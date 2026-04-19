@@ -146,10 +146,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
-        if (player.isSneaking()) return this.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+        // When sneaking, skip block activation so onItemUse is called directly by the pipeline.
+        // This prevents the wrong C08 packet format (air-click) that would occur if we mined
+        // the block inside onItemUseFirst (which sends face=255 to the server when returning true).
+        return false;
     }
 
     @Override
@@ -180,7 +181,10 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        // Return true so Forge sends C08 with real block coordinates (not the air-click face=255
+        // format that would be used if we returned true from onItemUseFirst). This ensures the
+        // server processes the packet via activateBlockOrUseItem → onItemUse, not onItemRightClick.
+        return true;
     }
 
     private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
