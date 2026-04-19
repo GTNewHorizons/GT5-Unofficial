@@ -194,7 +194,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
             .beginStructureBlock(7, 5, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 32, false)
@@ -309,11 +309,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

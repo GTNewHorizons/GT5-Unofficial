@@ -203,7 +203,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(EnumChatFormatting.WHITE + "Processing Time = 5 seconds * " + EnumChatFormatting.GOLD + "Minimum Required Rate" + EnumChatFormatting.WHITE + " / " + createRateText("Input Beam Rate"))
             .addInfo("Can process up to the durability of all " + createMaskText("Mask's") + " in the Focus Input Bus of one type per game tick")
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Any Tiered Glass", 16, false)
@@ -505,6 +505,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate() };
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private String createMaskText(String text) {

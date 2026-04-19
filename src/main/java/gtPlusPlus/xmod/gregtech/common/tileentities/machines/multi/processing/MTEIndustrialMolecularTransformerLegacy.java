@@ -67,7 +67,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
             .addInfo("Maximum 1x of each bus/hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, false)
-            .addController("Top Center")
+            .addController("Top center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
             .addCasingInfoMin("TPV-Alloy Coils", 16, false)
             .addCasingInfoMin("Molecular Containment Casing", 52, false)
@@ -205,7 +205,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
 
     @Override
     protected int getCasingTextureId() {
-        return 44;
+        return 113;
     }
 
     @Override

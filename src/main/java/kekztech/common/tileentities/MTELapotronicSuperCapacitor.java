@@ -452,7 +452,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + " for every capacitor tier above")
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
-            .addController("Front center bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
             .addOtherStructurePart(
                 "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
@@ -1103,6 +1103,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     protected boolean canUseWireless() {
         return wirelessCapableCapacitors() != 0;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

@@ -356,6 +356,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+            .addController("Front left, 2nd layer")
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
@@ -542,6 +543,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 "tt.infodata.qc.total_wireless_computation",
                 "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         return data.toArray(new String[] {});
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {

@@ -28,6 +28,7 @@ public class MaterialsInit {
         loadTiers();
         loadCircuitry();
         loadNotExact();
+        loadBioVatBacterialSludges();
         loadTODOThis();
         loadDegree1Compounds();
         loadUnclassified01();
@@ -4799,7 +4800,7 @@ public class MaterialsInit {
     private static Materials loadGlue() {
         return new MaterialBuilder().setName("Glue")
             .setDefaultLocalName("Refined Glue")
-            .setChemicalFormula("No Horses were harmed in the the making of this substance", true)
+            .setChemicalFormula("No Horses were harmed in the making of this substance", true)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00c8c400)
@@ -5181,6 +5182,29 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static void loadBioVatBacterialSludges() {
+        Materials.EnrichedBacterialSludge = loadEnrichedBacterialSludge();
+        Materials.FermentedBacterialSludge = loadFermentedBacterialSludge();
+    }
+
+    private static Materials loadEnrichedBacterialSludge() {
+        return new MaterialBuilder().setName("EnrichedBacterialSludge")
+            .setDefaultLocalName("Enriched Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0036f60e)
+            .constructMaterial();
+    }
+
+    private static Materials loadFermentedBacterialSludge() {
+        return new MaterialBuilder().setName("FermentedBacterialSludge")
+            .setDefaultLocalName("Fermented Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00008c10)
+            .constructMaterial();
+    }
+
     private static void loadTODOThis() {
         Materials.AluminiumBrass = loadAluminiumBrass();
         Materials.Endstone = loadEndstone();
@@ -5393,6 +5417,7 @@ public class MaterialsInit {
         Materials.SodaAsh = loadSodaAsh();
         Materials.Sodalite = loadSodalite();
         Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumPotassium = loadSodiumPotassium();
         Materials.SodiumSulfide = loadSodiumSulfide();
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
@@ -7339,6 +7364,17 @@ public class MaterialsInit {
             .addMaterial(Materials.Sodium, 2)
             .addMaterial(Materials.Sulfur, 2)
             .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPotassium() {
+        return new MaterialBuilder().setName("SodiumPotassium")
+            .setDefaultLocalName("Sodium Potassium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0016ff24)
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Potassium, 1)
             .constructMaterial();
     }
 
@@ -9496,6 +9532,7 @@ public class MaterialsInit {
         Materials.Perlite = loadPerlite();
         Materials.Pitchblende = loadPitchblende();
         Materials.Pollucite = loadPollucite();
+        Materials.Pollution = loadPollution();
         Materials.PotassiumFeldspar = loadPotassiumFeldspar();
         Materials.QuartzSand = loadQuartzSand();
         Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
@@ -10842,6 +10879,15 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Caesium)
             .addOreByproduct(() -> Materials.Aluminiumoxide)
             .addOreByproduct(() -> Materials.Rubidium)
+            .constructMaterial();
+    }
+
+    private static Materials loadPollution() {
+        return new MaterialBuilder().setName("Pollution")
+            .setDefaultLocalName("Pollution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setARGB(0x00d0b361)
             .constructMaterial();
     }
 

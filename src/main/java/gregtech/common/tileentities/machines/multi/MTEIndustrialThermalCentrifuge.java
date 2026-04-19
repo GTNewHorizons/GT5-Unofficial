@@ -99,12 +99,12 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                     EnumChatFormatting.GRAY))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Thermal Processing Casings", 92, false)
-            .addCasingInfoMin("Heat Proof Machine Casings", 4, false)
-            .addCasingInfoMin("Red Steel Frame Box", 16, false)
-            .addCasingInfoMin("Solenoid Superconducting Coil", 6, true)
-            .addCasingInfoMin("Heating Coils", 16, true)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Thermal Processing Casings", 85, false)
+            .addCasingInfoExactly("Heat Proof Machine Casings", 4, false)
+            .addCasingInfoExactly("Red Steel Frame Box", 16, false)
+            .addCasingInfoExactly("Solenoid Superconducting Coil", 6, true)
+            .addCasingInfoExactly("Heating Coils", 16, true)
             .addCasingInfoExactly("Any Glass", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -227,9 +227,9 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1.0f / getSpeedBonus())
-            .setEuModifier(getEUMultiplier())
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEUMultiplier)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -265,19 +265,19 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
         solenoidLevel = level;
     }
 
-    public float getCoilSpeedBonus() {
-        return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
+    public double getCoilSpeedBonus() {
+        return (coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier());
     }
 
-    public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
+    public double getSpeedBonus() {
+        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
-    public float getEUMultiplier() {
+    public double getEUMultiplier() {
         double heatingBonus = (coilLevel == null ? 0
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
-        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
+        return BASE_EU_MULTIPLIER * heatingBonus;
     }
 
     @Override

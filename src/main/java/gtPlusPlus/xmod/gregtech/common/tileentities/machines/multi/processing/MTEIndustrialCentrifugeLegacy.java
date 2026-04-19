@@ -19,7 +19,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,12 +39,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.RenderOverlay;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -61,7 +63,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
-    protected boolean mFormed;
 
     public MTEIndustrialCentrifugeLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -92,7 +93,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Centrifuge Casings", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -206,7 +207,16 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                // ensures heavy mode recipes can not run
+                if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                return super.validateRecipe(recipe);
+            }
+        }.noRecipeCaching()
             .setEuModifier(0.9F)
             .setSpeedBonus(1F / 2.25F)
             .setMaxParallelSupplier(this::getTrueParallel);
@@ -215,14 +225,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     @Override
     public int getMaxParallelRecipes() {
         return (6 * GTUtility.getTier(this.getMaxInputVoltage()));
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasingsMisc;
-    }
-
-    public byte getCasingMeta() {
-        return 0;
     }
 
     public byte getCasingTextureIndex() {
@@ -237,7 +239,6 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.mIsAnimated = !mIsAnimated;
-        Logger.INFO("Is Centrifuge animated " + this.mIsAnimated);
         if (this.mIsAnimated) {
             GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture. ");
         } else {
@@ -262,13 +263,11 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     }
 
     public boolean usingAnimations() {
-        // Logger.INFO("Is animated? "+this.mIsAnimated);
         return this.mIsAnimated;
     }
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mFormed = (aValue & 0x1) != 0;
         setTurbineOverlay();
     }
 
@@ -283,8 +282,4 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
         if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
-    @Override
-    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
-        mFormed = true;
-    }
 }

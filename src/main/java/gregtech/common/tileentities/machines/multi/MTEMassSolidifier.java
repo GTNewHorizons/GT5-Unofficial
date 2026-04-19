@@ -32,8 +32,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -181,7 +179,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("Front Center Bottom")
+            .addController("Front bottom center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
             .addCasingInfoExactly("Solidifier Radiator", 34, false)
@@ -194,6 +192,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInputHatch("Any Solidifier Casing", 1)
             .addEnergyHatch("Any Solidifier Casing", 1)
             .addMaintenanceHatch("Any Solidifier Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -300,14 +299,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 }
                 return false;
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Nonnull
@@ -340,6 +333,10 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public int getMaxParallelRecipes() {
         return 10 * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    public double getSpeedBonus() {
+        return 1F / speedup;
     }
 
     @Override

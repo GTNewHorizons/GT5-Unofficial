@@ -1015,6 +1015,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     /**
      * Space Miner project module T1 of the Space Elevator
      *
@@ -1102,6 +1107,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
+                .addController("Front, 4th layer")
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                 .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
