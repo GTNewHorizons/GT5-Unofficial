@@ -638,7 +638,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .childIf(shouldDisplayInputSeparation(), () -> createInputSeparationButton(syncManager))
             .childIf(shouldDisplayBatchMode(), () -> createBatchModeButton(syncManager))
             .childIf(shouldDisplayRecipeLock(), () -> createLockToSingleRecipeButton(syncManager))
-            .childIf(!machineModeIcons.isEmpty(), () -> createModeSwitchButton(syncManager));
+            .childIf(!machineModeIcons.isEmpty(), () -> createModeSwitchButton(syncManager))
+            .child(createCoilGlowToggleButton(syncManager));
     }
 
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
@@ -868,6 +869,34 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::isBatchModeEnabled,
             StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
             StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+    }
+
+    protected IWidget createCoilGlowToggleButton(PanelSyncManager syncManager) {
+        BooleanSyncValue disableCoilGlowSyncer = (BooleanSyncValue) syncManager
+            .getSyncHandlerFromMapKey("disableCoilGlow:0");
+        BooleanSyncValue hasCoilsSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("hasCoils:0");
+
+        return new ToggleButton().size(18, 18)
+            .value(disableCoilGlowSyncer)
+            .overlay(getCoilGlowOverlay(disableCoilGlowSyncer))
+            .tooltipBuilder(this::createCoilGlowTooltip)
+            .setEnabledIf(w -> hasCoilsSyncer.getValue());
+    }
+
+    private IDrawable getCoilGlowOverlay(BooleanSyncValue disableCoilGlowSyncer) {
+        return new DynamicDrawable(
+            () -> disableCoilGlowSyncer.getValue() ? GTGuiTextures.TT_OVERLAY_BUTTON_HEAT_OFF
+                : GTGuiTextures.TT_OVERLAY_BUTTON_HEAT_ON);
+    }
+
+    private void createCoilGlowTooltip(RichTooltip t) {
+        t.addLine(IKey.dynamic(() -> {
+            if (multiblock.isCoilGlowDisabled()) {
+                return StatCollector.translateToLocal("GT5U.gui.button.coil_glow_off");
+            } else {
+                return StatCollector.translateToLocal("GT5U.gui.button.coil_glow_on");
+            }
+        }));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -1329,6 +1358,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::isInputSeparationEnabled,
             multiblock::setInputSeparation);
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
+
+        BooleanSyncValue disableCoilGlowSyncer = new BooleanSyncValue(
+            multiblock::isCoilGlowDisabled,
+            multiblock::setCoilGlowDisabled);
+        syncManager.syncValue("disableCoilGlow", disableCoilGlowSyncer);
+
+        BooleanSyncValue hasCoilsSyncer = new BooleanSyncValue(multiblock::supportsCoilGlowToggle);
+        syncManager.syncValue("hasCoils", hasCoilsSyncer);
 
         IntSyncValue voidExcessSyncer = new IntSyncValue(
             () -> multiblock.getVoidingMode()
