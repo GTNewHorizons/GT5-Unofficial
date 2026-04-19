@@ -128,9 +128,7 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
             textColumn.child(coordinateRow);
         }
 
-        if (isOriginColumn) {
-            textColumn.child(createButtonRow());
-        }
+        textColumn.childIf(isOriginColumn, this::createButtonRow);
 
         return textColumn;
     }
