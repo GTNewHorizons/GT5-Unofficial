@@ -11010,6 +11010,7 @@ public class MaterialsInit {
             .addOrePrefix(OrePrefixes.plate)
             .removeOrePrefix(OrePrefixes.block) // minecraft:redstone_block
             .removeOrePrefix(OrePrefixes.dust) // minecraft:redstone
+            .addPlasma()
             .constructMaterial();
     }
 
@@ -16105,6 +16106,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
     }
+
     private static Materials loadHexanite() {
         return new MaterialBuilder().setName("Hexanite")
             .setDefaultLocalName("Hexanite")
