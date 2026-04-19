@@ -507,6 +507,10 @@ public enum Casings implements ICasing {
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
 
+    // Block Reinforced
+    NaquadahReinforcedBlock
+        (() -> GregTechAPI.sBlockReinforced,10,218),
+
     // Block Casings Foundry
     PrimaryExoFoundryCasing
         (() -> GregTechAPI.sBlockCasingsFoundry, 0, gt(8, 5, 0)),
@@ -669,7 +673,7 @@ public enum Casings implements ICasing {
     IncoloyDSFluidContainmentBlock
         (() -> ModBlocks.blockCasings2Misc, 3, gtpp(1, 3)),
     WashPlantCasing
-        (() -> ModBlocks.blockCasings2Misc, 4, -1),
+        (() -> ModBlocks.blockCasings2Misc, 4, 75),
     IndustrialSieveCasing
         (() -> ModBlocks.blockCasings2Misc, 5, gtpp(1, 5)),
     LargeSieveGrate
@@ -829,7 +833,7 @@ public enum Casings implements ICasing {
     ReinforcedEngineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     MolecularContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),
     HighVoltageCurrentCapacitor
         (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
     ParticleContainmentCasing

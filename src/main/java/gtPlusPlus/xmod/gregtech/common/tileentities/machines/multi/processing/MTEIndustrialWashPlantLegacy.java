@@ -48,7 +48,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TAE;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -72,29 +71,29 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
-public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWashPlant>
+public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustrialWashPlantLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
 
-    private static IStructureDefinition<MTEIndustrialWashPlant> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialWashPlantLegacy> STRUCTURE_DEFINITION = null;
 
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
     private static final int MACHINEMODE_CHEMBATH = 2;
     private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
 
-    public MTEIndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialWashPlantLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialWashPlant(final String aName) {
+    public MTEIndustrialWashPlantLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialWashPlant(this.mName);
+        return new MTEIndustrialWashPlantLegacy(this.mName);
     }
 
     @Override
@@ -106,6 +105,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
             .addInfo("Always requires an Input Hatch full of water to refill structure")
@@ -127,9 +127,9 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialWashPlant> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialWashPlantLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWashPlant>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWashPlantLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -138,7 +138,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                             { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialWashPlant.class)
+                    buildHatchAdder(MTEIndustrialWashPlantLegacy.class)
                         .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
@@ -262,7 +262,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     public byte getCasingTextureIndex() {
-        return (byte) TAE.GTPP_INDEX(11);
+        return 114;
     }
 
     public boolean checkForWater() {
