@@ -324,7 +324,7 @@ public enum CircuitComponent {
         () -> MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)),
     FrameboxMagMatter(
         1404,
-        "gt.circuitcomponent.frame.tritanium",
+        "gt.circuitcomponent.frame.magmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
