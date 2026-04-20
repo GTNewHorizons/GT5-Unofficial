@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -13,10 +14,12 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
@@ -48,9 +51,8 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow corner = super.createLeftCornerFlow(panel, syncManager).collapseDisabledChild();
 
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = createButtonList(panel, syncManager);
-
-        for (Pair<Boolean, Supplier<IWidget>> elem : buttons) corner.childIf(elem.getFirst(), elem.getSecond());
+        for (Pair<Boolean, Supplier<IWidget>> elem : createButtonList(panel, syncManager))
+            corner.childIf(elem.getFirst(), elem.getSecond());
 
         return corner;
     }
@@ -154,5 +156,12 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip"))));
 
         return buttons;
+    }
+
+    protected Widget<?> createButtonRowArrow(BiFunction<Integer, Boolean, UITexture> arrowSupplier, int width,
+        int height) {
+        return arrowSupplier.apply(width, true)
+            .asWidget()
+            .size(width, height);
     }
 }
