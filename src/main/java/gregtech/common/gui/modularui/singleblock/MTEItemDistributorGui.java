@@ -49,7 +49,7 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
     @Override
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createLeftCornerFlow(panel, syncManager).child(
-            createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 86, 22).marginBottom(1)
+            createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 86, 22, true).marginBottom(1)
                 .marginLeft(1));
     }
 
