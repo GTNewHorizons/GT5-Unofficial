@@ -147,6 +147,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(170, Materials.Datolite);
         r(171, Materials.MetamorphicMineralMixture);
         r(172, Materials.Plagioclase);
+        r(173, Materials.UnformedHexanite);
+        r(174, Materials.Hexanite);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);

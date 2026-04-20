@@ -1091,6 +1091,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials MetamorphicMineralMixture;
     public static Materials Plagioclase;
     public static Materials Epidote;
+    public static Materials UnformedHexanite;
+    public static Materials Hexanite;
     // endregion
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
