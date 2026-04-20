@@ -56,4 +56,9 @@ public class MTESuperBuffer extends MTEChestBuffer {
                 .setPos(61, 4)
                 .setSize(54, 54));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
