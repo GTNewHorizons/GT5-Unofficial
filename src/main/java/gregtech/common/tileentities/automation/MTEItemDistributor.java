@@ -14,12 +14,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,6 +27,7 @@ import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEItemDistributorGui;
 
 public class MTEItemDistributor extends MTEBuffer {
 
@@ -227,19 +228,7 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addEmitRedstoneIfFullButton(builder);
-        addInvertRedstoneButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(87, true))
-                .setPos(62, 60)
-                .setSize(87, 22));
-        addInventorySlots(builder);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEItemDistributorGui(this).build(guiData, syncManager, uiSettings);
     }
 }
