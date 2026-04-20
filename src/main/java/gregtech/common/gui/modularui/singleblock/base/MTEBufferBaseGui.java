@@ -158,8 +158,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
         return buttons;
     }
 
-    protected Widget<?> createButtonRowArrow(BiFunction<Integer, Boolean, UITexture> arrowSupplier, int width,
-        int height) {
+    protected Widget<?> createArrow(BiFunction<Integer, Boolean, UITexture> arrowSupplier, int width, int height) {
         return arrowSupplier.apply(width, true)
             .asWidget()
             .size(width, height);
