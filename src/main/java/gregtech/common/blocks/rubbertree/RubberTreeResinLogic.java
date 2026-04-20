@@ -16,8 +16,8 @@ import java.util.Set;
 
 public final class RubberTreeResinLogic {
 
-    private static final int MIN_REFILL_TICKS = 20 * 2;
-    private static final int MAX_REFILL_TICKS = 20 * 3;
+    private static final int MIN_REFILL_TICKS = 20 * 85; // 85 seconds + ~2.5 seconds of throttle
+    private static final int MAX_REFILL_TICKS = 20 * 295; // 295 seconds + ~2.5 seconds of throttle
     private static final int MAX_CONNECTED_LOGS = 64;
 
     private RubberTreeResinLogic() {}
