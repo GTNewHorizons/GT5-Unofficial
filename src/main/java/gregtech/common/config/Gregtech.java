@@ -554,6 +554,16 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.Name("Enable Powerfail Notifications")
         public boolean enablePowerfailNotifications;
+
+        @Config.Comment("Format template for the circuit suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for the circuit number.")
+        @Config.DefaultString(" [%s]")
+        @Config.Name("CIB Circuit Suffix Format")
+        public String cibCircuitSuffixFormat = " [%s]";
+
+        @Config.Comment("Format template for the manual slots suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for comma-separated item names.")
+        @Config.DefaultString(" {%s}")
+        @Config.Name("CIB Manual Slots Suffix Format")
+        public String cibManualSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

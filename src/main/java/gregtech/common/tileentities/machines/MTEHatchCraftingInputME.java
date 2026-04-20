@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -674,12 +675,17 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+            name.append(
+                String.format(Gregtech.machines.cibCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
         }
-        if (mInventory[SLOT_MANUAL_START] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_MANUAL_START].getDisplayName());
+        StringJoiner manualSlots = new StringJoiner(", ");
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                manualSlots.add(mInventory[i].getDisplayName());
+            }
+        }
+        if (manualSlots.length() > 0) {
+            name.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
         }
         return name.toString();
     }
