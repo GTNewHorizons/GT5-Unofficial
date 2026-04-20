@@ -76,19 +76,19 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     protected static String getTickRateDesc(int tier) {
-        int tickRate = getTickRate(tier);
+        final int tickRate = getTickRate(tier);
         String timeStr = "";
-        String numStr = "";
+        final String numStr;
         if (maxStacks[tier] > 1) {
-            numStr = maxStacks[tier] + " items";
+            numStr = maxStacks[tier] + " stacks";
         } else {
-            numStr = "1 item";
+            numStr = "1 stack";
         }
         if (tickRate < 20) timeStr = "1/" + 20 / tickRate + " ";
         else if (tickRate > 20) {
             timeStr = (tickRate / 20) + "th ";
         }
-        return "Moves " + numStr + " every " + timeStr + "second";
+        return numStr + " of 64 items every " + timeStr + "second";
     }
 
     protected static int getTickRate(int tier) {
@@ -117,5 +117,10 @@ public class MTEChestBuffer extends MTEBuffer {
 
     protected void addMainUI(ModularWindow.Builder builder) {
         addInventorySlots(builder);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

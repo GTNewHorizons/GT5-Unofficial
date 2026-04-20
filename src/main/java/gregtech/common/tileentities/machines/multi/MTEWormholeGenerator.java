@@ -1091,7 +1091,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 data.add(StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
-                    inputHatch.Amperes,
+                    inputHatch.getAmperes(),
                     VN[inputHatch.mTier],
                     avgSend,
                     avgSend / 20 / V[inputHatch.mTier],
@@ -1185,6 +1185,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             new FakeSyncWidget.DoubleSyncer(
                 () -> mLink != null ? mLink.mWormholeEnergy : 0,
                 val -> mWormholeEnergy_UI = val));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     // #endregion
