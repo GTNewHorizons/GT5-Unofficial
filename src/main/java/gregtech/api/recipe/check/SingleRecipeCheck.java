@@ -130,7 +130,7 @@ public class SingleRecipeCheck {
         FluidStack[] fluidInputs) {
         int currentParallel = maxParallel;
 
-        if (totalItemCost > 0) {
+        if (totalItemCost >= 0 && !itemCost.isEmpty()) {
             // Create a map for items to their stored amounts.
             Map<ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : itemInputs) {
@@ -140,8 +140,13 @@ public class SingleRecipeCheck {
 
             // For each item cost, update the maximum parallel executions possible.
             for (Map.Entry<ItemId, Integer> costEntry : itemCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math
+                        .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                }
+                else { // Likely a non-consumable in itemCost. Check if machine has this non-consumable
+                    if (!itemMap.containsKey(costEntry.getKey())) currentParallel = 0;
+                }
                 if (currentParallel <= 0) {
                     return 0;
                 }
@@ -683,7 +688,7 @@ public class SingleRecipeCheck {
             ImmutableMap.Builder<ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
             for (Map.Entry<ItemId, Integer> entry : beforeItems.entrySet()) {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
-                if (cost > 0) {
+                if (cost >= 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
                 }
             }
