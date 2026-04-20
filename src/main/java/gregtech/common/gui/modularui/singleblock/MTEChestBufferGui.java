@@ -39,7 +39,7 @@ public class MTEChestBufferGui extends MTEBufferBaseGui<MTEChestBuffer> {
     @Override
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createLeftCornerFlow(panel, syncManager).child(
-            createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 50, 22).marginBottom(1)
+            createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 50, 22, true).marginBottom(1)
                 .marginLeft(1));
     }
 
