@@ -61,7 +61,7 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
 
         // arrow
         corner.child(
-            createButtonRowArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 84, 22).marginBottom(1)
+            createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 84, 22).marginBottom(1)
                 .marginLeft(3));
 
         return corner;
