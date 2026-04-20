@@ -9,10 +9,10 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
-import bartworks.common.loaders.FluidLoader;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.common.loaders.FluidLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
