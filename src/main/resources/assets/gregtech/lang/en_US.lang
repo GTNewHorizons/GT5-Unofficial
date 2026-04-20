@@ -1,6 +1,6 @@
-tile.gt.block_rubber_log.name=Rubber Log
-tile.gt.block_rubber_leaves.rubber.name=Rubber Leaves
-tile.gt.block_rubber_sapling.name=Rubber Sapling
+tile.gt.block_rubber_log.name=Rubber Wood
+tile.gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
+tile.gt.block_rubber_sapling.name=Rubber Tree Sapling
 item.gt.sticky_resin.name=Sticky Resin
 
 # Creative ItemGroup Tab
