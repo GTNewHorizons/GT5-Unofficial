@@ -571,5 +571,14 @@
         "stream": false
       }
     ]
+  },
+  "resin.harvest": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "ResinHarvest",
+        "stream": false
+      }
+    ]
   }
 }

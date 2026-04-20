@@ -1,3 +1,8 @@
+tile.gt.block_rubber_log.name=Rubber Log
+tile.gt.block_rubber_leaves.rubber.name=Rubber Leaves
+tile.gt.block_rubber_sapling.name=Rubber Sapling
+item.gt.sticky_resin.name=Sticky Resin
+
 # Creative ItemGroup Tab
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines

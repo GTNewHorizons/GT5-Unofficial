@@ -40,6 +40,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.blocks.rubbertree.RubberTreeRegistrator;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -818,6 +819,7 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
+        RubberTreeRegistrator.init();
         GTLog.out.println("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
