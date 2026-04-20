@@ -394,8 +394,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public String getInterfaceNameSuffix() {
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null || !ccs.allowSelectCircuit()) return null;
-        final int config = new GhostCircuitItemStackHandler(getMetaTileEntity()).getCircuitConfig();
-        return config > 0 ? " [" + config + "]" : null;
+        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+        if (stack == null || stack.getItemDamage() <= 0) return null;
+        return " [" + stack.getItemDamage() + "]";
     }
 
     @Override
