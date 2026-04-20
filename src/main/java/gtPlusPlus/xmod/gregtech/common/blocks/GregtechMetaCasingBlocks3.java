@@ -89,7 +89,8 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             return switch (aMeta) {
                 case 0 ->
                     // Aquatic Casing
-                    Textures.BlockIcons.AQUATIC_CASING.getIcon();
+                    ordinalSide < 2 ? Textures.BlockIcons.AQUATIC_CASING_TOP.getIcon()
+                        : Textures.BlockIcons.AQUATIC_CASING.getIcon();
                 case 1 ->
                     // Inconel Reinforced Casing
                     Textures.BlockIcons.INCONEL_REINFORCED_CASING.getIcon();
