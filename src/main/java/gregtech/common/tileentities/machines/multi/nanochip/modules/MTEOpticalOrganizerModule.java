@@ -9,18 +9,18 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
@@ -29,7 +29,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -42,6 +41,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 // todo look over and cleanup. the functionality is present
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
@@ -154,12 +154,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.3"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.4"))
             .addSeparator()
-            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.9x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.7x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.9x"), TooltipHelper.EFF_COLOR))
-            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
+            .addInfo(getWaterTooltipLine("3", BoostingWater.Grade3.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("4", BoostingWater.Grade4.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("5", BoostingWater.Grade5.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.9x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("6", BoostingWater.Grade6.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.7x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("7", BoostingWater.Grade7.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.9x"), TooltipHelper.EFF_COLOR))
+            .addInfo(getWaterTooltipLine("8", BoostingWater.Grade8.amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
             .beginStructureBlock(7, 10, 7, false)
@@ -228,25 +228,18 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         firstWater = null;
         secondWater = null;
 
-        for (MTEHatchInput hatch : mInputHatches) {
+        for (FluidStack fluid : getStoredFluids()) {
             if (firstWater != null && secondWater != null) break;
-
-            final List<BoostingWater> fluid = WATER_LIST.stream()
-                .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
-                .collect(Collectors.toList());
-
-            if (fluid.size() >= 2) {
-                firstWater = fluid.get(0);
-                secondWater = fluid.get(1);
-            } else if (fluid.size() == 1) {
-                if (firstWater == null) {
-                    firstWater = fluid.get(0);
-                } else {
-                    secondWater = fluid.get(0);
-                }
+            BoostingWater candidate = BoostingWater.getByFluid(fluid.getFluid());
+            if (candidate == null) continue;
+            if (firstWater == null) {
+                firstWater = candidate;
+            } else if (secondWater == null && candidate != firstWater) {
+                secondWater = candidate;
             }
         }
-        if (firstWater == null || secondWater == null || (firstWater.water == secondWater.water)) {
+
+        if (firstWater == null || secondWater == null) {
             return CheckRecipeResultRegistry.NAC_OPTICAL_MISSING_WATER;
         }
         if (baseMulti.opticalT3Active) {
@@ -273,28 +266,40 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         }
     }
 
-    private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
-        new BoostingWater(Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
-        new BoostingWater(Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
-        new BoostingWater(Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
+    private enum BoostingWater {
 
-    private static class BoostingWater {
+        Grade3(Materials.Grade3PurifiedWater, 1000, module -> module.waterDiscount *= 0.8f),
+        Grade4(Materials.Grade4PurifiedWater, 800, module -> module.waterDiscount *= 0.6f),
+        Grade5(Materials.Grade5PurifiedWater, 800, module -> module.speedModifier *= 0.9f),
+        Grade6(Materials.Grade6PurifiedWater, 600, module -> module.speedModifier *= 0.7f),
+        Grade7(Materials.Grade7PurifiedWater, 600, module -> module.euMultiplier *= 0.9f),
+        Grade8(Materials.Grade8PurifiedWater, 400, module -> module.euMultiplier *= 0.7f),
 
-        public final Materials water;
-        public final int amount;
-        public final Consumer<MTEOpticalOrganizerModule> boosterFunction;
+        ;
 
-        public BoostingWater(Materials water, int amount, Consumer<MTEOpticalOrganizerModule> boosterFunction) {
-            this.water = water;
+        private static final Map<Fluid, BoostingWater> FLUID_MAP = new Object2ObjectOpenHashMap<>();
+        private final Fluid water;
+        private final int amount;
+        private final Consumer<MTEOpticalOrganizerModule> boosterFunction;
+
+        private static final BoostingWater[] values = values();
+
+        BoostingWater(Materials water, int amount, Consumer<MTEOpticalOrganizerModule> boosterFunction) {
+            this.water = water.mFluid;
             this.amount = amount;
             this.boosterFunction = boosterFunction;
         }
 
+        public static BoostingWater getByFluid(Fluid fluid) {
+            if (FLUID_MAP.isEmpty()) {
+                Arrays.stream(values)
+                    .forEach(water -> FLUID_MAP.put(water.water, water));
+            }
+            return FLUID_MAP.get(fluid);
+        }
+
         public FluidStack getStack(float waterDiscount) {
-            return this.water.getFluid((long) (waterDiscount * this.amount));
+            return new FluidStack(water, (int) (waterDiscount * (float) this.amount));
         }
     }
 }
