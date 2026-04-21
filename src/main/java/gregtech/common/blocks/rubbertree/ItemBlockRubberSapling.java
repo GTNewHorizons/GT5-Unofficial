@@ -10,9 +10,4 @@ public class ItemBlockRubberSapling extends ItemBlock {
         setHasSubtypes(false);
         setMaxDamage(0);
     }
-
-    @Override
-    public int getMetadata(int meta) {
-        return 0;
-    }
 }

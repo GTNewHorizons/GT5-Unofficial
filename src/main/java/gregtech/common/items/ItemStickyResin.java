@@ -1,14 +1,12 @@
 package gregtech.common.items;
 
-import gregtech.api.GregTechAPI;
-import net.minecraft.item.Item;
+import gregtech.api.items.GTGenericItem;
 
-public class ItemStickyResin extends Item {
+public class ItemStickyResin extends GTGenericItem {
 
-    public ItemStickyResin() {
-        setUnlocalizedName("gt.sticky_resin");
-        setTextureName("gregtech:sticky_resin");
-        setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+    public ItemStickyResin(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
+        super(aUnlocalized, aEnglish, aEnglishTooltip);
+        setCreativeTab(gregtech.api.GregTechAPI.TAB_GREGTECH_MATERIALS);
         setMaxStackSize(64);
     }
 }

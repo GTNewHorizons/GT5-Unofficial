@@ -48,7 +48,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("logRubber", 1))
             .circuit(2)
             .itemOutputs(
-                ItemList.IC2_Resin.get(1L),
+                ItemList.Sticky_Resin.get(1L),
                 ItemList.IC2_Plantball.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
@@ -433,7 +433,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Resin.get(1))
+            .itemInputs(ItemList.Sticky_Resin.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3),
                 ItemList.IC2_Plantball.get(1))

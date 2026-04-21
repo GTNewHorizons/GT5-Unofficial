@@ -80,6 +80,7 @@ public enum ItemList implements IItemContainer {
     IC2_Scrapbox,
     IC2_Mixed_Metal_Ingot,
     IC2_Resin,
+    Sticky_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
     IC2_Energium_Dust,

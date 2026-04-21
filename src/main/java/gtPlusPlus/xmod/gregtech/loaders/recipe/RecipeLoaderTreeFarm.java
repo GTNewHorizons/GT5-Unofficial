@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,8 +17,8 @@ public class RecipeLoaderTreeFarm {
 
     public static void generateRecipes() {
         generateVanillaTrees();
+        generateRubberTrees();
 
-        if (Mods.IndustrialCraft2.isModLoaded()) generateIC2Trees();
         if (Mods.TinkerConstruct.isModLoaded()) generateTinkersTrees();
         generateGTPPTrees();
 
@@ -94,12 +96,12 @@ public class RecipeLoaderTreeFarm {
             null);
     }
 
-    private static void generateIC2Trees() {
-        MTETreeFarm.registerTreeProducts( // Rubber Tree
-            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "blockRubSapling", 1, 0),
-            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "blockRubWood", 1, 0),
-            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "blockRubLeaves", 1, 0),
-            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "itemHarz", 1, 0));
+    private static void generateRubberTrees() {
+        MTETreeFarm.registerTreeProducts(
+            new ItemStack(GregTechAPI.sBlockRubberSapling, 1, 0),
+            new ItemStack(GregTechAPI.sBlockRubberLog, 1, 0),
+            new ItemStack(GregTechAPI.sBlockRubberLeaves, 1, 0),
+            ItemList.Sticky_Resin.get(1));
     }
 
     private static void generateTinkersTrees() {

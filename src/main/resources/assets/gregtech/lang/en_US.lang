@@ -1,8 +1,3 @@
-tile.gt.block_rubber_log.name=Rubber Wood
-tile.gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
-tile.gt.block_rubber_sapling.name=Rubber Tree Sapling
-item.gt.sticky_resin.name=Sticky Resin
-
 # Creative ItemGroup Tab
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
@@ -4763,6 +4758,13 @@ gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
 gt.Item_Toolbox.name=Field Engineer's Toolbox
 gt.Item_Toolbox.tooltip=A container to hold your tools!
+
+## Rubber tree
+tile.gt.block_rubber_log.name=Rubber Wood
+tile.gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
+tile.gt.block_rubber_sapling.name=Rubber Tree Sapling
+gt.item_sticky_resin.name=Sticky Resin
+gt.item_sticky_resin.tooltip=Sap of a Rubber Tree
 
 # MetaItem02
 ## Power Goggles

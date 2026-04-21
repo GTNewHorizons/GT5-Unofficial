@@ -1,8 +1,8 @@
 package gregtech.common.blocks.rubbertree;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.common.items.ItemStickyResin;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -12,9 +12,7 @@ public final class RubberTreeRegistrator {
 
     private RubberTreeRegistrator() {}
 
-    public static Item stickyResin;
-
-    public static void init() {
+    public static void initBlocks() {
         GregTechAPI.sBlockRubberLog = new BlockRubberLog();
         GregTechAPI.sBlockRubberLeaves = new BlockRubberLeaves();
         GregTechAPI.sBlockRubberSapling = new BlockRubberSapling();
@@ -36,9 +34,13 @@ public final class RubberTreeRegistrator {
             new ItemStack(GregTechAPI.sBlockRubberSapling, 1, OreDictionary.WILDCARD_VALUE)
         );
 
-        stickyResin = new ItemStickyResin();
-        GameRegistry.registerItem(stickyResin, "gt.sticky_resin");
-
         GameRegistry.registerTileEntity(TileEntityRubberLog.class, "gt.rubber_log");
+        GameRegistry.registerFuelHandler(new RubberTreeFuelHandler());
+    }
+
+    public static void initItems() {
+        ItemList.Sticky_Resin.set(
+            new ItemStickyResin(
+                "item_sticky_resin", "Sticky Resin", "Sap of a Rubber Tree"));
     }
 }

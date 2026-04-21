@@ -1638,7 +1638,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.piston, 1, 32767), ItemList.IC2_Resin.get(1))
+            .itemInputs(new ItemStack(Blocks.piston, 1, 32767), ItemList.Sticky_Resin.get(1))
             .itemOutputs(new ItemStack(Blocks.sticky_piston, 1, 0))
             .duration(5 * SECONDS)
             .eut(4)
@@ -3063,7 +3063,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1), ItemList.IC2_Resin.get(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1), ItemList.Sticky_Resin.get(1))
             .itemOutputs(new ItemStack(Blocks.torch, 6))
             .duration(2 * SECONDS)
             .eut(20)

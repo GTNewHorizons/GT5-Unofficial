@@ -819,7 +819,8 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        RubberTreeRegistrator.init();
+        RubberTreeRegistrator.initBlocks();
+        RubberTreeRegistrator.initItems();
         GTLog.out.println("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));

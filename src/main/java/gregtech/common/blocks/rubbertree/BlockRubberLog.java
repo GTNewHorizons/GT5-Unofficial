@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.BlockLog;
@@ -146,7 +147,7 @@ public class BlockRubberLog extends BlockLog {
             return false;
         }
 
-        spawnResinDrop(world, x, y, z, side, new ItemStack(RubberTreeRegistrator.stickyResin, getResinAmount(world)));
+        spawnResinDrop(world, x, y, z, side, ItemList.Sticky_Resin.get(getResinAmount(world)));
 
         return true;
     }
