@@ -79,11 +79,11 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             .addInfo("Grows vertically. Height adds parallel processing.")
             .addInfo("Max Parallels = (Height Layers) * 2^Tier")
             .addInfo("Base Crafting Time: 16 seconds.")
-            .addInfo("Pollution: 2200 per cycle. Requires exactly 1 Muffler Hatch on Top.")
+            .addInfo("Pollution: 2200 per cycle. Requires 1 Muffler Hatch on Top.")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 5, false)
             .addController("Front Center, 2nd Layer")
             .addMufflerHatch("Top Center ONLY (Exactly 1)")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher("Роберт-_P0ZA_");
         return tt;
     }
 
@@ -229,7 +229,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             }
         }
 
-        if (mIgnisCentiVis < 50 || mOrdoCentiVis < 50 || mAquaCentiVis < 50) return SimpleCheckRecipeResult.ofFailure("ic.no_vis");
+        int visPerCraft = 50;
+        if (mIgnisCentiVis < visPerCraft || mOrdoCentiVis < visPerCraft || mAquaCentiVis < visPerCraft) return SimpleCheckRecipeResult.ofFailure("ic.no_vis");
 
         int maxP = Math.max(1, this.mParallel);
         int totalCat = 0;
@@ -245,14 +246,14 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             crafts = Math.min(crafts, totalE / entry.getValue());
         }
 
-        crafts = Math.min(crafts, mIgnisCentiVis / 50);
-        crafts = Math.min(crafts, mOrdoCentiVis / 50);
-        crafts = Math.min(crafts, mAquaCentiVis / 50);
+        crafts = Math.min(crafts, mIgnisCentiVis / visPerCraft);
+        crafts = Math.min(crafts, mOrdoCentiVis / visPerCraft);
+        crafts = Math.min(crafts, mAquaCentiVis / visPerCraft);
         if (crafts <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        mIgnisCentiVis -= crafts * 50;
-        mOrdoCentiVis -= crafts * 50;
-        mAquaCentiVis -= crafts * 50;
+        mIgnisCentiVis -= crafts * visPerCraft;
+        mOrdoCentiVis -= crafts * visPerCraft;
+        mAquaCentiVis -= crafts * visPerCraft;
 
         int toCons = crafts;
         for (ItemStack in : inputs) {
@@ -297,9 +298,9 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         if (aBaseMetaTileEntity.isServerSide() && mMachine && aTick % 10 == 0) {
             long v = getMaxInputVoltage();
             if (v >= 512) {
-                int tier = (v >= 131072) ? 7 : GTUtility.getTier(v);
-                int maxBuf = (1 << tier) * 1000;
-                int dr = 50 * (1 << (Math.max(3, tier) - 3));
+                int tier = GTUtility.getTier(v);
+                int maxBuf = tier * 100000;
+                int dr = (1 << (tier + 2)) * 25;
                 if (mIgnisCentiVis < maxBuf) mIgnisCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.FIRE, dr);
                 if (mOrdoCentiVis < maxBuf) mOrdoCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.ORDER, dr);
                 if (mAquaCentiVis < maxBuf) mAquaCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.WATER, dr);
