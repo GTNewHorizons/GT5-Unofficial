@@ -577,7 +577,7 @@ public class Loaders {
         NeutronActivatorLoader.NARecipeLoad();
         if (Mods.Thaumcraft.isModLoaded()) {
             IndustrialCrucibleRecipes.init();
-            if (cpw.mods.fml.common.Loader.isModLoaded("thaumicenergistics")) {
+            if (gregtech.api.enums.Mods.ThaumicEnergistics.isModLoaded()) {
                 thaumicenergistics.api.ThEApi.instance().transportPermissions()
                     .addAspectContainerTileToBothPermissions(MTEEssentiaInputHatch.class, MTEEssentiaInputHatch.CAPACITY);
             }

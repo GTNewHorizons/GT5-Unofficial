@@ -64,6 +64,8 @@ essentiaFilterCasing.name=Essentia Filter Casing
 essentiaFilterCasing.0.name=Essentia Filter Casing
 essentiaOutputHatch.name=Essentia Output Hatch
 essentiaOutputHatch.0.name=Essentia Output Hatch
+essentiaInputHatch.name=Essentia Input Hatch
+essentiaInputHatch.0.name=Essentia Input Hatch
 essentiaOutputHatch_ME.name=Essentia Output Hatch (ME)
 essentiaOutputHatch_ME.0.name=Essentia Output Hatch (ME)
 componentAssemblyLineCasing.name=Component Assembly Line Casing
@@ -565,6 +567,9 @@ achievement.item.advancedRadiationProtectionPlate=Advanced Radiation Proof Plate
 achievement.item.advancedRadiationProtectionPlate.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
+tc.research_name.RESEARCH_IC=Industrial Crucible
+tc.research_text.RESEARCH_IC=[GG] Automated Alchemy
+tc.research_page.RESEARCH_IC.1=This massive multiblock structure performs alchemy on an industrial scale. By integrating advanced machinery with Thaumcraft logic, the Industrial Crucible provides up to 40 parallels. It consumes liquid Essentia and centiVis to power its crafts
 research.ESSENTIA_CELL.page.0=The Novice Cell has such low efficiency that you can't bear it. So you discovered a new way to make some better Cells<BR><BR>The Novice Cell only provides 1 StablePoint, the Adept one provides 2 StablePoint, the Master one provides 5 StablePoint, and the Grandmaster one provides 10 StablePoint!<BR><BR>With higher StablePoint, the generator can create more electricity per Essentia.<BR><BR>They also allow you to use better hatches.
 research.ESSENTIA_SMELTERY.page.0=The Advanced Alchemical Furnace is no longer enough to support your Essentia production...<BR><BR>The LES(Large Essentia Smeltery) is an advanced version of the Advanced Alchemical Furnace, which consumes electricity and cent-vis to smelt Essentia.
 research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can only run after this requirement is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up the machine's work, up to 200% (100cv/5t).

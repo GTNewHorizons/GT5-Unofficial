@@ -28,6 +28,83 @@ public class IndustrialCrucibleRecipes {
 
     public static void init() {
         loadRecipesFromThaumcraft();
+        initMachineRecipes();
+    }
+
+    private static void initMachineRecipes() {
+        thaumcraft.api.aspects.AspectList crucibleAspects = new thaumcraft.api.aspects.AspectList()
+            .add(thaumcraft.api.aspects.Aspect.MECHANISM, 128)
+            .add(thaumcraft.api.aspects.Aspect.MAGIC, 128)
+            .add(thaumcraft.api.aspects.Aspect.FIRE, 64)
+            .add(thaumcraft.api.aspects.Aspect.WATER, 64)
+            .add(thaumcraft.api.aspects.Aspect.ORDER, 64);
+
+        ItemStack[] crucibleItems = new ItemStack[] {
+            gregtech.api.enums.ItemList.Electric_Pump_IV.get(1),
+            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14),
+            gregtech.api.enums.ItemList.Electric_Motor_IV.get(1),
+            new ItemStack(thaumcraft.common.config.ConfigBlocks.blockMetalDevice, 1, 0),
+            gregtech.api.enums.ItemList.Circuit_Parts_Advanced.get(1),
+            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14)
+        };
+
+        Object controllerRecipe = thaumcraft.api.ThaumcraftApi.addInfusionCraftingRecipe(
+            "RESEARCH_IC",
+            goodgenerator.util.ItemRefer.Industrial_Crucible.get(1),
+            6,
+            crucibleAspects,
+            goodgenerator.util.ItemRefer.Magic_Casing.get(1),
+            crucibleItems
+        );
+
+        thaumcraft.api.aspects.AspectList hatchAspects = new thaumcraft.api.aspects.AspectList()
+            .add(thaumcraft.api.aspects.Aspect.MECHANISM, 64)
+            .add(thaumcraft.api.aspects.Aspect.WATER, 32)
+            .add(thaumcraft.api.aspects.Aspect.VOID, 32)
+            .add(thaumcraft.api.aspects.Aspect.ORDER, 32);
+
+        ItemStack[] hatchItems = new ItemStack[] {
+            new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 0),
+            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14),
+            new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 1),
+            gregtech.api.enums.ItemList.Electric_Pump_HV.get(1)
+        };
+
+        Object hatchRecipe = thaumcraft.api.ThaumcraftApi.addInfusionCraftingRecipe(
+            "RESEARCH_IC",
+            goodgenerator.util.ItemRefer.Essentia_Input_Hatch.get(1),
+            4,
+            hatchAspects,
+            gregtech.api.enums.ItemList.Hatch_Input_HV.get(1),
+            hatchItems
+        );
+
+        thaumcraft.api.aspects.AspectList researchAspects = new thaumcraft.api.aspects.AspectList()
+            .add(thaumcraft.api.aspects.Aspect.MECHANISM, 5)
+            .add(thaumcraft.api.aspects.Aspect.MAGIC, 5)
+            .add(thaumcraft.api.aspects.Aspect.CRAFT, 4)
+            .add(thaumcraft.api.aspects.Aspect.WATER, 4)
+            .add(thaumcraft.api.aspects.Aspect.FIRE, 4)
+            .add(thaumcraft.api.aspects.Aspect.ORDER, 4);
+
+        thaumcraft.api.research.ResearchItem icResearch = new thaumcraft.api.research.ResearchItem(
+            "RESEARCH_IC",
+            "ARTIFICE",
+            researchAspects,
+            -19, 3,
+            5,
+            goodgenerator.util.ItemRefer.Industrial_Crucible.get(1)
+        );
+
+        icResearch.setParents("ESSENTIA_SMELTERY");
+
+        icResearch.setPages(
+            new thaumcraft.api.research.ResearchPage("tc.research_page.RESEARCH_IC.1"),
+            new thaumcraft.api.research.ResearchPage((thaumcraft.api.crafting.InfusionRecipe) controllerRecipe),
+            new thaumcraft.api.research.ResearchPage((thaumcraft.api.crafting.InfusionRecipe) hatchRecipe)
+        );
+
+        icResearch.registerResearchItem();
     }
 
     private static void loadRecipesFromThaumcraft() {
