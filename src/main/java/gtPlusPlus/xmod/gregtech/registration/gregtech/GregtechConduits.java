@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 
-import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -20,6 +19,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
