@@ -2,24 +2,28 @@ package gregtech.common.blocks.rubbertree;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
-public final class RubberTreeClientEffects {
+public final class RubberTreeEffects {
 
-    private RubberTreeClientEffects() {}
+    private RubberTreeEffects() {}
 
     public static void spawnResinRefillParticles(World world, int x, int y, int z, int side) {
-        if (world == null) {
+        if (!(world instanceof WorldServer)) {
             return;
         }
 
+        WorldServer worldServer = (WorldServer) world;
         Random rand = world.rand;
         ForgeDirection dir = ForgeDirection.getOrientation(side);
 
+        // Main burst on the resin face
         for (int i = 0; i < 18; i++) {
             double px = x + 0.5D;
             double py = y + 0.5D;
@@ -43,23 +47,46 @@ public final class RubberTreeClientEffects {
                 pz += (rand.nextDouble() - 0.5D) * 0.70D;
             }
 
-            double red = 0.90D + rand.nextDouble() * 0.10D;
-            double green = 0.68D + rand.nextDouble() * 0.12D;
-            double blue = 0.06D + rand.nextDouble() * 0.05D;
-
-            world.spawnParticle("reddust", px, py, pz, red, green, blue);
+            // IMPORTANT:
+            // count = 0 for "reddust" => the following 3 values are RGB
+            worldServer.func_147487_a(
+                "reddust",
+                px, py, pz,
+                0,
+                0.90D,
+                0.68D,
+                0.06D,
+                1.0D
+            );
         }
 
+        // A small secondary halo around the block
         for (int i = 0; i < 8; i++) {
             double px = x + 0.2D + rand.nextDouble() * 0.6D;
             double py = y + 0.2D + rand.nextDouble() * 0.8D;
             double pz = z + 0.2D + rand.nextDouble() * 0.6D;
 
-            double red = 0.95D;
-            double green = 0.78D;
-            double blue = 0.10D;
-
-            world.spawnParticle("reddust", px, py, pz, red, green, blue);
+            worldServer.func_147487_a(
+                "reddust",
+                px, py, pz,
+                0,
+                0.95D,
+                0.78D,
+                0.10D,
+                1.0D
+            );
         }
+    }
+
+    public static void playResinHarvestSound(World world, int x, int y, int z) {
+        GTUtility.sendSoundToPlayers(
+            world,
+            "gregtech:resin.harvest",
+            0.55F,
+            0.96F + world.rand.nextFloat() * 0.10F,
+            x + 0.5D,
+            y + 0.5D,
+            z + 0.5D
+        );
     }
 }

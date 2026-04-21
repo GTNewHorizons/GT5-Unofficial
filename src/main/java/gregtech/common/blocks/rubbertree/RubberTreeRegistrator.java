@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.ItemStickyResin;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTechAPI;
@@ -14,6 +15,7 @@ public final class RubberTreeRegistrator {
 
     public static void initBlocks() {
         GregTechAPI.sBlockRubberLog = new BlockRubberLog();
+        GregTechAPI.sBlockRubberLogNatural = new BlockRubberLogNatural();
         GregTechAPI.sBlockRubberLeaves = new BlockRubberLeaves();
         GregTechAPI.sBlockRubberSapling = new BlockRubberSapling();
 
@@ -34,8 +36,10 @@ public final class RubberTreeRegistrator {
             new ItemStack(GregTechAPI.sBlockRubberSapling, 1, OreDictionary.WILDCARD_VALUE)
         );
 
-        GameRegistry.registerTileEntity(TileEntityRubberLog.class, "gt.rubber_log");
         GameRegistry.registerFuelHandler(new RubberTreeFuelHandler());
+
+        // TODO Remove in next major version after GT rubber tree is implemented
+        MinecraftForge.EVENT_BUS.register(new RubberTreeWorldEvents());
     }
 
     public static void initItems() {

@@ -92,10 +92,19 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
             if (block == null || block.isAir(world, x, y + trunkY, z) || block.isLeaves(world, x, y + trunkY, z)
                 || block.canBeReplacedByLeaves(world, x, y + trunkY, z)) {
 
-                int meta = BlockRubberLog.makeMeta(true, BlockRubberLog.AXIS_Y);
-                setBlockAndNotifyAdequately(world, x, y + trunkY, z, GregTechAPI.sBlockRubberLog, meta);
+                setBlockAndNotifyAdequately(world, x, y + trunkY, z, GregTechAPI.sBlockRubberLogNatural, BlockRubberLogNatural.META_EMPTY);
             }
         }
+
+        // Init timer for resin spawn when tree is generated
+        int refillY = y + random.nextInt(height);
+        world.scheduleBlockUpdate(
+            x,
+            refillY,
+            z,
+            GregTechAPI.sBlockRubberLogNatural,
+            RubberTreeResinLogic.nextResinDelay(random)
+        );
 
         return true;
     }

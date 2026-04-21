@@ -4760,6 +4760,7 @@ gt.Item_Toolbox.tooltip=A container to hold your tools!
 
 ## Rubber tree
 tile.gt.block_rubber_log.name=Rubber Wood
+tile.gt.block_rubber_log_natural.name=Rubber Wood Natural
 tile.gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
 tile.gt.block_rubber_sapling.name=Rubber Tree Sapling
 gt.item_sticky_resin.name=Sticky Resin

@@ -2,9 +2,9 @@ package gregtech.loaders.postload;
 
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import gregtech.api.enums.ItemList;
-import gregtech.common.blocks.rubbertree.BlockRubberLog;
-import net.minecraft.block.Block;
+import gregtech.common.blocks.rubbertree.BlockRubberLogNatural;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -93,22 +93,28 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerIc2RubberTreeTransformers() {
-        // IC2 Rubber Sapling -> GT Rubber Sapling
-        BlockReplacementManager.addSimpleReplacement("IC2:blockRubSapling", GregTechAPI.sBlockRubberSapling, 0);
+        BlockReplacementManager.addSimpleReplacement(
+            "IC2:blockRubSapling", GregTechAPI.sBlockRubberSapling, 0);
 
-        // IC2 Rubber Leaves -> GT Rubber Leaves
-        BlockReplacementManager.addSimpleReplacement("IC2:blockRubLeaves", GregTechAPI.sBlockRubberLeaves, 0);
+        BlockReplacementManager.addSimpleReplacement(
+            "IC2:blockRubLeaves", GregTechAPI.sBlockRubberLeaves, 0);
 
-        // IC2 Rubber Wood -> GT Rubber Log
-        // Option chosen here: convert to a vertical "natural" log,
-        // so that the old worldgen trees can be used in your new resin system.
+        // Rubber Logs in world replaced by natural logs
         BlockReplacementManager.addSimpleReplacement(
             "IC2:blockRubWood",
-            GregTechAPI.sBlockRubberLog,
-            BlockRubberLog.makeMeta(true, BlockRubberLog.AXIS_Y)
+            GregTechAPI.sBlockRubberLogNatural,
+            BlockRubberLogNatural.META_POSTEA_TRANSFORM,
+            true
         );
 
-        // IC2 Sticky Resin -> GT Sticky Resin
-        ItemStackReplacementManager.addSimpleReplacement("IC2:itemHarz", ItemList.Sticky_Resin.get(1L));
+        // Rubber Logs in inventories replaced by regular logs
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:blockRubWood",
+            new ItemStack(Item.getItemFromBlock(GregTechAPI.sBlockRubberLog), 1, 0),
+            true
+        );
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemHarz", ItemList.Sticky_Resin.get(1L));
     }
 }
