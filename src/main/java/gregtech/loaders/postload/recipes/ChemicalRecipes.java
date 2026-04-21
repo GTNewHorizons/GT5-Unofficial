@@ -470,8 +470,8 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1))
             .fluidInputs(Materials.Chlorine.getGas(4_000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
