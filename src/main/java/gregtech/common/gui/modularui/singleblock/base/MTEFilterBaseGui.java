@@ -35,11 +35,10 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
                 () -> createButton(
                     new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                    configureTooltip(
+                    configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_gradually.tooltip",
-                        true,
-                        machine.getEmptySlots(),
-                        machine.getRedstoneOutput()))));
+                        machine::getEmptySlots,
+                        machine::getRedstoneOutput))));
 
         // invert filter button
         buttons.add(
@@ -48,7 +47,7 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
                 () -> createButton(
                     new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter),
                     GTGuiTextures.OVERLAY_BUTTON_INVERT_FILTER,
-                    configureTooltip("GT5U.machines.invert_filter.tooltip", false))));
+                    configureTooltip("GT5U.machines.invert_filter.tooltip"))));
 
         return buttons;
     }
