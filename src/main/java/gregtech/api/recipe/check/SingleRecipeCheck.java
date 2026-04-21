@@ -143,8 +143,7 @@ public class SingleRecipeCheck {
                 if (costEntry.getValue() > 0) {
                     currentParallel = Math
                         .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
-                }
-                else { // Likely a non-consumable in itemCost. Check if machine has this non-consumable
+                } else { // Likely a non-consumable in itemCost. Check if machine has this non-consumable
                     if (!itemMap.containsKey(costEntry.getKey())) currentParallel = 0;
                 }
                 if (currentParallel <= 0) {
@@ -688,8 +687,33 @@ public class SingleRecipeCheck {
             ImmutableMap.Builder<ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
             for (Map.Entry<ItemId, Integer> entry : beforeItems.entrySet()) {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
-                if (cost >= 0) {
+                if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
+                } else {
+                    // Check if somehow an item not meant to be consumed was consumed
+                    // We don't want that possibility here
+                    if (Objects.equals(entry.getValue(), afterItems.getOrDefault(entry.getKey(), -1))) {
+                        // This is either a non-consumable or an item not used in the recipe
+                        // Filter for non-consumables based on oreDictAlt first
+                        if (this.recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
+                            if (Arrays.stream(recipeWithAlt.mOreDictAlt)
+                                .filter(Objects::nonNull)
+                                .flatMap(Arrays::stream)
+                                .anyMatch(
+                                    aStack -> aStack != null && entry.getKey()
+                                        .matches(aStack))) {
+                                itemCostBuilder.put(entry.getKey(), cost);
+                            }
+                        }
+                        // Filter for non-consumables that have no alts
+                        else if (Arrays.stream(this.recipe.mInputs)
+                            .anyMatch(
+                                aStack -> entry.getKey()
+                                    .matches(aStack))) {
+                                        itemCostBuilder.put(entry.getKey(), cost);
+                                    }
+                        // Anything left here isn't a non-consumable
+                    }
                 }
             }
             return itemCostBuilder.build();
