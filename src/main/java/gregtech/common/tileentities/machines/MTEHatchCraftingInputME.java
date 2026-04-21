@@ -676,7 +676,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         if (mInventory[SLOT_CIRCUIT] != null) {
             name.append(
-                String.format(Gregtech.machines.cibCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
+                String.format(Gregtech.machines.ghostCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
         }
         StringJoiner manualSlots = new StringJoiner(", ");
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {

@@ -555,10 +555,10 @@ public class Gregtech {
         @Config.Name("Enable Powerfail Notifications")
         public boolean enablePowerfailNotifications;
 
-        @Config.Comment("Format template for the circuit suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for the circuit number.")
+        @Config.Comment("Format template for the ghost circuit suffix in AE2 terminal display names. Use %s as placeholder for the circuit number. Applies to all GT machines and Crafting Input Bus/Buffer.")
         @Config.DefaultString(" [%s]")
-        @Config.Name("CIB Circuit Suffix Format")
-        public String cibCircuitSuffixFormat = " [%s]";
+        @Config.Name("Ghost Circuit Suffix Format")
+        public String ghostCircuitSuffixFormat = " [%s]";
 
         @Config.Comment("Format template for the manual slots suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for comma-separated item names.")
         @Config.DefaultString(" {%s}")

@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.interfaces.IInterfaceNameProvider;
 import gregtech.GTMod;
+import gregtech.common.config.Gregtech;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -395,7 +396,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (ccs == null || !ccs.allowSelectCircuit()) return null;
         ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
         if (stack == null || stack.getItemDamage() <= 0) return null;
-        return " [" + stack.getItemDamage() + "]";
+        return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
     }
 
     @Override
