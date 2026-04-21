@@ -18,7 +18,6 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.nei.GTNEIDefaultHandler;
-import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -49,16 +48,13 @@ public class CauldronFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawDescription(RecipeDisplayInfo recipeInfo) {
-        recipeInfo.drawText(StatCollector.translateToLocal("GT5U.nei.cauldron.anystack"));
-    }
-
-    @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
 
         if (stack.getItem() instanceof ItemFluidDisplay) {
             currentTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.nei.cauldron.consumed"));
+        } else {
+            currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.nei.cauldron.anystack"));
         }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
