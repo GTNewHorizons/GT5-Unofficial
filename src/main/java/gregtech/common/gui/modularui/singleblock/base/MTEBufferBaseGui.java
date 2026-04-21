@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -87,12 +88,25 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected Consumer<RichTooltip> configureTooltip(String key, boolean isDynamic, Object... args) {
-        GTTooltipDataCache.TooltipData data = isDynamic ? machine.mTooltipCache.getUncachedTooltipData(key, args)
-            : machine.mTooltipCache.getData(key, args);
+    protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
+        GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
 
         return t -> t.addStringLines(Interactable.hasShiftDown() ? data.shiftText : data.text)
             .titleMargin(2);
+    }
+
+    @SafeVarargs
+    protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
+        return t -> {
+            GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getUncachedTooltipData(
+                key,
+                Arrays.stream(args)
+                    .map(Supplier::get)
+                    .toArray());
+
+            t.addStringLines(Interactable.hasShiftDown() ? data.shiftText : data.text)
+                .titleMargin(2);
+        };
     }
 
     /// Subclasses should add their own buttons to this list.
@@ -109,7 +123,6 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_ENERGY,
                     configureTooltip(
                         "GT5U.machines.emit_energy.tooltip",
-                        false,
                         EnumChatFormatting.GREEN + formatNumber(V[machine.mTier])
                             + " ("
                             + GTUtility.getColoredTierNameFromTier(machine.mTier)
@@ -125,7 +138,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                 () -> createButton(
                     new BooleanSyncValue(machine::isSortStacks, machine::setSortStacks),
                     GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE,
-                    configureTooltip("GT5U.machines.sorting_mode.tooltip", false))));
+                    configureTooltip("GT5U.machines.sorting_mode.tooltip"))));
 
         // emit redstone button
         buttons.add(
@@ -134,11 +147,10 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                 () -> createButton(
                     new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                    configureTooltip(
+                    configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_if_full.tooltip",
-                        true,
-                        GTUtility.translate(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
-                        machine.getRedstoneOutput()))));
+                        () -> GTUtility.translate(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
+                        machine::getRedstoneOutput))));
 
         // invert redstone button
         buttons.add(
@@ -147,7 +159,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                 () -> createButton(
                     new BooleanSyncValue(machine::isInvert, machine::setInvert),
                     GTGuiTextures.OVERLAY_BUTTON_INVERT_REDSTONE,
-                    configureTooltip("GT5U.machines.invert_redstone.tooltip", false))));
+                    configureTooltip("GT5U.machines.invert_redstone.tooltip"))));
 
         // stocking mode button
         buttons.add(
@@ -156,7 +168,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                 () -> createButton(
                     new BooleanSyncValue(machine::isStockingMode, machine::setStockingMode),
                     GTGuiTextures.OVERLAY_BUTTON_STOCKING_MODE,
-                    configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip", false))));
+                    configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip"))));
 
         return buttons;
     }
