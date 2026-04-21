@@ -11,6 +11,8 @@ import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.bsideup.jabel.Desugar;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
@@ -236,7 +238,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             if (tIdentifier != null && !tPlanksParts[0].equals(tIdentifier.modId)) {
                 continue;
             }
-            if (tIdentifier != null && !tPlanksParts[1].equals(tIdentifier.name))  {
+            if (tIdentifier != null && !tPlanksParts[1].equals(tIdentifier.name)) {
                 continue;
             }
 
@@ -273,6 +275,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         SKIPPED
     }
 
-    private record SpecialSlabConversionResult(boolean isSpecialConversion, ItemStack resultingSlab) {
-    }
+    @Desugar
+    private record SpecialSlabConversionResult(boolean isSpecialConversion, ItemStack resultingSlab) {}
 }
