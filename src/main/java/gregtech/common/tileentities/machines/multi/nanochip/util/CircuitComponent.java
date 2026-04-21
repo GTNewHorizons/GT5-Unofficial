@@ -373,8 +373,7 @@ public enum CircuitComponent {
     ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
-    ProcessedPlanckScaleManifold(1805, "gt.circuitcomponent.other.processed.planckscalemanifold", null, true),
-    ProcessedCoiledThermalSuperconductor(1806, "gt.circuitcomponent.other.processed.coiledthermalsuperconductor", null, true),
+    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.other.processed.coiledthermalsuperconductor", null, true),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -542,6 +541,10 @@ public enum CircuitComponent {
         2118,
         "gt.circuitcomponent.planckcircuit",
         () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+    PlanckManifold(
+        2119,
+        "gt.circuitcomponent.planckmanifold",
+        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
     ;
 
     // spotless:on
