@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 
+import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -60,7 +61,10 @@ public class GregtechConduits {
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
         }
 
-        public Material getMaterial() {
+        public IOreMaterial getMaterial() {
+            if (this == Void) {
+                return Materials.Void;
+            }
             return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
         }
     }
