@@ -38,7 +38,8 @@ public class BlockTEContainer extends BlockContainer {
     // Index 0: Formerly Essentia Hatch, now removed
     // Index 1: Essentia Output Hatch
     // Index 2: Essentia Output Hatch (ME)
-    // Index 3+: Unused
+    // Index 3: Essentia Input Hatch
+    // Index 4+: Unused
     protected int index;
 
     public BlockTEContainer(String name, String[] texture, CreativeTabs Tab) {

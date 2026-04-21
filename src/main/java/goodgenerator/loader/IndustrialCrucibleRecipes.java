@@ -33,39 +33,45 @@ public class IndustrialCrucibleRecipes {
 
     private static void initMachineRecipes() {
         thaumcraft.api.aspects.AspectList crucibleAspects = new thaumcraft.api.aspects.AspectList()
-            .add(thaumcraft.api.aspects.Aspect.MECHANISM, 128)
-            .add(thaumcraft.api.aspects.Aspect.MAGIC, 128)
-            .add(thaumcraft.api.aspects.Aspect.FIRE, 64)
-            .add(thaumcraft.api.aspects.Aspect.WATER, 64)
-            .add(thaumcraft.api.aspects.Aspect.ORDER, 64);
+            .add(thaumcraft.api.aspects.Aspect.MECHANISM, 256)
+            .add(thaumcraft.api.aspects.Aspect.MAGIC, 256)
+            .add(thaumcraft.api.aspects.Aspect.FIRE, 256)
+            .add(thaumcraft.api.aspects.Aspect.WATER, 256)
+            .add(thaumcraft.api.aspects.Aspect.ORDER, 256)
+            .add(thaumcraft.api.aspects.Aspect.EXCHANGE, 256);
+
+        ItemStack circuitIV = gregtech.api.util.GTOreDictUnificator.get(gregtech.api.enums.OrePrefixes.circuit, gregtech.api.enums.Materials.IV, 1L);
+        ItemStack rotorKnightmetal = gregtech.api.util.GTOreDictUnificator.get(gregtech.api.enums.OrePrefixes.rotor, gregtech.api.enums.Materials.Knightmetal, 1L);
+        ItemStack mnemonicMatrix = new ItemStack(thaumcraft.common.config.ConfigBlocks.blockMetalDevice, 1, 12);
 
         ItemStack[] crucibleItems = new ItemStack[] {
-            gregtech.api.enums.ItemList.Electric_Pump_IV.get(1),
-            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14),
-            gregtech.api.enums.ItemList.Electric_Motor_IV.get(1),
+            circuitIV, circuitIV, circuitIV, circuitIV,
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockMetalDevice, 1, 0),
-            gregtech.api.enums.ItemList.Circuit_Parts_Advanced.get(1),
-            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14)
+            gregtech.api.enums.ItemList.Electric_Pump_IV.get(1),
+            rotorKnightmetal,
+            new ItemStack(thaumcraft.common.config.ConfigBlocks.blockCrystal, 1, 2),
+            new ItemStack(thaumcraft.common.config.ConfigBlocks.blockStoneDevice, 1, 12),
+            mnemonicMatrix, mnemonicMatrix, mnemonicMatrix, mnemonicMatrix
         };
 
         Object controllerRecipe = thaumcraft.api.ThaumcraftApi.addInfusionCraftingRecipe(
             "RESEARCH_IC",
             goodgenerator.util.ItemRefer.Industrial_Crucible.get(1),
-            6,
+            20,
             crucibleAspects,
-            goodgenerator.util.ItemRefer.Magic_Casing.get(1),
+            gregtech.api.enums.ItemList.Casing_Pipe_TungstenSteel.get(1),
             crucibleItems
         );
 
         thaumcraft.api.aspects.AspectList hatchAspects = new thaumcraft.api.aspects.AspectList()
             .add(thaumcraft.api.aspects.Aspect.MECHANISM, 64)
-            .add(thaumcraft.api.aspects.Aspect.WATER, 32)
+            .add(thaumcraft.api.aspects.Aspect.WATER, 128)
             .add(thaumcraft.api.aspects.Aspect.VOID, 32)
             .add(thaumcraft.api.aspects.Aspect.ORDER, 32);
 
         ItemStack[] hatchItems = new ItemStack[] {
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 0),
-            new ItemStack(thaumcraft.common.config.ConfigItems.itemResource, 1, 14),
+            goodgenerator.util.ItemRefer.Magic_Casing.get(1),
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 1),
             gregtech.api.enums.ItemList.Electric_Pump_HV.get(1)
         };
@@ -73,9 +79,9 @@ public class IndustrialCrucibleRecipes {
         Object hatchRecipe = thaumcraft.api.ThaumcraftApi.addInfusionCraftingRecipe(
             "RESEARCH_IC",
             goodgenerator.util.ItemRefer.Essentia_Input_Hatch.get(1),
-            4,
+            6,
             hatchAspects,
-            gregtech.api.enums.ItemList.Hatch_Input_HV.get(1),
+            gregtech.api.enums.ItemList.Hatch_Output_HV.get(1),
             hatchItems
         );
 
@@ -106,7 +112,6 @@ public class IndustrialCrucibleRecipes {
 
         icResearch.registerResearchItem();
     }
-
     private static void loadRecipesFromThaumcraft() {
         CRUCIBLE_RECIPES.clear();
         Map<String, Integer> totalOccurrences = new HashMap<>();
