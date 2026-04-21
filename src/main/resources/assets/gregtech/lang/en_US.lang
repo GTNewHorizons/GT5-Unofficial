@@ -2205,7 +2205,7 @@ GT5U.machines.debugstructurewriter.tooltip.1=Prints Multiblock NonTE structure c
 GT5U.machines.debugstructurewriter.tooltip.2=ABC axes aligned to machine front
 GT5U.machines.debugstructurewriter.printed=Printed structure to console
 GT5U.machines.debugstructurewriter.gui.origin=Origin
-GT5U.machines.debugstructurewriter.gui.size=Structure Size
+GT5U.machines.debugstructurewriter.gui.size=Size
 GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
@@ -2504,8 +2504,8 @@ GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
-GT5U.gui.text.repair_tip=Click with a tool to repair.
 GT5U.gui.text.repair_info=Right-click hatch with Duct Tape\nor a filled Tool Box to repair all issues.
+GT5U.gui.text.autorepair_info=Consumes 4 Duct Tape, 2 Lubricant Cells,\n4 Steel Screws, and 2 HV Circuits\nfor each autorepair.
 GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
 GT5U.gui.text.microwave_energy_transmitter.x=Target X
 GT5U.gui.text.microwave_energy_transmitter.y=Target Y
@@ -2824,7 +2824,6 @@ gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
 gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
 gt.circuitcomponent.casing.processed.planck=Planck-Scale Circuit Encasement
 
-gt.circuitcomponent.other.processed.planckscalemanifold=Planck-Scale Manifold
 gt.circuitcomponent.other.processed.coiledthermalsuperconductor=Coiled Thermal Superconductor
 
 gt.circuitcomponent.bolt.processed.enrichedholmium=Filed Enriched Holmium Bolt
@@ -8058,3 +8057,5 @@ gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
 
 gt.item.gravitational_lens.name=Gravitational Lens
 gt.item.gravitational_lens.tooltip=Portable gravitational well
+gt.item.planck_manifold.name=Planck-Scale Manifold
+gt.item.planck_manifold.tooltip=The smallest there can be
