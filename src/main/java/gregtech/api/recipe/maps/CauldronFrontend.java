@@ -18,6 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -45,6 +46,11 @@ public class CauldronFrontend extends RecipeMapFrontend {
         return Arrays.asList(
             UIHelper.getItemInputPositions(2)
                 .get(1));
+    }
+
+    @Override
+    public void drawDescription(RecipeDisplayInfo recipeInfo) {
+        recipeInfo.drawText(StatCollector.translateToLocal("GT5U.nei.cauldron.anystack"));
     }
 
     @Override
