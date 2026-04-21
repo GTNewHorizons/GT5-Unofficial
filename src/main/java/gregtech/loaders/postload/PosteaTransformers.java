@@ -1,5 +1,9 @@
 package gregtech.loaders.postload;
 
+import com.gtnewhorizons.postea.api.BlockReplacementManager;
+import gregtech.api.enums.ItemList;
+import gregtech.common.blocks.rubbertree.BlockRubberLog;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -18,6 +22,7 @@ public class PosteaTransformers implements Runnable {
     public void run() {
         registerFrameboxTransformers();
         registerProgrammedCircuitTransformers();
+        registerIc2RubberTreeTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -85,5 +90,25 @@ public class PosteaTransformers implements Runnable {
             "miscutils:item.T3RecipeSelector",
             GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
             true);
+    }
+
+    private void registerIc2RubberTreeTransformers() {
+        // IC2 Rubber Sapling -> GT Rubber Sapling
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubSapling", GregTechAPI.sBlockRubberSapling, 0);
+
+        // IC2 Rubber Leaves -> GT Rubber Leaves
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubLeaves", GregTechAPI.sBlockRubberLeaves, 0);
+
+        // IC2 Rubber Wood -> GT Rubber Log
+        // Option chosen here: convert to a vertical "natural" log,
+        // so that the old worldgen trees can be used in your new resin system.
+        BlockReplacementManager.addSimpleReplacement(
+            "IC2:blockRubWood",
+            GregTechAPI.sBlockRubberLog,
+            BlockRubberLog.makeMeta(true, BlockRubberLog.AXIS_Y)
+        );
+
+        // IC2 Sticky Resin -> GT Sticky Resin
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemHarz", ItemList.Sticky_Resin.get(1L));
     }
 }
