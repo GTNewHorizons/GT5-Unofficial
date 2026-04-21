@@ -218,7 +218,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) {
-            tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText + EnumChatFormatting.RESET);
+            tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
         tt.addInfo(
             "Every coil tier gives a " + EnumChatFormatting.GREEN
@@ -382,10 +382,19 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             mEUt = -recipeEUt * (4 << (2 * ocLevel));
         }
 
+        int processTime = (int) (20 * speedBoost(getCoilTier()));
+
+        int batchMultiplierMax = 1;
+        if (isBatchModeEnabled()) {
+            batchMultiplierMax = getMaxBatchSize() / processTime;
+        }
+
+        fluid.amount = (int) (fluid.amount * batchMultiplierMax);
+
         mOutputFluids = new FluidStack[] { fluid };
         mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = (int) (20 * speedBoost(getCoilTier()));
+        mMaxProgresstime = processTime * batchMultiplierMax;
         return SimpleCheckRecipeResult.ofSuccess("siphoning");
     }
 
@@ -521,5 +530,10 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("coilTier", getCoilTier());
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 }
