@@ -63,7 +63,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         int j = this.rand.nextInt(3);
         int k;
         int min = 1;
-        int max = 3;
+        int max = 1;
         int range = max - min + 1;
 
         for (k = 0; k < j; ++k) {
