@@ -2,6 +2,7 @@ package goodgenerator.blocks.regularBlock;
 
 import java.util.List;
 
+import goodgenerator.blocks.tileEntity.MTEEssentiaInputHatch;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -145,18 +146,16 @@ public class BlockTEContainer extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         switch (index) {
-            case 2:
-                return new MTEEssentiaOutputHatch();
-            case 3:
-                return new MTEEssentiaOutputHatchME();
-            default:
-                return null;
+            case 2: return new MTEEssentiaOutputHatch();
+            case 3: return new MTEEssentiaOutputHatchME();
+            case 4: return new MTEEssentiaInputHatch();
+            default: return null;
         }
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
-        float par8, float par9) {
+                                    float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
@@ -167,6 +166,17 @@ public class BlockTEContainer extends BlockContainer {
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
                         GTUtility.sendChatTrans(player, "essentiaoutputhatch.chat.0");
+                    }
+                    return true;
+                } else return false;
+            } else if (index == 4) {
+                if (tile instanceof MTEEssentiaInputHatch) {
+                    MTEEssentiaInputHatch hatch = (MTEEssentiaInputHatch) tile;
+                    if (player.isSneaking()) {
+                        if (player.getHeldItem() == null) {
+                            hatch.clear();
+                            GTUtility.sendChatTrans(player, "Cleared");
+                        }
                     }
                     return true;
                 } else return false;

@@ -25,6 +25,8 @@ import goodgenerator.blocks.tileEntity.MTEComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.MTECoolantTower;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
+import goodgenerator.blocks.tileEntity.MTEEssentiaInputHatch;
+import goodgenerator.blocks.tileEntity.MTEIndustrialCrucible;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
 import goodgenerator.blocks.tileEntity.MTEFuelRefineFactoryLegacy;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
@@ -235,6 +237,7 @@ public class Loaders {
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
     public static Block essentiaOutputHatch;
     public static Block essentiaOutputHatch_ME;
+    public static Block essentiaInputHatch;
     public static final Block componentAssemblylineCasing = new BlockCasing(
         "componentAssemblyLineCasing",
         new String[] { GoodGenerator.MOD_ID + ":compAsslineCasing/0", // LV
@@ -263,6 +266,7 @@ public class Loaders {
     public static ItemStack XHE;
     public static ItemStack PA;
     public static ItemStack LES;
+    public static ItemStack IC;
     public static ItemStack CT;
     public static ItemStack[] LFC = new ItemStack[5];
 
@@ -456,10 +460,15 @@ public class Loaders {
         if (!Mods.Thaumcraft.isModLoaded()) return;
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatch.class, "EssentiaOutputHatch");
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatchME.class, "EssentiaOutputHatch_ME");
+        GameRegistry.registerTileEntity(MTEEssentiaInputHatch.class, "EssentiaInputHatch");
         Loaders.LES = new MTELargeEssentiaSmeltery(
             MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
             "LargeEssentiaSmeltery",
             "Large Essentia Smeltery").getStackForm(1L);
+        Loaders.IC = new MTEIndustrialCrucible(
+            32670,
+            "IndustrialCrucible",
+            "Industrial Crucible").getStackForm(1L);
         essentiaOutputHatch = new BlockTEContainer(
             "essentiaOutputHatch",
             new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
@@ -468,11 +477,16 @@ public class Loaders {
             "essentiaOutputHatch_ME",
             new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
             3);
+        essentiaInputHatch = new BlockTEContainer(
+            "essentiaInputHatch",
+            new String[] { GoodGenerator.MOD_ID + ":essentiaInputHatch" },
+            4);
         GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
         GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");
         GameRegistry.registerBlock(essentiaOutputHatch, GGItemBlocks.class, "essentiaOutputHatch");
         GameRegistry.registerBlock(essentiaFilterCasing, GGItemBlocks.class, "essentiaFilterCasing");
         GameRegistry.registerBlock(essentiaOutputHatch_ME, GGItemBlocks.class, "essentiaOutputHatch_ME");
+        GameRegistry.registerBlock(essentiaInputHatch, GGItemBlocks.class, "essentiaInputHatch");
 
         Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
     }
@@ -561,5 +575,12 @@ public class Loaders {
         RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
+        if (Mods.Thaumcraft.isModLoaded()) {
+            IndustrialCrucibleRecipes.init();
+            if (cpw.mods.fml.common.Loader.isModLoaded("thaumicenergistics")) {
+                thaumicenergistics.api.ThEApi.instance().transportPermissions()
+                    .addAspectContainerTileToBothPermissions(MTEEssentiaInputHatch.class, MTEEssentiaInputHatch.CAPACITY);
+            }
+        }
     }
 }
