@@ -114,9 +114,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
 
         String lubricantRate = TooltipHelper.fluidText(8000);
         String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euText(10900);
+        String defaultOutput = TooltipHelper.euRateText(10900);
         String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euText(32700);
+        String boostedOutput = TooltipHelper.euRateText(32700);
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 

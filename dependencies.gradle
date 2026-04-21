@@ -42,7 +42,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.3.2:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.56-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.22:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-897-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-902-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.73-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
 
@@ -144,6 +144,9 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.4.1-GTNH"))
+
+    // For testing involving the quantum computer
+    // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
 }
 
 afterEvaluate {
