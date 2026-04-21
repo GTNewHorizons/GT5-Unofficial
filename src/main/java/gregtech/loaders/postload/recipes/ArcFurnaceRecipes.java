@@ -14,7 +14,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -504,6 +506,43 @@ public class ArcFurnaceRecipes implements Runnable {
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        // Steam Multi Hatches and Buses
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 12),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 4),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getIngot(2),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 5))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getIngot(2),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 5))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
     }

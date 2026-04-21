@@ -27,6 +27,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidExtractorRecipes implements Runnable {
@@ -559,5 +560,30 @@ public class FluidExtractorRecipes implements Runnable {
                 .eut(TierEU.RECIPE_IV)
                 .addTo(fluidExtractionRecipes);
         }
+
+        // Steam Multi Hatches and Buses
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Steam.get(1L))
+            .fluidOutputs(Materials.Bronze.getMolten(12 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
+            .fluidOutputs(Materials.Bronze.getMolten(4 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
+            .fluidOutputs(Materials.Bronze.getMolten(4 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
     }
 }

@@ -24,7 +24,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -852,6 +854,43 @@ public class Pulverizer implements Runnable {
             .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 4))
             .duration(20 * SECONDS)
             .eut(4)
+            .addTo(maceratorRecipes);
+
+        // Steam Multi Hatches and Buses
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 12),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getDust(2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 5))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getDust(2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 5))
+            .duration(15 * SECONDS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
     }
 }
