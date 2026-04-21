@@ -69,6 +69,13 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
+        }
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return false;
