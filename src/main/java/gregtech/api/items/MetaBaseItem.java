@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -27,10 +28,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTMod;
@@ -85,11 +88,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
-    protected String getToolTipLocalizationKey(ItemStack aStack) {
-        return null;
-    }
-
-    protected Object[] getToolTipLocalizationArgs(ItemStack aStack) {
+    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
         return null;
     }
 
@@ -252,6 +251,14 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
+        if (tooltipSupplier != null) {
+            Collections.addAll(
+                aList,
+                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                    .filter(GTUtility::isStringValid)
+                    .toArray(String[]::new));
+        }
         final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
         if (StatCollector.canTranslate(key)) Collections.addAll(
             aList,
@@ -471,25 +478,20 @@ public abstract class MetaBaseItem extends GTGenericItem
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null) return 0;
         if (tStats[3] > 0) return (int) (long) tStats[3];
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(ItemStack aStack, long aCharge) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null || tStats[3] > 0) return false;
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) tNBT = new NBTTagCompound();
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(getEmptyMetaData(aStack));
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
-        if (tNBT.hasNoTags()) aStack.setTagCompound(null);
-        else aStack.setTagCompound(tNBT);
         isItemStackUsable(aStack);
         return true;
     }
@@ -605,18 +607,18 @@ public abstract class MetaBaseItem extends GTGenericItem
     public FluidStack getFluidContent(ItemStack aStack) {
         Long[] tStats = getFluidContainerStats(aStack);
         if (tStats == null || tStats[0] <= 0) return GTUtility.getFluidForFilledItem(aStack, false);
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
+        if (ItemStackNBT.hasKey(aStack, "GT.FluidContent", NBT.TAG_COMPOUND)) {
+            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(aStack, "GT.FluidContent"));
+        }
+        return null;
     }
 
     public void setFluidContent(ItemStack aStack, FluidStack aFluid) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) tNBT = new NBTTagCompound();
-        else tNBT.removeTag("GT.FluidContent");
-        if (aFluid != null && aFluid.amount > 0)
-            tNBT.setTag("GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
-        if (tNBT.hasNoTags()) aStack.setTagCompound(null);
-        else aStack.setTagCompound(tNBT);
+        if (aFluid != null && aFluid.amount > 0) {
+            ItemStackNBT.setTag(aStack, "GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
+        } else {
+            ItemStackNBT.removeTag(aStack, "GT.FluidContent");
+        }
         isItemStackUsable(aStack);
     }
 

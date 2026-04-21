@@ -925,11 +925,11 @@ public class RecipeLoader2 {
             80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("ic2hotcoolant", 16_000),
-            GTModHandler.getIC2Coolant(16_000),
-            GTModHandler.getDistilledWater(20_000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
+            FluidRegistry.getFluidStack("ic2hotcoolant", 128_000),
+            GTModHandler.getIC2Coolant(128_000),
+            GTModHandler.getDistilledWater(160_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 25_600_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 25_600_000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1409,7 +1409,7 @@ public class RecipeLoader2 {
             256,
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.UHV_Coil.get(64), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemList.UEV_Coil.get(16), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(16 * INGOTS),

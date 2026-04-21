@@ -102,11 +102,6 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (GTModHandler.isElectricItem(aStack)) {
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(aStack)));
         }
-        this.addAdditionalToolTips(aList, aStack);
-    }
-
-    protected void addAdditionalToolTips(final List aList, final ItemStack aStack) {
-        //
     }
 
     @Override

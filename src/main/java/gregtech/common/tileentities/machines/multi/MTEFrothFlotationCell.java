@@ -1,6 +1,8 @@
 
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -14,15 +16,19 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -55,10 +61,27 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
     implements ISurvivalConstructable {
 
-    private int casingAmount;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 5;
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
+
+    private int casingAmount;
+    private boolean needsWaterFill = false;
+
+    private static final String[][] structure = new String[][] {
+        { "           ", "           ", "           ", "    D~D    ", "   CCCCC   " },
+        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
+        { "           ", "       BB  ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+        { "           ", "      BBB  ", "       B   ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+        { "   EEEEE   ", " AE  BBBEA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+        { " EEEEEEEEE ", " E  BEB  E ", "     E     ", "DWWWDEDWWWD", "CCCCCCCCCCC" },
+        { "   EEEEE   ", " AEBBB  EA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+        { "           ", "  BBB      ", "   B       ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+        { "           ", "  BB       ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
+        { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } };
+
     private static IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = null;
 
     public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
@@ -83,11 +106,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 120, false)
-            .addCasingInfoMin("Flotation Cell Casing", 31, false)
-            .addCasingInfoMin("Staballoy Frame Box", 20, false)
-            .addCasingInfoMin("Inconel-690 Frame Box", 8, false)
+            .addController("Front center, 2nd layer")
+            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
+            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
+            .addCasingInfoExactly("Staballoy Frame Box", 20, false)
+            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
             .addInputBus("Bottom Casing", 1)
             .addInputHatch("Bottom Casing", 1)
             .addOutputHatch("Bottom Casing", 1)
@@ -111,19 +134,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder()
-                .addShape(
-                    mName,
-                    new String[][] { { "           ", "           ", "           ", "    D~D    ", "   CCCCC   " },
-                        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
-                        { "           ", "       BB  ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
-                        { "           ", "      BBB  ", "       B   ", " DWWWWWWWD ", "CCCCCCCCCCC" },
-                        { "   EEEEE   ", " AE  BBBEA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
-                        { " EEEEEEEEE ", " E  BEB  E ", "     E     ", "DWWWDEDWWWD", "CCCCCCCCCCC" },
-                        { "   EEEEE   ", " AEBBB  EA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
-                        { "           ", "  BBB      ", "   B       ", " DWWWWWWWD ", "CCCCCCCCCCC" },
-                        { "           ", "  BB       ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
-                        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
-                        { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } })
+                .addShape(STRUCTURE_PIECE_MAIN, structure)
                 .addElement(
                     'C',
                     buildHatchAdder(MTEFrothFlotationCell.class)
@@ -136,7 +147,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .addElement('E', Casings.InconelReinforcedCasing.asElement())
                 .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
                 .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
-                .addElement('W', ofAnyWater(false))
+                .addElement('W', ofChain(isAir(), ofAnyWater(false)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -171,19 +182,31 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, OFFSET_X, OFFSET_Y, OFFSET_Z, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 90 && checkHatch();
+        boolean valid = checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 90
+            && checkHatch();
+        if (valid) needsWaterFill = true;
+        return valid;
     }
 
     public boolean checkHatch() {
@@ -271,8 +294,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("lockedMaterialName")) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
             tooltip.add(
                 StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
                     + StatCollector.translateToLocal(
@@ -310,5 +332,48 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
+            World world = aBaseMetaTileEntity.getWorld();
+            boolean allFilled = true;
+            int controllerX = aBaseMetaTileEntity.getXCoord();
+            int controllerY = aBaseMetaTileEntity.getYCoord();
+            int controllerZ = aBaseMetaTileEntity.getZCoord();
+
+            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+                String[] layers = structure[sliceZ];
+                for (int layerY = 0; layerY < layers.length; layerY++) {
+                    String row = layers[layerY];
+                    for (int charX = 0; charX < row.length(); charX++) {
+                        if (row.charAt(charX) != 'W') continue;
+
+                        int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
+                        int[] xyz = new int[] { 0, 0, 0 };
+                        this.getExtendedFacing()
+                            .getWorldOffset(abc, xyz);
+                        int wx = controllerX + xyz[0];
+                        int wy = controllerY + xyz[1];
+                        int wz = controllerZ + xyz[2];
+
+                        Block block = world.getBlock(wx, wy, wz);
+                        if (block != Blocks.water) {
+                            boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
+                                || block.isReplaceable(world, wx, wy, wz);
+                            if (isReplaceable) {
+                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                            } else {
+                                allFilled = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (allFilled) needsWaterFill = false;
+        }
     }
 }

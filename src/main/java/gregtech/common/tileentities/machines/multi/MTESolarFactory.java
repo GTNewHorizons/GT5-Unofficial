@@ -401,6 +401,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .beginStructureBlock(7, 10, 9, false)
+            .addController("Front bottom center")
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
@@ -424,6 +425,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorPureBluez);
         return tt;
     }
@@ -477,6 +479,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean supportsInputSeparation() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {

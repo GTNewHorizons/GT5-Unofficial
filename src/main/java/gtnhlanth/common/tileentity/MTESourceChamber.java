@@ -164,7 +164,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
             .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
@@ -422,6 +422,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build() };
         }
         return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private String particleText(String text) {

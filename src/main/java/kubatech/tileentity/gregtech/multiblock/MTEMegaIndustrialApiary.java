@@ -406,7 +406,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
             .beginStructureBlock(15, 17, 15, false)
-            .addController("Front Bottom Center")
+            .addController("Front center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
             .addCasingInfoExactly("Any Tiered Glass", 121, false)
             .addStructureInfo("The glass tier limits the Energy Input tier")
@@ -1352,5 +1352,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MEGA_INDUSTRIAL_APIARY_LOOP;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

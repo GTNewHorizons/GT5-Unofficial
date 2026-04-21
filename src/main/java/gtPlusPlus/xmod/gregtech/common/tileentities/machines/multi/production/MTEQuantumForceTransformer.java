@@ -209,7 +209,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
             .addCasingInfoMin("Quantum Force Conductor", 177, false)
             .addCasingInfoMin("Force Field Glass", 224, false)
@@ -787,7 +787,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
-        IIcon forceField = TexturesGtBlock.ForceField.getIcon();
+        IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();

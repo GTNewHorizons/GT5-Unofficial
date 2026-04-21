@@ -140,7 +140,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         tt.addMachineType("Compressor, LEC")
             .addBulkMachineInfo(2, 2f, 0.9f)
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
             .addCasingInfoExactly("Any Tiered Glass", 6, false)
@@ -216,11 +216,6 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

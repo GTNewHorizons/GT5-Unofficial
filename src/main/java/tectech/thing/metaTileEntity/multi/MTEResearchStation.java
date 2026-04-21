@@ -256,6 +256,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            .addController("Front center on the frontside of the main body")
             // Object Holder: Center of the front pillar
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -814,6 +815,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 
