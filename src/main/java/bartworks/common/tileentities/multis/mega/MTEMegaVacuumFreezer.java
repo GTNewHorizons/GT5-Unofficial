@@ -83,8 +83,8 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     private enum SubspaceCoolingFluid {
 
         SpaceTime(Materials.SpaceTime, 1, 75),
-        Space(Materials.Space, 1, 50),
-        Eternity(Materials.Eternity, 1, 25),
+        Space(Materials.Space, 2, 50),
+        Eternity(Materials.Eternity, 3, 25),
 
         ;
 
