@@ -70,7 +70,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
             this.func_145778_a(Item.getItemFromBlock(Blocks.yellow_flower), 1, 0.0F);
         }
 
-        for (k = 0; k < j; ++k) k = (int) (Math.random() * range) + min;
+        for (k = 0; k < j; ++k) k = 1;
 
         for (int l = 0; l < k; ++l) {
             int rand = (int) (Math.random() * range) + min;
