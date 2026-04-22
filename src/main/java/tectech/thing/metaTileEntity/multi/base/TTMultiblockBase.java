@@ -1174,7 +1174,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
             }
             for (MTEHatchEnergyMulti hatch : validMTEList(eEnergyMulti)) {
-                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.Amperes;
+                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.getAmperes();
             }
             for (MTEHatchDynamo hatch : validMTEList(mDynamoHatches)) {
                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin;

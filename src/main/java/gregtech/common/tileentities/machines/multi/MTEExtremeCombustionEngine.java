@@ -114,9 +114,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
 
         String lubricantRate = TooltipHelper.fluidText(8000);
         String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euText(10900);
+        String defaultOutput = TooltipHelper.euRateText(10900);
         String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euText(32700);
+        String boostedOutput = TooltipHelper.euRateText(32700);
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
@@ -247,7 +247,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.engine.output") + ": "
                 + EnumChatFormatting.RED
-                + formatNumber((long) -mEUt * mEfficiency / 10000)
+                + formatNumber(lEUt * mEfficiency / 10000)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
@@ -363,14 +363,14 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel
-                this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
+                this.lEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = getEfficiencyIncrease();
                 return CheckRecipeResultRegistry.GENERATING;
             }
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }

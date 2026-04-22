@@ -124,7 +124,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
         @Override
         protected UITexture getLogoTexture() {
-            return GTGuiTextures.PICTURE_TECTECH_LOGO;
+            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
         }
 
         @Override

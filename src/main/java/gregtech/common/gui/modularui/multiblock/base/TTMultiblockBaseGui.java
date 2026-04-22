@@ -165,6 +165,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         multiblock.parameterMap.forEach((mapKey, parameter) -> {
+            if (!parameter.shouldShowInGui()) {
+                return;
+            }
             String key = parameter.getLangKey();
             ButtonWidget<?> parameterEditButton = new ButtonWidget<>().overlay(IKey.lang(key))
                 .width(100)
@@ -222,7 +225,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     private IWidget createInputWidget(Parameter<?> parameter, String mapKey, PanelSyncManager syncManager) {
-
         if (parameter instanceof IntegerParameter integerParameter) {
             return new TextFieldWidget().value((IStringValue<?>) integerParameter.createSyncHandler())
                 .setNumbers(integerParameter::getMin, integerParameter::getMax);
@@ -243,7 +245,10 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        multiblock.parameterMap
-            .forEach((key, parameter) -> { syncManager.syncValue(key, parameter.createSyncHandler()); });
+        multiblock.parameterMap.forEach((key, parameter) -> {
+            if (parameter.shouldShowInGui()) {
+                syncManager.syncValue(key, parameter.createSyncHandler());
+            }
+        });
     }
 }
