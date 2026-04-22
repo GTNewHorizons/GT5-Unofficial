@@ -17,8 +17,8 @@ import gregtech.api.GregTechAPI;
 
 public final class RubberTreeResinLogic {
 
-    public static final int MIN_REFILL_TICKS = 20 * 90;
-    public static final int MAX_REFILL_TICKS = 20 * 300;
+    public static final int MIN_REFILL_TICKS = 20 * 30;
+    public static final int MAX_REFILL_TICKS = 20 * 180;
     private static final int MAX_CONNECTED_LOGS = 64;
 
     private RubberTreeResinLogic() {}
