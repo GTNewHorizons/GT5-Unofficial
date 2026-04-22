@@ -2168,7 +2168,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             researchAmperage,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 6L), ItemList.NuclearStar.get(64L),
-                ItemList.Emitter_UXV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8 },
+                ItemList.Emitter_UXV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4 },
 
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
