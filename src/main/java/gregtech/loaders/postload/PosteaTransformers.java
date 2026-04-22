@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -17,6 +19,7 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
+        registerIC2Transformers();
         registerProgrammedCircuitTransformers();
     }
 
@@ -73,6 +76,21 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
+    }
+
+    // TODO: Remove this after IC2 deprecation is complete. Or leave them here for the end of time
+    // (that's probably whats gonna happen anyways)
+    private void registerIC2Transformers() {
+
+        // Cells
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 0,  ItemList.Cell_Empty.get(1));
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 15, Materials.HydrofluoricAcid.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 16, Materials.SulfurousAcid.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 17, Materials.SulfuricApatite.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 18, Materials.HydrogenChloride.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 19, Materials.SulfuricLithium.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 20, Materials.LithiumHydroxide.getCells(1));
     }
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
