@@ -9,7 +9,10 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class IndustrialCrucibleRecipes {
     public static final RecipeMap<RecipeMapBackend> sCrucibleRecipes = RecipeMapBuilder.of("gg.recipe.industrial_crucible")
