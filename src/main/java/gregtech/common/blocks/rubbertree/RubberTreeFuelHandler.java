@@ -8,7 +8,7 @@ import gregtech.api.GregTechAPI;
 
 public class RubberTreeFuelHandler implements IFuelHandler {
 
-    private static final int RUBBER_SAPLING_BURN_TIME = 100; // comme un sapling vanilla
+    private static final int RUBBER_SAPLING_BURN_TIME = 100; // like a vanilla sapling
 
     @Override
     public int getBurnTime(ItemStack fuel) {
