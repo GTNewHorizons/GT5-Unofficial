@@ -107,10 +107,8 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     public abstract int getTierRecipes();
 
     /**
-     * Returns true when the structure is fully tier-2 (High Pressure / Steel).
-     * Subclasses implement this based on their own tier fields, e.g.:
-     * return tierMachineCasing == 2;
-     * return tierGearBoxCasing == 2 && tierPipeCasing == 2 && ...;
+     * Returns true when the structure is partially tier-2
+     * affects textures and gui, not actual tier
      */
     protected abstract boolean isHighPressure();
 
