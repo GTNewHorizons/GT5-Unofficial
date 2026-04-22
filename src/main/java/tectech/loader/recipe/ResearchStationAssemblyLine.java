@@ -3076,7 +3076,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 64),
                 GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
                 GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8L },
+                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L },
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8),
