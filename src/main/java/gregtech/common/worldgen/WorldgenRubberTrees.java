@@ -94,10 +94,10 @@ public class WorldgenRubberTrees extends GTWorldgen {
             return false;
         }
 
-        return BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST)
+        return (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST)
+            || BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.CONIFEROUS))
             && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.JUNGLE)
             && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SAVANNA)
-            && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.CONIFEROUS)
             && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.WET)
             && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY)
             && !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.HOT)
