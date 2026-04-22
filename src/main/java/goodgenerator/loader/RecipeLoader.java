@@ -953,7 +953,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
-                ItemList.LargeCombustionEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
+                ItemList.LargeCombustionEngine.get(1), 'B', ItemList.ExtremeCombustionEngine.get(1), 'L',
                 ItemList.Hull_LuV, 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
 
@@ -1285,6 +1285,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.RadoxPolymer, 16),
+                ItemList.UEV_Coil.get(8),
                 ItemList.Tesseract.get(8),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UIV.get(2),
@@ -1308,6 +1309,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
+                ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UMV.get(2),

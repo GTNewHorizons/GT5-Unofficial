@@ -171,7 +171,7 @@ public class RecipesGeneral {
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
             .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_EV)
+            .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         addCompressedCactusCharcoal();
@@ -313,6 +313,9 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
         generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
         generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        generateWireRecipes(MaterialsElements.STANDALONE.DRAGON_METAL);
+        generateWireRecipes(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        generateWireRecipes(MaterialsElements.STANDALONE.RHUGNOR);
 
         generatePipeRecipes(MaterialsAlloy.STABALLOY);
         generatePipeRecipes(MaterialsAlloy.TANTALLOY_60);

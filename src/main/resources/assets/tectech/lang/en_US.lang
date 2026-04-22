@@ -499,6 +499,7 @@ gt.blockmachines.hatch.wirelessdataoutass.desc.1=High speed internet connection
 gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
 gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
 gt.blockmachines.hatch.rack.desc.1=Holds Computer Components
+gt.blockmachines.hatch.rack.heat=Heat: %s
 gt.blockmachines.hatch.holder.tier.09.name=Object Holder
 gt.blockmachines.hatch.holder.desc.0=For Research Station
 gt.blockmachines.hatch.holder.desc.1=Advanced Holding Mechanism!
@@ -1977,6 +1978,10 @@ tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
 
+## Waila
+
+tt.waila.multi.computation=§7Computation: §a%s
+
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics
 tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
@@ -2015,6 +2020,42 @@ tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
 
+## Space Elevator
+tt.spaceelevator.storedEnergy=Stored Energy: %d
+# Space Miner
+tt.spaceminer.distance=Distance
+tt.spaceminer.parallel=Parallels
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
+tt.spaceminer.filterButtonTooltip=Open Filter
+tt.spaceminer.toggleFilter=Toggle Filter
+tt.spaceminer.clearFilter=Clear Filter
+tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel
+tt.spaceminer.asteroidButtonTooltipInfo=Click me to get more info!
+tt.spaceminer.asteroidButtonFilter=Right click to add asteroid to filter
+tt.spaceminer.textFieldOre=Ore
+tt.spaceminer.textFieldDistance=Distance
+tt.spaceminer.textFieldTier=Tier
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidutilitypanel.miningDrones=Can be mined by:
+tt.spaceminer.asteroidutilitypanel.itemUsage=Uses 4 of each per parallel
+tt.spaceminer.asteroidutilitypanel.sizeForDrone=Asteroid size with this drone: %d-%d
+tt.spaceminer.asteroidutilitypanel.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidutilitypanel.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidutilitypanel.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidutilitypanel.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidutilitypanel.drops=Drops:
+tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Calculate
+tt.spaceminer.calculator.asteroidChance= %s
+tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
+tt.spaceminer.filter.noValidInputs=No valid inputs!
+tt.spaceminer.filter.addOre=Click to add this ore to the filter
+
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
 tt.gui.tooltip.safe_void=Safe Void
@@ -2025,15 +2066,25 @@ tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 
-tt.gui.text.debug.eut=EUT:
-tt.gui.text.debug.amp=AMP:
-tt.gui.text.debug.sum=SUM: %s
-tt.gui.text.debug.tier=TIER: %s
+tt.gui.text.debug.set_mode=Click to Set Machine to %s
+tt.gui.text.debug.status.inactive=Inactive
+tt.gui.text.debug.status.disabled=Disabled
 
-tt.gui.text.debug_pollutor.pollution=Pollution
+tt.gui.text.debug_power.status.produce=Producing
+tt.gui.text.debug_power.status.consume=Consuming
+tt.gui.text.debug_power.toggle_laser=Toggle Laser Mode
+
+tt.gui.text.debug_pollutor.pollution=Pollution/tick
+tt.gui.text.debug_pollutor.status=Status: %s
+tt.gui.text.debug_pollutor.status.produce=Polluting
+tt.gui.text.debug_pollutor.status.consume=Cleaning
 
 tt.gui.text.hatch.uncertainty.status.ok=Status: OK
 tt.gui.text.hatch.uncertainty.status.ng=Status: NG
+
+tt.gui.text.hatch.status=Machine Status: %s
+tt.gui.text.hatch.status.active=Active
+tt.gui.text.hatch.status.inactive=Inactive
 
 tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s

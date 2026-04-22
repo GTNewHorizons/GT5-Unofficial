@@ -1886,6 +1886,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }

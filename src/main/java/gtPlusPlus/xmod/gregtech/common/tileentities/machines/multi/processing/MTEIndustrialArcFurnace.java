@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -281,6 +282,12 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (mSize <= 5) return MACHINE_MODE_ARC;
+        else return super.nextMachineMode();
     }
 
     @Override
