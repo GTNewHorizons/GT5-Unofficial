@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -17,12 +18,15 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
 // For singleblock MUI2 guis.
@@ -205,15 +209,36 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     protected ToggleButton createMufflerButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
-            .background(IDrawable.EMPTY)
-            .disableHoverBackground();
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true);
     }
 
     protected ToggleButton createPowerSwitchButton() {
         return CommonWidgets.createSmallPowerSwitchButton("powerSwitch", machine.getBaseMetaTileEntity())
-            .background(IDrawable.EMPTY)
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .disableHoverBackground();
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    protected ItemSlot createChargerSlot() {
+
+        return new ItemSlot()
+            .slot(
+                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
+                    (newItem, onlyAmountChanged, client, init) -> {
+                        if (!client && !init) machine.getBaseMetaTileEntity()
+                            .markInventoryBeenModified();
+                    }))
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
+            .tooltip(this::createTooltipForChargerSlot)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    protected void createTooltipForChargerSlot(RichTooltip tooltip) {
+        final byte machineTier = machine.mTier;
+        String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
+        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
+            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
+            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+    }
 }

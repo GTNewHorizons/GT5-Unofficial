@@ -72,6 +72,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(1, i, TextureFactory.of(this, i));
         }
+        TAE.registerTexture(3, 2, TextureFactory.of(this, 4));
 
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
@@ -101,7 +102,8 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
                 case 1 -> TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
                 case 2 -> TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
                 case 3 -> TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
-                case 4 -> TexturesGtBlock.Casing_Material_Grisium.getIcon();
+                case 4 -> ordinalSide < 2 ? TexturesGtBlock.Casing_Material_Grisium_Top.getIcon()
+                    : TexturesGtBlock.Casing_Material_Grisium.getIcon();
                 case 5 -> Textures.BlockIcons.INDUSTRIAL_SIEVE_CASING.getIcon();
                 case 6 -> Textures.BlockIcons.LARGE_SIEVE_GRATE.getIcon();
                 case 7 -> Textures.BlockIcons.CASING_REDOX_EV.getIcon();
