@@ -293,7 +293,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mSize <= 5) {
-            GTUtility.sendChatTrans(aPlayer, "gtpp.chat.industrial_arc_furnace.too_small");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT");
             return;
         }
         setMachineMode(nextMachineMode());

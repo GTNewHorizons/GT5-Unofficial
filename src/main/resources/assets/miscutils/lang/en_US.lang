@@ -4141,7 +4141,6 @@ gtpp.chat.pollution_base.useless=This block is useless, Pollution is disabled.
 gtpp.chat.pollution_base.contains=This chunk now contains %s pollution.
 gtpp.chat.pollution_creator.multiplier=Pollution Multiplier is now %s.
 gtpp.chat.pollution_detector.redstone_level=Emit Redstone at pollution level: %s
-gtpp.chat.industrial_arc_furnace.too_small=Cannot change mode, structure not large enough.
 gtpp.chat.sparge_tower.clear_output_hatch.layers=Trying to clear %s layers of output hatches.
 gtpp.chat.sparge_tower.clear_output_hatch=Clearing %sL of %s from hatch %s on layer %s.
 gtpp.chat.adv_distillation_tower.too_short=Cannot switch mode if not in full height.
