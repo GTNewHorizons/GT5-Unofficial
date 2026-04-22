@@ -13,37 +13,38 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.tuple.Pair;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.loader.IndustrialCrucibleRecipes;
+import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-
-import goodgenerator.loader.IndustrialCrucibleRecipes;
-import goodgenerator.loader.Loaders;
 import thaumcraft.common.config.ConfigBlocks;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvivalConstructable {
 
@@ -115,41 +116,52 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCrucible>builder()
-                .addShape(STRUCTURE_PIECE_BOTTOM, transpose(new String[][]{
-                    {" M~M ", "MEEEM", "MEDEM", "MEEEM", " MMM "},
-                    {" MMM ", "MMMMM", "MMMMM", "MMMMM", " MMM "}
-                }))
-                .addShape(STRUCTURE_PIECE_MIDDLE, transpose(new String[][]{
-                    {" MWM ", "M---M", "W-D-W", "M---M", " MWM "}
-                }))
-                .addShape(STRUCTURE_PIECE_TOP, transpose(new String[][]{
-                    {"  M  ", " MMM ", "MMHMM", " MMM ", "  M  "},
-                    {" MMM ", "MEEEM", "MEDEM", "MEEEM", " MMM "}
-                }))
-                .addElement('M', ofChain(
-                    buildHatchAdder(MTEIndustrialCrucible.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy)
-                        .casingIndex(CASING_INDEX).hint(1).build(),
-                    ofSpecificTileAdder(MTEIndustrialCrucible::addNormalEssentiaHatch, MTEEssentiaInputHatch.class, Loaders.essentiaInputHatch, 0),
-                    onElementPass(t -> t.mCasing++, ofBlock(Loaders.magicCasing, 0))
-                ))
+                .addShape(
+                    STRUCTURE_PIECE_BOTTOM,
+                    transpose(
+                        new String[][] { { " M~M ", "MEEEM", "MEDEM", "MEEEM", " MMM " },
+                            { " MMM ", "MMMMM", "MMMMM", "MMMMM", " MMM " } }))
+                .addShape(
+                    STRUCTURE_PIECE_MIDDLE,
+                    transpose(new String[][] { { " MWM ", "M---M", "W-D-W", "M---M", " MWM " } }))
+                .addShape(
+                    STRUCTURE_PIECE_TOP,
+                    transpose(
+                        new String[][] { { "  M  ", " MMM ", "MMHMM", " MMM ", "  M  " },
+                            { " MMM ", "MEEEM", "MEDEM", "MEEEM", " MMM " } }))
+                .addElement(
+                    'M',
+                    ofChain(
+                        buildHatchAdder(MTEIndustrialCrucible.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+                            .casingIndex(CASING_INDEX)
+                            .hint(1)
+                            .build(),
+                        ofSpecificTileAdder(
+                            MTEIndustrialCrucible::addNormalEssentiaHatch,
+                            MTEEssentiaInputHatch.class,
+                            Loaders.essentiaInputHatch,
+                            0),
+                        onElementPass(t -> t.mCasing++, ofBlock(Loaders.magicCasing, 0))))
                 .addElement('E', ofBlock(Loaders.essentiaFilterCasing, 0))
                 .addElement('W', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
-                .addElement('H', buildHatchAdder(MTEIndustrialCrucible.class)
-                    .atLeast(Muffler)
-                    .casingIndex(CASING_INDEX).hint(2).build())
-                .addElement('D', ofBlocksTiered(
-                    (block, meta) -> block == Loaders.essentiaCell ? meta : null,
-                    ImmutableList.of(
-                        Pair.of(Loaders.essentiaCell, 0),
-                        Pair.of(Loaders.essentiaCell, 1),
-                        Pair.of(Loaders.essentiaCell, 2),
-                        Pair.of(Loaders.essentiaCell, 3)
-                    ),
-                    -1,
-                    (t, meta) -> t.pTier = meta,
-                    t -> t.pTier
-                ))
+                .addElement(
+                    'H',
+                    buildHatchAdder(MTEIndustrialCrucible.class).atLeast(Muffler)
+                        .casingIndex(CASING_INDEX)
+                        .hint(2)
+                        .build())
+                .addElement(
+                    'D',
+                    ofBlocksTiered(
+                        (block, meta) -> block == Loaders.essentiaCell ? meta : null,
+                        ImmutableList.of(
+                            Pair.of(Loaders.essentiaCell, 0),
+                            Pair.of(Loaders.essentiaCell, 1),
+                            Pair.of(Loaders.essentiaCell, 2),
+                            Pair.of(Loaders.essentiaCell, 3)),
+                        -1,
+                        (t, meta) -> t.pTier = meta,
+                        t -> t.pTier))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -225,8 +237,10 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         ItemStack tome = mInventory[1];
         if (tome == null) return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
         String bookOwner = null;
-        if (tome.hasTagCompound() && tome.getTagCompound().hasKey("player"))
-            bookOwner = tome.getTagCompound().getString("player");
+        if (tome.hasTagCompound() && tome.getTagCompound()
+            .hasKey("player"))
+            bookOwner = tome.getTagCompound()
+                .getString("player");
         if (bookOwner == null || bookOwner.isEmpty()) return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
 
         int circuit = 0;
@@ -301,11 +315,10 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             }
         }
 
-        this.mOutputItems = new ItemStack[]{GTUtility.copyAmount(crafts * info.output.stackSize, info.output)};
+        this.mOutputItems = new ItemStack[] { GTUtility.copyAmount(crafts * info.output.stackSize, info.output) };
         this.mPollution = 2200;
 
-        OverclockCalculator calculator = new OverclockCalculator()
-            .setRecipeEUt(480)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(480)
             .setEUt(v)
             .setDuration(320)
             .calculate();
@@ -328,12 +341,27 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
                 int tier = GTUtility.getTier(v);
                 int maxBuf = tier * 100000;
                 int dr = (1 << (tier + 2)) * 25;
-                if (mIgnisCentiVis < maxBuf)
-                    mIgnisCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.FIRE, dr);
-                if (mOrdoCentiVis < maxBuf)
-                    mOrdoCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.ORDER, dr);
-                if (mAquaCentiVis < maxBuf)
-                    mAquaCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.WATER, dr);
+                if (mIgnisCentiVis < maxBuf) mIgnisCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(
+                    aBaseMetaTileEntity.getWorld(),
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    thaumcraft.api.aspects.Aspect.FIRE,
+                    dr);
+                if (mOrdoCentiVis < maxBuf) mOrdoCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(
+                    aBaseMetaTileEntity.getWorld(),
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    thaumcraft.api.aspects.Aspect.ORDER,
+                    dr);
+                if (mAquaCentiVis < maxBuf) mAquaCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(
+                    aBaseMetaTileEntity.getWorld(),
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    thaumcraft.api.aspects.Aspect.WATER,
+                    dr);
             }
         }
     }
@@ -371,9 +399,12 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing)
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.of((aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE))};
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            TextureFactory.of(
+                (aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE
+                    : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 }

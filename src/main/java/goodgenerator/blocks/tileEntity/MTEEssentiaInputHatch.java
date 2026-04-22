@@ -1,13 +1,14 @@
 package goodgenerator.blocks.tileEntity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-import net.minecraft.tileentity.TileEntity;
 
 public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
 
@@ -23,7 +24,6 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
         this.mAspects = new AspectList();
         this.markDirty();
     }
-
 
     @Override
     public void markDirty() {
@@ -67,7 +67,8 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
         if (this.mAspects.visSize() >= CAPACITY) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            TileEntity te = this.worldObj
+                .getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if (te instanceof IEssentiaTransport) {
                 IEssentiaTransport ic = (IEssentiaTransport) te;
                 if (!ic.canOutputTo(dir.getOpposite())) continue;
@@ -102,8 +103,7 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
     }
 
     @Override
-    public void setSuction(Aspect aspect, int amount) {
-    }
+    public void setSuction(Aspect aspect, int amount) {}
 
     @Override
     public Aspect getSuctionType(ForgeDirection face) {

@@ -2,7 +2,6 @@ package goodgenerator.blocks.regularBlock;
 
 import java.util.List;
 
-import goodgenerator.blocks.tileEntity.MTEEssentiaInputHatch;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,6 +20,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.MTEEssentiaInputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.main.GoodGenerator;
@@ -160,7 +160,7 @@ public class BlockTEContainer extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
-                                    float par8, float par9) {
+        float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
