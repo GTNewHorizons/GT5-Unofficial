@@ -32,6 +32,9 @@ public class BlockRubberLogNatural extends Block {
     public static final int META_EMPTY = 0;
 
     // TODO Remove in next major version after GT rubber tree is implemented
+    // Needed because trees are transformed by Postea has no scheduleTreeRefill triggered like normal generation
+    // Result : No Resin spawn in this trees. This META only set by Postea transformer, in this cas a special
+    // scheduleTreeRefill is triggered in updateTick()
     public static final int META_POSTEA_TRANSFORM = 1;
 
     private static final int ELECTRIC_TREETAP_EU_PER_USE = 50;
