@@ -19,6 +19,7 @@ import gregtech.api.GregTechAPI;
 
 public class BlockRubberLog extends BlockLog {
 
+    public static final String NAME = "gt.block_rubber_log";
     public static final int META_AXIS_MASK = 0xC;
 
     public static final int AXIS_Y = 0x0;
@@ -34,14 +35,14 @@ public class BlockRubberLog extends BlockLog {
     public BlockRubberLog() {
         super();
 
-        setBlockName("gt.block_rubber_log");
+        setBlockName(NAME);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setStepSound(soundTypeWood);
         setHardness(2.0F);
         setResistance(5.0F);
         setHarvestLevel("axe", 0);
 
-        GameRegistry.registerBlock(this, ItemBlockRubberLog.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockRubberLog.class, NAME);
     }
 
     @Override
@@ -50,6 +51,11 @@ public class BlockRubberLog extends BlockLog {
         this.sideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_side");
         this.topIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_top");
         this.blockIcon = this.sideIcon;
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return NAME;
     }
 
     @Override

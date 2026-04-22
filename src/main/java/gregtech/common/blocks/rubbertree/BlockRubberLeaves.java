@@ -22,13 +22,15 @@ import gregtech.api.GregTechAPI;
 
 public class BlockRubberLeaves extends BlockLeaves {
 
+    public static final String NAME = "gt.block_rubber_leaves";
+
     @SideOnly(Side.CLIENT)
     private final IIcon[][] icons = new IIcon[2][1];
 
     public BlockRubberLeaves() {
         super();
 
-        setBlockName("gt.block_rubber_leaves");
+        setBlockName(NAME);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setStepSound(soundTypeGrass);
         setHardness(0.2F);
@@ -36,7 +38,7 @@ public class BlockRubberLeaves extends BlockLeaves {
         setHarvestLevel("shears", 0);
         setLightOpacity(1);
 
-        GameRegistry.registerBlock(this, ItemBlockRubberLeaves.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockRubberLeaves.class, NAME);
     }
 
     @Override
@@ -45,6 +47,11 @@ public class BlockRubberLeaves extends BlockLeaves {
         this.icons[0][0] = iconRegister.registerIcon("gregtech:rubbertree/rubber_leaves_fancy");
         this.icons[1][0] = iconRegister.registerIcon("gregtech:rubbertree/rubber_leaves_fast");
         this.blockIcon = this.icons[0][0];
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return NAME;
     }
 
     @Override

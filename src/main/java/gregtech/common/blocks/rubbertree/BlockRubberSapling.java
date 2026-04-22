@@ -22,18 +22,20 @@ import gregtech.api.GregTechAPI;
 
 public class BlockRubberSapling extends BlockSapling {
 
+    public static final String NAME = "gt.block_rubber_sapling";
+
     @SideOnly(Side.CLIENT)
     private IIcon saplingIcon;
 
     public BlockRubberSapling() {
         super();
 
-        setBlockName("gt.block_rubber_sapling");
+        setBlockName(NAME);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setStepSound(soundTypeGrass);
         setHardness(0.0F);
 
-        GameRegistry.registerBlock(this, ItemBlockRubberSapling.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockRubberSapling.class, NAME);
     }
 
     @Override
@@ -41,6 +43,11 @@ public class BlockRubberSapling extends BlockSapling {
     public void registerBlockIcons(@NotNull IIconRegister iconRegister) {
         this.saplingIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_sapling");
         this.blockIcon = this.saplingIcon;
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return NAME;
     }
 
     @Override

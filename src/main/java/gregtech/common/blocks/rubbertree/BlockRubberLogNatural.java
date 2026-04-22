@@ -28,6 +28,7 @@ import gregtech.api.util.GTModHandler;
 
 public class BlockRubberLogNatural extends Block {
 
+    public static final String NAME = "gt.block_rubber_log_natural";
     public static final int META_EMPTY = 0;
 
     // TODO Remove in next major version after GT rubber tree is implemented
@@ -47,14 +48,14 @@ public class BlockRubberLogNatural extends Block {
     public BlockRubberLogNatural() {
         super(Material.wood);
 
-        setBlockName("gt.block_rubber_log_natural");
+        setBlockName(NAME);
         setCreativeTab(null);
         setStepSound(soundTypeWood);
         setHardness(2.0F);
         setResistance(5.0F);
         setHarvestLevel("axe", 0);
 
-        GameRegistry.registerBlock(this, ItemBlockRubberLogNatural.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockRubberLogNatural.class, NAME);
     }
 
     public static boolean hasResin(int meta) {
@@ -72,6 +73,11 @@ public class BlockRubberLogNatural extends Block {
         this.topIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_top");
         this.resinSideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_resin_side");
         this.blockIcon = this.sideIcon;
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return NAME;
     }
 
     @Override

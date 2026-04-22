@@ -4760,10 +4760,10 @@ gt.Item_Toolbox.name=Field Engineer's Toolbox
 gt.Item_Toolbox.tooltip=A container to hold your tools!
 
 ## Rubber tree
-tile.gt.block_rubber_log.name=Rubber Wood
-tile.gt.block_rubber_log_natural.name=Rubber Wood Natural
-tile.gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
-tile.gt.block_rubber_sapling.name=Rubber Tree Sapling
+gt.block_rubber_log.name=Rubber Wood
+gt.block_rubber_log_natural.name=Rubber Wood Natural
+gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
+gt.block_rubber_sapling.name=Rubber Tree Sapling
 gt.item_sticky_resin.name=Sticky Resin
 gt.item_sticky_resin.tooltip=Sap of a Rubber Tree
 
