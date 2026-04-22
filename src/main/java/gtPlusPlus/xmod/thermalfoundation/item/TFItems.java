@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
-import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
