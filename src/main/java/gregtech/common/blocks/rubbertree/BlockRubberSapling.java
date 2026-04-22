@@ -24,7 +24,6 @@ public class BlockRubberSapling extends BlockSapling {
 
     public static final String NAME = "gt.block_rubber_sapling";
 
-    @SideOnly(Side.CLIENT)
     private IIcon saplingIcon;
 
     public BlockRubberSapling() {

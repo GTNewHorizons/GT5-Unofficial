@@ -24,7 +24,6 @@ public class BlockRubberLeaves extends BlockLeaves {
 
     public static final String NAME = "gt.block_rubber_leaves";
 
-    @SideOnly(Side.CLIENT)
     private final IIcon[][] icons = new IIcon[2][1];
 
     public BlockRubberLeaves() {

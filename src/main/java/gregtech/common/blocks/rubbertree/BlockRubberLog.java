@@ -26,11 +26,8 @@ public class BlockRubberLog extends BlockLog {
     public static final int AXIS_X = 0x4;
     public static final int AXIS_Z = 0x8;
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon sideIcon;
-
-    @SideOnly(Side.CLIENT)
-    protected IIcon topIcon;
+    private IIcon sideIcon;
+    private IIcon topIcon;
 
     public BlockRubberLog() {
         super();

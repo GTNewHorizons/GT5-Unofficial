@@ -36,13 +36,8 @@ public class BlockRubberLogNatural extends Block {
 
     private static final int ELECTRIC_TREETAP_EU_PER_USE = 50;
 
-    @SideOnly(Side.CLIENT)
     private IIcon sideIcon;
-
-    @SideOnly(Side.CLIENT)
     private IIcon topIcon;
-
-    @SideOnly(Side.CLIENT)
     private IIcon resinSideIcon;
 
     public BlockRubberLogNatural() {
