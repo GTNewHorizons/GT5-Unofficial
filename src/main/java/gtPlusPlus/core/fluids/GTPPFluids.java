@@ -484,7 +484,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(15, "HydrofluoricAcid");
 
         HighQualitySulfurDioxide = FluidUtils.generateFluidNoPrefix(
             "SulfurDioxide",
@@ -502,7 +501,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(16, "SulfurousAcid");
 
         SulfuricApatiteMix = FluidUtils.addGtFluid(
             "sulfuricApatite",
@@ -514,7 +512,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(17, "SulfuricApatite");
 
         IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
             "hydrogenChloride",
@@ -526,7 +523,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(18, "HydrogenChloride");
 
         SulfuricLithiumMix = FluidUtils.addGtFluid(
             "sulfuricLithium",
@@ -538,7 +534,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(19, "SulfuricLithium");
 
         LithiumHydroxide = FluidUtils.addGtFluid(
             "lithiumHydroxide",
@@ -550,7 +545,6 @@ public class GTPPFluids {
             ItemList.Cell_Empty.get(1),
             1000,
             false);
-        generateIC2FluidCell(20, "LithiumHydroxide");
 
         RaisinJuice = FluidUtils.generateFluidNonMolten(
             "RaisinJuice",
@@ -566,27 +560,6 @@ public class GTPPFluids {
             .generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
 
         handleBlood();
-    }
-
-    private static ItemStack generateIC2FluidCell(final int cellID, final String s) {
-        InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
-        ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
-
-        try {
-            Method addCell = ItemCell.class.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
-            addCell.setAccessible(true);
-            ItemStack temp = (ItemStack) addCell.invoke(item, cellID, yourName, new Block[0]);
-
-            FluidContainerRegistry.registerFluidContainer(
-                FluidRegistry.getFluidStack(s.toLowerCase(), 1000),
-                temp.copy(),
-                ItemList.Cell_Empty.get(1));
-            OreDictionary.registerOre("cell" + s, temp.copy());
-            return temp;
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private static void handleBlood() {
