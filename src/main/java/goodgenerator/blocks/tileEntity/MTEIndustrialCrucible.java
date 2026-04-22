@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Map;
 
+import gregtech.api.interfaces.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.loader.IndustrialCrucibleRecipes;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -400,11 +400,16 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-            TextureFactory.of(
-                (aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE
-                    : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)) };
+                                 int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                TextureFactory.of(
+                    (IIconContainer) (aActive
+                        ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE
+                        : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE))
+            };
+        }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 }
