@@ -81,8 +81,16 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             .addInfo("Base Crafting Time: 16 seconds.")
             .addInfo("Pollution: 2200 per cycle. Requires 1 Muffler Hatch on Top.")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 5, false)
-            .addController("Front Center, 2nd Layer")
-            .addMufflerHatch("Top Center ONLY (Exactly 1)")
+            .addController("Front center, 2nd layer")
+            .addOtherStructurePart("Magic Casing", "28 (minimum)")
+            .addOtherStructurePart("Essentia Filter Casing", "Inner rings on the 1st and top layers")
+            .addOtherStructurePart("Essentia Cell", "Center pillar (T0-T3)")
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addOtherStructurePart("Essentia Input Hatch", "Any Casing")
+            .addMufflerHatch("Top Center", 1)
             .toolTipFinisher("Роберт-_P0ZA_");
         return tt;
     }
@@ -148,7 +156,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
         if (!structureCheck_EM(STRUCTURE_PIECE_TOP, 2, middleLen + 2, 0)) return false;
 
-        if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
+        if (this.mCasing >= 28 && this.mMaintenanceHatches.size() == 1
             && !this.mEnergyHatches.isEmpty()
             && this.mMufflerHatches.size() == 1) {
 

@@ -1,12 +1,86 @@
 package goodgenerator.util;
 
+import static goodgenerator.loader.Loaders.AMForge;
+import static goodgenerator.loader.Loaders.AMGenerator;
+import static goodgenerator.loader.Loaders.CT;
+import static goodgenerator.loader.Loaders.CompAssline;
+import static goodgenerator.loader.Loaders.FRF;
+import static goodgenerator.loader.Loaders.FRF_Casings;
+import static goodgenerator.loader.Loaders.FRF_Coil_1;
+import static goodgenerator.loader.Loaders.FRF_Coil_2;
+import static goodgenerator.loader.Loaders.FRF_Coil_3;
+import static goodgenerator.loader.Loaders.FRF_Coil_4;
+import static goodgenerator.loader.Loaders.Generator_Diesel;
+import static goodgenerator.loader.Loaders.IC;
+import static goodgenerator.loader.Loaders.LES;
+import static goodgenerator.loader.Loaders.LFC;
+import static goodgenerator.loader.Loaders.MAR;
+import static goodgenerator.loader.Loaders.MAR_Casing;
+import static goodgenerator.loader.Loaders.PA;
+import static goodgenerator.loader.Loaders.SCTurbine;
+import static goodgenerator.loader.Loaders.UCFE;
+import static goodgenerator.loader.Loaders.XHE;
+import static goodgenerator.loader.Loaders.YFT;
+import static goodgenerator.loader.Loaders._null_;
+import static goodgenerator.loader.Loaders.advancedFuelRod;
+import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
+import static goodgenerator.loader.Loaders.aluminumNitride;
+import static goodgenerator.loader.Loaders.antimatterAnnihilationMatrix;
+import static goodgenerator.loader.Loaders.antimatterContainmentCasing;
+import static goodgenerator.loader.Loaders.compactFusionCoil;
+import static goodgenerator.loader.Loaders.componentAssemblylineCasing;
+import static goodgenerator.loader.Loaders.enrichedNaquadahMass;
+import static goodgenerator.loader.Loaders.essentiaCell;
+import static goodgenerator.loader.Loaders.essentiaFilterCasing;
+import static goodgenerator.loader.Loaders.essentiaInputHatch;
+import static goodgenerator.loader.Loaders.essentiaOutputHatch;
+import static goodgenerator.loader.Loaders.essentiaOutputHatch_ME;
+import static goodgenerator.loader.Loaders.fieldRestrictingGlass;
+import static goodgenerator.loader.Loaders.fluidCore;
+import static goodgenerator.loader.Loaders.gravityStabilizationCasing;
+import static goodgenerator.loader.Loaders.highDensityPlutonium;
+import static goodgenerator.loader.Loaders.highDensityPlutoniumNugget;
+import static goodgenerator.loader.Loaders.highDensityThorium;
+import static goodgenerator.loader.Loaders.highDensityThoriumNugget;
+import static goodgenerator.loader.Loaders.highDensityUranium;
+import static goodgenerator.loader.Loaders.highDensityUraniumNugget;
+import static goodgenerator.loader.Loaders.highEnergyMixture;
+import static goodgenerator.loader.Loaders.huiCircuit;
+import static goodgenerator.loader.Loaders.impreciseUnitCasing;
+import static goodgenerator.loader.Loaders.inverter;
+import static goodgenerator.loader.Loaders.magicCasing;
+import static goodgenerator.loader.Loaders.magneticFluxCasing;
+import static goodgenerator.loader.Loaders.microHeater;
+import static goodgenerator.loader.Loaders.naquadahMass;
+import static goodgenerator.loader.Loaders.naquadriaMass;
+import static goodgenerator.loader.Loaders.neutronSource;
+import static goodgenerator.loader.Loaders.plasticCase;
+import static goodgenerator.loader.Loaders.preciseUnitCasing;
+import static goodgenerator.loader.Loaders.pressureResistantWalls;
+import static goodgenerator.loader.Loaders.protomatterActivationCoil;
+import static goodgenerator.loader.Loaders.quartzCrystalResonator;
+import static goodgenerator.loader.Loaders.quartzWafer;
+import static goodgenerator.loader.Loaders.radiationProtectionPlate;
+import static goodgenerator.loader.Loaders.radiationProtectionSteelFrame;
+import static goodgenerator.loader.Loaders.radioactiveWaste;
+import static goodgenerator.loader.Loaders.rawAtomicSeparationCatalyst;
+import static goodgenerator.loader.Loaders.rawCylinder;
+import static goodgenerator.loader.Loaders.specialCeramics;
+import static goodgenerator.loader.Loaders.specialCeramicsPlate;
+import static goodgenerator.loader.Loaders.speedingPipe;
+import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
+import static goodgenerator.loader.Loaders.titaniumPlatedCylinder;
+import static goodgenerator.loader.Loaders.wrappedPlutoniumIngot;
+import static goodgenerator.loader.Loaders.wrappedThoriumIngot;
+import static goodgenerator.loader.Loaders.wrappedUraniumIngot;
+import static goodgenerator.loader.Loaders.yottaFluidTankCasing;
+import static goodgenerator.loader.Loaders.yottaFluidTankCell;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GTUtility;
-
-import static goodgenerator.loader.Loaders.*;
 
 public final class ItemRefer {
 
@@ -95,9 +169,9 @@ public final class ItemRefer {
     public static ItemRefer Compact_Fusion_Coil_T3 = getItemStack(compactFusionCoil, 3);
     public static ItemRefer Compact_Fusion_Coil_T4 = getItemStack(compactFusionCoil, 4);
     public static ItemRefer Essentia_Filter_Casing = getItemStack(essentiaFilterCasing);
+    public static ItemRefer Essentia_Input_Hatch = getItemStack(essentiaInputHatch);
     public static ItemRefer Essentia_Output_Hatch = getItemStack(essentiaOutputHatch);
     public static ItemRefer Essentia_Output_Hatch_ME = getItemStack(essentiaOutputHatch_ME);
-    public static ItemRefer Essentia_Input_Hatch = getItemStack(essentiaInputHatch);
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR);
     public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF);
