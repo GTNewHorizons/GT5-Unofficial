@@ -2,6 +2,8 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -79,12 +81,15 @@ public class PosteaTransformers implements Runnable {
     }
 
     // TODO: Remove this after IC2 deprecation is complete. Or leave them here for the end of time
-    // (that's probably whats gonna happen anyways)
+    // (that's probably whats gonna happen)
     private void registerIC2Transformers() {
 
         // Cells
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 0,  ItemList.Cell_Empty.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 1,  Materials.Water.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 2,  Materials.Lava.getCells(1));
 
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 14, GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Steam, 1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 15, Materials.HydrofluoricAcid.getCells(1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 16, Materials.SulfurousAcid.getCells(1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 17, Materials.SulfuricApatite.getCells(1));

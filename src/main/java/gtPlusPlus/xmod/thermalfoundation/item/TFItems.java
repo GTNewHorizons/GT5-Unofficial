@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
+import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import cofh.core.item.ItemBase;
@@ -31,6 +32,7 @@ public class TFItems {
         GregtechItemList.CryotheumDust.set(material.addOreDictItem(4, "dustCryotheum"));
 
         FurnaceFuelHandler.registerFuel(GregtechItemList.PyrotheumDust.get(1), 2400);
+        FurnaceFuelHandler.registerFuel(Materials.Lava.getCells(1), 20000);
 
         GTOreDictUnificator.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
     }

@@ -872,8 +872,9 @@ public class GTProxy implements IFuelHandler {
 
         ItemList.Cell_Universal_Fluid.set(GTModHandler.getIC2Item("FluidCell", 1L));
         ItemList.Cell_Empty.set(new ItemEmptyCell());
-        ItemList.Cell_Water.set(GTModHandler.getIC2Item("waterCell", 1L, GTModHandler.getIC2Item("cellWater", 1L)));
-        ItemList.Cell_Lava.set(GTModHandler.getIC2Item("lavaCell", 1L, GTModHandler.getIC2Item("cellLava", 1L)));
+        ItemList.Cell_Water.set(Materials.Water.getCells(1));
+        ItemList.Cell_Lava.set(Materials.Lava.getCells(1));
+        ItemList.Cell_Steam.set(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Steam, 1));
         ItemList.Cell_Air.set(GTModHandler.getIC2Item("airCell", 1L, GTModHandler.getIC2Item("cellAir", 1L, GTModHandler.getIC2Item("cellOxygen", 1L))));
 
         ItemList.IC2_Item_Casing_Iron.set(GTModHandler.getIC2Item("casingiron", 1L));
@@ -2381,7 +2382,7 @@ public class GTProxy implements IFuelHandler {
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("steamCell", 1L))
+                .itemInputs(ItemList.Cell_Steam.get(1))
                 .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000))

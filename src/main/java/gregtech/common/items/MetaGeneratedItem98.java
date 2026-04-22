@@ -308,7 +308,6 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
         GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 

@@ -3754,8 +3754,10 @@ public class MaterialsInit {
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00ff4000)
             .addCell()
+            .addFluid()
+            .setFuel(MaterialBuilder.FuelType.Thermal, 32)
             .setHeatDamage(3.0f)
-            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:2
+            .addSubTag(SubTag.FLAMMABLE)
             .removeOrePrefix(OrePrefixes.bucket) // minecraft:lava_bucket
             .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketLava
             .constructMaterial();
@@ -7420,6 +7422,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeBlue)
             .setARGB(0x000000ff)
             .addCell()
+            .addFluid()
             .addMaterial(Materials.Hydrogen, 2)
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.AQUA, 2)
@@ -7427,7 +7430,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECYCLING)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .removeOrePrefix(OrePrefixes.cell) // IC2:itemCellEmpty:1
             .removeOrePrefix(OrePrefixes.bucket) // minecraft:water_bucket
             .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketWater
             .removeOrePrefix(OrePrefixes.bottle) // minecraft:potion:0
