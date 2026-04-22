@@ -147,10 +147,14 @@ public class BlockTEContainer extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         switch (index) {
-            case 2: return new MTEEssentiaOutputHatch();
-            case 3: return new MTEEssentiaOutputHatchME();
-            case 4: return new MTEEssentiaInputHatch();
-            default: return null;
+            case 2:
+                return new MTEEssentiaOutputHatch();
+            case 3:
+                return new MTEEssentiaOutputHatchME();
+            case 4:
+                return new MTEEssentiaInputHatch();
+            default:
+                return null;
         }
     }
 

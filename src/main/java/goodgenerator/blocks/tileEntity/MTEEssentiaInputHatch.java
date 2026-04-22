@@ -87,16 +87,23 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
     }
 
     @Override
-    public boolean isConnectable(ForgeDirection face) { return true; }
+    public boolean isConnectable(ForgeDirection face) {
+        return true;
+    }
 
     @Override
-    public boolean canInputFrom(ForgeDirection face) { return true; }
+    public boolean canInputFrom(ForgeDirection face) {
+        return true;
+    }
 
     @Override
-    public boolean canOutputTo(ForgeDirection face) { return true; }
+    public boolean canOutputTo(ForgeDirection face) {
+        return true;
+    }
 
     @Override
-    public void setSuction(Aspect aspect, int amount) {}
+    public void setSuction(Aspect aspect, int amount) {
+    }
 
     @Override
     public Aspect getSuctionType(ForgeDirection face) {
@@ -136,13 +143,19 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
     }
 
     @Override
-    public int getMinimumSuction() { return 0; }
+    public int getMinimumSuction() {
+        return 0;
+    }
 
     @Override
-    public boolean renderExtendedTube() { return false; }
+    public boolean renderExtendedTube() {
+        return false;
+    }
 
     @Override
-    public AspectList getAspects() { return this.mAspects; }
+    public AspectList getAspects() {
+        return this.mAspects;
+    }
 
     @Override
     public void setAspects(AspectList aspectList) {

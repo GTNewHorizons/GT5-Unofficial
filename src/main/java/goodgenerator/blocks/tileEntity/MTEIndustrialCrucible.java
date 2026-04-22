@@ -1,8 +1,17 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofSpecificTileAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.enums.HatchElement.*;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -60,14 +69,23 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     protected int mCurrentLength = 0;
     protected int mParallel = 0;
 
-    public MTEIndustrialCrucible(int aID, String aName, String aNameRegional) { super(aID, aName, aNameRegional); }
-    public MTEIndustrialCrucible(String aName) { super(aName); }
+    public MTEIndustrialCrucible(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEIndustrialCrucible(String aName) {
+        super(aName);
+    }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) { return new MTEIndustrialCrucible(this.mName); }
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEIndustrialCrucible(this.mName);
+    }
 
     @Override
-    public RecipeMap<?> getRecipeMap() { return IndustrialCrucibleRecipes.sCrucibleRecipes; }
+    public RecipeMap<?> getRecipeMap() {
+        return IndustrialCrucibleRecipes.sCrucibleRecipes;
+    }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
@@ -209,12 +227,14 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         ItemStack tome = mInventory[1];
         if (tome == null) return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
         String bookOwner = null;
-        if (tome.hasTagCompound() && tome.getTagCompound().hasKey("player")) bookOwner = tome.getTagCompound().getString("player");
+        if (tome.hasTagCompound() && tome.getTagCompound().hasKey("player"))
+            bookOwner = tome.getTagCompound().getString("player");
         if (bookOwner == null || bookOwner.isEmpty()) return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
 
         int circuit = 0;
         for (ItemStack item : inputs) {
-            if (gregtech.api.enums.ItemList.Circuit_Integrated.isStackEqual(item, true, true)) circuit = item.getItemDamage();
+            if (gregtech.api.enums.ItemList.Circuit_Integrated.isStackEqual(item, true, true))
+                circuit = item.getItemDamage();
         }
 
         IndustrialCrucibleRecipes.CrucibleRecipeInfo info = null;
@@ -238,7 +258,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         }
 
         int visPerCraft = 50;
-        if (mIgnisCentiVis < visPerCraft || mOrdoCentiVis < visPerCraft || mAquaCentiVis < visPerCraft) return SimpleCheckRecipeResult.ofFailure("ic.no_vis");
+        if (mIgnisCentiVis < visPerCraft || mOrdoCentiVis < visPerCraft || mAquaCentiVis < visPerCraft)
+            return SimpleCheckRecipeResult.ofFailure("ic.no_vis");
 
         int maxP = Math.max(1, this.mParallel);
         int totalCat = 0;
@@ -309,16 +330,25 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
                 int tier = GTUtility.getTier(v);
                 int maxBuf = tier * 100000;
                 int dr = (1 << (tier + 2)) * 25;
-                if (mIgnisCentiVis < maxBuf) mIgnisCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.FIRE, dr);
-                if (mOrdoCentiVis < maxBuf) mOrdoCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.ORDER, dr);
-                if (mAquaCentiVis < maxBuf) mAquaCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.WATER, dr);
+                if (mIgnisCentiVis < maxBuf)
+                    mIgnisCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.FIRE, dr);
+                if (mOrdoCentiVis < maxBuf)
+                    mOrdoCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.ORDER, dr);
+                if (mAquaCentiVis < maxBuf)
+                    mAquaCentiVis += thaumcraft.api.visnet.VisNetHandler.drainVis(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), thaumcraft.api.aspects.Aspect.WATER, dr);
             }
         }
     }
 
-    private boolean addNormalEssentiaHatch(MTEEssentiaInputHatch aTileEntity) { return aTileEntity != null && this.mEssentiaHatches.add(aTileEntity); }
+    private boolean addNormalEssentiaHatch(MTEEssentiaInputHatch aTileEntity) {
+        return aTileEntity != null && this.mEssentiaHatches.add(aTileEntity);
+    }
+
     @Override
-    protected void clearHatches_EM() { super.clearHatches_EM(); this.mEssentiaHatches.clear(); }
+    protected void clearHatches_EM() {
+        super.clearHatches_EM();
+        this.mEssentiaHatches.clear();
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -344,7 +374,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.of((aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE))};
+        if (side == facing)
+            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.of((aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE))};
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 }

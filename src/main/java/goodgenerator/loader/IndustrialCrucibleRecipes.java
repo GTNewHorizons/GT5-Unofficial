@@ -9,6 +9,7 @@ import gregtech.api.util.GTUtility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class IndustrialCrucibleRecipes {
         ItemStack rotorKnightmetal = gregtech.api.util.GTOreDictUnificator.get(gregtech.api.enums.OrePrefixes.rotor, gregtech.api.enums.Materials.Knightmetal, 1L);
         ItemStack mnemonicMatrix = new ItemStack(thaumcraft.common.config.ConfigBlocks.blockMetalDevice, 1, 12);
 
-        ItemStack[] crucibleItems = new ItemStack[] {
+        ItemStack[] crucibleItems = new ItemStack[]{
             circuitIV, circuitIV, circuitIV, circuitIV,
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockMetalDevice, 1, 0),
             gregtech.api.enums.ItemList.Electric_Pump_IV.get(1),
@@ -72,7 +73,7 @@ public class IndustrialCrucibleRecipes {
             .add(thaumcraft.api.aspects.Aspect.VOID, 32)
             .add(thaumcraft.api.aspects.Aspect.ORDER, 32);
 
-        ItemStack[] hatchItems = new ItemStack[] {
+        ItemStack[] hatchItems = new ItemStack[]{
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 0),
             goodgenerator.util.ItemRefer.Magic_Casing.get(1),
             new ItemStack(thaumcraft.common.config.ConfigBlocks.blockTube, 1, 1),
@@ -115,6 +116,7 @@ public class IndustrialCrucibleRecipes {
 
         icResearch.registerResearchItem();
     }
+
     private static void loadRecipesFromThaumcraft() {
         CRUCIBLE_RECIPES.clear();
         Map<String, Integer> totalOccurrences = new HashMap<>();
