@@ -397,7 +397,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         mCurrentLength = aNBT.getInteger("mCurrentLength");
         mParallel = aNBT.getInteger("mParallel");
     }
-
+    
+    //?
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
                                  int colorIndex, boolean aActive, boolean aRedstone) {
