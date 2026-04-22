@@ -1,14 +1,15 @@
 package gregtech.common.blocks.rubbertree;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.GregTechAPI;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.world.ChunkEvent;
 
-import java.util.Random;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.GregTechAPI;
 
 // TODO Remove this class in next major version after GT rubber tree is implemented
 public class RubberTreeWorldEvents {
@@ -56,13 +57,7 @@ public class RubberTreeWorldEvents {
                         int wz = chunk.zPosition * 16 + lz;
 
                         // small random delay to spread the load
-                        world.scheduleBlockUpdate(
-                            wx,
-                            wy,
-                            wz,
-                            block,
-                            1 + random.nextInt(20)
-                        );
+                        world.scheduleBlockUpdate(wx, wy, wz, block, 1 + random.nextInt(20));
                     }
                 }
             }

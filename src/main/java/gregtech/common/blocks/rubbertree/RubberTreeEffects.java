@@ -1,13 +1,14 @@
 package gregtech.common.blocks.rubbertree;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTUtility;
+import java.util.Random;
+
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Random;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 
 @SideOnly(Side.CLIENT)
 public final class RubberTreeEffects {
@@ -49,15 +50,7 @@ public final class RubberTreeEffects {
 
             // IMPORTANT:
             // count = 0 for "reddust" => the following 3 values are RGB
-            worldServer.func_147487_a(
-                "reddust",
-                px, py, pz,
-                0,
-                0.90D,
-                0.68D,
-                0.06D,
-                1.0D
-            );
+            worldServer.func_147487_a("reddust", px, py, pz, 0, 0.90D, 0.68D, 0.06D, 1.0D);
         }
 
         // A small secondary halo around the block
@@ -66,15 +59,7 @@ public final class RubberTreeEffects {
             double py = y + 0.2D + rand.nextDouble() * 0.8D;
             double pz = z + 0.2D + rand.nextDouble() * 0.6D;
 
-            worldServer.func_147487_a(
-                "reddust",
-                px, py, pz,
-                0,
-                0.95D,
-                0.78D,
-                0.10D,
-                1.0D
-            );
+            worldServer.func_147487_a("reddust", px, py, pz, 0, 0.95D, 0.78D, 0.10D, 1.0D);
         }
     }
 
@@ -86,7 +71,6 @@ public final class RubberTreeEffects {
             0.96F + world.rand.nextFloat() * 0.10F,
             x + 0.5D,
             y + 0.5D,
-            z + 0.5D
-        );
+            z + 0.5D);
     }
 }

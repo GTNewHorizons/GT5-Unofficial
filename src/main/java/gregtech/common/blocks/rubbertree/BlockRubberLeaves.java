@@ -1,9 +1,8 @@
 package gregtech.common.blocks.rubbertree;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,10 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Random;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 
 public class BlockRubberLeaves extends BlockLeaves {
 
@@ -71,9 +73,7 @@ public class BlockRubberLeaves extends BlockLeaves {
 
     @Override
     public Item getItemDropped(int meta, Random random, int fortune) {
-        return GregTechAPI.sBlockRubberSapling == null
-            ? null
-            : Item.getItemFromBlock(GregTechAPI.sBlockRubberSapling);
+        return GregTechAPI.sBlockRubberSapling == null ? null : Item.getItemFromBlock(GregTechAPI.sBlockRubberSapling);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

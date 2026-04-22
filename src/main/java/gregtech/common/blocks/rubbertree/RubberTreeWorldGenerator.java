@@ -1,14 +1,16 @@
 package gregtech.common.blocks.rubbertree;
 
-import gregtech.api.GregTechAPI;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
+import gregtech.api.GregTechAPI;
 
 public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
 
@@ -25,13 +27,8 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
         }
 
         Block soil = world.getBlock(x, y - 1, z);
-        if (soil == null || !soil.canSustainPlant(
-            world,
-            x,
-            y - 1,
-            z,
-            ForgeDirection.UP,
-            (BlockSapling) GregTechAPI.sBlockRubberSapling)) {
+        if (soil == null || !soil
+            .canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, (BlockSapling) GregTechAPI.sBlockRubberSapling)) {
             return false;
         }
 
@@ -52,7 +49,8 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
                     }
 
                     Block block = world.getBlock(xx, yy, zz);
-                    if (block != null && !block.isAir(world, xx, yy, zz) && !block.isLeaves(world, xx, yy, zz)
+                    if (block != null && !block.isAir(world, xx, yy, zz)
+                        && !block.isLeaves(world, xx, yy, zz)
                         && !block.canBeReplacedByLeaves(world, xx, yy, zz)) {
                         return false;
                     }
@@ -76,7 +74,8 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
                     if (Math.abs(dx) != radius || Math.abs(dz) != radius || random.nextInt(2) != 0 && layer != 0) {
                         Block block = world.getBlock(xx, yy, zz);
 
-                        if (block == null || block.isAir(world, xx, yy, zz) || block.isLeaves(world, xx, yy, zz)
+                        if (block == null || block.isAir(world, xx, yy, zz)
+                            || block.isLeaves(world, xx, yy, zz)
                             || block.canBeReplacedByLeaves(world, xx, yy, zz)) {
                             setBlockAndNotifyAdequately(world, xx, yy, zz, GregTechAPI.sBlockRubberLeaves, 0);
                         }
@@ -89,10 +88,17 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
         for (int trunkY = 0; trunkY < height; trunkY++) {
             Block block = world.getBlock(x, y + trunkY, z);
 
-            if (block == null || block.isAir(world, x, y + trunkY, z) || block.isLeaves(world, x, y + trunkY, z)
+            if (block == null || block.isAir(world, x, y + trunkY, z)
+                || block.isLeaves(world, x, y + trunkY, z)
                 || block.canBeReplacedByLeaves(world, x, y + trunkY, z)) {
 
-                setBlockAndNotifyAdequately(world, x, y + trunkY, z, GregTechAPI.sBlockRubberLogNatural, BlockRubberLogNatural.META_EMPTY);
+                setBlockAndNotifyAdequately(
+                    world,
+                    x,
+                    y + trunkY,
+                    z,
+                    GregTechAPI.sBlockRubberLogNatural,
+                    BlockRubberLogNatural.META_EMPTY);
             }
         }
 
@@ -103,8 +109,7 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
             refillY,
             z,
             GregTechAPI.sBlockRubberLogNatural,
-            RubberTreeResinLogic.nextResinDelay(random)
-        );
+            RubberTreeResinLogic.nextResinDelay(random));
 
         return true;
     }

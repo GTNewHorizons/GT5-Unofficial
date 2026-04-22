@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;

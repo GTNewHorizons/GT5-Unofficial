@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.blocks.rubbertree.RubberTreeRegistrator;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -160,6 +159,7 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
+import gregtech.common.blocks.rubbertree.RubberTreeRegistrator;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;

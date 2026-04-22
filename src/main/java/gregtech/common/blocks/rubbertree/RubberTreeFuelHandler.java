@@ -1,9 +1,10 @@
 package gregtech.common.blocks.rubbertree;
 
-import cpw.mods.fml.common.IFuelHandler;
-import gregtech.api.GregTechAPI;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import cpw.mods.fml.common.IFuelHandler;
+import gregtech.api.GregTechAPI;
 
 public class RubberTreeFuelHandler implements IFuelHandler {
 

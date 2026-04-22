@@ -1,5 +1,7 @@
 package gregtech.common.worldgen;
 
+import java.util.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.world.World;
@@ -8,13 +10,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.rubbertree.RubberTreeWorldGenerator;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import gregtech.api.GregTechAPI;
+import gregtech.api.world.GTWorldgen;
+import gregtech.common.blocks.rubbertree.RubberTreeWorldGenerator;
 
 public class WorldgenRubberTrees extends GTWorldgen {
 
@@ -32,7 +33,7 @@ public class WorldgenRubberTrees extends GTWorldgen {
 
     @Override
     public boolean executeWorldgen(World world, Random random, String biomeName, int chunkX, int chunkZ,
-                                   IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 
         if (world == null || world.provider == null || world.provider.dimensionId != 0) {
             return false;
@@ -108,21 +109,15 @@ public class WorldgenRubberTrees extends GTWorldgen {
         }
 
         final Block blockAt = world.getBlock(x, y, z);
-        if (blockAt != null
-            && !blockAt.isAir(world, x, y, z)
+        if (blockAt != null && !blockAt.isAir(world, x, y, z)
             && !blockAt.isLeaves(world, x, y, z)
             && !blockAt.canBeReplacedByLeaves(world, x, y, z)) {
             return false;
         }
 
         final Block soil = world.getBlock(x, y - 1, z);
-        return soil != null && soil.canSustainPlant(
-            world,
-            x,
-            y - 1,
-            z,
-            ForgeDirection.UP,
-            (BlockSapling) GregTechAPI.sBlockRubberSapling);
+        return soil != null && soil
+            .canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, (BlockSapling) GregTechAPI.sBlockRubberSapling);
     }
 
     /**
@@ -134,12 +129,12 @@ public class WorldgenRubberTrees extends GTWorldgen {
 
         while (y > 1) {
             final Block below = world.getBlock(x, y - 1, z);
-            if (below == null
-                || below.isAir(world, x, y, z)
+            if (below == null || below.isAir(world, x, y, z)
                 || below.isLeaves(world, x, y, z)
                 || below.isWood(world, x, y - 1, z)
                 || below.canBeReplacedByLeaves(world, x, y - 1, z)
-                || below.getMaterial().isReplaceable()) {
+                || below.getMaterial()
+                    .isReplaceable()) {
                 y--;
                 continue;
             }

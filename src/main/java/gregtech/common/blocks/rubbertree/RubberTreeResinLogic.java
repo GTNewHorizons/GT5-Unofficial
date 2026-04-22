@@ -1,17 +1,19 @@
 package gregtech.common.blocks.rubbertree;
 
-import gregtech.api.GregTechAPI;
-import net.minecraft.block.Block;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.GregTechAPI;
 
 public final class RubberTreeResinLogic {
 
@@ -37,8 +39,7 @@ public final class RubberTreeResinLogic {
             anchor[1],
             anchor[2],
             GregTechAPI.sBlockRubberLogNatural,
-            nextResinDelay(random)
-        );
+            nextResinDelay(random));
     }
 
     public static void tryRefillTree(@NotNull World world, int x, int y, int z, Random random) {
@@ -57,7 +58,8 @@ public final class RubberTreeResinLogic {
 
         if (!fillRandomLog(world, treeLogs, random)) {
             // retry in 10..15 seconds if fail
-            world.scheduleBlockUpdate(x, y, z, GregTechAPI.sBlockRubberLogNatural, 20 * 10 + random.nextInt(20 * 5 + 1));
+            world
+                .scheduleBlockUpdate(x, y, z, GregTechAPI.sBlockRubberLogNatural, 20 * 10 + random.nextInt(20 * 5 + 1));
         }
     }
 
@@ -94,11 +96,11 @@ public final class RubberTreeResinLogic {
             int nz = z + dir.offsetZ;
 
             Block neighbour = world.getBlock(nx, ny, nz);
-            if (neighbour == null
-                || neighbour.isAir(world, nx, ny, nz)
+            if (neighbour == null || neighbour.isAir(world, nx, ny, nz)
                 || neighbour.isLeaves(world, nx, ny, nz)
                 || neighbour.canBeReplacedByLeaves(world, nx, ny, nz)
-                || neighbour.getMaterial().isReplaceable()) {
+                || neighbour.getMaterial()
+                    .isReplaceable()) {
                 result.add(side);
             }
         }
@@ -139,11 +141,7 @@ public final class RubberTreeResinLogic {
             result.add(pos);
 
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                queue.add(new int[] {
-                    pos[0] + dir.offsetX,
-                    pos[1] + dir.offsetY,
-                    pos[2] + dir.offsetZ
-                });
+                queue.add(new int[] { pos[0] + dir.offsetX, pos[1] + dir.offsetY, pos[2] + dir.offsetZ });
             }
         }
 

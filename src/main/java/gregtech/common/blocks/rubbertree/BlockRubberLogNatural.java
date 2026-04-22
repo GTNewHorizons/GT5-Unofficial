@@ -1,11 +1,8 @@
 package gregtech.common.blocks.rubbertree;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTModHandler;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,11 +15,16 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
+import gregtech.api.util.GTModHandler;
 
 public class BlockRubberLogNatural extends Block {
 
@@ -226,7 +228,7 @@ public class BlockRubberLogNatural extends Block {
 
     @Override
     public boolean onBlockActivated(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player, int side,
-                                    float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
 
         int meta = world.getBlockMetadata(x, y, z);
         boolean canHarvestFromThisFace = isResinSide(meta, side);
