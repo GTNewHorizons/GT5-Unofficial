@@ -120,6 +120,8 @@ gtpp.nei.tgs.1=The sapling is not consumed.
 gtpp.nei.tgs.2=If %s is provided,
 gtpp.nei.tgs.3=Saplings are made instead.
 gtpp.nei.tgs.sapling=Outputted if %s is provided
+gtpp.nei.chemical_plant.not_consumed=Does not always get consumed in the process
+gtpp.nei.chemical_plant.higher_tier_casing=Higher tier pipe casings allow this item to last longer
 
 gtpp.nei.tgs.tooltip.sapling=Place in machine controller slot
 gtpp.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
@@ -4132,7 +4134,7 @@ miscutils.blockcasings.0.name=Centrifuge Casing
 miscutils.blockcasings.1.name=Structural Coke Oven Casing
 miscutils.blockcasings.2.name=Heat Resistant Coke Oven Casing
 miscutils.blockcasings.3.name=Heat Proof Coke Oven Casing
-miscutils.blockcasings.4.name=Material Press Machine Casing
+miscutils.blockcasings.4.name=Metalworking Machine Casing
 miscutils.blockcasings.5.name=Electrolyzer Casing
 miscutils.blockcasings.6.name=Wire Factory Casing
 miscutils.blockcasings.7.name=Maceration Stack Casing
