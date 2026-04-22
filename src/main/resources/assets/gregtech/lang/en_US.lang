@@ -2208,6 +2208,7 @@ GT5U.machines.debugstructurewriter.gui.origin=Origin
 GT5U.machines.debugstructurewriter.gui.size=Size
 GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.debugstructurewriter.gui.copy.tooltip=Copy Structure To Clipboard
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
