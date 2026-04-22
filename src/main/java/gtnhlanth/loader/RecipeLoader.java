@@ -706,7 +706,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
                 Materials.Glass.getPlates(2),
-                GregtechItemList.LithiumHydroxideDust.get(2),
+                Materials.LithiumHydroxide.getDust(2),
                 Materials.Epoxid.getDust(4))
             .fluidInputs(Materials.Hydrogen.getGas(2_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))

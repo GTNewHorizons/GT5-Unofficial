@@ -7831,10 +7831,14 @@ public class MaterialsInit {
         Materials.Glycerol = loadGlycerol();
         Materials.HydrochloricAcid = loadHydrochloricAcid();
         Materials.HydrofluoricAcid = loadHydrofluoricAcid();
+        Materials.HydrogenPeroxide = loadHydrogenPeroxide();
+        Materials.HydrogenChloride = loadHydrogenChloride();
         Materials.HypochlorousAcid = loadHypochlorousAcid();
         Materials.IronIIIChloride = loadIronIIIChloride();
         Materials.Isoprene = loadIsoprene();
         Materials.LifeEssence = loadLifeEssence();
+        Materials.LithiumPeroxide = loadLithiumPeroxide();
+        Materials.LithiumHydroxide = loadLithiumHydroxide();
         Materials.MetalMixture = loadMetalMixture();
         Materials.Methanol = loadMethanol();
         Materials.MethylAcetate = loadMethylAcetate();
@@ -7858,6 +7862,9 @@ public class MaterialsInit {
         Materials.StyreneButadieneRubber = loadStyreneButadieneRubber();
         Materials.SulfurDioxide = loadSulfurDioxide();
         Materials.SulfurTrioxide = loadSulfurTrioxide();
+        Materials.SulfurousAcid = loadSulfurousAcid();
+        Materials.SulfuricApatite = loadSulfuricApatite();
+        Materials.SulfuricLithium = loadSulfuricLithium();
         Materials.Tetrafluoroethylene = loadTetrafluoroethylene();
         Materials.Tetranitromethane = loadTetranitromethane();
         Materials.Toluene = loadToluene();
@@ -8208,6 +8215,34 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static Materials loadHydrogenPeroxide() {
+        return new MaterialBuilder().setName("HydrogenPeroxide")
+            .setDefaultLocalName("Hydrogen Peroxide")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0x00fcffff)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadHydrogenChloride() {
+        return new MaterialBuilder().setName("HydrogenChloride")
+            .setDefaultLocalName("Industrial Strength Hydrogen Chloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0096F05A)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 1)
+            .addMaterial(Materials.Chlorine, 1)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
     private static Materials loadHypochlorousAcid() {
         return new MaterialBuilder().setName("HypochlorousAcid")
             .setDefaultLocalName("Hypochlorous Acid")
@@ -8260,6 +8295,35 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.Magic, 100)
             .addCell()
             .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadLithiumPeroxide() {
+        return new MaterialBuilder().setName("LithiumPeroxide")
+            .setDefaultLocalName("Lithium Peroxide")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0x00878764)
+            .addCell()
+            .addDustItems()
+            .addMaterial(Materials.Lithium, 2)
+            .addMaterial(Materials.Oxygen, 2)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadLithiumHydroxide() {
+        return new MaterialBuilder().setName("LithiumHydroxide")
+            .setDefaultLocalName("Lithium Hydroxide")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x00006969)
+            .addCell()
+            .addDustItems()
+            .addMaterial(Materials.Lithium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
@@ -8612,6 +8676,45 @@ public class MaterialsInit {
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 3)
             .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfurousAcid() {
+        return new MaterialBuilder().setName("SulfurousAcid")
+            .setDefaultLocalName("Sulfurous Acid")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x006EDC1E)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Sulfur, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .addElectrolyzerRecipe()
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricApatite() {
+        return new MaterialBuilder().setName("SulfuricApatite")
+            .setDefaultLocalName("Sulfuric Apatite Mix")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x00006969)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadSulfuricLithium() {
+        return new MaterialBuilder().setName("SulfuricLithium")
+            .setDefaultLocalName("Sulfuric Lithium Mix")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeCyan)
+            .setARGB(0x00006969)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Lithium, 1)
+            .addMaterial(Materials.Sulfur, 1)
             .constructMaterial();
     }
 

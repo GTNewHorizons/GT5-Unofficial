@@ -71,7 +71,7 @@ public class NetheriteRecipes {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 24))
                 .fluidInputs(
                     new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4000),
-                    new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
+                    Materials.HydrogenPeroxide.getFluid(4000))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
@@ -83,7 +83,7 @@ public class NetheriteRecipes {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 6))
                 .fluidInputs(
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
-                    new FluidStack(GTPPFluids.HydrogenPeroxide, 2000))
+                    Materials.HydrogenPeroxide.getFluid(2000))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)

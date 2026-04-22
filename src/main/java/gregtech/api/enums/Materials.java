@@ -587,10 +587,14 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Glycerol;
     public static Materials HydrochloricAcid;
     public static Materials HydrofluoricAcid;
+    public static Materials HydrogenPeroxide;
+    public static Materials HydrogenChloride;
     public static Materials HypochlorousAcid;
     public static Materials IronIIIChloride;
     public static Materials Isoprene;
     public static Materials LifeEssence;
+    public static Materials LithiumPeroxide;
+    public static Materials LithiumHydroxide;
     public static Materials MetalMixture;
     public static Materials Methanol;
     public static Materials MethylAcetate;
@@ -614,6 +618,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StyreneButadieneRubber;
     public static Materials SulfurDioxide;
     public static Materials SulfurTrioxide;
+    public static Materials SulfurousAcid;
+    public static Materials SulfuricApatite;
+    public static Materials SulfuricLithium;
     public static Materials Tetrafluoroethylene;
     public static Materials Tetranitromethane;
     public static Materials Toluene;

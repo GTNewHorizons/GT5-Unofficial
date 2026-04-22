@@ -100,11 +100,7 @@ public class GTPPFluids {
     public static Fluid Pyrotheum;
     public static Fluid IndustrialStrengthHydrofluoricAcid;
     public static Fluid HighQualitySulfurDioxide;
-    public static Fluid SulfurousAcid;
-    public static Fluid SulfuricApatiteMix;
     public static Fluid IndustrialStrengthHydrogenChloride;
-    public static Fluid SulfuricLithiumMix;
-    public static Fluid LithiumHydroxide;
     public static Fluid RaisinJuice;
     public static Fluid MobEssence;
 
@@ -305,22 +301,6 @@ public class GTPPFluids {
             null,
             null);
 
-        HydrogenPeroxide = FluidUtils.generateFluidNonMolten(
-            "HydrogenPeroxide",
-            "Hydrogen Peroxide",
-            150,
-            new short[] { 210, 255, 255, 100 },
-            null,
-            null);
-
-        LithiumPeroxide = FluidUtils.generateFluidNonMolten(
-            "LithiumPeroxide",
-            "Lithium Peroxide",
-            446,
-            new short[] { 135, 135, 135, 100 },
-            null,
-            null);
-
         CarbonDisulfide = FluidUtils
             .generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[] { 175, 175, 175, 100 });
 
@@ -491,56 +471,12 @@ public class GTPPFluids {
             263,
             new short[] { 150, 200, 50, 0 });
 
-        SulfurousAcid = FluidUtils.addGtFluid(
-            "sulfurousAcid",
-            "Sulfurous Acid",
-            new short[] { 110, 220, 30, 0 },
-            4,
-            75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        SulfuricApatiteMix = FluidUtils.addGtFluid(
-            "sulfuricApatite",
-            "Sulfuric Apatite Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
         IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
             "hydrogenChloride",
             "Industrial Strength Hydrogen Chloride",
             new short[] { 150, 240, 90, 0 },
             4,
             75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        SulfuricLithiumMix = FluidUtils.addGtFluid(
-            "sulfuricLithium",
-            "Sulfuric Lithium Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            280,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        LithiumHydroxide = FluidUtils.addGtFluid(
-            "lithiumHydroxide",
-            "Lithium Hydroxide",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
             null,
             ItemList.Cell_Empty.get(1),
             1000,

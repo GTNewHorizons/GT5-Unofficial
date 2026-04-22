@@ -149,6 +149,13 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(172, Materials.Plagioclase);
         r(173, Materials.UnformedHexanite);
         r(174, Materials.Hexanite);
+        r(175, Materials.HydrogenPeroxide);
+        r(176, Materials.LithiumPeroxide);
+        r(177, Materials.HydrogenChloride);
+        r(178, Materials.SulfurousAcid);
+        r(179, Materials.SulfuricApatite);
+        r(180, Materials.SulfuricLithium);
+        r(181, Materials.LithiumHydroxide);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);

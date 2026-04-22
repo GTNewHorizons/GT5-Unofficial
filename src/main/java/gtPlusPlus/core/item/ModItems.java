@@ -615,24 +615,6 @@ public final class ModItems {
         GregtechItemList.SmallLithiumCarbonateDust.set(lithiumCarbonate[1]);
         GregtechItemList.TinyLithiumCarbonateDust.set(lithiumCarbonate[2]);
 
-        Item[] lithiumPeroxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumPeroxide",
-            "Lithium Peroxide",
-            "Li2O2",
-            Utils.rgbtoHexValue(250, 250, 250));
-        GregtechItemList.LithiumPeroxideDust.set(lithiumPeroxide[0]);
-        GregtechItemList.SmallLithiumPeroxideDust.set(lithiumPeroxide[1]);
-        GregtechItemList.TinyLithiumPeroxideDust.set(lithiumPeroxide[2]);
-
-        Item[] lithiumHydroxide = ItemUtils.generateSpecialUseDusts(
-            "LithiumHydroxide",
-            "Lithium Hydroxide",
-            "LiOH",
-            Utils.rgbtoHexValue(250, 250, 250));
-        GregtechItemList.LithiumHydroxideDust.set(lithiumHydroxide[0]);
-        GregtechItemList.SmallLithiumHydroxideDust.set(lithiumHydroxide[1]);
-        GregtechItemList.TinyLithiumHydroxideDust.set(lithiumHydroxide[2]);
-
         Item[] calciumHydroxide = ItemUtils
             .generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", "CaO2H2", Utils.rgbtoHexValue(255, 255, 255));
         GregtechItemList.CalciumHydroxideDust.set(calciumHydroxide[0]);
