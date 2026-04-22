@@ -32,7 +32,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.OverclockCalculator;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,7 +43,6 @@ import goodgenerator.loader.Loaders;
 import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvivalConstructable {
