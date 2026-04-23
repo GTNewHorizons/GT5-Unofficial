@@ -3407,7 +3407,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SpaceTime, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Eternity, 32),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 16),
-                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L }, ItemList.EnergisedTesseract.get(1) },
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 8L }, ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS),
                     Materials.ExcitedDTSC.getFluid(32_000) },
                 wirelessLasers[i],
