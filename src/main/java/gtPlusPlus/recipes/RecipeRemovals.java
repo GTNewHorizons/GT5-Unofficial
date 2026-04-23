@@ -10,7 +10,7 @@ public class RecipeRemovals {
 
     public static void postInit() {
         if (Mods.AdvancedSolarPanel.isModLoaded()) {
-            GTModHandler.removeRecipeByOutput(new ItemStack(AdvancedSolarPanel.blockMolecularTransformer));
+            GTModHandler.removeRecipeByOutputDelayed(new ItemStack(AdvancedSolarPanel.blockMolecularTransformer));
         }
     }
 }
