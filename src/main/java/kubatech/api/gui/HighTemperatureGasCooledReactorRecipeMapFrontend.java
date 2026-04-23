@@ -61,6 +61,15 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                 .itemOutputsGetter(recipe -> {
                     ArrayList<ItemStack> outputs = new ArrayList<>();
                     Materials material = GTOreDictUnificator.getAssociation(recipe.mInputs[0]).mMaterial.mMaterial;
+                    Collections.addAll(outputs, recipe.mOutputs);
+                    // recycling
+                    for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
+                        ItemStack stack = fuel.getLeft()
+                            .copy();
+                        stack.stackSize = Math.max(fuel.getRight(), 1);
+                        if (fuel.getRight() > 0) outputs.add(stack);
+                    }
+                    outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
                     outputs.add(HTGRItem.createTRISOMixture(material));
                     outputs.add(HTGRItem.createIncompleteBISOFuel(material));
                     outputs.add(HTGRItem.createIncompleteTRISOFuel(material));
@@ -68,15 +77,6 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                     outputs.add(ofuel);
                     outputs.add(ofuel.copy());
                     outputs.add(HTGRItem.createBurnedTRISOFuel(material));
-                    Collections.addAll(outputs, recipe.mOutputs);
-                    // recycling
-                    for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
-                        ItemStack stack = fuel.getLeft()
-                            .copy();
-                        stack.stackSize = Math.max(fuel.getRight(), 1);
-                        if (stack.stackSize > 0) outputs.add(stack);
-                    }
-                    outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
                     return outputs.toArray(new ItemStack[0]);
                 }));
     }
@@ -116,13 +116,6 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     public @NotNull List<Pos2d> getItemOutputPositions(int itemOutputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
 
-        // outputs
-        positions.add(new Pos2d(79, 67));
-        positions.add(new Pos2d(79, 99));
-        positions.add(new Pos2d(79, 131));
-        positions.add(new Pos2d(79, 163));
-        positions.add(new Pos2d(136, 25));
-        positions.add(new Pos2d(136, 163));
         // recycling
 
         int x = 7, y = 197;
@@ -134,6 +127,14 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                 y += 18;
             }
         }
+
+        // outputs
+        positions.add(new Pos2d(79, 67));
+        positions.add(new Pos2d(79, 99));
+        positions.add(new Pos2d(79, 131));
+        positions.add(new Pos2d(79, 163));
+        positions.add(new Pos2d(136, 25));
+        positions.add(new Pos2d(136, 163));
         return positions;
     }
 

@@ -36,6 +36,8 @@ import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRLoader {
 
+    public static int shell_recycle_chance = 9500;
+
     @SuppressWarnings("unchecked")
     public static final RecipeMetadataKey<Pair<ItemStack, Integer>[]> FUEL = SimpleRecipeMetadataKey
         .create((Class<Pair<ItemStack, Integer>[]>) (Class<?>) Pair[].class, "htgr_fuel");
@@ -113,9 +115,12 @@ public class HTGRLoader {
                     if (fuelStack.stackSize > 0) items.add(fuelStack);
                 }
             }
+            int[] item_chances = builder.getOutputChances();
             int[] chances = new int[items.size() + 3];
-            Arrays.fill(chances, 0, items.size(), 10000);
-            Arrays.fill(chances, items.size(), items.size() + 3, 9500);
+            for (int i = 0; i < items.size(); i++) {
+                chances[i] = item_chances[i];
+            }
+            Arrays.fill(chances, items.size(), items.size() + 3, shell_recycle_chance);
             items.addAll(Arrays.asList(shells));
 
             GTValues.RA.stdBuilder()
