@@ -116,10 +116,9 @@ public class HTGRLoader {
                 }
             }
             int[] chances = new int[items.size() + 3];
+            Arrays.fill(chances, 0, items.size(), 10000);
             if (builder.getOutputChances() != null) {
-                System.arraycopy(builder.getOutputChances(), 0, chances, 0, items.size());
-            } else {
-                Arrays.fill(chances, 0, items.size(), 10000);
+                System.arraycopy(builder.getOutputChances(), 0, chances, 0, builder.getOutputChances().length);
             }
             Arrays.fill(chances, items.size(), items.size() + 3, shell_recycle_chance);
             items.addAll(Arrays.asList(shells));
