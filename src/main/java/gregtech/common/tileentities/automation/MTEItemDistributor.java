@@ -55,6 +55,14 @@ public class MTEItemDistributor extends MTEBuffer {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public byte getItemsPerSide(int index) {
+        return itemsPerSide[index];
+    }
+
+    public void setItemsPerSide(int index, byte itemsPerSide) {
+        this.itemsPerSide[index] = itemsPerSide;
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEItemDistributor(
