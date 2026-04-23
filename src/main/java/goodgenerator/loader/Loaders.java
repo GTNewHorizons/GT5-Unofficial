@@ -547,27 +547,13 @@ public class Loaders {
 
     public static void initLoad() {
         GTMetaTileRegister();
-        initLoadRecipes();
-    }
-
-    public static void postInitLoad() {
-        postInitLoadRecipes();
-    }
-
-    public static void completeLoad() {
-        RecipeLoader2.FinishLoadRecipe();
-        MaterialFix.addRecipeForMultiItems();
-        ComponentAssemblyLineLoader.run();
-    }
-
-    public static void initLoadRecipes() {
         RecipeLoader.InitLoadRecipe();
         RecipeLoader2.InitLoadRecipe();
         FuelRecipeLoader.RegisterFuel();
         NaquadahReworkRecipeLoader.RecipeLoad();
     }
 
-    public static void postInitLoadRecipes() {
+    public static void postInitLoad() {
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
@@ -582,5 +568,11 @@ public class Loaders {
                         MTEEssentiaInputHatch.CAPACITY);
             }
         }
+        MaterialFix.addRecipeForMultiItems();
+        ComponentAssemblyLineLoader.run();
+    }
+
+    public static void completeLoad() {
+        RecipeLoader2.FinishLoadRecipe();
     }
 }
