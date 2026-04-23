@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
@@ -77,11 +78,11 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
-            .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(5, 4, 7, true)
             .addController("Front center")
-            .addCasingInfoMin("Advanced Cryogenic Casing", 10, false)
+            .addCasingInfoMin("Advanced Cryogenic Casing", 50, false)
+            .addCasingInfoExactly("Grisium Frame Box", 24, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -90,6 +91,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMufflerHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart("Cryotheum Cooling Hatch", "Any Casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
         return tt;
     }
@@ -100,11 +102,11 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             STRUCTURE_DEFINITION = StructureDefinition.<MTECryogenicFreezer>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "     ", " BBB ", " B~B ", " BBB " }, { " ABA ", "ABBBA", "ABBBA", "ABBBA" },
-                        { "  B  ", " BBB ", " BBB ", " BBB " }, { " ABA ", "ABBBA", "ABBBA", "ABBBA" },
-                        { "  B  ", " BBB ", " BBB ", " BBB " }, { " ABA ", "ABBBA", "ABBBA", "ABBBA" },
+                    new String[][] { { "     ", " BBB ", " B~B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
+                        { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
+                        { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
                         { "     ", " BBB ", " BBB ", " BBB " } })
-                .addElement('A', ofFrame(Materials.Steel))
+                .addElement('A', ofFrame(MaterialsAlloy.LEAGRISIUM))
                 .addElement(
                     'B',
                     ofChain(
@@ -150,7 +152,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 10;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 50;
     }
 
     @Override
