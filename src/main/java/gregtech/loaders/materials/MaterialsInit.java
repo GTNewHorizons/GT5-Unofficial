@@ -2182,6 +2182,7 @@ public class MaterialsInit {
     private static void loadRandom() {
         Materials.AnyBronze = loadAnyBronze();
         Materials.AnyCopper = loadAnyCopper();
+        Materials.AnyCarbon = loadAnyCarbon();
         Materials.AnyIron = loadAnyIron();
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
@@ -2213,6 +2214,15 @@ public class MaterialsInit {
             .setMaceratingInto(() -> Materials.Copper)
             .setArcSmeltingInto(() -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyCarbon() {
+        return new MaterialBuilder().setName("AnyCarbon")
+            .setDefaultLocalName("AnyCarbon")
+            .setChemicalFormula("C")
+            .setUnifiable(false)
+            .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
 
