@@ -8,6 +8,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -675,8 +676,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
-            name.append(
-                String.format(Gregtech.machines.ghostCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
+            try {
+                name.append(
+                    String.format(
+                        Gregtech.machines.ghostCircuitSuffixFormat,
+                        mInventory[SLOT_CIRCUIT].getItemDamage()));
+            } catch (IllegalFormatException ignored) {}
         }
         StringJoiner manualSlots = new StringJoiner(", ");
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
@@ -685,7 +690,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
         }
         if (manualSlots.length() > 0) {
-            name.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+            try {
+                name.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+            } catch (IllegalFormatException ignored) {}
         }
         return name.toString();
     }
