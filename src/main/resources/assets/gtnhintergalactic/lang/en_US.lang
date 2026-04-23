@@ -195,9 +195,9 @@ gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set 
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
 gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
-gt.blockmachines.multimachine.ig.siphon.lore0=333:Taking Space-Mining to another Level!
-gt.blockmachines.multimachine.ig.siphon.lore1=333:It's time to SUCC!
-gt.blockmachines.multimachine.ig.siphon.lore2=333:Trading EU -> Fluids
+gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
+gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
+gt.blockmachines.multimachine.ig.siphon.lore2=Trading EU -> Fluids
 gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 
 # Dyson Swarm
@@ -400,6 +400,7 @@ ig.sp.upgrade.reinforcedstructure=Reinforced Structure Upgrade
 ig.sp.upgrade.reinforcedstructure.description=This upgrade reinforces the structure to survive hits from any fast moving asteroids and protects the drones from accidents
 
 # Asteroids
+ig.asteroid=Asteroid
 ig.asteroid.coalAsteroid=Coal
 ig.asteroid.saltAsteroid=Salt
 ig.asteroid.ironAsteroid=Iron

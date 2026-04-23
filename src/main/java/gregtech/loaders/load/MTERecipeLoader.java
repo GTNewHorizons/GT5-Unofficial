@@ -21,8 +21,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
-
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import goodgenerator.util.ItemRefer;
@@ -1720,6 +1718,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.CryogenicFreezer.get(1),
             new Object[] { GregtechItemList.Industrial_Cryogenic_Freezer });
 
+        // Industrial Coke Oven Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCokeOven.get(1),
+            new Object[] { GregtechItemList.Industrial_CokeOven });
+
         // Extreme Combustion Engine Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ExtremeCombustionEngine.get(1),
@@ -1764,6 +1767,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // Maceration Stack conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MacerationStack.get(1),
+            new Object[] { GregtechItemList.Industrial_MacerationStack });
+
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
@@ -1782,6 +1790,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
             new Object[] { GregtechItemList.Industrial_Mixer });
+
+        // Fishing Port Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.FishingPort.get(1),
+            new Object[] { GregtechItemList.Industrial_FishingPond });
 
         // Integrated Ore Factory Conversion Recipe
         GTModHandler
