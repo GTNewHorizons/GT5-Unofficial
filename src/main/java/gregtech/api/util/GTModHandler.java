@@ -81,6 +81,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -95,11 +96,16 @@ public class GTModHandler {
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
     // public for bartworks
-    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000), sBufferRecipeList = new ArrayList<>(1000);
-    private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
+    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000);
+    public static final List<IRecipe> sBufferRecipeList = new ArrayList<>(1000);
+
+    private static final ObjectOpenCustomHashSet<ItemStack> delayedRemovalByOutput = new ObjectOpenCustomHashSet<>(
+        1024,
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
-    public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
+    public static Collection<String> sNativeRecipeClasses = new HashSet<>();
+    public static Collection<String> sSpecialRecipeClasses = new HashSet<>();
     public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
@@ -1273,79 +1279,77 @@ public class GTModHandler {
     /**
      * Removes a Smelting Recipe
      */
-    public static boolean removeFurnaceSmelting(ItemStack aInput) {
-        if (aInput != null) {
-            for (ItemStack tInput : FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .keySet()) {
-                if (GTUtility.isStackValid(tInput) && GTUtility.areStacksEqual(aInput, tInput, true)) {
-                    FurnaceRecipes.smelting()
-                        .getSmeltingList()
-                        .remove(tInput);
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static boolean removeFurnaceSmelting(ItemStack input) {
+        if (input == null) return false;
+
+        // smelting list was optimized to allow fast operations like that, see MixinFurnaceRecipes.java in Hodgepodge
+        return FurnaceRecipes.smelting()
+            .getSmeltingList()
+            .remove(input) != null;
     }
 
     /**
      * Removes a Crafting Recipe and gives you the former output of it.
      *
-     * @param aRecipe The content of the Crafting Grid as ItemStackArray with length 9
+     * @param shape The content of the Crafting Grid as ItemStackArray with length 9
      * @return the output of the old Recipe or null if there was nothing.
      */
-    public static ItemStack removeRecipe(ItemStack... aRecipe) {
-        if (aRecipe == null) return null;
-        if (isAllNulls(aRecipe)) return null;
+    public static ItemStack removeRecipe(ItemStack... shape) {
+        if (shape == null) return null;
+        if (isAllNulls(shape)) return null;
 
         ItemStack rReturn = null;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < aRecipe.length && i < 9; i++) {
-            aCrafting.setInventorySlotContents(i, aRecipe[i]);
+
+        for (int i = 0; i < shape.length && i < 9; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
         }
+
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int size = allRecipes.size();
-        for (int i = 0; i < size; i++) {
-            for (; i < size; i++) {
-                if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
-                    || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
-                        .matches(aCrafting, DW)) {
-                    rReturn = allRecipes.get(i)
-                        .getCraftingResult(aCrafting);
-                    if (rReturn != null) allRecipes.remove(i--);
-                    size = allRecipes.size();
-                }
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            if (recipe.matches(craftMatrix, DW)) {
+                rReturn = recipe.getCraftingResult(craftMatrix);
+                allRecipes.remove(i--);
             }
         }
         return rReturn;
     }
 
-    public static void removeRecipeDelayed(ItemStack... aRecipe) {
+    public static void removeRecipeDelayed(ItemStack... shape) {
         if (!sBufferCraftingRecipes) {
-            removeRecipe(aRecipe);
+            removeRecipe(shape);
             return;
         }
 
-        if (aRecipe == null) return;
-        if (isAllNulls(aRecipe)) return;
+        if (shape == null) return;
+        if (isAllNulls(shape)) return;
 
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        delayedRemovalByRecipe.add(aCrafting);
+
+        for (int i = 0; i < shape.length && i < 9; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        delayedRemovalByRecipe.add(craftMatrix);
     }
 
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
@@ -1355,10 +1359,15 @@ public class GTModHandler {
 
         Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable()) {
                     return false;
-                return toRemove.stream()
-                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+                }
+                for (InventoryCrafting crafting : toRemove) {
+                    if (tRecipe.matches(crafting, DW)) {
+                        return true;
+                    }
+                }
+                return false;
             })
             .collect(Collectors.toSet());
 
@@ -1366,16 +1375,21 @@ public class GTModHandler {
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
-        if (sBufferCraftingRecipes) return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput);
+        if (sBufferCraftingRecipes) {
+            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+        }
+
+        return removeRecipeByOutput(aOutput);
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput, boolean aIgnoreNBT,
         boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers))
+        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers)) {
             // Too lazy to handle deferred versions of the parameters that aren't used very often
-            return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
+            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+        }
+
+        return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
     }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
@@ -1425,59 +1439,52 @@ public class GTModHandler {
         return rReturn;
     }
 
-    public static boolean bulkRemoveRecipeByOutput(List<ItemStack> toRemove) {
+    public static boolean bulkRemoveRecipeByOutput(Set<ItemStack> toRemove) {
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
+        ItemStack wildcardItem = new ItemStack((Item) null, 0, WILDCARD);
 
-        Set<ItemStack> setToRemove = toRemove.parallelStream()
-            .map(GTOreDictUnificator::get_nocopy)
-            .collect(Collectors.toSet());
+        GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: allRecipes: {} toRemove: {}", allRecipes.size(), toRemove.size());
 
-        GT_FML_LOGGER
-            .info("BulkRemoveRecipeByOutput: allRecipes: " + allRecipes.size() + " setToRemove: " + setToRemove.size());
+        allRecipes.removeIf(recipe -> {
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                return false;
+            }
 
-        Set<IRecipe> tListToRemove = allRecipes.parallelStream()
-            .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
-                    return false;
-                if (sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    return false;
-                final ItemStack tStack = GTOreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
-                return setToRemove.stream()
-                    .anyMatch(aOutput -> GTUtility.areStacksEqual(tStack, aOutput, true));
-            })
-            .collect(Collectors.toSet());
+            if (sSpecialRecipeClasses.contains(
+                recipe.getClass()
+                    .getName())) {
+                return false;
+            }
 
-        allRecipes.removeIf(tListToRemove::contains);
+            final ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            if (output == null) return false;
+
+            wildcardItem.func_150996_a(output.getItem());
+            return toRemove.contains(output) || toRemove.contains(wildcardItem);
+        });
         return true;
     }
 
     /**
      * Checks all Crafting Handlers for Recipe Output Used for the Autocrafting Table
      */
-    public static ItemStack getAllRecipeOutput(World aWorld, ItemStack... aRecipe) {
-        if (aRecipe == null || aRecipe.length == 0) return null;
-
+    public static ItemStack getAllRecipeOutput(World aWorld, ItemStack... shape) {
+        if (shape == null || shape.length == 0 || isAllNulls(shape)) return null;
         if (aWorld == null) aWorld = DW;
 
-        boolean temp = false;
-        for (ItemStack itemStack : aRecipe) {
-            if (itemStack != null) {
-                temp = true;
-                break;
-            }
-        }
-        if (!temp) return null;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
+
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
         List<IRecipe> allRecipes = CraftingManager.getInstance()
             .getRecipeList();
         synchronized (sAllRecipeList) {
@@ -1487,20 +1494,20 @@ public class GTModHandler {
             }
             for (int i = 0, j = sAllRecipeList.size(); i < j; i++) {
                 IRecipe tRecipe = sAllRecipeList.get(i);
-                if (tRecipe.matches(aCrafting, aWorld)) {
+                if (tRecipe.matches(craftMatrix, aWorld)) {
                     if (i > 10) {
                         sAllRecipeList.remove(i);
                         sAllRecipeList.add(i - 10, tRecipe);
                     }
-                    return tRecipe.getCraftingResult(aCrafting);
+                    return tRecipe.getCraftingResult(craftMatrix);
                 }
             }
         }
 
         int tIndex = 0;
         ItemStack tStack1 = null, tStack2 = null;
-        for (int i = 0, j = aCrafting.getSizeInventory(); i < j; i++) {
-            ItemStack tStack = aCrafting.getStackInSlot(i);
+        for (int i = 0, j = craftMatrix.getSizeInventory(); i < j; i++) {
+            ItemStack tStack = craftMatrix.getStackInSlot(i);
             if (tStack != null) {
                 if (tIndex == 0) tStack1 = tStack;
                 if (tIndex == 1) tStack2 = tStack;
@@ -1526,8 +1533,8 @@ public class GTModHandler {
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, false, aRecipe);
+    public static ItemStack getRecipeOutput(ItemStack... shape) {
+        return getRecipeOutput(false, false, shape);
     }
 
     /**
@@ -1540,39 +1547,43 @@ public class GTModHandler {
      * registered as 'plankWood' in the OreDict. This method will select the former, regardless of the order they appear
      * on the list.
      */
-    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, aRecipe);
+    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... shape) {
+        return getRecipeOutput(false, true, shape);
     }
 
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, false, aRecipe);
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... shape) {
+        return getRecipeOutput(aUncopiedStack, false, shape);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
-        if (aRecipe == null || isAllNulls(aRecipe)) return null;
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... shape) {
+        if (shape == null || isAllNulls(shape)) return null;
 
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        ArrayList<IRecipe> recipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
 
         boolean tOreDictRecipeFound = false;
         ItemStack tOreDictOutput = null;
 
-        for (IRecipe iRecipe : tList) {
-            if (iRecipe.matches(aCrafting, DW)) {
-                ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
+        for (IRecipe recipe : recipes) {
+            if (recipe.matches(craftMatrix, DW)) {
+                ItemStack tOutput = aUncopiedStack ? recipe.getRecipeOutput() : recipe.getCraftingResult(craftMatrix);
 
-                if (aPreferNonOreDict && iRecipe instanceof ShapedOreRecipe) {
+                if (aPreferNonOreDict && recipe instanceof ShapedOreRecipe) {
                     if (!tOreDictRecipeFound) {
                         tOreDictOutput = tOutput;
                         tOreDictRecipeFound = true;
@@ -1609,78 +1620,80 @@ public class GTModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe If you have multiple Mods, which add Bronze Armor for
      * example Buffers a List which only has armor-alike crafting in it
      */
-    public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
+    public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... shape) {
+        if (bufferedRecipes == null) {
+            final List<IRecipe> recipes = CraftingManager.getInstance()
+                .getRecipeList();
+            bufferedRecipes = new ArrayList<>(recipes.size() / 2);
 
-        if (bufferedRecipes == null) bufferedRecipes = CraftingManager.getInstance()
-            .getRecipeList()
-            .stream()
-            .filter(
-                tRecipe -> !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)
-                    && !(tRecipe instanceof IGTCraftingRecipe))
-            .filter(tRecipe -> {
-                try {
-                    ItemStack tOutput = tRecipe.getRecipeOutput();
-                    if (tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1) {
-                        return true;
-                    }
-                } catch (Exception ignored) {}
-                return false;
-            })
-            .collect(Collectors.toList());
-        return getRecipeOutputs(bufferedRecipes, false, aRecipe);
+            for (IRecipe recipe : recipes) {
+                if (recipe instanceof ShapelessRecipes) continue;
+                if (recipe instanceof ShapelessOreRecipe) continue;
+                if (recipe instanceof IGTCraftingRecipe) continue;
+
+                ItemStack output = recipe.getRecipeOutput();
+                if (output == null || output.getItem() == null) continue;
+
+                if (output.stackSize == 1 && output.getMaxDamage() > 0 && output.getMaxStackSize() == 1) {
+                    bufferedRecipes.add(recipe);
+                }
+            }
+        }
+
+        return getRecipeOutputs(bufferedRecipes, false, shape);
     }
 
     /**
      * Gives you a list of the Outputs from a Crafting Recipe If you have multiple Mods, which add Bronze Armor for
      * example
      */
-    public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
-        List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null || isAllNulls(aRecipe)) return rList;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+    public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
+        ItemStack... shape) {
+
+        final ArrayList<ItemStack> outputList = new ArrayList<>();
+        if (shape == null || isAllNulls(shape)) return outputList;
+
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        if (!aDeleteFromList) {
-            HashSet<ItemStack> stacks = new HashSet<>();
-            aList.stream()
-                .filter(tRecipe -> {
-                    if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
-                        || tRecipe instanceof IGTCraftingRecipe) return false;
-                    return tRecipe.matches(aCrafting, DW);
-                })
-                .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
-            rList = stacks.stream()
-                .filter(
-                    tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1)
-                .collect(Collectors.toList());
-        } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
-            IRecipe tRecipe = iterator.next();
 
-            if (tRecipe.matches(aCrafting, DW)) {
-                ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
-
-                if (tOutput == null || tOutput.stackSize <= 0) {
-                    // Seriously, who would ever do that shit?
-                    if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
-                        "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                    continue;
-                }
-                if (tOutput.stackSize != 1) continue;
-                if (tOutput.getMaxDamage() <= 0) continue;
-                if (tOutput.getMaxStackSize() != 1) continue;
-                if (tRecipe instanceof ShapelessRecipes) continue;
-                if (tRecipe instanceof ShapelessOreRecipe) continue;
-                if (tRecipe instanceof IGTCraftingRecipe) continue;
-                rList.add(GTUtility.copyOrNull(tOutput));
-                iterator.remove();
-            }
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
         }
-        return rList;
+
+        for (Iterator<IRecipe> iterator = recipeList.iterator(); iterator.hasNext();) {
+            final IRecipe recipe = iterator.next();
+
+            if (recipe instanceof ShapelessRecipes) continue;
+            if (recipe instanceof ShapelessOreRecipe) continue;
+            if (recipe instanceof IGTCraftingRecipe) continue;
+
+            if (!recipe.matches(craftMatrix, DW)) continue;
+
+            final ItemStack output = recipe.getCraftingResult(craftMatrix);
+
+            if (output == null || output.stackSize <= 0) {
+                // Seriously, who would ever do that shit?
+                if (!GregTechAPI.sPostloadFinished) {
+                    throw new GTItsNotMyFaultException(
+                        "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+                }
+                continue;
+            }
+
+            if (output.stackSize != 1) continue;
+            if (output.getMaxDamage() <= 0) continue;
+            if (output.getMaxStackSize() != 1) continue;
+
+            outputList.add(output);
+            if (deleteFromList) iterator.remove();
+        }
+
+        return outputList;
     }
 
     private static boolean isAllNulls(ItemStack[] aRecipe) {

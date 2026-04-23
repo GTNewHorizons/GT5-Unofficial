@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 
@@ -94,13 +95,23 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
                     .child(
                         new Column().size(100, 120)
                             .paddingRight(40)
-                            .child(new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
-                            .child(new TextWidget<>(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20))
+                            .child(
+                                new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20)
+                                    .color(0x404040)
+                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                            .child(
+                                new TextWidget<>(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20)
+                                    .color(0x404040)
+                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
                             .child(
                                 new TextWidget<>(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
-                                    .size(80, 20))
+                                    .size(80, 20)
+                                    .color(0x404040)
+                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
+                                new TextWidget<>(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)
+                                    .color(0x404040)
+                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)))
                     .child(
                         new SliderWidget().size(15, 110)
                             .background(GuiTextures.MC_BUTTON)

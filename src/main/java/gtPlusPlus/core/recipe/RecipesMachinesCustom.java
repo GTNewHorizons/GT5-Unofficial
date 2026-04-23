@@ -729,7 +729,7 @@ public class RecipesMachinesCustom {
 
         // Zhuhai - Fishing Port
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_FishingPond.get(1),
+            ItemList.FishingPort.get(1),
             new Object[] { "PCP", "WFW", "PCP", 'P', MaterialsAlloy.AQUATIC_STEEL.getPlate(1), 'C', "circuitElite", 'W',
                 OrePrefixes.wireFine.get(Materials.Electrum), 'F', GregtechItemList.FishTrap });
     }

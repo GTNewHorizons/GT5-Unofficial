@@ -13,8 +13,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Generator;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Terminal;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Thermal_Boiler;
 
-import gregtech.api.GregTechAPI;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
@@ -27,7 +25,6 @@ public class Gregtech4Content {
     // ID Range 828, 829, 833 - 850
 
     public static void run() {
-        Logger.INFO("Max MTE: " + GregTechAPI.METATILEENTITIES.length + " | " + GregTechAPI.MAXIMUM_METATILE_IDS);
         thermalBoiler();
         multiCrafter();
         tesseracts();
@@ -35,7 +32,6 @@ public class Gregtech4Content {
     }
 
     private static void automation() {
-        Logger.INFO("Gregtech 4 Content | Registering Auto Workbenches.");
         GregtechItemList.GT4_Electric_Auto_Workbench_LV.set(
             new MTEElectricAutoWorkbench(GT4_Electric_Auto_Workbench_LV.ID, 1, "Automatic crafting machine")
                 .getStackForm(1L));
@@ -65,7 +61,6 @@ public class Gregtech4Content {
 
     private static void tesseracts() {
         // Gregtech 4 Tesseracts
-        Logger.INFO("Gregtech 4 Content | Registering Tesseracts.");
         GregtechItemList.GT4_Tesseract_Generator.set(
             new MTETesseractGenerator(GT4_Tesseract_Generator.ID, "tesseract.generator", "Tesseract Generator", 4)
                 .getStackForm(1L));
@@ -76,7 +71,6 @@ public class Gregtech4Content {
 
     private static void thermalBoiler() {
         // Gregtech 4 Thermal Boiler
-        Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
         GregtechItemList.GT4_Thermal_Boiler.set(
             new MTEThermalBoilerLegacy(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
                 .getStackForm(1L));
@@ -85,7 +79,6 @@ public class Gregtech4Content {
 
     private static void multiCrafter() {
         // Gregtech 4 Multiblock Auto-Crafter
-        Logger.INFO("Gregtech 4 Content | Registering Multiblock Crafter.");
         GregtechItemList.GT4_Multi_Crafter.set(
             new MTEAutoCrafter(GT4_Multi_Crafter.ID, "gtplusplus.autocrafter.multi", "Large Scale Auto-Assembler v1.01")
                 .getStackForm(1L));

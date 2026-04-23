@@ -282,4 +282,9 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

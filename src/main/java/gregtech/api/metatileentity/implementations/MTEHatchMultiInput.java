@@ -9,12 +9,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -22,6 +21,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
+import gregtech.common.gui.modularui.hatch.MTEHatchMultiInputGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchMultiInput extends MTEHatchInput {
@@ -81,6 +81,10 @@ public class MTEHatchMultiInput extends MTEHatchInput {
 
     public FluidStack[] getStoredFluid() {
         return mStoredFluid;
+    }
+
+    public FluidStackTank[] getFluidTanks() {
+        return fluidTanks;
     }
 
     @Override
@@ -280,24 +284,21 @@ public class MTEHatchMultiInput extends MTEHatchInput {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int SLOT_NUMBER = 4;
-        final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
-            new Pos2d(88, 43), };
-
-        for (int i = 0; i < SLOT_NUMBER; i++) {
-            builder.widget(
-                new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
-                    .setPos(positions[i]));
-        }
-    }
-
-    @Override
     public String[] getDescription() {
         final int slots = mInventory.length;
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.input_hatch_multislot.desc",
             formatNumber(getCapacityPerTank(mTier, slots)),
             slots);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMultiInputGui(this).build(guiData, syncManager, uiSettings);
     }
 }
