@@ -104,7 +104,7 @@ public enum SoundResource {
     GT_MACHINES_EBF_LOOP(259, GregTech.ID, "machines.MTEElectricBlastFurnace"),
     GT_MACHINES_ADV_FREEZER_LOOP(260, GregTech.ID, "machines.MTEIndustrialVacuumFreezer"),
     GT_MACHINES_GOD_FORGE_LOOP(261, GregTech.ID, "machines.MTEForgeOfGods"),
-    GT_MACHINES_MEGA_BLAST_FURNACE_LOOP(262, GregTech.ID, "machines.MTEMegaElectricBlastFurnace"),
+    GT_MACHINES_MEGA_BLAST_FURNACE_LOOP(262, GregTech.ID, "machines.MTEMegaBlastFurnace"),
     GT_MACHINES_OIL_DRILL_LOOP(263, GregTech.ID, "machines.MTEOilDrillBase"),
     GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP(264, GregTech.ID, "machines.MTEQuantumForceTransformer"),
     GT_MACHINES_ADV_EBF_LOOP(265, GregTech.ID, "machines.MTEAdvEBF"),
