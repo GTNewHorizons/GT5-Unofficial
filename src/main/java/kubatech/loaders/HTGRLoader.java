@@ -115,10 +115,11 @@ public class HTGRLoader {
                     if (fuelStack.stackSize > 0) items.add(fuelStack);
                 }
             }
-            int[] item_chances = builder.getOutputChances();
             int[] chances = new int[items.size() + 3];
-            for (int i = 0; i < items.size(); i++) {
-                chances[i] = item_chances[i];
+            if (builder.getOutputChances() != null) {
+                System.arraycopy(builder.getOutputChances(), 0, chances, 0, items.size());
+            } else {
+                Arrays.fill(chances, 0, items.size(), 10000);
             }
             Arrays.fill(chances, items.size(), items.size() + 3, shell_recycle_chance);
             items.addAll(Arrays.asList(shells));
