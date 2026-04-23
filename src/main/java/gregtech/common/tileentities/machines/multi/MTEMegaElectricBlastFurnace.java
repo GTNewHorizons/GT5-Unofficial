@@ -138,7 +138,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
         .addElement('G', ofFrame(Materials.Naquadria))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
-        .addElement('I', Casings.RuggedBotmiumMachineCasing.asElement()) // TODO: make a new casing
+        .addElement('I', Casings.HeatAbsorbentCasing.asElement())
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
         .build();
 
@@ -160,6 +160,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         return new MTEMegaElectricBlastFurnace(this.mName);
     }
 
+    // todo: implement flux mechanic
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -242,6 +243,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
+    // todo: unshittify this
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {

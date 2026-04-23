@@ -962,7 +962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialcokeoven.controller.tier.single",
                 "Industrial Coke Oven").getStackForm(1L));
 
-        ItemList.MegaBlastFurnace.set(
+        ItemList.MegaBlastFurnace.set( // todo: a better name
             new MTEMegaElectricBlastFurnace(
                 MegaBlastFurnace.ID,
                 "multimachine.megaelectricblastfurnace",
