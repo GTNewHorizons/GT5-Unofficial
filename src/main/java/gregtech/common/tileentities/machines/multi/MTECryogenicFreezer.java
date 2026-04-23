@@ -152,7 +152,8 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 50;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 50
+            && mMufflerHatches.size() == 1;
     }
 
     @Override
