@@ -469,27 +469,42 @@ public class RecipeGenOre extends RecipeGenBase {
 
         GTModHandler.addCraftingRecipe(
             material.getDustPurified(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
         GTModHandler.addCraftingRecipe(
             material.getDustImpure(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
-        GTModHandler
-            .addCraftingRecipe(matDust, new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
+        GTModHandler.addCraftingRecipe(
+            matDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
         if (tinyDust != null) {
-            GTModHandler.addCraftingRecipe(matDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-            GTModHandler.addCraftingRecipe(material.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', matDust });
+            GTModHandler.addCraftingRecipe(
+                matDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(
+                material.getTinyDust(9),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "D  ", "   ", "   ", 'D', matDust });
         }
 
         if (smallDust != null) {
-            GTModHandler.addCraftingRecipe(matDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-            GTModHandler
-                .addCraftingRecipe(material.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', matDust });
+            GTModHandler.addCraftingRecipe(
+                matDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(
+                material.getSmallDust(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { " D ", "   ", "   ", 'D', matDust });
         }
     }
 

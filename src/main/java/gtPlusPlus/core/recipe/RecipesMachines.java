@@ -108,18 +108,21 @@ public class RecipesMachines {
         // Tesseract Generator
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Generator.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitMaster",
                 'E', new ItemStack(Blocks.ender_chest), 'X', GregtechItemList.Gregtech_Computer_Cube });
 
         // Tesseract Terminal
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitElite",
                 'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.get(Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
@@ -127,6 +130,7 @@ public class RecipesMachines {
         // Extreme Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
@@ -134,6 +138,7 @@ public class RecipesMachines {
         // Atmospheric Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
@@ -178,6 +183,7 @@ public class RecipesMachines {
         // Industrial Multi Tank Casing (unused but craftable)
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MultitankExterior.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RPR", "PFP", "PPP", 'R', MaterialsAlloy.LEAGRISIUM.getRod(1), 'P',
                 MaterialsAlloy.LEAGRISIUM.getPlate(1), 'F', MaterialsAlloy.LEAGRISIUM.getFrameBox(1) });
 
