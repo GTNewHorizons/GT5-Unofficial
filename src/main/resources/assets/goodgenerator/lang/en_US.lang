@@ -324,7 +324,7 @@ gg.scanner.info.fusion_reactor_mk=Fusion Reactor MK
 #GUI Info
 GT5U.gui.text.ic.missing_research=Missing Research
 GT5U.gui.text.ic.no_energy=Not enough energy
-GT5U.gui.text.ic.no_vis=Node too small (Need Ignis, Aqua, Ordo)
+GT5U.gui.text.ic.no_vis=Node too small (Ignis, Aqua, Ordo)
 GT5U.gui.text.ic.no_aspects=Missing required Aspects
 GT5U.gui.text.node_too_small=§7Node too small
 GT5U.gui.text.ic.no_tome=Missing Tome of Knowledge
