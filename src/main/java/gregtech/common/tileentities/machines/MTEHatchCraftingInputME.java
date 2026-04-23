@@ -8,11 +8,11 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -678,9 +678,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (mInventory[SLOT_CIRCUIT] != null) {
             try {
                 name.append(
-                    String.format(
-                        Gregtech.machines.ghostCircuitSuffixFormat,
-                        mInventory[SLOT_CIRCUIT].getItemDamage()));
+                    String
+                        .format(Gregtech.machines.ghostCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
             } catch (IllegalFormatException ignored) {}
         }
         StringJoiner manualSlots = new StringJoiner(", ");
