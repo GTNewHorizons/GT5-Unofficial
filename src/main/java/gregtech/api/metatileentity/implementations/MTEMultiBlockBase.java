@@ -516,6 +516,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
         mSmartInputHatches.clear();
+        mCryotheumHatches.clear();
 
         mCoils.clear();
         deactivateCoilLease();
