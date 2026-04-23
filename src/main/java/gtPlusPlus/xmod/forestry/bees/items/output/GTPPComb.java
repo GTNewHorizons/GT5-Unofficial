@@ -100,7 +100,6 @@ public class GTPPComb extends Item {
     }
 
     public static void initCombsRecipes() {
-
         addChemicalRecipe(
             GTPPCombType.DRAGONBLOOD,
             new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
@@ -126,6 +125,5 @@ public class GTPPComb extends Item {
             .eut(aEU)
             .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
-
     }
 }

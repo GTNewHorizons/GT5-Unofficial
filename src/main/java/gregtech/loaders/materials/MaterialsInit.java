@@ -28,6 +28,7 @@ public class MaterialsInit {
         loadTiers();
         loadCircuitry();
         loadNotExact();
+        loadBioVatBacterialSludges();
         loadTODOThis();
         loadDegree1Compounds();
         loadUnclassified01();
@@ -2181,6 +2182,7 @@ public class MaterialsInit {
     private static void loadRandom() {
         Materials.AnyBronze = loadAnyBronze();
         Materials.AnyCopper = loadAnyCopper();
+        Materials.AnyCarbon = loadAnyCarbon();
         Materials.AnyIron = loadAnyIron();
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
@@ -2212,6 +2214,15 @@ public class MaterialsInit {
             .setMaceratingInto(() -> Materials.Copper)
             .setArcSmeltingInto(() -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadAnyCarbon() {
+        return new MaterialBuilder().setName("AnyCarbon")
+            .setDefaultLocalName("AnyCarbon")
+            .setChemicalFormula("C")
+            .setUnifiable(false)
+            .setIconSet(TextureSet.SET_DULL)
             .constructMaterial();
     }
 
@@ -5181,6 +5192,29 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static void loadBioVatBacterialSludges() {
+        Materials.EnrichedBacterialSludge = loadEnrichedBacterialSludge();
+        Materials.FermentedBacterialSludge = loadFermentedBacterialSludge();
+    }
+
+    private static Materials loadEnrichedBacterialSludge() {
+        return new MaterialBuilder().setName("EnrichedBacterialSludge")
+            .setDefaultLocalName("Enriched Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0036f60e)
+            .constructMaterial();
+    }
+
+    private static Materials loadFermentedBacterialSludge() {
+        return new MaterialBuilder().setName("FermentedBacterialSludge")
+            .setDefaultLocalName("Fermented Bacterial Sludge")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x00008c10)
+            .constructMaterial();
+    }
+
     private static void loadTODOThis() {
         Materials.AluminiumBrass = loadAluminiumBrass();
         Materials.Endstone = loadEndstone();
@@ -5393,6 +5427,7 @@ public class MaterialsInit {
         Materials.SodaAsh = loadSodaAsh();
         Materials.Sodalite = loadSodalite();
         Materials.SodiumPersulfate = loadSodiumPersulfate();
+        Materials.SodiumPotassium = loadSodiumPotassium();
         Materials.SodiumSulfide = loadSodiumSulfide();
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
@@ -7339,6 +7374,17 @@ public class MaterialsInit {
             .addMaterial(Materials.Sodium, 2)
             .addMaterial(Materials.Sulfur, 2)
             .addMaterial(Materials.Oxygen, 8)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumPotassium() {
+        return new MaterialBuilder().setName("SodiumPotassium")
+            .setDefaultLocalName("Sodium Potassium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLime)
+            .setARGB(0x0016ff24)
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Potassium, 1)
             .constructMaterial();
     }
 
@@ -9496,6 +9542,7 @@ public class MaterialsInit {
         Materials.Perlite = loadPerlite();
         Materials.Pitchblende = loadPitchblende();
         Materials.Pollucite = loadPollucite();
+        Materials.Pollution = loadPollution();
         Materials.PotassiumFeldspar = loadPotassiumFeldspar();
         Materials.QuartzSand = loadQuartzSand();
         Materials.RawStyreneButadieneRubber = loadRawStyreneButadieneRubber();
@@ -10845,6 +10892,15 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
+    private static Materials loadPollution() {
+        return new MaterialBuilder().setName("Pollution")
+            .setDefaultLocalName("Pollution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setARGB(0x00d0b361)
+            .constructMaterial();
+    }
+
     private static Materials loadPotassiumFeldspar() {
         return new MaterialBuilder().setName("PotassiumFeldspar")
             .setDefaultLocalName("Potassium Feldspar")
@@ -10964,6 +11020,7 @@ public class MaterialsInit {
             .addOrePrefix(OrePrefixes.plate)
             .removeOrePrefix(OrePrefixes.block) // minecraft:redstone_block
             .removeOrePrefix(OrePrefixes.dust) // minecraft:redstone
+            .addPlasma()
             .constructMaterial();
     }
 
@@ -15896,6 +15953,8 @@ public class MaterialsInit {
         Materials.MetamorphicMineralMixture = loadMetamorphicMineralMixture();
         Materials.Plagioclase = loadPlagioclase();
         Materials.Epidote = loadEpidote();
+        Materials.UnformedHexanite = loadUnformedHexanite();
+        Materials.Hexanite = loadHexanite();
     }
 
     private static Materials loadSignalum() {
@@ -16057,5 +16116,51 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
+    }
+
+    private static Materials loadUnformedHexanite() {
+        return new MaterialBuilder().setName("Unformed Hexanite")
+            .setDefaultLocalName("Unformed Hexanite")
+            .setChemicalFormula("Hx*")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x003fb094)
+            .addFluid()
+            .addCell()
+            .setMeltingPoint(9_000)
+            .setBlastFurnaceTemp(9_000)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .setAutoGeneratedRecycleRecipes(false)
+            .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
+            .constructMaterial();
+    }
+
+    private static Materials loadHexanite() {
+        return new MaterialBuilder().setName("Hexanite")
+            .setDefaultLocalName("Hexanite")
+            .setChemicalFormula("Hx⚶")
+            .setFlavorText("Insanity and willpower, given form")
+            .setIconSet(TextureSet.SET_NUCLEAR)
+            .setARGB(0x003fb094)
+            .addMetalItems()
+            .addGearItems()
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .setAutoGeneratedRecycleRecipes(false)
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.NO_RECIPES)
+            .addSubTag(SubTag.NO_RECYCLING_RECIPES)
+            .addOrePrefix(OrePrefixes.itemCasing)
+            .removeOrePrefix(OrePrefixes.dust)
+            .removeOrePrefix(OrePrefixes.dustSmall)
+            .removeOrePrefix(OrePrefixes.dustTiny)
+            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.spring)
+            .removeOrePrefix(OrePrefixes.springSmall)
+            .removeOrePrefix(OrePrefixes.wireFine)
+            .removeOrePrefix(OrePrefixes.cellMolten)
+            .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 }

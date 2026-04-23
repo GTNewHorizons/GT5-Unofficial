@@ -255,14 +255,13 @@ public class ItemGenericChemBase extends Item {
         return 0;
     }
 
-    public static boolean createCatalystNBT(ItemStack rStack) {
+    public static void createCatalystNBT(ItemStack rStack) {
         final NBTTagCompound tagMain = new NBTTagCompound();
         final NBTTagCompound tagNBT = new NBTTagCompound();
         tagNBT.setLong("Damage", 0);
-        tagNBT.setLong("MaxDamage", getMaxCatalystDurability(rStack));
+        tagNBT.setLong("MaxDamage", getMaxCatalystDurability());
         tagMain.setTag("catalyst", tagNBT);
         rStack.setTagCompound(tagMain);
-        return true;
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
@@ -289,7 +288,7 @@ public class ItemGenericChemBase extends Item {
             .setInteger("Damage", aAmount);
     }
 
-    public static int getMaxCatalystDurability(ItemStack aStack) {
+    public static int getMaxCatalystDurability() {
         return 50;
     }
 }

@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.fuel.BlockCactusCharcoal;
 import gtPlusPlus.core.block.fuel.BlockCactusCoke;
 import gtPlusPlus.core.block.fuel.BlockSugarCharcoal;
@@ -47,15 +46,10 @@ public final class ModBlocks {
     public static Block blockInfiniteFLuidTank;
 
     public static void init() {
-        Logger.INFO("Initializing Blocks.");
-
         registerBlocks();
     }
 
     public static void registerBlocks() {
-
-        Logger.INFO("Registering Blocks.");
-
         // Fluids
         FluidRegistryHandler.registerFluids();
 

@@ -144,9 +144,9 @@ public class FuelConfigPanel {
                     .size(18))
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
-                    .background(IDrawable.EMPTY)
-                    .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
+                    .disableThemeBackground(true)
                     .disableHoverThemeBackground(true)
+                    .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
                     .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {

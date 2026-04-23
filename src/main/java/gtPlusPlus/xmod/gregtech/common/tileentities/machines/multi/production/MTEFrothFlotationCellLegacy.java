@@ -273,11 +273,6 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Locked material: " + lockedMaterialName };
-    }
-
-    @Override
     public boolean isRecipeLockingEnabled() {
         return lockedMaterialName != null && !lockedMaterialName.isEmpty();
     }

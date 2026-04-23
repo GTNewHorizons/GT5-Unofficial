@@ -28,7 +28,6 @@ public class ItemLavaFilter extends CoreItem {
             99,
             new String[] { "Lava Filter" },
             EnumRarity.common,
-            EnumChatFormatting.BLACK,
             false,
             null);
         setGregtechItemList();

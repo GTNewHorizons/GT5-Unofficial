@@ -8,16 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
-
-    private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-
-    /*
-     * Handles Custom Textures.
-     */
 
     public static class CustomIcon implements IIconContainer, Runnable {
 
@@ -32,7 +24,6 @@ public class TexturesGtBlock {
         public CustomIcon(final String aModID, final String aIconName) {
             this.mIconName = aIconName;
             this.mModID = aModID;
-            Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
         }
 
@@ -49,9 +40,6 @@ public class TexturesGtBlock {
         @Override
         public void run() {
             this.mIcon = GregTechAPI.sBlockIcons.registerIcon(this.mModID + ":" + this.mIconName);
-            Logger.WARNING(
-                "FIND ME _ Processing texture: " + this.getTextureFile()
-                    .getResourcePath());
         }
 
         @Override
@@ -93,6 +81,8 @@ public class TexturesGtBlock {
 
     public static final CustomIcon Casing_Material_Grisium = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_GRISIUM");
+    public static final CustomIcon Casing_Material_Grisium_Top = new CustomIcon(
+        "TileEntities/MACHINE_CASING_STABLE_GRISIUM_TOP");
     public static final CustomIcon Casing_Material_RedSteel = new CustomIcon(
         "TileEntities/MACHINE_CASING_STABLE_RED_STEEL");
     public static final CustomIcon Casing_Material_ZirconiumCarbide = new CustomIcon(
@@ -139,11 +129,37 @@ public class TexturesGtBlock {
     // Custom Pipes
     public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
     public static final CustomIcon TEXTURE_PIPE_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_PIPE_GENERIC");
+    public static final CustomIcon TEXTURE_PIPE_BABBITALLOY = new CustomIcon(
+        "iconsets/MACHINE_CASING_PIPE_BABBITALLOY");
+    public static final CustomIcon TEXTURE_PIPE_INCONEL690 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_INCONEL690");
+    public static final CustomIcon TEXTURE_PIPE_STELLITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_STELLITE");
+    public static final CustomIcon TEXTURE_PIPE_NITINOL60 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_NITINOL60");
+    public static final CustomIcon TEXTURE_PIPE_LAFIUM = new CustomIcon("iconsets/MACHINE_CASING_PIPE_LAFIUM");
+    public static final CustomIcon TEXTURE_PIPE_CINOBITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_CINOBITE");
+    public static final CustomIcon TEXTURE_PIPE_TITANSTEEL = new CustomIcon("iconsets/MACHINE_CASING_PIPE_TITANSTEEL");
+    public static final CustomIcon TEXTURE_PIPE_ABYSSALALLOY = new CustomIcon(
+        "iconsets/MACHINE_CASING_PIPE_ABYSSALALLOY");
 
     // Custom Gearboxes
     public static final CustomIcon TEXTURE_GEARBOX_GRINDING_MILL = new CustomIcon(
         "TileEntities/MACHINE_CASING_GEARBOX_T1");
     public static final CustomIcon TEXTURE_GEARBOX_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_GEARBOX_GENERIC");
+    public static final CustomIcon TEXTURE_GEARBOX_EGLINSTEEL = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_EGLINSTEEL");
+    public static final CustomIcon TEXTURE_GEARBOX_ABYSSALALLOY = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_ABYSSALALLOY");
+    public static final CustomIcon TEXTURE_GEARBOX_INCOLOYMA956 = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_INCOLOYMA956");
+    public static final CustomIcon TEXTURE_GEARBOX_INCONEL792 = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_INCONEL792");
+    public static final CustomIcon TEXTURE_GEARBOX_NITINOL60 = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_NITINOL60");
+    public static final CustomIcon TEXTURE_GEARBOX_PIKYONIUM = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_PIKYONIUM");
+    public static final CustomIcon TEXTURE_GEARBOX_TITANSTEEL = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_TITANSTEEL");
+    public static final CustomIcon TEXTURE_GEARBOX_ZERON100 = new CustomIcon(
+        "iconsets/MACHINE_CASING_GEARBOX_ZERON100");
 
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon("iconsets/MACHINE_CASING_FUSION_3");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_INNER = new CustomIcon(
