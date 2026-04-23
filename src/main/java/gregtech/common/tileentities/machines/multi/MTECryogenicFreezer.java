@@ -35,11 +35,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -72,10 +72,10 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer")
+        tt.addMachineType("Vacuum Freezer, VF")
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addStaticParallelInfo(8)
-            .addStaticSpeedInfo(2.2f)
+            .addStaticParallelInfo(16)
+            .addStaticSpeedInfo(3f)
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -185,20 +185,20 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.advancedFreezerRecipes;
+        return RecipeMaps.vacuumFreezerRecipes;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2.2F)
+            .setSpeedBonus(1F / 3F)
             .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 8;
+        return 16;
     }
 
     @Override

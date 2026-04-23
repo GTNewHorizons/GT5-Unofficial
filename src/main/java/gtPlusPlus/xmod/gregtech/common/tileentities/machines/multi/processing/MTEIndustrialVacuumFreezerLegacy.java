@@ -40,10 +40,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -254,7 +254,7 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.advancedFreezerRecipes;
+        return RecipeMaps.vacuumFreezerRecipes;
     }
 
     @Override
