@@ -75,7 +75,11 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
             case 13 -> Textures.BlockIcons.MIXING_CASING.getIcon();
             case 14 -> Textures.BlockIcons.FORMING_CORE.getIcon();
-            case 15 -> Textures.BlockIcons.MACHINE_CASING_HEAT_ABSORBENT.getIcon();
+            case 15 -> {
+                if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_HEAT_ABSORBENT_BOTTOM.getIcon();
+                if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_HEAT_ABSORBENT_TOP.getIcon();
+                yield Textures.BlockIcons.MACHINE_CASING_HEAT_ABSORBENT_SIDE.getIcon();
+            }
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
