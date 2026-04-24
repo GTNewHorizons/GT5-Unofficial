@@ -129,15 +129,23 @@ public class ItemUtils {
             .addTo(packagerRecipes);
 
         // Tiny Dusts
-        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+        GTModHandler.addCraftingRecipe(
+            normalDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(9, tinyDust),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
         // Small Dusts
-        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+        GTModHandler.addCraftingRecipe(
+            normalDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(4, smallDust),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " D ", "   ", "   ", 'D', normalDust });
 
         return output;
