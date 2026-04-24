@@ -81,6 +81,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 /**
@@ -102,6 +103,12 @@ public class GTModHandler {
     private static final ObjectOpenCustomHashSet<ItemStack> delayedRemovalByOutput = new ObjectOpenCustomHashSet<>(
         1024,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+    private static final Object2IntOpenCustomHashMap<ItemStack> delayedRemovalByOutputFlags = new Object2IntOpenCustomHashMap<>(
+        512,
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1 << 0;
+    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 1 << 1;
+
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>();
@@ -528,11 +535,12 @@ public class GTModHandler {
     public static void stopBufferingCraftingRecipes() {
         sBufferCraftingRecipes = false;
 
-        bulkRemoveRecipeByOutput(delayedRemovalByOutput);
-        bulkRemoveByRecipe(delayedRemovalByRecipe);
+        bulkRemoveRecipeByOutput();
+        bulkRemoveByRecipe();
         sBufferRecipeList.forEach(GameRegistry::addRecipe);
 
         delayedRemovalByOutput.clear();
+        delayedRemovalByOutputFlags.clear();
         delayedRemovalByRecipe.clear();
         sBufferRecipeList.clear();
     }
@@ -1352,18 +1360,19 @@ public class GTModHandler {
         delayedRemovalByRecipe.add(craftMatrix);
     }
 
-    public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
+    private static void bulkRemoveByRecipe() {
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        GT_FML_LOGGER.info("BulkRemoveByRecipe: allRecipes: " + allRecipes.size() + " toRemove: " + toRemove.size());
+        GT_FML_LOGGER
+            .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
 
-        Set<IRecipe> tListToRemove = allRecipes.parallelStream()
-            .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable()) {
+        Set<IRecipe> listToRemove = allRecipes.parallelStream()
+            .filter(recipe -> {
+                if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
                     return false;
                 }
-                for (InventoryCrafting crafting : toRemove) {
-                    if (tRecipe.matches(crafting, DW)) {
+                for (InventoryCrafting crafting : delayedRemovalByRecipe) {
+                    if (recipe.matches(crafting, DW)) {
                         return true;
                     }
                 }
@@ -1371,7 +1380,7 @@ public class GTModHandler {
             })
             .collect(Collectors.toSet());
 
-        allRecipes.removeIf(tListToRemove::contains);
+        allRecipes.removeIf(listToRemove::contains);
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
@@ -1382,14 +1391,24 @@ public class GTModHandler {
         return removeRecipeByOutput(aOutput);
     }
 
-    public static boolean removeRecipeByOutputDelayed(ItemStack aOutput, boolean aIgnoreNBT,
-        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers)) {
-            // Too lazy to handle deferred versions of the parameters that aren't used very often
-            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+    public static boolean removeRecipeByOutputDelayed(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
+        boolean onlyRemoveNativeHandlers) {
+        // Handling NBT-sensitive stacks would be a nightmare, because we wouldn't be able to use HashMaps anymore.
+        // Luckily, ignoreNBT is almost never false, so we're not missing any performance gain by not handling it.
+        if (sBufferCraftingRecipes && ignoreNBT) {
+            ItemStack unifiedOutput = GTOreDictUnificator.get_nocopy(output);
+
+            int removalFlags = 0;
+            if (keepShapelessRecipes) removalFlags |= DELAYED_REMOVAL_KEEP_SHAPELESS;
+            if (onlyRemoveNativeHandlers) removalFlags |= DELAYED_REMOVAL_ONLY_REMOVE_NATIVE;
+
+            if (removalFlags != 0) {
+                delayedRemovalByOutputFlags.put(unifiedOutput, removalFlags);
+            }
+            return delayedRemovalByOutput.add(unifiedOutput);
         }
 
-        return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
+        return removeRecipeByOutput(output, ignoreNBT, keepShapelessRecipes, onlyRemoveNativeHandlers);
     }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
@@ -1402,68 +1421,91 @@ public class GTModHandler {
      * @param output The output of the Recipe.
      * @return if it has removed at least one Recipe.
      */
-    public static boolean removeRecipeByOutput(ItemStack output, boolean aIgnoreNBT, boolean aNotRemoveShapelessRecipes,
-        boolean aOnlyRemoveNativeHandlers) {
+    public static boolean removeRecipeByOutput(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
+        boolean onlyRemoveNativeHandlers) {
+
+        output = GTOreDictUnificator.get_nocopy(output);
         if (output == null) return false;
-        boolean rReturn = false;
+
         final ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        output = GTOreDictUnificator.get(output);
         int size = allRecipes.size();
+        boolean removed = false;
+
         for (int i = 0; i < size; i++) {
             final IRecipe recipe = allRecipes.get(i);
-            if (aNotRemoveShapelessRecipes
-                && (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe)) {
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
                 continue;
             }
-            if (aOnlyRemoveNativeHandlers) {
-                if (!sNativeRecipeClasses.contains(
-                    recipe.getClass()
-                        .getName()))
+
+            if (keepShapelessRecipes) {
+                if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe) {
                     continue;
-            } else {
-                if (sSpecialRecipeClasses.contains(
-                    recipe.getClass()
-                        .getName()))
-                    continue;
-            }
-            ItemStack recipeOutput = recipe.getRecipeOutput();
-            if (!(recipe instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) recipe).isRemovable()) {
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(recipeOutput), output, aIgnoreNBT)) {
-                    allRecipes.remove(i--);
-                    size = allRecipes.size();
-                    rReturn = true;
                 }
             }
+
+            String recipeClassName = recipe.getClass()
+                .getName();
+            if (onlyRemoveNativeHandlers) {
+                if (!sNativeRecipeClasses.contains(recipeClassName)) continue;
+            } else {
+                if (sSpecialRecipeClasses.contains(recipeClassName)) continue;
+            }
+
+            ItemStack recipeOutput = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            if (GTUtility.areStacksEqual(recipeOutput, output, ignoreNBT)) {
+                allRecipes.remove(i--);
+                size = allRecipes.size();
+                removed = true;
+            }
         }
-        return rReturn;
+
+        return removed;
     }
 
-    public static boolean bulkRemoveRecipeByOutput(Set<ItemStack> toRemove) {
+    private static void bulkRemoveRecipeByOutput() {
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
         ItemStack wildcardItem = new ItemStack((Item) null, 0, WILDCARD);
 
-        GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: allRecipes: {} toRemove: {}", allRecipes.size(), toRemove.size());
+        GT_FML_LOGGER.info(
+            "BulkRemoveRecipeByOutput: allRecipes: {}; toRemove: {}",
+            allRecipes.size(),
+            delayedRemovalByOutput.size());
 
         allRecipes.removeIf(recipe -> {
             if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
                 return false;
             }
 
-            if (sSpecialRecipeClasses.contains(
-                recipe.getClass()
-                    .getName())) {
-                return false;
-            }
-
-            final ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
             if (output == null) return false;
 
             wildcardItem.func_150996_a(output.getItem());
-            return toRemove.contains(output) || toRemove.contains(wildcardItem);
+            if (delayedRemovalByOutput.contains(wildcardItem)) {
+                output = wildcardItem;
+            }
+
+            if (!delayedRemovalByOutput.contains(output)) {
+                return false;
+            }
+
+            final int flags = delayedRemovalByOutputFlags.getOrDefault(output, 0);
+            if ((flags & DELAYED_REMOVAL_KEEP_SHAPELESS) != 0) {
+                if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe) {
+                    return false;
+                }
+            }
+
+            String recipeClassName = recipe.getClass()
+                .getName();
+            if ((flags & DELAYED_REMOVAL_ONLY_REMOVE_NATIVE) != 0) {
+                return sNativeRecipeClasses.contains(recipeClassName);
+            } else {
+                return !sSpecialRecipeClasses.contains(recipeClassName);
+            }
         });
-        return true;
     }
 
     /**
