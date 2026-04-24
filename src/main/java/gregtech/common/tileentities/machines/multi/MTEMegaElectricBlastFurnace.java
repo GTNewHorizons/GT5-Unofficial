@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -37,10 +36,12 @@ import bartworks.common.configs.Configuration;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -59,12 +60,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaElectricBlastFurnace>
     implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX = Casings.HeatProofMachineCasing.textureId;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 39;
     private static final int HORIZONTAL_OFFSET = 11;
@@ -76,7 +77,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             // spotless:off
             transpose(new String[][]{
                 {"                       ","                       ","                       ","                       ","                       ","         G   G         ","         G   G         ","         G   G         ","         G   G         ","     GGGGGGGGGGGGG     ","         G   G         ","         G   G         ","         G   G         ","     GGGGGGGGGGGGG     ","         G   G         ","         G   G         ","         G   G         ","         G   G         ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","         HHHHH         ","      HHH H H HHH      ","     H   GH HG   H     ","    H   FFFFFFF   H    ","    H  FFFFFFFFF  H    ","    H FFFFFFFFFFF H    ","   H GFFFFFFFFFFFG H   ","   HHHFFFFFHFFFFFHHH   ","   H  FFFFHHHFFFF  H   ","   HHHFFFFFHFFFFFHHH   ","   H GFFFFFFFFFFFG H   ","    H FFFFFFFFFFF H    ","    H  FFFFFFFFF  H    ","    H   FFFFFFF   H    ","     H   GH HG   H     ","      HHH H H HHH      ","         HHHHH         ","                       ","                       ","                       "},
+                {"                       ","                       ","                       ","         HHHHH         ","      HHH H H HHH      ","     H   GH HG   H     ","    H   FFFFFFF   H    ","    H  FFFFFFFFF  H    ","    H FFFFFFFFFFF H    ","   H GFFFFFFFFFFFG H   ","   HHHFFFFFHFFFFFHHH   ","   H  FFFFHKHFFFF  H   ","   HHHFFFFFHFFFFFHHH   ","   H GFFFFFFFFFFFG H   ","    H FFFFFFFFFFF H    ","    H  FFFFFFFFF  H    ","    H   FFFFFFF   H    ","     H   GH HG   H     ","      HHH H H HHH      ","         HHHHH         ","                       ","                       ","                       "},
                 {"                       ","                       ","                       ","         HHHHH         ","      HHHHHHHHHHH      ","     HHHHHHHHHHHHH     ","    HHHHHHHHHHHHHHH    ","    HHHHHDDDDDHHHHH    ","    HHHHD  D  DHHHH    ","   HHHHD   D   DHHHH   ","   HHHHD  DDD  DHHHH   ","   HHHHDDDDDDDDDHHHH   ","   HHHHD  DDD  DHHHH   ","   HHHHD   D   DHHHH   ","    HHHHD  D  DHHHH    ","    HHHHHDDDDDHHHHH    ","    HHHHHHHHHHHHHHH    ","     HHHHHHHHHHHHH     ","      HHHHHHHHHHH      ","         HHHHH         ","                       ","                       ","                       "},
                 {"                       ","                       ","                       ","         HHHHH         ","      HHHHHHHHHHH      ","     HHHHHHHHHHHHH     ","    HHHHHHHHHHHHHHH    ","    HHHHH     HHHHH    ","    HHHH       HHHH    ","   HHHH         HHHH   ","   HHHH         HHHH   ","   HHHH    D    HHHH   ","   HHHH         HHHH   ","   HHHH         HHHH   ","    HHHH       HHHH    ","    HHHHH     HHHHH    ","    HHHHHHHHHHHHHHH    ","     HHHHHHHHHHHHH     ","      HHHHHHHHHHH      ","         HHHHH         ","                       ","                       ","                       "},
                 {"                       ","                       ","                       ","                       ","         HHHHH         ","        HHEEEHH        ","      FHHE   EHHF      ","      HHE     EHH      ","     HHE       EHH     ","    HHE         EHH    ","    HE           EH    ","    HE     D     EH    ","    HE           EH    ","    HHE         EHH    ","     HHE       EHH     ","      HHE     EHH      ","      FHHE   EHHF      ","        HHEEEHH        ","         HHHHH         ","                       ","                       ","                       ","                       "},
@@ -121,13 +122,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             }))
         //spotless:on
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement(
-            'B',
-            buildHatchAdder(MTEMegaElectricBlastFurnace.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), Muffler)
-                .casingIndex(CASING_INDEX)
-                .hint(1)
-                .buildAndChain(Casings.HeatProofMachineCasing.asElement()))
+        .addElement('B', Casings.HeatProofMachineCasing.asElement())
         .addElement('C', Casings.BlackPlutoniumItemPipeCasing.asElement())
         .addElement('D', Casings.TungstensteelPipeCasing.asElement())
         .addElement(
@@ -136,10 +131,19 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                 activeCoils(
                     ofCoil(MTEMegaElectricBlastFurnace::setCoilLevel, MTEMegaElectricBlastFurnace::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
-        .addElement('G', ofFrame(Materials.Naquadria))
+        .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
-        .addElement('I', Casings.HeatAbsorbentCasing.asElement())
+        // todo remove muffler after element k works
+        .addElement(
+            'I',
+            buildHatchAdder(MTEMegaElectricBlastFurnace.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), Muffler)
+                .hint(1)
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
+        // todo make this v for muffler, use the thermalcontainmentcasing overlay for this jawn
+        .addElement('K', Casings.ThermalContainmentCasing.asElement())
         .build();
 
     public MTEMegaElectricBlastFurnace(final int aID, final String aName, final String aNameRegional) {
@@ -193,19 +197,20 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 20, 15, true)
-            .addController("Front center, 3rd layer")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
+            .beginStructureBlock(23, 43, 23, true)
+            .addController("Front center, 4th layer")
+            .addCasingInfoRange("Heat Absorbent Casing", 0, 1915, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
-            .addCasingInfoExactly("Any Tiered Glass", 1007, true)
+            .addCasingInfoExactly("Any Tiered Glass", 332, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addEnergyHatch("Any Heat Absorbent Casing")
+            .addMaintenanceHatch("Any Heat Absorbent Casing")
+            .addInputBus("Any Heat Absorbent Casing")
+            .addInputHatch("Any Heat Absorbent Casing")
             .addMufflerHatch("Top middle")
-            .addInputBus("Any bottom layer casing")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputBus("Any bottom layer casing")
-            .addOutputHatch("Any Heat Proof Machine Casing")
+            .addOutputBus("Any Heat Absorbent Casing")
+            .addOutputHatch("Any Heat Absorbent Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
@@ -243,31 +248,43 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
-    // todo: unshittify this
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)) };
         }
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
+        return rTexture;
     }
 
     private static final int pollutionPerSecond = 400 * 256;
