@@ -26,7 +26,7 @@ public class VolumetricFlaskGui {
         this.data = data;
 
         ItemStack usedItemStack = data.getUsedItemStack();
-        if (usedItemStack == null || !(usedItemStack.getItem() instanceof ItemVolumetricFlask))
+        if (!(usedItemStack.getItem() instanceof ItemVolumetricFlask))
             throw new RuntimeException("Tried to open the volumetric flask GUI with no flask in main hand or offhand");
     }
 
