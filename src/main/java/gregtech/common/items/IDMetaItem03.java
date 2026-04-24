@@ -228,6 +228,10 @@ public enum IDMetaItem03 {
     StableMesonContainmentUnit(302),
     StableBosonContainmentUnit(303),
     StableEmptyContainmentUnit(304),
+
+    Circuit_BasicElectronic(305),
+    Circuit_AdvancedIntegrated(306),
+
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

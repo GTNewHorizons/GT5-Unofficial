@@ -2025,6 +2025,9 @@ public enum ItemList implements IItemContainer {
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
 
+    Circuit_BasicElectronic,
+    Circuit_Integrated_Advanced,
+
     Circuit_Microprocessor,
     Circuit_Processor,
     Circuit_Computer,

@@ -4929,6 +4929,10 @@ gt.item.circuit.chip.bio_cpu.tooltip=Bio CPU
 gt.item.circuit.chip.optical.name=Raw Exposed Optical Chip
 gt.item.circuit.chip.optical.tooltip=Raw Optical Chip
 
+## Basic Electronic Circuit
+gt.item.circuit.basic_electronic.name=Basic Electronic Circuit
+gt.item.circuit.basic_electronic.tooltip=A Basic Circuit
+
 ## NAND Chip
 gt.item.nand_chip.name=NAND Chip
 gt.item.nand_chip.tooltip=A very simple Circuit
@@ -4944,6 +4948,10 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
 gt.item.circuit.good_integrated.tooltip=Good Circuit
+
+## Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.tooltip=An Advanced Circuit
 
 ## Nano Circuits
 gt.item.circuit.nano_processor.name=Nano Processor
