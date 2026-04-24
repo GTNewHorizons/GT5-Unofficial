@@ -6,7 +6,6 @@ import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +19,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.api.MCHelper;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
@@ -32,10 +34,13 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
+import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
@@ -208,7 +213,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 }
             }
 
-            openGUI(player, itemStack);
+            openGUI(itemStack);
         }
 
         return true;
@@ -217,18 +222,29 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region GUI
-    private void openGUI(final EntityPlayer player, final ItemStack itemStack) {
-        UIInfos.openClientUI(
-            player,
-            buildContext -> new DyeSelectGUI(
-                StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.header"),
-                itemStack,
-                selectedStack -> sendPacket(
-                    GTPacketInfiniteSpraycan.Action.SET_COLOR,
-                    selectedStack.getItem() == Items.dye ? selectedStack.getItemDamage() : REMOVE_COLOR),
-                COLOR_SELECTIONS,
-                getColor(itemStack),
-                true).createWindow(buildContext));
+    private void openGUI(final ItemStack itemStack) {
+        int currentSelected = getColor(itemStack);
+        ModularPanel panel = new SelectItemGuiBuilder(
+            GTGuis.createSimplePanel("infinite_spray")
+                .background(GTGuiTextures.BACKGROUND_POPUP),
+            COLOR_SELECTIONS) //
+                .setHeaderItem(itemStack)
+                .setTitle(IKey.lang("gt.behaviour.paintspray.infinite.gui.header"))
+                .setSelected(currentSelected)
+                .setOnSelectedClientAction((selected, $) -> {
+                    sendPacket(GTPacketInfiniteSpraycan.Action.SET_COLOR, selected);
+                    MCHelper.closeScreen();
+                })
+                .setCurrentItemWidgetCustomizer(
+                    widget -> widget.tooltipBuilder(
+                        tooltip -> tooltip.clearText()
+                            .add(getTooltip(currentSelected))))
+                .setChoiceWidgetCustomizer(
+                    (index, widget) -> widget.tooltipBuilder(
+                        tooltip -> tooltip.clearText()
+                            .add(getTooltip(index))))
+                .build();
+        GTGuis.openClientOnlyScreen(panel);
     }
 
     private byte getColor(ItemStack sprayCan) {
@@ -236,6 +252,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             return ItemStackNBT.getByte(sprayCan, COLOR_NBT_TAG);
         }
         return REMOVE_COLOR;
+    }
+
+    private String getTooltip(int index) {
+        return index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
+            : Dyes.getDyeFromIndex((short) index).mName;
     }
 
     private static void displayLockedMessage() {
