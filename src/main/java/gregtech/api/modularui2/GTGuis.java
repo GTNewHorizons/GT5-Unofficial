@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.RecipeViewerSettingsImpl;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
@@ -72,10 +71,11 @@ public final class GTGuis {
     public static void openClientOnlyScreen(ModularPanel panel, boolean enableRecipeViewer) {
         ModularScreen screen = new GTModularScreen(panel, GTGuiThemes.STANDARD);
 
-        RecipeViewerSettingsImpl recipeViewerSettings = new RecipeViewerSettingsImpl();
-        if (enableRecipeViewer) recipeViewerSettings.enable();
+        UISettings settings = new UISettings();
+        if (enableRecipeViewer) settings.getRecipeViewerSettings()
+            .enable();
 
-        ClientGUI.open(screen, new UISettings(recipeViewerSettings));
+        ClientGUI.open(screen, settings);
     }
 
     @ApiStatus.Internal
