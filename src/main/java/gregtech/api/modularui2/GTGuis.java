@@ -6,13 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.factory.ClientGUI;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ContainerCustomizer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.NEISettingsImpl;
+import com.cleanroommc.modularui.screen.RecipeViewerSettingsImpl;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -57,23 +58,24 @@ public final class GTGuis {
     }
 
     /**
-     * Opens client-only GUI with the supplied panel. NEI is enabled.
+     * Opens client-only GUI with the supplied panel. Recipe viewer is enabled.
      */
+    @SideOnly(Side.CLIENT)
     public static void openClientOnlyScreen(ModularPanel panel) {
         openClientOnlyScreen(panel, true);
     }
 
     /**
-     * Opens client-only GUI with the supplied panel. Can specify whether to enable NEI.
+     * Opens client-only GUI with the supplied panel. Can specify whether to enable the recipe viewer.
      */
-    public static void openClientOnlyScreen(ModularPanel panel, boolean enableNEI) {
+    @SideOnly(Side.CLIENT)
+    public static void openClientOnlyScreen(ModularPanel panel, boolean enableRecipeViewer) {
         ModularScreen screen = new GTModularScreen(panel, GTGuiThemes.STANDARD);
-        NEISettingsImpl neiSetting = new NEISettingsImpl();
-        if (enableNEI) {
-            neiSetting.enableNEI();
-        }
-        ContainerCustomizer containerCustomizer = enableNEI ? new ContainerCustomizer() : null;
-        ClientGUI.open(screen, neiSetting, containerCustomizer);
+
+        RecipeViewerSettingsImpl recipeViewerSettings = new RecipeViewerSettingsImpl();
+        if (enableRecipeViewer) recipeViewerSettings.enable();
+
+        ClientGUI.open(screen, new UISettings(recipeViewerSettings));
     }
 
     @ApiStatus.Internal
