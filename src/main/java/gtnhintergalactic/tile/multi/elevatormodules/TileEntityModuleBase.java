@@ -18,9 +18,13 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -346,6 +350,21 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     public boolean willExplodeInRain() {
         return false;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.INTERGALACTIC_STANDARD;
+    }
+
+    @Override
+    protected MTEMultiBlockBaseGui<?> getGui() {
+        return new TileEntityModuleBaseGui<>(this);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     /**
