@@ -385,7 +385,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.HydrochloricAcid.getCells(3))
             .fluidInputs(AmmoniumChloride.getFluidOrGas(400))
             .fluidOutputs(PDAmmonia.getFluidOrGas(400))
-            .duration(MINUTES)
+            .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
@@ -397,7 +397,7 @@ public class PlatinumSludgeOverHaul {
                 PDAmmonia.getFluidOrGas(400),
                 Materials.NitrogenDioxide.getGas(1_000),
                 Materials.HydrochloricAcid.getFluid(3_000))
-            .duration(1200)
+            .duration(1280)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
