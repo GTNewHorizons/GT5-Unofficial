@@ -94,8 +94,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             .addInfo("Requires Tome of Knowledge Sharing in the Controller slot.")
             .addInfo("Essentia Hatches can be placed instead of Magic Casings.")
             .addInfo("Grows vertically. Height adds parallel processing.")
-            .addInfo("Max Parallels = (Height Layers) * 2^Tier")
-            .addInfo("Base Crafting Time: 16 seconds.")
+            .addInfo("Max Parallels = (Height Layers) * 2^(Tier + 1)")
+            .addInfo("Base Crafting Time: 6 seconds.")
             .addInfo("Pollution: 2200 per cycle. Requires 1 Muffler Hatch on Top.")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 5, false)
             .addController("Front center, 2nd layer")
@@ -189,7 +189,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             && this.mMufflerHatches.size() == 1) {
 
             this.mCurrentLength = middleLen;
-            this.mParallel = this.mCurrentLength * (1 << Math.max(0, this.pTier));
+            this.mParallel = this.mCurrentLength * (1 << Math.max(0, this.pTier)) * 2;
             return true;
         }
         return false;
@@ -320,7 +320,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(480)
             .setEUt(getMaxInputEu())
-            .setDuration(320)
+            .setDuration(120)
             .calculate();
 
         this.lEUt = -calculator.getConsumption();
