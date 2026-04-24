@@ -319,7 +319,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         this.mPollution = 2200;
 
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(480)
-            .setEUt(v)
+            .setEUt(getMaxInputEu())
             .setDuration(320)
             .calculate();
 
