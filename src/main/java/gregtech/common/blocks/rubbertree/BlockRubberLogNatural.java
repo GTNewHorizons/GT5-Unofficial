@@ -161,7 +161,7 @@ public class BlockRubberLogNatural extends Block {
         int meta = world.getBlockMetadata(x, y, z);
 
         // TODO Remove in next major version after GT rubber tree is implemented
-        // Special case: old IC2 log migrated by Postea
+        // Special case: old IC2 tree logs migrated by Postea
         if (meta == META_POSTEA_TRANSFORM) {
             world.setBlockMetadataWithNotify(x, y, z, META_EMPTY, 2);
             RubberTreeResinLogic.scheduleTreeRefill(world, x, y, z, random);
