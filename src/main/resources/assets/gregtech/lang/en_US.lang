@@ -5012,6 +5012,12 @@ gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
 gt.item.circuit_board.optical.tooltip=Optically Infused Board
+gt.item.circuit_board.exotic.name=Exotic Circuit Board
+gt.item.circuit_board.exotic.tooltip=Exotic Matter Infused Board
+gt.item.circuit_board.cosmic.name=Cosmic Circuit Board
+gt.item.circuit_board.cosmic.tooltip=Cosmos Infused Board
+gt.item.circuit_board.transcendent.name=Temporally Transcendent Circuit Board
+gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
