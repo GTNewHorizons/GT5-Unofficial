@@ -2168,7 +2168,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             researchAmperage,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 6L), ItemList.NuclearStar.get(64L),
-                ItemList.Emitter_UXV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8 },
+                ItemList.Emitter_UXV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4 },
 
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
@@ -3076,7 +3076,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 64),
                 GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
                 GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8L },
+                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L },
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8),
@@ -3244,31 +3244,20 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.eM_energyTunnel6_UXV.get(1), CustomItemList.eM_energyTunnel7_UXV.get(1),
             CustomItemList.eM_energyTunnel8_UXV.get(1), CustomItemList.eM_energyTunnel9_UXV.get(1) };
 
-        ItemStack[] dynamoHatches = { ItemList.Hatch_Dynamo_ULV.get(1), ItemList.Hatch_Dynamo_LV.get(1),
-            ItemList.Hatch_Dynamo_MV.get(1), ItemList.Hatch_Dynamo_HV.get(1), ItemList.Hatch_Dynamo_EV.get(1),
-            ItemList.Hatch_Dynamo_IV.get(1), ItemList.Hatch_Dynamo_LuV.get(1), ItemList.Hatch_Dynamo_ZPM.get(1),
-            ItemList.Hatch_Dynamo_UV.get(1), ItemList.Hatch_Dynamo_UHV.get(1), ItemList.Hatch_Dynamo_UEV.get(1L),
-            ItemList.Hatch_Dynamo_UIV.get(1L), ItemList.Hatch_Dynamo_UMV.get(1L), ItemList.Hatch_Dynamo_UXV.get(1L) };
-
-        Object[] circuitsTierPlusTwo = { new Object[] { OrePrefixes.circuit.get(Materials.MV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.HV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.EV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.IV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.LuV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1L },
-            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4L }, // MAX (Technically not MAX, can be
-            // changed once MAX circuits become
-            // craftable)
-            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L } // MAX (Technically not MAX, can be
-            // changed once MAX circuits become
-            // craftable)
-        };
+        Object[] circuitsTierPlusOne = { new Object[] { OrePrefixes.circuit.get(Materials.LV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.MV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.HV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.EV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.IV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4L },
+            new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L } };
 
         ItemStack[] wirelessHatches = { ItemList.Wireless_Hatch_Energy_ULV.get(1),
             ItemList.Wireless_Hatch_Energy_LV.get(1), ItemList.Wireless_Hatch_Energy_MV.get(1),
@@ -3320,7 +3309,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(2),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusTwo[i],
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusOne[i],
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
                     Materials.ExcitedDTEC.getFluid(500) },
@@ -3344,7 +3333,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.eM_Power.get(4),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
                     GTOreDictUnificator.get("plateTripleShirabon", 4L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4), circuitsTierPlusTwo[i + 4],
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4), circuitsTierPlusOne[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
                     Materials.ExcitedDTEC.getFluid(2_000) },
@@ -3369,7 +3358,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
                     GTOreDictUnificator.get("plateTripleShirabon", 16L),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4),
-                    circuitsTierPlusTwo[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS + 16 * INGOTS),
                     Materials.ExcitedDTEC.getFluid(8_000) },
                 wirelessHatches_16A[i],
@@ -3392,7 +3381,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.eM_Power.get(64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
                     GTOreDictUnificator.get("plateTripleShirabon", 64L),
-                    GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusTwo[i + 4],
+                    GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
                     Materials.ExcitedDTEC.getFluid(32_000) },
@@ -3418,7 +3407,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SpaceTime, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Eternity, 32),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 16),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L }, ItemList.EnergisedTesseract.get(1) },
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 8L }, ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS),
                     Materials.ExcitedDTSC.getFluid(32_000) },
                 wirelessLasers[i],
