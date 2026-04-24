@@ -65,7 +65,7 @@ public class ItemIntegratedCircuit extends GTGenericItem
     public static final List<ItemStack> NON_ZERO_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER);
 
     private static final String aTextEmptyRow = "   ";
-    private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER + 1);
+    public static final List<ItemStack> ALL_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER + 1);
     protected final IIcon[] mIconDamage = new IIcon[25];
 
     public ItemIntegratedCircuit() {

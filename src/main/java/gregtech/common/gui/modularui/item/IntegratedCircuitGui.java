@@ -12,7 +12,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.net.GTPacketUpdateItem;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 
@@ -35,7 +34,7 @@ public class IntegratedCircuitGui {
     public ModularPanel build() {
         return new SelectItemGuiBuilder(
             GTGuis.createPopUpPanel("programmed_circuit"),
-            GTUtility.getAllIntegratedCircuits()).setHeaderItem(configurator)
+            ItemIntegratedCircuit.ALL_VARIANTS).setHeaderItem(configurator)
                 .setTitle(IKey.lang("GT5U.item.programmed_circuit.select.header"))
                 // selected index 0 == config 1
                 .setSelected(
