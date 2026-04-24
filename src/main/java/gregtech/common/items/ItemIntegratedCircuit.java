@@ -25,7 +25,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
+import com.cleanroommc.modularui.api.MCHelper;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.screen.ModularPanel;
 
 import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
@@ -39,12 +41,16 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.core.IC2;
@@ -286,25 +292,31 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 return stack;
             }
         }
-        openSelectorGui(configuratorStack, stack.getItemDamage(), player);
+        openSelectorGui(configuratorStack, stack.getItemDamage());
         return stack;
     }
 
-    private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
-        UIInfos.openClientUI(
-            player,
-            buildContext -> new ItemSelectBaseGui(
-                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                configurator,
-                ItemIntegratedCircuit::onConfigured,
-                ALL_VARIANTS,
-                meta,
-                true).createWindow(buildContext));
+    private void openSelectorGui(ItemStack configurator, int meta) {
+        ModularPanel panel = new SelectItemGuiBuilder(
+            GTGuis.createSimplePanel("programmed_circuit")
+                .background(GTGuiTextures.BACKGROUND_POPUP),
+            GTUtility.getAllIntegratedCircuits()) //
+                .setHeaderItem(configurator)
+                .setTitle(IKey.lang("GT5U.item.programmed_circuit.select.header"))
+                // selected index 0 == config 1
+                .setSelected(meta - 1)
+                .setOnSelectedClientAction((selected, $) -> {
+                    onConfigured(selected + 1);
+                    MCHelper.closeScreen();
+                })
+                .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
+                .build();
+        GTGuis.openClientOnlyScreen(panel);
     }
 
-    private static void onConfigured(ItemStack stack) {
+    private static void onConfigured(int meta) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setByte("meta", (byte) stack.getItemDamage());
+        tag.setByte("meta", (byte) meta);
         GTValues.NW.sendToServer(new GTPacketUpdateItem(tag));
     }
 
