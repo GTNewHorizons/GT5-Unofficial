@@ -2208,6 +2208,7 @@ GT5U.machines.debugstructurewriter.gui.origin=Origin
 GT5U.machines.debugstructurewriter.gui.size=Size
 GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.debugstructurewriter.gui.copy.tooltip=Copy Structure To Clipboard
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
@@ -4934,6 +4935,10 @@ gt.item.circuit.chip.bio_cpu.tooltip=Bio CPU
 gt.item.circuit.chip.optical.name=Raw Exposed Optical Chip
 gt.item.circuit.chip.optical.tooltip=Raw Optical Chip
 
+## Basic Electronic Circuit
+gt.item.circuit.basic_electronic.name=Basic Electronic Circuit
+gt.item.circuit.basic_electronic.tooltip=A Basic Circuit
+
 ## NAND Chip
 gt.item.nand_chip.name=NAND Chip
 gt.item.nand_chip.tooltip=A very simple Circuit
@@ -4949,6 +4954,10 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
 gt.item.circuit.good_integrated.tooltip=Good Circuit
+
+## Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.tooltip=An Advanced Circuit
 
 ## Nano Circuits
 gt.item.circuit.nano_processor.name=Nano Processor
@@ -5017,6 +5026,12 @@ gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
 gt.item.circuit_board.optical.tooltip=Optically Infused Board
+gt.item.circuit_board.exotic.name=Exotic Circuit Board
+gt.item.circuit_board.exotic.tooltip=Exotic Matter Infused Board
+gt.item.circuit_board.cosmic.name=Cosmic Circuit Board
+gt.item.circuit_board.cosmic.tooltip=Cosmos Infused Board
+gt.item.circuit_board.transcendent.name=Temporally Transcendent Circuit Board
+gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
