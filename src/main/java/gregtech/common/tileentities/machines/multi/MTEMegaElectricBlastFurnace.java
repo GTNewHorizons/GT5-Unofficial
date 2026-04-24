@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -36,7 +35,6 @@ import bartworks.common.configs.Configuration;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -56,11 +54,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaElectricBlastFurnace>
@@ -137,13 +133,20 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         .addElement(
             'I',
             buildHatchAdder(MTEMegaElectricBlastFurnace.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), Muffler)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .hint(1)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
-                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+                .casingIndex(Casings.HeatAbsorbentCasing.getTextureId())
+                .buildAndChain(Casings.HeatAbsorbentCasing.asElement()))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
-        // todo make this v for muffler, use the thermalcontainmentcasing overlay for this jawn
-        .addElement('K', Casings.ThermalContainmentCasing.asElement())
+        .addElement(
+            'K',
+            buildHatchAdder(MTEMegaElectricBlastFurnace.class).anyOf(Muffler)
+                .hint(2)
+                .casingIndex(Casings.StructuralCokeOvenCasing.getTextureId())
+                // this casing references the same texture as the alloy blast smelter,
+                // and it has the perk of actually being registered in the atlas!
+                // if this ever gets split out for texture pack reasons, it should be updated here as well.
+                .build())
         .build();
 
     public MTEMegaElectricBlastFurnace(final int aID, final String aName, final String aNameRegional) {
@@ -236,27 +239,13 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (!aPlayer.isSneaking()) {
-            this.inputSeparation = !this.inputSeparation;
-            GTUtility.sendChatTrans(
-                aPlayer,
-                this.inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
-            return true;
-        }
-        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)),
+                    Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE)
                         .extFacing()
@@ -268,8 +257,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)),
+                    Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE)
                         .extFacing()
@@ -281,8 +269,8 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()) };
         }
         return rTexture;
     }
