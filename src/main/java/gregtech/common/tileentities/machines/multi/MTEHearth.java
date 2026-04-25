@@ -71,6 +71,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.MTEHearthGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
@@ -391,7 +392,7 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new gregtech.common.gui.modularui.multiblock.MTEHearth(this);
+        return new MTEHearthGui(this);
     }
 
     @Override

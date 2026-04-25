@@ -10,10 +10,11 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.MTEHearth;
 
-public class MTEHearth extends MTEMultiBlockBaseGui<gregtech.common.tileentities.machines.multi.MTEHearth> {
+public class MTEHearthGui extends MTEMultiBlockBaseGui<MTEHearth> {
 
-    public MTEHearth(gregtech.common.tileentities.machines.multi.MTEHearth multiblock) {
+    public MTEHearthGui(MTEHearth multiblock) {
         super(multiblock);
     }
 
