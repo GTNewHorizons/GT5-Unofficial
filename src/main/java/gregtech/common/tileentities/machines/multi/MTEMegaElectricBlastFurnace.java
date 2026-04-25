@@ -153,9 +153,9 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             buildHatchAdder(MTEMegaElectricBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .hint(1)
-                .casingIndex(Casings.HeatAbsorbentCasing.getTextureId())
+                .casingIndex(Casings.HearthCasing.getTextureId())
                 .buildAndChain(
-                    onElementPass(MTEMegaElectricBlastFurnace::onCasingAdded, Casings.HeatAbsorbentCasing.asElement())))
+                    onElementPass(MTEMegaElectricBlastFurnace::onCasingAdded, Casings.HearthCasing.asElement())))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
         .addElement(
             'K',
@@ -409,7 +409,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()),
+                    Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE)
                         .extFacing()
@@ -421,7 +421,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()),
+                    Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE)
                         .extFacing()
@@ -434,7 +434,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             }
         } else {
             rTexture = new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.HeatAbsorbentCasing.getTextureId()) };
+                Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()) };
         }
         return rTexture;
     }

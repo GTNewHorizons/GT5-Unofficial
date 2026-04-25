@@ -2200,7 +2200,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     CasingMixer,
     FormingCore,
-    CasingHeatAbsorbent,
+    CasingHearth,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
