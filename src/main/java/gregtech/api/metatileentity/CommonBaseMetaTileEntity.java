@@ -3,9 +3,9 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
-import java.util.IllegalFormatException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
