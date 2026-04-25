@@ -78,6 +78,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
+    protected byte oldStrongRedstone = 0;
 
     protected short mID = 0;
     public long mTickTimer = 0;
