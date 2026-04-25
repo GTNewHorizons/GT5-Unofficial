@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -18,13 +21,22 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
@@ -52,12 +63,20 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.MTEMegaElectricBlastFurnaceGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaElectricBlastFurnace>
     implements ISurvivalConstructable {
@@ -129,14 +148,14 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
         .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
-        // todo remove muffler after element k works
         .addElement(
             'I',
             buildHatchAdder(MTEMegaElectricBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .hint(1)
                 .casingIndex(Casings.HeatAbsorbentCasing.getTextureId())
-                .buildAndChain(Casings.HeatAbsorbentCasing.asElement()))
+                .buildAndChain(
+                    onElementPass(MTEMegaElectricBlastFurnace::onCasingAdded, Casings.HeatAbsorbentCasing.asElement())))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
         .addElement(
             'K',
@@ -195,6 +214,36 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
             .addSeparator()
+            .addInfo(
+                "While active, the machine will heat up and multiply its parallels up to " + EnumChatFormatting.GOLD
+                    + "2x")
+            .addInfo(
+                "Takes " + EnumChatFormatting.LIGHT_PURPLE
+                    + "30 minutes"
+                    + EnumChatFormatting.GRAY
+                    + " of constant running to reach maximum multiplier")
+            .addInfo("While not running, the machine will rapidly cooldown")
+            .addInfo(
+                "Optionally supply " + EnumChatFormatting.RED
+                    + formatFluid(PYROTHEUM_DRAIN_BASE)
+                    + EnumChatFormatting.GRAY
+                    + "/s of "
+                    + EnumChatFormatting.GOLD
+                    + "Pyrotheum"
+                    + EnumChatFormatting.GRAY
+                    + " to speed up heating by "
+                    + EnumChatFormatting.RED
+                    + "6x")
+            .addInfo(
+                "The drain rate of " + EnumChatFormatting.GOLD
+                    + "Pyrotheum"
+                    + EnumChatFormatting.GRAY
+                    + " will increase "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "linearly"
+                    + EnumChatFormatting.GRAY
+                    + " with the parallel multiplier")
+            .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
@@ -202,7 +251,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoRange("Heat Absorbent Casing", 0, 1915, false)
+            .addCasingInfoRange("Heat Absorbent Casing", 1800, 1915, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 332, true)
@@ -230,12 +279,127 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.glassTier = aNBT.getInteger("glass");
+        this.parallelModifier = aNBT.getFloat("parallelModifier");
+        this.isPyroSupplied = aNBT.getBoolean("pyro");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("glass", this.glassTier);
+        aNBT.setFloat("parallelModifier", this.parallelModifier);
+        aNBT.setBoolean("pyro", this.isPyroSupplied);
+    }
+
+    private boolean checkFluid(int amount) {
+        final FluidStack fluidToDrain = new FluidStack(TFFluids.fluidPyrotheum, amount);
+        return this.depleteInput(fluidToDrain, true);
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(MTEMegaElectricBlastFurnace.this.heatingCapacity)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true);
+            }
+
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                if (isPyroSupplied) {
+                    if (!checkFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier)))
+                        return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                }
+                return recipe.mSpecialValue <= MTEMegaElectricBlastFurnace.this.heatingCapacity
+                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    private int runningTickCounter = 0;
+    private float parallelModifier = 1;
+    public boolean isPyroSupplied = false;
+    private static final int PYROTHEUM_DRAIN_BASE = 250;
+    // without pyrotheum, it should take 30 minutes to reach max multiplier (2x)
+    // with pyrotheum, itll take 5 minutes.
+    private static final float INCREMENT_BASE = 1f / 360;
+    private static final float INCREMENT_PYRO = INCREMENT_BASE * 6;
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        runningTickCounter++;
+        // every 5 seconds, increment the parallel modifier.
+        if (runningTickCounter % 20 == 0) { // drain pyrotheum and crash machine if enough isnt supplied
+            if (isPyroSupplied) {
+                final FluidStack pyrotheum = new FluidStack(
+                    TFFluids.fluidPyrotheum,
+                    (int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier));
+                if (!this.depleteInput(pyrotheum, false)) stopMachine(ShutDownReasonRegistry.outOfFluid(pyrotheum));
+            }
+        }
+        if (runningTickCounter % 100 == 0 && parallelModifier < 2) {
+            float increment = isPyroSupplied ? INCREMENT_PYRO : INCREMENT_BASE;
+            parallelModifier = Math.min(2, parallelModifier + increment);
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMTE, long tick) {
+        super.onPostTick(baseMTE, tick);
+        if (!baseMTE.isServerSide()) return;
+        if (mMaxProgresstime == 0 && parallelModifier > 1) { // machine is not running
+            // every second while not on, decrement parallel modifier
+            if (tick % 20 == 0) parallelModifier = Math.max(1, parallelModifier - INCREMENT_BASE);
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setBoolean("pyrotheum", isPyroSupplied);
+        tag.setInteger("drain", (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE));
+        tag.setFloat("parallelModifier", parallelModifier);
+
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean pyrotheumActive = tag.getBoolean("pyrotheum");
+        float parallelModifier = tag.getFloat("parallelModifier");
+        currentTip.add(translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(parallelModifier)));
+        if (pyrotheumActive) {
+            currentTip
+                .add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
+        }
+
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (int) Math.floor(parallelModifier * Configuration.Multiblocks.megaMachinesMax);
+    }
+
+    private static final int pollutionPerSecond = 400 * 256;
+
+    @Override
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return pollutionPerSecond;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMegaElectricBlastFurnaceGui(this);
     }
 
     @Override
@@ -275,43 +439,15 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         return rTexture;
     }
 
-    private static final int pollutionPerSecond = 400 * 256;
+    int casingAmount = 0;
 
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return pollutionPerSecond;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MTEMegaElectricBlastFurnace.this.heatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true);
-            }
-
-            @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= MTEMegaElectricBlastFurnace.this.heatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return Configuration.Multiblocks.megaMachinesMax;
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece("main", stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
@@ -321,7 +457,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         this.glassTier = -1;
         this.setCoilLevel(HeatingCoilLevel.None);
         return this.survivalBuildPiece(
-            "main",
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFFSET,
             VERTICAL_OFFSET,
@@ -347,9 +483,11 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
 
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!this.checkPiece("main", HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)
-            || this.getCoilLevel() == HeatingCoilLevel.None
-            || this.mMaintenanceHatches.size() != 1) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) return false;
+
+        if (this.getCoilLevel() == HeatingCoilLevel.None) return false;
+
+        if (this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
@@ -371,10 +509,8 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             }
         }
 
-        this.heatingCapacity = (int) this.getCoilLevel()
-            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-
-        return true;
+        this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
+        return this.casingAmount > 1800;
     }
 
     @Override

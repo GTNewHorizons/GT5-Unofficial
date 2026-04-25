@@ -2534,6 +2534,7 @@ GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
+GT5U.gui.text.button.pyrotheum=Enable Pyrotheum Heating
 
 
 # NAC Keys
@@ -5403,6 +5404,8 @@ GT5U.waila.digital_chest.count=Item Count: %s
 GT5U.waila.digital_chest.type=Item Type: %s
 GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
+GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
+GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
