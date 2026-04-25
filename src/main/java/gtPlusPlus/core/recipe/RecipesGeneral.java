@@ -79,37 +79,45 @@ public class RecipesGeneral {
         // Workbench Blueprint
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BlueprintBase.get(2),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lazurite, 1) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
             new ItemStack(BOPBlockRegistrator.sapling_Rainforest),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SSS", "SPS", "SBS", 'S', "stickWood", 'P', "treeSapling", 'B', "dustBone" });
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
             MaterialsAlloy.POTIN.getDust(5),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
         // Tumbaga
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.TumbagaMixDust.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialsAlloy.TUMBAGA.getDust(10),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
 
         // Basic Turbines
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicIronTurbine.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateIron", 'R', "ringIron", 'S', "stickIron" });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicBronzeTurbine.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateBronze", 'R', "ringBronze", 'S', "stickBronze" });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicSteelTurbine.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateSteel", 'R', "ringSteel", 'S', "stickSteel" });
 
         // Large Volumetric Flask
@@ -142,12 +150,14 @@ public class RecipesGeneral {
         // Mining Explosives
         GTModHandler.addCraftingRecipe(
             GregtechItemList.MiningExplosives.get(3),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AlkalusDisk.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABC", "DEF", "GHI", 'A', "gemExquisiteRuby", 'B', "gemFlawlessDiamond", 'C',
                 "gemExquisiteDiamond", 'D', "gemFlawlessRuby", 'E', ItemList.Credit_Greg_Osmium.get(1), 'F',
                 "gemFlawlessSapphire", 'G', "gemExquisiteEmerald", 'H', "gemFlawlessEmerald", 'I',
@@ -156,6 +166,7 @@ public class RecipesGeneral {
         // Wither Cage
         GTModHandler.addCraftingRecipe(
             GregtechItemList.WitherGuard.get(32),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SPS", "PWP", "SPS", 'S', "stickBlackSteel", 'P', "plateTungstenSteel", 'W',
                 new ItemStack(Items.nether_star) });
 
