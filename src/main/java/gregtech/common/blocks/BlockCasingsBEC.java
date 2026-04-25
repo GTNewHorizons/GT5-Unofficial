@@ -1,14 +1,13 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
-
 
 public class BlockCasingsBEC extends BlockCasingsAbstract {
 
