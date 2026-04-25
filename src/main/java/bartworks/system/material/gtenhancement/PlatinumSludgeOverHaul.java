@@ -397,7 +397,7 @@ public class PlatinumSludgeOverHaul {
                 PDAmmonia.getFluidOrGas(400),
                 Materials.NitrogenDioxide.getGas(1_000),
                 Materials.HydrochloricAcid.getFluid(3_000))
-            .duration(1280)
+            .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
