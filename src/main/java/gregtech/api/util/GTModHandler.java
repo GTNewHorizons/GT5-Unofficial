@@ -557,7 +557,6 @@ public class GTModHandler {
             false,
             false,
             false,
-            false,
             true,
             aRecipe);
     }
