@@ -227,7 +227,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", CASINGS_MIN, false)
             .addCasingInfoExactly("Iron Frame Box", 28, false)
-            .addCasingInfoExactly("Steel Frame Box", 32, false)
+            .addCasingInfoExactly("Steel Frame Box", 47, false)
             .addCasingInfoExactly("Steel Pipe Casing", 61, false)
             .addCasingInfoExactly("Hempcrete", 29, false)
             .addInputBus("Any Solid Steel Machine Casing", 1)
