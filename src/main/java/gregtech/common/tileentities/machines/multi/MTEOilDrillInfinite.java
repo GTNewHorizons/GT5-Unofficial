@@ -36,6 +36,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     private static final int OFFSET_Y = 13;
     private static final int OFFSET_Z = 0;
     private int casingAmount;
+    private static final int parallels = 2;
 
     private static IStructureDefinition<MTEOilDrillInfinite> STRUCTURE_DEFINITION = null;
 
@@ -90,6 +91,15 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         tt.addMachineType("Pump, FDR")
+            .addInfo(
+                EnumChatFormatting.GOLD + formatNumber(parallels)
+                    + EnumChatFormatting.GRAY
+                    + " Parallels per "
+                    + EnumChatFormatting.WHITE
+                    + "Energy Hatch"
+                    + EnumChatFormatting.GRAY
+                    + " Tier above "
+                    + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
@@ -211,6 +221,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     }
 
     protected int getParallelCount() {
-        return (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * 2 + 1;
+        System.out.println("1");
+        return (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * parallels + 1;
     }
 }
