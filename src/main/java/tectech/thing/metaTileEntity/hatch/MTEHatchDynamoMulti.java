@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
@@ -96,33 +95,8 @@ public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipE
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 128L * Amperes;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return V[mTier];
     }
 
     @Override
@@ -171,18 +145,6 @@ public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipE
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchDynamoMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
