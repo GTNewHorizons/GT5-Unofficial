@@ -100,7 +100,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
     private static final int OFFSET_Z = 0;
     private int casingAmount;
     private static IStructureDefinition<MTETreeFarm> STRUCTURE_DEFINITION = null;
-    private static final String[][] shape = { { "       ", "  AAA  ", " ABBBA ", "CABBBAC", "CABBBAC", "CABBBAC", "CCC~CCC" },
+    private static final String[][] shape = {
+        { "       ", "  AAA  ", " ABBBA ", "CABBBAC", "CABBBAC", "CABBBAC", "CCC~CCC" },
         { "  AAA  ", " A   A ", "A     A", "A     A", "A     A", "ADDDDDA", "CCCCCCC" },
         { " ABBBA ", "A     A", "B  F  B", "B     B", "B     B", "BDDDDDB", "CCCCCCC" },
         { " ABBBA ", "A  F  A", "B FGF B", "B  G  B", "B  G  B", "BDDDDDB", "CCCCCCC" },
