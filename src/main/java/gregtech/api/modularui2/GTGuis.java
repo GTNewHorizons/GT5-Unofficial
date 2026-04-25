@@ -3,16 +3,12 @@ package gregtech.api.modularui2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.factory.ClientGUI;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -54,28 +50,6 @@ public final class GTGuis {
     public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
         boolean closeOnOutOfBoundsClick) {
         return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
-    }
-
-    /**
-     * Opens client-only GUI with the supplied panel. Recipe viewer is enabled.
-     */
-    @SideOnly(Side.CLIENT)
-    public static void openClientOnlyScreen(ModularPanel panel) {
-        openClientOnlyScreen(panel, true);
-    }
-
-    /**
-     * Opens client-only GUI with the supplied panel. Can specify whether to enable the recipe viewer.
-     */
-    @SideOnly(Side.CLIENT)
-    public static void openClientOnlyScreen(ModularPanel panel, boolean enableRecipeViewer) {
-        ModularScreen screen = new GTModularScreen(panel, GTGuiThemes.STANDARD);
-
-        UISettings settings = new UISettings();
-        if (enableRecipeViewer) settings.getRecipeViewerSettings()
-            .enable();
-
-        ClientGUI.open(screen, settings);
     }
 
     @ApiStatus.Internal

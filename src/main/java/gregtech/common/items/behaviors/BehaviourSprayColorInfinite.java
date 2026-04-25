@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.screen.ModularPanel;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
@@ -30,12 +29,10 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.gui.modularui.item.SprayColorInfiniteGui;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -207,7 +204,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 }
             }
 
-            openGUI(itemStack);
+            sendPacket(GTPacketInfiniteSpraycan.Action.OPEN_GUI);
         }
 
         return true;
@@ -216,11 +213,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region GUI
-    private void openGUI(final ItemStack itemStack) {
-        ModularPanel panel = new SprayColorInfiniteGui(itemStack).build();
-        GTGuis.openClientOnlyScreen(panel);
-    }
-
     private static void displayLockedMessage() {
         GTNHLib.proxy.printMessageAboveHotbar(
             StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.lock_error"),
