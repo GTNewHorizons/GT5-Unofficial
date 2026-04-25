@@ -103,8 +103,7 @@ import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
 public class RecipeLoader {
 
     protected static final long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-        | GTModHandler.RecipeBits.BUFFERED
-        | GTModHandler.RecipeBits.DISMANTLEABLE;
+        | GTModHandler.RecipeBits.BUFFERED;
 
     public static void registerMTEs() {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {

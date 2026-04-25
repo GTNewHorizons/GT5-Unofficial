@@ -38,7 +38,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerLV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
                 .get(0), 'S',
@@ -49,7 +49,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerMV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
                 .get(0), 'S',
@@ -61,7 +61,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerHV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
                 .get(0), 'S',
@@ -72,7 +72,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerEV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
                 .get(0), 'S',
@@ -83,7 +83,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerIV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
                 .get(0), 'S',
@@ -95,7 +95,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerLuV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
                 .get(0), 'S',
@@ -106,7 +106,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerZPM.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
                 .get(0), 'S',
@@ -117,7 +117,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerUV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
                 .get(0), 'S',
@@ -129,7 +129,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerUHV.ID, 1, material, Materials.Steel, null),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
                 .get(0), 'S',

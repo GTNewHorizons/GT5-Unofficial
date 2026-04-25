@@ -42,7 +42,7 @@ public class GregtechGeothermalThermalGenerator {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_EV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
@@ -51,7 +51,7 @@ public class GregtechGeothermalThermalGenerator {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_IV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
@@ -62,7 +62,7 @@ public class GregtechGeothermalThermalGenerator {
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_LuV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',

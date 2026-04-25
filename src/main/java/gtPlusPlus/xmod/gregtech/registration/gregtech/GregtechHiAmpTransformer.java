@@ -24,7 +24,7 @@ public class GregtechHiAmpTransformer {
 
     public static void run() {
 
-        long bitsd = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
+        long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE
             | GTModHandler.RecipeBits.REVERSIBLE
             | GTModHandler.RecipeBits.BUFFERED;
 

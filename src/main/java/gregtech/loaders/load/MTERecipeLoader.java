@@ -9,7 +9,6 @@ import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
-import static gregtech.api.util.GTModHandler.RecipeBits.DISMANTLEABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
@@ -3821,7 +3820,7 @@ public class MTERecipeLoader implements Runnable {
     }
 
     private static void run4() {
-        long bits = DISMANTLEABLE | NOT_REMOVABLE | REVERSIBLE | BUFFERED;
+        long bits = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
 
         // high pressure fluid pipes
         GTValues.RA.stdBuilder()

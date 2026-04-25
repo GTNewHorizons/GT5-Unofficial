@@ -55,7 +55,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -67,7 +67,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -79,7 +79,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -91,7 +91,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -104,7 +104,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -117,7 +117,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -130,7 +130,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -144,7 +144,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -158,7 +158,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -178,7 +178,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -190,7 +190,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -202,7 +202,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -214,7 +214,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -227,7 +227,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -240,7 +240,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -253,7 +253,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -267,7 +267,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -281,7 +281,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -302,7 +302,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -314,7 +314,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -326,7 +326,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -338,7 +338,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -351,7 +351,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -364,7 +364,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -377,7 +377,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1_600_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -391,7 +391,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1_200_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -405,7 +405,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -420,7 +420,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -433,7 +433,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -446,7 +446,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50_000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -460,7 +460,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -473,7 +473,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -486,7 +486,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200_000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -500,7 +500,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1_600_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -514,7 +514,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1_200_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -528,7 +528,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800_000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Piston_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -639,7 +639,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -651,7 +651,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -663,7 +663,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G',
@@ -675,7 +675,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -688,7 +688,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -701,7 +701,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.Aluminium),
@@ -714,7 +714,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -728,7 +728,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -742,7 +742,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -756,7 +756,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -769,7 +769,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -782,7 +782,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
@@ -795,7 +795,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -809,7 +809,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -823,7 +823,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'P',
@@ -836,7 +836,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -850,7 +850,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -864,7 +864,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', OrePrefixes.stickLong.get(aMaterial), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'P',
@@ -879,7 +879,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -894,7 +894,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -909,7 +909,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -925,7 +925,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -940,7 +940,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -955,7 +955,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -971,7 +971,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -986,7 +986,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -1001,7 +1001,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         aMaterial,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXS", "GMG", "PBP", 'X',
                         MetaGeneratedTool01.INSTANCE
@@ -1018,7 +1018,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'L',
@@ -1031,7 +1031,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'L',
@@ -1044,7 +1044,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'L',
@@ -1058,7 +1058,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
@@ -1071,7 +1071,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
@@ -1084,7 +1084,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                         ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
@@ -1098,7 +1098,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
@@ -1112,7 +1112,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
@@ -1126,7 +1126,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         aMaterial,
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
-                    GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                         | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                         ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
