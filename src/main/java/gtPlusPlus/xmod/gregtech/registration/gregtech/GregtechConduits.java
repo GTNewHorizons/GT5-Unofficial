@@ -19,6 +19,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -60,7 +61,10 @@ public class GregtechConduits {
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
         }
 
-        public Material getMaterial() {
+        public IOreMaterial getMaterial() {
+            if (this == Void) {
+                return Materials.Void;
+            }
             return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
         }
     }
