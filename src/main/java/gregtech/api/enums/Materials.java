@@ -665,6 +665,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Uvarovite;
     public static Materials VanadiumGallium;
     public static Materials Wood;
+    public static Materials CastIron;
+    @Deprecated
     public static Materials WroughtIron;
     public static Materials Wulfenite;
     public static Materials YellowLimonite;
@@ -1476,7 +1478,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private static void setReRegistration() {
         Iron.mOreReRegistrations.add(AnyIron);
         PigIron.mOreReRegistrations.add(AnyIron);
-        WroughtIron.mOreReRegistrations.add(AnyIron);
+        CastIron.mOreReRegistrations.add(AnyIron);
         Copper.mOreReRegistrations.add(AnyCopper);
         AnnealedCopper.mOreReRegistrations.add(AnyCopper);
         Bronze.mOreReRegistrations.add(AnyBronze);

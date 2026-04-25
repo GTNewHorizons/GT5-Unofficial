@@ -287,7 +287,7 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
-                || tMaterial.mMaterial == Materials.WroughtIron
+                || tMaterial.mMaterial == Materials.CastIron
                 || tMaterial.mMaterial == Materials.AnnealedCopper) {
                 ItemData stackData = GTOreDictUnificator.getItemData(aStack);
                 if (stackData != null

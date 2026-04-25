@@ -152,7 +152,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)
                     && !(aMaterial.contains(SubTag.NO_SMELTING))
                     && aPrefix == OrePrefixes.ingot) {
                     if (aMaterial.mStandardMoltenFluid != null) {

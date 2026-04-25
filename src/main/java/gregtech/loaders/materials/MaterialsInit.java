@@ -8996,7 +8996,7 @@ public class MaterialsInit {
         Materials.Uvarovite = loadUvarovite();
         Materials.VanadiumGallium = loadVanadiumGallium();
         Materials.Wood = loadWood();
-        Materials.WroughtIron = loadWroughtIron();
+        Materials.WroughtIron = Materials.CastIron = loadCastIron();
         Materials.Wulfenite = loadWulfenite();
         Materials.YellowLimonite = loadYellowLimonite();
         Materials.YttriumBariumCuprate = loadYttriumBariumCuprate();
@@ -9394,9 +9394,9 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadWroughtIron() {
+    private static Materials loadCastIron() {
         return new MaterialBuilder().setName("WroughtIron")
-            .setDefaultLocalName("Wrought Iron")
+            .setDefaultLocalName("Cast Iron")
             .setChemicalFormula("Fe*")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightGray)

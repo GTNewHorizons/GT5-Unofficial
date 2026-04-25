@@ -511,7 +511,7 @@ public class ArcFurnaceRecipes implements Runnable {
             for (final OrePrefixes ironPrefix : new OrePrefixes[] { OrePrefixes.dust, OrePrefixes.ingot }) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(Materials.Iron.getPart(ironPrefix, 1), coal.getDust(1))
-                    .itemOutputs(Materials.WroughtIron.getIngots(1))
+                    .itemOutputs(Materials.CastIron.getIngots(1))
                     .duration(3 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(arcFurnaceRecipes);

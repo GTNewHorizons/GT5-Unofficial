@@ -379,7 +379,7 @@ public class BWGTMaterialReference {
         Werkstoff.Types.ELEMENT,
         31_766 + 327);
     public static Werkstoff WroughtIron = new Werkstoff(
-        Materials.WroughtIron,
+        Materials.CastIron,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ISOTOPE,
         31_766 + 304);

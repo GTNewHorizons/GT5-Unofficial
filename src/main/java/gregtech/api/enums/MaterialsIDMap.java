@@ -168,7 +168,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(301, Materials.Brass);
         r(302, Materials.Invar);
         r(303, Materials.Electrum);
-        r(304, Materials.WroughtIron);
+        r(304, Materials.CastIron);
         r(305, Materials.Steel);
         r(306, Materials.StainlessSteel);
         r(307, Materials.PigIron);

@@ -2056,7 +2056,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron) });
+                OrePrefixes.plate.get(Materials.CastIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2336,7 +2336,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_HP_Bricks.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'B',
+            new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.CastIron), 'B',
                 new ItemStack(Blocks.brick_block, 1) });
 
         // hull crafting recipes. (They can't be used for recycling as that would create an exploit loop with the
@@ -2346,20 +2346,20 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hull_ULV.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.WroughtIron), 'P',
+                OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.CastIron), 'P',
                 OrePrefixes.plate.get(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_LV.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Tin), 'H', OrePrefixes.plate.get(Materials.Steel), 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron) });
+                OrePrefixes.plate.get(Materials.CastIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_MV.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Copper), 'H', OrePrefixes.plate.get(Materials.Aluminium), 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron) });
+                OrePrefixes.plate.get(Materials.CastIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_HV.get(1L),
             NOT_REMOVABLE | BUFFERED,
@@ -2655,7 +2655,7 @@ public class MTERecipeLoader implements Runnable {
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "GGG", "WSW", aTextPlateMotor, 'M', ItemList.Machine_Bronze_Boiler_Solar, 'P',
                 OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'W',
-                OrePrefixes.plateDouble.get(Materials.WroughtIron), 'G',
+                OrePrefixes.plateDouble.get(Materials.CastIron), 'G',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L) });
 
         GTModHandler.addCraftingRecipe(
@@ -2667,7 +2667,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Furnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Furnace, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Macerator.get(1L),
@@ -2679,7 +2679,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Macerator.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "XMX", "PPP", 'M', ItemList.Machine_Bronze_Macerator, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Extractor.get(1L),
@@ -2691,7 +2691,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Extractor.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Extractor, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Hammer.get(1L),
@@ -2703,7 +2703,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Hammer.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "XMX", "PPP", 'M', ItemList.Machine_Bronze_Hammer, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Compressor.get(1L),
@@ -2714,7 +2714,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Compressor.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Compressor, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_AlloySmelter.get(1L),
@@ -2725,7 +2725,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_AlloySmelter.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "PMP", "PXP", 'M', ItemList.Machine_Bronze_AlloySmelter, 'X',
-                OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron),
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
                 'S', OrePrefixes.plate.get(Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
