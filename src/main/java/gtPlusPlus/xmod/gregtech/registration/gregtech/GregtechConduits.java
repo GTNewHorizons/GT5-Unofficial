@@ -712,6 +712,7 @@ public class GregtechConduits {
             if (pipePlateDouble != null) {
                 GTModHandler.addCraftingRecipe(
                     ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "DhD", "D D", "DwD", 'D', pipePlateDouble.copy() });
             }
         }
@@ -795,7 +796,10 @@ public class GregtechConduits {
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
             && aMaterial.vVoltageMultiplier < 7680) {
-            GTModHandler.addCraftingRecipe(aWire01, new Object[] { "Px ", "   ", "   ", 'P', aPlate });
+            GTModHandler.addCraftingRecipe(
+                aWire01,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "Px ", "   ", "   ", 'P', aPlate });
         }
 
         // Wire mill
@@ -948,68 +952,105 @@ public class GregtechConduits {
         // Shapeless Down-Crafting
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(2), new ItemStack[] { aWire02 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(2),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire02 });
         }
 
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(4), new ItemStack[] { aWire04 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04 });
         }
 
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(8), new ItemStack[] { aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(8),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire08 });
         }
 
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(12), new ItemStack[] { aWire12 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(12),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire12 });
         }
 
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(16), new ItemStack[] { aWire16 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(16),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire16 });
         }
 
         // 1x -> 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire02, new ItemStack[] { aWire01, aWire01 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire02,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire01, aWire01 });
         }
 
         // 2x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire04, new ItemStack[] { aWire02, aWire02 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire04,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire02, aWire02 });
         }
 
         // 4x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire08, new ItemStack[] { aWire04, aWire04 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire08,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire04 });
         }
 
         // 8x -> 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire12, new ItemStack[] { aWire04, aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire12,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire08 });
         }
 
         // 12x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire12, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire16, new ItemStack[] { aWire04, aWire12 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire16,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire12 });
         }
 
         // 8x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire16, new ItemStack[] { aWire08, aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire16,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire08, aWire08 });
         }
 
         // 1x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire04, new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire04,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
         }
 
         // 1x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
+                GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01 });
         }
 

@@ -1279,20 +1279,13 @@ public class GTModHandler {
     /**
      * Removes a Smelting Recipe
      */
-    public static boolean removeFurnaceSmelting(ItemStack aInput) {
-        if (aInput != null) {
-            for (ItemStack tInput : FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .keySet()) {
-                if (GTUtility.areStacksEqual(aInput, tInput, true)) {
-                    FurnaceRecipes.smelting()
-                        .getSmeltingList()
-                        .remove(tInput);
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static boolean removeFurnaceSmelting(ItemStack input) {
+        if (input == null) return false;
+
+        // smelting list was optimized to allow fast operations like that, see MixinFurnaceRecipes.java in Hodgepodge
+        return FurnaceRecipes.smelting()
+            .getSmeltingList()
+            .remove(input) != null;
     }
 
     /**
