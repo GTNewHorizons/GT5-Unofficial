@@ -760,8 +760,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsInputSeparation,
             multiblock::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation"));
     }
 
     /**
@@ -777,31 +776,19 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
      * @param tooltip                the RichTooltip to add the line to
      * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
      * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
-     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
-     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     * @param tooltipFeatureName  tooltip text to display when the feature is enabled
      *
      * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(com.gtnewhorizons.modularui.api.widget.Widget,
      *      java.util.function.Supplier, java.util.function.Supplier, String, String)
      *      For equivalent method but made for ModularUI
      */
     private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
-        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
-
-        if (supportsFeature.get()) {
-            tooltip.addLine(IKey.dynamic(() -> {
-                if (isFeatureEnabled.get()) {
-                    return tooltipFeatureEnabled;
-                } else {
-                    return tooltipFeatureDisabled;
-                }
-            }));
-        } else {
-            if (isFeatureEnabled.get()) {
-                tooltip.addLine(tooltipFeatureEnabled);
-            } else {
-                tooltip.addLine(tooltipFeatureDisabled);
-            }
-
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
+        String status = isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
+            : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled");
+        tooltip.addLine(tooltipFeatureName);
+        tooltip.addLine(status);
+        if (!supportsFeature.get()) {
             tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
         }
     }
@@ -868,8 +855,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsBatchMode,
             multiblock::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -917,8 +903,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsSingleRecipeLocking,
             multiblock::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {

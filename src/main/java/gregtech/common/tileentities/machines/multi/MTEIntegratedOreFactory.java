@@ -662,7 +662,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private static List<String> getDisplayMode(ProcessingMode mode) {
-        final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
+        final EnumChatFormatting AQUA = EnumChatFormatting.GRAY;
         final String ARROW = " " + AQUA + "-> ";
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
         final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
