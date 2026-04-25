@@ -676,7 +676,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             name.append(getLocalName());
         }
 
-        return name.append(this.getNameSuffix()).toString();
+        return name.append(this.getNameSuffix())
+            .toString();
     }
 
     @Override
