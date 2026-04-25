@@ -300,6 +300,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 return false;
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(0.8F)
             .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 

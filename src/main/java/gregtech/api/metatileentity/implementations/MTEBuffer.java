@@ -31,6 +31,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -48,6 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -83,6 +88,46 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
     public MTEBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public boolean isOutput() {
+        return bOutput;
+    }
+
+    public void setOutput(boolean bOutput) {
+        this.bOutput = bOutput;
+    }
+
+    public boolean isRedstoneIfFull() {
+        return bRedstoneIfFull;
+    }
+
+    public void setRedstoneIfFull(boolean bRedstoneIfFull) {
+        this.bRedstoneIfFull = bRedstoneIfFull;
+    }
+
+    public boolean isInvert() {
+        return bInvert;
+    }
+
+    public void setInvert(boolean bInvert) {
+        this.bInvert = bInvert;
+    }
+
+    public boolean isStockingMode() {
+        return bStockingMode;
+    }
+
+    public void setStockingMode(boolean bStockingMode) {
+        this.bStockingMode = bStockingMode;
+    }
+
+    public boolean isSortStacks() {
+        return bSortStacks;
+    }
+
+    public void setSortStacks(boolean bSortStacks) {
+        this.bSortStacks = bSortStacks;
     }
 
     @Override
@@ -368,11 +413,11 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             .forEach(side -> aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) redstoneOutput));
     }
 
-    protected int getRedstoneOutput() {
+    public int getRedstoneOutput() {
         return (!bRedstoneIfFull || (bInvert ^ hasEmptySlots())) ? 0 : 15;
     }
 
-    private boolean hasEmptySlots() {
+    public boolean hasEmptySlots() {
         return IntStream.range(0, mInventory.length)
             .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
     }
@@ -551,7 +596,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBufferBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }
