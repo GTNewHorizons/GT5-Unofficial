@@ -571,5 +571,14 @@
         "stream": false
       }
     ]
+  },
+  "machines.MTEBECGenerator": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEBECGenerator",
+        "stream": false
+      }
+    ]
   }
 }

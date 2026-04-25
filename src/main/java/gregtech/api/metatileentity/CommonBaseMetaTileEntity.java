@@ -149,13 +149,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-                    GTMod.logStackTrace(e);
+                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-            GTMod.logStackTrace(e);
+            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
     }
 
