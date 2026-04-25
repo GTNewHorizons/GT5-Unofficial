@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -73,6 +74,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
     private boolean replaceWithCobblestone = true;
+    private boolean showWorkArea = false;
 
     /** Used to drive the remaining ores count in the UI. */
     private int clientOreListSize = 0;
@@ -102,6 +104,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
+        aNBT.setBoolean("showWorkArea", showWorkArea);
         aNBT.setBoolean("replaceWithCobblestone", replaceWithCobblestone);
         if (veinName != null) {
             aNBT.setString("veinName", veinName);
@@ -115,6 +118,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("chunkRadiusConfig")) {
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
+        }
+        if (aNBT.hasKey("showWorkArea")) {
+            showWorkArea = aNBT.getBoolean("showWorkArea");
         }
         if (aNBT.hasKey("replaceWithCobblestone")) {
             replaceWithCobblestone = aNBT.getBoolean("replaceWithCobblestone");
@@ -766,6 +772,26 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                             replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
                                 : "GT5U.gui.button.ore_drill_cobblestone_off")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setSize(16, 16),
+            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> showWorkArea = !showWorkArea)
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (showWorkArea) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                            GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                    }
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                })
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .dynamicTooltip(
+                    () -> ImmutableList.of(
+                        StatCollector.translateToLocal(
+                            showWorkArea ? "GT5U.gui.button.work_area_preview_on"
+                                : "GT5U.gui.button.work_area_preview_off")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16));
     }
 
@@ -812,7 +838,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     veinName == null ? ""
                         : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
                 case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
-
                 default -> ImmutableList.of();
             };
         }
@@ -826,5 +851,22 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    public boolean isWorkAreaShown() {
+        return showWorkArea;
+    }
+
+    public AxisAlignedBB getWorkAreaAABB() {
+        ChunkCoordIntPair topLeft = getTopLeftChunkCoords();
+        ChunkCoordIntPair bottomRight = getBottomRightChunkCoords();
+
+        return AxisAlignedBB.getBoundingBox(
+            topLeft.chunkXPos << 4,
+            0,
+            topLeft.chunkZPos << 4,
+            bottomRight.chunkXPos << 4,
+            256,
+            bottomRight.chunkZPos << 4);
     }
 }
