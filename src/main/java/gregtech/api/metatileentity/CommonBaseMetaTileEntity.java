@@ -364,6 +364,15 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
+        if (mTickDisabled) {
+            doBlockUpdate();
+        }
+    }
+
+    public final void doBlockUpdate() {
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
     }
 
     @Override
