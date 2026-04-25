@@ -10,11 +10,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.MTEMegaElectricBlastFurnace;
 
-public class MTEMegaElectricBlastFurnaceGui extends MTEMultiBlockBaseGui<MTEMegaElectricBlastFurnace> {
+public class MTEHearth extends MTEMultiBlockBaseGui<gregtech.common.tileentities.machines.multi.MTEHearth> {
 
-    public MTEMegaElectricBlastFurnaceGui(MTEMegaElectricBlastFurnace multiblock) {
+    public MTEHearth(gregtech.common.tileentities.machines.multi.MTEHearth multiblock) {
         super(multiblock);
     }
 

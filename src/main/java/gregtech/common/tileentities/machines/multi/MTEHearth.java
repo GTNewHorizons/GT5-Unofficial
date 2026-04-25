@@ -12,10 +12,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -71,22 +71,19 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.gui.modularui.multiblock.MTEMegaElectricBlastFurnaceGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<MTEMegaElectricBlastFurnace>
-    implements ISurvivalConstructable {
+public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 39;
     private static final int HORIZONTAL_OFFSET = 11;
     private static final int DEPTH_OFFSET = 1;
-    private static final IStructureDefinition<MTEMegaElectricBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaElectricBlastFurnace>builder()
+    private static final IStructureDefinition<MTEHearth> STRUCTURE_DEFINITION = StructureDefinition.<MTEHearth>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -142,24 +139,21 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
         .addElement('D', Casings.TungstensteelPipeCasing.asElement())
         .addElement(
             'E',
-            GTStructureChannels.HEATING_COIL.use(
-                activeCoils(
-                    ofCoil(MTEMegaElectricBlastFurnace::setCoilLevel, MTEMegaElectricBlastFurnace::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil(MTEHearth::setCoilLevel, MTEHearth::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
         .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
         .addElement(
             'I',
-            buildHatchAdder(MTEMegaElectricBlastFurnace.class)
+            buildHatchAdder(MTEHearth.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .hint(1)
                 .casingIndex(Casings.HearthCasing.getTextureId())
-                .buildAndChain(
-                    onElementPass(MTEMegaElectricBlastFurnace::onCasingAdded, Casings.HearthCasing.asElement())))
+                .buildAndChain(onElementPass(MTEHearth::onCasingAdded, Casings.HearthCasing.asElement())))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
         .addElement(
             'K',
-            buildHatchAdder(MTEMegaElectricBlastFurnace.class).anyOf(Muffler)
+            buildHatchAdder(MTEHearth.class).anyOf(Muffler)
                 .hint(2)
                 .casingIndex(Casings.StructuralCokeOvenCasing.getTextureId())
                 // this casing references the same texture as the alloy blast smelter,
@@ -168,29 +162,29 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                 .build())
         .build();
 
-    public MTEMegaElectricBlastFurnace(final int aID, final String aName, final String aNameRegional) {
+    public MTEHearth(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMegaElectricBlastFurnace(String aName) {
+    public MTEHearth(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEMegaElectricBlastFurnace> getStructureDefinition() {
+    public IStructureDefinition<MTEHearth> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaElectricBlastFurnace(this.mName);
+        return new MTEHearth(this.mName);
     }
 
     // todo: implement flux mechanic
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, MEBF, MBF")
+        tt.addMachineType("Blast Furnace, HeaRTH, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
@@ -263,7 +257,6 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             .addMufflerHatch("Top middle")
             .addOutputBus("Any Heat Absorbent Casing")
             .addOutputHatch("Any Heat Absorbent Casing")
-            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors("GregTech Odyssey")
@@ -304,7 +297,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MTEMegaElectricBlastFurnace.this.heatingCapacity)
+                    .setMachineHeat(MTEHearth.this.heatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true);
             }
@@ -315,8 +308,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                     if (!checkFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier)))
                         return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 }
-                return recipe.mSpecialValue <= MTEMegaElectricBlastFurnace.this.heatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= MTEHearth.this.heatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -399,7 +391,7 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMegaElectricBlastFurnaceGui(this);
+        return new gregtech.common.gui.modularui.multiblock.MTEHearth(this);
     }
 
     @Override
@@ -411,11 +403,11 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                 rTexture = new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -423,11 +415,11 @@ public class MTEMegaElectricBlastFurnace extends MTEExtendedPowerMultiBlockBase<
                 rTexture = new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE)
+                        .addIcon(OVERLAY_FRONT_HEARTH)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_ELECTRIC_BLAST_FURNACE_GLOW)
+                        .addIcon(OVERLAY_FRONT_HEARTH_GLOW)
                         .extFacing()
                         .glow()
                         .build() };

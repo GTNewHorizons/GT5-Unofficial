@@ -159,6 +159,7 @@ import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
+import gregtech.common.tileentities.machines.multi.MTEHearth;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
@@ -201,7 +202,6 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
-import gregtech.common.tileentities.machines.multi.MTEMegaElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -962,11 +962,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialcokeoven.controller.tier.single",
                 "Industrial Coke Oven").getStackForm(1L));
 
-        ItemList.MegaBlastFurnace.set( // todo: a better name
-            new MTEMegaElectricBlastFurnace(
-                MegaBlastFurnace.ID,
-                "multimachine.megaelectricblastfurnace",
-                "Mega Electric Blast Furnace").getStackForm(1));
+        ItemList.Hearth
+            .set(new MTEHearth(Hearth.ID, "multimachine.hearth", "Heat-Resistant Thermal Housing").getStackForm(1));
     }
 
     private static void registerSteamMachines() {

@@ -78,7 +78,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 15 -> {
                 if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_BOTTOM.getIcon();
                 if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_TOP.getIcon();
-                yield Textures.BlockIcons.MACHINE_CASING_HEARTH_BOTTOM.getIcon();
+                yield Textures.BlockIcons.MACHINE_CASING_HEARTH_SIDE.getIcon();
             }
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
