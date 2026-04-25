@@ -211,6 +211,351 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
+    // region space ores
+    /** Prefix for ores on the moon */
+    public static final OrePrefixes oreMoon = new OrePrefixBuilder("oreMoon").withDefaultLocalName("Moon Ores")
+        .withPrefix("Moon ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Mars */
+    public static final OrePrefixes oreMars = new OrePrefixBuilder("oreMars").withDefaultLocalName("Mars Ores")
+        .withPrefix("Mars ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Asteroid */
+    public static final OrePrefixes oreAsteroid = new OrePrefixBuilder("oreAsteroid")
+        .withDefaultLocalName("Asteroid Ores")
+        .withPrefix("Asteroid ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Phobos */
+    public static final OrePrefixes orePhobos = new OrePrefixBuilder("orePhobos").withDefaultLocalName("Phobos Ores")
+        .withPrefix("Phobos ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Deimos */
+    public static final OrePrefixes oreDeimos = new OrePrefixBuilder("oreDeimos").withDefaultLocalName("Deimos Ores")
+        .withPrefix("Deimos ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Ceres */
+    public static final OrePrefixes oreCeres = new OrePrefixBuilder("oreCeres").withDefaultLocalName("Ceres Ores")
+        .withPrefix("Ceres ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Io */
+    public static final OrePrefixes oreIo = new OrePrefixBuilder("oreIo").withDefaultLocalName("Io Ores")
+        .withPrefix("Io ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Europa */
+    public static final OrePrefixes oreEuropa = new OrePrefixBuilder("oreEuropa").withDefaultLocalName("Europa Ores")
+        .withPrefix("Europa ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Ganymede */
+    public static final OrePrefixes oreGanymede = new OrePrefixBuilder("oreGanymede")
+        .withDefaultLocalName("Ganymede Ores")
+        .withPrefix("Ganymede ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Callisto */
+    public static final OrePrefixes oreCallisto = new OrePrefixBuilder("oreCallisto")
+        .withDefaultLocalName("Callisto Ores")
+        .withPrefix("Callisto ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Enceladus */
+    public static final OrePrefixes oreEnceladus = new OrePrefixBuilder("oreEnceladus")
+        .withDefaultLocalName("Enceladus Ores")
+        .withPrefix("Enceladus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Titan */
+    public static final OrePrefixes oreTitan = new OrePrefixBuilder("oreTitan").withDefaultLocalName("Titan Ores")
+        .withPrefix("Titan ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Miranda */
+    public static final OrePrefixes oreMiranda = new OrePrefixBuilder("oreMiranda").withDefaultLocalName("Miranda Ores")
+        .withPrefix("Miranda ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Oberon */
+    public static final OrePrefixes oreOberon = new OrePrefixBuilder("oreOberon").withDefaultLocalName("Oberon Ores")
+        .withPrefix("Oberon ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Proteus */
+    public static final OrePrefixes oreProteus = new OrePrefixBuilder("oreProteus").withDefaultLocalName("Proteus Ores")
+        .withPrefix("Proteus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Triton */
+    public static final OrePrefixes oreTriton = new OrePrefixBuilder("oreTriton").withDefaultLocalName("Triton Ores")
+        .withPrefix("Triton ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Pluto */
+    public static final OrePrefixes orePluto = new OrePrefixBuilder("orePluto").withDefaultLocalName("Pluto Ores")
+        .withPrefix("Pluto ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Haumea */
+    public static final OrePrefixes oreHaumea = new OrePrefixBuilder("oreHaumea").withDefaultLocalName("Haumea Ores")
+        .withPrefix("Haumea ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on MakeMake */
+    public static final OrePrefixes oreMakeMake = new OrePrefixBuilder("oreMakeMake")
+        .withDefaultLocalName("MakeMake Ores")
+        .withPrefix("MakeMake ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Venus */
+    public static final OrePrefixes oreVenus = new OrePrefixBuilder("oreVenus").withDefaultLocalName("Venus Ores")
+        .withPrefix("Venus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Mercury */
+    public static final OrePrefixes oreMercury = new OrePrefixBuilder("oreMercury").withDefaultLocalName("Mercury Ores")
+        .withPrefix("Mercury ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on AlphaCentauri */
+    public static final OrePrefixes oreAlphaCentauri = new OrePrefixBuilder("oreAlphaCentauri")
+        .withDefaultLocalName("AlphaCentauri Ores")
+        .withPrefix("AlphaCentauri ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on TCetiE */
+    public static final OrePrefixes oreTCetiE = new OrePrefixBuilder("oreTCetiE").withDefaultLocalName("TCetiE Ores")
+        .withPrefix("TCetiE ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on VegaB */
+    public static final OrePrefixes oreVegaB = new OrePrefixBuilder("oreVegaB").withDefaultLocalName("VegaB Ores")
+        .withPrefix("VegaB ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on BarnardaE */
+    public static final OrePrefixes oreBarnardaE = new OrePrefixBuilder("oreBarnardaE")
+        .withDefaultLocalName("BarnardaE Ores")
+        .withPrefix("BarnardaE ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on BarnardaF */
+    public static final OrePrefixes oreBarnardaF = new OrePrefixBuilder("oreBarnardaF")
+        .withDefaultLocalName("BarnardaF Ores")
+        .withPrefix("BarnardaF ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Horus */
+    public static final OrePrefixes oreHorus = new OrePrefixBuilder("oreHorus").withDefaultLocalName("Horus Ores")
+        .withPrefix("Horus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on AnubisAndMaahes */
+    public static final OrePrefixes oreAnubisAndMaahes = new OrePrefixBuilder("oreAnubisAndMaahes")
+        .withDefaultLocalName("Anubis And Maahes Ores")
+        .withPrefix("AnubisAndMaahes ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on PackedIce */
+    public static final OrePrefixes orePackedIce = new OrePrefixBuilder("orePackedIce")
+        .withDefaultLocalName("Packed Ice Ores")
+        .withPrefix("PackedIce ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on SethIce */
+    public static final OrePrefixes oreSethIce = new OrePrefixBuilder("oreSethIce")
+        .withDefaultLocalName("Seth Ice Ores")
+        .withPrefix("SethIce ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on SethClay */
+    public static final OrePrefixes oreSethClay = new OrePrefixBuilder("oreSethClay")
+        .withDefaultLocalName("Seth Clay Ores")
+        .withPrefix("SethClay ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Tuff */
+    public static final OrePrefixes oreTuff = new OrePrefixBuilder("oreTuff").withDefaultLocalName("Tuff Ores")
+        .withPrefix("Tuff ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on BlueIce */
+    public static final OrePrefixes oreBlueIce = new OrePrefixBuilder("oreBlueIce")
+        .withDefaultLocalName("Blue Ice Ores")
+        .withPrefix("BlueIce ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+    // endregion
+
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
     public static final OrePrefixes ore = new OrePrefixBuilder("ore").withDefaultLocalName("Ores")
         .withSuffix(" Ore")
