@@ -8,8 +8,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gtPlusPlus.core.util.Utils;
+import net.minecraft.util.StatCollector;
+import org.apache.commons.lang3.ArrayUtils;
 
 @IMetaTileEntity.SkipGenerateDescription
+@Deprecated // Remove in 2.10
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -48,9 +51,11 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAlkalus(
+        return ArrayUtils.addAll(Utils.splitLocalizedFormattedWithAlkalus(
             "gt.blockmachines.dynamo_hatch_buffer.desc",
-            this.maxEUOutput() * this.maxAmperesIn());
+            this.maxEUOutput() * this.maxAmperesIn()),
+            StatCollector.translateToLocalFormatted("GT5U.MBTT.Deprecated",
+                StatCollector.translateToLocal("GT5U.MBTT.Deprecated.RemovalMachine")));
     }
 
     @Override
