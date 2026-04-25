@@ -218,8 +218,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getRobotArmTier() {
+        ArrayList<ItemStack> storedInputs = getStoredInputs();
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
-            ArrayList<ItemStack> storedInputs = getStoredInputs();
             int currentStackSize = 0;
             for (ItemStack storedInput : storedInputs) {
                 if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
