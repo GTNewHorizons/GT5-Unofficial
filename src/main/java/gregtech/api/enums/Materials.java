@@ -165,6 +165,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Random
     public static Materials AnyBronze;
     public static Materials AnyCopper;
+    public static Materials AnyCarbon;
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
@@ -1089,6 +1090,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials MetamorphicMineralMixture;
     public static Materials Plagioclase;
     public static Materials Epidote;
+    public static Materials UnformedHexanite;
+    public static Materials Hexanite;
     // endregion
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
@@ -1482,6 +1485,10 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         RubberSilicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         RubberSilicone.mOreReRegistrations.add(AnySyntheticRubber);
+        Carbon.mOreReRegistrations.add(AnyCarbon);
+        Coal.mOreReRegistrations.add(AnyCarbon);
+        Charcoal.mOreReRegistrations.add(AnyCarbon);
+        Lignite.mOreReRegistrations.add(AnyCarbon);
     }
 
     private static void setToolEnchantments() {
