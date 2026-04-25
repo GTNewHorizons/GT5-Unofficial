@@ -1583,6 +1583,7 @@ public final class GTGuiTextures {
         .location(MODID, "gui/picture/tectech_logo")
         .fullImage()
         .canApplyTheme()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO)
         .build();
     public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
         .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")

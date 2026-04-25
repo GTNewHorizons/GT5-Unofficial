@@ -13,6 +13,14 @@ import static gregtech.api.enums.MetaTileEntityIDs.BasicTeslaTransceiver1by1;
 import static gregtech.api.enums.MetaTileEntityIDs.BasicTeslaTransceiver2by2;
 import static gregtech.api.enums.MetaTileEntityIDs.BasicTeslaTransceiver3by3;
 import static gregtech.api.enums.MetaTileEntityIDs.BasicTeslaTransceiver4by4;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateAssembler;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateDiode;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateGenerator;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateIONode;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensatePipe;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensatePipeBlock;
+import static gregtech.api.enums.MetaTileEntityIDs.BoseEinsteinCondensateStorage;
 import static gregtech.api.enums.MetaTileEntityIDs.CapacitorHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.CloudComputationClientHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.CloudComputationServerHatch;
@@ -40,6 +48,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.ExtendedMegaUltimateBuckConve
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremelyUltimateBuckConverter;
 import static gregtech.api.enums.MetaTileEntityIDs.EyeofHarmony;
 import static gregtech.api.enums.MetaTileEntityIDs.ForgeoftheGods;
+import static gregtech.api.enums.MetaTileEntityIDs.HatchCondensateDetector;
+import static gregtech.api.enums.MetaTileEntityIDs.HatchIOController;
+import static gregtech.api.enums.MetaTileEntityIDs.HatchNaniteDetector;
 import static gregtech.api.enums.MetaTileEntityIDs.HelioflarePowerForge;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofluxMeltingCore;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofusionExoticizer;
@@ -266,6 +277,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPMVoltageBuckConverter;
 import static tectech.thing.CustomItemList.DATApipe;
 import static tectech.thing.CustomItemList.DATApipeBlock;
+import static tectech.thing.CustomItemList.Hatch_BEC_CondensateDetector;
+import static tectech.thing.CustomItemList.Hatch_BEC_Connector;
+import static tectech.thing.CustomItemList.Hatch_BEC_IOController;
+import static tectech.thing.CustomItemList.Hatch_BEC_Nanites;
 import static tectech.thing.CustomItemList.LASERpipe;
 import static tectech.thing.CustomItemList.LASERpipeBlock;
 import static tectech.thing.CustomItemList.LASERpipeSmart;
@@ -280,6 +295,11 @@ import static tectech.thing.CustomItemList.Machine_BuckConverter_UXV;
 import static tectech.thing.CustomItemList.Machine_BuckConverter_ZPM;
 import static tectech.thing.CustomItemList.Machine_DebugGenny;
 import static tectech.thing.CustomItemList.Machine_DebugPollutor;
+import static tectech.thing.CustomItemList.Machine_Multi_BECAssembler;
+import static tectech.thing.CustomItemList.Machine_Multi_BECDiode;
+import static tectech.thing.CustomItemList.Machine_Multi_BECGenerator;
+import static tectech.thing.CustomItemList.Machine_Multi_BECIONode;
+import static tectech.thing.CustomItemList.Machine_Multi_BECStorage;
 import static tectech.thing.CustomItemList.Machine_Multi_Computer;
 import static tectech.thing.CustomItemList.Machine_Multi_DataBank;
 import static tectech.thing.CustomItemList.Machine_Multi_EyeOfHarmony;
@@ -316,6 +336,8 @@ import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_HV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_IV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_LV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_MV;
+import static tectech.thing.CustomItemList.Pipe_BEC;
+import static tectech.thing.CustomItemList.Pipe_BEC_Block;
 import static tectech.thing.CustomItemList.TestHatch;
 import static tectech.thing.CustomItemList.TestPipe;
 import static tectech.thing.CustomItemList.UncertaintyX_Hatch;
@@ -566,6 +588,10 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
 import tectech.thing.metaTileEntity.multi.MTEDataBank;
 import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
@@ -576,11 +602,18 @@ import tectech.thing.metaTileEntity.multi.MTENetworkSwitchAdv;
 import tectech.thing.metaTileEntity.multi.MTEQuantumComputer;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECDiode;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECGenerator;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECIONode;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBEC;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBECBlock;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -1865,6 +1898,8 @@ public class MachineLoader implements Runnable {
             Machine_Multi_QuarkGluonPlasmaModule.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
 
+        registerBECMachines();
+
         // ===================================================================================================
         // Hatches
         // ===================================================================================================
@@ -1935,9 +1970,8 @@ public class MachineLoader implements Runnable {
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-            TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test", "Test Factory Pipe").getStackForm(1));
-            TestHatch
-                .set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", "Test Factory Hatch", 7).getStackForm(1));
+            TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test").getStackForm(1));
+            TestHatch.set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", 7).getStackForm(1));
         }
 
         LASERpipeBlock.set(
@@ -2118,5 +2152,29 @@ public class MachineLoader implements Runnable {
         MTEHatchRack.run();
 
         MTEHatchCapacitor.run();
+    }
+
+    private static void registerBECMachines() {
+        Pipe_BEC.set(new MTEPipeBEC(BoseEinsteinCondensatePipe.ID, "pipe.bec").getStackForm(1L));
+
+        Pipe_BEC_Block.set(new MTEPipeBECBlock(BoseEinsteinCondensatePipeBlock.ID, "pipe.bec.block").getStackForm(1L));
+
+        Hatch_BEC_Connector.set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", 10).getStackForm(1L));
+        Hatch_BEC_Nanites
+            .set(new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector").getStackForm(1L));
+        Hatch_BEC_IOController
+            .set(new MTEHatchIONodeController(HatchIOController.ID, "hatch.io-node-controller").getStackForm(1L));
+        Hatch_BEC_CondensateDetector.set(
+            new MTEHatchCondensateDetector(HatchCondensateDetector.ID, "hatch.condensate-detector").getStackForm(1L));
+
+        Machine_Multi_BECGenerator
+            .set(new MTEBECGenerator(BoseEinsteinCondensateGenerator.ID, "multi.bec.generator").getStackForm(1L));
+        Machine_Multi_BECStorage
+            .set(new MTEBECStorage(BoseEinsteinCondensateStorage.ID, "multi.bec.storage").getStackForm(1L));
+        Machine_Multi_BECAssembler
+            .set(new MTEBECAssembler(BoseEinsteinCondensateAssembler.ID, "multi.bec.assembler").getStackForm(1L));
+        Machine_Multi_BECIONode
+            .set(new MTEBECIONode(BoseEinsteinCondensateIONode.ID, "multi.bec.io-node").getStackForm(1L));
+        Machine_Multi_BECDiode.set(new MTEBECDiode(BoseEinsteinCondensateDiode.ID, "multi.bec.diode").getStackForm(1L));
     }
 }

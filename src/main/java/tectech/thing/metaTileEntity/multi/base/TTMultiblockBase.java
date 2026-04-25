@@ -183,7 +183,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected long eMaxAmpereFlow = 0, eMaxAmpereGen = 0;
 
     // What is the max and minimal tier of eu hatches installed
-    private long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
+    protected long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
@@ -985,37 +985,43 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                                    hatchesStatusUpdate_EM();
+                                // progress increase and done
+                                if (mMaxProgresstime > 0) {
+                                    incrementProgressTime();
 
-                                    outputAfterRecipe_EM();
+                                    if (getProgresstime() >= mMaxProgresstime) {
+                                        hatchesStatusUpdate_EM();
 
-                                    addClassicOutputs_EM();
+                                        outputAfterRecipe_EM();
 
-                                    updateSlots();
-                                    mProgresstime = 0;
-                                    mMaxProgresstime = 0;
-                                    mEfficiencyIncrease = 0;
-                                    mLastWorkingTick = mTotalRunTime;
-                                    if (processingLogic != null) {
-                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
-                                    } else {
-                                        recipesDone += 1;
-                                    }
-                                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                        if (checkRecipe()) {
-                                            mEfficiency = Math.max(
-                                                0,
-                                                min(
-                                                    mEfficiency + mEfficiencyIncrease,
-                                                    getMaxEfficiency(mInventory[1])
-                                                        - (getIdealStatus() - getRepairStatus()) * 1000));
-                                        } else {
-                                            afterRecipeCheckFailed();
-                                        }
+                                        addClassicOutputs_EM();
+
                                         updateSlots();
-                                    } else {
-                                        notAllowedToWork_stopMachine_EM();
+                                        mProgresstime = 0;
+                                        mMaxProgresstime = 0;
+                                        mEfficiencyIncrease = 0;
+                                        mLastWorkingTick = mTotalRunTime;
+                                        if (processingLogic != null) {
+                                            recipesDone += Math
+                                                .max(processingLogic.getCurrentParallels(), lastParallel);
+                                        } else {
+                                            recipesDone += 1;
+                                        }
+                                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                                            if (checkRecipe()) {
+                                                mEfficiency = Math.max(
+                                                    0,
+                                                    min(
+                                                        mEfficiency + mEfficiencyIncrease,
+                                                        getMaxEfficiency(mInventory[1])
+                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                            } else {
+                                                afterRecipeCheckFailed();
+                                            }
+                                            updateSlots();
+                                        } else {
+                                            notAllowedToWork_stopMachine_EM();
+                                        }
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick
@@ -1069,15 +1075,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mOutputItems = null;
 
         if (mOutputFluids != null) {
-            if (mOutputFluids.length == 1) {
-                for (FluidStack tStack : mOutputFluids) {
-                    if (tStack != null) {
-                        addOutput(tStack);
-                    }
-                }
-            } else if (mOutputFluids.length > 1) {
-                addFluidOutputs(mOutputFluids);
-            }
+            addFluidOutputs(mOutputFluids);
         }
         mOutputFluids = null;
     }
@@ -1261,30 +1259,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-    }
-
-    protected final void powerInput_EM() {
-        long euVar;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput();
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput() * tHatch.getAmperes();
             if (tHatch.getBaseMetaTileEntity()
                 .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
@@ -1545,7 +1519,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> list = new ArrayList<>();
+        List<MTEHatch> list = new ArrayList<>(mEnergyHatches.size() + eEnergyMulti.size());
         list.addAll(filterValidMTEs(mEnergyHatches));
         list.addAll(filterValidMTEs(eEnergyMulti));
         return list;

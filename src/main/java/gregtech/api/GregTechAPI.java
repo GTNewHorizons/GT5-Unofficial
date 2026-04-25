@@ -171,8 +171,8 @@ public class GregTechAPI {
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
-        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsSE, sBlockCasingsSEMotor,
-        sBlockCasingsDyson, sBlockCasingsSiphon;
+        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsBEC, sBlockCasingsSE,
+        sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -315,7 +315,7 @@ public class GregTechAPI {
             if (id != null) {
                 if (id == -1) // for all-meta registrations, also with meta > 32
                     return true;
-                return (id & B[aMeta]) != 0;
+                return aMeta < 32 && (id & B[aMeta]) != 0;
             }
         }
         return false;

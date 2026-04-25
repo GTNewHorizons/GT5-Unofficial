@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.Multimaps;
@@ -27,6 +29,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 
@@ -331,6 +334,16 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
         iLines.addAll(Arrays.asList(infoStrings));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, Collections.emptyMap()));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc, Map<String, Object> vars) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, vars));
         return this;
     }
 
