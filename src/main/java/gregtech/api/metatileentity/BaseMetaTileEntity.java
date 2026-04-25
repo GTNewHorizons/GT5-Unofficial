@@ -115,8 +115,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     private boolean mWorkUpdate = false;
     private boolean mWorks = true;
     private boolean oRedstone = false;
-    private byte mColor = 0, oldColor = 0, oldRedstoneData = 63, oldTextureData = 0,
-        oldUpdateData = 0;
+    private byte mColor = 0, oldColor = 0, oldRedstoneData = 63, oldTextureData = 0, oldUpdateData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
     private int oldX = 0, oldY = 0, oldZ = 0;
