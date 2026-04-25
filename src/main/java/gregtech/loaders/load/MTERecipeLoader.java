@@ -2055,8 +2055,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(Materials.CastIron) });
+            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.CastIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2667,8 +2666,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Furnace.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Furnace, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Macerator.get(1L),
             GTModHandler.RecipeBits.BITSD,
@@ -2679,8 +2678,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Macerator.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "XMX", "PPP", 'M', ItemList.Machine_Bronze_Macerator, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Extractor.get(1L),
             GTModHandler.RecipeBits.BITSD,
@@ -2691,8 +2690,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Extractor.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Extractor, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Hammer.get(1L),
             GTModHandler.RecipeBits.BITSD,
@@ -2703,8 +2702,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Hammer.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "XMX", "PPP", 'M', ItemList.Machine_Bronze_Hammer, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Compressor.get(1L),
             GTModHandler.RecipeBits.BITSD,
@@ -2714,8 +2713,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_Compressor.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Compressor, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_AlloySmelter.get(1L),
             GTModHandler.RecipeBits.BITSD,
@@ -2725,8 +2724,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_HP_AlloySmelter.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "PSP", "PMP", "PXP", 'M', ItemList.Machine_Bronze_AlloySmelter, 'X',
-                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron),
-                'S', OrePrefixes.plate.get(Materials.Steel) });
+                OrePrefixes.pipeSmall.get(Materials.CastIron), 'P', OrePrefixes.plate.get(Materials.CastIron), 'S',
+                OrePrefixes.plate.get(Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_ULV.get(1L),
