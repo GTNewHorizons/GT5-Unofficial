@@ -10,7 +10,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
-import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
@@ -1600,7 +1599,7 @@ public class MTERecipeLoader implements Runnable {
         // Industrial Centrifuge
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
                 OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
                 ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
@@ -1608,21 +1607,21 @@ public class MTERecipeLoader implements Runnable {
         // Amazon Warehousing Depot
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
                 ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
 
         // Industrial Wire Factory
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialWireFactory.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
 
         // Industrial Electrolyzer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
                 ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
         // Mega Chemical Reactor
@@ -1638,14 +1637,14 @@ public class MTERecipeLoader implements Runnable {
         // Industrial Mixer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
                 MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
 
         // Mixer casing, move if there is a better place for it
         GTModHandler.addCraftingRecipe(
             ItemList.CasingMixer.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
                 MaterialsAlloy.MARAGING250.getPlate(1), 'F',
                 OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
@@ -1653,7 +1652,7 @@ public class MTERecipeLoader implements Runnable {
         // Forming Core
         GTModHandler.addCraftingRecipe(
             ItemList.FormingCore.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
     }
@@ -3820,7 +3819,6 @@ public class MTERecipeLoader implements Runnable {
     }
 
     private static void run4() {
-        long bits = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
 
         // high pressure fluid pipes
         GTValues.RA.stdBuilder()
@@ -3853,448 +3851,448 @@ public class MTERecipeLoader implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.ULV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_LV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_MV, 'V', ItemList.Conveyor_Module_MV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.MV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_HV, 'V', ItemList.Conveyor_Module_HV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.HV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_EV, 'V', ItemList.Conveyor_Module_EV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.EV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_IV, 'V', ItemList.Conveyor_Module_IV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.IV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_LuV, 'V', ItemList.Conveyor_Module_LuV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LuV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.ZPM) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.UV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_UHV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.UHV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_LV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_MV, 'V', ItemList.Conveyor_Module_MV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_HV, 'V', ItemList.Conveyor_Module_HV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_EV, 'V', ItemList.Conveyor_Module_EV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_IV, 'V', ItemList.Conveyor_Module_IV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_LuV, 'V', ItemList.Conveyor_Module_LuV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_LV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MV, 'V', ItemList.Conveyor_Module_MV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_HV, 'V', ItemList.Conveyor_Module_HV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_EV, 'V', ItemList.Conveyor_Module_EV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_IV, 'V', ItemList.Conveyor_Module_IV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_LuV, 'V', ItemList.Conveyor_Module_LuV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_ULV, 'V', ItemList.Robot_Arm_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_LV, 'V', ItemList.Robot_Arm_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_MV, 'V', ItemList.Robot_Arm_MV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_HV, 'V', ItemList.Robot_Arm_HV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_EV, 'V', ItemList.Robot_Arm_EV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_IV, 'V', ItemList.Robot_Arm_IV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_LuV, 'V', ItemList.Robot_Arm_LuV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_ZPM, 'V', ItemList.Robot_Arm_ZPM, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_UV, 'V', ItemList.Robot_Arm_UV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_MAX, 'V', ItemList.Robot_Arm_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_ULV, 'V', ItemList.Conveyor_Module_LV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_LV, 'V', ItemList.Conveyor_Module_LV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_MV, 'V', ItemList.Conveyor_Module_MV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_HV, 'V', ItemList.Conveyor_Module_HV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_EV, 'V', ItemList.Conveyor_Module_EV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_IV, 'V', ItemList.Conveyor_Module_IV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_LuV, 'V', ItemList.Conveyor_Module_LuV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_UV, 'V', ItemList.Conveyor_Module_UV, 'D',
                 ItemList.Tool_DataOrb });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_UHV, 'V', ItemList.Conveyor_Module_UHV, 'D',
                 ItemList.Tool_DataOrb });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_LV, 'V', ItemList.Conveyor_Module_LV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_MV, 'V', ItemList.Conveyor_Module_MV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_HV, 'V', ItemList.Conveyor_Module_HV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_EV, 'V', ItemList.Conveyor_Module_EV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_IV, 'V', ItemList.Conveyor_Module_IV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_LuV, 'V', ItemList.Conveyor_Module_LuV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'D',
                 ItemList.Tool_DataStick });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "DMV", "DDD", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'D',
                 ItemList.Tool_DataStick });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_LV, 'V', ItemList.Conveyor_Module_LV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_MV, 'V', ItemList.Conveyor_Module_MV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_HV, 'V', ItemList.Conveyor_Module_HV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_EV, 'V', ItemList.Conveyor_Module_EV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_IV, 'V', ItemList.Conveyor_Module_IV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_LuV, 'V', ItemList.Conveyor_Module_LuV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Conveyor_Module_ZPM, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_ULV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Robot_Arm_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_LV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_LV, 'V', ItemList.Robot_Arm_LV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_MV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MV, 'V', ItemList.Robot_Arm_MV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_HV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_HV, 'V', ItemList.Robot_Arm_HV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_EV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_EV, 'V', ItemList.Robot_Arm_EV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_IV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_IV, 'V', ItemList.Robot_Arm_IV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_LuV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_LuV, 'V', ItemList.Robot_Arm_LuV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_ZPM.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Robot_Arm_ZPM, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_UV.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Robot_Arm_UV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_MAX.get(1L),
-            bits,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Robot_Arm_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });

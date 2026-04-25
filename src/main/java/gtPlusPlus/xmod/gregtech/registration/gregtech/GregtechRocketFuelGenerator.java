@@ -66,8 +66,7 @@ public class GregtechRocketFuelGenerator {
                 6).getStackForm(1L));
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_EV.get(1L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
@@ -75,8 +74,7 @@ public class GregtechRocketFuelGenerator {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_IV.get(1L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
@@ -85,8 +83,7 @@ public class GregtechRocketFuelGenerator {
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_LuV.get(1L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
+            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
