@@ -70,6 +70,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
             aBaseMetaTileEntity.tryDisableTicking();
         }
