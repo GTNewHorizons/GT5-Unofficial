@@ -623,7 +623,7 @@ public class GTModHandler {
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
-        addMachineCraftingRecipe(aResult, RecipeBits.BITSD, aRecipe, machineTier);
+        addMachineCraftingRecipe(aResult, RecipeBits.BITS, aRecipe, machineTier);
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
@@ -2178,8 +2178,11 @@ public class GTModHandler {
          */
         public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
-         * Legacy combination of common bits. Equivalent to {@link #BITS}.
+         * Used to be BITS | DISMANTLEABLE.
+         *
+         * @deprecated Use BITS instead.
          */
+        @Deprecated
         public static final long BITSD = BITS;
         /**
          * Combination of common bits. DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL,

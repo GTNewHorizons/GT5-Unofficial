@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_RocketEngine;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_LuV;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 
 import net.minecraft.item.ItemStack;
 
@@ -33,7 +33,7 @@ public class GregtechRocketFuelGenerator {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_RocketEngine.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.LargeCombustionEngine.get(1), 'P',
                 ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C',
                 OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
@@ -41,7 +41,7 @@ public class GregtechRocketFuelGenerator {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_RocketEngine.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "PhP", "RFR", "PWP", 'R', OrePrefixes.pipeMedium.get(Materials.TungstenSteel), 'F',
                 ItemList.Casing_RobustTungstenSteel, 'P', MaterialsAlloy.NITINOL_60.getGear(1), 'W',
                 OrePrefixes.stickLong.get(Materials.TungstenSteel) });
