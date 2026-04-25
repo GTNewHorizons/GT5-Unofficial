@@ -1923,6 +1923,9 @@ public enum ItemList implements IItemContainer {
     Circuit_Board_Bio,
     Circuit_Board_Bio_Ultra,
     Circuit_Board_Optical,
+    Circuit_Board_Exotic,
+    Circuit_Board_Cosmic,
+    Circuit_Board_Transcendent,
 
     Circuit_Parts_Resistor,
     Circuit_Parts_ResistorSMD,
@@ -1958,6 +1961,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Silicon_Wafer5,
     Circuit_Silicon_Wafer6,
     Circuit_Silicon_Wafer7,
+    Circuit_Silicon_Wafer8,
     Circuit_Wafer_ILC,
     Circuit_Chip_ILC,
     Circuit_Wafer_Ram,
@@ -1997,6 +2001,16 @@ public enum ItemList implements IItemContainer {
     Circuit_Wafer_QuantumCPU,
     Circuit_Chip_QuantumCPU,
     Circuit_Wafer_Bioware,
+    Circuit_Wafer_FPIC,
+    Circuit_Chip_FPIC,
+    Circuit_Wafer_APIC,
+    Circuit_Chip_APIC,
+    Circuit_Wafer_ZPIC,
+    Circuit_Chip_ZPIC,
+    Circuit_Wafer_YPIC,
+    Circuit_Chip_YPIC,
+    Circuit_Wafer_PlPIC,
+    Circuit_Chip_PlPIC,
 
     Circuit_Chip_CrystalCPU,
     Circuit_Chip_CrystalSoC,
@@ -2015,6 +2029,9 @@ public enum ItemList implements IItemContainer {
     Spinneret,
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
+
+    Circuit_BasicElectronic,
+    Circuit_Integrated_Advanced,
 
     Circuit_Microprocessor,
     Circuit_Processor,
@@ -3005,6 +3022,8 @@ public enum ItemList implements IItemContainer {
     ComputationalMatrixNanochipCasing,
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
+    Gravitational_Lens,
+    Planck_Manifold,
 
     // semicolon after the comment to reduce merge conflicts
     ;

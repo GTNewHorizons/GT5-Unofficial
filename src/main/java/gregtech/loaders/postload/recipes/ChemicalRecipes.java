@@ -470,8 +470,8 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1))
             .fluidInputs(Materials.Chlorine.getGas(4_000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
@@ -4350,7 +4350,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Hydrogen.getGas(3_000))
             .fluidOutputs(Materials.Ammonia.getGas(1_000))
             .duration(16 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -4360,7 +4360,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .fluidOutputs(Materials.Ammonia.getGas(1_000))
             .duration(16 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -4369,7 +4369,7 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(Materials.Ammonia.getCells(1))
             .fluidInputs(Materials.Hydrogen.getGas(3_000))
             .duration(16 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -4378,7 +4378,7 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(Materials.Ammonia.getCells(1), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .duration(16 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -5381,7 +5381,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Nitrogen.getGas(1_000), Materials.Hydrogen.getGas(3_000))
             .fluidOutputs(Materials.Ammonia.getGas(1_000))
             .duration(16 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -5389,7 +5389,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Nitrogen.getGas(10_000), Materials.Hydrogen.getGas(30_000))
             .fluidOutputs(Materials.Ammonia.getGas(10_000))
             .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.HV * 3 / 4)
+            .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(multiblockChemicalReactorRecipes);
 
         // 2NH3 + 7O = N2O4 + 3H2O

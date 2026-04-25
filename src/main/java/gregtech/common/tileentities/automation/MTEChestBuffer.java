@@ -118,4 +118,9 @@ public class MTEChestBuffer extends MTEBuffer {
     protected void addMainUI(ModularWindow.Builder builder) {
         addInventorySlots(builder);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
