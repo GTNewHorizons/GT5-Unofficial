@@ -28,7 +28,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.EmptyWidget;
-import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
@@ -336,8 +335,7 @@ public class ProductionPanel extends ModularPanel {
         }
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().widthRel(1);
         cells.forEach(listWidget::child);
-        return listWidget
-            .widthRel(1)
+        return listWidget.widthRel(1)
             .expanded();
     }
 
@@ -386,7 +384,6 @@ public class ProductionPanel extends ModularPanel {
 
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().sizeRel(1);
         cells.forEach(listWidget::child);
-        return listWidget
-            .sizeRel(1);
+        return listWidget.sizeRel(1);
     }
 }
