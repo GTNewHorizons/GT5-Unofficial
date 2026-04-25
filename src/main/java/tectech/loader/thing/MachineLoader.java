@@ -40,6 +40,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ExtendedMegaUltimateBuckConve
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremelyUltimateBuckConverter;
 import static gregtech.api.enums.MetaTileEntityIDs.EyeofHarmony;
 import static gregtech.api.enums.MetaTileEntityIDs.ForgeoftheGods;
+import static gregtech.api.enums.MetaTileEntityIDs.HV4ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.HelioflarePowerForge;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofluxMeltingCore;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofusionExoticizer;
@@ -347,6 +348,7 @@ import static tectech.thing.CustomItemList.eM_dynamoMulti256_UMV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UXV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_EV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti4_HV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_IV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_LuV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_UEV;
@@ -1340,6 +1342,9 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
+        eM_dynamoMulti4_HV.set(
+            new MTEHatchDynamoMulti(HV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.03", "HV 4A Dynamo Hatch", 4, 4)
+                .getStackForm(1L));
         eM_dynamoMulti4_EV.set(
             new MTEHatchDynamoMulti(EV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.04", "EV 4A Dynamo Hatch", 4, 4)
                 .getStackForm(1L));
