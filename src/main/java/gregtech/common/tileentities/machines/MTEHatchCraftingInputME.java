@@ -67,6 +67,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -675,12 +676,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             name.append(getLocalName());
         }
 
-        if (mInventory[SLOT_CIRCUIT] != null) {
-            try {
-                name.append(
-                    String
-                        .format(Gregtech.machines.ghostCircuitSuffixFormat, mInventory[SLOT_CIRCUIT].getItemDamage()));
-            } catch (IllegalFormatException ignored) {}
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base instanceof IInterfaceNameProvider) {
+            String circuitSuffix = ((IInterfaceNameProvider) base).getInterfaceNameSuffix();
+            if (circuitSuffix != null) name.append(circuitSuffix);
         }
         StringJoiner manualSlots = new StringJoiner(", ");
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
