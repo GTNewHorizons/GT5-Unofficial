@@ -10,7 +10,8 @@ import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
 import forestry.plugins.PluginArboriculture;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class ForestryTreeHandler {
 
@@ -43,6 +44,13 @@ public class ForestryTreeHandler {
                     fruit = individual.getProduceList()[0];
                 }
             }
+
+            MTETreeFarmLegacy.registerForestryTree(
+                speciesUID,
+                sapling == null ? null : sapling.copy(),
+                log == null ? null : log.copy(),
+                leaves.copy(),
+                fruit == null ? null : fruit.copy());
 
             MTETreeFarm.registerForestryTree(
                 speciesUID,
@@ -80,6 +88,13 @@ public class ForestryTreeHandler {
                     fruit = individual.getProduceList()[0];
                 }
             }
+
+            MTETreeFarmLegacy.registerForestryTree(
+                speciesUID,
+                sapling == null ? null : sapling.copy(),
+                log == null ? null : log.copy(),
+                leaves.copy(),
+                fruit == null ? null : fruit.copy());
 
             MTETreeFarm.registerForestryTree(
                 speciesUID,
