@@ -676,11 +676,32 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             name.append(getLocalName());
         }
 
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base instanceof IInterfaceNameProvider) {
-            String circuitSuffix = ((IInterfaceNameProvider) base).getInterfaceNameSuffix();
-            if (circuitSuffix != null) name.append(circuitSuffix);
+        return name.append(this.getNameSuffix()).toString();
+    }
+
+    @Override
+    public String getRawName() {
+        if (hasCustomName()) {
+            return getCustomName();
         }
+
+        if (getCrafterIcon() != null) {
+            return getCrafterIcon().getUnlocalizedName();
+        } else {
+            return getLocalName();
+        }
+    }
+
+    @Override
+    public String getNameSuffix() {
+        StringBuilder suffix = new StringBuilder();
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base instanceof IInterfaceNameProvider nameProvider) {
+            String circuitSuffix = nameProvider.getInterfaceNameSuffix();
+            if (circuitSuffix != null) suffix.append(circuitSuffix);
+        }
+
         StringJoiner manualSlots = new StringJoiner(", ");
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
@@ -689,10 +710,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
         if (manualSlots.length() > 0) {
             try {
-                name.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+                suffix.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
             } catch (IllegalFormatException ignored) {}
         }
-        return name.toString();
+
+        return suffix.toString();
     }
 
     @Override
