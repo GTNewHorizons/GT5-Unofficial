@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.util.List;
 
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +19,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -39,7 +39,7 @@ public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipE
     }
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int i, String[] description,
-                               int aAmp) {
+        int aAmp) {
         super(aID, aName, aNameRegional, aTier, description);
         Amperes = maxAmperes = aAmp;
     }
