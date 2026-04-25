@@ -1923,6 +1923,9 @@ public enum ItemList implements IItemContainer {
     Circuit_Board_Bio,
     Circuit_Board_Bio_Ultra,
     Circuit_Board_Optical,
+    Circuit_Board_Exotic,
+    Circuit_Board_Cosmic,
+    Circuit_Board_Transcendent,
 
     Circuit_Parts_Resistor,
     Circuit_Parts_ResistorSMD,
@@ -2026,6 +2029,9 @@ public enum ItemList implements IItemContainer {
     Spinneret,
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
+
+    Circuit_BasicElectronic,
+    Circuit_Integrated_Advanced,
 
     Circuit_Microprocessor,
     Circuit_Processor,

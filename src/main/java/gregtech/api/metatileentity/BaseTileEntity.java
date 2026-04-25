@@ -642,7 +642,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         NEI_TRANSFER_STEAM_TOOLTIP = "GT5U.machines.nei_transfer.steam.tooltip",
         NEI_TRANSFER_VOLTAGE_TOOLTIP = "GT5U.machines.nei_transfer.voltage.tooltip";
 
-    public static final int TOOLTIP_DELAY = 5;
+    public static final int TOOLTIP_DELAY = 0;
 
     /**
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
