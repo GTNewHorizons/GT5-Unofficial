@@ -850,7 +850,6 @@ public class MaterialsInit {
             .addAspect(TCAspects.METALLUM, 3)
             .addOreByproduct(() -> Materials.Nickel)
             .addOreByproduct(() -> Materials.Tin)
-            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
@@ -2251,7 +2250,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
-            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
@@ -6888,7 +6886,6 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Iron)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
-            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addSubTag(SubTag.BLASTFURNACE_CALCITE_TRIPLE)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.TRANSMUTABLE_NUGGETS)
@@ -9044,7 +9041,7 @@ public class MaterialsInit {
         Materials.Uvarovite = loadUvarovite();
         Materials.VanadiumGallium = loadVanadiumGallium();
         Materials.Wood = loadWood();
-        Materials.WroughtIron = loadWroughtIron();
+        Materials.WroughtIron = Materials.CastIron = loadCastIron();
         Materials.Wulfenite = loadWulfenite();
         Materials.YellowLimonite = loadYellowLimonite();
         Materials.YttriumBariumCuprate = loadYttriumBariumCuprate();
@@ -9442,9 +9439,9 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadWroughtIron() {
+    private static Materials loadCastIron() {
         return new MaterialBuilder().setName("WroughtIron")
-            .setDefaultLocalName("Wrought Iron")
+            .setDefaultLocalName("Cast Iron")
             .setChemicalFormula("Fe*")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeLightGray)
@@ -10416,7 +10413,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Iron, 1)
             .setSmeltingInto(() -> Materials.Iron)
             .setMaceratingInto(() -> Materials.Iron)
-            .setArcSmeltingInto(() -> Materials.WroughtIron)
             .addAspect(TCAspects.METALLUM, 2)
             .addAspect(TCAspects.MAGNETO, 1)
             .addSubTag(SubTag.METAL)

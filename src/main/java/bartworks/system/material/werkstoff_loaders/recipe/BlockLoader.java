@@ -25,6 +25,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeConstants;
 
@@ -37,8 +38,8 @@ public class BlockLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(ingot, 9))
-                .duration(16 * TICKS)
-                .eut(90)
+                .duration(32 * TICKS)
+                .eut(TierEU.RECIPE_LV)
                 .metadata(GTRecipeConstants.RECYCLE, true)
                 .addTo(UniversalArcFurnace);
         }

@@ -239,7 +239,7 @@ public class AssemblyLineServer {
                                 Materials.Tritanium, Materials.Tungsten, Materials.TungstenSteel, Materials.Ultimet,
                                 Materials.Uranium, Materials.Uranium235 };
                             case 8 -> mMats = new Materials[] { Materials.Vanadium, Materials.VanadiumGallium,
-                                Materials.WroughtIron, Materials.Ytterbium, Materials.Yttrium,
+                                Materials.CastIron, Materials.Ytterbium, Materials.Yttrium,
                                 Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
                                 Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS,
                                 Materials.Steeleaf, Materials.Ichorium, Materials.Firestone };
