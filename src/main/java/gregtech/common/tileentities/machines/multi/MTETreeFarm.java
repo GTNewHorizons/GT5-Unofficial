@@ -155,7 +155,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
             .addEnergyHatch("Any Sterile Farm Casing", 1)
             .addMaintenanceHatch("Any Sterile Farm Casing", 1)
             .addMufflerHatch("Any Sterile Farm Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Author")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
     }
