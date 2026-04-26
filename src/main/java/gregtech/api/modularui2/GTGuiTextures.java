@@ -184,6 +184,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .location(GregTech.ID, "gui/picture/gray_rectangle")
         .build();
+
+    public static final UITexture BW_BACKGROUND_CIRCUIT_PROGRAMMER = UITexture
+        .fullImage(MainMod.MOD_ID, "GUI/background/circuit_programmer");
     // endregion background
 
     // region overlay
