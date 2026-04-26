@@ -17,12 +17,11 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.CapturingTessellator;
-import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 
@@ -40,7 +39,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
     private ShaderProgram laserProgram;
     private static int u_LaserCameraPosition = -1, u_LaserColor = -1, u_LaserModelMatrix = -1;
-    private static VertexBuffer laserVBO;
+    private static IVertexArrayObject laserVBO;
     private static ResourceLocation laserTexture;
 
     private static final Matrix4fStack modelMatrix = new Matrix4fStack(2);
@@ -91,8 +90,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         laserTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/laser.png");
 
-        TessellatorManager.startCapturing();
-        CapturingTessellator tess = (CapturingTessellator) TessellatorManager.get();
+        final DirectTessellator tess = DirectTessellator.startCapturing();
 
         tess.startDrawingQuads();
 
@@ -108,7 +106,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         tess.draw();
 
-        laserVBO = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        laserVBO = DirectTessellator.stopCapturingToVBO(VertexBufferType.IMMUTABLE);
 
         initialized = true;
     }
