@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -597,7 +598,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 : 80) / GTUtility.powInt(2, tier));
     }
 
-    private ItemStack[] getOutputByDrops(List<ItemStack> oreBlockDrops) {
+    private ItemStack @NotNull [] getOutputByDrops(@NotNull List<ItemStack> oreBlockDrops) {
         long voltage = getMaxInputVoltage();
         List<ItemStack> outputItems = new ArrayList<>();
 
@@ -642,7 +643,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && !itemData.mMaterial.mMaterial.contains(SubTag.ICE_ORE);
     }
 
-    private ItemStack multiplyStackSize(ItemStack itemStack) {
+    @Contract("_ -> param1")
+    private @NotNull ItemStack multiplyStackSize(@NotNull ItemStack itemStack) {
         itemStack.stackSize *= getBaseMetaTileEntity().getRandomNumber(4) + 1;
         return itemStack;
     }
@@ -711,7 +713,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     protected abstract int getBaseProgressTime();
 
-    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
+    protected MultiblockTooltipBuilder createTooltip(String tier) {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
@@ -811,66 +813,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
         return ImmutableList.of(
-            (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
-                .setPlayClickSound(true)
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
-                .attachSyncer(
-                    new FakeSyncWidget.IntegerSyncer(() -> chunkRadiusConfig, (val) -> chunkRadiusConfig = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.button.ore_drill_radius_1",
-                            formatNumber((long) chunkRadiusConfig << 4)),
-                        StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16),
-            (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (replaceWithCobblestone) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> replaceWithCobblestone,
-                        (val) -> replaceWithCobblestone = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
-                                : "GT5U.gui.button.ore_drill_cobblestone_off")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16),
-            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (showWorkArea) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_WORK_AREA };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            showWorkArea ? "GT5U.gui.button.work_area_preview_on"
-                                : "GT5U.gui.button.work_area_preview_off")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16));
+            createReplaceWithCobblestone(builder),
+            createChunkRangeButton(builder),
+            createWorkAreaToggleButton(builder));
     }
 
     @Override
@@ -1096,5 +1041,72 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             tile.markDirty();
             base.issueTileUpdate();
         }
+    }
+
+    // UI Buttons
+    private ButtonWidget createReplaceWithCobblestone(ModularWindow.Builder builder) {
+        return (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                if (replaceWithCobblestone) {
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                        GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
+                }
+                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
+            })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> replaceWithCobblestone, (val) -> replaceWithCobblestone = val),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange())
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocal(
+                        replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
+                            : "GT5U.gui.button.ore_drill_cobblestone_off")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
+    }
+
+    private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
+        return (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
+            .setPlayClickSound(true)
+            .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
+            .attachSyncer(
+                new FakeSyncWidget.IntegerSyncer(() -> chunkRadiusConfig, (val) -> chunkRadiusConfig = val),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange())
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.button.drill_radius_1",
+                        formatNumber((long) chunkRadiusConfig << 4)),
+                    StatCollector.translateToLocal("GT5U.gui.button.drill_radius_2")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
+    }
+
+    private ButtonWidget createWorkAreaToggleButton(ModularWindow.Builder builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                if (showWorkArea) {
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                        GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                }
+                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+            })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange())
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocal(
+                        showWorkArea ? "GT5U.gui.button.work_area_preview_on"
+                            : "GT5U.gui.button.work_area_preview_off")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
     }
 }

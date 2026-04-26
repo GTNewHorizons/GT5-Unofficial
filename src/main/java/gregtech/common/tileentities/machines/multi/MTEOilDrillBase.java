@@ -49,6 +49,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
@@ -236,25 +237,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-        int oldChunkRange = chunkRangeConfig;
-        if (aPlayer.isSneaking()) {
-            if (chunkRangeConfig > 0) {
-                chunkRangeConfig--;
-            }
-            if (chunkRangeConfig == 0) chunkRangeConfig = getRangeInChunks();
-        } else {
-            if (chunkRangeConfig <= getRangeInChunks()) {
-                chunkRangeConfig++;
-            }
-            if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
-        }
 
-        if (oldChunkRange != chunkRangeConfig) {
-            mOilFieldChunks.clear();
-            activeOilFieldChunkKeys.clear();
-            invalidateWorkAreaCache();
-            syncWorkAreaData();
-        }
+        adjustChunkRange(!aPlayer.isSneaking());
 
         GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
     }
@@ -594,27 +578,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of(
-            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (showWorkArea) {
-                        return new com.gtnewhorizons.modularui.api.drawable.IDrawable[] {
-                            GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            showWorkArea ? "GT5U.gui.button.work_area_preview_on"
-                                : "GT5U.gui.button.work_area_preview_off")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16));
+        return ImmutableList.of(createChunkRangeButton(builder), createWorkAreaToggleButton(builder));
     }
 
     @Override
@@ -675,6 +639,37 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     public int getCurrentWorkAreaOrder() {
         return 0;
+    }
+
+    private void adjustChunkRange(boolean increase) {
+        int oldChunkRange = chunkRangeConfig;
+
+        if (increase) {
+            if (chunkRangeConfig <= getRangeInChunks()) {
+                chunkRangeConfig++;
+            }
+
+            if (chunkRangeConfig > getRangeInChunks()) {
+                chunkRangeConfig = 1;
+            }
+        } else {
+            if (chunkRangeConfig > 0) {
+                chunkRangeConfig--;
+            }
+
+            if (chunkRangeConfig == 0) {
+                chunkRangeConfig = getRangeInChunks();
+            }
+        }
+
+        if (oldChunkRange != chunkRangeConfig) {
+            mOilFieldChunks.clear();
+
+            activeOilFieldChunkKeys.clear();
+
+            invalidateWorkAreaCache();
+            syncWorkAreaData();
+        }
     }
 
     private @Nullable WorkAreaBounds getWorkAreaBounds() {
@@ -759,5 +754,59 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private static long packChunkKey(int chunkX, int chunkZ) {
         return (((long) chunkX) << 32) ^ (chunkZ & 0xffffffffL);
+    }
+
+    // UI buttons
+    private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
+        return (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            .setOnClick((clickData, widget) -> adjustChunkRange(clickData.mouseButton == 0))
+            .setPlayClickSound(true)
+            .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
+            .attachSyncer(
+                new FakeSyncWidget.IntegerSyncer(() -> chunkRangeConfig, this::setChunkRangeConfigFromSync),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange())
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.button.drill_radius_1",
+                        formatNumber(chunkRangeConfig),
+                        formatNumber(chunkRangeConfig)),
+                    StatCollector.translateToLocal("GT5U.gui.button.drill_radius_2")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
+    }
+
+    private ButtonWidget createWorkAreaToggleButton(ModularWindow.Builder builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                if (showWorkArea) {
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                        GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                }
+
+                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+            })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange())
+            .dynamicTooltip(
+                () -> ImmutableList.of(
+                    StatCollector.translateToLocal(
+                        showWorkArea ? "GT5U.gui.button.work_area_preview_on"
+                            : "GT5U.gui.button.work_area_preview_off")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
+    }
+
+    private void setChunkRangeConfigFromSync(int value) {
+        if (chunkRangeConfig == value) {
+            return;
+        }
+
+        chunkRangeConfig = value;
+        invalidateWorkAreaCache();
     }
 }
