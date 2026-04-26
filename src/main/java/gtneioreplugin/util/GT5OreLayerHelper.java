@@ -111,10 +111,15 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (IStoneType stoneType : ores[veinLayer].getValidStones()) {
+            List<IStoneType> validStones = ores[veinLayer].getValidStones();
+            for (IStoneType stoneType : validStones) {
                 if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));
                 }
+            }
+            // Fallback just in case so we at least show *some* ore
+            if (stackList.isEmpty() && !validStones.isEmpty()) {
+                stackList.add(getLayerOre(veinLayer, validStones.get(0)));
             }
             return stackList;
         }

@@ -205,18 +205,9 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween, List<ItemStack> stackListSporadic) {
             this.oreVein = oreVein;
             positionedStackPrimary = new PositionedStack(stackListPrimary, 0, VEIN_LAYER_START_Y);
-            positionedStackSecondary = new PositionedStack(
-                stackListSecondary,
-                0,
-                0);
-            positionedStackBetween = new PositionedStack(
-                stackListBetween,
-                0,
-                0);
-            positionedStackSporadic = new PositionedStack(
-                stackListSporadic,
-                0,
-                0);
+            positionedStackSecondary = new PositionedStack(stackListSecondary, 0, 0);
+            positionedStackBetween = new PositionedStack(stackListBetween, 0, 0);
+            positionedStackSporadic = new PositionedStack(stackListSporadic, 0, 0);
             updateOreYPos(0);
             setDimensionDisplayItems(dimAbbr);
         }
@@ -277,14 +268,14 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             }
         }
 
-        private void updateOreYPos(int yOffset){
+        private void updateOreYPos(int yOffset) {
             positionedStackPrimary.rely = VEIN_LAYER_START_Y + yOffset;
             positionedStackSecondary.rely = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT + yOffset;
-            positionedStackBetween.rely = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT*2 + yOffset;
-            positionedStackSporadic.rely = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT*3 + yOffset;
+            positionedStackBetween.rely = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT * 2 + yOffset;
+            positionedStackSporadic.rely = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT * 3 + yOffset;
         }
 
-        public void drawExtra(){
+        public void drawExtra() {
             int numLines = drawVeinName(oreVein);
 
             drawVeinLayerNames(oreVein, numLines);
@@ -294,7 +285,6 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
             drawSeeAllRecipesLabel();
         }
-
 
         private int drawVeinName(OreLayerWrapper oreLayer) {
             String text = oreLayer.getLocalizedName() + " " + I18n.format("gtnop.gui.nei.vein");
