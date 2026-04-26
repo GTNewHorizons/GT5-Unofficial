@@ -762,9 +762,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
+                        StatCollector.translateToLocal("GT5U.gui.button.ore_drill_cobblestone"),
                         StatCollector.translateToLocal(
-                            replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
-                                : "GT5U.gui.button.ore_drill_cobblestone_off")))
+                            replaceWithCobblestone ? "GT5U.gui.button.feature_enabled"
+                                : "GT5U.gui.button.feature_disabled")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16));
     }

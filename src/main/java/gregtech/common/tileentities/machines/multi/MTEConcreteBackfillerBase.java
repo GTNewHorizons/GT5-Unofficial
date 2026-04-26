@@ -259,9 +259,10 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
+                        StatCollector.translateToLocal("GT5U.gui.button.liquid_filling"),
                         StatCollector.translateToLocal(
-                            mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
-                                : "GT5U.gui.button.liquid_filling_OFF")))
+                            mLiquidEnabled ? "GT5U.gui.button.feature_enabled"
+                                : "GT5U.gui.button.feature_disabled")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(100, BUTTON_Y_LEVEL))
                 .setSize(16, 16));

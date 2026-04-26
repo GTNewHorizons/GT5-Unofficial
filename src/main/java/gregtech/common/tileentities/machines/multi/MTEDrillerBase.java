@@ -800,9 +800,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
+                        StatCollector.translateToLocal("GT5U.gui.button.chunk_loading"),
                         StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
+                            mChunkLoadingEnabled ? "GT5U.gui.button.feature_enabled"
+                                : "GT5U.gui.button.feature_disabled")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
                 .setSize(16, 16))

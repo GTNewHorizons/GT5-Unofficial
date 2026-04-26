@@ -293,8 +293,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsInputSeparation,
             this::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation"));
 
         return (ButtonWidget) button;
     }
@@ -386,8 +385,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsBatchMode,
             this::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
 
         return (ButtonWidget) button;
     }
@@ -435,8 +433,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsSingleRecipeLocking,
             this::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
 
         return (ButtonWidget) button;
     }
@@ -458,29 +455,28 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * @param widget                 the widget button to add the tooltip to
      * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
      * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
-     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
-     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     * @param tooltipFeatureName     tooltip text to display as the name of the feature
      *
      *
      * @see gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
-     *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
+     *      Supplier, Supplier, String) For equivalent method but made for non-ModularUI
      */
     default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,
-        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
-
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
+        widget.addTooltip(tooltipFeatureName);
         if (supportsFeature.get()) {
             widget.dynamicTooltip(() -> {
                 if (isFeatureEnabled.get()) {
-                    return Collections.singletonList(tooltipFeatureEnabled);
+                    return Collections.singletonList(StatCollector.translateToLocal("GT5U.gui.button.feature_enabled"));
                 } else {
-                    return Collections.singletonList(tooltipFeatureDisabled);
+                    return Collections.singletonList(StatCollector.translateToLocal("GT5U.gui.button.feature_enabled"));
                 }
             });
         } else {
             if (isFeatureEnabled.get()) {
-                widget.addTooltip(tooltipFeatureEnabled);
+                widget.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.feature_enabled"));
             } else {
-                widget.addTooltip(tooltipFeatureDisabled);
+                widget.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.feature_disabled"));
             }
 
             widget.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
