@@ -4267,7 +4267,7 @@ public class MaterialsInit {
 
     private static Materials loadVoid() {
         return new MaterialBuilder().setName("Void")
-            .setDefaultLocalName("Void")
+            .setDefaultLocalName("Void Metal")
             .setChemicalFormula("ShFeMa₃")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyeBlack)
