@@ -897,7 +897,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1))
             .duration(41 * SECONDS + 16 * TICKS)
