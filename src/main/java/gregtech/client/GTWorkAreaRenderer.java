@@ -227,13 +227,12 @@ public class GTWorkAreaRenderer {
 
         Vec3 end = Vec3.createVectorHelper(textX, textY, textZ);
 
-        MovingObjectPosition hit = mc.theWorld.func_147447_a(
-            start,
-            end,
-            false, // stopOnLiquid
-            true, // ignoreBlockWithoutBoundingBox
-            false // returnLastUncollidableBlock
-        );
+        /*
+         * MCP name for rayTraceBlocks(
+         * start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock
+         * ) in MC 1.7.10.
+         */
+        MovingObjectPosition hit = mc.theWorld.func_147447_a(start, end, false, true, false);
 
         return hit == null;
     }
