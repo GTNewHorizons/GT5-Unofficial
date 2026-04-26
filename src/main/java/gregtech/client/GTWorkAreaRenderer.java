@@ -3,7 +3,6 @@ package gregtech.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
@@ -19,6 +18,8 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlantBase;
 @SideOnly(Side.CLIENT)
 public class GTWorkAreaRenderer {
 
+    private static final int WORK_AREA_COLOR = 0x40B4FF;
+
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -29,62 +30,62 @@ public class GTWorkAreaRenderer {
 
         Entity camera = mc.renderViewEntity;
 
-        double camX = camera.lastTickPosX + (camera.posX - camera.lastTickPosX) * event.partialTicks;
-        double camY = camera.lastTickPosY + (camera.posY - camera.lastTickPosY) * event.partialTicks;
-        double camZ = camera.lastTickPosZ + (camera.posZ - camera.lastTickPosZ) * event.partialTicks;
-
-        for (Object object : mc.theWorld.loadedTileEntityList) {
-            if (!(object instanceof IGregTechTileEntity gregTechTile)) {
-                continue;
-            }
-
-            IMetaTileEntity metaTileEntity = gregTechTile.getMetaTileEntity();
-
-            if (!(metaTileEntity instanceof MTEOreDrillingPlantBase oreDrill)) {
-                continue;
-            }
-
-            if (!oreDrill.isWorkAreaShown()) {
-                continue;
-            }
-
-            // Petit culling pour éviter de parcourir/rendre des choses trop loin.
-            TileEntity tile = (TileEntity) gregTechTile;
-            double dx = tile.xCoord + 0.5D - camera.posX;
-            double dy = tile.yCoord + 0.5D - camera.posY;
-            double dz = tile.zCoord + 0.5D - camera.posZ;
-
-            if (dx * dx + dy * dy + dz * dz > 256D * 256D) {
-                continue;
-            }
-
-            renderWorkArea(oreDrill.getWorkAreaAABB(), camX, camY, camZ);
-        }
-    }
-
-    private void renderWorkArea(AxisAlignedBB worldBox, double camX, double camY, double camZ) {
-        AxisAlignedBB box = worldBox.offset(-camX, -camY, -camZ);
+        double cameraX = camera.lastTickPosX + (camera.posX - camera.lastTickPosX) * event.partialTicks;
+        double cameraY = camera.lastTickPosY + (camera.posY - camera.lastTickPosY) * event.partialTicks;
+        double cameraZ = camera.lastTickPosZ + (camera.posZ - camera.lastTickPosZ) * event.partialTicks;
 
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
+
+        /*
+         * Important:
+         * Après ce translate, on dessine en coordonnées monde normales.
+         * Donc les AxisAlignedBB passées à RenderGlobal.drawOutlinedBoundingBox
+         * ne doivent PAS être offsetées par -cameraX/Y/Z.
+         */
+        GL11.glTranslated(-cameraX, -cameraY, -cameraZ);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        // Laisse ça activé si tu veux que la box soit cachée par le terrain.
-        // Désactive-le si tu veux voir la zone à travers les blocs.
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        // Pour debug, je recommande de garder le depth test activé au début.
+        // Si tu veux voir la zone à travers les blocs ensuite, remets glDisable(GL_DEPTH_TEST).
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDepthMask(false);
 
         GL11.glLineWidth(2.0F);
-        RenderGlobal.drawOutlinedBoundingBox(box, 0x40B4FF);
+
+        for (Object object : mc.theWorld.loadedTileEntityList) {
+            if (!(object instanceof IGregTechTileEntity)) {
+                continue;
+            }
+
+            IGregTechTileEntity gregTechTile = (IGregTechTileEntity) object;
+            IMetaTileEntity metaTileEntity = gregTechTile.getMetaTileEntity();
+
+            if (!(metaTileEntity instanceof MTEOreDrillingPlantBase)) {
+                continue;
+            }
+
+            MTEOreDrillingPlantBase oreDrill = (MTEOreDrillingPlantBase) metaTileEntity;
+
+            if (!oreDrill.isWorkAreaShown()) {
+                continue;
+            }
+
+            AxisAlignedBB workArea = oreDrill.getWorkAreaAABB();
+            if (workArea == null) {
+                continue;
+            }
+
+            RenderGlobal.drawOutlinedBoundingBox(workArea, WORK_AREA_COLOR);
+        }
 
         GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();

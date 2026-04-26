@@ -69,6 +69,11 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter {
 
+    private static final String NBT_VEIN_NAME = "veinName";
+    private static final String NBT_REPLACE_WITH_COBBLESTONE = "replaceWithCobblestone";
+    private static final String NBT_CHUNK_RADIUS_CONFIG = "chunkRadiusConfig";
+    private static final String NBT_SHOW_WORK_AREA = "showWorkArea";
+
     private final LongList oreBlockPositions = new LongArrayList();
     private final LongSet oreBlockSet = new LongOpenHashSet();
     protected int mTier = 1;
@@ -103,33 +108,35 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
-        aNBT.setBoolean("showWorkArea", showWorkArea);
-        aNBT.setBoolean("replaceWithCobblestone", replaceWithCobblestone);
+
+        aNBT.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
+        aNBT.setBoolean(NBT_REPLACE_WITH_COBBLESTONE, replaceWithCobblestone);
+        aNBT.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
+
         if (veinName != null) {
-            aNBT.setString("veinName", veinName);
-        } else if (aNBT.hasKey("veinName")) {
-            aNBT.removeTag("veinName");
+            aNBT.setString(NBT_VEIN_NAME, veinName);
+        } else if (aNBT.hasKey(NBT_VEIN_NAME)) {
+            aNBT.removeTag(NBT_VEIN_NAME);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("chunkRadiusConfig")) {
-            chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
+
+        if (aNBT.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
+            chunkRadiusConfig = aNBT.getInteger(NBT_CHUNK_RADIUS_CONFIG);
         }
-        if (aNBT.hasKey("showWorkArea")) {
-            showWorkArea = aNBT.getBoolean("showWorkArea");
+
+        if (aNBT.hasKey(NBT_SHOW_WORK_AREA)) {
+            showWorkArea = aNBT.getBoolean(NBT_SHOW_WORK_AREA);
         }
-        if (aNBT.hasKey("replaceWithCobblestone")) {
-            replaceWithCobblestone = aNBT.getBoolean("replaceWithCobblestone");
+
+        if (aNBT.hasKey(NBT_REPLACE_WITH_COBBLESTONE)) {
+            replaceWithCobblestone = aNBT.getBoolean(NBT_REPLACE_WITH_COBBLESTONE);
         }
-        if (aNBT.hasKey("veinName")) {
-            veinName = aNBT.getString("veinName");
-        } else {
-            veinName = null;
-        }
+
+        veinName = aNBT.hasKey(NBT_VEIN_NAME) ? aNBT.getString(NBT_VEIN_NAME) : null;
     }
 
     private void adjustChunkRadius(boolean increase) {
@@ -151,6 +158,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         oreBlockPositions.clear();
         createInitialWorkingChunk();
+
+        syncWorkAreaData();
     }
 
     @Override
@@ -773,7 +782,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                                 : "GT5U.gui.button.ore_drill_cobblestone_off")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
-            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> showWorkArea = !showWorkArea)
+            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (showWorkArea) {
@@ -785,7 +794,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
                     builder,
-                    (widget, val) -> widget.notifyTooltipChange())
+                    (widget, val) -> widget.notifyTooltipChange()
+                )
                 .dynamicTooltip(
                     () -> ImmutableList.of(
                         StatCollector.translateToLocal(
@@ -857,16 +867,79 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return showWorkArea;
     }
 
+    private void toggleWorkArea() {
+        showWorkArea = !showWorkArea;
+        syncWorkAreaData();
+    }
+
+    private void syncWorkAreaData() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return;
+        }
+
+        TileEntity tile = (TileEntity) base;
+
+        if (!tile.getWorldObj().isRemote) {
+            tile.markDirty();
+            base.issueTileUpdate();
+        }
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
+        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
+
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        if (data == null) {
+            return;
+        }
+
+        if (data.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
+            chunkRadiusConfig = data.getInteger(NBT_CHUNK_RADIUS_CONFIG);
+        }
+
+        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
+            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
+        }
+    }
+
     public AxisAlignedBB getWorkAreaAABB() {
-        ChunkCoordIntPair topLeft = getTopLeftChunkCoords();
-        ChunkCoordIntPair bottomRight = getBottomRightChunkCoords();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return null;
+        }
+
+        int xDrill = base.getXCoord();
+        int zDrill = base.getZCoord();
+
+        int drillChunkX = xDrill >> 4;
+        int drillChunkZ = zDrill >> 4;
+
+        int xOffset = (xDrill - (drillChunkX << 4)) < 8 ? 0 : 1;
+        int zOffset = (zDrill - (drillChunkZ << 4)) < 8 ? 0 : 1;
+
+        int radius = Math.max(1, chunkRadiusConfig);
+
+        int minChunkX = drillChunkX - radius + xOffset;
+        int minChunkZ = drillChunkZ - radius + zOffset;
+        int maxChunkX = drillChunkX + radius + xOffset;
+        int maxChunkZ = drillChunkZ + radius + zOffset;
 
         return AxisAlignedBB.getBoundingBox(
-            topLeft.chunkXPos << 4,
+            minChunkX << 4,
             0,
-            topLeft.chunkZPos << 4,
-            bottomRight.chunkXPos << 4,
+            minChunkZ << 4,
+            maxChunkX << 4,
             256,
-            bottomRight.chunkZPos << 4);
+            maxChunkZ << 4
+        );
     }
 }
