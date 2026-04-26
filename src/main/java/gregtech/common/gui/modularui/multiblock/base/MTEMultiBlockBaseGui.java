@@ -773,22 +773,27 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
      * message</li>
      * </ul>
      *
-     * @param tooltip                the RichTooltip to add the line to
-     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
-     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
-     * @param tooltipFeatureName  tooltip text to display when the feature is enabled
+     * @param tooltip            the RichTooltip to add the line to
+     * @param supportsFeature    supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled   supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureName tooltip text to display as the name of the feature
      *
      * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(com.gtnewhorizons.modularui.api.widget.Widget,
-     *      java.util.function.Supplier, java.util.function.Supplier, String, String)
+     *      java.util.function.Supplier, java.util.function.Supplier, String)
      *      For equivalent method but made for ModularUI
      */
     private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
         Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
-        String status = isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
-            : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled");
         tooltip.addLine(tooltipFeatureName);
-        tooltip.addLine(status);
-        if (!supportsFeature.get()) {
+        if (supportsFeature.get()) {
+            tooltip.addLine(IKey.dynamic(() -> {
+                return isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
+                    : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled");
+            }));
+        } else {
+            tooltip.addLine(
+                isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
+                    : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled"));
             tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
         }
     }
