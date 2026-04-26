@@ -82,7 +82,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
-public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISurvivalConstructable {
+public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
     private static final int TICKS_PER_OPERATION = 100;
@@ -91,21 +91,21 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
     private int mCasing;
     public static String mCasingName = "Sterile Farm Casing";
-    private static IStructureDefinition<MTETreeFarm> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTETreeFarmLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTETreeFarm(final int aID, final String aName, final String aNameRegional) {
+    public MTETreeFarmLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
     }
 
-    public MTETreeFarm(final String aName) {
+    public MTETreeFarmLegacy(final String aName) {
         super(aName);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTETreeFarm(this.mName);
+        return new MTETreeFarmLegacy(this.mName);
     }
 
     @Override
@@ -117,6 +117,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Farms and harvests trees using EU")
             .addInfo("Place a sapling in the controller slot")
             .addInfo("Place a tool in an input bus")
@@ -205,16 +206,16 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     }
 
     @Override
-    public IStructureDefinition<MTETreeFarm> getStructureDefinition() {
+    public IStructureDefinition<MTETreeFarmLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTETreeFarm>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTETreeFarmLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTETreeFarm.class)
+                    buildHatchAdder(MTETreeFarmLegacy.class)
                         .atLeast(
                             InputHatch,
                             OutputHatch,
