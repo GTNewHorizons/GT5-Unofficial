@@ -11,6 +11,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,6 +41,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -147,6 +149,12 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     @Override
     public boolean doesAutoOutput() {
         return false;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        // bronze machines don't have fluid slots
+        return GTValues.emptyFluidTankInfo;
     }
 
     @Override
