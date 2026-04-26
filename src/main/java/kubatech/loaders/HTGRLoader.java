@@ -131,6 +131,21 @@ public class HTGRLoader {
                 .duration(300)
                 .nbtSensitive()
                 .addTo(centrifugeNonCellRecipes);
+
+            // for HTGR NEI frontend
+            int[] virtualChances = new int[6 + chances.length];
+            Arrays.fill(virtualChances, 0, 6, 10000);
+            System.arraycopy(chances, 0, virtualChances, 6, chances.length);
+            ItemStack ofuel = HTGRItem.createTRISOFuel(material);
+            ArrayList<ItemStack> virtualOutputs = new ArrayList<>();
+            virtualOutputs.add(HTGRItem.createTRISOMixture(material));
+            virtualOutputs.add(HTGRItem.createIncompleteBISOFuel(material));
+            virtualOutputs.add(HTGRItem.createIncompleteTRISOFuel(material));
+            virtualOutputs.add(ofuel);
+            virtualOutputs.add(ofuel.copy());
+            virtualOutputs.add(HTGRItem.createBurnedTRISOFuel(material));
+            virtualOutputs.addAll(items);
+            builder.itemOutputs(virtualOutputs.toArray(new ItemStack[0]), virtualChances);
         })
         .build();
 

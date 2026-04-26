@@ -5,7 +5,6 @@ import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -20,15 +19,12 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.loaders.HTGRLoader;
-import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapFrontend {
 
@@ -57,30 +53,6 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                         inputs.add(fuel.getLeft());
                     }
                     return inputs.toArray(new ItemStack[0]);
-                })
-                .itemOutputsGetter(recipe -> {
-                    ArrayList<ItemStack> outputs = new ArrayList<>();
-                    Materials material = GTOreDictUnificator.getAssociation(recipe.mInputs[0]).mMaterial.mMaterial;
-                    Collections.addAll(outputs, recipe.mOutputs);
-                    // recycling
-                    for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
-                        if (fuel.getRight() > 0) {
-                            ItemStack stack = fuel.getLeft()
-                                .copy();
-                            stack.stackSize = fuel.getRight();
-                            outputs.add(stack);
-
-                        }
-                    }
-                    outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
-                    outputs.add(HTGRItem.createTRISOMixture(material));
-                    outputs.add(HTGRItem.createIncompleteBISOFuel(material));
-                    outputs.add(HTGRItem.createIncompleteTRISOFuel(material));
-                    ItemStack ofuel = HTGRItem.createTRISOFuel(material);
-                    outputs.add(ofuel);
-                    outputs.add(ofuel.copy());
-                    outputs.add(HTGRItem.createBurnedTRISOFuel(material));
-                    return outputs.toArray(new ItemStack[0]);
                 }));
     }
 
@@ -119,6 +91,13 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     public @NotNull List<Pos2d> getItemOutputPositions(int itemOutputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
 
+        // outputs
+        positions.add(new Pos2d(79, 67));
+        positions.add(new Pos2d(79, 99));
+        positions.add(new Pos2d(79, 131));
+        positions.add(new Pos2d(79, 163));
+        positions.add(new Pos2d(136, 25));
+        positions.add(new Pos2d(136, 163));
         // recycling
 
         int x = 7, y = 197;
@@ -130,14 +109,6 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                 y += 18;
             }
         }
-
-        // outputs
-        positions.add(new Pos2d(79, 67));
-        positions.add(new Pos2d(79, 99));
-        positions.add(new Pos2d(79, 131));
-        positions.add(new Pos2d(79, 163));
-        positions.add(new Pos2d(136, 25));
-        positions.add(new Pos2d(136, 163));
         return positions;
     }
 
