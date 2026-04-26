@@ -229,7 +229,7 @@ public class GTWorkAreaRenderer {
 
         /*
          * MCP name for rayTraceBlocks(
-         * start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock
+         * Vec3 start, Vec3 end, bool stopOnLiquid, bool ignoreBlockWithoutBoundingBox, bool returnLastUncollidableBlock
          * ) in MC 1.7.10.
          */
         MovingObjectPosition hit = mc.theWorld.func_147447_a(start, end, false, true, false);
