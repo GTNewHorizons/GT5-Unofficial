@@ -173,6 +173,9 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_CASING_FUSION_OVERLAY = new CustomIcon(
         "iconsets/MACHINE_CASING_FUSION_GLASS_HYPER");
 
+    public static final CustomIcon TEXTURE_INFINITY_CASING_SIDE = new CustomIcon("iconsets/TEXTURE_INFINITY_CASING_SIDE");
+    public static final CustomIcon TEXTURE_INFINITY_CASING_TOP = new CustomIcon("iconsets/TEXTURE_INFINITY_CASING_TOP");
+
     // Overlays
     // Fan Textures
     public static final CustomIcon Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");
