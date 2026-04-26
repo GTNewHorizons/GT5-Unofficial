@@ -539,15 +539,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected void onStructureCheckFinished() {
         structureErrors = EnumSet.noneOf(StructureError.class);
-        structureErrorContext = new NBTTagCompound();
+        NBTTagCompound newContext = new NBTTagCompound();
 
         // only run validation when the structure check passes, so that we don't confuse people
         if (mMachine) {
-            validateStructure(structureErrors, structureErrorContext);
+            validateStructure(structureErrors, newContext);
 
             if (hasStructureErrors()) mMachine = false;
+        } else {
+            generateStructureErrorDiagnostics(structureErrors, newContext);
         }
+        structureErrorContext = newContext;
     }
+
+    protected void generateStructureErrorDiagnostics(EnumSet<StructureError> errors, NBTTagCompound context) {}
 
     /**
      * Validates this multi's structure (hatch/casing counts mainly) for any errors. The multi will not form if any
@@ -3802,6 +3807,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public void setStructureErrors(EnumSet<StructureError> structureErrors) {
         this.structureErrors = structureErrors;
+    }
+
+    public NBTTagCompound getStructureErrorContext() {
+        return structureErrorContext;
+    }
+
+    public void setStructureErrorContext(NBTTagCompound structureErrorContext) {
+        this.structureErrorContext = structureErrorContext;
     }
 
     public int getPowerPanelMaxParallel() {

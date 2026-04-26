@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -39,14 +40,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.value.sync.*;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -82,6 +76,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.gui.modularui.adapter.StructureErrorAdapter;
+import gregtech.common.gui.modularui.synchandler.NBTTagSyncHandler;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
@@ -292,6 +287,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .widthRel(1))
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
+            .child(createStructureErrorWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
 
@@ -331,6 +327,38 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
             && GTUtility.isStringValid(shutdownString);
+    }
+
+    protected IWidget createStructureErrorWidget(PanelSyncManager syncManager) {
+
+        NBTTagSyncHandler errorContextSyncer = syncManager.findSyncHandler("errorContext", NBTTagSyncHandler.class);
+
+        DynamicSyncHandler errorSyncer = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            Flow columns = Flow.column()
+                .coverChildren(0)
+                .crossAxisAlignment(Alignment.CrossAxis.START);
+
+            NBTTagCompound context = errorContextSyncer.getValue();
+            if (context == null) {
+                return new EmptyWidget();
+            }
+
+            for (StructureError error : multiblock.getStructureErrors()) {
+                columns.child(
+                    IKey.str(error.getLocalizedString(context))
+                        .asWidget());
+            }
+            return columns;
+        });
+
+        syncManager.findSyncHandler("errors", GenericSyncValue.class)
+            .setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
+
+        errorContextSyncer.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
+
+        return new DynamicSyncedWidget<>().widthRel(0.85f)
+            .coverChildrenHeight(0)
+            .syncHandler(errorSyncer);
     }
 
     private IWidget createRecipeResultWidget() {
@@ -1184,6 +1212,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .setter(multiblock::setStructureErrors)
                 .adapter(new StructureErrorAdapter())
                 .build());
+        syncManager.syncValue(
+            "errorContext",
+            new NBTTagSyncHandler(multiblock::getStructureErrorContext, multiblock::setStructureErrorContext));
         syncManager
             .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(
