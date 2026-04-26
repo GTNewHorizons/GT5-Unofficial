@@ -44,8 +44,8 @@ public class ItemGenericChemBase extends Item {
      * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
      * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 33 - Algagenic
      * Growth Promoter Catalyst (for seaweed skip) 34 - Hellish Force Catalyst (for Netherite skip) 35 - Crystal
-     * 36 - Chlorination Catalyst (for Chlorosulfonic Acid)
      * Colorization Catalyst (for Prismatic Acid)
+     * 36 - Chlorination Catalyst (for Chlorosulfonic Acid)
      */
 
     public ItemGenericChemBase() {

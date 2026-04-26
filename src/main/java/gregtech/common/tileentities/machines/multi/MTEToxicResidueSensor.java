@@ -171,6 +171,7 @@ public class MTEToxicResidueSensor extends MTEHatch {
 
     public void setThresholdType(ThresholdType thresholdType) {
         this.thresholdType = thresholdType;
+        this.threshold = Math.min(this.threshold, this.thresholdType.getMaxCapacity());
     }
 
     public enum ThresholdType {

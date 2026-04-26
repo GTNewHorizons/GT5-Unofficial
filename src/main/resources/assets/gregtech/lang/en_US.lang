@@ -1083,7 +1083,7 @@ gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
 gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
 gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
-gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue Percentage in base units
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue shown in percent
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch

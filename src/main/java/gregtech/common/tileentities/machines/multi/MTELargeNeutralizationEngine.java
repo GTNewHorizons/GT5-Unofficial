@@ -138,6 +138,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     public float getResidueUsedPercentage() {
+        if (residueCapacity == 0) return 0;
         return Math.round(10 * (float) toxicResidue / residueCapacity * 100F) / 10F;
     }
 
@@ -218,8 +219,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private int getRobotArmTier() {
+        ArrayList<ItemStack> storedInputs = getStoredInputs();
         for (int i = ItemList.ROBOT_ARMS.length - 1; i >= 0; i--) {
-            ArrayList<ItemStack> storedInputs = getStoredInputs();
             int currentStackSize = 0;
             for (ItemStack storedInput : storedInputs) {
                 if (GTUtility.areStacksEqual(storedInput, ItemList.ROBOT_ARMS[i].get(1L))) {
@@ -540,6 +541,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         structureTier = -1;
+        sensorHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (mCasing < 30 || structureTier < 1) return false;
         if (mMaintenanceHatches.size() != 1) return false;
