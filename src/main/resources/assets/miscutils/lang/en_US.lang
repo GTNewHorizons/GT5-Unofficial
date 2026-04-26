@@ -4047,7 +4047,6 @@ gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.tiered_tank.desc.capacity=Stores %s of fluid
 gtpp.tiered_tank.desc.portable=A portable tank.
 gtpp.tiered_tank.desc.fluid=Fluid: %s %s L
-gtpp.tiered_tank.tooltip.contains=Contains Fluid:
 gtpp.tiered_tank.tooltip.contains=Contains Fluid: %s
 gtpp.tiered_tank.tooltip.amount=Fluid Amount: %s L
 gtpp.infodata.tiered_tank.name=%s Tank
