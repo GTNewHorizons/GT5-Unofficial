@@ -12,13 +12,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.UndergroundOil.undergroundOil;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Nonnegative;
 
@@ -26,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -35,18 +34,21 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
@@ -59,14 +61,33 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
+import gregtech.common.misc.IWorkAreaProvider;
+import gregtech.common.misc.WorkAreaChunk;
 
-public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter {
+public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
+
+    private static final String NBT_SHOW_WORK_AREA = "showWorkArea";
+    private static final String NBT_CHUNK_RANGE_CONFIG = "chunkRangeConfig";
+    private static final String NBT_ACTIVE_OIL_FIELD_CHUNKS = "activeOilFieldChunks";
 
     private final ArrayList<ChunkCoordIntPair> mOilFieldChunks = new ArrayList<>();
+    private final Set<Long> activeOilFieldChunkKeys = new HashSet<>();
     private Fluid mOil = null;
     private int mOilFlow = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
+    private boolean showWorkArea = false;
+
+    private @Nullable WorkAreaBounds cachedBounds = null;
+    private int cachedBoundsXDrill = Integer.MIN_VALUE;
+    private int cachedBoundsZDrill = Integer.MIN_VALUE;
+    private int cachedBoundsRange = Integer.MIN_VALUE;
+
+    private @Nullable WorkAreaBounds cachedWorkAreaBounds = null;
+    private List<WorkAreaChunk> cachedWorkAreaChunks = Collections.emptyList();
+
+    @Desugar
+    private record WorkAreaBounds(int minChunkX, int minChunkZ, int maxChunkX, int maxChunkZ) {}
 
     protected int batchMultiplier = 1;
 
@@ -105,15 +126,78 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
+    public boolean isWorkAreaShown() {
+        return showWorkArea;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("chunkRangeConfig", chunkRangeConfig);
+
+        aNBT.setInteger(NBT_CHUNK_RANGE_CONFIG, chunkRangeConfig);
+        aNBT.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
+
+        if (aNBT.hasKey(NBT_CHUNK_RANGE_CONFIG)) {
+            chunkRangeConfig = aNBT.getInteger(NBT_CHUNK_RANGE_CONFIG);
+        }
+
+        if (aNBT.hasKey(NBT_SHOW_WORK_AREA)) {
+            showWorkArea = aNBT.getBoolean(NBT_SHOW_WORK_AREA);
+        }
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setInteger(NBT_CHUNK_RANGE_CONFIG, chunkRangeConfig);
+        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
+
+        int[] activeChunks = new int[activeOilFieldChunkKeys.size() * 2];
+        int index = 0;
+
+        for (long chunkKey : activeOilFieldChunkKeys) {
+            activeChunks[index++] = (int) (chunkKey >> 32); // chunkX
+            activeChunks[index++] = (int) chunkKey; // chunkZ
+        }
+
+        data.setIntArray(NBT_ACTIVE_OIL_FIELD_CHUNKS, activeChunks);
+
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        if (data == null) {
+            return;
+        }
+
+        if (data.hasKey(NBT_CHUNK_RANGE_CONFIG)) {
+            chunkRangeConfig = data.getInteger(NBT_CHUNK_RANGE_CONFIG);
+            invalidateWorkAreaCache();
+        }
+
+        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
+            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
+        }
+
+        if (data.hasKey(NBT_ACTIVE_OIL_FIELD_CHUNKS)) {
+            activeOilFieldChunkKeys.clear();
+
+            int[] activeChunks = data.getIntArray(NBT_ACTIVE_OIL_FIELD_CHUNKS);
+
+            for (int i = 0; i + 1 < activeChunks.length; i += 2) {
+                int chunkX = activeChunks[i];
+                int chunkZ = activeChunks[i + 1];
+
+                activeOilFieldChunkKeys.add(packChunkKey(chunkX, chunkZ));
+            }
+        }
     }
 
     @Override
@@ -164,7 +248,14 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             }
             if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
         }
-        if (oldChunkRange != chunkRangeConfig) mOilFieldChunks.clear();
+
+        if (oldChunkRange != chunkRangeConfig) {
+            mOilFieldChunks.clear();
+            activeOilFieldChunkKeys.clear();
+            invalidateWorkAreaCache();
+            syncWorkAreaData();
+        }
+
         GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
     }
 
@@ -252,7 +343,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             mOil = tFluid.getFluid();
         }
         if (debugDriller) {
-            GTLog.out.println(" Driller on  fluid = " + mOil == null ? null : mOil.getName());
+            GTLog.out.println(mOil == null ? null : " Driller on  fluid = " + mOil.getName());
         }
 
         tOil = new FluidStack(mOil, 0);
@@ -289,6 +380,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     }
                     if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
                         mOilFieldChunks.add(tChunk);
+                        activeOilFieldChunkKeys.add(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
                         if (debugDriller) {
                             GTLog.out.println(" Matching fluid, quantity = " + tFluid.amount);
                         }
@@ -347,6 +439,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         World world = getBaseMetaTileEntity().getWorld();
         final float coefficient = (simulate ? -speed : speed) * batchMultiplier;
 
+        boolean workAreaChanged = false;
+
         for (Iterator<ChunkCoordIntPair> iterator = mOilFieldChunks.iterator(); iterator.hasNext();) {
             ChunkCoordIntPair tChunk = iterator.next();
             FluidStack pumped = undergroundOil(world, tChunk.chunkXPos, tChunk.chunkZPos, coefficient);
@@ -360,12 +454,19 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             }
             if (pumped == null || pumped.amount < 1) {
                 iterator.remove();
+                activeOilFieldChunkKeys.remove(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
+                workAreaChanged = true;
                 continue;
             }
             if (returnOil.isFluidEqual(pumped)) {
                 returnOil.amount += pumped.amount;
             }
         }
+
+        if (workAreaChanged) {
+            syncWorkAreaData();
+        }
+
         return returnOil;
     }
 
@@ -492,6 +593,31 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
+    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        return ImmutableList.of(
+            (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (showWorkArea) {
+                        return new com.gtnewhorizons.modularui.api.drawable.IDrawable[] {
+                            GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                    }
+                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                })
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .dynamicTooltip(
+                    () -> ImmutableList.of(
+                        StatCollector.translateToLocal(
+                            showWorkArea ? "GT5U.gui.button.work_area_preview_on"
+                                : "GT5U.gui.button.work_area_preview_off")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setSize(16, 16));
+    }
+
+    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -500,5 +626,138 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_OIL_DRILL_LOOP;
+    }
+
+    @Override
+    public @Nullable AxisAlignedBB getWorkAreaAABB() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return null;
+        }
+
+        return AxisAlignedBB.getBoundingBox(
+            bounds.minChunkX() << 4,
+            0,
+            bounds.minChunkZ() << 4,
+            bounds.maxChunkX() << 4,
+            256,
+            bounds.maxChunkZ() << 4);
+    }
+
+    @Override
+    public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return Collections.emptyList();
+        }
+
+        if (bounds.equals(cachedWorkAreaBounds)) {
+            return cachedWorkAreaChunks;
+        }
+
+        cachedWorkAreaBounds = bounds;
+        cachedWorkAreaChunks = Collections.unmodifiableList(buildWorkAreaChunksInWorkOrder(bounds));
+
+        return cachedWorkAreaChunks;
+    }
+
+    @Override
+    public WorkAreaChunkState getWorkAreaChunkState(@NotNull WorkAreaChunk chunk) {
+        long key = packChunkKey(chunk.chunkX(), chunk.chunkZ());
+
+        if (activeOilFieldChunkKeys.contains(key)) {
+            return WorkAreaChunkState.ACTIVE;
+        }
+
+        return WorkAreaChunkState.INACTIVE;
+    }
+
+    @Override
+    public int getCurrentWorkAreaOrder() {
+        return 0;
+    }
+
+    private @Nullable WorkAreaBounds getWorkAreaBounds() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return null;
+        }
+
+        int xDrill = base.getXCoord();
+        int zDrill = base.getZCoord();
+        int range = Math.max(1, chunkRangeConfig);
+
+        if (cachedBounds != null && cachedBoundsXDrill == xDrill
+            && cachedBoundsZDrill == zDrill
+            && cachedBoundsRange == range) {
+            return cachedBounds;
+        }
+
+        int controllerChunkX = xDrill >> 4;
+        int controllerChunkZ = zDrill >> 4;
+
+        int minChunkX = Math.floorDiv(controllerChunkX, range) * range;
+        int minChunkZ = Math.floorDiv(controllerChunkZ, range) * range;
+        int maxChunkX = minChunkX + range;
+        int maxChunkZ = minChunkZ + range;
+
+        cachedBoundsXDrill = xDrill;
+        cachedBoundsZDrill = zDrill;
+        cachedBoundsRange = range;
+        cachedBounds = new WorkAreaBounds(minChunkX, minChunkZ, maxChunkX, maxChunkZ);
+
+        return cachedBounds;
+    }
+
+    private void toggleWorkArea() {
+        showWorkArea = !showWorkArea;
+        syncWorkAreaData();
+    }
+
+    private void syncWorkAreaData() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return;
+        }
+
+        TileEntity tile = (TileEntity) base;
+
+        if (!tile.getWorldObj().isRemote) {
+            tile.markDirty();
+            base.issueTileUpdate();
+        }
+    }
+
+    private void invalidateWorkAreaCache() {
+        cachedBounds = null;
+        cachedBoundsXDrill = Integer.MIN_VALUE;
+        cachedBoundsZDrill = Integer.MIN_VALUE;
+        cachedBoundsRange = Integer.MIN_VALUE;
+
+        cachedWorkAreaBounds = null;
+        cachedWorkAreaChunks = Collections.emptyList();
+    }
+
+    private List<WorkAreaChunk> buildWorkAreaChunksInWorkOrder(@NotNull WorkAreaBounds bounds) {
+        int totalChunkCount = getTotalWorkAreaChunkCount(bounds);
+        List<WorkAreaChunk> chunks = new ArrayList<>(totalChunkCount);
+
+        int order = 1;
+
+        for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
+            for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
+                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order++));
+            }
+        }
+
+        return chunks;
+    }
+
+    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
+        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
+    }
+
+    private static long packChunkKey(int chunkX, int chunkZ) {
+        return (((long) chunkX) << 32) ^ (chunkZ & 0xffffffffL);
     }
 }

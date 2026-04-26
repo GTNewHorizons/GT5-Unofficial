@@ -28,6 +28,8 @@ public class GTWorkAreaRenderer {
     private static final int WORK_AREA_MINED_CHUNK_COLOR = 0x808080;
     private static final int WORK_AREA_CURRENT_CHUNK_COLOR = 0x00FF00;
     private static final int WORK_AREA_PENDING_CHUNK_COLOR = 0xFFD700;
+    private static final int WORK_AREA_ACTIVE_CHUNK_COLOR = 0x00FF00;
+    private static final int WORK_AREA_INACTIVE_CHUNK_COLOR = 0x808080;
     private static final int WORK_AREA_COLOR = 0x9003fc;
     private static final int WORK_AREA_FACE_ALPHA = 51; // 20% of 255
     private static final float NUMBER_SCALE = 0.6F;
@@ -90,8 +92,6 @@ public class GTWorkAreaRenderer {
             RenderGlobal.drawOutlinedBoundingBox(workArea, WORK_AREA_COLOR);
 
             if (workAreaProvider.shouldRenderWorkAreaChunkNumbers()) {
-                int currentWorkAreaOrder = workAreaProvider.getCurrentWorkAreaOrder();
-
                 for (WorkAreaChunk chunk : workAreaProvider.getWorkAreaChunksInWorkOrder()) {
                     double numberX = (chunk.chunkX() << 4) + 8.0D;
                     double numberY = workAreaProvider.getWorkAreaNumberY();
@@ -113,7 +113,7 @@ public class GTWorkAreaRenderer {
                         numberX,
                         numberY,
                         numberZ,
-                        getChunkNumberColor(chunk.order(), currentWorkAreaOrder),
+                        getChunkNumberColor(workAreaProvider.getWorkAreaChunkState(chunk)),
                         drawInFrontOfClouds);
                 }
             }
@@ -201,20 +201,14 @@ public class GTWorkAreaRenderer {
         GL11.glPopMatrix();
     }
 
-    private int getChunkNumberColor(int chunkOrder, int currentWorkAreaOrder) {
-        if (currentWorkAreaOrder <= 0) {
-            return WORK_AREA_PENDING_CHUNK_COLOR;
-        }
-
-        if (chunkOrder < currentWorkAreaOrder) {
-            return WORK_AREA_MINED_CHUNK_COLOR;
-        }
-
-        if (chunkOrder == currentWorkAreaOrder) {
-            return WORK_AREA_CURRENT_CHUNK_COLOR;
-        }
-
-        return WORK_AREA_PENDING_CHUNK_COLOR;
+    private int getChunkNumberColor(@NotNull IWorkAreaProvider.WorkAreaChunkState state) {
+        return switch (state) {
+            case MINED -> WORK_AREA_MINED_CHUNK_COLOR;
+            case CURRENT -> WORK_AREA_CURRENT_CHUNK_COLOR;
+            case PENDING -> WORK_AREA_PENDING_CHUNK_COLOR;
+            case ACTIVE -> WORK_AREA_ACTIVE_CHUNK_COLOR;
+            case INACTIVE -> WORK_AREA_INACTIVE_CHUNK_COLOR;
+        };
     }
 
     private boolean hasLineOfSightToText(@NotNull Minecraft mc, @NotNull Entity camera, double cameraX, double cameraY,

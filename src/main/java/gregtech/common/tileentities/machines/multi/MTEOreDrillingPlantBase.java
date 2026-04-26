@@ -170,25 +170,49 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         veinName = aNBT.hasKey(NBT_VEIN_NAME) ? aNBT.getString(NBT_VEIN_NAME) : null;
     }
 
-    private void adjustChunkRadius(boolean increase) {
-        if (increase) {
-            if (chunkRadiusConfig <= getRadiusInChunks()) {
-                chunkRadiusConfig++;
-            }
-            if (chunkRadiusConfig > getRadiusInChunks()) chunkRadiusConfig = 1;
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
+        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
+
+        data.setInteger(NBT_WORK_STATE, workState.ordinal());
+        data.setBoolean(NBT_HAS_CURRENT_WORK_CHUNK, mCurrentChunk != null);
+
+        if (mCurrentChunk != null) {
+            data.setInteger(NBT_CURRENT_WORK_CHUNK_X, mCurrentChunk.chunkXPos);
+            data.setInteger(NBT_CURRENT_WORK_CHUNK_Z, mCurrentChunk.chunkZPos);
+        }
+
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        if (data == null) {
+            return;
+        }
+
+        if (data.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
+            chunkRadiusConfig = data.getInteger(NBT_CHUNK_RADIUS_CONFIG);
+        }
+
+        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
+            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
+        }
+
+        if (data.hasKey(NBT_WORK_STATE)) {
+            setWorkState(data.getInteger(NBT_WORK_STATE));
+        }
+
+        if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {
+            mCurrentChunk = new ChunkCoordIntPair(
+                data.getInteger(NBT_CURRENT_WORK_CHUNK_X),
+                data.getInteger(NBT_CURRENT_WORK_CHUNK_Z));
         } else {
-            if (chunkRadiusConfig > 0) {
-                chunkRadiusConfig--;
-            }
-            if (chunkRadiusConfig == 0) chunkRadiusConfig = getRadiusInChunks();
+            mCurrentChunk = null;
         }
-
-        if (mCurrentChunk != null && mChunkLoadingEnabled) {
-            GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
-        }
-
-        oreBlockPositions.clear();
-        createInitialWorkingChunk();
     }
 
     @Override
@@ -933,51 +957,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
     }
 
-    @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
-
-        data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
-        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
-
-        data.setInteger(NBT_WORK_STATE, workState.ordinal());
-        data.setBoolean(NBT_HAS_CURRENT_WORK_CHUNK, mCurrentChunk != null);
-
-        if (mCurrentChunk != null) {
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_X, mCurrentChunk.chunkXPos);
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_Z, mCurrentChunk.chunkZPos);
-        }
-
-        return data;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        if (data == null) {
-            return;
-        }
-
-        if (data.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
-            chunkRadiusConfig = data.getInteger(NBT_CHUNK_RADIUS_CONFIG);
-        }
-
-        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
-            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
-        }
-
-        if (data.hasKey(NBT_WORK_STATE)) {
-            setWorkState(data.getInteger(NBT_WORK_STATE));
-        }
-
-        if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {
-            mCurrentChunk = new ChunkCoordIntPair(
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_X),
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_Z));
-        } else {
-            mCurrentChunk = null;
-        }
-    }
-
     public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
         WorkAreaBounds bounds = getWorkAreaBounds();
         if (bounds == null) {
@@ -992,6 +971,27 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         cachedWorkAreaChunks = Collections.unmodifiableList(buildWorkAreaChunksInWorkOrder(bounds));
 
         return cachedWorkAreaChunks;
+    }
+
+    private void adjustChunkRadius(boolean increase) {
+        if (increase) {
+            if (chunkRadiusConfig <= getRadiusInChunks()) {
+                chunkRadiusConfig++;
+            }
+            if (chunkRadiusConfig > getRadiusInChunks()) chunkRadiusConfig = 1;
+        } else {
+            if (chunkRadiusConfig > 0) {
+                chunkRadiusConfig--;
+            }
+            if (chunkRadiusConfig == 0) chunkRadiusConfig = getRadiusInChunks();
+        }
+
+        if (mCurrentChunk != null && mChunkLoadingEnabled) {
+            GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
+        }
+
+        oreBlockPositions.clear();
+        createInitialWorkingChunk();
     }
 
     private @Nullable WorkAreaBounds getWorkAreaBounds() {
