@@ -14,7 +14,6 @@ import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -48,6 +47,7 @@ import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeB
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     private final RecipeMap<?> mRecipes;
@@ -56,29 +56,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     private final SoundResource mSoundResource;
     private FallbackableUITexture progressBarTexture;
     private int recipeCatalystPriority;
-
-    /**
-     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource.
-     */
-    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { aDescription },
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-
-    }
 
     /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
@@ -209,29 +186,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     }
 
     /**
-     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource. Has
-     * no recipe.
-     */
-    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound,
-            aSpecialEffect,
-            aOverlays,
-            null);
-    }
-
-    /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource. has
      * no recipe.
      */
@@ -265,23 +219,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
         this.mSpecialEffect = aSpecialEffect;
         this.mRecipes = aRecipes;
         this.mSoundResource = aSound;
-    }
-
-    public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
-        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-        ResourceLocation aSound, SpecialEffects aSpecialEffect) {
-        this(
-            aName,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aAmperage,
-            aTextures,
-            SoundResource.get(aSound.toString()),
-            aSpecialEffect);
     }
 
     @Override

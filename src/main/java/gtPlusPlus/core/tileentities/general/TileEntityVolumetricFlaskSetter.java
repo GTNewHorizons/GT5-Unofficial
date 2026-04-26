@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
@@ -23,39 +22,20 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
     private int tickCount = 0;
     private final InventoryVolumetricFlaskSetter inventoryContents;
     private String customName;
-    public int locationX;
-    public int locationY;
-    public int locationZ;
     private int aCurrentMode = 0;
     private int aCustomValue = 1000;
 
     public TileEntityVolumetricFlaskSetter() {
         this.inventoryContents = new InventoryVolumetricFlaskSetter();
-        this.setTileLocation();
     }
 
     public int getCustomValue() {
-        // Logger.INFO("Value: "+this.aCustomValue);
         return this.aCustomValue;
     }
 
     public void setCustomValue(int aVal) {
-        log("Old Value: " + this.aCustomValue);
         this.aCustomValue = aVal;
-        log("New Value: " + this.aCustomValue);
         markDirty();
-    }
-
-    public boolean setTileLocation() {
-        if (this.hasWorldObj()) {
-            if (!this.getWorldObj().isRemote) {
-                this.locationX = this.xCoord;
-                this.locationY = this.yCoord;
-                this.locationZ = this.zCoord;
-                return true;
-            }
-        }
-        return false;
     }
 
     // Rename to hasCircuitToConfigure
@@ -116,7 +96,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
         // Don't do anything unless we have items
         if (!hasFlask()) {
-            Logger.INFO("No Flasks.");
             return false;
         }
 
@@ -144,7 +123,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
             // Skip slot 7 (Custom) unless it has a value > 0
             if (e == 7 && getCustomValue() <= 0) {
-                log("Skipping Custom slot as value <= 0");
                 continue;
             }
             if (e == ContainerVolumetricFlaskSetter.SLOT_OUTPUT) {
@@ -174,12 +152,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                             && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e)
                             && ((aInputFluidStack == null && aFluidInCheckedSlot == null)
                                 || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
-                            log(
-                                "Input Slot Flask Contains: "
-                                    + (aInputFluidStack != null ? aInputFluidStack.getLocalizedName() : "Empty"));
-                            log(
-                                "Output Slot Flask Contains: "
-                                    + (aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName() : "Empty"));
                             aSize = f.stackSize + g.stackSize;
                             if (aSize > 16) {
                                 aInputStack = g.copy();
@@ -240,17 +212,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 this.tickCount++;
             }
         } catch (final Exception t) {}
-    }
-
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
     }
 
     @Override
@@ -396,12 +357,10 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         this.readFromNBT(tag);
     }
 
-    public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
-
+    public boolean onScrewdriverRightClick(EntityPlayer player) {
         if (player.isSneaking()) {
             GTUtility.sendChatToPlayer(player, "Value: " + this.getCustomValue());
         }
-
         try {
             if (aCurrentMode == 7) {
                 aCurrentMode = 0;
@@ -413,9 +372,5 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
         } catch (Exception t) {
             return false;
         }
-    }
-
-    public void log(String aString) {
-        Logger.INFO("[Flask-Tile] " + aString);
     }
 }

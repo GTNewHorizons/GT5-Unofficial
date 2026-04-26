@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GTMod;
@@ -105,9 +106,7 @@ public class AssemblyLineUtils {
      * @return Does this Data Stick have a valid output ItemStack?
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
-        return isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
-            && aDataStick.getTagCompound()
-                .hasKey("output");
+        return isItemDataStick(aDataStick) && ItemStackNBT.hasKey(aDataStick, "output");
     }
 
     /**
@@ -150,20 +149,13 @@ public class AssemblyLineUtils {
             }
         }
 
-        String author = "Assembling Line Recipe Generator";
-        String displayName = null;
+        final String author;
+        final String displayName = ItemStackNBT.getDisplayName(aDataStick);
 
-        if (aDataStick.hasTagCompound()) {
-            NBTTagCompound tag = aDataStick.getTagCompound();
-
-            if (tag.hasKey("author", NBT.TAG_STRING)) {
-                author = tag.getString("author");
-            }
-
-            if (tag.hasKey("display", NBT.TAG_COMPOUND)) {
-                NBTTagCompound displayTag = tag.getCompoundTag("display");
-                if (displayTag.hasKey("Name", NBT.TAG_STRING)) displayName = displayTag.getString("Name");
-            }
+        if (ItemStackNBT.hasKey(aDataStick, "author", NBT.TAG_STRING)) {
+            author = ItemStackNBT.getString(aDataStick, "author");
+        } else {
+            author = "Assembling Line Recipe Generator";
         }
 
         // remove possible old NBTTagCompound
