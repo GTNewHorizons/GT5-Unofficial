@@ -138,6 +138,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     public float getResidueUsedPercentage() {
+        if (residueCapacity == 0) return 0;
         return Math.round(10 * (float) toxicResidue / residueCapacity * 100F) / 10F;
     }
 
