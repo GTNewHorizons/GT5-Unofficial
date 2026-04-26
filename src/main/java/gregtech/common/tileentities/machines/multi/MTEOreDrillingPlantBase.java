@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -26,7 +27,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -73,10 +76,13 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     private static final String NBT_REPLACE_WITH_COBBLESTONE = "replaceWithCobblestone";
     private static final String NBT_CHUNK_RADIUS_CONFIG = "chunkRadiusConfig";
     private static final String NBT_SHOW_WORK_AREA = "showWorkArea";
+    private static final String NBT_WORK_STATE = "workState";
+    private static final String NBT_HAS_CURRENT_WORK_CHUNK = "hasCurrentWorkChunk";
+    private static final String NBT_CURRENT_WORK_CHUNK_X = "currentWorkChunkX";
+    private static final String NBT_CURRENT_WORK_CHUNK_Z = "currentWorkChunkZ";
 
     private final LongList oreBlockPositions = new LongArrayList();
     private final LongSet oreBlockSet = new LongOpenHashSet();
-    protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
     private boolean replaceWithCobblestone = true;
     private boolean showWorkArea = false;
@@ -96,6 +102,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     /** Contains the name of the currently mined vein. Used for driving metrics cover output. */
     private String veinName = null;
     private final XSTR random = new XSTR();
+
+    protected int mTier = 1;
+
+    public enum WorkAreaChunkState {
+        MINED,
+        CURRENT,
+        PENDING
+    }
 
     MTEOreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -158,8 +172,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         oreBlockPositions.clear();
         createInitialWorkingChunk();
-
-        syncWorkAreaData();
     }
 
     @Override
@@ -337,6 +349,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
                     workState = WorkState.UPWARD;
                     updateVeinNameFromVP();
+                    syncWorkAreaData();
                 }
                 return true;
             }
@@ -346,11 +359,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     private void createInitialWorkingChunk() {
         mCurrentChunk = getTopLeftChunkCoords();
+
         updateVeinNameFromVP();
+
         if (mChunkLoadingEnabled) {
             GTChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
             mWorkChunkNeedsReload = false;
         }
+
+        syncWorkAreaData();
     }
 
     @NotNull
@@ -443,11 +460,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     protected void onAbort() {
         oreBlockPositions.clear();
+
         if (mCurrentChunk != null) {
             GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
         }
+
         mCurrentChunk = null;
         updateVeinNameFromVP();
+        syncWorkAreaData();
     }
 
     private boolean moveToNextChunk(int centerX, int centerZ) {
@@ -485,6 +505,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         GTChunkManager
             .requestChunkLoad((TileEntity) getBaseMetaTileEntity(), new ChunkCoordIntPair(nextChunkX, nextChunkZ));
+
+        syncWorkAreaData();
+
         return true;
     }
 
@@ -794,8 +817,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 .attachSyncer(
                     new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
                     builder,
-                    (widget, val) -> widget.notifyTooltipChange()
-                )
+                    (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
                         StatCollector.translateToLocal(
@@ -893,6 +915,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
         data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
 
+        data.setInteger(NBT_WORK_STATE, workState.ordinal());
+        data.setBoolean(NBT_HAS_CURRENT_WORK_CHUNK, mCurrentChunk != null);
+
+        if (mCurrentChunk != null) {
+            data.setInteger(NBT_CURRENT_WORK_CHUNK_X, mCurrentChunk.chunkXPos);
+            data.setInteger(NBT_CURRENT_WORK_CHUNK_Z, mCurrentChunk.chunkZPos);
+        }
+
         return data;
     }
 
@@ -909,9 +939,36 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         if (data.hasKey(NBT_SHOW_WORK_AREA)) {
             showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
         }
+
+        if (data.hasKey(NBT_WORK_STATE)) {
+            setWorkState(data.getInteger(NBT_WORK_STATE));
+        }
+
+        if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {
+            mCurrentChunk = new ChunkCoordIntPair(
+                data.getInteger(NBT_CURRENT_WORK_CHUNK_X),
+                data.getInteger(NBT_CURRENT_WORK_CHUNK_Z));
+        } else {
+            mCurrentChunk = null;
+        }
     }
 
     public AxisAlignedBB getWorkAreaAABB() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return null;
+        }
+
+        return AxisAlignedBB.getBoundingBox(
+            bounds.minChunkX() << 4,
+            0,
+            bounds.minChunkZ() << 4,
+            bounds.maxChunkX() << 4,
+            256,
+            bounds.maxChunkZ() << 4);
+    }
+
+    private @Nullable WorkAreaBounds getWorkAreaBounds() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) {
             return null;
@@ -920,26 +977,121 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         int xDrill = base.getXCoord();
         int zDrill = base.getZCoord();
 
-        int drillChunkX = xDrill >> 4;
-        int drillChunkZ = zDrill >> 4;
+        int centerChunkX = xDrill >> 4;
+        int centerChunkZ = zDrill >> 4;
 
-        int xOffset = (xDrill - (drillChunkX << 4)) < 8 ? 0 : 1;
-        int zOffset = (zDrill - (drillChunkZ << 4)) < 8 ? 0 : 1;
+        int xOffset = (xDrill - (centerChunkX << 4)) < 8 ? 0 : 1;
+        int zOffset = (zDrill - (centerChunkZ << 4)) < 8 ? 0 : 1;
 
         int radius = Math.max(1, chunkRadiusConfig);
 
-        int minChunkX = drillChunkX - radius + xOffset;
-        int minChunkZ = drillChunkZ - radius + zOffset;
-        int maxChunkX = drillChunkX + radius + xOffset;
-        int maxChunkZ = drillChunkZ + radius + zOffset;
+        int minChunkX = centerChunkX - radius + xOffset;
+        int minChunkZ = centerChunkZ - radius + zOffset;
+        int maxChunkX = centerChunkX + radius + xOffset;
+        int maxChunkZ = centerChunkZ + radius + zOffset;
 
-        return AxisAlignedBB.getBoundingBox(
-            minChunkX << 4,
-            0,
-            minChunkZ << 4,
-            maxChunkX << 4,
-            256,
-            maxChunkZ << 4
-        );
+        return new WorkAreaBounds(minChunkX, minChunkZ, maxChunkX, maxChunkZ, centerChunkX, centerChunkZ);
     }
+
+    private int getCurrentWorkAreaOrder(@NotNull WorkAreaBounds bounds) {
+        if (workState == WorkState.DOWNWARD) {
+            return 1;
+        }
+
+        if (workState == WorkState.AT_BOTTOM && mCurrentChunk != null) {
+            return getWorkOrderForChunk(bounds, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos);
+        }
+
+        if (workState == WorkState.UPWARD && mCurrentChunk == null) {
+            return getTotalWorkAreaChunkCount(bounds) + 1;
+        }
+
+        return 0;
+    }
+
+    private int getWorkOrderForChunk(@NotNull WorkAreaBounds bounds, int targetChunkX, int targetChunkZ) {
+        if (targetChunkX == bounds.centerChunkX() && targetChunkZ == bounds.centerChunkZ()) {
+            return 1;
+        }
+
+        int order = 2;
+
+        for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
+            for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
+                if (chunkX == bounds.centerChunkX() && chunkZ == bounds.centerChunkZ()) {
+                    continue;
+                }
+
+                if (chunkX == targetChunkX && chunkZ == targetChunkZ) {
+                    return order;
+                }
+
+                order++;
+            }
+        }
+
+        return 0;
+    }
+
+    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
+        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
+    }
+
+    private WorkAreaChunkState getWorkAreaChunkState(int order, int currentOrder) {
+        if (currentOrder <= 0) {
+            return WorkAreaChunkState.PENDING;
+        }
+
+        if (order < currentOrder) {
+            return WorkAreaChunkState.MINED;
+        }
+
+        if (order == currentOrder) {
+            return WorkAreaChunkState.CURRENT;
+        }
+
+        return WorkAreaChunkState.PENDING;
+    }
+
+    public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return Collections.emptyList();
+        }
+
+        List<WorkAreaChunk> chunks = new ArrayList<>();
+
+        int currentOrder = getCurrentWorkAreaOrder(bounds);
+
+        int order = 1;
+
+        chunks.add(
+            new WorkAreaChunk(
+                bounds.centerChunkX(),
+                bounds.centerChunkZ(),
+                order,
+                getWorkAreaChunkState(order, currentOrder)));
+
+        order++;
+
+        for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
+            for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
+                if (chunkX == bounds.centerChunkX() && chunkZ == bounds.centerChunkZ()) {
+                    continue;
+                }
+
+                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order, getWorkAreaChunkState(order, currentOrder)));
+                order++;
+            }
+        }
+
+        return chunks;
+    }
+
+    @Desugar
+    private record WorkAreaBounds(int minChunkX, int minChunkZ, int maxChunkX, int maxChunkZ, int centerChunkX,
+        int centerChunkZ) {}
+
+    @Desugar
+    public record WorkAreaChunk(int chunkX, int chunkZ, int order, WorkAreaChunkState state) {}
 }
