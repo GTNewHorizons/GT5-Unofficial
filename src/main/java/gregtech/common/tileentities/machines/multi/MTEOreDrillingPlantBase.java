@@ -87,6 +87,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     private boolean replaceWithCobblestone = true;
     private boolean showWorkArea = false;
 
+    private @Nullable WorkAreaBounds cachedWorkAreaBounds = null;
+    private List<WorkAreaChunk> cachedWorkAreaChunks = Collections.emptyList();
+
+    private @Nullable WorkAreaBounds cachedBounds = null;
+    private int cachedBoundsXDrill = Integer.MIN_VALUE;
+    private int cachedBoundsZDrill = Integer.MIN_VALUE;
+    private int cachedBoundsRadius = Integer.MIN_VALUE;
+
     /** Used to drive the remaining ores count in the UI. */
     private int clientOreListSize = 0;
 
@@ -104,12 +112,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     private final XSTR random = new XSTR();
 
     protected int mTier = 1;
-
-    public enum WorkAreaChunkState {
-        MINED,
-        CURRENT,
-        PENDING
-    }
 
     MTEOreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -976,6 +978,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         int xDrill = base.getXCoord();
         int zDrill = base.getZCoord();
+        int radius = Math.max(1, chunkRadiusConfig);
+
+        if (cachedBounds != null
+            && cachedBoundsXDrill == xDrill
+            && cachedBoundsZDrill == zDrill
+            && cachedBoundsRadius == radius) {
+            return cachedBounds;
+        }
 
         int centerChunkX = xDrill >> 4;
         int centerChunkZ = zDrill >> 4;
@@ -983,30 +993,17 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         int xOffset = (xDrill - (centerChunkX << 4)) < 8 ? 0 : 1;
         int zOffset = (zDrill - (centerChunkZ << 4)) < 8 ? 0 : 1;
 
-        int radius = Math.max(1, chunkRadiusConfig);
-
         int minChunkX = centerChunkX - radius + xOffset;
         int minChunkZ = centerChunkZ - radius + zOffset;
         int maxChunkX = centerChunkX + radius + xOffset;
         int maxChunkZ = centerChunkZ + radius + zOffset;
 
-        return new WorkAreaBounds(minChunkX, minChunkZ, maxChunkX, maxChunkZ, centerChunkX, centerChunkZ);
-    }
+        cachedBoundsXDrill = xDrill;
+        cachedBoundsZDrill = zDrill;
+        cachedBoundsRadius = radius;
+        cachedBounds = new WorkAreaBounds(minChunkX, minChunkZ, maxChunkX, maxChunkZ, centerChunkX, centerChunkZ);
 
-    private int getCurrentWorkAreaOrder(@NotNull WorkAreaBounds bounds) {
-        if (workState == WorkState.DOWNWARD) {
-            return 1;
-        }
-
-        if (workState == WorkState.AT_BOTTOM && mCurrentChunk != null) {
-            return getWorkOrderForChunk(bounds, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos);
-        }
-
-        if (workState == WorkState.UPWARD && mCurrentChunk == null) {
-            return getTotalWorkAreaChunkCount(bounds) + 1;
-        }
-
-        return 0;
+        return cachedBounds;
     }
 
     private int getWorkOrderForChunk(@NotNull WorkAreaBounds bounds, int targetChunkX, int targetChunkZ) {
@@ -1033,46 +1030,39 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return 0;
     }
 
-    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
-        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
-    }
-
-    private WorkAreaChunkState getWorkAreaChunkState(int order, int currentOrder) {
-        if (currentOrder <= 0) {
-            return WorkAreaChunkState.PENDING;
-        }
-
-        if (order < currentOrder) {
-            return WorkAreaChunkState.MINED;
-        }
-
-        if (order == currentOrder) {
-            return WorkAreaChunkState.CURRENT;
-        }
-
-        return WorkAreaChunkState.PENDING;
-    }
-
     public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
         WorkAreaBounds bounds = getWorkAreaBounds();
         if (bounds == null) {
             return Collections.emptyList();
         }
 
-        List<WorkAreaChunk> chunks = new ArrayList<>();
+        if (bounds.equals(cachedWorkAreaBounds)) {
+            return cachedWorkAreaChunks;
+        }
 
-        int currentOrder = getCurrentWorkAreaOrder(bounds);
+        cachedWorkAreaBounds = bounds;
+        cachedWorkAreaChunks = Collections.unmodifiableList(buildWorkAreaChunksInWorkOrder(bounds));
+
+        return cachedWorkAreaChunks;
+    }
+
+    public int getCurrentWorkAreaOrder() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return 0;
+        }
+
+        return getCurrentWorkAreaOrder(bounds);
+    }
+
+    private @NotNull List<WorkAreaChunk> buildWorkAreaChunksInWorkOrder(@NotNull WorkAreaBounds bounds) {
+        int totalChunkCount = getTotalWorkAreaChunkCount(bounds);
+        List<WorkAreaChunk> chunks = new ArrayList<>(totalChunkCount);
 
         int order = 1;
 
-        chunks.add(
-            new WorkAreaChunk(
-                bounds.centerChunkX(),
-                bounds.centerChunkZ(),
-                order,
-                getWorkAreaChunkState(order, currentOrder)));
-
-        order++;
+        // La machine traite le chunk central en premier pendant la descente.
+        chunks.add(new WorkAreaChunk(bounds.centerChunkX(), bounds.centerChunkZ(), order++));
 
         for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
             for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
@@ -1080,12 +1070,31 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     continue;
                 }
 
-                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order, getWorkAreaChunkState(order, currentOrder)));
-                order++;
+                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order++));
             }
         }
 
         return chunks;
+    }
+
+    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
+        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
+    }
+
+    private int getCurrentWorkAreaOrder(@NotNull WorkAreaBounds bounds) {
+        if (workState == WorkState.DOWNWARD) {
+            return 1;
+        }
+
+        if (workState == WorkState.AT_BOTTOM && mCurrentChunk != null) {
+            return getWorkOrderForChunk(bounds, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos);
+        }
+
+        if (workState == WorkState.UPWARD && mCurrentChunk == null) {
+            return getTotalWorkAreaChunkCount(bounds) + 1;
+        }
+
+        return 0;
     }
 
     @Desugar
@@ -1093,5 +1102,5 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         int centerChunkZ) {}
 
     @Desugar
-    public record WorkAreaChunk(int chunkX, int chunkZ, int order, WorkAreaChunkState state) {}
+    public record WorkAreaChunk(int chunkX, int chunkZ, int order) {}
 }

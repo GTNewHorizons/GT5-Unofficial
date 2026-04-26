@@ -87,13 +87,15 @@ public class GTWorkAreaRenderer {
             // AxisAlignedBB must not be offset with -cameraX/Y/Z
             RenderGlobal.drawOutlinedBoundingBox(workArea, WORK_AREA_COLOR);
 
+            int currentWorkAreaOrder = oreDrill.getCurrentWorkAreaOrder();
+
             for (MTEOreDrillingPlantBase.WorkAreaChunk chunk : oreDrill.getWorkAreaChunksInWorkOrder()) {
                 renderChunkNumber(
                     mc.fontRenderer,
                     String.valueOf(chunk.order()),
                     (chunk.chunkX() << 4) + 8.0D,
                     (chunk.chunkZ() << 4) + 8.0D,
-                    getChunkNumberColor(chunk.state()));
+                    getChunkNumberColor(chunk.order(), currentWorkAreaOrder));
             }
         }
 
@@ -167,11 +169,19 @@ public class GTWorkAreaRenderer {
         GL11.glPopMatrix();
     }
 
-    private int getChunkNumberColor(@NotNull MTEOreDrillingPlantBase.WorkAreaChunkState state) {
-        return switch (state) {
-            case MINED -> WORK_AREA_MINED_CHUNK_COLOR;
-            case CURRENT -> WORK_AREA_CURRENT_CHUNK_COLOR;
-            case PENDING -> WORK_AREA_PENDING_CHUNK_COLOR;
-        };
+    private int getChunkNumberColor(int chunkOrder, int currentWorkAreaOrder) {
+        if (currentWorkAreaOrder <= 0) {
+            return WORK_AREA_PENDING_CHUNK_COLOR;
+        }
+
+        if (chunkOrder < currentWorkAreaOrder) {
+            return WORK_AREA_MINED_CHUNK_COLOR;
+        }
+
+        if (chunkOrder == currentWorkAreaOrder) {
+            return WORK_AREA_CURRENT_CHUNK_COLOR;
+        }
+
+        return WORK_AREA_PENDING_CHUNK_COLOR;
     }
 }
