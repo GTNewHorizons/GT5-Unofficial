@@ -31,6 +31,11 @@ import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 
+    private static final int VEIN_LAYER_START_Y = 23;
+    private static final int VEIN_LAYER_HEIGHT = 22;
+    private static final int VEIN_INFO_Y_POS = 110;
+    private static final int DIM_HEADER_Y_POS = 120;
+
     // spotless:off
     public static final List<OrePrefixes> PREFIX_WHITELIST = ImmutableList.of(
         OrePrefixes.dust,
@@ -158,42 +163,37 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinLayerNames(oreLayer);
         drawVeinInfo(oreLayer);
 
-        drawDimNames();
+        drawDimHeader(DIM_HEADER_Y_POS);
 
         drawSeeAllRecipesLabel();
     }
 
     private OreLayerWrapper getOreLayer(int recipe) {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
-        return GT5OreLayerHelper.getVeinByName(crecipe.oreVein.veinName);
+        return crecipe.oreVein;
     }
 
-    private void drawVeinName(OreLayerWrapper oreLayer) {
-        drawVeinNameLine(oreLayer.getLocalizedName() + " ");
-    }
-
-    private void drawVeinNameLine(String veinName) {
-        drawLine("gtnop.gui.nei.veinName", veinName + I18n.format("gtnop.gui" + ".nei.vein"), 2, 20);
+    private int drawVeinName(OreLayerWrapper oreLayer) {
+        String text = oreLayer.getLocalizedName() + " " + I18n.format("gtnop.gui.nei.vein");
+        return drawTitle(text);
     }
 
     private void drawVeinLayerNames(OreLayerWrapper oreLayer) {
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, 50);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SECONDARY, 60);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_BETWEEN, 70);
-        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, 0);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SECONDARY, 1);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_BETWEEN, 2);
+        drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 3);
     }
 
-    private void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
-        drawLine(
-            OreVeinLayer.getOreVeinLayerName(veinLayer),
-            getGTOreLocalizedName(oreLayer.ores[veinLayer], false),
-            2,
-            height);
+    private void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int index) {
+        int height = VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT * index;
+        drawHeader(OreVeinLayer.getOreVeinLayerName(veinLayer), LEFT_PADDING + 16, height);
+        drawLine(getGTOreLocalizedName(oreLayer.ores[veinLayer], false), LEFT_PADDING + 16, height + 10);
     }
 
     private void drawVeinInfo(OreLayerWrapper oreLayer) {
-        drawLine("gtnop.gui.nei.genHeight", oreLayer.worldGenHeightRange, 2, 90);
-        drawLine("gtnop.gui.nei.weightedChance", Integer.toString(oreLayer.randomWeight), 100, 90);
+        drawLine("gtnop.gui.nei.genHeight", oreLayer.worldGenHeightRange, LEFT_PADDING, VEIN_INFO_Y_POS);
+        drawLine("gtnop.gui.nei.weightedChance", Integer.toString(oreLayer.randomWeight), 100, VEIN_INFO_Y_POS);
     }
 
     @Override
@@ -239,24 +239,31 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public CachedVeinStatRecipe(OreLayerWrapper oreVein, String[] dimAbbr, List<ItemStack> stackListPrimary,
             List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween, List<ItemStack> stackListSporadic) {
             this.oreVein = oreVein;
-            positionedStackPrimary = new PositionedStack(stackListPrimary, 2, 0);
-            positionedStackSecondary = new PositionedStack(stackListSecondary, 22, 0);
-            positionedStackBetween = new PositionedStack(stackListBetween, 42, 0);
-            positionedStackSporadic = new PositionedStack(stackListSporadic, 62, 0);
+            positionedStackPrimary = new PositionedStack(stackListPrimary, 0, VEIN_LAYER_START_Y);
+            positionedStackSecondary = new PositionedStack(
+                stackListSecondary,
+                0,
+                VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT);
+            positionedStackBetween = new PositionedStack(
+                stackListBetween,
+                0,
+                VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT * 2);
+            positionedStackSporadic = new PositionedStack(
+                stackListSporadic,
+                0,
+                VEIN_LAYER_START_Y + VEIN_LAYER_HEIGHT * 3);
             setDimensionDisplayItems(dimAbbr);
         }
 
         private void setDimensionDisplayItems(String[] dimAbbr) {
-            int x = 2;
-            int y = 110;
             int count = 0;
             int itemsPerLine = 9;
             int itemSize = 18;
             for (String dim : dimAbbr) {
                 ItemStack item = ItemDimensionDisplay.getItem(dim);
                 if (item != null) {
-                    int xPos = x + itemSize * (count % itemsPerLine);
-                    int yPos = y + itemSize * (count / itemsPerLine);
+                    int xPos = LEFT_PADDING + itemSize * (count % itemsPerLine);
+                    int yPos = DIM_HEADER_Y_POS + 10 + itemSize * (count / itemsPerLine);
                     dimensionDisplayItems.add(new PositionedStack(item, xPos, yPos, false));
                     count++;
                 }

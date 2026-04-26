@@ -1,6 +1,6 @@
 package gtneioreplugin.plugin;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,11 +42,11 @@ public abstract class PluginBase extends TemplateRecipeHandler {
      * Draw the "see all recipes" transfer label
      */
     protected void drawSeeAllRecipesLabel() {
-        GuiDraw.drawStringR(
-            EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
-            getGuiWidth() - 3,
-            5,
-            0x404040,
-            false);
+        // GuiDraw.drawStringR(
+        // EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
+        // getGuiWidth() - 3,
+        // 5,
+        // 0x404040,
+        // false);
     }
 }

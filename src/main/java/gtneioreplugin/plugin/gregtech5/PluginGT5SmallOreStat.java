@@ -28,7 +28,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         drawSmallOreName(oreSmall);
         drawSmallOreInfo(oreSmall);
 
-        drawDimNames();
+        drawDimHeader(120);
 
         drawSeeAllRecipesLabel();
     }

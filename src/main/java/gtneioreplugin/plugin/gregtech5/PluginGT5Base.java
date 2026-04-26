@@ -1,6 +1,9 @@
 package gtneioreplugin.plugin.gregtech5;
 
+import java.util.List;
+
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.enums.Materials;
@@ -10,6 +13,9 @@ import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
+
+    protected static final int LEFT_PADDING = 2;
+    protected static final int TITLE_Y_POS = 1;
 
     protected String getGTOreLocalizedName(IOreMaterial ore, boolean small) {
         if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
@@ -22,23 +28,40 @@ public abstract class PluginGT5Base extends PluginBase {
         }
     }
 
-    protected void drawLine(String lineKey, String value, int x, int y) {
-        String text = I18n.format(lineKey) + ": " + value;
-
-        String text2 = text;
-
-        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
-            text2 = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+    protected int drawTitle(String text) {
+        List<String> lines = GuiDraw.fontRenderer.listFormattedStringToWidth(text, getGuiWidth() - 4);
+        int yPos = TITLE_Y_POS;
+        if (lines.size() == 1) {
+            yPos += 5;
         }
-
-        GuiDraw.drawString(text2 + (text2.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
+        GuiDraw.drawRect(0, yPos - 1, getGuiWidth(), lines.size() * 10 + 1, 0xffefd790);
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            int x = (getGuiWidth() - GuiDraw.fontRenderer.getStringWidth(line)) / 2;
+            GuiDraw.drawString(line, x, yPos + i * 11, 0xfafafa, true);
+        }
+        return lines.size();
     }
 
-    /**
-     * Draw the dimension header and the dimension names over up to 3 lines
-     *
-     */
-    protected void drawDimNames() {
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 100, 0x404040, false);
+    protected void drawLine(String lineKey, String value, int x, int y) {
+        String text = I18n.format(lineKey) + ": " + value;
+        drawLine(text, x, y);
+    }
+
+    protected void drawLine(String text, int x, int y) {
+        String trimmed = text;
+        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
+            trimmed = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+        }
+
+        GuiDraw.drawString(trimmed + (trimmed.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
+    }
+
+    protected void drawHeader(String key, int x, int y) {
+        GuiDraw.drawString(EnumChatFormatting.UNDERLINE + I18n.format(key), x, y, 0x303030, false);
+    }
+
+    protected void drawDimHeader(int y) {
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, y, 0x404040, false);
     }
 }
