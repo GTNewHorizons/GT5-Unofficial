@@ -1670,6 +1670,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Industrial 3D Copying Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPrinter.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialAutoChisel });
+
         // Industrial Extruder Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialExtruder.get(1),
