@@ -233,6 +233,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         aRenderer.useInventoryTint = false;
+        ctx.doCleanup();
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {

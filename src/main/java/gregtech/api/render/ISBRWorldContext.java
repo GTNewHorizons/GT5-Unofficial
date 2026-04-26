@@ -22,8 +22,6 @@ public interface ISBRWorldContext extends ISBRContext {
     @Override
     ISBRWorldContext reset();
 
-    void doCleanup();
-
     @Override
     ISBRWorldContext setupColor(ForgeDirection side, int hexColor);
 

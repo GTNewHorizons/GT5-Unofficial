@@ -63,6 +63,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         aRenderer.useInventoryTint = false;
+        ctx.doCleanup();
     }
 
     private void setupBlockTexturesOnly(Block aBlock, int aMeta, boolean noCoord) {

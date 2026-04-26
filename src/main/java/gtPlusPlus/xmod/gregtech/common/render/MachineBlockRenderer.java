@@ -495,6 +495,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        ctx.doCleanup();
     }
 
     @Override
