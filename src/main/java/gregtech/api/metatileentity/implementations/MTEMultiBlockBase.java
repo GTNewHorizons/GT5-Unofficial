@@ -2146,7 +2146,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch && hatch.maxAmperesOut() <= 4) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDynamoHatches.add(hatch);
