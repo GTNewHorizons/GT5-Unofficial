@@ -1681,15 +1681,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
+        int fluidCost = aLiquid.amount;
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
-            if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+            if (tLiquid == null) continue;
+            if (tLiquid.amount >= aLiquid.amount) {
                 if (simulate) {
                     return true;
                 }
                 tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
-                return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                return tLiquid.amount >= aLiquid.amount;
+            }
+            fluidCost -= tLiquid.amount;
+        }
+        // Enough fluid is present spread through multiple hatches. Drain requested amount
+        if (fluidCost <= 0) {
+            if (simulate) return true;
+            fluidCost = aLiquid.amount;
+            for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, fluidCost, true);
+                if (tLiquid == null) continue;
+                fluidCost -= tLiquid.amount;
+                if (fluidCost == 0) return true;
             }
         }
         return false;
@@ -2137,7 +2151,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch && hatch.maxAmperesOut() <= 4) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDynamoHatches.add(hatch);

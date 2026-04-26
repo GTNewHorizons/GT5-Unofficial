@@ -1662,6 +1662,7 @@ public enum MetaTileEntityIDs {
     UIV256AtLaserSourceHatch(15236),
     UMV256AtLaserSourceHatch(15237),
     UXV256AtLaserSourceHatch(15238),
+    HV4ADynamoHatch(15239),
     LuV1024AtLaserSourceHatch(15241),
     ZPM1024AtLaserSourceHatch(15242),
     UV1024AtLaserSourceHatch(15243),
