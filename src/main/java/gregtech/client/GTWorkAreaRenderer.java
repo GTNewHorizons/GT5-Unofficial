@@ -17,7 +17,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlantBase;
+import gregtech.common.misc.IWorkAreaProvider;
+import gregtech.common.misc.WorkAreaChunk;
 
 @SideOnly(Side.CLIENT)
 public class GTWorkAreaRenderer {
@@ -27,7 +28,6 @@ public class GTWorkAreaRenderer {
     private static final int WORK_AREA_PENDING_CHUNK_COLOR = 0xFFD700;
     private static final int WORK_AREA_COLOR = 0x9003fc;
     private static final int WORK_AREA_FACE_ALPHA = 51; // 20% of 255
-    private static final double NUMBER_DRAW_IN_Y_AXIS = 200D;
     private static final float NUMBER_SCALE = 0.6F;
 
     @SubscribeEvent
@@ -70,15 +70,15 @@ public class GTWorkAreaRenderer {
 
             IMetaTileEntity metaTileEntity = gregTechTile.getMetaTileEntity();
 
-            if (!(metaTileEntity instanceof MTEOreDrillingPlantBase oreDrill)) {
+            if (!(metaTileEntity instanceof IWorkAreaProvider workAreaProvider)) {
                 continue;
             }
 
-            if (!oreDrill.isWorkAreaShown()) {
+            if (!workAreaProvider.isWorkAreaShown()) {
                 continue;
             }
 
-            AxisAlignedBB workArea = oreDrill.getWorkAreaAABB();
+            AxisAlignedBB workArea = workAreaProvider.getWorkAreaAABB();
             if (workArea == null) {
                 continue;
             }
@@ -87,15 +87,18 @@ public class GTWorkAreaRenderer {
             // AxisAlignedBB must not be offset with -cameraX/Y/Z
             RenderGlobal.drawOutlinedBoundingBox(workArea, WORK_AREA_COLOR);
 
-            int currentWorkAreaOrder = oreDrill.getCurrentWorkAreaOrder();
+            if (workAreaProvider.shouldRenderWorkAreaChunkNumbers()) {
+                int currentWorkAreaOrder = workAreaProvider.getCurrentWorkAreaOrder();
 
-            for (MTEOreDrillingPlantBase.WorkAreaChunk chunk : oreDrill.getWorkAreaChunksInWorkOrder()) {
-                renderChunkNumber(
-                    mc.fontRenderer,
-                    String.valueOf(chunk.order()),
-                    (chunk.chunkX() << 4) + 8.0D,
-                    (chunk.chunkZ() << 4) + 8.0D,
-                    getChunkNumberColor(chunk.order(), currentWorkAreaOrder));
+                for (WorkAreaChunk chunk : workAreaProvider.getWorkAreaChunksInWorkOrder()) {
+                    renderChunkNumber(
+                        mc.fontRenderer,
+                        String.valueOf(chunk.order()),
+                        (chunk.chunkX() << 4) + 8.0D,
+                        workAreaProvider.getWorkAreaNumberY(),
+                        (chunk.chunkZ() << 4) + 8.0D,
+                        getChunkNumberColor(chunk.order(), currentWorkAreaOrder));
+                }
             }
         }
 
@@ -145,10 +148,11 @@ public class GTWorkAreaRenderer {
         tessellator.draw();
     }
 
-    private void renderChunkNumber(@NotNull FontRenderer fontRenderer, String text, double x, double z, int color) {
+    private void renderChunkNumber(@NotNull FontRenderer fontRenderer, String text, double x, double y, double z,
+        int color) {
         GL11.glPushMatrix();
 
-        GL11.glTranslated(x, NUMBER_DRAW_IN_Y_AXIS, z);
+        GL11.glTranslated(x, y, z);
 
         GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
