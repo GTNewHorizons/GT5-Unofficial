@@ -30,15 +30,11 @@ public abstract class PluginGT5Base extends PluginBase {
 
     protected int drawTitle(String text) {
         List<String> lines = GuiDraw.fontRenderer.listFormattedStringToWidth(text, getGuiWidth() - 4);
-        int yPos = TITLE_Y_POS;
-        if (lines.size() == 1) {
-            yPos += 5;
-        }
-        GuiDraw.drawRect(0, yPos - 1, getGuiWidth(), lines.size() * 10 + 1, 0xffefd790);
+        GuiDraw.drawRect(0, TITLE_Y_POS - 1, getGuiWidth(), lines.size() * 10 + 1, 0xffefd790);
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             int x = (getGuiWidth() - GuiDraw.fontRenderer.getStringWidth(line)) / 2;
-            GuiDraw.drawString(line, x, yPos + i * 11, 0xfafafa, true);
+            GuiDraw.drawString(line, x, TITLE_Y_POS + i * 11, 0xfafafa, true);
         }
         return lines.size();
     }
@@ -50,8 +46,8 @@ public abstract class PluginGT5Base extends PluginBase {
 
     protected void drawLine(String text, int x, int y) {
         String trimmed = text;
-        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
-            trimmed = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth() - x) {
+            trimmed = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - x - 10);
         }
 
         GuiDraw.drawString(trimmed + (trimmed.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
