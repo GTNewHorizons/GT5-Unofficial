@@ -540,6 +540,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         structureTier = -1;
+        sensorHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (mCasing < 30 || structureTier < 1) return false;
         if (mMaintenanceHatches.size() != 1) return false;
