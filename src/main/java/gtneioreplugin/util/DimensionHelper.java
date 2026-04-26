@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 
 import com.github.bsideup.jabel.Desugar;
 
@@ -240,6 +240,6 @@ public class DimensionHelper {
     }
 
     public static String getDimLocalizedName(String dimName) {
-        return I18n.format(getDimUnlocalizedName(dimName));
+        return StatCollector.translateToLocal(getDimUnlocalizedName(dimName));
     }
 }
