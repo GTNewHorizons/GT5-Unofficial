@@ -18,9 +18,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -103,7 +101,8 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             .topRel(0)
             .size(120, 50)
             .child(
-                new Column().sizeRel(1)
+                Flow.column()
+                    .sizeRel(1)
                     .padding(3)
                     .child(
                         IKey.lang("GT5U.gui.button.max_fluid")
@@ -115,7 +114,8 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
 
     private IWidget makeMaxFluidConfigurator() {
         IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse);
-        return new Row().widthRel(1)
+        return Flow.row()
+            .widthRel(1)
             .marginBottom(4)
             .height(18)
             .paddingLeft(3)
@@ -127,7 +127,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     private IWidget makeMaxFluidConfiguratorTextFieldWidget(IntSyncValue maxFluidUseSyncer) {
         return new TextFieldWidget().value(maxFluidUseSyncer)
             .setTextAlignment(Alignment.Center)
-            .setNumbers(0, Integer.MAX_VALUE)
+            .setNumbers(0, 300000)
             .size(70, 14)
             .marginBottom(4)
             .marginRight(16);
