@@ -3,21 +3,29 @@ package gtneioreplugin.plugin.gregtech5;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.ImmutableList;
 
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.StackInfo;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
+import gtneioreplugin.util.DimensionHelper.Dimension;
 import gtneioreplugin.util.GT5OreLayerHelper;
+import gtneioreplugin.util.GT5OreLayerHelper.NormalOreDimensionWrapper;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 import gtneioreplugin.util.OreVeinLayer;
 
@@ -116,13 +124,25 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private void addVeinWithLayers(OreLayerWrapper oreVein) {
+        String[] dimAbbr = getDimNameArrayFromVeinName(oreVein.veinName);
+
+        Set<StoneType> stoneTypes = new HashSet<>();
+
+        for (String abbr : dimAbbr) {
+            Dimension dimension = DimensionHelper.getByIndex(DimensionHelper.getIndexByAbbr(abbr));
+            if (dimension != null) {
+                stoneTypes.addAll(dimension.stoneTypes());
+            }
+        }
+
         this.arecipes.add(
             new CachedVeinStatRecipe(
-                oreVein.veinName,
-                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_PRIMARY),
-                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SECONDARY),
-                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_BETWEEN),
-                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SPORADIC)));
+                oreVein,
+                dimAbbr,
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_PRIMARY, stoneTypes),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SECONDARY, stoneTypes),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_BETWEEN, stoneTypes),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SPORADIC, stoneTypes)));
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
@@ -145,7 +165,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private OreLayerWrapper getOreLayer(int recipe) {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
-        return GT5OreLayerHelper.getVeinByName(crecipe.veinName);
+        return GT5OreLayerHelper.getVeinByName(crecipe.oreVein.veinName);
     }
 
     private void drawVeinName(OreLayerWrapper oreLayer) {
@@ -198,32 +218,41 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         return dims;
     }
 
+    @Override
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
+        if (arecipes.get(recipeIndex) instanceof CachedVeinStatRecipe recipe) {
+            recipe.addItemTooltip(stack, currenttip);
+            return currenttip;
+        }
+        return super.handleItemTooltip(gui, stack, currenttip, recipeIndex);
+    }
+
     public class CachedVeinStatRecipe extends CachedRecipe {
 
-        public final String veinName;
+        private final OreLayerWrapper oreVein;
         public final PositionedStack positionedStackPrimary;
         public final PositionedStack positionedStackSecondary;
         public final PositionedStack positionedStackBetween;
         public final PositionedStack positionedStackSporadic;
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
-        public CachedVeinStatRecipe(String veinName, List<ItemStack> stackListPrimary,
+        public CachedVeinStatRecipe(OreLayerWrapper oreVein, String[] dimAbbr, List<ItemStack> stackListPrimary,
             List<ItemStack> stackListSecondary, List<ItemStack> stackListBetween, List<ItemStack> stackListSporadic) {
-            this.veinName = veinName;
+            this.oreVein = oreVein;
             positionedStackPrimary = new PositionedStack(stackListPrimary, 2, 0);
             positionedStackSecondary = new PositionedStack(stackListSecondary, 22, 0);
             positionedStackBetween = new PositionedStack(stackListBetween, 42, 0);
             positionedStackSporadic = new PositionedStack(stackListSporadic, 62, 0);
-            setDimensionDisplayItems();
+            setDimensionDisplayItems(dimAbbr);
         }
 
-        private void setDimensionDisplayItems() {
+        private void setDimensionDisplayItems(String[] dimAbbr) {
             int x = 2;
             int y = 110;
             int count = 0;
             int itemsPerLine = 9;
             int itemSize = 18;
-            for (String dim : getDimNameArrayFromVeinName(this.veinName)) {
+            for (String dim : dimAbbr) {
                 ItemStack item = ItemDimensionDisplay.getItem(dim);
                 if (item != null) {
                     int xPos = x + itemSize * (count % itemsPerLine);
@@ -256,6 +285,23 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             outputs.add(positionedStackBetween);
             outputs.add(positionedStackSporadic);
             return outputs;
+        }
+
+        public void addItemTooltip(ItemStack stack, List<String> currentTip) {
+            for (PositionedStack item : dimensionDisplayItems) {
+                if (StackInfo.equalItemAndNBT(stack, item.item, false)) {
+                    String dimAbbr = ItemDimensionDisplay.getDimension(stack);
+                    if (dimAbbr != null) {
+                        NormalOreDimensionWrapper wrapper = GT5OreLayerHelper.getVeinByDim(dimAbbr);
+                        if (wrapper != null && wrapper.oreVeinToProbabilityInDimension.containsKey(oreVein)) {
+                            String percent = String
+                                .format("%.2f", wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
+                            currentTip
+                                .add(String.format(EnumChatFormatting.AQUA + "Chance to generate: %s%%", percent));
+                        }
+                    }
+                }
+            }
         }
     }
 }
