@@ -115,6 +115,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
         ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
         ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
+        ctx.doCleanup();
         // spotless:on
 
         return tessAccess.gt5u$hasVertices();

@@ -129,6 +129,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
             }
         }
     }
+
     // spotless:on
     @Override
     public boolean renderStandardBlock(ISBRWorldContext ctx) {
@@ -501,7 +502,13 @@ public class MachineBlockRenderer extends GTRendererBlock {
         RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final boolean b = renderInWorld(aWorld, aX, aY, aZ, tessAccess, ctx);
+        ctx.doCleanup();
+        return b;
+    }
 
+    private boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, TesselatorAccessor tessAccess,
+        ISBRWorldContext ctx) {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null

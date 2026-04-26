@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ISBRWorldContext extends ISBRContext {
 
-    @NotNull
     IBlockAccess getBlockAccess();
 
     @Nullable
@@ -22,6 +21,8 @@ public interface ISBRWorldContext extends ISBRContext {
 
     @Override
     ISBRWorldContext reset();
+
+    void doCleanup();
 
     @Override
     ISBRWorldContext setupColor(ForgeDirection side, int hexColor);

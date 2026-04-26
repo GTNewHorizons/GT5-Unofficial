@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRWorldContext;
 
@@ -69,11 +68,12 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     private final float[][][] AOLV = new float[3][3][3];
 
     private int worldRenderPass;
+
     /**
-     * Non-null dummy world, replaced in {@link #setup}.
+     * Reference to the world we are currently rendering in, replaced in {@link #setup}.
      */
-    @NotNull
-    private IBlockAccess blockAccess = GTValues.DW;
+    private IBlockAccess blockAccess;
+
     /**
      * Brightness for side.
      */
@@ -137,7 +137,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     }
 
     @Override
-    public @NotNull IBlockAccess getBlockAccess() {
+    public IBlockAccess getBlockAccess() {
         return blockAccess;
     }
 
@@ -198,6 +198,11 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         this.hasLightnessOverride = false;
         this.renderBlocks.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.proxy.mRenderTileAmbientOcclusion;
         return this;
+    }
+
+    @Override
+    public void doCleanup() {
+        this.blockAccess = null;
     }
 
     @Override
