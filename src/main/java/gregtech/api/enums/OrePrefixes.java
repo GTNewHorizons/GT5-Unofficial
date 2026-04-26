@@ -396,10 +396,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on MakeMake */
-    public static final OrePrefixes oreMakeMake = new OrePrefixBuilder("oreMakeMake")
-        .withDefaultLocalName("MakeMake Ores")
-        .withPrefix("MakeMake ")
+    /** Prefix for ores on Makemake */
+    public static final OrePrefixes oreMakemake = new OrePrefixBuilder("oreMakemake")
+        .withDefaultLocalName("Makemake Ores")
+        .withPrefix("Makemake ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -427,10 +427,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on AlphaCentauri */
+    /** Prefix for ores on Alpha Centauri */
     public static final OrePrefixes oreAlphaCentauri = new OrePrefixBuilder("oreAlphaCentauri")
-        .withDefaultLocalName("AlphaCentauri Ores")
-        .withPrefix("AlphaCentauri ")
+        .withDefaultLocalName("Alpha Centauri Ores")
+        .withPrefix("Alpha Centauri ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -438,9 +438,9 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on TCetiE */
-    public static final OrePrefixes oreTCetiE = new OrePrefixBuilder("oreTCetiE").withDefaultLocalName("TCetiE Ores")
-        .withPrefix("TCetiE ")
+    /** Prefix for ores on T Ceti E */
+    public static final OrePrefixes oreTCetiE = new OrePrefixBuilder("oreTCetiE").withDefaultLocalName("T Ceti E Ores")
+        .withPrefix("T Ceti E ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -448,9 +448,9 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on VegaB */
-    public static final OrePrefixes oreVegaB = new OrePrefixBuilder("oreVegaB").withDefaultLocalName("VegaB Ores")
-        .withPrefix("VegaB ")
+    /** Prefix for ores on Vega B */
+    public static final OrePrefixes oreVegaB = new OrePrefixBuilder("oreVegaB").withDefaultLocalName("Vega B Ores")
+        .withPrefix("Vega B ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -458,10 +458,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on BarnardaE */
+    /** Prefix for ores on Barnarda E */
     public static final OrePrefixes oreBarnardaE = new OrePrefixBuilder("oreBarnardaE")
-        .withDefaultLocalName("BarnardaE Ores")
-        .withPrefix("BarnardaE ")
+        .withDefaultLocalName("Barnarda E Ores")
+        .withPrefix("Barnarda E ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -469,10 +469,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on BarnardaF */
+    /** Prefix for ores on Barnarda F */
     public static final OrePrefixes oreBarnardaF = new OrePrefixBuilder("oreBarnardaF")
-        .withDefaultLocalName("BarnardaF Ores")
-        .withPrefix("BarnardaF ")
+        .withDefaultLocalName("Barnarda F Ores")
+        .withPrefix("Barnarda F ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -490,10 +490,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on AnubisAndMaahes */
+    /** Prefix for ores on Anubis and Maahes */
     public static final OrePrefixes oreAnubisAndMaahes = new OrePrefixBuilder("oreAnubisAndMaahes")
         .withDefaultLocalName("Anubis And Maahes Ores")
-        .withPrefix("AnubisAndMaahes ")
+        .withPrefix("Anubis And Maahes ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -501,10 +501,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on PackedIce */
+    /** Prefix for packed ice ores */
     public static final OrePrefixes orePackedIce = new OrePrefixBuilder("orePackedIce")
         .withDefaultLocalName("Packed Ice Ores")
-        .withPrefix("PackedIce ")
+        .withPrefix("Packed Ice ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -512,10 +512,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on SethIce */
+    /** Prefix for ice ores on Seth */
     public static final OrePrefixes oreSethIce = new OrePrefixBuilder("oreSethIce")
         .withDefaultLocalName("Seth Ice Ores")
-        .withPrefix("SethIce ")
+        .withPrefix("Seth Ice ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -523,10 +523,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on SethClay */
+    /** Prefix for clay ores on Seth */
     public static final OrePrefixes oreSethClay = new OrePrefixBuilder("oreSethClay")
         .withDefaultLocalName("Seth Clay Ores")
-        .withPrefix("SethClay ")
+        .withPrefix("Seth Clay ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -534,7 +534,7 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on Tuff */
+    /** Prefix for tuff ores */
     public static final OrePrefixes oreTuff = new OrePrefixBuilder("oreTuff").withDefaultLocalName("Tuff Ores")
         .withPrefix("Tuff ")
         .withSuffix(" Ore")
@@ -544,10 +544,10 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
-    /** Prefix for ores on BlueIce */
+    /** Prefix for blue ice ores */
     public static final OrePrefixes oreBlueIce = new OrePrefixBuilder("oreBlueIce")
         .withDefaultLocalName("Blue Ice Ores")
-        .withPrefix("BlueIce ")
+        .withPrefix("Blue Ice ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()

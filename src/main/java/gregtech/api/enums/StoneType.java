@@ -113,7 +113,7 @@ public enum StoneType implements IStoneType {
     Triton(StoneBuilder.galaxySpace("Triton", 2, 1).setPrefix(OrePrefixes.oreTriton)),
     Pluto(StoneBuilder.galaxySpace("Pluto", 5, 4).setPrefix(OrePrefixes.orePluto)),
     Haumea(StoneBuilder.galaxySpace("Haumea", 0).setPrefix(OrePrefixes.oreHaumea)),
-    MakeMake(StoneBuilder.galaxySpace("MakeMake", "grunt", 1).setPrefix(OrePrefixes.oreMakeMake)),
+    MakeMake(StoneBuilder.galaxySpace("MakeMake", "grunt", 1).setPrefix(OrePrefixes.oreMakemake)),
     Venus(StoneBuilder.galaxySpace("Venus", 1).setPrefix(OrePrefixes.oreVenus)),
     Mercury(StoneBuilder.galaxySpace("Mercury", 2, 1).setPrefix(OrePrefixes.oreMercury)),
     AlphaCentauri(new StoneBuilder()
