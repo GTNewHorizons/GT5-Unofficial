@@ -64,10 +64,13 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                     Collections.addAll(outputs, recipe.mOutputs);
                     // recycling
                     for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
-                        ItemStack stack = fuel.getLeft()
-                            .copy();
-                        stack.stackSize = Math.max(fuel.getRight(), 1);
-                        if (fuel.getRight() > 0) outputs.add(stack);
+                        if (fuel.getRight() > 0) {
+                            ItemStack stack = fuel.getLeft()
+                                .copy();
+                            stack.stackSize = fuel.getRight();
+                            outputs.add(stack);
+
+                        }
                     }
                     outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
                     outputs.add(HTGRItem.createTRISOMixture(material));
