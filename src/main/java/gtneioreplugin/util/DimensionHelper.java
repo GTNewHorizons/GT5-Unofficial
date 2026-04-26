@@ -97,7 +97,7 @@ public class DimensionHelper {
         register("Nether", NETHER, "Nether", "Ne", T0, ImmutableList.of(StoneType.Netherrack));
         register("Twilight", TWILIGHT_FOREST, "Twilight", "TF", T0, ImmutableList.of(StoneType.Stone));
         register("The End", THE_END, "The End", "ED", T0, ImmutableList.of(StoneType.Endstone));
-        register("EndAsteroid", ENDASTEROID, "EndAsteroid", "EA", T0, ImmutableList.of(StoneType.Stone));
+        register("EndAsteroid", ENDASTEROID, "EndAsteroid", "EA", T0, ImmutableList.of(StoneType.Endstone));
         register("dimensionDarkWorld", EVERGLADES, "dimensionDarkWorld", "Eg", T0, ImmutableList.of(StoneType.Stone));
 
         // T1
@@ -126,7 +126,7 @@ public class DimensionHelper {
         register("GalaxySpace_Miranda", MIRANDA, "Miranda", "Mi", T5, ImmutableList.of(StoneType.Miranda));
         register("GalaxySpace_Oberon", OBERON, "Oberon", "Ob", T5, ImmutableList.of(StoneType.Oberon));
         register("GalaxySpace_Titan", TITAN, "Titan", "Ti", T5, ImmutableList.of(StoneType.Titan));
-        register("Ross128ba", ROSS128BA, "Ross128ba", "Ra", T5, ImmutableList.of(StoneType.Stone));
+        register("Ross128ba", ROSS128BA, "Ross128ba", "Ra", T5, ImmutableList.of(StoneType.Moon));
 
         // T6
         register("GalaxySpace_Proteus", PROTEUS, "Proteus", "Pr", T6, ImmutableList.of(StoneType.Proteus));
@@ -134,7 +134,7 @@ public class DimensionHelper {
 
         // T7
         register("GalaxySpace_Haumea", HAUMEA, "Haumea", "Ha", T7, ImmutableList.of(StoneType.Haumea));
-        register("GalaxySpace_Kuiperbelt", KUIPERBELT, "Kuiperbelt", "KB", T7, ImmutableList.of(StoneType.Stone));
+        register("GalaxySpace_Kuiperbelt", KUIPERBELT, "Kuiperbelt", "KB", T7, ImmutableList.of(StoneType.PackedIce, StoneType.BlueIce));
         register("GalaxySpace_MakeMake", MAKEMAKE, "MakeMake", "MM", T7, ImmutableList.of(StoneType.MakeMake));
         register("GalaxySpace_Pluto", PLUTO, "Pluto", "Pl", T7, ImmutableList.of(StoneType.Pluto));
 
@@ -150,7 +150,7 @@ public class DimensionHelper {
         register("GalacticraftAmunRa_Anubis", ANUBIS, "Anubis", "An", T9, ImmutableList.of(StoneType.AnubisAndMaahes));
         register("GalacticraftAmunRa_Horus", HORUS, "Horus", "Ho", T9, ImmutableList.of(StoneType.Horus));
         register("GalacticraftAmunRa_Maahes", MAAHES, "Maahes", "Mh", T9, ImmutableList.of(StoneType.AnubisAndMaahes));
-        register("GalacticraftAmunRa_MehenBelt", MEHENBELT, "MehenBelt", "MB", T9, ImmutableList.of(StoneType.Stone));
+        register("GalacticraftAmunRa_MehenBelt", MEHENBELT, "MehenBelt", "MB", T9, ImmutableList.of(StoneType.Asteroid));
         register("GalacticraftAmunRa_Neper", NEPER, "Neper", "Np", T9, ImmutableList.of(StoneType.Stone));
         register(
             "GalacticraftAmunRa_Seth",
