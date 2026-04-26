@@ -19,6 +19,6 @@ public interface IWorkAreaProvider {
     }
 
     default double getWorkAreaNumberY() {
-        return 200D;
+        return 255D;
     }
 }

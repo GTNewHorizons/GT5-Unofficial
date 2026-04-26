@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.jetbrains.annotations.NotNull;
@@ -91,13 +93,28 @@ public class GTWorkAreaRenderer {
                 int currentWorkAreaOrder = workAreaProvider.getCurrentWorkAreaOrder();
 
                 for (WorkAreaChunk chunk : workAreaProvider.getWorkAreaChunksInWorkOrder()) {
+                    double numberX = (chunk.chunkX() << 4) + 8.0D;
+                    double numberY = workAreaProvider.getWorkAreaNumberY();
+                    double numberZ = (chunk.chunkZ() << 4) + 8.0D;
+
+                    boolean drawInFrontOfClouds = hasLineOfSightToText(
+                        mc,
+                        camera,
+                        cameraX,
+                        cameraY,
+                        cameraZ,
+                        numberX,
+                        numberY,
+                        numberZ);
+
                     renderChunkNumber(
                         mc.fontRenderer,
                         String.valueOf(chunk.order()),
-                        (chunk.chunkX() << 4) + 8.0D,
-                        workAreaProvider.getWorkAreaNumberY(),
-                        (chunk.chunkZ() << 4) + 8.0D,
-                        getChunkNumberColor(chunk.order(), currentWorkAreaOrder));
+                        numberX,
+                        numberY,
+                        numberZ,
+                        getChunkNumberColor(chunk.order(), currentWorkAreaOrder),
+                        drawInFrontOfClouds);
                 }
             }
         }
@@ -149,7 +166,7 @@ public class GTWorkAreaRenderer {
     }
 
     private void renderChunkNumber(@NotNull FontRenderer fontRenderer, String text, double x, double y, double z,
-        int color) {
+        int color, boolean ignoreDepth) {
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, z);
@@ -160,14 +177,25 @@ public class GTWorkAreaRenderer {
         GL11.glScalef(-NUMBER_SCALE, -NUMBER_SCALE, NUMBER_SCALE);
 
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glDepthMask(false);
 
+        if (ignoreDepth) {
+            /*
+             * We already checked block line-of-sight with rayTraceBlocks.
+             * This makes the number appear in front of clouds, without making it
+             * appear through solid blocks in normal cases.
+             */
+            GL11.glDepthFunc(GL11.GL_ALWAYS);
+        } else {
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+        }
+
         int width = fontRenderer.getStringWidth(text);
         fontRenderer.drawString(text, -width / 2, 0, color);
 
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glDepthMask(true);
 
         GL11.glPopMatrix();
@@ -187,5 +215,26 @@ public class GTWorkAreaRenderer {
         }
 
         return WORK_AREA_PENDING_CHUNK_COLOR;
+    }
+
+    private boolean hasLineOfSightToText(@NotNull Minecraft mc, @NotNull Entity camera, double cameraX, double cameraY,
+        double cameraZ, double textX, double textY, double textZ) {
+        if (mc.theWorld == null) {
+            return false;
+        }
+
+        Vec3 start = Vec3.createVectorHelper(cameraX, cameraY + camera.getEyeHeight(), cameraZ);
+
+        Vec3 end = Vec3.createVectorHelper(textX, textY, textZ);
+
+        MovingObjectPosition hit = mc.theWorld.func_147447_a(
+            start,
+            end,
+            false, // stopOnLiquid
+            true, // ignoreBlockWithoutBoundingBox
+            false // returnLastUncollidableBlock
+        );
+
+        return hit == null;
     }
 }
