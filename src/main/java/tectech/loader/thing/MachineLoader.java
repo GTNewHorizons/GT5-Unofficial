@@ -539,15 +539,13 @@ import static tectech.thing.CustomItemList.hatch_CreativeUncertainty;
 import static tectech.thing.CustomItemList.holder_Hatch;
 import static tectech.thing.CustomItemList.rack_Hatch;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.VoltageIndex;
-import gregtech.client.GTTooltipHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.factory.test.TestFactoryHatch;
 import gregtech.api.factory.test.TestFactoryPipe;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
@@ -1346,53 +1344,117 @@ public class MachineLoader implements Runnable {
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
         eM_dynamoMulti4_HV.set(
-            new MTEHatchDynamoMulti(HV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.03", "HV 4A Dynamo Hatch", VoltageIndex.HV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                HV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.03",
+                "HV 4A Dynamo Hatch",
+                VoltageIndex.HV,
+                4).getStackForm(1L));
         eM_dynamoMulti4_EV.set(
-            new MTEHatchDynamoMulti(EV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.04", "EV 4A Dynamo Hatch", VoltageIndex.EV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                EV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.04",
+                "EV 4A Dynamo Hatch",
+                VoltageIndex.EV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_EV.set(
-            new MTEHatchDynamoMulti(EV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.04", "EV 16A Dynamo Hatch", VoltageIndex.EV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                EV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.04",
+                "EV 16A Dynamo Hatch",
+                VoltageIndex.EV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_EV.set(
-            new MTEHatchDynamoMulti(EV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.04", "EV 64A Dynamo Hatch", VoltageIndex.EV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                EV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.04",
+                "EV 64A Dynamo Hatch",
+                VoltageIndex.EV,
+                64).getStackForm(1L));
         eM_dynamoMulti4_IV.set(
-            new MTEHatchDynamoMulti(IV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.05", "IV 4A Dynamo Hatch", VoltageIndex.IV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                IV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.05",
+                "IV 4A Dynamo Hatch",
+                VoltageIndex.IV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_IV.set(
-            new MTEHatchDynamoMulti(IV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.05", "IV 16A Dynamo Hatch", VoltageIndex.IV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                IV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.05",
+                "IV 16A Dynamo Hatch",
+                VoltageIndex.IV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_IV.set(
-            new MTEHatchDynamoMulti(IV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.05", "IV 64A Dynamo Hatch", VoltageIndex.IV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                IV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.05",
+                "IV 64A Dynamo Hatch",
+                VoltageIndex.IV,
+                64).getStackForm(1L));
         eM_dynamoMulti4_LuV.set(
-            new MTEHatchDynamoMulti(LuV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.06", "LuV 4A Dynamo Hatch", VoltageIndex.LuV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                LuV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.06",
+                "LuV 4A Dynamo Hatch",
+                VoltageIndex.LuV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_LuV.set(
-            new MTEHatchDynamoMulti(LuV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.06", "LuV 16A Dynamo Hatch", VoltageIndex.LuV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                LuV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.06",
+                "LuV 16A Dynamo Hatch",
+                VoltageIndex.LuV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_LuV.set(
-            new MTEHatchDynamoMulti(LuV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.06", "LuV 64A Dynamo Hatch", VoltageIndex.LuV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                LuV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.06",
+                "LuV 64A Dynamo Hatch",
+                VoltageIndex.LuV,
+                64).getStackForm(1L));
         eM_dynamoMulti4_ZPM.set(
-            new MTEHatchDynamoMulti(ZPM4ADynamoHatch.ID, "hatch.dynamomulti04.tier.07", "ZPM 4A Dynamo Hatch", VoltageIndex.ZPM, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                ZPM4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.07",
+                "ZPM 4A Dynamo Hatch",
+                VoltageIndex.ZPM,
+                4).getStackForm(1L));
         eM_dynamoMulti16_ZPM.set(
-            new MTEHatchDynamoMulti(ZPM16ADynamoHatch.ID, "hatch.dynamomulti16.tier.07", "ZPM 16A Dynamo Hatch", VoltageIndex.ZPM, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                ZPM16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.07",
+                "ZPM 16A Dynamo Hatch",
+                VoltageIndex.ZPM,
+                16).getStackForm(1L));
         eM_dynamoMulti64_ZPM.set(
-            new MTEHatchDynamoMulti(ZPM64ADynamoHatch.ID, "hatch.dynamomulti64.tier.07", "ZPM 64A Dynamo Hatch", VoltageIndex.ZPM, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                ZPM64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.07",
+                "ZPM 64A Dynamo Hatch",
+                VoltageIndex.ZPM,
+                64).getStackForm(1L));
         eM_dynamoMulti4_UV.set(
-            new MTEHatchDynamoMulti(UV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.08", "UV 4A Dynamo Hatch", VoltageIndex.UV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.08",
+                "UV 4A Dynamo Hatch",
+                VoltageIndex.UV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UV.set(
-            new MTEHatchDynamoMulti(UV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.08", "UV 16A Dynamo Hatch", VoltageIndex.UV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.08",
+                "UV 16A Dynamo Hatch",
+                VoltageIndex.UV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UV.set(
-            new MTEHatchDynamoMulti(UV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.08", "UV 64A Dynamo Hatch", VoltageIndex.UV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.08",
+                "UV 64A Dynamo Hatch",
+                VoltageIndex.UV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UV.set(
             new MTEHatchDynamoMulti(
                 UV256ADynamoHatch.ID,
@@ -1401,14 +1463,26 @@ public class MachineLoader implements Runnable {
                 VoltageIndex.UV,
                 256).getStackForm(1L));
         eM_dynamoMulti4_UHV.set(
-            new MTEHatchDynamoMulti(UHV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.09", "UHV 4A Dynamo Hatch", VoltageIndex.UHV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UHV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.09",
+                "UHV 4A Dynamo Hatch",
+                VoltageIndex.UHV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UHV.set(
-            new MTEHatchDynamoMulti(UHV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.09", "UHV 16A Dynamo Hatch", VoltageIndex.UHV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UHV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.09",
+                "UHV 16A Dynamo Hatch",
+                VoltageIndex.UHV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UHV.set(
-            new MTEHatchDynamoMulti(UHV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.09", "UHV 64A Dynamo Hatch", VoltageIndex.UHV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UHV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.09",
+                "UHV 64A Dynamo Hatch",
+                VoltageIndex.UHV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UHV.set(
             new MTEHatchDynamoMulti(
                 UHV256ADynamoHatch.ID,
@@ -1417,14 +1491,26 @@ public class MachineLoader implements Runnable {
                 VoltageIndex.UHV,
                 256).getStackForm(1L));
         eM_dynamoMulti4_UEV.set(
-            new MTEHatchDynamoMulti(UEV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.10", "UEV 4A Dynamo Hatch", VoltageIndex.UEV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UEV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.10",
+                "UEV 4A Dynamo Hatch",
+                VoltageIndex.UEV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UEV.set(
-            new MTEHatchDynamoMulti(UEV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.10", "UEV 16A Dynamo Hatch", VoltageIndex.UEV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UEV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.10",
+                "UEV 16A Dynamo Hatch",
+                VoltageIndex.UEV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UEV.set(
-            new MTEHatchDynamoMulti(UEV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.10", "UEV 64A Dynamo Hatch", VoltageIndex.UEV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UEV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.10",
+                "UEV 64A Dynamo Hatch",
+                VoltageIndex.UEV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UEV.set(
             new MTEHatchDynamoMulti(
                 UEV256ADynamoHatch.ID,
@@ -1433,14 +1519,26 @@ public class MachineLoader implements Runnable {
                 VoltageIndex.UEV,
                 256).getStackForm(1L));
         eM_dynamoMulti4_UIV.set(
-            new MTEHatchDynamoMulti(UIV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.11", "UIV 4A Dynamo Hatch", VoltageIndex.UIV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UIV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.11",
+                "UIV 4A Dynamo Hatch",
+                VoltageIndex.UIV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UIV.set(
-            new MTEHatchDynamoMulti(UIV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.11", "UIV 16A Dynamo Hatch", VoltageIndex.UIV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UIV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.11",
+                "UIV 16A Dynamo Hatch",
+                VoltageIndex.UIV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UIV.set(
-            new MTEHatchDynamoMulti(UIV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.11", "UIV 64A Dynamo Hatch", VoltageIndex.UIV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UIV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.11",
+                "UIV 64A Dynamo Hatch",
+                VoltageIndex.UIV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UIV.set(
             new MTEHatchDynamoMulti(
                 UIV256ADynamoHatch.ID,
@@ -1449,14 +1547,26 @@ public class MachineLoader implements Runnable {
                 VoltageIndex.UIV,
                 256).getStackForm(1L));
         eM_dynamoMulti4_UMV.set(
-            new MTEHatchDynamoMulti(UMV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.12", "UMV 4A Dynamo Hatch", VoltageIndex.UMV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UMV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.12",
+                "UMV 4A Dynamo Hatch",
+                VoltageIndex.UMV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UMV.set(
-            new MTEHatchDynamoMulti(UMV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.12", "UMV 16A Dynamo Hatch", VoltageIndex.UMV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UMV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.12",
+                "UMV 16A Dynamo Hatch",
+                VoltageIndex.UMV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UMV.set(
-            new MTEHatchDynamoMulti(UMV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.12", "UMV 64A Dynamo Hatch", VoltageIndex.UMV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UMV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.12",
+                "UMV 64A Dynamo Hatch",
+                VoltageIndex.UMV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UMV.set(
             new MTEHatchDynamoMulti(
                 UMV256ADynamoHatch.ID,
@@ -1465,14 +1575,26 @@ public class MachineLoader implements Runnable {
                 VoltageIndex.UMV,
                 256).getStackForm(1L));
         eM_dynamoMulti4_UXV.set(
-            new MTEHatchDynamoMulti(UXV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.13", "UXV 4A Dynamo Hatch", VoltageIndex.UXV, 4)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UXV4ADynamoHatch.ID,
+                "hatch.dynamomulti04.tier.13",
+                "UXV 4A Dynamo Hatch",
+                VoltageIndex.UXV,
+                4).getStackForm(1L));
         eM_dynamoMulti16_UXV.set(
-            new MTEHatchDynamoMulti(UXV16ADynamoHatch.ID, "hatch.dynamomulti16.tier.13", "UXV 16A Dynamo Hatch", VoltageIndex.UXV, 16)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UXV16ADynamoHatch.ID,
+                "hatch.dynamomulti16.tier.13",
+                "UXV 16A Dynamo Hatch",
+                VoltageIndex.UXV,
+                16).getStackForm(1L));
         eM_dynamoMulti64_UXV.set(
-            new MTEHatchDynamoMulti(UXV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.13", "UXV 64A Dynamo Hatch", VoltageIndex.UXV, 64)
-                .getStackForm(1L));
+            new MTEHatchDynamoMulti(
+                UXV64ADynamoHatch.ID,
+                "hatch.dynamomulti64.tier.13",
+                "UXV 64A Dynamo Hatch",
+                VoltageIndex.UXV,
+                64).getStackForm(1L));
         eM_dynamoMulti256_UXV.set(
             new MTEHatchDynamoMulti(
                 UXV256ADynamoHatch.ID,
