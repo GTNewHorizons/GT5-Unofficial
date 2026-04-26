@@ -1343,7 +1343,7 @@ public class MachineLoader implements Runnable {
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
         eM_dynamoMulti4_HV.set(
-            new MTEHatchDynamoMulti(HV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.03", "HV 4A Dynamo Hatch", 4, 4)
+            new MTEHatchDynamoMulti(HV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.03", "HV 4A Dynamo Hatch", 3, 4)
                 .getStackForm(1L));
         eM_dynamoMulti4_EV.set(
             new MTEHatchDynamoMulti(EV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.04", "EV 4A Dynamo Hatch", 4, 4)
