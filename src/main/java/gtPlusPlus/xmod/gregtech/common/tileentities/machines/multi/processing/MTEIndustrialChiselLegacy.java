@@ -53,27 +53,28 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
-public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel> implements ISurvivalConstructable {
+public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialChiselLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
 
     private ItemStack target;
-    private static IStructureDefinition<MTEIndustrialChisel> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialChiselLegacy> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
     private GTRecipe mCachedRecipe;
 
-    public MTEIndustrialChisel(int aID, String aName, String aNameRegional) {
+    public MTEIndustrialChiselLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialChisel(String aName) {
+    public MTEIndustrialChiselLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialChisel(this.mName);
+        return new MTEIndustrialChiselLegacy(this.mName);
     }
 
     @Override
@@ -85,6 +86,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
@@ -104,9 +106,9 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialChisel> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialChiselLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChisel>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChiselLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -119,7 +121,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 // spotless:on
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialChisel.class)
+                    buildHatchAdder(MTEIndustrialChiselLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(90)
                         .hint(1)
