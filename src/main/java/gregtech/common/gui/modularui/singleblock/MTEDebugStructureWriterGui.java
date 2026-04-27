@@ -5,6 +5,7 @@ import static gregtech.api.util.GTUtility.clamp;
 
 import java.util.stream.IntStream;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.MCHelper;
@@ -242,6 +243,17 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                         }))
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
                 .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.print.tooltip"))));
+
+        // button for copying to clipboard
+        buttonRow.child(
+            new com.cleanroommc.modularui.widgets.ButtonWidget<>()
+                .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                    if (!baseMetaTileEntity.isServerSide()) {
+                        GuiScreen.setClipboardString(machine.getPseudoJavaCode());
+                    }
+                }))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_COPY)
+                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.copy.tooltip"))));
 
         // button for toggling transpose
         buttonRow.child(

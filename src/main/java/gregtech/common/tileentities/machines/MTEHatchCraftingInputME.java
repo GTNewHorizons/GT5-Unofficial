@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static appeng.util.item.AEFluidStackType.FLUID_STACK_TYPE;
+import static appeng.util.item.AEItemStackType.ITEM_STACK_TYPE;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
@@ -12,11 +14,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -65,6 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -78,6 +83,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IAEStackType;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
@@ -673,15 +679,46 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             name.append(getLocalName());
         }
 
-        if (mInventory[SLOT_CIRCUIT] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+        return name.append(this.getNameSuffix())
+            .toString();
+    }
+
+    @Override
+    public String getRawName() {
+        if (hasCustomName()) {
+            return getCustomName();
         }
-        if (mInventory[SLOT_MANUAL_START] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_MANUAL_START].getDisplayName());
+
+        if (getCrafterIcon() != null) {
+            return getCrafterIcon().getUnlocalizedName();
+        } else {
+            return getLocalName();
         }
-        return name.toString();
+    }
+
+    @Override
+    public String getNameSuffix() {
+        StringBuilder suffix = new StringBuilder();
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base instanceof IInterfaceNameProvider nameProvider) {
+            String circuitSuffix = nameProvider.getInterfaceNameSuffix();
+            if (circuitSuffix != null) suffix.append(circuitSuffix);
+        }
+
+        StringJoiner manualSlots = new StringJoiner(", ");
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                manualSlots.add(mInventory[i].getDisplayName());
+            }
+        }
+        if (manualSlots.length() > 0) {
+            try {
+                suffix.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+            } catch (IllegalFormatException ignored) {}
+        }
+
+        return suffix.toString();
     }
 
     @Override
@@ -697,6 +734,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean allowsPatternOptimization() {
         return !disablePatternOptimization;
+    }
+
+    @Override
+    public IAEStackType<?>[] getSupportedStackTypes() {
+        if (supportFluids) {
+            return new IAEStackType<?>[] { ITEM_STACK_TYPE, FLUID_STACK_TYPE };
+        }
+        return new IAEStackType<?>[] { ITEM_STACK_TYPE };
     }
 
     @Override
