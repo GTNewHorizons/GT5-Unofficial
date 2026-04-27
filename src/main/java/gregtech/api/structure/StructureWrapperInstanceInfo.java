@@ -8,20 +8,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 
 import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
-import gregtech.api.enums.StructureErrorId;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.structure.error.MissingStructureWrapperCasings;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
@@ -102,29 +98,6 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
 
         if (!data.tagList.isEmpty()) {
             errors.add(new MissingStructureWrapperCasings(data));
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
-        List<String> lines) {
-        if (!errors.contains(StructureErrorId.MISSING_STRUCTURE_WRAPPER_CASINGS)) return;
-
-        NBTTagList list = context.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND);
-
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            GTItemStack stack = new GTItemStack(
-                Item.getItemById(tag.getInteger("casingId")),
-                1,
-                tag.getInteger("casingMeta"));
-
-            lines.add(
-                GTUtility.translate(
-                    "GT5U.gui.missing_casings_specific",
-                    stack.toStack()
-                        .getDisplayName(),
-                    tag.getInteger("req"),
-                    tag.getInteger("pres")));
         }
     }
 
