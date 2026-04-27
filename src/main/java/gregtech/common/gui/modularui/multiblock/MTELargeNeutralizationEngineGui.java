@@ -33,15 +33,15 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
-        BooleanSyncValue checkMachineSyncer = syncManager.findSyncHandler("checkMachine", BooleanSyncValue.class);
         IntSyncValue toxicResidueSyncer = syncManager.findSyncHandler("toxicResidue", IntSyncValue.class);
         IntSyncValue residueCapacitySyncer = syncManager.findSyncHandler("residueCapacity", IntSyncValue.class);
         FloatSyncValue residuePercentageSyncer = syncManager.findSyncHandler("residuePercentage", FloatSyncValue.class);
         IntSyncValue residueIncreaseSyncer = syncManager.findSyncHandler("residueIncrease", IntSyncValue.class);
         IntSyncValue residueDecaySyncer = syncManager.findSyncHandler("residueDecay", IntSyncValue.class);
         IntSyncValue netResidueSyncer = syncManager.findSyncHandler("netResidue", IntSyncValue.class);
+        boolean shouldDisplayText=true;
         terminalText.childIf(
-            checkMachineSyncer.getBoolValue(),
+            shouldDisplayText,
             () -> IKey
                 .dynamic(
                     () -> StatCollector.translateToLocalFormatted(
@@ -51,7 +51,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
                         formatNumber(residuePercentageSyncer.getFloatValue())))
                 .asWidget());
         terminalText.childIf(
-            checkMachineSyncer.getBoolValue(),
+            shouldDisplayText,
             () -> IKey
                 .dynamic(
                     () -> StatCollector.translateToLocalFormatted(
@@ -66,8 +66,6 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        BooleanSyncValue checkMachineSyncer = new BooleanSyncValue(() -> multiblock.mMachine);
-        syncManager.syncValue("checkMachine", checkMachineSyncer);
 
         IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> multiblock.toxicResidue);
         IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> multiblock.residueCapacity);
