@@ -17,6 +17,8 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -83,6 +85,15 @@ public class AcidRecipes {
             .eut(480)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Bismuthinit.get(OrePrefixes.crushed,2))
+            .fluidInputs(Materials.PhosphorusChlorineMixture.getFluid(1000L))
+            .itemOutputs(Materials.PhosphorusTrichloride.getDust(3))
+            .fluidOutputs(Materials.StagnantWasteWater.getFluid(200L))
+            .eut(5040)
+            .duration(10 * SECONDS)
+            .metadata(COIL_HEAT, 1800)
+            .addTo(digesterRecipes);
+        GTValues.RA.stdBuilder()
             .itemInputs(MaterialsOres.LAFOSSAITE.getCrushed(2))
             .fluidInputs(Materials.PhosphorusChlorineMixture.getFluid(1000L))
             .itemOutputs(Materials.PhosphorusTrichloride.getDust(4))
@@ -135,6 +146,13 @@ public class AcidRecipes {
             .eut(1920)
             .duration(30 * SECONDS)
             .addTo(vacuumFreezerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed,Materials.Quantium,6))
+            .fluidInputs(Materials.ToxicSlurry.getFluid(3000L))
+            .fluidOutputs(Materials.DestabilizationSlurry.getFluid(2500L))
+            .eut(7680)
+            .duration(20 * SECONDS)
+            .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.STANDALONE.RUNITE.getCrushed(4))
             .fluidInputs(Materials.ToxicSlurry.getFluid(3000L))
