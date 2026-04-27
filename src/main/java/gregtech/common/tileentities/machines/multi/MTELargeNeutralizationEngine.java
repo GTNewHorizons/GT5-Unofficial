@@ -476,7 +476,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "("
                     + EnumChatFormatting.WHITE
-                    + "64"
+                    + "16"
                     + EnumChatFormatting.GRAY
                     + " max) robot arms to multiply "
                     + EnumChatFormatting.YELLOW
@@ -780,7 +780,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         }
         robotArmTier = getRobotArmTier();
         if (robotArmTier != -1) {
-            int amount = Math.min(robotArmAmount, 64);
+            int amount = Math.min(robotArmAmount, 16);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {
