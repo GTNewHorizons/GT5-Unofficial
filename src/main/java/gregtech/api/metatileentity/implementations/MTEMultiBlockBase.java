@@ -1746,15 +1746,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean depleteInput(ItemStack aStack) {
+        return depleteInput(aStack, false);
+    }
+
+    public boolean depleteInput(ItemStack aStack, boolean simulate) {
         if (GTUtility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
-        if (aLiquid != null) return depleteInput(aLiquid);
+        if (aLiquid != null) return depleteInput(aLiquid, simulate);
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
             ItemStack stackInFirstSlot = baseMetaTileEntity.getStackInSlot(0);
             if (GTUtility.areStacksEqual(aStack, stackInFirstSlot)) {
                 if (stackInFirstSlot.stackSize >= aStack.stackSize) {
+                    if (simulate) return true;
                     baseMetaTileEntity.decrStackSize(0, aStack.stackSize);
                     return true;
                 }
@@ -1767,6 +1772,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                 if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
                     if (stackInSlot.stackSize >= aStack.stackSize) {
+                        if (simulate) return true;
                         baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
                         return true;
                     }
