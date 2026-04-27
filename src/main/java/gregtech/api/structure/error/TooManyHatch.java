@@ -13,10 +13,10 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.StructureErrorId;
 
 @Desugar
-public record TooManyHatch(int itemId, int itemMeta) implements StructureError {
+public record TooManyHatch(int itemId, int itemMeta, int max) implements StructureError {
 
-    public TooManyHatch(ItemStack stack) {
-        this(Item.getIdFromItem(stack.getItem()), stack.getItemDamage());
+    public TooManyHatch(ItemStack stack, int max) {
+        this(Item.getIdFromItem(stack.getItem()), stack.getItemDamage(), max);
     }
 
     @Override
@@ -28,22 +28,26 @@ public record TooManyHatch(int itemId, int itemMeta) implements StructureError {
     public void serialize(PacketBuffer buffer) throws IOException {
         buffer.writeInt(itemId);
         buffer.writeInt(itemMeta);
+        buffer.writeInt(max);
     }
 
     @Override
     public StructureError deserialize(PacketBuffer buffer) throws IOException {
-        return new TooManyHatch(buffer.readInt(), buffer.readInt());
+        return new TooManyHatch(buffer.readInt(), buffer.readInt(), buffer.readInt());
     }
 
     @Override
     public IWidget createWidget() {
         return IKey
-            .lang("GT5U.gui.too_many_hatches", new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName())
+            .lang(
+                "GT5U.gui.too_many_hatches",
+                new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName(),
+                max)
             .asWidget();
     }
 
     @Override
     public StructureError copy() {
-        return new TooManyHatch(itemId, itemMeta);
+        return new TooManyHatch(itemId, itemMeta, max);
     }
 }

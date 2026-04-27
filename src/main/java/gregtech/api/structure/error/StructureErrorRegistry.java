@@ -31,7 +31,7 @@ public class StructureErrorRegistry {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
         StructureErrorRegistry.register(new TooFewCasings(0, 0));
         StructureErrorRegistry.register(new MissingHatch(0, 0));
-        StructureErrorRegistry.register(new TooManyHatch(0, 0));
+        StructureErrorRegistry.register(new TooManyHatch(0, 0, 0));
         StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
     }
 

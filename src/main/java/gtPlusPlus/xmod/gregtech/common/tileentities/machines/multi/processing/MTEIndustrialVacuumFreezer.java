@@ -182,7 +182,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         }
 
         if (mCryotheumHatches.size() > 1) {
-            errors.add(new TooManyHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
+            errors.add(new TooManyHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
         }
     }
 
