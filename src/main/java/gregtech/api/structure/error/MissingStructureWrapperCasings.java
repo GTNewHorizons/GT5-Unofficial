@@ -3,6 +3,9 @@ package gregtech.api.structure.error;
 import java.io.IOException;
 import java.util.List;
 
+import com.cleanroommc.modularui.utils.Alignment;
+import gregtech.api.objects.GTItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
@@ -46,14 +49,16 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
     public IWidget createWidget() {
 
         Flow column = Flow.column()
-            .coverChildren(0);
+            .coverChildrenHeight(0)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            GTItemStack stack = new GTItemStack(Item.getItemById(tag.getInteger("casingId")), 1, tag.getInteger("casingMeta"));
             column.child(
                 IKey.str(
                     GTUtility.translate(
                         "GT5U.gui.missing_casings_specific",
-                        StatCollector.translateToLocal(tag.getString("casing")),
+                        stack.toStack().getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
                     .asWidget());

@@ -1,5 +1,7 @@
 package gregtech.api.structure.error;
 
+import java.util.function.Supplier;
+
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -9,10 +11,17 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.StructureErrorId;
 
 @Desugar
-public record NullaryStructureError(StructureErrorId id, String lang_key, Object[] format) implements StructureError {
+public record NullaryStructureError(StructureErrorId id, Supplier<IWidget> widgetSupplier) implements StructureError {
 
     NullaryStructureError(StructureErrorId id, String lang_key) {
-        this(id, lang_key, new Object[0]);
+        this(
+            id,
+            IKey.lang(lang_key)
+                .asWidget());
+    }
+
+    NullaryStructureError(StructureErrorId id, IWidget widget) {
+        this(id, () -> widget);
     }
 
     @Override
@@ -32,8 +41,7 @@ public record NullaryStructureError(StructureErrorId id, String lang_key, Object
 
     @Override
     public IWidget createWidget() {
-        return IKey.lang(lang_key, () -> format)
-            .asWidget();
+        return widgetSupplier.get();
     }
 
     @Override

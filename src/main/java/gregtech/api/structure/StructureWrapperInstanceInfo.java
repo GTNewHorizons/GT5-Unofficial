@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.api.objects.GTItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -89,7 +91,8 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
 
                 ItemStack stack = e.getValue().casing.toStack(1);
 
-                error.setString("casing", stack.getUnlocalizedName());
+                error.setInteger("casingId", Item.getIdFromItem(stack.getItem()));
+                error.setInteger("casingMeta", stack.getItemDamage());
                 error.setInteger("req", minCasings);
                 error.setInteger("pres", presentCasings);
 
@@ -110,13 +113,12 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
         NBTTagList list = context.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND);
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            char casing = tag.getString("casing")
-                .charAt(0);
+            GTItemStack stack = new GTItemStack(Item.getItemById(tag.getInteger("casingId")), 1, tag.getInteger("casingMeta"));
 
             lines.add(
                 GTUtility.translate(
                     "GT5U.gui.missing_casings_specific",
-                    structure.casings.get(casing).casing.getLocalizedName(),
+                    stack.toStack().getDisplayName(),
                     tag.getInteger("req"),
                     tag.getInteger("pres")));
         }

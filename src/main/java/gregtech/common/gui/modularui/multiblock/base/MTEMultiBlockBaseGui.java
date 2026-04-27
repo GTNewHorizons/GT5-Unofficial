@@ -338,8 +338,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             for (StructureError error : errors.getValue()) {
                 columns.child(error.createWidget());
             }
-            return columns.setEnabledIf(widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
-                && !baseMetaTileEntity.isAllowedToWork());
+            return columns.setEnabledIf(
+                widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+                    && !baseMetaTileEntity.isAllowedToWork());
         });
 
         errors.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));

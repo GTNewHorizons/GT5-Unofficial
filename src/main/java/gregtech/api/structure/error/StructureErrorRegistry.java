@@ -1,8 +1,12 @@
 package gregtech.api.structure.error;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import net.minecraft.network.PacketBuffer;
+
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 
 import gregtech.api.enums.StructureErrorId;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -12,30 +16,41 @@ public class StructureErrorRegistry {
 
     private static final StructureError[] registry = new StructureError[StructureErrorId.values().length];
 
-    public static final StructureError BLOCK_NOT_LOADED = register(
-        new NullaryStructureError(StructureErrorId.BLOCK_NOT_LOADED, "GT5U.gui.not_loaded"));
-    public static final StructureError MISSING_MAINTENANCE = register(
-        new NullaryStructureError(StructureErrorId.MISSING_MAINTENANCE, "GT5U.gui.text.no_maintenance"));
-    public static final StructureError MISSING_MUFFLER = register(
-        new NullaryStructureError(StructureErrorId.MISSING_MUFFLER, "GT5U.gui.text.no_muffler"));
-    public static final StructureError UNNEEDED_MUFFLER = register(
-        new NullaryStructureError(StructureErrorId.UNNEEDED_MUFFLER, "GT5U.gui.text.unneeded_muffler"));
-    public static final StructureError MISSING_CRYO_HATCH = register(
-        new NullaryStructureError(
-            StructureErrorId.MISSING_CRYO_HATCH,
+    public static final StructureError BLOCK_NOT_LOADED = registerNullary(
+        StructureErrorId.BLOCK_NOT_LOADED,
+        "GT5U.gui.not_loaded");
+    public static final StructureError MISSING_MAINTENANCE = registerNullary(
+        StructureErrorId.MISSING_MAINTENANCE,
+        "GT5U.gui.text.no_maintenance");
+    public static final StructureError MISSING_MUFFLER = registerNullary(
+        StructureErrorId.MISSING_MUFFLER,
+        "GT5U.gui.text.no_muffler");
+    public static final StructureError UNNEEDED_MUFFLER = registerNullary(
+        StructureErrorId.UNNEEDED_MUFFLER,
+        "GT5U.gui.text.unneeded_muffler");
+    public static final StructureError MISSING_CRYO_HATCH = registerNullary(
+        StructureErrorId.MISSING_CRYO_HATCH,
+        () -> IKey.lang("GT5U.gui.missing_hatch", MTEIndustrialVacuumFreezer.HATCH_NAME)
+            .asWidget());
+    public static final StructureError TOO_MANY_CRYO_HATCHES = registerNullary(
+        StructureErrorId.TOO_MANY_CRYO_HATCHES,
+        () -> IKey.lang("GT5U.gui.too_many_hatches", MTEIndustrialVacuumFreezer.HATCH_NAME, 1)
+            .asWidget());
+    public static final StructureError MISSING_STEAM_HATCH = registerNullary(
+        StructureErrorId.MISSING_STEAM_HATCH,
+        () -> IKey.lang(
             "GT5U.gui.missing_hatch",
-            new Object[] { MTEIndustrialVacuumFreezer.HATCH_NAME }));
-    public static final StructureError TOO_MANY_CRYO_HATCHES = register(
-        new NullaryStructureError(
-            StructureErrorId.TOO_MANY_CRYO_HATCHES,
-            "GT5U.gui.too_many_hatches",
-            new Object[] { MTEIndustrialVacuumFreezer.HATCH_NAME, 1 }));
-    public static final StructureError MISSING_STEAM_HATCH = register(
-        new NullaryStructureError(
-            StructureErrorId.MISSING_STEAM_HATCH,
-            "GT5U.gui.missing_hatch",
-            new Object[] { GregtechItemList.Hatch_Input_Steam.get(1)
-                .getDisplayName() }));
+            GregtechItemList.Hatch_Input_Steam.get(1)
+                .getDisplayName())
+            .asWidget());
+
+    public static StructureError registerNullary(StructureErrorId id, String lang_key) {
+        return register(new NullaryStructureError(id, lang_key));
+    }
+
+    public static StructureError registerNullary(StructureErrorId id, Supplier<IWidget> widget) {
+        return register(new NullaryStructureError(id, widget));
+    }
 
     public static StructureError register(StructureError error) {
         registry[error.getId()
