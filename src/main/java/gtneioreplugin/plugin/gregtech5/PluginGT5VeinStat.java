@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import bartworks.system.material.Werkstoff;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
+import bartworks.system.material.Werkstoff;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.StackInfo;
@@ -64,7 +64,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
 
             if (mat != null) {
                 isMatItem |= loadMatchingVeins(mat);
-                if(mat instanceof Werkstoff werkstoff){
+                if (mat instanceof Werkstoff werkstoff) {
                     isMatItem |= loadMatchingVeins(werkstoff.getBridgeMaterial());
                 }
             }
