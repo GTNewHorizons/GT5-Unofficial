@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -39,7 +38,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
         IntSyncValue residueIncreaseSyncer = syncManager.findSyncHandler("residueIncrease", IntSyncValue.class);
         IntSyncValue residueDecaySyncer = syncManager.findSyncHandler("residueDecay", IntSyncValue.class);
         IntSyncValue netResidueSyncer = syncManager.findSyncHandler("netResidue", IntSyncValue.class);
-        boolean shouldDisplayText=true;
+        boolean shouldDisplayText = true;
         terminalText.childIf(
             shouldDisplayText,
             () -> IKey
