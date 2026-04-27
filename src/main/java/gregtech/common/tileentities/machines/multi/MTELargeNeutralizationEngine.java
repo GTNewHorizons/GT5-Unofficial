@@ -183,7 +183,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private static float getRobotArmDecayBoost(int tier) {
         if (tier <= 5) return (float) Math.pow(1.2F, tier);
-        return (float) Math.pow(1.3F, tier);
+        return (float) Math.pow(1.4F, tier);
     }
 
     private float getResidueScaleDecayBoost() {
@@ -454,7 +454,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + " or below, "
                     + EnumChatFormatting.WHITE
-                    + "1.3"
+                    + "1.4"
                     + EnumChatFormatting.GRAY
                     + "^"
                     + EnumChatFormatting.LIGHT_PURPLE
