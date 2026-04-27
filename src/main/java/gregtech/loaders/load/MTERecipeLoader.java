@@ -1696,6 +1696,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TreeGrowSimulator.get(1),
             new Object[] { GregtechItemList.Industrial_TreeFarm });
 
+        // Algae Farm Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AlgaeFarm.get(1),
+            new Object[] { GregtechItemList.AlgaeFarm_Controller });
+
         // Naquadah Fuel Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.NaquadahFuelRefinery.get(1),

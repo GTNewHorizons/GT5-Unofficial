@@ -59,20 +59,21 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
-public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
+public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseLegacy>
+    implements ISurvivalConstructable {
 
     private int tier = -1;
     private int mCasing;
-    private static IStructureDefinition<MTEAlgaePondBase> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEAlgaePondBaseLegacy> STRUCTURE_DEFINITION = null;
     private int checkMeta;
 
     private static final int MINIMUM_CASINGS = 75;
 
-    public MTEAlgaePondBase(final int aID, final String aName, final String aNameRegional) {
+    public MTEAlgaePondBaseLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAlgaePondBase(final String aName) {
+    public MTEAlgaePondBaseLegacy(final String aName) {
         super(aName);
     }
 
@@ -83,7 +84,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEAlgaePondBase(this.mName);
+        return new MTEAlgaePondBaseLegacy(this.mName);
     }
 
     @Override
@@ -122,9 +123,9 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
-    public IStructureDefinition<MTEAlgaePondBase> getStructureDefinition() {
+    public IStructureDefinition<MTEAlgaePondBaseLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAlgaePondBase>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEAlgaePondBaseLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -138,13 +139,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEAlgaePondBase.class).atLeast(InputHatch, InputBus, OutputBus)
+                        buildHatchAdder(MTEAlgaePondBaseLegacy.class).atLeast(InputHatch, InputBus, OutputBus)
                             .casingIndex(TAE.getIndexFromPage(1, 15))
                             .hint(1)
                             .build(),
                         onElementPass(
                             x -> ++x.mCasing,
-                            chainAllCasings(-1, MTEAlgaePondBase::setMeta, MTEAlgaePondBase::getMeta))))
+                            chainAllCasings(-1, MTEAlgaePondBaseLegacy::setMeta, MTEAlgaePondBaseLegacy::getMeta))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }
