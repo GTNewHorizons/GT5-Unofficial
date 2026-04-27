@@ -16,27 +16,27 @@ public class StructureErrorRegistry {
 
     private static final StructureError[] registry = new StructureError[StructureErrorId.values().length];
 
-    public static final StructureError BLOCK_NOT_LOADED = registerNullary(
+    public static final StructureError BLOCK_NOT_LOADED = registerSingleton(
         StructureErrorId.BLOCK_NOT_LOADED,
         "GT5U.gui.not_loaded");
-    public static final StructureError MISSING_MAINTENANCE = registerNullary(
+    public static final StructureError MISSING_MAINTENANCE = registerSingleton(
         StructureErrorId.MISSING_MAINTENANCE,
         "GT5U.gui.text.no_maintenance");
-    public static final StructureError MISSING_MUFFLER = registerNullary(
+    public static final StructureError MISSING_MUFFLER = registerSingleton(
         StructureErrorId.MISSING_MUFFLER,
         "GT5U.gui.text.no_muffler");
-    public static final StructureError UNNEEDED_MUFFLER = registerNullary(
+    public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
         StructureErrorId.UNNEEDED_MUFFLER,
         "GT5U.gui.text.unneeded_muffler");
-    public static final StructureError MISSING_CRYO_HATCH = registerNullary(
+    public static final StructureError MISSING_CRYO_HATCH = registerSingleton(
         StructureErrorId.MISSING_CRYO_HATCH,
         () -> IKey.lang("GT5U.gui.missing_hatch", MTEIndustrialVacuumFreezer.HATCH_NAME)
             .asWidget());
-    public static final StructureError TOO_MANY_CRYO_HATCHES = registerNullary(
+    public static final StructureError TOO_MANY_CRYO_HATCHES = registerSingleton(
         StructureErrorId.TOO_MANY_CRYO_HATCHES,
         () -> IKey.lang("GT5U.gui.too_many_hatches", MTEIndustrialVacuumFreezer.HATCH_NAME, 1)
             .asWidget());
-    public static final StructureError MISSING_STEAM_HATCH = registerNullary(
+    public static final StructureError MISSING_STEAM_HATCH = registerSingleton(
         StructureErrorId.MISSING_STEAM_HATCH,
         () -> IKey.lang(
             "GT5U.gui.missing_hatch",
@@ -44,11 +44,11 @@ public class StructureErrorRegistry {
                 .getDisplayName())
             .asWidget());
 
-    public static StructureError registerNullary(StructureErrorId id, String lang_key) {
+    public static StructureError registerSingleton(StructureErrorId id, String lang_key) {
         return register(new SingletonStructureError(id, lang_key));
     }
 
-    public static StructureError registerNullary(StructureErrorId id, Supplier<IWidget> widget) {
+    public static StructureError registerSingleton(StructureErrorId id, Supplier<IWidget> widget) {
         return register(new SingletonStructureError(id, widget));
     }
 
