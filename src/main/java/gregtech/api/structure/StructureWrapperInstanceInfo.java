@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import gregtech.api.objects.GTItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +18,7 @@ import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.StructureErrorId;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.structure.error.MissingStructureWrapperCasings;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
@@ -113,12 +113,16 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
         NBTTagList list = context.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND);
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            GTItemStack stack = new GTItemStack(Item.getItemById(tag.getInteger("casingId")), 1, tag.getInteger("casingMeta"));
+            GTItemStack stack = new GTItemStack(
+                Item.getItemById(tag.getInteger("casingId")),
+                1,
+                tag.getInteger("casingMeta"));
 
             lines.add(
                 GTUtility.translate(
                     "GT5U.gui.missing_casings_specific",
-                    stack.toStack().getDisplayName(),
+                    stack.toStack()
+                        .getDisplayName(),
                     tag.getInteger("req"),
                     tag.getInteger("pres")));
         }

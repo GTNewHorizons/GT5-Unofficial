@@ -3,21 +3,20 @@ package gregtech.api.structure.error;
 import java.io.IOException;
 import java.util.List;
 
-import com.cleanroommc.modularui.utils.Alignment;
-import gregtech.api.objects.GTItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 
 @Desugar
@@ -53,12 +52,16 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            GTItemStack stack = new GTItemStack(Item.getItemById(tag.getInteger("casingId")), 1, tag.getInteger("casingMeta"));
+            GTItemStack stack = new GTItemStack(
+                Item.getItemById(tag.getInteger("casingId")),
+                1,
+                tag.getInteger("casingMeta"));
             column.child(
                 IKey.str(
                     GTUtility.translate(
                         "GT5U.gui.missing_casings_specific",
-                        stack.toStack().getDisplayName(),
+                        stack.toStack()
+                            .getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
                     .asWidget());
