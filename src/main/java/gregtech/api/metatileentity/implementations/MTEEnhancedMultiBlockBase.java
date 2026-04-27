@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Nonnegative;
 
@@ -9,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,7 +36,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureErrorId;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -558,30 +555,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
         } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
             errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
-        }
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureErrorId.WRONG_BLOCK)) {
-            lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.wrong_block",
-                    context.getInteger("x"),
-                    context.getInteger("y"),
-                    context.getInteger("z")));
-        }
-
-        if (errors.contains(StructureErrorId.BLOCK_NOT_LOADED)) {
-            lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.missing_block",
-                    context.getInteger("x"),
-                    context.getInteger("y"),
-                    context.getInteger("z")));
         }
     }
 

@@ -44,7 +44,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -165,14 +164,6 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         super.validateStructure(errors);
 
         structureInstanceInfo.validate(errors);
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        structureInstanceInfo.localizeStructureErrors(errors, context, lines);
     }
 
     @Override

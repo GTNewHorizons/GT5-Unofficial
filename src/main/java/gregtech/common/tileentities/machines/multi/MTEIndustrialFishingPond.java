@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -168,18 +167,6 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
 
         if (casingAmount < 160) {
             errors.add(new TooFewCasings(casingAmount, 160));
-        }
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureErrorId.TOO_FEW_CASINGS)) {
-            lines.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.missing_casings", 160, context.getInteger("casings")));
         }
     }
 

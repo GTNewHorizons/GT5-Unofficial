@@ -43,7 +43,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -203,24 +202,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             tHatch.updateSlots();
         }
         super.updateSlots();
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureErrorId.MISSING_MAINTENANCE)) {
-            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_maintenance"));
-        }
-
-        if (errors.contains(StructureErrorId.MISSING_MUFFLER)) {
-            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_muffler"));
-        }
-
-        if (errors.contains(StructureErrorId.UNNEEDED_MUFFLER)) {
-            lines.add(StatCollector.translateToLocal("GT5U.gui.text.unneeded_muffler"));
-        }
     }
 
     @Override
