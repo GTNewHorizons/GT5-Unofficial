@@ -8,8 +8,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
-import bartworks.system.material.Werkstoff;
 import codechicken.nei.PositionedStack;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
@@ -63,8 +63,8 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
             if (mat != null) {
                 isMatItem |= loadSmallOre(mat);
-                if (mat instanceof Werkstoff werkstoff) {
-                    isMatItem |= loadSmallOre(werkstoff.getBridgeMaterial());
+                if (!(mat instanceof Materials)) {
+                    isMatItem |= loadSmallOre(mat.getGTMaterial());
                 }
             }
         }
