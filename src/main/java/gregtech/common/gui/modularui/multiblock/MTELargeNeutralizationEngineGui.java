@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -32,39 +33,45 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
+        BooleanSyncValue checkMachineSyncer = syncManager.findSyncHandler("checkMachine", BooleanSyncValue.class);
         IntSyncValue toxicResidueSyncer = syncManager.findSyncHandler("toxicResidue", IntSyncValue.class);
         IntSyncValue residueCapacitySyncer = syncManager.findSyncHandler("residueCapacity", IntSyncValue.class);
         FloatSyncValue residuePercentageSyncer = syncManager.findSyncHandler("residuePercentage", FloatSyncValue.class);
         IntSyncValue residueIncreaseSyncer = syncManager.findSyncHandler("residueIncrease", IntSyncValue.class);
         IntSyncValue residueDecaySyncer = syncManager.findSyncHandler("residueDecay", IntSyncValue.class);
         IntSyncValue netResidueSyncer = syncManager.findSyncHandler("netResidue", IntSyncValue.class);
-        boolean shouldDisplayText = true;
-        terminalText.childIf(
-            shouldDisplayText,
-            () -> IKey
-                .dynamic(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.toxic_residue",
-                        formatNumber(toxicResidueSyncer.getIntValue()),
-                        formatNumber(residueCapacitySyncer.getIntValue()),
-                        formatNumber(residuePercentageSyncer.getFloatValue())))
-                .asWidget());
-        terminalText.childIf(
-            shouldDisplayText,
-            () -> IKey
-                .dynamic(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.residue_change",
-                        formatNumber(residueIncreaseSyncer.getIntValue()),
-                        formatNumber(residueDecaySyncer.getIntValue()),
-                        formatNumber(netResidueSyncer.getIntValue())))
-                .asWidget());
+        terminalText
+            .child(
+                IKey.dynamic(
+                    () -> checkMachineSyncer.getBoolValue()
+                        ? StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.toxic_residue",
+                            formatNumber(toxicResidueSyncer.getIntValue()),
+                            formatNumber(residueCapacitySyncer.getIntValue()),
+                            formatNumber(residuePercentageSyncer.getFloatValue()))
+                        : "")
+                    .asWidget());
+        terminalText
+            .child(
+                IKey.dynamic(
+                    () -> checkMachineSyncer.getBoolValue()
+                        ? StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.residue_change",
+                            formatNumber(residueIncreaseSyncer.getIntValue()),
+                            formatNumber(residueDecaySyncer.getIntValue()),
+                            formatNumber(netResidueSyncer.getIntValue()))
+                        : "")
+                    .asWidget());
         return terminalText;
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+
+        BooleanSyncValue checkMachineSyncer = new BooleanSyncValue(() -> multiblock.mMachine);
+
+        syncManager.syncValue("checkMachine", checkMachineSyncer);
 
         IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> multiblock.toxicResidue);
         IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> multiblock.residueCapacity);
