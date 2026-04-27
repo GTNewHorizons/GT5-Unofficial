@@ -1601,6 +1601,7 @@ public class MTERecipeLoader implements Runnable {
         // Industrial Centrifuge
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
                 OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
                 ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
@@ -1608,18 +1609,21 @@ public class MTERecipeLoader implements Runnable {
         // Amazon Warehousing Depot
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialPackager.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
                 ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
 
         // Industrial Wire Factory
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialWireFactory.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
 
         // Industrial Electrolyzer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
                 ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
         // Mega Chemical Reactor
@@ -1635,12 +1639,14 @@ public class MTERecipeLoader implements Runnable {
         // Industrial Mixer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
                 MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
 
         // Mixer casing, move if there is a better place for it
         GTModHandler.addCraftingRecipe(
             ItemList.CasingMixer.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
                 MaterialsAlloy.MARAGING250.getPlate(1), 'F',
                 OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
@@ -1648,6 +1654,7 @@ public class MTERecipeLoader implements Runnable {
         // Forming Core
         GTModHandler.addCraftingRecipe(
             ItemList.FormingCore.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
     }
@@ -1677,6 +1684,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
+
+        // Tree Grow Simulator Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.TreeGrowSimulator.get(1),
+            new Object[] { GregtechItemList.Industrial_TreeFarm });
 
         // Naquadah Fuel Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
