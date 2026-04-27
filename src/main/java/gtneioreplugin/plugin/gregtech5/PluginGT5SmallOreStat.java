@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import bartworks.system.material.Werkstoff;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -62,6 +63,9 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
             if (mat != null) {
                 isMatItem |= loadSmallOre(mat);
+                if(mat instanceof Werkstoff werkstoff){
+                    isMatItem |= loadSmallOre(werkstoff.getBridgeMaterial());
+                }
             }
         }
 
