@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.fuel.BlockCactusCharcoal;
 import gtPlusPlus.core.block.fuel.BlockCactusCoke;
 import gtPlusPlus.core.block.fuel.BlockSugarCharcoal;
@@ -12,7 +11,6 @@ import gtPlusPlus.core.block.fuel.BlockSugarCoke;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
 import gtPlusPlus.core.block.general.BlockFluidTankInfinite;
 import gtPlusPlus.core.block.general.BlockHellFire;
-import gtPlusPlus.core.block.general.BlockLightGlass;
 import gtPlusPlus.core.block.general.BlockMiningExplosives;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
 import gtPlusPlus.core.block.machine.BlockCircuitProgrammer;
@@ -41,8 +39,6 @@ public final class ModBlocks {
     public static Block blockCustomMachineCasings;
     public static Block blockCustomPipeGearCasings;
 
-    public static Block MatterFabricatorEffectBlock;
-
     public static Fluid fluidSludge = new Fluid("fluid.sludge");
     public static Block blockFluidSludge;
 
@@ -50,16 +46,10 @@ public final class ModBlocks {
     public static Block blockInfiniteFLuidTank;
 
     public static void init() {
-        Logger.INFO("Initializing Blocks.");
-
         registerBlocks();
     }
 
     public static void registerBlocks() {
-
-        Logger.INFO("Registering Blocks.");
-        MatterFabricatorEffectBlock = new BlockLightGlass(false);
-
         // Fluids
         FluidRegistryHandler.registerFluids();
 

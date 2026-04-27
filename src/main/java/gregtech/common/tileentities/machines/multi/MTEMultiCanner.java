@@ -114,11 +114,11 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner")
+        tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .beginStructureBlock(7, 5, 7, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addCasingInfoExactly("Steel Pipe Casing", 24, false)
             .addInputBus("Any Solid Steel Casing", 1)
@@ -190,11 +190,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

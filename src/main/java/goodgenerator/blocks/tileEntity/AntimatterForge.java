@@ -311,6 +311,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
             .beginStructureBlock(53, 53, 47, false)
+            .addController("Front center")
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
@@ -536,11 +537,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Drain upgrade fluids
         for (int i = 0; i < upgradeFluids.length; i++) {
             FluidStack upgradeFluid = upgradeFluids[i];
-            if (upgradeFluid != null) {
-                for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
-                    if (inputFluid.isFluidEqual(upgradeFluid)) {
-                        inputFluid.amount -= fluidConsumptions[i];
-                    }
+            if (upgradeFluid == null) {
+                continue;
+            }
+            for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
+                if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
+                    inputFluid.amount -= fluidConsumptions[i];
+                    break;
                 }
             }
         }
@@ -816,6 +819,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         destroyAntimatterRender();
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

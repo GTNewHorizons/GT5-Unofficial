@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import appeng.api.interfaces.IInterfaceNameProvider;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -32,8 +34,10 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Gregtech;
 
-public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
+    implements IGregTechTileEntity, IInterfaceNameProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
         mInventoryChanged = false;
@@ -385,6 +389,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return (IConfigurationCircuitSupport) getMetaTileEntity();
         }
         return null;
+    }
+
+    @Override
+    public String getInterfaceNameSuffix() {
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null || !ccs.allowSelectCircuit()) return null;
+        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+        if (stack == null || stack.getItemDamage() <= 0) return null;
+        try {
+            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
+        } catch (IllegalFormatException e) {
+            return "";
+        }
     }
 
     @Override

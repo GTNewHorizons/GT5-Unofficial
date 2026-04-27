@@ -397,7 +397,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
@@ -439,6 +439,11 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

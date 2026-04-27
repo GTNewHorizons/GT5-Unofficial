@@ -149,7 +149,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
             .addInfo("More advanced singularities will require even stronger compression...")
             .beginStructureBlock(11, 11, 11, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Neutronium Casing", 220, false)
             .addCasingInfoExactly("Active Neutronium Casing", 63, false)
             .addCasingInfoExactly("Any Tiered Glass", 25, false)
@@ -227,11 +227,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

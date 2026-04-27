@@ -135,7 +135,6 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputHatchWithPattern;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -151,7 +150,7 @@ import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -1230,7 +1229,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
         for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
 
-        if (this instanceof MTESteamMultiBase<?>steamMultiBase) {
+        if (this instanceof MTESteamMultiBlockBase<?>steamMultiBase) {
             for (var bus : steamMultiBase.mSteamInputs) hatchColors |= (short) (1 << bus.getColor());
             for (var hatch : steamMultiBase.mSteamInputFluids) hatchColors |= (short) (1 << hatch.getColor());
         }
@@ -1682,15 +1681,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
+        int fluidCost = aLiquid.amount;
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
-            if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+            if (tLiquid == null) continue;
+            if (tLiquid.amount >= aLiquid.amount) {
                 if (simulate) {
                     return true;
                 }
                 tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
-                return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                return tLiquid.amount >= aLiquid.amount;
+            }
+            fluidCost -= tLiquid.amount;
+        }
+        // Enough fluid is present spread through multiple hatches. Drain requested amount
+        if (fluidCost <= 0) {
+            if (simulate) return true;
+            fluidCost = aLiquid.amount;
+            for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, fluidCost, true);
+                if (tLiquid == null) continue;
+                fluidCost -= tLiquid.amount;
+                if (fluidCost == 0) return true;
             }
         }
         return false;
@@ -2039,12 +2052,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                if (this.processingLogic != null) {
-                    // processingLogic might be null, like a Space Elevator
-                    withPattern.setProcessingLogic(processingLogic);
-                }
-            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -2139,7 +2146,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch && hatch.maxAmperesOut() <= 4) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDynamoHatches.add(hatch);
@@ -2189,12 +2196,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                if (this.processingLogic != null) {
-                    // processingLogic might be null, like a Space Elevator
-                    withPattern.setProcessingLogic(processingLogic);
-                }
-            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
@@ -2990,6 +2991,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setMachineMode(int index) {
         machineMode = index;
+        // The machine is likely using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
     }
 
     @Override
@@ -3042,7 +3046,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean supportsSingleRecipeLocking() {
-        return false;
+        return true;
     }
 
     @Override

@@ -449,6 +449,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
+            .addController("Front bottom center of the Dyson Swarm Energy Receiver Base")
             .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
@@ -549,6 +550,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

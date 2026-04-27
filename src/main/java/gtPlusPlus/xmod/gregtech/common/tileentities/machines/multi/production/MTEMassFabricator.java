@@ -27,7 +27,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
@@ -54,7 +51,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -64,20 +60,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> implements ISurvivalConstructable {
 
-    public static int sUUAperUUM = 1;
-    public static int sUUASpeedBonus = 4;
-    public static int sDurationMultiplier = 3200;
-
     public static String mCasingName1 = "Matter Fabricator Casing";
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
-
-    public static boolean sRequiresUUA = false;
-    private static final FluidStack[] mUU = new FluidStack[2];
-    private static final ItemStack[] mScrap = new ItemStack[2];
 
     private int mCasing;
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
@@ -107,7 +95,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin(mCasingName3, 9, false)
             .addCasingInfoMin(mCasingName2, 24, false)
             .addCasingInfoMin(mCasingName1, 36, false)
@@ -145,35 +133,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected int getCasingTextureId() {
         return TAE.GTPP_INDEX(9);
-    }
-
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        sDurationMultiplier = MachineStats.massFabricator.durationMultiplier;
-        sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
-        sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
-        sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-    }
-
-    public static boolean sInit = false;
-
-    public static void init() {
-        if (!sInit) {
-            if (mScrap[0] == null) {
-                mScrap[0] = ItemList.IC2_Scrap.get(1L);
-            }
-            if (mScrap[1] == null) {
-                mScrap[1] = ItemList.IC2_Scrapbox.get(1L);
-            }
-            if (mUU[0] == null) {
-                mUU[0] = Materials.UUAmplifier.getFluid(100);
-            }
-            if (mUU[1] == null) {
-                mUU[1] = Materials.UUMatter.getFluid(100);
-            }
-            sInit = true;
-        }
     }
 
     @Override
@@ -245,13 +204,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                init();
-                return super.process();
-            }
 
             @NotNull
             @Override

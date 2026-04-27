@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -19,10 +17,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -30,12 +31,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -47,7 +42,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -55,6 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchMaintenanceGui;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxDelegateInventory;
 import gregtech.common.items.toolbox.ToolboxItemStackHandler;
@@ -92,7 +87,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         mAuto = aAuto;
     }
 
-    private static ItemStack[] getAutoMaintenanceInputs() {
+    public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
             GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
@@ -478,50 +473,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mAuto) {
-            getBaseMetaTileEntity().add2by2Slots(builder);
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.SLOT_MAINTENANCE)
-                    .setPos(78, 33)
-                    .setSize(20, 20))
-                .widget(new SlotWidget(BaseSlot.empty()) {
-
-                    @Override
-                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
-                        return false;
-                    }
-
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (cursorStack == null) return;
-                        onToolClick(cursorStack, getContext().getPlayer());
-                        if (cursorStack.stackSize < 1) {
-                            getContext().getPlayer().inventory.setItemStack(null);
-                        }
-                        if (getContext().getPlayer() instanceof EntityPlayerMP) {
-                            ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
-                        }
-                    }
-                }.disableShiftInsert()
-                    .setBackground(GTUITextures.TRANSPARENT)
-                    .setPos(79, 34))
-                .widget(
-                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 12))
-                .widget(
-                    new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
-                        .addTooltips(
-                            Arrays.asList(
-                                GTUtility.breakLines(StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
-                        .setPos(163, 5)
-                        .setSize(7, 18));
-        }
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mRotation", (byte) rotation.getIndex());
@@ -579,5 +530,15 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     @Override
     public boolean isRotationChangeAllowed() {
         return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
     }
 }

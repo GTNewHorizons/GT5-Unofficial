@@ -51,7 +51,6 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
@@ -365,7 +364,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             if (count > 0) this.stats = stats.setMass(tmpmass / count);
         }
 
-        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = 1123;
+        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = -1;
 
         if (this.stats.meltingVoltage == 0) this.stats.meltingVoltage = 120;
 
@@ -828,10 +827,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.rawOre, ORES);
 
             prefixLogic.put(OrePrefixes.cell, LIQUID_CELLS);
-            if (Mods.Forestry.isModLoaded()) {
-                prefixLogic.put(OrePrefixes.capsule, LIQUID_CELLS);
-                prefixLogic.put(OrePrefixes.capsuleMolten, MOLTEN_CELLS);
-            }
             // prefixLogic.put(OrePrefixes.bottle, BOTTLES);
 
             prefixLogic.put(OrePrefixes.cellMolten, MOLTEN_CELLS);
@@ -1052,6 +1047,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         }
 
         public int getMeltingPoint() {
+            return this.meltingPoint == -1 ? 1123 : this.meltingPoint;
+        }
+
+        public int getMeltingPointDirect() {
             return this.meltingPoint;
         }
 

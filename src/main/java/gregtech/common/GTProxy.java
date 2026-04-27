@@ -611,6 +611,8 @@ public class GTProxy implements IFuelHandler {
     public boolean gt6Pipe = true;
     public boolean gt6Cable = true;
     public boolean ic2EnergySourceCompat = true;
+    public boolean cableMultiConnectEnabled = true;
+    public int cableMultiConnectLimit = 10000;
     public boolean costlyCableConnection = false;
     public boolean crashOnNullRecipeInput = false;
 
@@ -1075,12 +1077,6 @@ public class GTProxy implements IFuelHandler {
         GTLanguageManager.writePlaceholderStrings();
     }
 
-    /**
-     * @deprecated use {@link gregtech.api.util.GTModHandler.RecipeBits#BITS_STD}
-     */
-    @Deprecated
-    public static long tBits = GTModHandler.RecipeBits.BITS_STD;
-
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
@@ -1115,60 +1111,60 @@ public class GTProxy implements IFuelHandler {
                 if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.reduced.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.clump.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.shard.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushed.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        tBits,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.get(aMaterial) });
                 }
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L),
-                    tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L),
-                    tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    tBits,
+                    GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial) });
             }
         }
@@ -1280,6 +1276,8 @@ public class GTProxy implements IFuelHandler {
         GTCapesLoader.clearSelectedCapes();
         PowerGogglesEventHandler.getInstance()
             .onServerStopped(event);
+        GTChunkManager.instance.onServerStopped();
+        dimensionWisePollution.clear();
     }
 
     /**

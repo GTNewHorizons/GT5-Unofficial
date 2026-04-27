@@ -321,7 +321,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
@@ -978,6 +978,53 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public final boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    private static final class EECMachineStatusWidget extends CycleButtonWidget {
+
+        private final MTEExtremeEntityCrusher mEEC;
+
+        private final IDrawable[] mEnabledBG;
+        private final IDrawable[] mDisabledBG;
+
+        private boolean mWorkingStatus;
+
+        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, IDrawable aEnabledTexture,
+            IDrawable aDisabledTexture) {
+            mEEC = aEEC;
+
+            mEnabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, aEnabledTexture };
+            mDisabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD, aDisabledTexture };
+
+            backgroundGetter = val -> val == 0 ? mDisabledBG : mEnabledBG;
+
+            mWorkingStatus = mEEC.mMaxProgresstime > 0;
+            textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public void onScreenUpdate() {
+            super.onScreenUpdate();
+            boolean tWorkingStatus = mEEC.mMaxProgresstime > 0;
+            if (mWorkingStatus == tWorkingStatus) return;
+            mWorkingStatus = tWorkingStatus;
+
+            notifyTooltipChange();
+            setState(getter.get(), false, false);
+            markForUpdate();
+        }
+
+        @Override
+        public ClickResult onClick(int buttonId, boolean doubleClick) {
+            if (mWorkingStatus) return ClickResult.ACKNOWLEDGED;
+            return super.onClick(buttonId, doubleClick);
+        }
     }
 
     private static class EECFakePlayer extends FakePlayer {
