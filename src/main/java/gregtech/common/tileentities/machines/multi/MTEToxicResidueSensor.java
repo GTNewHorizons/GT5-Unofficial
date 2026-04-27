@@ -89,7 +89,8 @@ public class MTEToxicResidueSensor extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
-        thresholdType = ThresholdType.values()[aNBT.getInteger("thresholdType")];
+        thresholdType = ThresholdType.values()[Math
+            .max(Math.min(aNBT.getInteger("thresholdType"), ThresholdType.values().length - 1), 0)];
         isOn = aNBT.getBoolean("isOn");
         super.loadNBTData(aNBT);
     }
@@ -108,7 +109,7 @@ public class MTEToxicResidueSensor extends MTEHatch {
      */
     public void updateRedstoneOutput(int toxicResidue, int capacity) {
         if (thresholdType == ThresholdType.PERCENTAGE) {
-            toxicResidue = (int) (((float) toxicResidue / capacity) * 100);
+            toxicResidue = (capacity == 0) ? 0 : (int) (((float) toxicResidue / capacity) * 100);
         }
         isOn = (toxicResidue > threshold) ^ inverted;
     }

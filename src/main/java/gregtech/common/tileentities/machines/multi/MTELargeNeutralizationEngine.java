@@ -186,7 +186,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private static float getRobotArmDecayBoost(int tier) {
-        if (tier <= 5) return (float) Math.pow(1.2F, tier);
+        if (tier <= 4) return (float) Math.pow(1.2F, tier);
         return (float) Math.pow(1.4F, tier);
     }
 
