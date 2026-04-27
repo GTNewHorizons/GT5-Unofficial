@@ -45,11 +45,11 @@ public class StructureErrorRegistry {
             .asWidget());
 
     public static StructureError registerNullary(StructureErrorId id, String lang_key) {
-        return register(new NullaryStructureError(id, lang_key));
+        return register(new SingletonStructureError(id, lang_key));
     }
 
     public static StructureError registerNullary(StructureErrorId id, Supplier<IWidget> widget) {
-        return register(new NullaryStructureError(id, widget));
+        return register(new SingletonStructureError(id, widget));
     }
 
     public static StructureError register(StructureError error) {

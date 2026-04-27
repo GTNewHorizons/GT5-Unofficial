@@ -11,16 +11,16 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.StructureErrorId;
 
 @Desugar
-public record NullaryStructureError(StructureErrorId id, Supplier<IWidget> widgetSupplier) implements StructureError {
+public record SingletonStructureError(StructureErrorId id, Supplier<IWidget> widgetSupplier) implements StructureError {
 
-    NullaryStructureError(StructureErrorId id, String lang_key) {
+    SingletonStructureError(StructureErrorId id, String lang_key) {
         this(
             id,
             IKey.lang(lang_key)
                 .asWidget());
     }
 
-    NullaryStructureError(StructureErrorId id, IWidget widget) {
+    SingletonStructureError(StructureErrorId id, IWidget widget) {
         this(id, () -> widget);
     }
 
