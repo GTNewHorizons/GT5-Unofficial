@@ -82,6 +82,8 @@ public class PowerGogglesEventHandler {
             openConfig();
         } else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             toggleChart();
+        } else if (PowerGogglesKeybindHandler.toggleMeasurements.isPressed()) {
+            toggleMeasurements();
         }
     }
 
@@ -127,6 +129,15 @@ public class PowerGogglesEventHandler {
         PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
             .get("Show Power Chart")
             .set(PowerGogglesConfigHandler.showPowerChart);
+        PowerGogglesConfigHandler.config.save();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void toggleMeasurements() {
+        PowerGogglesConfigHandler.showMeasurements = !PowerGogglesConfigHandler.showMeasurements;
+        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+            .get("Show Measurements Section")
+            .set(PowerGogglesConfigHandler.showMeasurements);
         PowerGogglesConfigHandler.config.save();
     }
 

@@ -2435,7 +2435,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("rodAnyIron", 3))
+            .itemInputs(new OreDictItemStack("stickAnyIron", 3))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)
@@ -2717,6 +2717,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1))
+            .circuit(1)
             .itemOutputs(ItemList.Casing_CleanStainlessSteel.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -2727,7 +2728,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1))
-            .circuit(1)
+            .circuit(2)
             .itemOutputs(ItemList.FormingCore.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

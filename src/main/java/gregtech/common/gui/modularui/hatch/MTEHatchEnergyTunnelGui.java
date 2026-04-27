@@ -34,14 +34,14 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
         mainColumn.child(
             new TextFieldWidget().width(60)
                 .value(new IntSyncValue(hatch::getAmperes, amps -> {
+                    hatch.setAmperes(amps);
+
                     // If max amperage gets changed, update the multi structure
                     if (baseMetaTileEntity.isServerSide()) GregTechAPI.causeMachineUpdate(
                         baseMetaTileEntity.getWorld(),
                         baseMetaTileEntity.getXCoord(),
                         baseMetaTileEntity.getYCoord(),
                         baseMetaTileEntity.getZCoord());
-
-                    hatch.setAmperes(amps);
                 }))
                 .setNumbers(0, hatch.maxAmperes)
                 .setFormatAsInteger(true)

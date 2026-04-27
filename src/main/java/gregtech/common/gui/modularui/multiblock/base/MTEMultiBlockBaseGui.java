@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -74,12 +72,12 @@ import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
-import gregtech.common.gui.modularui.adapter.StructureErrorAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
@@ -139,8 +137,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         setMachineModeIcons();
         registerSyncValues(syncManager);
-
         ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
+        initPanelMap(panel, syncManager);
         return panel.child(createMainColumn(panel, syncManager));
     }
 
@@ -152,6 +150,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createPanelGap(panel, syncManager))
             .childIf(multiblock.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager));
     }
+
+    protected void initPanelMap(ModularPanel parent, PanelSyncManager syncManager) {}
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).setWidth(getBasePanelWidth())
@@ -291,6 +291,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth())
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
+            .child(createStructureErrorWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
 
@@ -330,6 +331,30 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
             && !baseMetaTileEntity.isAllowedToWork()
             && GTUtility.isStringValid(shutdownString);
+    }
+
+    protected IWidget createStructureErrorWidget(PanelSyncManager syncManager) {
+        GenericListSyncHandler<StructureError> errors = syncManager
+            .findSyncHandler("structureErrors", GenericListSyncHandler.class);
+
+        DynamicSyncHandler errorSyncer = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            Flow columns = Flow.column()
+                .coverChildrenHeight(0)
+                .crossAxisAlignment(Alignment.CrossAxis.START);
+
+            for (StructureError error : errors.getValue()) {
+                columns.child(error.createWidget());
+            }
+            return columns.setEnabledIf(
+                widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+                    && !baseMetaTileEntity.isAllowedToWork());
+        });
+
+        errors.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
+
+        return new DynamicSyncedWidget<>().widthRel(0.85f)
+            .coverChildrenHeight(0)
+            .syncHandler(errorSyncer);
     }
 
     private IWidget createRecipeResultWidget() {
@@ -1183,13 +1208,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
-        syncManager.syncValue(
-            "errors",
-            GenericSyncValue.<EnumSet<StructureError>>rawTypeBuilder(EnumSet.class)
-                .getter(multiblock::getStructureErrors)
-                .setter(multiblock::setStructureErrors)
-                .adapter(new StructureErrorAdapter())
-                .build());
+        syncManager.syncValue("structureErrors", multiblock.getStructureErrorsSyncer());
         syncManager
             .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(

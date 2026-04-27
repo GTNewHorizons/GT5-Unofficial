@@ -158,7 +158,7 @@ public class StatisticsPanel {
             .asWidget()
             .padding(2, 0)
             .size(WIDTH_MINOR, HEIGHT_MINOR)
-            .scale(0.8f);
+            .scale(0.75f);
     }
 
     private static Flow createPreviewRow(MutableBoolean usingPreview, MutableInt previewFuelFactor) {
@@ -212,7 +212,9 @@ public class StatisticsPanel {
             IKey.str(stat.toString())
                 .alignment(Alignment.Center)
                 .asWidget()
-                .size(WIDTH_MAJOR, HEIGHT_MAJOR));
+                .size(WIDTH_MAJOR, HEIGHT_MAJOR)
+                .tooltip(t -> t.addLine(stat.tooltip()))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Smelting module
         returnList.add(

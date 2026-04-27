@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -23,12 +24,14 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.MathUtils;
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
@@ -39,7 +42,8 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         super(base);
     }
 
-    // credit to purebluez @Override
+    // credit to purebluez
+    @Override
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IPanelHandler popupPanel = syncManager
             .syncedPanel("popup", true, (manager, handler) -> createShutterUI(syncManager));
@@ -58,6 +62,9 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         IntSyncValue coverageSyncer = new IntSyncValue(hatch::getCoverage, value -> hatch.setCoverage((short) value));
         LongSyncValue timeSyncHandler = new LongSyncValue(hatch::getTimer, hatch::setTimer);
         LongSyncValue decayTimeSyncHandler = new LongSyncValue(hatch::getDecayTime, hatch::setDecayTime);
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
+            baseMetaTileEntity::isMuffled,
+            baseMetaTileEntity::setMuffler);
 
         syncManager.syncValue("decayTime", decayTimeSyncHandler);
         syncManager.syncValue("timer", timeSyncHandler);
@@ -67,6 +74,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         syncManager.syncValue("color1", color2Syncer);
         syncManager.syncValue("color2", color3Syncer);
         syncManager.syncValue("coverage", 0, coverageSyncer);
+        syncManager.syncValue("muffler", mufflerSyncer);
         return GTGuis.mteTemplatePanelBuilder(hatch, data, syncManager, uiSettings)
             .doesAddGregTechLogo(false)
             .build()
@@ -118,15 +126,25 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .asWidget()
                     .pos(60, 72)
                     .size(80, 8))
-            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                popupPanel.openPanel();
-                return popupPanel.isPanelOpen();
-            })
-                .backgroundOverlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
-                .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
-                .pos(153, 5)
-                .size(18, 18))
+            .child(
+                Flow.column()
+                    .topRel(0)
+                    .rightRel(0)
+                    .crossAxisAlignment(Alignment.CrossAxis.END)
+                    .coverChildren()
+                    .margin(5)
+                    .childPadding(2)
+                    .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+                        popupPanel.openPanel();
+                        return popupPanel.isPanelOpen();
+                    })
+                        .backgroundOverlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                        .disableHoverBackground()
+                        .tooltip(tooltip -> tooltip.add("Radiation Shutter")))
+                    .child(
+                        CommonWidgets.createMuffleButton("muffler")
+                            .disableThemeBackground(true)
+                            .disableHoverThemeBackground(true)))
             .child(
                 GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget()
                     .pos(10, 53)

@@ -1,22 +1,33 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gtnhlanth.common.beamline.Particle;
 
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
@@ -27,12 +38,20 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager
-            .syncValue("currentRecipeCurrentAmountA", new IntSyncValue(multiblock::getCurrentRecipeCurrentAmountA));
-        syncManager
-            .syncValue("currentRecipeCurrentAmountB", new IntSyncValue(multiblock::getCurrentRecipeCurrentAmountB));
-        syncManager.syncValue("currentRecipeMaxAmountA", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountA));
-        syncManager.syncValue("currentRecipeMaxAmountB", new IntSyncValue(multiblock::getCurrentRecipeMaxAmountB));
+
+        for (Particle particle : Particle.VALUES) {
+            int key = particle.getId();
+
+            syncManager.syncValue(
+                "valueID",
+                key,
+                new IntSyncValue(
+                    () -> multiblock.getBufferMap()
+                        .get(key),
+                    i -> multiblock.getBufferMap()
+                        .put(key, i)));
+        }
+
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
         syncManager.syncValue("currentRecipeParticleIDB", new IntSyncValue(multiblock::getCurrentRecipeParticleIDB));
     }
@@ -40,52 +59,124 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        IntSyncValue currentRecipeCurrentAmountA = syncManager
-            .findSyncHandler("currentRecipeCurrentAmountA", IntSyncValue.class);
-        IntSyncValue currentRecipeCurrentAmountB = syncManager
-            .findSyncHandler("currentRecipeCurrentAmountB", IntSyncValue.class);
-        IntSyncValue currentRecipeMaxAmountA = syncManager
-            .findSyncHandler("currentRecipeMaxAmountA", IntSyncValue.class);
-        IntSyncValue currentRecipeMaxAmountB = syncManager
-            .findSyncHandler("currentRecipeMaxAmountB", IntSyncValue.class);
-        IntSyncValue currentRecipeParticleIDA = syncManager
-            .findSyncHandler("currentRecipeParticleIDA", IntSyncValue.class);
-        IntSyncValue currentRecipeParticleIDB = syncManager
-            .findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
+        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        IKey guiHeaderKey = IKey.dynamic(this::formatGuiHeader);
-        IKey particleAProgressKey = IKey.dynamic(
-            () -> formatParticle(currentRecipeParticleIDA, currentRecipeCurrentAmountA, currentRecipeMaxAmountA));
-        IKey particleBProgressKey = IKey.dynamic(
-            () -> formatParticle(currentRecipeParticleIDB, currentRecipeCurrentAmountB, currentRecipeMaxAmountB));
+        IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
+        IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);
 
-        return new ListWidget<>().fullWidth()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(new TextWidget<>(guiHeaderKey).marginBottom(18))
-            .child(
-                new TextWidget<>(particleAProgressKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
-            .child(
-                new TextWidget<>(particleBProgressKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+        IntSyncValue syncIDA = syncManager.findSyncHandler("currentRecipeParticleIDA", IntSyncValue.class);
+        IntSyncValue syncIDB = syncManager.findSyncHandler("currentRecipeParticleIDB", IntSyncValue.class);
+
+        outputWidget.child(new TextWidget<>(guiHeaderKeyCrafting).marginBottom(4));
+        IKey particleKeyA = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDA.getIntValue()));
+        IKey particleKeyB = IKey.dynamic(() -> EnumChatFormatting.AQUA + getParticleNameFromID(syncIDB.getIntValue()));
+        outputWidget.child(new TextWidget<>(particleKeyA));
+        outputWidget.child(new TextWidget<>(particleKeyB));
+
+        outputWidget.child(
+            new TextWidget<>(guiHeaderKeyBuffer).marginTop(4)
+                .marginBottom(4));
+
+        for (Particle particle : Particle.VALUES) {
+
+            int key = particle.getId();
+
+            IntSyncValue valueSync = syncManager.findSyncHandler("valueID", key, IntSyncValue.class);
+
+            IKey particleKey = IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + getParticleNameFromID(key)
+                    + ": "
+                    + formatNumberCompact(valueSync.getValue()));
+
+            outputWidget.child(
+                new IDrawable.DrawableWidget(getParticleTexture(key)).setEnabledIf(w -> valueSync.getIntValue() > 0));
+            outputWidget.child(new TextWidget<>(particleKey).setEnabledIf(w -> valueSync.getIntValue() > 0));
+        }
+
+        return outputWidget;
     }
 
-    private String formatGuiHeader() {
-        return EnumChatFormatting.WHITE
-            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheader");
+    @Override
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
+    }
+
+    protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler statsPanel = syncManager
+            .syncedPanel("statsPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent, syncManager));
+        return new ButtonWidget<>().overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .onMousePressed(d -> {
+                if (!statsPanel.isPanelOpen()) {
+                    statsPanel.openPanel();
+                } else {
+                    statsPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    private ModularPanel openInfoPanel(ModularPanel parent, PanelSyncManager syncManager) {
+        Flow mainColumn = Flow.column()
+            .coverChildren()
+            .horizontalCenter()
+            .marginTop(20)
+            .childPadding(10);
+
+        mainColumn.child(
+            IKey.dynamic(() -> GTUtility.translate("gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer"))
+                .asWidget()
+                .textAlign(Alignment.CENTER));
+
+        mainColumn.child(createParticleButtonGrid(syncManager));
+
+        return GTGuis.createPopUpPanel("statsPanel")
+            .relative(parent)
+            .size(110, 160)
+            .leftRel(1)
+            .topRel(0)
+            .child(mainColumn);
+    }
+
+    private Grid createParticleButtonGrid(PanelSyncManager syncManager) {
+        Particle[] particles = Particle.values();
+
+        return new Grid()
+            .gridOfSizeWidth(
+                particles.length,
+                5,
+                (xIndex, yIndex,
+                    index) -> index < particles.length ? createButtonForParticle(syncManager, particles[index]) : null)
+            .coverChildren()
+            .minElementMarginBottom(2);
+    }
+
+    protected IWidget createButtonForParticle(PanelSyncManager syncManager, Particle particle) {
+        return new ButtonWidget<>().overlay(particle.getTexture())
+            .onMousePressed(d -> {
+                IntSyncValue valueSync = syncManager.findSyncHandler("valueID", particle.getId(), IntSyncValue.class);
+                valueSync.setIntValue(0);
+                return true;
+            });
+    }
+
+    private String formatGuiHeaderBuffer() {
+        return EnumChatFormatting.GOLD
+            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheaderbuffer");
+    }
+
+    private String formatGuiHeaderCrafting() {
+        return EnumChatFormatting.GOLD
+            + StatCollector.translateToLocalFormatted("GT5U.gui.text.beamcrafter.guiheadercrafting");
     }
 
     private String getParticleNameFromID(int particleID) {
         return getParticleFromId(particleID).getLocalisedName();
     }
 
-    private String formatParticle(IntSyncValue currParticleID, IntSyncValue currAmount, IntSyncValue maxAmount) {
-        return EnumChatFormatting.WHITE + getParticleNameFromID(currParticleID.getIntValue())
-            + ": "
-            + EnumChatFormatting.GRAY
-            + Math.min(currAmount.getIntValue(), maxAmount.getIntValue())
-            + "/"
-            + maxAmount.getIntValue();
+    private UITexture getParticleTexture(int particleID) {
+        return getParticleFromId(particleID).getTexture();
     }
-
 }
