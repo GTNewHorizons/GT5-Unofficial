@@ -493,7 +493,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + ", 1/("
                     + EnumChatFormatting.WHITE
-                    + "45"+EnumChatFormatting.GRAY+"*(1+"
+                    + "45"
+                    + EnumChatFormatting.GRAY
+                    + "*(1+"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY
