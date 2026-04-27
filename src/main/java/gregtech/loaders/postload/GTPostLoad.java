@@ -53,6 +53,7 @@ import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
+import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -440,22 +441,27 @@ public class GTPostLoad {
     }
 
     public static void addCauldronRecipe() {
+        OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
+            OrePrefixes.dust };
+
         for (Materials material : Materials.getAll()) {
-            ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
-            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
+            for (OrePrefixes prefix : washablePrefixes) {
+                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
+                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
 
-            if (dust == null || dustImpure == null) {
-                continue;
+                if (input == null || output == null) {
+                    continue;
+                }
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(input)
+                    .fluidInputs(Materials.Water.getFluid(333))
+                    .itemOutputs(output)
+                    .duration(0)
+                    .eut(0)
+                    .fake()
+                    .addTo(RecipeMaps.cauldronRecipe);
             }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(dustImpure)
-                .fluidInputs(Materials.Water.getFluid(333))
-                .itemOutputs(dust)
-                .duration(0)
-                .eut(0)
-                .fake()
-                .addTo(RecipeMaps.cauldronRecipe);
         }
     }
 

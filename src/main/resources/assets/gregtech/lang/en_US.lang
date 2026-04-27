@@ -1678,6 +1678,7 @@ GT5U.MBTT.ConfigMenu=Configuration Menu
 GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
 GT5U.MBTT.Deprecated=§4DEPRECATED - %s
 GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
+GT5U.MBTT.Deprecated.RemovalMachine=Machine will be removed in next major update!
 GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
@@ -6768,6 +6769,7 @@ GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only w
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
+GT5U.tooltip.flour.cauldron=Throw into Cauldron with Water to make Dough
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # Scanner info
