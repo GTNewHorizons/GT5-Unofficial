@@ -3,7 +3,6 @@ package gregtech.api.structure.error;
 import java.io.IOException;
 import java.util.List;
 
-import com.github.bsideup.jabel.Desugar;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
@@ -13,6 +12,7 @@ import net.minecraftforge.common.util.Constants;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
 import gregtech.api.util.GTUtility;

@@ -2,10 +2,10 @@ package gregtech.api.structure.error;
 
 import java.io.IOException;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.network.PacketBuffer;
 
 import gregtech.api.enums.StructureErrorId;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezer;
 
 public class StructureErrorRegistry {
@@ -31,9 +31,11 @@ public class StructureErrorRegistry {
             "GT5U.gui.too_many_hatches",
             new Object[] { MTEIndustrialVacuumFreezer.HATCH_NAME, 1 }));
     public static final StructureError MISSING_STEAM_HATCH = register(
-        new NullaryStructureError(StructureErrorId.MISSING_STEAM_HATCH, "GT5U.gui.missing_hatch", new Object[] {
-            GregtechItemList.Hatch_Input_Steam.get(1).getDisplayName()
-        }));
+        new NullaryStructureError(
+            StructureErrorId.MISSING_STEAM_HATCH,
+            "GT5U.gui.missing_hatch",
+            new Object[] { GregtechItemList.Hatch_Input_Steam.get(1)
+                .getDisplayName() }));
 
     public static StructureError register(StructureError error) {
         registry[error.getId()
