@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.MTEEssentiaInputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.main.GoodGenerator;
@@ -37,7 +38,8 @@ public class BlockTEContainer extends BlockContainer {
     // Index 0: Formerly Essentia Hatch, now removed
     // Index 1: Essentia Output Hatch
     // Index 2: Essentia Output Hatch (ME)
-    // Index 3+: Unused
+    // Index 4: Essentia Input Hatch
+    // Index 5+: Unused
     protected int index;
 
     public BlockTEContainer(String name, String[] texture, CreativeTabs Tab) {
@@ -149,6 +151,8 @@ public class BlockTEContainer extends BlockContainer {
                 return new MTEEssentiaOutputHatch();
             case 3:
                 return new MTEEssentiaOutputHatchME();
+            case 4:
+                return new MTEEssentiaInputHatch();
             default:
                 return null;
         }
@@ -167,6 +171,17 @@ public class BlockTEContainer extends BlockContainer {
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
                         GTUtility.sendChatTrans(player, "essentiaoutputhatch.chat.0");
+                    }
+                    return true;
+                } else return false;
+            } else if (index == 4) {
+                if (tile instanceof MTEEssentiaInputHatch) {
+                    MTEEssentiaInputHatch hatch = (MTEEssentiaInputHatch) tile;
+                    if (player.isSneaking()) {
+                        if (player.getHeldItem() == null) {
+                            hatch.clear();
+                            GTUtility.sendChatTrans(player, "Cleared");
+                        }
                     }
                     return true;
                 } else return false;

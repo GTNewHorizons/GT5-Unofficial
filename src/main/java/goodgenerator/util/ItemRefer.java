@@ -11,6 +11,7 @@ import static goodgenerator.loader.Loaders.FRF_Coil_2;
 import static goodgenerator.loader.Loaders.FRF_Coil_3;
 import static goodgenerator.loader.Loaders.FRF_Coil_4;
 import static goodgenerator.loader.Loaders.Generator_Diesel;
+import static goodgenerator.loader.Loaders.IC;
 import static goodgenerator.loader.Loaders.LES;
 import static goodgenerator.loader.Loaders.LFC;
 import static goodgenerator.loader.Loaders.MAR;
@@ -31,6 +32,7 @@ import static goodgenerator.loader.Loaders.componentAssemblylineCasing;
 import static goodgenerator.loader.Loaders.enrichedNaquadahMass;
 import static goodgenerator.loader.Loaders.essentiaCell;
 import static goodgenerator.loader.Loaders.essentiaFilterCasing;
+import static goodgenerator.loader.Loaders.essentiaInputHatch;
 import static goodgenerator.loader.Loaders.essentiaOutputHatch;
 import static goodgenerator.loader.Loaders.essentiaOutputHatch_ME;
 import static goodgenerator.loader.Loaders.fieldRestrictingGlass;
@@ -167,6 +169,7 @@ public final class ItemRefer {
     public static ItemRefer Compact_Fusion_Coil_T3 = getItemStack(compactFusionCoil, 3);
     public static ItemRefer Compact_Fusion_Coil_T4 = getItemStack(compactFusionCoil, 4);
     public static ItemRefer Essentia_Filter_Casing = getItemStack(essentiaFilterCasing);
+    public static ItemRefer Essentia_Input_Hatch = getItemStack(essentiaInputHatch);
     public static ItemRefer Essentia_Output_Hatch = getItemStack(essentiaOutputHatch);
     public static ItemRefer Essentia_Output_Hatch_ME = getItemStack(essentiaOutputHatch_ME);
 
@@ -185,6 +188,7 @@ public final class ItemRefer {
     public static ItemRefer Compact_Fusion_MK4 = getItemStack(LFC[3]);
     public static ItemRefer Compact_Fusion_MK5 = getItemStack(LFC[4]);
     public static ItemRefer Large_Essentia_Smeltery = getItemStack(LES);
+    public static ItemRefer Industrial_Crucible = getItemStack(IC);
     public static ItemRefer Coolant_Tower = getItemStack(CT);
     public static ItemRefer Component_Assembly_Line = getItemStack(CompAssline);
 
