@@ -11,10 +11,6 @@ import gregtech.api.enums.StructureErrorId;
 @Desugar
 public record WrongBlockError(int x, int y, int z) implements StructureError {
 
-    static {
-        StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
-    }
-
     @Override
     public StructureErrorId getId() {
         return StructureErrorId.WRONG_BLOCK;

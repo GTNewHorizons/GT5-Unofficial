@@ -3,14 +3,12 @@ package gregtech.api.structure.error;
 import java.io.IOException;
 import java.util.function.Supplier;
 
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 
 import gregtech.api.enums.StructureErrorId;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezer;
 
 public class StructureErrorRegistry {
 
@@ -28,21 +26,14 @@ public class StructureErrorRegistry {
     public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
         StructureErrorId.UNNEEDED_MUFFLER,
         "GT5U.gui.text.unneeded_muffler");
-    public static final StructureError MISSING_CRYO_HATCH = registerSingleton(
-        StructureErrorId.MISSING_CRYO_HATCH,
-        () -> IKey.lang("GT5U.gui.missing_hatch", MTEIndustrialVacuumFreezer.HATCH_NAME)
-            .asWidget());
-    public static final StructureError TOO_MANY_CRYO_HATCHES = registerSingleton(
-        StructureErrorId.TOO_MANY_CRYO_HATCHES,
-        () -> IKey.lang("GT5U.gui.too_many_hatches", MTEIndustrialVacuumFreezer.HATCH_NAME, 1)
-            .asWidget());
-    public static final StructureError MISSING_STEAM_HATCH = registerSingleton(
-        StructureErrorId.MISSING_STEAM_HATCH,
-        () -> IKey.lang(
-            "GT5U.gui.missing_hatch",
-            GregtechItemList.Hatch_Input_Steam.get(1)
-                .getDisplayName())
-            .asWidget());
+
+    static {
+        StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
+        StructureErrorRegistry.register(new TooFewCasings(0, 0));
+        StructureErrorRegistry.register(new MissingHatch(0, 0));
+        StructureErrorRegistry.register(new TooManyHatch(0, 0));
+        StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
+    }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {
         return register(new SingletonStructureError(id, lang_key));

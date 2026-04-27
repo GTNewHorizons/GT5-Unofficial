@@ -22,10 +22,6 @@ import gregtech.api.util.GTUtility;
 @Desugar
 public record MissingStructureWrapperCasings(NBTTagList list) implements StructureError {
 
-    static {
-        StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
-    }
-
     @Override
     public StructureErrorId getId() {
         return StructureErrorId.MISSING_STRUCTURE_WRAPPER_CASINGS;

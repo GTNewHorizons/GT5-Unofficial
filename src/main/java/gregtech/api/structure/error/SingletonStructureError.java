@@ -16,12 +16,8 @@ public record SingletonStructureError(StructureErrorId id, Supplier<IWidget> wid
     SingletonStructureError(StructureErrorId id, String lang_key) {
         this(
             id,
-            IKey.lang(lang_key)
+            () -> IKey.lang(lang_key)
                 .asWidget());
-    }
-
-    SingletonStructureError(StructureErrorId id, IWidget widget) {
-        this(id, () -> widget);
     }
 
     @Override
