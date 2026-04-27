@@ -153,18 +153,6 @@ public class GTAuthors {
             EnumChatFormatting.GOLD + BOLD,
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
-    public static final String AuthorLeon = "" + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "l"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "e"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "o"
-        + EnumChatFormatting.DARK_BLUE
-        + EnumChatFormatting.BOLD
-        + "n";
     public static final String AuthorJulia =
         // spotless:off
         EnumChatFormatting.BOLD.toString() +

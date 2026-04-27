@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorLeon;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -433,6 +432,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + "10 "
                     + EnumChatFormatting.GRAY
                     + "times slower when multiblock is disabled")
+            .addSeparator()
             .addInfo(
                 "Insert " + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arms "
@@ -530,7 +530,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
             .addCasingInfoRange(
-                "Tiered Casings: Strengthened Inanimate Casing, Precise Stationary Casing, Ultimate Static Casing",
+                "Tiered Casings",
                 30,
                 46,
                 false)
@@ -542,7 +542,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addDynamoHatch("Any Tiered Casing", 1)
             .addOtherStructurePart("Toxic Residue Sensor Hatch", "Any Tiered Casing")
             .addTecTechHatchInfo()
-            .toolTipFinisher(AuthorLeon);
+            .toolTipFinisher();
         return tt;
     }
 
