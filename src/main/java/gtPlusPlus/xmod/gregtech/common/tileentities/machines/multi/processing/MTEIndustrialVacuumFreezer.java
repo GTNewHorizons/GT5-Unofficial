@@ -33,13 +33,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
@@ -170,39 +173,38 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    public void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
         if (mCasing < 10) {
-            errors.add(StructureError.TOO_FEW_CASINGS);
-            context.setInteger("casings", mCasing);
+            errors.add(new TooFewCasings(10, mCasing));
         }
 
         if (mCryotheumHatches.isEmpty()) {
-            errors.add(StructureError.MISSING_CRYO_HATCH);
+            errors.add(StructureErrorRegistry.MISSING_CRYO_HATCH);
         }
 
         if (mCryotheumHatches.size() > 1) {
-            errors.add(StructureError.TOO_MANY_CRYO_HATCHES);
+            errors.add(StructureErrorRegistry.TOO_MANY_CRYO_HATCHES);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
         List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
-        if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
+        if (errors.contains(StructureErrorId.TOO_FEW_CASINGS)) {
             lines.add(
                 StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
         }
 
-        if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {
+        if (errors.contains(StructureErrorId.MISSING_CRYO_HATCH)) {
             lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.missing_hatch", HATCH_NAME));
         }
 
-        if (errors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
+        if (errors.contains(StructureErrorId.TOO_MANY_CRYO_HATCHES)) {
             lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
         }
     }

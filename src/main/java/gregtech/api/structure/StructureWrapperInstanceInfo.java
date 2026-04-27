@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -13,9 +14,11 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.structure.error.MissingStructureWrapperCasings;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -72,7 +75,7 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
     /**
      * Validates this multi. Currently only checks casing counts.
      */
-    public void validate(Collection<StructureError> errors, NBTTagCompound context) {
+    public void validate(Collection<StructureError> errors) {
         NBTTagList data = new NBTTagList();
 
         for (var e : structure.casings.char2ObjectEntrySet()) {
@@ -84,7 +87,9 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
             if (presentCasings < minCasings) {
                 NBTTagCompound error = new NBTTagCompound();
 
-                error.setString("casing", Character.toString(e.getCharKey()));
+                ItemStack stack = e.getValue().casing.toStack(1);
+
+                error.setString("casing", stack.getUnlocalizedName());
                 error.setInteger("req", minCasings);
                 error.setInteger("pres", presentCasings);
 
@@ -93,14 +98,14 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
         }
 
         if (!data.tagList.isEmpty()) {
-            errors.add(StructureError.MISSING_STRUCTURE_WRAPPER_CASINGS);
-            context.setTag("structureWrapper", data);
+            errors.add(new MissingStructureWrapperCasings(data));
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context, List<String> lines) {
-        if (!errors.contains(StructureError.MISSING_STRUCTURE_WRAPPER_CASINGS)) return;
+    public void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
+        List<String> lines) {
+        if (!errors.contains(StructureErrorId.MISSING_STRUCTURE_WRAPPER_CASINGS)) return;
 
         NBTTagList list = context.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND);
 

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -44,7 +45,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -160,14 +161,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
-        structureInstanceInfo.validate(errors, context);
+        structureInstanceInfo.validate(errors);
     }
 
     @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
         List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 

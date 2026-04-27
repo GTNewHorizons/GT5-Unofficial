@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,7 +29,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -192,14 +193,14 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
-        structureInstanceInfo.validate(errors, context);
+        structureInstanceInfo.validate(errors);
     }
 
     @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
         List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 

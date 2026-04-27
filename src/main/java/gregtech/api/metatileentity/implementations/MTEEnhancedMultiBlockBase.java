@@ -1,8 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.annotation.Nonnegative;
 
-import gregtech.api.enums.StructureError;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -35,16 +38,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.WrongBlockError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
-import org.joml.Vector3i;
-
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -550,39 +552,36 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    protected void generateStructureErrorDiagnostics(EnumSet<StructureError> errors, NBTTagCompound context) {
-        super.generateStructureErrorDiagnostics(errors, context);
+    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
+        super.generateStructureErrorDiagnostics(errors);
         if (structureStatus == StructureStatus.WRONG_BLOCK) {
-            errors.add(StructureError.WRONG_BLOCK);
-            context.setInteger("x", errorPos.x);
-            context.setInteger("y", errorPos.y);
-            context.setInteger("z", errorPos.z);
+            errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
         } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
-            errors.add(StructureError.BLOCK_NOT_LOADED);
+            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
         }
     }
 
     @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-                                           List<String> lines) {
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
+        List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
-        if (errors.contains(StructureError.WRONG_BLOCK)) {
+        if (errors.contains(StructureErrorId.WRONG_BLOCK)) {
             lines.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.wrong_block",
-                        context.getInteger("x"),
-                        context.getInteger("y"),
-                        context.getInteger("z")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.wrong_block",
+                    context.getInteger("x"),
+                    context.getInteger("y"),
+                    context.getInteger("z")));
         }
 
-        if (errors.contains(StructureError.BLOCK_NOT_LOADED)) {
+        if (errors.contains(StructureErrorId.BLOCK_NOT_LOADED)) {
             lines.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.missing_block",
-                        context.getInteger("x"),
-                        context.getInteger("y"),
-                        context.getInteger("z")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.missing_block",
+                    context.getInteger("x"),
+                    context.getInteger("y"),
+                    context.getInteger("z")));
         }
     }
 
@@ -638,7 +637,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
         @Override
         public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
-                             int a, int b, int c) {
+            int a, int b, int c) {
             boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
 
             if (!result) {
@@ -650,8 +649,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
 
         @Override
-        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z, int a, int b,
-            int c) {
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+            int y, int z, int a, int b, int c) {
             structureStatus = StructureStatus.BLOCK_NOT_LOADED;
             return false;
         }

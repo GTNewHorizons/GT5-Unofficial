@@ -43,7 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -67,6 +67,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -204,37 +206,37 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
         List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
-        if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
+        if (errors.contains(StructureErrorId.MISSING_MAINTENANCE)) {
             lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_maintenance"));
         }
 
-        if (errors.contains(StructureError.MISSING_MUFFLER)) {
+        if (errors.contains(StructureErrorId.MISSING_MUFFLER)) {
             lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_muffler"));
         }
 
-        if (errors.contains(StructureError.UNNEEDED_MUFFLER)) {
+        if (errors.contains(StructureErrorId.UNNEEDED_MUFFLER)) {
             lines.add(StatCollector.translateToLocal("GT5U.gui.text.unneeded_muffler"));
         }
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
         if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureError.MISSING_MAINTENANCE);
+            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
         }
 
         if (requiresMuffler() && mMufflerHatches.isEmpty()) {
-            errors.add(StructureError.MISSING_MUFFLER);
+            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
         }
 
         if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
-            errors.add(StructureError.UNNEEDED_MUFFLER);
+            errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
     }
 

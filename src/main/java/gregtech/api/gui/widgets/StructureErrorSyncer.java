@@ -9,18 +9,19 @@ import net.minecraft.network.PacketBuffer;
 
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 
-public class StructureErrorSyncer extends FakeSyncWidget<EnumSet<StructureError>> {
+public class StructureErrorSyncer extends FakeSyncWidget<EnumSet<StructureErrorId>> {
 
-    public StructureErrorSyncer(Supplier<EnumSet<StructureError>> getter, Consumer<EnumSet<StructureError>> setter) {
+    public StructureErrorSyncer(Supplier<EnumSet<StructureErrorId>> getter,
+        Consumer<EnumSet<StructureErrorId>> setter) {
         super(getter, setter, StructureErrorSyncer::save, StructureErrorSyncer::load);
     }
 
-    private static void save(PacketBuffer buffer, EnumSet<StructureError> errors) {
+    private static void save(PacketBuffer buffer, EnumSet<StructureErrorId> errors) {
         BitSet bits = new BitSet();
 
-        for (StructureError error : errors) {
+        for (StructureErrorId error : errors) {
             bits.set(error.ordinal());
         }
 
@@ -30,15 +31,15 @@ public class StructureErrorSyncer extends FakeSyncWidget<EnumSet<StructureError>
         buffer.writeBytes(data);
     }
 
-    private static EnumSet<StructureError> load(PacketBuffer buffer) {
+    private static EnumSet<StructureErrorId> load(PacketBuffer buffer) {
         byte[] data = new byte[buffer.readVarIntFromBuffer()];
         buffer.readBytes(data);
 
         BitSet bits = BitSet.valueOf(data);
 
-        EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
+        EnumSet<StructureErrorId> out = EnumSet.noneOf(StructureErrorId.class);
 
-        for (StructureError error : StructureError.values()) {
+        for (StructureErrorId error : StructureErrorId.values()) {
             if (bits.get(error.ordinal())) {
                 out.add(error);
             }

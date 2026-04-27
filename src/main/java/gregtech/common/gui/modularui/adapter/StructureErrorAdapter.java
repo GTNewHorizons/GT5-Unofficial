@@ -9,20 +9,20 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 
-public class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
+public class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureErrorId>> {
 
     @Override
-    public EnumSet<StructureError> deserialize(PacketBuffer buffer) {
+    public EnumSet<StructureErrorId> deserialize(PacketBuffer buffer) {
         byte[] data = new byte[buffer.readVarIntFromBuffer()];
         buffer.readBytes(data);
 
         BitSet bits = BitSet.valueOf(data);
 
-        EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
+        EnumSet<StructureErrorId> out = EnumSet.noneOf(StructureErrorId.class);
 
-        for (StructureError error : StructureError.values()) {
+        for (StructureErrorId error : StructureErrorId.values()) {
             if (bits.get(error.ordinal())) {
                 out.add(error);
             }
@@ -32,10 +32,10 @@ public class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureE
     }
 
     @Override
-    public void serialize(PacketBuffer buffer, EnumSet<StructureError> errors) {
+    public void serialize(PacketBuffer buffer, EnumSet<StructureErrorId> errors) {
         BitSet bits = new BitSet();
 
-        for (StructureError error : errors) {
+        for (StructureErrorId error : errors) {
             bits.set(error.ordinal());
         }
 
@@ -46,7 +46,7 @@ public class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureE
     }
 
     @Override
-    public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
+    public boolean areEqual(@NotNull EnumSet<StructureErrorId> t1, @NotNull EnumSet<StructureErrorId> t2) {
         return t1.containsAll(t2) && t2.containsAll(t1);
     }
 }

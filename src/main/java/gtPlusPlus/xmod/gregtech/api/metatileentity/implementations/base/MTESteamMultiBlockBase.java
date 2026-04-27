@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -37,7 +39,7 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.enums.StructureError;
+import gregtech.api.enums.StructureErrorId;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -474,21 +476,21 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
         if (mSteamInputFluids.isEmpty()) {
-            errors.add(StructureError.MISSING_STEAM_HATCH);
+            errors.add(StructureErrorRegistry.MISSING_STEAM_HATCH);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+    protected void localizeStructureErrors(Collection<StructureErrorId> errors, NBTTagCompound context,
         List<String> lines) {
         super.localizeStructureErrors(errors, context, lines);
 
-        if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
+        if (errors.contains(StructureErrorId.MISSING_STEAM_HATCH)) {
             lines.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.missing_hatch",
