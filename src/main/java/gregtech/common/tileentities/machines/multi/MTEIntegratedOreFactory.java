@@ -662,62 +662,61 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private static List<String> getDisplayMode(ProcessingMode mode) {
-        final EnumChatFormatting AQUA = EnumChatFormatting.GRAY;
-        final String ARROW = " " + AQUA + "-> ";
+        final EnumChatFormatting GRAY = EnumChatFormatting.GRAY;
+        final String ARROW = " " + GRAY + "-> ";
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
         final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
-            .replace(" ", " " + AQUA);
+            .replace(" ", " " + GRAY);
         final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
-            .replace(" ", " " + AQUA);
+            .replace(" ", " " + GRAY);
         final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
         final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
         final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
-            .replace(" ", " " + AQUA);
+            .replace(" ", " " + GRAY);
         final String HAMMER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Forge_Hammer");
         final String SIM_WASHER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Simple_Washer");
 
         List<String> lines = new ArrayList<>();
-        lines.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
 
         switch (mode) {
             case MAC_WASH_THERMAL_MAC -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + WASH + ARROW);
-                lines.add(AQUA + THERMAL + ARROW);
-                lines.add(AQUA + CRUSH + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + WASH + ARROW);
+                lines.add(GRAY + THERMAL + ARROW);
+                lines.add(GRAY + CRUSH + ' ');
             }
             case MAC_WASH_MAC_CENTRI -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + WASH + ARROW);
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CENTRIFUGE + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + WASH + ARROW);
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CENTRIFUGE + ' ');
             }
             case MAC_MAC_CENTRI -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CENTRIFUGE + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CENTRIFUGE + ' ');
             }
             case MAC_WASH_SIFT -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + WASH + ARROW);
-                lines.add(AQUA + SIFTER + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + WASH + ARROW);
+                lines.add(GRAY + SIFTER + ' ');
             }
             case MAC_CHEM_MAC_CENTRI -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CHEM_WASH + ARROW);
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CENTRIFUGE + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CHEM_WASH + ARROW);
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CENTRIFUGE + ' ');
             }
             case MAC_CHEM_THERMAL_MAC -> {
-                lines.add(AQUA + CRUSH + ARROW);
-                lines.add(AQUA + CHEM_WASH + ARROW);
-                lines.add(AQUA + THERMAL + ARROW);
-                lines.add(AQUA + CRUSH + ' ');
+                lines.add(GRAY + CRUSH + ARROW);
+                lines.add(GRAY + CHEM_WASH + ARROW);
+                lines.add(GRAY + THERMAL + ARROW);
+                lines.add(GRAY + CRUSH + ' ');
             }
             case FORGE_FORGE_SIMPLEWASH -> {
-                lines.add(AQUA + HAMMER + ARROW);
-                lines.add(AQUA + HAMMER + ARROW);
-                lines.add(AQUA + SIM_WASHER + ' ');
+                lines.add(GRAY + HAMMER + ARROW);
+                lines.add(GRAY + HAMMER + ARROW);
+                lines.add(GRAY + SIM_WASHER + ' ');
             }
             default -> lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }

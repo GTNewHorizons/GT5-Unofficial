@@ -855,7 +855,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setString("mode", StatCollector.translateToLocal(this.getMachineModeKey()));
+        tag.setString("mode", getMachineModeName());
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());
     }

@@ -469,7 +469,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 if (isFeatureEnabled.get()) {
                     return Collections.singletonList(StatCollector.translateToLocal("GT5U.gui.button.feature_enabled"));
                 } else {
-                    return Collections.singletonList(StatCollector.translateToLocal("GT5U.gui.button.feature_enabled"));
+                    return Collections.singletonList(StatCollector.translateToLocal("GT5U.gui.button.feature_disabled"));
                 }
             });
         } else {
