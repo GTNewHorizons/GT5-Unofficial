@@ -262,7 +262,7 @@ public class NaniteChain {
                 Materials.Universium.getNanite(1),
                 Materials.MagMatter.getBlocks(8),
                 ItemList.Circuit_Chip_YPIC.get(64),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 1))
             .itemOutputs(Materials.MagMatter.getNanite(1))
             .fluidInputs(
                 Materials.QuarkGluonPlasma.getFluid(100_000),
