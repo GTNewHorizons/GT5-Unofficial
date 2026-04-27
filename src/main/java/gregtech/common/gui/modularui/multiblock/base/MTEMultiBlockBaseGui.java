@@ -327,19 +327,19 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createStructureErrorWidget(PanelSyncManager syncManager) {
-
         GenericListSyncHandler<StructureError> errors = syncManager
             .findSyncHandler("structureErrors", GenericListSyncHandler.class);
 
         DynamicSyncHandler errorSyncer = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
             Flow columns = Flow.column()
-                .coverChildren(0)
+                .coverChildrenHeight(0)
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
                 columns.child(error.createWidget());
             }
-            return columns;
+            return columns.setEnabledIf(widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+                && !baseMetaTileEntity.isAllowedToWork());
         });
 
         errors.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
