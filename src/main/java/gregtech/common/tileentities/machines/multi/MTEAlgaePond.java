@@ -105,11 +105,11 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
         tt.addMachineType("Algae Pond")
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
-            .addInfo("Does not need Maintenance")
             .addInfo("Machine tier is equal to the highest energy hatch tier, capped by glass tier")
             .addInfo(
                 GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
                     + "-glass unlocks all above energy tiers")
+            .addInfo("Accepts exactly 1 Energy Hatch. Does not need Maintenance")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
@@ -174,7 +174,8 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 20
             && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()) {
+            && !mOutputBusses.isEmpty()
+            && mEnergyHatches.size() == 1) {
             int inputTier = (int) getInputVoltageTier();
             if (glassTier < VoltageIndex.UMV && inputTier > glassTier) {
                 return false;
