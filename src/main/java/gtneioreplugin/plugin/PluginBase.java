@@ -16,6 +16,9 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     protected static final int LEFT_PADDING = 3;
     protected static final int TITLE_Y_POS = 3;
     protected static final int BOTTOM_PADDING = 2;
+    protected static final int BACKGROUND_TEXTURE_LEFT = -2;
+    protected static final int BACKGROUND_TEXTURE_RIGHT = 2;
+    protected static final int RECIPE_COLUMN_PADDING = 2;
 
     protected static final int LINE_KEY_COLOR = 0x404040;
     protected static final int LINE_VALUE_COLOR = 0x303030;
@@ -38,7 +41,11 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     @Override
     public void drawBackground(int recipe) {
         GL11.glColor4f(1, 1, 1, 1);
-        GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.draw(0, 0, getGuiWidth(), getRecipeHeight(recipe) - 2);
+        GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.draw(
+            BACKGROUND_TEXTURE_LEFT,
+            0,
+            getGuiWidth() - BACKGROUND_TEXTURE_LEFT + BACKGROUND_TEXTURE_RIGHT,
+            getRecipeHeight(recipe) - 2 - RECIPE_COLUMN_PADDING);
     }
 
     public abstract String getOutputId();

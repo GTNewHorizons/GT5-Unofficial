@@ -201,7 +201,10 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
 
             createDimensionDisplayItems(dimAbbr, DIM_HEADER_Y_POS, dimensionDisplayItems);
 
-            totalHeight = DIM_HEADER_Y_POS + 10 + MathHelper.ceiling_float_int(dimAbbr.length / 9f) * 18 + 3;
+            totalHeight = DIM_HEADER_Y_POS + 10
+                + MathHelper.ceiling_float_int(dimAbbr.length / 9f) * 18
+                + 3
+                + RECIPE_COLUMN_PADDING;
         }
 
         @Override

@@ -198,7 +198,10 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
             sortDimNamesByTier(abbrDims);
             dimHeaderYPos = chanceDropsPos + MathHelper.ceiling_float_int(i / 9f) * 16 + 14;
             createDimensionDisplayItems(abbrDims, dimHeaderYPos, dimensionDisplayItems);
-            totalHeight = dimHeaderYPos + 10 + MathHelper.ceiling_float_int(abbrDims.length / 9f) * 18 + 3;
+            totalHeight = dimHeaderYPos + 10
+                + MathHelper.ceiling_float_int(abbrDims.length / 9f) * 18
+                + 3
+                + RECIPE_COLUMN_PADDING;
         }
 
         @Override

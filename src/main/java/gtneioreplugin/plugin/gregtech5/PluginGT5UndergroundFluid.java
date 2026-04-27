@@ -190,7 +190,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
                     minAmounts.add(wrapper.minAmount);
                 }
             }
-            totalHeight = y + 6;
+            totalHeight = y + 6 + RECIPE_COLUMN_PADDING;
         }
 
         @Override

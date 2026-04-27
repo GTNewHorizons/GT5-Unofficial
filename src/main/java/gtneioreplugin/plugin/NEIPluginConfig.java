@@ -87,6 +87,7 @@ public class NEIPluginConfig implements IConfigureNEI {
                     GTNEIOrePlugin.MODID).setHeight(160)
                         .setShowFavoritesButton(false)
                         .setShowOverlayButton(false)
+                        .setShiftY(-2)
                         .setDisplayStack(handler.getValue())
                         .build());
         }
