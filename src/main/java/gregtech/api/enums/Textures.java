@@ -469,6 +469,7 @@ public class Textures {
 
             MIXING_CASING = create("MIXING_CASING"),
             FORMING_CORE = create("FORMING_CORE"),
+            ALGAE_CASING = create("ALGAE_CASING"),
 
             DECAY_WAREHOUSE_BACKGROUND = create("DECAY_WAREHOUSE_BACKGROUND"),
             DECAY_WAREHOUSE_GLOW = createOptional("DECAY_WAREHOUSE_GLOW"),

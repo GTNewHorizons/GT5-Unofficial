@@ -31,6 +31,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(12, ItemList.CasingIchorium);
         register(13, ItemList.CasingMixer);
         register(14, ItemList.FormingCore);
+        register(15, ItemList.AlgaeCasing);
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
@@ -74,6 +75,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
             case 13 -> Textures.BlockIcons.MIXING_CASING.getIcon();
             case 14 -> Textures.BlockIcons.FORMING_CORE.getIcon();
+            case 15 -> Textures.BlockIcons.ALGAE_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
