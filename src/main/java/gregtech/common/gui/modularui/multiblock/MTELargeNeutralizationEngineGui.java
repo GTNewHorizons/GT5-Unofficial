@@ -33,39 +33,57 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         ListWidget<IWidget, ?> terminalText = super.createTerminalTextWidget(syncManager, parent);
+        BooleanSyncValue checkMachineSyncer = syncManager.findSyncHandler("checkMachine", BooleanSyncValue.class);
+        IntSyncValue toxicResidueSyncer = syncManager.findSyncHandler("toxicResidue", IntSyncValue.class);
+        IntSyncValue residueCapacitySyncer = syncManager.findSyncHandler("residueCapacity", IntSyncValue.class);
+        FloatSyncValue residuePercentageSyncer = syncManager.findSyncHandler("residuePercentage", FloatSyncValue.class);
+        IntSyncValue residueIncreaseSyncer = syncManager.findSyncHandler("residueIncrease", IntSyncValue.class);
+        IntSyncValue residueDecaySyncer = syncManager.findSyncHandler("residueDecay", IntSyncValue.class);
+        IntSyncValue netResidueSyncer = syncManager.findSyncHandler("netResidue", IntSyncValue.class);
+        terminalText.childIf(
+            checkMachineSyncer.getBoolValue(),
+            () -> IKey
+                .dynamic(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.toxic_residue",
+                        formatNumber(toxicResidueSyncer.getIntValue()),
+                        formatNumber(residueCapacitySyncer.getIntValue()),
+                        formatNumber(residuePercentageSyncer.getFloatValue())))
+                .asWidget());
+        terminalText.childIf(
+            checkMachineSyncer.getBoolValue(),
+            () -> IKey
+                .dynamic(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.residue_change",
+                        formatNumber(residueIncreaseSyncer.getIntValue()),
+                        formatNumber(residueDecaySyncer.getIntValue()),
+                        formatNumber(netResidueSyncer.getIntValue())))
+                .asWidget());
+        return terminalText;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
         BooleanSyncValue checkMachineSyncer = new BooleanSyncValue(() -> multiblock.mMachine);
         syncManager.syncValue("checkMachine", checkMachineSyncer);
-        if (!checkMachineSyncer.getBoolValue()) return terminalText;
 
         IntSyncValue toxicResidueSyncer = new IntSyncValue(() -> multiblock.toxicResidue);
         IntSyncValue residueCapacitySyncer = new IntSyncValue(() -> multiblock.residueCapacity);
         FloatSyncValue residuePercentageSyncer = new FloatSyncValue(multiblock::getResidueUsedPercentage);
+
         syncManager.syncValue("toxicResidue", toxicResidueSyncer);
-        syncManager.syncValue("residueCapacitySyncer", residueCapacitySyncer);
-        syncManager.syncValue("residuePercentageSyncer", residuePercentageSyncer);
-        terminalText.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.toxic_residue",
-                    formatNumber(toxicResidueSyncer.getIntValue()),
-                    formatNumber(residueCapacitySyncer.getIntValue()),
-                    formatNumber(residuePercentageSyncer.getFloatValue())))
-                .asWidget());
-        IntSyncValue residueDecaySyncer = new IntSyncValue(() -> multiblock.residueDecay);
+        syncManager.syncValue("residueCapacity", residueCapacitySyncer);
+        syncManager.syncValue("residuePercentage", residuePercentageSyncer);
+
         IntSyncValue residueIncreaseSyncer = new IntSyncValue(() -> multiblock.residueIncrease);
+        IntSyncValue residueDecaySyncer = new IntSyncValue(() -> multiblock.residueDecay);
         IntSyncValue netResidueSyncer = new IntSyncValue(multiblock::getNetResidue);
-        syncManager.syncValue("residueDecay", residueDecaySyncer);
+
         syncManager.syncValue("residueIncrease", residueIncreaseSyncer);
+        syncManager.syncValue("residueDecay", residueDecaySyncer);
         syncManager.syncValue("netResidue", netResidueSyncer);
-        terminalText.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.residue_change",
-                    formatNumber(residueIncreaseSyncer.getIntValue()),
-                    formatNumber(residueDecaySyncer.getIntValue()),
-                    formatNumber(netResidueSyncer.getIntValue())))
-                .asWidget());
-        return terminalText;
     }
 
     @Override
@@ -79,7 +97,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
         IPanelHandler fluidRegulationPanel = syncManager.syncedPanel(
             "fluidRegulationPanel",
             true,
-            (p_syncManager, syncHandler) -> openFluidRegulationControlPanel(p_syncManager, parent));
+            (p_syncManager, syncHandler) -> openFluidRegulationControlPanel(parent));
         return new ButtonWidget<>().size(18, 18)
             .marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/fluid_regulation_panel"))
@@ -95,7 +113,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private ModularPanel openFluidRegulationControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
+    private ModularPanel openFluidRegulationControlPanel(ModularPanel parent) {
         return new ModularPanel("fluidRegulationPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
