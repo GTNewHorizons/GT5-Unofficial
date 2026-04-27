@@ -1196,13 +1196,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "structureErrors",
-            new GenericListSyncHandler<StructureError>(
-                multiblock::getStructureErrorsForSync,
-                null,
-                StructureErrorRegistry::deserialize,
-                StructureErrorRegistry::serialize,
-                Object::equals,
-                StructureError::copy));
+            multiblock.getStructureErrorsSyncer());
         syncManager
             .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(

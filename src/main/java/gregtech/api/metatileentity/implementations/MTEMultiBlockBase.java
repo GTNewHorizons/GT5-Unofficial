@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -3689,6 +3691,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }));
     }
 
+    /**
+     * Do not use this outside of {@link MTEMultiBlockBaseGui}, you should use {@link #clearHatches} to empty the list.
+     */
+    public GenericListSyncHandler<StructureError> getStructureErrorsSyncer() {
+        return new GenericListSyncHandler<>(
+            () -> structureErrors,
+            null,
+            StructureErrorRegistry::deserialize,
+            StructureErrorRegistry::serialize,
+            Object::equals,
+            StructureError::copy);
+    }
+
     public boolean showRecipeTextInGUI() {
         return true;
     }
@@ -3772,10 +3787,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public void setLastWorkingTick(long mLastWorkingTick) {
         this.mLastWorkingTick = mLastWorkingTick;
-    }
-
-    public List<StructureError> getStructureErrorsForSync() {
-        return structureErrors;
     }
 
     public int getPowerPanelMaxParallel() {
