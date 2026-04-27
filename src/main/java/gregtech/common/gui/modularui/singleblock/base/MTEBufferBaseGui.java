@@ -4,7 +4,9 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -13,10 +15,12 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
@@ -48,9 +52,8 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow corner = super.createLeftCornerFlow(panel, syncManager).collapseDisabledChild();
 
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = createButtonList(panel, syncManager);
-
-        for (Pair<Boolean, Supplier<IWidget>> elem : buttons) corner.childIf(elem.getFirst(), elem.getSecond());
+        for (Pair<Boolean, Supplier<IWidget>> elem : createButtonList(panel, syncManager))
+            corner.childIf(elem.getFirst(), elem.getSecond());
 
         return corner;
     }
@@ -92,6 +95,20 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             .titleMargin(2);
     }
 
+    @SafeVarargs
+    protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
+        return t -> {
+            GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getUncachedTooltipData(
+                key,
+                Arrays.stream(args)
+                    .map(Supplier::get)
+                    .toArray());
+
+            t.addStringLines(Interactable.hasShiftDown() ? data.shiftText : data.text)
+                .titleMargin(2);
+        };
+    }
+
     /// Subclasses should add their own buttons to this list.
     protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
@@ -130,10 +147,10 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                 () -> createButton(
                     new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                    configureTooltip(
+                    configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_if_full.tooltip",
-                        GTUtility.translate(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
-                        machine.getRedstoneOutput()))));
+                        () -> GTUtility.translate(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
+                        machine::getRedstoneOutput))));
 
         // invert redstone button
         buttons.add(
@@ -154,5 +171,12 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip"))));
 
         return buttons;
+    }
+
+    protected Widget<?> createArrow(BiFunction<Integer, Boolean, UITexture> arrowSupplier, int width, int height,
+        boolean fromRight) {
+        return arrowSupplier.apply(width, fromRight)
+            .asWidget()
+            .size(width, height);
     }
 }
