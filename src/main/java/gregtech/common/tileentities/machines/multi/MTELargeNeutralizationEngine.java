@@ -529,11 +529,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInfo(getTierInfoTextFormatted(3, "Ultimate Static Machine Casing", 700, 2500000))
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
-            .addCasingInfoRange(
-                "Tiered Casings",
-                30,
-                46,
-                false)
+            .addCasingInfoRange("Tiered Casings", 30, 46, false)
             .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
             .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
             .addInputBus("Any Tiered Casing", 1)
