@@ -32,7 +32,7 @@ import xyz.wagyourtail.jvmdg.util.Pair;
 
 public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlockBaseGui<T> {
 
-    public static final int TOOLTIP_DELAY = 5;
+    public static final int TOOLTIP_DELAY = 0;
 
     public MTEBufferBaseGui(T machine) {
         super(machine);

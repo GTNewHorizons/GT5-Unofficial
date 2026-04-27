@@ -652,7 +652,7 @@ public class RecipeLoader {
          * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3_000), Materials.Ammonia.getFluid(4_000))
          * .fluidOutputs(Materials.HydrochloricAcid.getFluid(12_000))
          * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GTRecipeBuilder.SECONDS *
-         * 30) .eut(TierEU.EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
+         * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
          */
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {
