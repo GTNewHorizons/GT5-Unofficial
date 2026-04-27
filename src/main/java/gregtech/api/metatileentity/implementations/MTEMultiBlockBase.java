@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -59,6 +57,7 @@ import org.jetbrains.annotations.TestOnly;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -86,18 +85,15 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
-import gregtech.api.gui.widgets.StructureErrorSyncer;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -112,6 +108,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
@@ -231,14 +229,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
-    /** A list of unparameterized structure errors. */
-    private EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
-
     /**
-     * Any implementation-defined error data. Private so that multis have to use the parameters (to make it easier to
+     * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
      * refactor if needed).
      */
-    private NBTTagCompound structureErrorContext = new NBTTagCompound();
+    private List<StructureError> structureErrors = new ArrayList<>();
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -538,42 +533,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void onStructureCheckFinished() {
-        structureErrors = EnumSet.noneOf(StructureError.class);
-        structureErrorContext = new NBTTagCompound();
+        structureErrors.clear();
 
         // only run validation when the structure check passes, so that we don't confuse people
         if (mMachine) {
-            validateStructure(structureErrors, structureErrorContext);
+            validateStructure(structureErrors);
 
             if (hasStructureErrors()) mMachine = false;
+        } else {
+            generateStructureErrorDiagnostics(structureErrors);
         }
     }
+
+    /**
+     * Generate error diagnostics when {@link #checkMachine} returns false.
+     *
+     * @param errors Add errors to this.
+     */
+    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {}
 
     /**
      * Validates this multi's structure (hatch/casing counts mainly) for any errors. The multi will not form if any
      * errors are added to {@code errors}. Only runs when {@link #checkMachine} is successful.
      *
-     * @param errors  Add errors to this.
-     * @param context Generic data blob that is synced with the client.
+     * @param errors Add errors to this.
      */
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-
-    }
-
-    /**
-     * Scans {@code errors}, {@code context}, or other fields as needed and emits localized structure error messages.
-     * The {@code errors} and {@code context} params are synced already, but any other fields must be manually synced.
-     * Note that the parameters may not be in sync due to network latency (they are synced separately). You shouldn't
-     * rely on a field being in {@code context} if an error is present in {@code errors}. This method is typically only
-     * called on the client, but it may be called on the server in the future. Don't use {@link I18n#format} since
-     * that's client-only (use {@link net.minecraft.util.StatCollector#translateToLocal} & its variants instead).
-     *
-     * @param errors  The errors generated by {@link #validateStructure}.
-     * @param context Generic context blob generated by {@link #validateStructure}.
-     * @param lines   Add text to this. These lines will be shown in the controller GUI.
-     */
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
+    protected void validateStructure(Collection<StructureError> errors) {
 
     }
 
@@ -3517,25 +3502,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         screenElements.setSynced(false)
             .setSpace(0);
 
-        screenElements.widget(new StructureErrorSyncer(() -> structureErrors, value -> structureErrors = value));
-
-        screenElements.widget(
-            new FakeSyncWidget<>(
-                () -> structureErrorContext,
-                data -> structureErrorContext = data,
-                ByteBufUtils::writeTag,
-                ByteBufUtils::readTag));
-
-        screenElements.widgets(TextWidget.dynamicString(() -> {
-            ArrayList<String> lines = new ArrayList<>();
-            localizeStructureErrors(structureErrors, structureErrorContext, lines);
-            return String.join("\n", lines);
-        })
-            .setSynced(false)
-            .setTextAlignment(Alignment.CenterLeft)
-            .setDefaultColor(EnumChatFormatting.DARK_RED)
-            .setEnabled(w -> hasStructureErrors()));
-
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
                 TextWidget
@@ -3731,6 +3697,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }));
     }
 
+    /**
+     * Do not use this outside of {@link MTEMultiBlockBaseGui}, you should use {@link #clearHatches} to empty the list.
+     */
+    public GenericListSyncHandler<StructureError> getStructureErrorsSyncer() {
+        return new GenericListSyncHandler<>(
+            () -> structureErrors,
+            null,
+            StructureErrorRegistry::deserialize,
+            StructureErrorRegistry::serialize,
+            Object::equals,
+            StructureError::copy);
+    }
+
     public boolean showRecipeTextInGUI() {
         return true;
     }
@@ -3814,14 +3793,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public void setLastWorkingTick(long mLastWorkingTick) {
         this.mLastWorkingTick = mLastWorkingTick;
-    }
-
-    public EnumSet<StructureError> getStructureErrors() {
-        return structureErrors;
-    }
-
-    public void setStructureErrors(EnumSet<StructureError> structureErrors) {
-        this.structureErrors = structureErrors;
     }
 
     public int getPowerPanelMaxParallel() {
