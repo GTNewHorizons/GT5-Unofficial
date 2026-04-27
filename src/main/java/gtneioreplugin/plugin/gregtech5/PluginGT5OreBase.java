@@ -25,9 +25,6 @@ import gtneioreplugin.util.DimensionHelper.Dimension;
 
 public abstract class PluginGT5OreBase extends PluginBase {
 
-    protected static final int LEFT_PADDING = 2;
-    protected static final int TITLE_Y_POS = 1;
-
     // spotless:off
     public static final List<OrePrefixes> PREFIX_WHITELIST = ImmutableList.of(
         OrePrefixes.dust,
@@ -100,19 +97,6 @@ public abstract class PluginGT5OreBase extends PluginBase {
 
     protected void updateRenderPermutation(PositionedStack ps) {
         ps.setPermutationToRender((cycleticks / 20) % ps.items.length);
-    }
-
-    protected List<String> getTitleLines(String text) {
-        return GuiDraw.fontRenderer.listFormattedStringToWidth(text, getGuiWidth() - 4);
-    }
-
-    protected void drawTitle(List<String> lines) {
-        GuiDraw.drawRect(0, TITLE_Y_POS - 1, getGuiWidth(), lines.size() * 10 + 1, 0xff939393);
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            int x = (getGuiWidth() - GuiDraw.fontRenderer.getStringWidth(line)) / 2;
-            GuiDraw.drawString(line, x, TITLE_Y_POS + i * 11, 0xfafafa, true);
-        }
     }
 
     protected void drawLine(String lineKey, String value, int x, int y) {

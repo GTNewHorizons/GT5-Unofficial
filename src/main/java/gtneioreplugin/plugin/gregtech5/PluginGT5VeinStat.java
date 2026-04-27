@@ -1,5 +1,6 @@
 package gtneioreplugin.plugin.gregtech5;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +32,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
     private static final int VEIN_LAYER_HEIGHT = 22;
     private static final int VEIN_INFO_Y_POS = 110;
     private static final int DIM_HEADER_Y_POS = 120;
+    private static final DecimalFormat format = new DecimalFormat("0.##");
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -221,8 +223,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                     if (dimAbbr != null) {
                         NormalOreDimensionWrapper wrapper = GT5OreLayerHelper.getVeinByDim(dimAbbr);
                         if (wrapper != null && wrapper.oreVeinToProbabilityInDimension.containsKey(oreVein)) {
-                            String percent = String
-                                .format("%.2f", wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
+                            String percent = format.format(wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
                             currentTip
                                 .add(String.format(EnumChatFormatting.AQUA + "Chance to generate: %s%%", percent));
                         }
