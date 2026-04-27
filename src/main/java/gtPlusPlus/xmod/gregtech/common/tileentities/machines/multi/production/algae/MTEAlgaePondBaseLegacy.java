@@ -96,6 +96,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
