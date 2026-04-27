@@ -18,11 +18,11 @@ import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm.Mode;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm.Mode;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

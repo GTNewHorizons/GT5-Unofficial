@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Gregtech;
 
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
@@ -395,7 +397,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (ccs == null || !ccs.allowSelectCircuit()) return null;
         ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
         if (stack == null || stack.getItemDamage() <= 0) return null;
-        return " [" + stack.getItemDamage() + "]";
+        try {
+            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
+        } catch (IllegalFormatException e) {
+            return "";
+        }
     }
 
     @Override
