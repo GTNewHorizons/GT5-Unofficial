@@ -28,25 +28,13 @@ public abstract class PluginBase extends TemplateRecipeHandler {
     public void loadTransferRects() {
         int stringLength = GuiDraw.getStringWidth(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"));
         transferRects.add(
-            new RecipeTransferRect(new Rectangle(getGuiWidth() - stringLength - 3, 5, stringLength, 9), getOutputId()));
+            new RecipeTransferRect(new Rectangle(0, TITLE_Y_POS, getGuiWidth(), 10), getOutputId()));
     }
 
     public abstract String getOutputId();
 
     public int getGuiWidth() {
         return 166;
-    }
-
-    /**
-     * Draw the "see all recipes" transfer label
-     */
-    protected void drawSeeAllRecipesLabel() {
-        // GuiDraw.drawStringR(
-        // EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
-        // getGuiWidth() - 3,
-        // 5,
-        // 0x404040,
-        // false);
     }
 
     protected java.util.List<String> getTitleLines(String text) {

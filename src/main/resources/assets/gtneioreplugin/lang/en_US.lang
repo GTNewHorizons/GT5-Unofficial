@@ -17,6 +17,7 @@ gtnop.gui.nei.worldNames=Generated world
 gtnop.gui.nei.restrictBiome=Restricted biome
 gtnop.gui.nei.dimension=Dimension
 gtnop.gui.nei.chance=Chance
+gtnop.gui.nei.genChance=Chance to generate: %s%%
 gtnop.gui.nei.fluidAmount=Amount
 
 gtnop.gui.nei.chance.value=%s%%

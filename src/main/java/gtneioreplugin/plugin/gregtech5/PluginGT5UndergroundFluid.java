@@ -92,8 +92,6 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
         drawTitle(recipe.title);
 
-        drawSeeAllRecipesLabel();
-
         int xChance = 85;
         int xAmount = 140;
         int yHeader = HEADER_Y_POS + recipe.titleHeight;

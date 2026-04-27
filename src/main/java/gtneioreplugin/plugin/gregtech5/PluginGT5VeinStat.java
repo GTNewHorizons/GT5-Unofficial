@@ -225,7 +225,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                         if (wrapper != null && wrapper.oreVeinToProbabilityInDimension.containsKey(oreVein)) {
                             String percent = format.format(wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
                             currentTip
-                                .add(String.format(EnumChatFormatting.AQUA + "Chance to generate: %s%%", percent));
+                                .add(EnumChatFormatting.AQUA + I18n.format("gtnop.gui.nei.genChance", percent));
                         }
                     }
                 }
@@ -237,7 +237,6 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             drawVeinLayerNames();
             drawVeinInfo();
             drawDimHeader(DIM_HEADER_Y_POS);
-            drawSeeAllRecipesLabel();
         }
 
         private void drawVeinLayerNames() {
