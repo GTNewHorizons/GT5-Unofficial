@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableList;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
@@ -55,18 +54,15 @@ public abstract class PluginGT5OreBase extends PluginBase {
     );
     // spotless:on
 
-    protected String[] sortDimNamesByTier(String[] dims) {
+    protected void sortDimNamesByTier(String[] dims) {
         Arrays.sort(dims, (a, b) -> {
             int indexA = DimensionHelper.getIndexByAbbr(a);
             int indexB = DimensionHelper.getIndexByAbbr(b);
             return Integer.compare(indexA, indexB);
         });
-        return dims;
     }
 
     protected String getGTOreLocalizedName(IOreMaterial ore, boolean small) {
-        if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
-
         try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
             info.material = ore;
             info.isSmall = small;

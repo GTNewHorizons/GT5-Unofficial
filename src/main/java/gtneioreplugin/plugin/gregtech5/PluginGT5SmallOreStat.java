@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
@@ -140,6 +141,12 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         return I18n.format("gtnop.gui.smallOreStat.name");
     }
 
+    @Override
+    public int getRecipeHeight(int recipe) {
+        CachedOreSmallRecipe crecipe = (CachedOreSmallRecipe) this.arecipes.get(recipe);
+        return crecipe.totalHeight;
+    }
+
     public class CachedOreSmallRecipe extends CachedRecipe {
 
         public final OreSmallWrapper oreSmall;
@@ -153,6 +160,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         private final int titleBottom;
         private final int chanceDropsPos;
         private final int dimHeaderYPos;
+        public final int totalHeight;
 
         public CachedOreSmallRecipe(OreSmallWrapper oreSmall, List<ItemStack> stackList,
             List<ItemStack> materialDustStackList, List<ItemStack> dropStackList) {
@@ -186,6 +194,8 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
             sortDimNamesByTier(abbrDims);
             dimHeaderYPos = chanceDropsPos + ((i / 9) + 1) * 16 + 14;
             createDimensionDisplayItems(abbrDims, dimHeaderYPos, dimensionDisplayItems);
+
+            totalHeight = dimHeaderYPos + 10 + MathHelper.ceiling_float_int(abbrDims.length / 9f) * 18 + 3;
         }
 
         @Override

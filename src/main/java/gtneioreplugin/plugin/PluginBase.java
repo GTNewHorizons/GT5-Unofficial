@@ -11,11 +11,6 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 public abstract class PluginBase extends TemplateRecipeHandler {
 
     @Override
-    public int recipiesPerPage() {
-        return 1;
-    }
-
-    @Override
     public String getRecipeName() {
         return null;
     }
