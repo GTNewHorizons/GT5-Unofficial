@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -37,6 +38,7 @@ import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -1644,6 +1646,34 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.EnrichedHolmium.getDust(5))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.NetherStar.getDust(8),
+                Materials.Terbium.getDust(7),
+                MaterialsElements.getInstance().TECHNETIUM.getDust(4),
+                Materials.Dilithium.getDust(4),
+                Materials.Flerovium.getDust(3),
+                Materials.InfinityCatalyst.getDust(1))
+            .circuit(6)
+            .itemOutputs(Materials.Hikari.getDust(27))
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.TinAlloy.getDust(8),
+                WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),
+                MaterialsAlloy.TRINIUM_NAQUADAH.getDust(4),
+                GGMaterial.adamantiumAlloy.get(OrePrefixes.dust, 4),
+                WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
+                MaterialsAlloy.QUANTUM.getDust(1))
+            .circuit(6)
+            .itemOutputs(Materials.Kanae.getDust(27))
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);
 
         // Catalysts for Plasma Forge.

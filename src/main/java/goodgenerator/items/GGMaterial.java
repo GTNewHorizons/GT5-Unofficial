@@ -1394,7 +1394,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff hikarium = new Werkstoff(
         new short[] { 0xff, 0xd6, 0xfb },
-        "Hikarium",
+        "Stellar Lumiium",
         new Werkstoff.Stats().setBlastFurnace(true)
             .setMeltingPoint(5400)
             .setCentrifuge(true)
