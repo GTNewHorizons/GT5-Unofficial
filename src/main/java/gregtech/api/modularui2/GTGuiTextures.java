@@ -534,6 +534,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_COPY = fullImage(GregTech.ID, "gui/overlay_button/copy_to_clipboard");
     public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
         GregTech.ID,
         "gui/overlay_button/redstoneSnifferLocate");

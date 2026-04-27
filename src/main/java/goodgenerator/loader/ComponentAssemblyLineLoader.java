@@ -2060,7 +2060,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, MHDCSM, 48),
                 get(NuclearStar, 3072),
                 get(Emitter_UXV, 192),
-                get(wrapCircuit, UXV, 24),
+                get(wrapCircuit, MAX, 12),
                 get(wrapCircuit, UHV, 66),
                 get(nanite, Gold, 36))
             .circuit(FIELD_GENERATOR_CIRCUIT)
