@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.ImmutableList;
 
@@ -99,25 +98,28 @@ public abstract class PluginGT5OreBase extends PluginBase {
         ps.setPermutationToRender((cycleticks / 20) % ps.items.length);
     }
 
-    protected void drawLine(String lineKey, String value, int x, int y) {
-        String text = I18n.format(lineKey) + ": " + value;
-        drawLine(text, x, y);
+    protected void drawKeyValueLine(String unlocalizedKey, String value, int x, int y) {
+        String key = I18n.format("gtnop.gui.nei.lineKey", I18n.format(unlocalizedKey)) + ": ";
+        value = I18n.format("gtnop.gui.nei.lineValue", value);
+        drawLine(key, x, y, LINE_KEY_COLOR);
+        drawLine(value, x + GuiDraw.fontRenderer.getStringWidth(key), y, LINE_VALUE_COLOR);
     }
 
-    protected void drawLine(String text, int x, int y) {
+    protected void drawLine(String text, int x, int y, int color) {
         String trimmed = text;
         if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth() - x) {
             trimmed = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - x - 10);
         }
 
-        GuiDraw.drawString(trimmed + (trimmed.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
+        GuiDraw.drawString(trimmed + (trimmed.length() < text.length() ? "..." : ""), x, y, color, false);
     }
 
     protected void drawHeader(String key, int x, int y) {
-        GuiDraw.drawString(EnumChatFormatting.UNDERLINE + I18n.format(key), x, y, 0x303030, false);
+        key = I18n.format("gtnop.gui.nei.lineKey", I18n.format(key));
+        GuiDraw.drawString(key, x, y, LINE_KEY_COLOR, false);
     }
 
     protected void drawDimHeader(int y) {
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, y, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", LEFT_PADDING, y, LINE_KEY_COLOR, false);
     }
 }

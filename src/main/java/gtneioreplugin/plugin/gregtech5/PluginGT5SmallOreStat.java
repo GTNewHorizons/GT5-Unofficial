@@ -192,9 +192,8 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
             OreSmallWrapper wrapper = GT5OreSmallHelper.SMALL_ORES_BY_NAME.get(this.oreGenName);
             String[] abbrDims = wrapper.enabledDims.toArray(new String[0]);
             sortDimNamesByTier(abbrDims);
-            dimHeaderYPos = chanceDropsPos + ((i / 9) + 1) * 16 + 14;
+            dimHeaderYPos = chanceDropsPos + MathHelper.ceiling_float_int(i / 9f) * 16 + 14;
             createDimensionDisplayItems(abbrDims, dimHeaderYPos, dimensionDisplayItems);
-
             totalHeight = dimHeaderYPos + 10 + MathHelper.ceiling_float_int(abbrDims.length / 9f) * 18 + 3;
         }
 
@@ -227,13 +226,17 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         }
 
         private void drawSmallOreInfo() {
-            drawLine("gtnop.gui.nei.genHeight", oreSmall.worldGenHeightRange, LEFT_PADDING + 20, titleBottom + 3);
-            drawLine(
+            drawKeyValueLine(
+                "gtnop.gui.nei.genHeight",
+                oreSmall.worldGenHeightRange,
+                LEFT_PADDING + 20,
+                titleBottom + 3);
+            drawKeyValueLine(
                 "gtnop.gui.nei.amount",
                 String.valueOf(oreSmall.amountPerChunk),
                 LEFT_PADDING + 20,
                 titleBottom + 16);
-            drawLine("gtnop.gui.nei.chanceDrops", "", LEFT_PADDING, chanceDropsPos);
+            drawKeyValueLine("gtnop.gui.nei.chanceDrops", "", LEFT_PADDING, chanceDropsPos);
         }
     }
 }

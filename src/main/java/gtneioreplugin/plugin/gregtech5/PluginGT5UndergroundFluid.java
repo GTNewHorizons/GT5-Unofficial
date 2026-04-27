@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.util.GTUtility;
@@ -22,7 +24,7 @@ import gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
 public class PluginGT5UndergroundFluid extends PluginBase {
 
     private static final int HEADER_Y_POS = 27;
-    private static final int ROW_START_Y = 47;
+    private static final int ROW_START_Y = 43;
     private static final int lineSpace = 20;
     private static final int xDimensionDisplay = 30;
     private static final int halfItemLength = 16 / 2;
@@ -95,21 +97,39 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         int xChance = 85;
         int xAmount = 140;
         int yHeader = HEADER_Y_POS + recipe.titleHeight;
-        int black = 0x404040;
 
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.dimension"), xDimensionDisplay, yHeader, black, false);
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.chance"), xChance, yHeader, black, false);
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.fluidAmount"), xAmount, yHeader, black, false);
-
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.dimension"),
+            xDimensionDisplay,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.chance"),
+            xChance,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.fluidAmount"),
+            xAmount,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
         int y = ROW_START_Y + recipe.titleHeight;
         for (int i = 0; i < recipe.dimensionDisplayItems.size(); i++) {
             String chanceValue = format.format((double) recipe.chances.get(i) / 100);
-            GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.chance.value", chanceValue), xChance, y, black, false);
+            GuiDraw.drawStringC(
+                I18n.format("gtnop.gui.nei.chance.value", chanceValue),
+                xChance,
+                y,
+                LINE_VALUE_COLOR,
+                false);
             GuiDraw.drawStringC(
                 I18n.format("gtnop.gui.nei.fluidAmount.value", recipe.minAmounts.get(i), recipe.maxAmounts.get(i)),
                 xAmount,
                 y,
-                black,
+                LINE_VALUE_COLOR,
                 false);
             y += lineSpace;
         }
@@ -170,7 +190,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
                     minAmounts.add(wrapper.minAmount);
                 }
             }
-            totalHeight = y + 5;
+            totalHeight = y + 6;
         }
 
         @Override

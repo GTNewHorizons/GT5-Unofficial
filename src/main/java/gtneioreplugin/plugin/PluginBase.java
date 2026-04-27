@@ -3,20 +3,22 @@ package gtneioreplugin.plugin;
 import java.awt.Rectangle;
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
+import net.minecraft.client.resources.I18n;
+
+import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import gtneioreplugin.GTNEIOrePlugin;
+import gregtech.api.gui.modularui.GTUITextures;
 
 public abstract class PluginBase extends TemplateRecipeHandler {
 
-    protected static final int LEFT_PADDING = 2;
-    protected static final int TITLE_Y_POS = 1;
+    protected static final int LEFT_PADDING = 3;
+    protected static final int TITLE_Y_POS = 3;
     protected static final int BOTTOM_PADDING = 2;
 
-    public static final AdaptableUITexture BACKGROUND = AdaptableUITexture
-        .of(GTNEIOrePlugin.MODID, "gui/nei/background", 8, 8, 1);
+    protected static final int LINE_KEY_COLOR = 0x404040;
+    protected static final int LINE_VALUE_COLOR = 0x303030;
 
     @Override
     public String getRecipeName() {
@@ -25,7 +27,7 @@ public abstract class PluginBase extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-        return BACKGROUND.location.toString() + ".png";
+        return GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location.toString() + ".png";
     }
 
     @Override
@@ -35,7 +37,8 @@ public abstract class PluginBase extends TemplateRecipeHandler {
 
     @Override
     public void drawBackground(int recipe) {
-        BACKGROUND.draw(0, 0, getGuiWidth(), getRecipeHeight(recipe) - 2);
+        GL11.glColor4f(1, 1, 1, 1);
+        GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.draw(0, 0, getGuiWidth(), getRecipeHeight(recipe) - 2);
     }
 
     public abstract String getOutputId();
@@ -44,16 +47,16 @@ public abstract class PluginBase extends TemplateRecipeHandler {
         return 166;
     }
 
-    protected java.util.List<String> getTitleLines(String text) {
+    protected List<String> getTitleLines(String text) {
+        text = I18n.format("gtnop.gui.nei.title", text);
         return GuiDraw.fontRenderer.listFormattedStringToWidth(text, getGuiWidth() - BOTTOM_PADDING);
     }
 
     protected void drawTitle(List<String> lines) {
-        GuiDraw.drawRect(1, TITLE_Y_POS, getGuiWidth() - 2, lines.size() * 10, 0xff939393);
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             int x = (getGuiWidth() - GuiDraw.fontRenderer.getStringWidth(line)) / 2;
-            GuiDraw.drawString(line, x, TITLE_Y_POS + 1 + i * 10, 0xfafafa, true);
+            GuiDraw.drawString(line, x, TITLE_Y_POS + i * 10, 0xffffff, true);
         }
     }
 }

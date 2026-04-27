@@ -51,7 +51,6 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
 
         if (mat != null) {
             loadMatchingVeins(mat);
-
             return;
         }
 
@@ -182,10 +181,19 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             if (title.size() == 1) {
                 stackPosY -= 5;
             }
-            positionedStackPrimary = new PositionedStack(stackListPrimary, 1, stackPosY);
-            positionedStackSecondary = new PositionedStack(stackListSecondary, 1, stackPosY + VEIN_LAYER_HEIGHT);
-            positionedStackBetween = new PositionedStack(stackListBetween, 1, stackPosY + VEIN_LAYER_HEIGHT * 2);
-            positionedStackSporadic = new PositionedStack(stackListSporadic, 1, stackPosY + VEIN_LAYER_HEIGHT * 3);
+            positionedStackPrimary = new PositionedStack(stackListPrimary, LEFT_PADDING, stackPosY);
+            positionedStackSecondary = new PositionedStack(
+                stackListSecondary,
+                LEFT_PADDING,
+                stackPosY + VEIN_LAYER_HEIGHT);
+            positionedStackBetween = new PositionedStack(
+                stackListBetween,
+                LEFT_PADDING,
+                stackPosY + VEIN_LAYER_HEIGHT * 2);
+            positionedStackSporadic = new PositionedStack(
+                stackListSporadic,
+                LEFT_PADDING,
+                stackPosY + VEIN_LAYER_HEIGHT * 3);
 
             createDimensionDisplayItems(dimAbbr, DIM_HEADER_Y_POS, dimensionDisplayItems);
 
@@ -250,13 +258,19 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             if (title.size() == 1) {
                 height -= 5;
             }
-            drawHeader(OreVeinLayer.getOreVeinLayerName(veinLayer), LEFT_PADDING + 16, height);
-            drawLine(getGTOreLocalizedName(oreVein.ores[veinLayer], false), LEFT_PADDING + 16, height + 10);
+            drawHeader(OreVeinLayer.getOreVeinLayerName(veinLayer), LEFT_PADDING + 18, height);
+            String oreName = I18n
+                .format("gtnop.gui.nei.lineValue", getGTOreLocalizedName(oreVein.ores[veinLayer], false));
+            drawLine(oreName, LEFT_PADDING + 18, height + 10, LINE_VALUE_COLOR);
         }
 
         private void drawVeinInfo() {
-            drawLine("gtnop.gui.nei.genHeight", oreVein.worldGenHeightRange, LEFT_PADDING, VEIN_INFO_Y_POS);
-            drawLine("gtnop.gui.nei.weightedChance", Short.toString(oreVein.randomWeight), 100, VEIN_INFO_Y_POS);
+            drawKeyValueLine("gtnop.gui.nei.genHeight", oreVein.worldGenHeightRange, LEFT_PADDING, VEIN_INFO_Y_POS);
+            drawKeyValueLine(
+                "gtnop.gui.nei.weightedChance",
+                Short.toString(oreVein.randomWeight),
+                100,
+                VEIN_INFO_Y_POS);
         }
     }
 }
