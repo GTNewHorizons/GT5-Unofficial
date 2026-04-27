@@ -2927,10 +2927,10 @@ GT5U.gui.text.status.online=Online
 GT5U.gui.text.status.offline=Offline
 GT5U.gui.text.status.disabled=Disabled
 GT5U.gui.text.status.incomplete=Incomplete Structure
-GT5U.gui.text.x=X: %s
-GT5U.gui.text.y=Y: %s
-GT5U.gui.text.z=Z: %s
-GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.x=X:
+GT5U.gui.text.y=Y:
+GT5U.gui.text.z=Z:
+GT5U.gui.text.dim=Dim:
 GT5U.gui.text.dim.valid=Dim Valid: Yes
 GT5U.gui.text.dim.invalid=Dim Valid: No
 
