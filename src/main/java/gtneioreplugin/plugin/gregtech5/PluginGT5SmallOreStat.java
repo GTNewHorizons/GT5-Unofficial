@@ -171,7 +171,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
             titleBottom = title.size() * 10 + 1 + TITLE_Y_POS;
             chanceDropsPos = titleBottom + 29;
 
-            this.positionedStackOreSmall = new PositionedStack(stackList, getGuiWidth() - 32, titleBottom + 8);
+            this.positionedStackOreSmall = new PositionedStack(stackList, LEFT_PADDING, titleBottom + 5);
             this.positionedStackMaterialDust = new PositionedStack(materialDustStackList, 0, 0);
 
             List<PositionedStack> positionedDropStackList = new ArrayList<>();
@@ -227,8 +227,12 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         }
 
         private void drawSmallOreInfo() {
-            drawLine("gtnop.gui.nei.genHeight", oreSmall.worldGenHeightRange, LEFT_PADDING, titleBottom + 3);
-            drawLine("gtnop.gui.nei.amount", String.valueOf(oreSmall.amountPerChunk), LEFT_PADDING, titleBottom + 16);
+            drawLine("gtnop.gui.nei.genHeight", oreSmall.worldGenHeightRange, LEFT_PADDING + 20, titleBottom + 3);
+            drawLine(
+                "gtnop.gui.nei.amount",
+                String.valueOf(oreSmall.amountPerChunk),
+                LEFT_PADDING + 20,
+                titleBottom + 16);
             drawLine("gtnop.gui.nei.chanceDrops", "", LEFT_PADDING, chanceDropsPos);
         }
     }

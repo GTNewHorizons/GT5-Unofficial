@@ -182,10 +182,10 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             if (title.size() == 1) {
                 stackPosY -= 5;
             }
-            positionedStackPrimary = new PositionedStack(stackListPrimary, 0, stackPosY);
-            positionedStackSecondary = new PositionedStack(stackListSecondary, 0, stackPosY + VEIN_LAYER_HEIGHT);
-            positionedStackBetween = new PositionedStack(stackListBetween, 0, stackPosY + VEIN_LAYER_HEIGHT * 2);
-            positionedStackSporadic = new PositionedStack(stackListSporadic, 0, stackPosY + VEIN_LAYER_HEIGHT * 3);
+            positionedStackPrimary = new PositionedStack(stackListPrimary, 1, stackPosY);
+            positionedStackSecondary = new PositionedStack(stackListSecondary, 1, stackPosY + VEIN_LAYER_HEIGHT);
+            positionedStackBetween = new PositionedStack(stackListBetween, 1, stackPosY + VEIN_LAYER_HEIGHT * 2);
+            positionedStackSporadic = new PositionedStack(stackListSporadic, 1, stackPosY + VEIN_LAYER_HEIGHT * 3);
 
             createDimensionDisplayItems(dimAbbr, DIM_HEADER_Y_POS, dimensionDisplayItems);
 
@@ -224,8 +224,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                         NormalOreDimensionWrapper wrapper = GT5OreLayerHelper.getVeinByDim(dimAbbr);
                         if (wrapper != null && wrapper.oreVeinToProbabilityInDimension.containsKey(oreVein)) {
                             String percent = format.format(wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
-                            currentTip
-                                .add(EnumChatFormatting.AQUA + I18n.format("gtnop.gui.nei.genChance", percent));
+                            currentTip.add(EnumChatFormatting.AQUA + I18n.format("gtnop.gui.nei.genChance", percent));
                         }
                     }
                 }
