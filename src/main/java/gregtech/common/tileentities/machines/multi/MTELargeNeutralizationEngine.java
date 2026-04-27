@@ -491,11 +491,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
                     + EnumChatFormatting.GRAY
-                    + ", 1/"
+                    + ", 1/("
                     + EnumChatFormatting.WHITE
-                    + "90 "
+                    + "45"+EnumChatFormatting.GRAY+"*(1+"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY
-                    + "chance for "
+                    + "))chance for "
                     + EnumChatFormatting.WHITE
                     + "all "
                     + EnumChatFormatting.GRAY
@@ -784,7 +786,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {
-                int random = getBaseMetaTileEntity().getRandomNumber(90);
+                int random = getBaseMetaTileEntity().getRandomNumber(45 * (1 + robotArmTier));
                 ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
                 if (random == 0) depleteInput(robotArmItemStack);
             }
