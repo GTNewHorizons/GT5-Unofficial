@@ -104,6 +104,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int maxFluidUse = 200;
 
+    private final static ItemStack FRANCIUM_HYDROXIDE_DUST = Materials.FranciumHydroxide.getDust(1);
+    private final static ItemStack CAESIUM_HYDROXIDE_DUST = Materials.CaesiumHydroxide.getDust(1);
+    private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
+    private final static ItemStack SODIUM_HYDROXIDE_DUST = Materials.SodiumHydroxide.getDust(1);
+
     private static final String SEPARATOR = EnumChatFormatting.GRAY + " : ";
 
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
@@ -632,16 +637,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private void useBooster() {
-        if (depleteInput(Materials.FranciumHydroxide.getDust(1))) {
+        if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = 5F;
             this.boosterBoostTicks = 240;
-        } else if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
+        } else if (depleteInput(CAESIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = 2.5F;
             this.boosterBoostTicks = 200;
-        } else if (depleteInput(Materials.PotassiumHydroxide.getDust(1))) {
+        } else if (depleteInput(POTASSIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = 1.9F;
             this.boosterBoostTicks = 50;
-        } else if (depleteInput(Materials.SodiumHydroxide.getDust(1))) {
+        } else if (depleteInput(SODIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = 1.5F;
             this.boosterBoostTicks = 20;
         } else {
