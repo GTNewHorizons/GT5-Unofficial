@@ -1680,6 +1680,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
 
+        // Industrial Sledgehammer/Forge Hammer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialForgeHammer.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialForgeHammer });
+
         // Large Thermal Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),

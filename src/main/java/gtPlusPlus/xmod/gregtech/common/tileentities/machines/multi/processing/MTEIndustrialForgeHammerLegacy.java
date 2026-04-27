@@ -61,24 +61,24 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialForgeHammer>
+public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndustrialForgeHammerLegacy>
     implements ISurvivalConstructable {
 
     private int mCasing;
     private int mAnvilTier = 0;
-    private static IStructureDefinition<MTEIndustrialForgeHammer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialForgeHammerLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialForgeHammer(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialForgeHammerLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialForgeHammer(final String aName) {
+    public MTEIndustrialForgeHammerLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialForgeHammer(this.mName);
+        return new MTEIndustrialForgeHammerLegacy(this.mName);
     }
 
     @Override
@@ -90,6 +90,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
@@ -125,7 +126,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialForgeHammer> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialForgeHammerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             Map<Block, Integer> anvilTiers = new HashMap<>();
 
@@ -144,14 +145,14 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
                 anvilTiers.put(GameRegistry.findBlock(ThaumicBases.ID, "voidAnvil"), 4);
             }
 
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialForgeHammer>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialForgeHammerLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "CAC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialForgeHammer.class)
+                    buildHatchAdder(MTEIndustrialForgeHammerLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(TAE.getIndexFromPage(1, 11))
                         .hint(1)
@@ -162,8 +163,8 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
                         anvilTierConverter(anvilTiers),
                         getAllAnvilTiers(anvilTiers),
                         0,
-                        MTEIndustrialForgeHammer::setAnvilTier,
-                        MTEIndustrialForgeHammer::getAnvilTier))
+                        MTEIndustrialForgeHammerLegacy::setAnvilTier,
+                        MTEIndustrialForgeHammerLegacy::getAnvilTier))
                 .build();
         }
         return STRUCTURE_DEFINITION;
