@@ -78,6 +78,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.client.StructureErrorHighlightRenderer;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -342,7 +343,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
-                columns.child(error.createWidget());
+                if (error.hasLocation()) {
+                    columns.child(
+                        Flow.row()
+                            .coverChildrenHeight(0)
+                            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+                            .child(error.createWidget())
+                            .child(createHighlightButton(error)));
+                } else {
+                    columns.child(error.createWidget());
+                }
             }
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -354,6 +364,23 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(errorSyncer);
+    }
+
+    private IWidget createHighlightButton(StructureError error) {
+        int errX = error.getLocationX();
+        int errY = error.getLocationY();
+        int errZ = error.getLocationZ();
+        return new ButtonWidget<>().size(12, 12)
+            .marginLeft(2)
+            .disableHoverBackground()
+            .background(IDrawable.EMPTY)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
+            .onMousePressed(d -> {
+                StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private IWidget createRecipeResultWidget() {
