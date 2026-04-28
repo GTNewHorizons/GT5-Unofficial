@@ -77,6 +77,9 @@ import gregtech.common.misc.WorkAreaChunk;
 
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
+    protected int batchMultiplier = 1;
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
     private static final String NBT_SHOW_WORK_AREA = "showWorkArea";
     private static final String NBT_CHUNK_RANGE_CONFIG = "chunkRangeConfig";
     private static final String NBT_ACTIVE_OIL_FIELD_CHUNKS = "activeOilFieldChunks";
@@ -85,6 +88,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     private final Set<Long> activeOilFieldChunkKeys = new HashSet<>();
     private Fluid mOil = null;
     private int mOilFlow = 0;
+    private @NotNull String clientFluidType = "";
+    private int clientFlowPerTick = 0;
+    private int clientFlowPerOperation = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
     private boolean showWorkArea = false;
@@ -100,14 +106,41 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Desugar
     private record WorkAreaBounds(int minChunkX, int minChunkZ, int maxChunkX, int maxChunkZ) {}
 
-    protected int batchMultiplier = 1;
-
     public MTEOilDrillBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     public MTEOilDrillBase(String aName) {
         super(aName);
+    }
+
+    /********************************************************
+     * Parent overrides
+     *******************************************************/
+    @Override
+    protected boolean checkHatches() {
+        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    }
+
+    @Override
+    protected void setElectricityStats() {
+        // for a 6.4 second beautiful batch
+        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
+        this.mEfficiency = getCurrentEfficiency(null);
+        this.mEfficiencyIncrease = 10000;
+        int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
+        this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return (int) Math.max(
+            1,
+            (workState == WorkState.AT_BOTTOM || simulateWorking
+                ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
+                : 120) / GTUtility.powInt(2, tier))
+            * batchMultiplier;
     }
 
     @Override
@@ -134,11 +167,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     .build() };
         }
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
-    }
-
-    @Override
-    public boolean isWorkAreaShown() {
-        return showWorkArea;
     }
 
     @Override
@@ -212,80 +240,52 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
-
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Pump, FDR")
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Use a Screwdriver to configure range")
-            .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
-            .addInfo("If total circuit # is greater than output per operation, the machine will halt.") // doesn't
-            // work
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher();
-        return tt;
-    }
-
-    protected abstract int getRangeInChunks();
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-
-        adjustChunkRange(!aPlayer.isSneaking());
-
-        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.pump_rate.1",
+                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerTick))
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.pump_recovery.1",
+                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerOperation))
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
+            .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));
     }
 
     @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        return ImmutableList.of(createChunkRangeButton(builder), createWorkAreaToggleButton(builder));
     }
 
     @Override
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
         return ImmutableList.of(InputBus, OutputHatch, Maintenance, Energy);
-    }
-
-    @Override
-    protected void setElectricityStats() {
-        // for a 6.4 second beautiful batch
-        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
-        this.mEfficiency = getCurrentEfficiency(null);
-        this.mEfficiencyIncrease = 10000;
-        int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
-        this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = calculateMaxProgressTime(tier);
-    }
-
-    @Override
-    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return (int) Math.max(
-            1,
-            (workState == WorkState.AT_BOTTOM || simulateWorking
-                ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
-                : 120) / GTUtility.powInt(2, tier))
-            * batchMultiplier;
-    }
-
-    protected float computeSpeed() {
-        return .5F + (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * .25F;
     }
 
     @Override
@@ -329,92 +329,189 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return true;
     }
 
-    private boolean tryFillChunkList() {
-        FluidStack tFluid, tOil;
-        if (mOil == null) {
-            tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
-            if (tFluid == null) return false;
-            mOil = tFluid.getFluid();
-        }
-        if (debugDriller) {
-            GTLog.out.println(mOil == null ? null : " Driller on  fluid = " + mOil.getName());
-        }
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        String casings = getCasingBlockItem().get(0)
+            .getDisplayName();
 
-        tOil = new FluidStack(mOil, 0);
-
-        if (mOilFieldChunks.isEmpty()) {
-            ChunkCoordIntPair tChunk = new ChunkCoordIntPair(
-                getBaseMetaTileEntity().getXCoord() >> 4,
-                getBaseMetaTileEntity().getZCoord() >> 4);
-            int range = chunkRangeConfig;
-            int xChunk = Math.floorDiv(tChunk.chunkXPos, range) * range; // For negative values, / returns rounded
-                                                                         // towards zero.
-            int zChunk = Math.floorDiv(tChunk.chunkZPos, range) * range;
-            if (debugDriller) {
-                GTLog.out.println(
-                    "tChunk.chunkXPos = " + tChunk.chunkXPos
-                        + " tChunk.chunkZPos = "
-                        + tChunk.chunkZPos
-                        + " xChunk = "
-                        + xChunk
-                        + " zChunk = "
-                        + zChunk);
-            }
-            for (int i = 0; i < range; i++) {
-                for (int j = 0; j < range; j++) {
-                    if (debugDriller) {
-                        GTLog.out.println(" getChunkX = " + (xChunk + i) + " getChunkZ = " + (zChunk + j));
-                    }
-                    tChunk = new ChunkCoordIntPair(xChunk + i, zChunk + j);
-                    tFluid = undergroundOil(getBaseMetaTileEntity().getWorld(), xChunk + i, zChunk + j, -1);
-                    if (debugDriller) {
-                        String fluidName = tFluid == null ? tFluid.getFluid()
-                            .getName() : null;
-                        GTLog.out.println(" Fluid in chunk = " + fluidName);
-                    }
-                    if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
-                        mOilFieldChunks.add(tChunk);
-                        activeOilFieldChunkKeys.add(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
-                        if (debugDriller) {
-                            GTLog.out.println(" Matching fluid, quantity = " + tFluid.amount);
-                        }
-                    }
-                }
-            }
-        }
-        if (debugDriller) {
-            GTLog.out.println("mOilFieldChunks.size = " + mOilFieldChunks.size());
-        }
-        return !mOilFieldChunks.isEmpty();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        tt.addMachineType("Pump, FDR")
+            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
+            .addInfo("Use a Screwdriver to configure range")
+            .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
+            .addInfo("If total circuit # is greater than output per operation, the machine will halt.") // doesn't
+            // work
+            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo(
+                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+            .beginStructureBlock(3, 7, 3, false)
+            .addController("Front bottom center")
+            .addOtherStructurePart(casings, "form the 3x1x3 Base")
+            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
+            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
+            .addMaintenanceHatch("Any base casing", 1)
+            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
+            .addOutputHatch("Any base casing", 1)
+            .toolTipFinisher();
+        return tt;
     }
 
-    /**
-     * Tries to pump oil, accounting for output space if void protection is enabled.
-     * <p>
-     * If pumped fluid will not fit in output hatches, it returns a result with INVALID.
-     * <p>
-     * If vein is depleted, it returns a result with VALID and null fluid.
-     */
-    protected ValidationResult<FluidStack> tryPumpOil(float speed) {
-        if (mOil == null) return null;
-        if (debugDriller) {
-            GTLog.out.println(" pump speed = " + speed);
-        }
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
-        // Even though it works fine without this check,
-        // it can save tiny amount of CPU time when void protection is disabled
-        if (protectsExcessFluid()) {
-            FluidStack simulatedOil = pumpOil(speed, true);
-            if (!canOutputAll(new FluidStack[] { simulatedOil })) {
-                return ValidationResult.of(ValidationType.INVALID, null);
+        adjustChunkRange(!aPlayer.isSneaking());
+
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> l = new ArrayList<>(
+            Arrays.asList(
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
+                    + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                    + EnumChatFormatting.GREEN
+                    + formatNumber(chunkRangeConfig)
+                    + " x "
+                    + formatNumber(chunkRangeConfig)
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + StatCollector.translateToLocal("GT5U.machines.chunks"),
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.oil_drill.drilling_fluid",
+                    EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.oil_drill.drilling_flow",
+                    EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
+        l.addAll(Arrays.asList(super.getInfoData()));
+        return l.toArray(new String[0]);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GTCEU_LOOP_PUMP;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP;
+    }
+
+    /********************************************************
+     * Implemented IMetricsExporter
+     *******************************************************/
+    @Override
+    public @NotNull List<String> reportMetrics() {
+        final boolean machineIsActive = getBaseMetaTileEntity().isActive();
+        final String failureReason = getFailureReason()
+            .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
+            .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
+
+        if (workState == WorkState.AT_BOTTOM) {
+            final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
+
+            if (machineIsActive) {
+                builder.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.pump_rate.1",
+                        EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
+                        + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
+                    mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+            } else {
+                builder.add(failureReason);
             }
+
+            return builder.build();
         }
 
-        FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount;
-        // Multiblock base already includes 1 parallel
-        recipesDone += batchMultiplier - 1;
-        return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
+        if (machineIsActive) {
+            return switch (workState) {
+                case DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
+                case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+                default -> ImmutableList.of();
+            };
+        }
+
+        return ImmutableList.of(failureReason);
+    }
+
+    /********************************************************
+     * Implemented IWorkAreaProvider
+     *******************************************************/
+    @Override
+    public boolean isWorkAreaShown() {
+        return showWorkArea;
+    }
+
+    @Override
+    public int getCurrentWorkAreaOrder() {
+        return 0;
+    }
+
+    @Override
+    public @Nullable AxisAlignedBB getWorkAreaAABB() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return null;
+        }
+
+        return AxisAlignedBB.getBoundingBox(
+            bounds.minChunkX() << 4,
+            0,
+            bounds.minChunkZ() << 4,
+            bounds.maxChunkX() << 4,
+            256,
+            bounds.maxChunkZ() << 4);
+    }
+
+    @Override
+    public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
+        WorkAreaBounds bounds = getWorkAreaBounds();
+        if (bounds == null) {
+            return Collections.emptyList();
+        }
+
+        if (bounds.equals(cachedWorkAreaBounds)) {
+            return cachedWorkAreaChunks;
+        }
+
+        cachedWorkAreaBounds = bounds;
+        cachedWorkAreaChunks = Collections.unmodifiableList(buildWorkAreaChunksInWorkOrder(bounds));
+
+        return cachedWorkAreaChunks;
+    }
+
+    @Override
+    public WorkAreaChunkState getWorkAreaChunkState(@NotNull WorkAreaChunk chunk) {
+        long key = packChunkKey(chunk.chunkX(), chunk.chunkZ());
+
+        if (activeOilFieldChunkKeys.contains(key)) {
+            return WorkAreaChunkState.ACTIVE;
+        }
+
+        return WorkAreaChunkState.INACTIVE;
+    }
+
+    /********************************************************
+     * Protected helpers
+     *******************************************************/
+    protected abstract int getRangeInChunks();
+
+    protected float computeSpeed() {
+        return .5F + (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * .25F;
     }
 
     /**
@@ -464,222 +561,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return returnOil;
     }
 
-    @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GTCEU_LOOP_PUMP;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        List<String> l = new ArrayList<>(
-            Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + formatNumber(chunkRangeConfig)
-                    + " x "
-                    + formatNumber(chunkRangeConfig)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.oil_drill.drilling_fluid",
-                    EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.oil_drill.drilling_flow",
-                    EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
-        l.addAll(Arrays.asList(super.getInfoData()));
-        return l.toArray(new String[0]);
-    }
-
-    @Override
-    public @NotNull List<String> reportMetrics() {
-        final boolean machineIsActive = getBaseMetaTileEntity().isActive();
-        final String failureReason = getFailureReason()
-            .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
-            .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
-
-        if (workState == WorkState.AT_BOTTOM) {
-            final ImmutableList.Builder<String> builder = ImmutableList.builder();
-            builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
-
-            if (machineIsActive) {
-                builder.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.pump_rate.1",
-                        EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
-                        + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
-                    mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
-            } else {
-                builder.add(failureReason);
-            }
-
-            return builder.build();
-        }
-
-        if (machineIsActive) {
-            return switch (workState) {
-                case DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
-                case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
-                default -> ImmutableList.of();
-            };
-        }
-
-        return ImmutableList.of(failureReason);
-    }
-
-    protected int getFlowRatePerTick() {
+    /********************************************************
+     * Private getters
+     *******************************************************/
+    private int getFlowRatePerTick() {
         return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
-    }
-
-    @NotNull
-    private String getFluidName() {
-        if (mOil != null) {
-            return mOil.getLocalizedName(new FluidStack(mOil, 0));
-        }
-        return "None";
-    }
-
-    private @NotNull String clientFluidType = "";
-    private int clientFlowPerTick = 0;
-    private int clientFlowPerOperation = 0;
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.pump_rate.1",
-                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerTick))
-                            + EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.pump_recovery.1",
-                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerOperation))
-                            + EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
-            .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));
-    }
-
-    @Override
-    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of(createChunkRangeButton(builder), createWorkAreaToggleButton(builder));
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP;
-    }
-
-    @Override
-    public @Nullable AxisAlignedBB getWorkAreaAABB() {
-        WorkAreaBounds bounds = getWorkAreaBounds();
-        if (bounds == null) {
-            return null;
-        }
-
-        return AxisAlignedBB.getBoundingBox(
-            bounds.minChunkX() << 4,
-            0,
-            bounds.minChunkZ() << 4,
-            bounds.maxChunkX() << 4,
-            256,
-            bounds.maxChunkZ() << 4);
-    }
-
-    @Override
-    public List<WorkAreaChunk> getWorkAreaChunksInWorkOrder() {
-        WorkAreaBounds bounds = getWorkAreaBounds();
-        if (bounds == null) {
-            return Collections.emptyList();
-        }
-
-        if (bounds.equals(cachedWorkAreaBounds)) {
-            return cachedWorkAreaChunks;
-        }
-
-        cachedWorkAreaBounds = bounds;
-        cachedWorkAreaChunks = Collections.unmodifiableList(buildWorkAreaChunksInWorkOrder(bounds));
-
-        return cachedWorkAreaChunks;
-    }
-
-    @Override
-    public WorkAreaChunkState getWorkAreaChunkState(@NotNull WorkAreaChunk chunk) {
-        long key = packChunkKey(chunk.chunkX(), chunk.chunkZ());
-
-        if (activeOilFieldChunkKeys.contains(key)) {
-            return WorkAreaChunkState.ACTIVE;
-        }
-
-        return WorkAreaChunkState.INACTIVE;
-    }
-
-    @Override
-    public int getCurrentWorkAreaOrder() {
-        return 0;
-    }
-
-    private void adjustChunkRange(boolean increase) {
-        int oldChunkRange = chunkRangeConfig;
-
-        if (increase) {
-            if (chunkRangeConfig <= getRangeInChunks()) {
-                chunkRangeConfig++;
-            }
-
-            if (chunkRangeConfig > getRangeInChunks()) {
-                chunkRangeConfig = 1;
-            }
-        } else {
-            if (chunkRangeConfig > 0) {
-                chunkRangeConfig--;
-            }
-
-            if (chunkRangeConfig == 0) {
-                chunkRangeConfig = getRangeInChunks();
-            }
-        }
-
-        if (oldChunkRange != chunkRangeConfig) {
-            mOilFieldChunks.clear();
-
-            activeOilFieldChunkKeys.clear();
-
-            invalidateWorkAreaCache();
-            syncWorkAreaData();
-        }
     }
 
     private @Nullable WorkAreaBounds getWorkAreaBounds() {
@@ -714,6 +600,159 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return cachedBounds;
     }
 
+    private @NotNull List<WorkAreaChunk> buildWorkAreaChunksInWorkOrder(@NotNull WorkAreaBounds bounds) {
+        int totalChunkCount = getTotalWorkAreaChunkCount(bounds);
+        List<WorkAreaChunk> chunks = new ArrayList<>(totalChunkCount);
+
+        int order = 1;
+
+        for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
+            for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
+                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order++));
+            }
+        }
+
+        return chunks;
+    }
+
+    private @NotNull String getFluidName() {
+        if (mOil != null) {
+            return mOil.getLocalizedName(new FluidStack(mOil, 0));
+        }
+        return "None";
+    }
+
+    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
+        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
+    }
+
+    private static long packChunkKey(int chunkX, int chunkZ) {
+        return (((long) chunkX) << 32) ^ (chunkZ & 0xffffffffL);
+    }
+
+    private boolean tryFillChunkList() {
+        FluidStack tFluid, tOil;
+        if (mOil == null) {
+            tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
+            if (tFluid == null) return false;
+            mOil = tFluid.getFluid();
+        }
+        if (debugDriller) {
+            GTLog.out.println(mOil == null ? null : " Driller on  fluid = " + mOil.getName());
+        }
+
+        tOil = new FluidStack(mOil, 0);
+
+        if (mOilFieldChunks.isEmpty()) {
+            ChunkCoordIntPair tChunk = new ChunkCoordIntPair(
+                getBaseMetaTileEntity().getXCoord() >> 4,
+                getBaseMetaTileEntity().getZCoord() >> 4);
+            int range = chunkRangeConfig;
+            int xChunk = Math.floorDiv(tChunk.chunkXPos, range) * range; // For negative values, / returns rounded
+            // towards zero.
+            int zChunk = Math.floorDiv(tChunk.chunkZPos, range) * range;
+            if (debugDriller) {
+                GTLog.out.println(
+                    "tChunk.chunkXPos = " + tChunk.chunkXPos
+                        + " tChunk.chunkZPos = "
+                        + tChunk.chunkZPos
+                        + " xChunk = "
+                        + xChunk
+                        + " zChunk = "
+                        + zChunk);
+            }
+            for (int i = 0; i < range; i++) {
+                for (int j = 0; j < range; j++) {
+                    if (debugDriller) {
+                        GTLog.out.println(" getChunkX = " + (xChunk + i) + " getChunkZ = " + (zChunk + j));
+                    }
+                    tChunk = new ChunkCoordIntPair(xChunk + i, zChunk + j);
+                    tFluid = undergroundOil(getBaseMetaTileEntity().getWorld(), xChunk + i, zChunk + j, -1);
+                    if (debugDriller) {
+                        String fluidName = tFluid == null ? tFluid.getFluid()
+                            .getName() : null;
+                        GTLog.out.println(" Fluid in chunk = " + fluidName);
+                    }
+                    if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
+                        mOilFieldChunks.add(tChunk);
+                        activeOilFieldChunkKeys.add(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
+                        if (debugDriller) {
+                            GTLog.out.println(" Matching fluid, quantity = " + tFluid.amount);
+                        }
+                    }
+                }
+            }
+        }
+        if (debugDriller) {
+            GTLog.out.println("mOilFieldChunks.size = " + mOilFieldChunks.size());
+        }
+        return !mOilFieldChunks.isEmpty();
+    }
+
+    /**
+     * Tries to pump oil, accounting for output space if void protection is enabled.
+     * <p>
+     * If pumped fluid will not fit in output hatches, it returns a result with INVALID.
+     * <p>
+     * If vein is depleted, it returns a result with VALID and null fluid.
+     */
+    private @Nullable ValidationResult<FluidStack> tryPumpOil(float speed) {
+        if (mOil == null) return null;
+        if (debugDriller) {
+            GTLog.out.println(" pump speed = " + speed);
+        }
+
+        // Even though it works fine without this check,
+        // it can save tiny amount of CPU time when void protection is disabled
+        if (protectsExcessFluid()) {
+            FluidStack simulatedOil = pumpOil(speed, true);
+            if (!canOutputAll(new FluidStack[] { simulatedOil })) {
+                return ValidationResult.of(ValidationType.INVALID, null);
+            }
+        }
+
+        FluidStack pumpedOil = pumpOil(speed, false);
+        mOilFlow = pumpedOil.amount;
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
+
+        return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
+    }
+
+    /********************************************************
+     * Private helpers
+     *******************************************************/
+    private void adjustChunkRange(boolean increase) {
+        int oldChunkRange = chunkRangeConfig;
+
+        if (increase) {
+            if (chunkRangeConfig <= getRangeInChunks()) {
+                chunkRangeConfig++;
+            }
+
+            if (chunkRangeConfig > getRangeInChunks()) {
+                chunkRangeConfig = 1;
+            }
+        } else {
+            if (chunkRangeConfig > 0) {
+                chunkRangeConfig--;
+            }
+
+            if (chunkRangeConfig == 0) {
+                chunkRangeConfig = getRangeInChunks();
+            }
+        }
+
+        if (oldChunkRange != chunkRangeConfig) {
+            mOilFieldChunks.clear();
+
+            activeOilFieldChunkKeys.clear();
+
+            invalidateWorkAreaCache();
+            syncWorkAreaData();
+        }
+    }
+
     private void toggleWorkArea() {
         showWorkArea = !showWorkArea;
         syncWorkAreaData();
@@ -743,30 +782,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         cachedWorkAreaChunks = Collections.emptyList();
     }
 
-    private List<WorkAreaChunk> buildWorkAreaChunksInWorkOrder(@NotNull WorkAreaBounds bounds) {
-        int totalChunkCount = getTotalWorkAreaChunkCount(bounds);
-        List<WorkAreaChunk> chunks = new ArrayList<>(totalChunkCount);
-
-        int order = 1;
-
-        for (int chunkX = bounds.minChunkX(); chunkX < bounds.maxChunkX(); chunkX++) {
-            for (int chunkZ = bounds.minChunkZ(); chunkZ < bounds.maxChunkZ(); chunkZ++) {
-                chunks.add(new WorkAreaChunk(chunkX, chunkZ, order++));
-            }
-        }
-
-        return chunks;
-    }
-
-    private int getTotalWorkAreaChunkCount(@NotNull WorkAreaBounds bounds) {
-        return (bounds.maxChunkX() - bounds.minChunkX()) * (bounds.maxChunkZ() - bounds.minChunkZ());
-    }
-
-    private static long packChunkKey(int chunkX, int chunkZ) {
-        return (((long) chunkX) << 32) ^ (chunkZ & 0xffffffffL);
-    }
-
-    // UI buttons
+    /********************************************************
+     * UI Buttons
+     *******************************************************/
     private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
         return (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
             .setOnClick((clickData, widget) -> adjustChunkRange(clickData.mouseButton == 0))
