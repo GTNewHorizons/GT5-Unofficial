@@ -36,7 +36,7 @@ import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
 import goodgenerator.blocks.tileEntity.MTEMultiNqGenerator;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
-import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
+import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbineLegacy;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngineLegacy;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
@@ -314,7 +314,7 @@ public class Loaders {
             MetaTileEntityIDs.AntimatterHatch.ID,
             "AntimatterHatch",
             "Antimatter Hatch").getStackForm(1L);
-        Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
+        Loaders.SCTurbine = new MTESupercriticalFluidTurbineLegacy(
             MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
             "Large Supercritical Steam Turbine").getStackForm(1L);

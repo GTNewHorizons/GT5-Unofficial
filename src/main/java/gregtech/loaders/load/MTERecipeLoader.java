@@ -1774,6 +1774,18 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // Large Turbines Conversion Recipes
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.SteamTurbine.get(1), new Object[] { ItemList.LargeSteamTurbine });
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.HPSteamTurbine.get(1), new Object[] { ItemList.LargeHPSteamTurbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SCSteamTurbine.get(1),
+            new Object[] { ItemRefer.SC_Fluid_Turbine.get(1) });
+        GTModHandler.addShapelessCraftingRecipe(ItemList.GasTurbine.get(1), new Object[] { ItemList.LargeGasTurbine });
+        GTModHandler
+            .addShapelessCraftingRecipe(ItemList.PlasmaTurbine.get(1), new Object[] { ItemList.LargePlasmaTurbine });
+
         // Maceration Stack conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MacerationStack.get(1),
@@ -3435,13 +3447,13 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_HV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeSteamTurbine.get(1L),
+            ItemList.SteamTurbine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.gearGt.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeGasTurbine.get(1L),
+            ItemList.GasTurbine.get(1L),
             GTModHandler.RecipeBits.BITSD,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',

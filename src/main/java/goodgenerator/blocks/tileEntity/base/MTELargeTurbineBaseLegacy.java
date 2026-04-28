@@ -45,15 +45,15 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
-public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTELargeTurbineBase>
+public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBase<MTELargeTurbineBaseLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<MTELargeTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
+    private static final ClassValue<IStructureDefinition<MTELargeTurbineBaseLegacy>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
-        protected IStructureDefinition<MTELargeTurbineBase> computeValue(Class<?> type) {
-            return StructureDefinition.<MTELargeTurbineBase>builder()
+        protected IStructureDefinition<MTELargeTurbineBaseLegacy> computeValue(Class<?> type) {
+            return StructureDefinition.<MTELargeTurbineBaseLegacy>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
@@ -67,7 +67,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                 .addElement(
                     'h',
                     lazy(
-                        t -> buildHatchAdder(MTELargeTurbineBase.class).atLeast(t.getHatchElements())
+                        t -> buildHatchAdder(MTELargeTurbineBaseLegacy.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
@@ -91,11 +91,11 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     // so we use a separate field for this
     protected boolean mFormed;
 
-    public MTELargeTurbineBase(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineBaseLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbineBase(String aName) {
+    public MTELargeTurbineBaseLegacy(String aName) {
         super(aName);
     }
 
@@ -110,12 +110,12 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public IStructureDefinition<MTELargeTurbineBase> getStructureDefinition() {
+    public IStructureDefinition<MTELargeTurbineBaseLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
     @SuppressWarnings("unchecked")
-    protected IHatchElement<? super MTELargeTurbineBase>[] getHatchElements() {
+    protected IHatchElement<? super MTELargeTurbineBaseLegacy>[] getHatchElements() {
         if (getPollutionPerTick(null) == 0)
             return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus };
         return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };

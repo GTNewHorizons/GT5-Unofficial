@@ -986,7 +986,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
-            ItemRefer.SC_Fluid_Turbine.get(1),
+            ItemList.SCSteamTurbine.get(1),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "NPN", "GHG", "IPI", 'N', "circuitMaster", 'P', GGMaterial.marM200.get(OrePrefixes.plate, 1),
                 'H', ItemList.Hull_IV.get(1), 'G', GGMaterial.marCeM200.get(OrePrefixes.gearGt, 1), 'I',
@@ -999,7 +999,7 @@ public class RecipeLoader2 {
                 GGMaterial.incoloy903.get(OrePrefixes.pipeLarge, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 ItemList.Hull_IV.get(1))
-            .itemOutputs(ItemRefer.SC_Fluid_Turbine.get(1))
+            .itemOutputs(ItemList.SCSteamTurbine.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

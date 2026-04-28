@@ -1046,6 +1046,8 @@ public enum Casings implements ICasing {
         (() -> Loaders.MAR_Casing, 0, -1),
     FieldRestrictionGlass
         (() -> Loaders.fieldRestrictingGlass, 0, -1),
+    SCTurbineCasing
+        (() -> Loaders.supercriticalFluidTurbineCasing, 0, 1538),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
