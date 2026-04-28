@@ -81,6 +81,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Europium;
     public static Materials Flerovium;
     public static Materials Fluorine;
+    public static Materials Francium;
     public static Materials Gadolinium;
     public static Materials Gallium;
     public static Materials Gold;
@@ -165,6 +166,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Random
     public static Materials AnyBronze;
     public static Materials AnyCopper;
+    public static Materials AnyCarbon;
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
@@ -569,6 +571,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Butane;
     public static Materials Butene;
     public static Materials CalciumAcetateSolution;
+    public static Materials CaesiumHydroxide;
     public static Materials CarbonMonoxide;
     public static Materials Chloramine;
     public static Materials Chloroform;
@@ -603,6 +606,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Polystyrene;
     public static Materials PolyvinylAcetate;
     public static Materials PolyvinylChloride;
+    public static Materials PotassiumHydroxide;
     public static Materials Propane;
     public static Materials Propene;
     public static Materials SaltWater;
@@ -947,6 +951,26 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials PrismaticAcid;
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
+    // endregion
+
+    // region Francium Line
+    public static Materials ImpureFranciumSolution;
+    public static Materials FranciumHydroxide;
+    public static Materials FranciumSlurry;
+    public static Materials ThoriumElutionAdsorbent;
+    // endregion
+
+    // region Chlorosulfonic Acid Line
+    public static Materials PhosphorusChlorineMixture;
+    public static Materials PhosphorusPentachloride;
+    public static Materials ToxicAir;
+    public static Materials ToxicSlurry;
+    public static Materials DestabilizationSlurry;
+    public static Materials AgitatingSlurry;
+    public static Materials UltraContaminatedGas;
+    public static Materials StagnantWasteWater;
+    public static Materials ActivatedWasteWater;
+    public static Materials ChlorosulfonicAcid;
     // endregion
 
     // region Magic Materials
@@ -1484,6 +1508,10 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         RubberSilicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         RubberSilicone.mOreReRegistrations.add(AnySyntheticRubber);
+        Carbon.mOreReRegistrations.add(AnyCarbon);
+        Coal.mOreReRegistrations.add(AnyCarbon);
+        Charcoal.mOreReRegistrations.add(AnyCarbon);
+        Lignite.mOreReRegistrations.add(AnyCarbon);
     }
 
     private static void setToolEnchantments() {
