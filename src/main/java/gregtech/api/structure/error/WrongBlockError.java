@@ -38,4 +38,24 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
     public StructureError copy() {
         return new WrongBlockError(x, y, z);
     }
+
+    @Override
+    public boolean hasLocation() {
+        return true;
+    }
+
+    @Override
+    public int getLocationX() {
+        return x;
+    }
+
+    @Override
+    public int getLocationY() {
+        return y;
+    }
+
+    @Override
+    public int getLocationZ() {
+        return z;
+    }
 }
