@@ -63,8 +63,9 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.misc.IWorkAreaProvider;
 import gregtech.common.misc.WorkAreaChunk;
+import gregtech.common.misc.workarea.IWorkAreaProvider;
+import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -227,6 +228,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         } else {
             mCurrentChunk = null;
         }
+
+        updateWorkAreaRendererRegistration();
     }
 
     @Override
@@ -510,6 +513,12 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     /********************************************************
      * Implemented IWorkAreaProvider
      *******************************************************/
+    @Override
+    public @Nullable World getWorkAreaWorld() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        return base == null ? null : base.getWorld();
+    }
+
     public int getCurrentWorkAreaOrder() {
         WorkAreaBounds bounds = getWorkAreaBounds();
         if (bounds == null) {
@@ -1060,6 +1069,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     private void toggleWorkArea() {
         showWorkArea = !showWorkArea;
+        updateWorkAreaRendererRegistration();
         syncWorkAreaData();
     }
 
@@ -1075,6 +1085,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             tile.markDirty();
             base.issueTileUpdate();
         }
+    }
+
+    private void updateWorkAreaRendererRegistration() {
+        WorkAreaProviderRegistry.setActive(this, showWorkArea);
+    }
+
+    private void setShowWorkAreaFromSync(boolean value) {
+        showWorkArea = value;
+        updateWorkAreaRendererRegistration();
     }
 
     /********************************************************
@@ -1142,7 +1161,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
             })
             .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, this::setShowWorkAreaFromSync),
                 builder,
                 (widget, val) -> widget.notifyTooltipChange())
             .dynamicTooltip(

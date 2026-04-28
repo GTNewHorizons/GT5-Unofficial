@@ -10,6 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -17,10 +18,9 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.misc.IWorkAreaProvider;
 import gregtech.common.misc.WorkAreaChunk;
+import gregtech.common.misc.workarea.IWorkAreaProvider;
+import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 
 @SideOnly(Side.CLIENT)
 public class GTWorkAreaRenderer {
@@ -31,7 +31,7 @@ public class GTWorkAreaRenderer {
     private static final int WORK_AREA_ACTIVE_CHUNK_COLOR = 0x00FF00;
     private static final int WORK_AREA_INACTIVE_CHUNK_COLOR = 0x808080;
     private static final int WORK_AREA_COLOR = 0x9003fc;
-    private static final int WORK_AREA_FACE_ALPHA = 51; // 20% of 255
+    private static final int WORK_AREA_FACE_ALPHA = 38; // ~15% of 255
     private static final float NUMBER_SCALE = 0.6F;
 
     @SubscribeEvent
@@ -67,18 +67,9 @@ public class GTWorkAreaRenderer {
 
         GL11.glLineWidth(2.0F);
 
-        for (Object object : mc.theWorld.loadedTileEntityList) {
-            if (!(object instanceof IGregTechTileEntity gregTechTile)) {
-                continue;
-            }
-
-            IMetaTileEntity metaTileEntity = gregTechTile.getMetaTileEntity();
-
-            if (!(metaTileEntity instanceof IWorkAreaProvider workAreaProvider)) {
-                continue;
-            }
-
-            if (!workAreaProvider.isWorkAreaShown()) {
+        for (IWorkAreaProvider workAreaProvider : WorkAreaProviderRegistry.getActiveProvidersSnapshot()) {
+            if (!workAreaProvider.isWorkAreaShown() || workAreaProvider.getWorkAreaWorld() != mc.theWorld) {
+                WorkAreaProviderRegistry.unregister(workAreaProvider);
                 continue;
             }
 
@@ -123,6 +114,13 @@ public class GTWorkAreaRenderer {
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.@NotNull Unload event) {
+        if (event.world.isRemote) {
+            WorkAreaProviderRegistry.clear();
+        }
     }
 
     private void drawWorkAreaFaces(@NotNull AxisAlignedBB box) {

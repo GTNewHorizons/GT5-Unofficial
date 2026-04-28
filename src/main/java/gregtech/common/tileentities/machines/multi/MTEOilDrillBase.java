@@ -73,8 +73,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
-import gregtech.common.misc.IWorkAreaProvider;
 import gregtech.common.misc.WorkAreaChunk;
+import gregtech.common.misc.workarea.IWorkAreaProvider;
+import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
@@ -238,6 +239,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 activeOilFieldChunkKeys.add(packChunkKey(chunkX, chunkZ));
             }
         }
+
+        updateWorkAreaRendererRegistration();
     }
 
     @Override
@@ -466,6 +469,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     /********************************************************
      * Implemented IWorkAreaProvider
      *******************************************************/
+    @Override
+    public @Nullable World getWorkAreaWorld() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        return base == null ? null : base.getWorld();
+    }
+
     @Override
     public boolean isWorkAreaShown() {
         return showWorkArea;
@@ -784,6 +793,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private void toggleWorkArea() {
         showWorkArea = !showWorkArea;
+        updateWorkAreaRendererRegistration();
         syncWorkAreaData();
     }
 
@@ -809,6 +819,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         cachedWorkAreaBounds = null;
         cachedWorkAreaChunks = Collections.emptyList();
+    }
+
+    private void updateWorkAreaRendererRegistration() {
+        WorkAreaProviderRegistry.setActive(this, showWorkArea);
+    }
+
+    private void setShowWorkAreaFromSync(boolean value) {
+        showWorkArea = value;
+        updateWorkAreaRendererRegistration();
     }
 
     /********************************************************
@@ -849,7 +868,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
             })
             .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, val -> showWorkArea = val),
+                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, this::setShowWorkAreaFromSync),
                 builder,
                 (widget, val) -> widget.notifyTooltipChange())
             .dynamicTooltip(

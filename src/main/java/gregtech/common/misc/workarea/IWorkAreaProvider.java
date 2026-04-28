@@ -1,8 +1,13 @@
-package gregtech.common.misc;
+package gregtech.common.misc.workarea;
 
 import java.util.List;
 
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.Nullable;
+
+import gregtech.common.misc.WorkAreaChunk;
 
 public interface IWorkAreaProvider {
 
@@ -15,6 +20,9 @@ public interface IWorkAreaProvider {
     }
 
     boolean isWorkAreaShown();
+
+    @Nullable
+    World getWorkAreaWorld();
 
     AxisAlignedBB getWorkAreaAABB();
 
