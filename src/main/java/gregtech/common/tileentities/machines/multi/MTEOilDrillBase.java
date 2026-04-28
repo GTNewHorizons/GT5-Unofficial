@@ -862,10 +862,10 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .setBackground(() -> {
                 if (showWorkArea) {
                     return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                        GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
                 }
 
-                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA };
+                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
             })
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, this::setShowWorkAreaFromSync),
