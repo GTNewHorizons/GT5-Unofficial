@@ -3975,7 +3975,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
      * @param stackSize   The stack size to be returned
      * @return the new ItemStack after washing, or null if the material/prefix was invalid
      */
-    static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
         final int stackSize) {
         if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
             switch (oldPrefix.getName()) {
@@ -4022,6 +4022,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
                     aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
+                }
+                if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
+                    aList.add(GTUtility.translate("GT5U.tooltip.flour.cauldron"));
                 }
             }
         }
