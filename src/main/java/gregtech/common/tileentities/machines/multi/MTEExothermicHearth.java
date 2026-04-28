@@ -71,20 +71,22 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.gui.modularui.multiblock.MTEHearthGui;
+import gregtech.common.gui.modularui.multiblock.MTEExothermicHearthGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> implements ISurvivalConstructable {
+public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExothermicHearth>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 39;
     private static final int HORIZONTAL_OFFSET = 11;
     private static final int DEPTH_OFFSET = 1;
-    private static final IStructureDefinition<MTEHearth> STRUCTURE_DEFINITION = StructureDefinition.<MTEHearth>builder()
+    private static final IStructureDefinition<MTEExothermicHearth> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEExothermicHearth>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -140,21 +142,22 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
         .addElement('D', Casings.TungstensteelPipeCasing.asElement())
         .addElement(
             'E',
-            GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil(MTEHearth::setCoilLevel, MTEHearth::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEExothermicHearth::setCoilLevel, MTEExothermicHearth::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
         .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
         .addElement(
             'I',
-            buildHatchAdder(MTEHearth.class)
+            buildHatchAdder(MTEExothermicHearth.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .hint(1)
                 .casingIndex(Casings.HearthCasing.getTextureId())
-                .buildAndChain(onElementPass(MTEHearth::onCasingAdded, Casings.HearthCasing.asElement())))
+                .buildAndChain(onElementPass(MTEExothermicHearth::onCasingAdded, Casings.HearthCasing.asElement())))
         .addElement('J', Casings.BlastSmelterHeatContainmentCoil.asElement())
         .addElement(
             'K',
-            buildHatchAdder(MTEHearth.class).anyOf(Muffler)
+            buildHatchAdder(MTEExothermicHearth.class).anyOf(Muffler)
                 .hint(2)
                 .casingIndex(Casings.StructuralCokeOvenCasing.getTextureId())
                 // this casing references the same texture as the alloy blast smelter,
@@ -163,25 +166,24 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
                 .build())
         .build();
 
-    public MTEHearth(final int aID, final String aName, final String aNameRegional) {
+    public MTEExothermicHearth(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEHearth(String aName) {
+    public MTEExothermicHearth(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEHearth> getStructureDefinition() {
+    public IStructureDefinition<MTEExothermicHearth> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHearth(this.mName);
+        return new MTEExothermicHearth(this.mName);
     }
 
-    // todo: implement flux mechanic
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -244,6 +246,8 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Heating up!")
             .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
             .addCasingInfoRange("Heat Absorbent Casing", 1800, 1915, false)
@@ -298,7 +302,7 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MTEHearth.this.heatingCapacity)
+                    .setMachineHeat(MTEExothermicHearth.this.heatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true);
             }
@@ -309,7 +313,8 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
                     if (!checkFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier)))
                         return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 }
-                return recipe.mSpecialValue <= MTEHearth.this.heatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= MTEExothermicHearth.this.heatingCapacity
+                    ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -392,7 +397,7 @@ public class MTEHearth extends MTEExtendedPowerMultiBlockBase<MTEHearth> impleme
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEHearthGui(this);
+        return new MTEExothermicHearthGui(this);
     }
 
     @Override

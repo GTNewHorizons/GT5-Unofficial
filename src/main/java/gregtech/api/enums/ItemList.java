@@ -2797,7 +2797,7 @@ public enum ItemList implements IItemContainer {
     IndustrialCentrifuge,
     IndustrialElectrolyzer,
     MegaDistillationTower,
-    Hearth,
+    ExothermicHearth,
     MegaVacuumFreezer,
     SteamTurbineXL,
     HPSteamTurbineXL,
