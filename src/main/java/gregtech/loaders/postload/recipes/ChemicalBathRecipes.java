@@ -40,7 +40,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
                 .fluidInputs(Materials.Creosote.getFluid(750L))
                 .duration(16 * TICKS)
-                .eut(TierEU.ULV)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
         }
 
