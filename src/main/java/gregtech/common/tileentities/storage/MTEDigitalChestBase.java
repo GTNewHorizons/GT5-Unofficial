@@ -587,6 +587,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                     ItemStack stored = mInventory[1];
 
+                    if (!ItemUtil.isStackEmpty(stored) && !stack.matches(stored)) {
+                        return remaining;
+                    }
+
                     int storedAmount = stored == null ? 0 : stored.stackSize;
 
                     int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
