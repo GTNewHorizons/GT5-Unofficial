@@ -1080,9 +1080,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .dynamicTooltip(
                 () -> ImmutableList.of(
                     StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.button.drill_radius_1",
+                        "GT5U.gui.button.ore_drill_radius_1",
                         formatNumber((long) chunkRadiusConfig << 4)),
-                    StatCollector.translateToLocal("GT5U.gui.button.drill_radius_2")))
+                    StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16);
     }

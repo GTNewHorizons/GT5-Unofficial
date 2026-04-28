@@ -779,10 +779,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .dynamicTooltip(
                 () -> ImmutableList.of(
                     StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.button.drill_radius_1",
-                        formatNumber(chunkRangeConfig),
-                        formatNumber(chunkRangeConfig)),
-                    StatCollector.translateToLocal("GT5U.gui.button.drill_radius_2")))
+                        "GT5U.gui.button.oil_drill_radius_1",
+                        formatNumber((long) chunkRangeConfig << 4)),
+                    StatCollector.translateToLocal("GT5U.gui.button.oil_drill_radius_2")))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16);
     }
