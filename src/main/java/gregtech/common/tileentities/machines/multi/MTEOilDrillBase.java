@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnegative;
@@ -242,6 +243,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return;
+        }
+
         screenElements
             .widget(
                 new TextWidget()
@@ -249,7 +255,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         () -> EnumChatFormatting.GRAY
                             + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -260,7 +266,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -271,7 +277,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                             + EnumChatFormatting.GRAY
                             + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.AT_BOTTOM))
+                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
@@ -363,10 +369,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        adjustChunkRange(!aPlayer.isSneaking());
+        if (base == null || base.isActive()) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workarea_fail");
+        } else {
+            adjustChunkRange(!aPlayer.isSneaking());
 
-        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
+        }
     }
 
     @Override
@@ -414,7 +425,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
      *******************************************************/
     @Override
     public @NotNull List<String> reportMetrics() {
-        final boolean machineIsActive = getBaseMetaTileEntity().isActive();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return ImmutableList.of();
+        }
+
         final String failureReason = getFailureReason()
             .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
             .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
@@ -423,7 +438,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
             builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
 
-            if (machineIsActive) {
+            if (base.isActive()) {
                 builder.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.pump_rate.1",
@@ -437,7 +452,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             return builder.build();
         }
 
-        if (machineIsActive) {
+        if (base.isActive()) {
             return switch (workState) {
                 case DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
                 case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
@@ -527,7 +542,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         FluidStack returnOil = new FluidStack(mOil, 0);
-        World world = getBaseMetaTileEntity().getWorld();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return returnOil;
+        }
+
+        World world = base.getWorld();
         final float coefficient = (simulate ? -speed : speed) * batchMultiplier;
 
         boolean workAreaChanged = false;
@@ -631,9 +651,14 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     private boolean tryFillChunkList() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return false;
+        }
+
         FluidStack tFluid, tOil;
         if (mOil == null) {
-            tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
+            tFluid = undergroundOilReadInformation(base);
             if (tFluid == null) return false;
             mOil = tFluid.getFluid();
         }
@@ -644,9 +669,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         tOil = new FluidStack(mOil, 0);
 
         if (mOilFieldChunks.isEmpty()) {
-            ChunkCoordIntPair tChunk = new ChunkCoordIntPair(
-                getBaseMetaTileEntity().getXCoord() >> 4,
-                getBaseMetaTileEntity().getZCoord() >> 4);
+            ChunkCoordIntPair tChunk = new ChunkCoordIntPair(base.getXCoord() >> 4, base.getZCoord() >> 4);
             int range = chunkRangeConfig;
             int xChunk = Math.floorDiv(tChunk.chunkXPos, range) * range; // For negative values, / returns rounded
             // towards zero.
@@ -661,19 +684,20 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         + " zChunk = "
                         + zChunk);
             }
+
             for (int i = 0; i < range; i++) {
                 for (int j = 0; j < range; j++) {
                     if (debugDriller) {
                         GTLog.out.println(" getChunkX = " + (xChunk + i) + " getChunkZ = " + (zChunk + j));
                     }
                     tChunk = new ChunkCoordIntPair(xChunk + i, zChunk + j);
-                    tFluid = undergroundOil(getBaseMetaTileEntity().getWorld(), xChunk + i, zChunk + j, -1);
+                    tFluid = undergroundOil(base.getWorld(), xChunk + i, zChunk + j, -1);
                     if (debugDriller) {
-                        String fluidName = tFluid == null ? tFluid.getFluid()
+                        String fluidName = tFluid != null ? tFluid.getFluid()
                             .getName() : null;
                         GTLog.out.println(" Fluid in chunk = " + fluidName);
                     }
-                    if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
+                    if (tFluid != null && tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
                         mOilFieldChunks.add(tChunk);
                         activeOilFieldChunkKeys.add(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
                         if (debugDriller) {
@@ -683,9 +707,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 }
             }
         }
+
         if (debugDriller) {
             GTLog.out.println("mOilFieldChunks.size = " + mOilFieldChunks.size());
         }
+
         return !mOilFieldChunks.isEmpty();
     }
 
@@ -696,8 +722,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
      * <p>
      * If vein is depleted, it returns a result with VALID and null fluid.
      */
-    private @Nullable ValidationResult<FluidStack> tryPumpOil(float speed) {
-        if (mOil == null) return null;
+    private @NotNull ValidationResult<FluidStack> tryPumpOil(float speed) {
+        if (mOil == null) {
+            return ValidationResult.of(ValidationType.VALID, null);
+        }
+
         if (debugDriller) {
             GTLog.out.println(" pump speed = " + speed);
         }
@@ -786,7 +815,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
      * UI Buttons
      *******************************************************/
     private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
-        return (ButtonWidget) new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+        IGregTechTileEntity base = Objects.requireNonNull(
+            getBaseMetaTileEntity(),
+            "Oil drill base meta tile entity is null while creating range button");
+
+        return (ButtonWidget) new LockedWhileActiveButton(base, builder)
             .setOnClick((clickData, widget) -> adjustChunkRange(clickData.mouseButton == 0))
             .setPlayClickSound(true)
             .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
