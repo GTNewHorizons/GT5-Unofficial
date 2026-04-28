@@ -220,18 +220,12 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                         t -> t.tierPipeCasing))
                 .addElement(
                     'E',
-                    ofChain(
-                        buildHatchAdder(MTESteamCompressor.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                            .casingIndex(10)
-                            .hint(1)
-                            .buildAndChain(),
-                        ofBlocksTiered(
-                            MTESteamCompressor::getTierBlock,
-                            ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
-                            -1,
-                            (t, m) -> t.tierBlock = m,
-                            t -> t.tierBlock)))
+                    ofBlocksTiered(
+                        MTESteamCompressor::getTierBlock,
+                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
+                        -1,
+                        (t, m) -> t.tierBlock = m,
+                        t -> t.tierBlock))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -370,16 +364,16 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-20x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "14-30x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "6" + EnumChatFormatting.GRAY + " Block of Iron")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-20x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Citrusss")
+                EnumChatFormatting.GOLD + "14-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "6" + EnumChatFormatting.GRAY + " Block of Steel")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }
