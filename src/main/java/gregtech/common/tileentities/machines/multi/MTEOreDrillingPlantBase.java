@@ -569,7 +569,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     protected abstract int getBaseProgressTime();
 
-    protected MultiblockTooltipBuilder createTooltip(String tierSuffix) {
+    protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
