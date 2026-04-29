@@ -1,7 +1,6 @@
 package gregtech.loaders.postload;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -91,10 +90,8 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerPotassiumHydroxideTransformer() {
-        ItemStackReplacementManager.addSimpleReplacement(
-            "dreamcraft:PotassiumHydroxideDust",
-            Materials.PotassiumHydroxide.getDust(1),
-            true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("dreamcraft:PotassiumHydroxideDust", Materials.PotassiumHydroxide.getDust(1), true);
         ItemStackReplacementManager.ignoreMissingMapping("dreamcraft:PotassiumHydroxideDust");
     }
 }
