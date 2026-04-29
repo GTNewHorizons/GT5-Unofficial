@@ -91,11 +91,10 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerPotassiumHydroxideTransformer() {
-        final ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
         ItemStackReplacementManager.addSimpleReplacement(
-            "dreamcraft:item.PotassiumHydroxideDust",
-            POTASSIUM_HYDROXIDE_DUST.getItem(),
-            POTASSIUM_HYDROXIDE_DUST.getItemDamage(),
+            "dreamcraft:PotassiumHydroxideDust",
+            Materials.PotassiumHydroxide.getDust(1),
             true);
+        ItemStackReplacementManager.ignoreMissingMapping("dreamcraft:PotassiumHydroxideDust");
     }
 }
