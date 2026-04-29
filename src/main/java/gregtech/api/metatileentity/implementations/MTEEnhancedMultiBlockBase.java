@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnegative;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -34,6 +37,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.WrongBlockError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
@@ -54,7 +60,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 
     private final StructureCenterWalker centerWalker = new StructureCenterWalker();
+    private final StructureErrorWalker errorWalker = new StructureErrorWalker();
     private final Vector3f center = new Vector3f();
+    private StructureStatus structureStatus = StructureStatus.OK;
+    private final Vector3i errorPos = new Vector3i();
     private int structureRadius;
 
     protected MTEEnhancedMultiBlockBase(int aID, String aName, String aNameRegional) {
@@ -206,6 +215,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        structureStatus = StructureStatus.OK;
+    }
+
+    @Override
     protected void onStructureCheckFinished() {
         super.onStructureCheckFinished();
 
@@ -294,6 +309,18 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
                 verticalOffset,
                 depthOffset,
                 centerWalker);
+        } else {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                errorWalker);
         }
 
         return success;
@@ -521,6 +548,16 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             Flip.byIndex(data.getByte("eFlip")));
     }
 
+    @Override
+    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
+        super.generateStructureErrorDiagnostics(errors);
+        if (structureStatus == StructureStatus.WRONG_BLOCK) {
+            errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
+        } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
+            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
@@ -567,5 +604,34 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
             return true;
         }
+    }
+
+    private class StructureErrorWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
+
+            if (!result) {
+                structureStatus = StructureStatus.WRONG_BLOCK;
+                errorPos.set(x, y, z);
+            }
+
+            return result;
+        }
+
+        @Override
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+            int y, int z, int a, int b, int c) {
+            structureStatus = StructureStatus.BLOCK_NOT_LOADED;
+            return false;
+        }
+    }
+
+    private enum StructureStatus {
+        OK,
+        WRONG_BLOCK,
+        BLOCK_NOT_LOADED,
     }
 }
