@@ -79,6 +79,7 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
+import org.jetbrains.annotations.ApiStatus;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
@@ -221,9 +222,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public boolean checkHatch() {
         return true;
     }
+
+    // Use this, so that validateStructure can be removed
+    public void checkHatch(List<StructureError> errors) {}
 
     @Override
     public void clearHatches() {
