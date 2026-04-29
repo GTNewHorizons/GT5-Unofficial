@@ -606,14 +606,45 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    protected final void checkMinMaintenanceHatch(List<StructureError> errors) {
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        if (mInputBusses.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_INPUT_BUS);
+        }
+    }
+
+    protected final void checkHasOutputBus(List<StructureError> errors) {
+        if (mOutputBusses.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_OUTPUT_BUS);
+        }
+    }
+
+    protected final void checkHasEnergyHatch(List<StructureError> errors) {
+        if (mEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
+        }
+    }
+
+    protected final void checkHasMufflerHatch(List<StructureError> errors) {
+        if (mMufflerHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
+        }
+    }
+
+    protected final void checkOneMufflerHatch(List<StructureError> errors) {
+        checkHasMufflerHatch(errors);
+        if (mMufflerHatches.size() > 1) {
+            errors.add(StructureErrorRegistry.TOO_MANY_MUFFLER);
+        }
+    }
+
+    protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
         if (mMaintenanceHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
         }
     }
 
     protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
-        checkMinMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         if (mMaintenanceHatches.size() > 1) {
             errors.add(StructureErrorRegistry.TOO_MANY_MAINTENANCE);
         }
