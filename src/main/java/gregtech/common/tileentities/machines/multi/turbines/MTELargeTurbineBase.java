@@ -64,21 +64,17 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                     new String[][] { { "---", "---", "---" }, { "CCC", "C~C", "CCC" }, { " B ", "BAB", " B " },
                         { " B ", "BAB", " B " }, { "AEA", "EAE", "AEA" }, { "AEA", "EAE", "AEA" },
                         { "B B", "BDB", "B B" } })
-                // Turbine casing
                 .addElement(
                     'C',
                     lazy(
                         t -> t.getTurbineCasing()
                             .asElement()))
-                // Frame box
                 .addElement('B', lazy(t -> ofFrame(t.getFrameMaterial())))
-                // Pipe casing
                 .addElement(
                     'A',
                     lazy(
                         t -> t.getPipeCasing()
                             .asElement()))
-                // Dynamo hatch, falls back to turbine casing
                 .addElement(
                     'D',
                     lazy(
@@ -110,7 +106,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
     protected int overflowMultiplier = 0;
     protected long maxPower = 0;
 
-    // client side stuff
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     protected boolean mHasTurbine;
     protected boolean mFormed;
@@ -125,15 +120,11 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         usesTurbine = true;
     }
 
-    // ── Blocks ───────────────────────────────────────────────────────────────
-
     public abstract Casings getTurbineCasing();
 
     public abstract Materials getFrameMaterial();
 
     public abstract Casings getPipeCasing();
-
-    // ── Structure ─────────────────────────────────────────────────────────────
 
     @Override
     public IStructureDefinition<MTELargeTurbineBase> getStructureDefinition() {
@@ -191,8 +182,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return getMaxEfficiency(aStack) > 0;
     }
-
-    // ── Turbine logic ─────────────────────────────────────────────────────────
 
     /**
      * If true, baseEff is taken raw from the turbine stat.
@@ -281,8 +270,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         return aTotal;
     }
 
-    // ── Component handling ────────────────────────────────────────────────────
-
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 1;
@@ -299,8 +286,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return true;
     }
-
-    // ── Overlay / rendering ───────────────────────────────────────────────────
 
     public IIconContainer[] getTurbineTextureActive() {
         return TURBINE_NEW_ACTIVE;
@@ -368,8 +353,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
             : this.getMaxEfficiency(mInventory[1]) > 0;
     }
 
-    // ── NBT ───────────────────────────────────────────────────────────────────
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -381,8 +364,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         super.loadNBTData(aNBT);
         looseFit = aNBT.getBoolean("turbineFitting");
     }
-
-    // ── Info panel ────────────────────────────────────────────────────────────
 
     @Override
     public String[] getInfoData() {
@@ -459,8 +440,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.RESET };
     }
 
-    // ── Interaction ───────────────────────────────────────────────────────────
-
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
@@ -481,8 +460,6 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
-
-    // ── Survival construction ─────────────────────────────────────────────────
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
