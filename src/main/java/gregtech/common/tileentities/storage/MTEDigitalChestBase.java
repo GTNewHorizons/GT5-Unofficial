@@ -526,6 +526,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             }
 
+            private boolean hasStack(){
+                ItemStack stack = getItemStack();
+                return stack != null && stack.getItem() != null && getItemCount() > 0;
+            }
+
             @Override
             public ItemStack extract(int amount, boolean forced) {
                 switch (getCurrentSlot()) {
@@ -603,7 +608,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     remaining -= toInsert;
                 }
 
-                if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                if (hasStack() && !stack.matches(getItemStack())) {
                     return remaining;
                 }
 
