@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -31,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -71,7 +71,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
         .<MTEIndustrialRockBreaker>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', ofFrame(Materials.Tungsten))
-        .addElement('B', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
+        .addElement('B', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEIndustrialRockBreaker.class)
