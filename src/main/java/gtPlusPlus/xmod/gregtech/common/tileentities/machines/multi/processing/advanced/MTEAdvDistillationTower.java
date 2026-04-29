@@ -276,16 +276,14 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         }
         if (!mTopLayerFound) {
             errors.add(new SimpleStructureError("GT5U.gui.text.dangote_missing_top"));
-            return;
         }
         if (mHeight == 1) {
             errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
-            return;
         }
         if (!checkHatch()) {
             errors.add(new SimpleStructureError("GT5U.gui.text.hatch_invalid"));
-            return;
         }
+        if (!errors.isEmpty()) return;
         // check success
         if (mHeight < 11) {
             // force the mode to DT if not in full height
