@@ -155,12 +155,6 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
         checkHasMaintenanceHatch(errors);
     }
 
-    public boolean checkHatch() {
-        return mMufflerHatches.size() == 1 && mEnergyHatches.size() >= 1
-            && mInputBusses.size() >= 1
-            && mOutputBusses.size() >= 1;
-    }
-
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
