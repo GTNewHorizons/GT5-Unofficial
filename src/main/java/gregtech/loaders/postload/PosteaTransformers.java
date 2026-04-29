@@ -1,6 +1,7 @@
 package gregtech.loaders.postload;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -10,6 +11,7 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -18,6 +20,7 @@ public class PosteaTransformers implements Runnable {
     public void run() {
         registerFrameboxTransformers();
         registerProgrammedCircuitTransformers();
+        registerPotassiumHydroxideTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -84,6 +87,15 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addSimpleReplacement(
             "miscutils:item.T3RecipeSelector",
             GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
+            true);
+    }
+
+    private void registerPotassiumHydroxideTransformer() {
+        final ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
+        ItemStackReplacementManager.addSimpleReplacement(
+            "dreamcraft:item.PotassiumHydroxideDust",
+            POTASSIUM_HYDROXIDE_DUST.getItem(),
+            POTASSIUM_HYDROXIDE_DUST.getItemDamage(),
             true);
     }
 }
