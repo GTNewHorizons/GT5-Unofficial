@@ -1287,7 +1287,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Any error must be added to the error list.
      */
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (checkMachine(aBaseMetaTileEntity, aStack)) {
+        if (!checkMachine(aBaseMetaTileEntity, aStack)) {
             errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
         }
     }

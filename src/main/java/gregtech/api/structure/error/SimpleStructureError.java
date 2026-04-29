@@ -11,7 +11,7 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.StructureErrorId;
 
 @Desugar
-public record SimpleStructureError(String lang_key) implements StructureError {
+public record SimpleStructureError(String langKey) implements StructureError {
 
     @Override
     public StructureErrorId getId() {
@@ -20,7 +20,7 @@ public record SimpleStructureError(String lang_key) implements StructureError {
 
     @Override
     public void serialize(PacketBuffer buffer) throws IOException {
-        buffer.writeStringToBuffer(lang_key);
+        buffer.writeStringToBuffer(langKey);
     }
 
     @Override
@@ -30,12 +30,12 @@ public record SimpleStructureError(String lang_key) implements StructureError {
 
     @Override
     public IWidget createWidget() {
-        return IKey.lang(lang_key)
+        return IKey.lang(langKey)
             .asWidget();
     }
 
     @Override
     public StructureError copy() {
-        return new SimpleStructureError(lang_key);
+        return new SimpleStructureError(langKey);
     }
 }
