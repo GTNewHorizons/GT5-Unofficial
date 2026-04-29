@@ -19,4 +19,20 @@ public interface StructureError {
     IWidget createWidget();
 
     StructureError copy();
+
+    default boolean hasLocation() {
+        return false;
+    }
+
+    default int getLocationX() {
+        return 0;
+    }
+
+    default int getLocationY() {
+        return 0;
+    }
+
+    default int getLocationZ() {
+        return 0;
+    }
 }

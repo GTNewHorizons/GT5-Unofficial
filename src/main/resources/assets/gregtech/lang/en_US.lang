@@ -2344,6 +2344,7 @@ GT5U.gui.button.batch_mode_off=Batch Mode: OFF
 GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
 GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
+GT5U.gui.button.highlight_block=Highlight block in world
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine

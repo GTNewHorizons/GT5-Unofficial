@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.HoverableIcon;
@@ -78,6 +79,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.client.StructureErrorHighlightRenderer;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -342,7 +344,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
-                columns.child(error.createWidget());
+                if (error.hasLocation()) {
+                    columns.child(
+                        Flow.row()
+                            .coverChildrenHeight(0)
+                            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+                            .child(error.createWidget())
+                            .child(createHighlightButton(error)));
+                } else {
+                    columns.child(error.createWidget());
+                }
             }
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -354,6 +365,39 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(errorSyncer);
+    }
+
+    private IWidget createHighlightButton(StructureError error) {
+        int errX = error.getLocationX();
+        int errY = error.getLocationY();
+        int errZ = error.getLocationZ();
+        return new ButtonWidget<>().size(12, 12)
+            .marginLeft(2)
+            .disableHoverBackground()
+            .background(IDrawable.EMPTY)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
+            .onMousePressed(d -> {
+                boolean lookAt = Interactable.hasShiftDown();
+                StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
+                net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft
+                    .getMinecraft().thePlayer;
+                if (player != null) {
+                    player.closeScreen();
+                    if (lookAt) {
+                        double dx = errX + 0.5 - player.posX;
+                        double dy = errY + 0.5 - (player.posY + player.getEyeHeight());
+                        double dz = errZ + 0.5 - player.posZ;
+                        double dist = Math.sqrt(dx * dx + dz * dz);
+                        float yaw = (float) (Math.atan2(dz, dx) * 180.0 / Math.PI) - 90.0f;
+                        float pitch = (float) -(Math.atan2(dy, dist) * 180.0 / Math.PI);
+                        player.rotationYaw = yaw;
+                        player.rotationPitch = pitch;
+                    }
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private IWidget createRecipeResultWidget() {
