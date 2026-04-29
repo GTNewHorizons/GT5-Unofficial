@@ -18,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -28,7 +29,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
@@ -153,8 +154,10 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        // bronze machines don't have fluid slots
-        return GTValues.emptyFluidTankInfo;
+        int steamAmount = (int) getBaseMetaTileEntity().getStoredSteam() * 2;
+        int steamCapacity = (int) getBaseMetaTileEntity().getSteamCapacity() * 2;
+        FluidStack steam = Materials.Steam.getGas(steamAmount);
+        return new FluidTankInfo[] { new FluidTankInfo(steam, steamCapacity) };
     }
 
     @Override
