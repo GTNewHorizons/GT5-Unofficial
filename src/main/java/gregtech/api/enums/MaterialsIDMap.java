@@ -81,6 +81,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r( 89, Materials.Lead);
         r( 90, Materials.Bismuth);
         r( 93, Materials.Radon);
+        r( 94, Materials.Francium);
         r( 96, Materials.Thorium);
         r( 97, Materials.Uranium235);
         r( 98, Materials.Uranium);
@@ -149,6 +150,20 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(172, Materials.Plagioclase);
         r(173, Materials.UnformedHexanite);
         r(174, Materials.Hexanite);
+        r(175, Materials.ImpureFranciumSolution);
+        r(176,Materials.FranciumSlurry);
+        r(177, Materials.FranciumHydroxide);
+        r(178, Materials.ThoriumElutionAdsorbent);
+        r(179,Materials.PhosphorusChlorineMixture);
+        r(180,Materials.PhosphorusPentachloride);
+        r(181,Materials.ToxicAir);
+        r(182,Materials.ToxicSlurry);
+        r(183,Materials.DestabilizationSlurry);
+        r(184,Materials.AgitatingSlurry);
+        r(185,Materials.UltraContaminatedGas);
+        r(186,Materials.StagnantWasteWater);
+        r(187,Materials.ActivatedWasteWater);
+        r(188,Materials.ChlorosulfonicAcid);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);
@@ -163,6 +178,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(234, Materials.DenseSupercriticalSteam);
         r(241, Materials.PlatinumGroupSludge);
         r(242, Materials.WeedEX9000);
+        r(243, Materials.PotassiumHydroxide);
+        r(244, Materials.CaesiumHydroxide);
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);

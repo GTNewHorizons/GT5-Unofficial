@@ -10,6 +10,7 @@ import java.util.List;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.common.config.Gregtech;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -20,9 +21,9 @@ public class GTLog {
 
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
-    public static PrintStream ore = new LogBuffer();
-    public static PrintStream exp = new LogBuffer();
-    public static PrintStream ico = new LogBuffer();
+    public static PrintStream ore = Gregtech.general.loggingOreDict ? new LogBuffer() : new VoidLogger();
+    public static PrintStream exp = new VoidLogger();
+    public static PrintStream ico = Gregtech.debug.logRegisterIcons ? new LogBuffer() : new VoidLogger();
     public static File mLogFile;
     public static File mOreDictLogFile;
     public static File mExplosionLog;
@@ -45,6 +46,24 @@ public class GTLog {
         @Override
         public void println(String aString) {
             lineBuffer.add(aString);
+        }
+    }
+
+    public static class VoidLogger extends PrintStream {
+
+        public VoidLogger() {
+            super(new OutputStream() {
+
+                @Override
+                public void write(int arg0) {
+                    /* Do nothing */
+                }
+            });
+        }
+
+        @Override
+        public void println(String aString) {
+            /* Do nothing */
         }
     }
 

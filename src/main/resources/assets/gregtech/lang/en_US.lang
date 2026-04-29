@@ -1079,6 +1079,12 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# Toxic Residue Sensor
+gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
+gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
+gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue shown in percent
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -2368,6 +2374,8 @@ GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is m
 GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
+GT5U.gui.button.max_fluid=Maximum Fluid Consumption (L/t)
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
@@ -2483,10 +2491,13 @@ GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.toxic_residue=§fToxic Residue: §c%s §f/ %s (%s%%)
+GT5U.gui.text.residue_change=§fResidue Change: §c+%s§f/§a-%s §f(%s)
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.toxic_residue_sensor=Toxic Residue threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
@@ -6932,6 +6943,8 @@ GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed 
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
 
+GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
+
 GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
 
@@ -7737,6 +7750,9 @@ gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
 gt.blockcasings12.3.name=Nanochip Computational Matrix Casing
 gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
+gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
+gt.blockcasings12.6.name=Precise Stationary Machine Casing
+gt.blockcasings12.7.name=Ultimately Static Machine Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
