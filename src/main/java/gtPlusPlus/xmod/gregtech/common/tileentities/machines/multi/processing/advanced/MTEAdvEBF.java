@@ -19,9 +19,11 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.TooFewCasings;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -200,8 +202,11 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     }
 
     @Override
-    public boolean checkHatch() {
-        return super.checkHatch() && !mPyrotheumHatches.isEmpty();
+    public void checkHatch(List<StructureError> errors) {
+        super.checkHatch(errors);
+        if (mPyrotheumHatches.isEmpty()) {
+            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Pyrotheum.get(1)));
+        }
     }
 
     private boolean addPyrotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
