@@ -4,9 +4,12 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record WrongBlockError(int x, int y, int z) implements StructureError {
@@ -29,33 +32,18 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
     }
 
     @Override
-    public IWidget createWidget() {
-        return IKey.lang("GT5U.gui.wrong_block", x, y, z)
-            .asWidget();
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
+        return Flow.row()
+            .coverChildrenHeight(0)
+            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+            .child(
+                IKey.lang("GT5U.gui.wrong_block", x, y, z)
+                    .asWidget())
+            .child(gui.createHighlightButton(x, y, z));
     }
 
     @Override
     public StructureError copy() {
         return new WrongBlockError(x, y, z);
-    }
-
-    @Override
-    public boolean hasLocation() {
-        return true;
-    }
-
-    @Override
-    public int getLocationX() {
-        return x;
-    }
-
-    @Override
-    public int getLocationY() {
-        return y;
-    }
-
-    @Override
-    public int getLocationZ() {
-        return z;
     }
 }

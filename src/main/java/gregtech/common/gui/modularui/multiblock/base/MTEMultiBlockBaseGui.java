@@ -344,16 +344,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
-                if (error.hasLocation()) {
-                    columns.child(
-                        Flow.row()
-                            .coverChildrenHeight(0)
-                            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-                            .child(error.createWidget())
-                            .child(createHighlightButton(error)));
-                } else {
-                    columns.child(error.createWidget());
-                }
+                columns.child(error.createWidget(this));
             }
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -367,10 +358,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .syncHandler(errorSyncer);
     }
 
-    private IWidget createHighlightButton(StructureError error) {
-        int errX = error.getLocationX();
-        int errY = error.getLocationY();
-        int errZ = error.getLocationZ();
+    public IWidget createHighlightButton(int errX, int errY, int errZ) {
         return new ButtonWidget<>().size(12, 12)
             .marginLeft(2)
             .disableHoverBackground()
