@@ -125,4 +125,9 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
             return getItemStackReplacementTooltip();
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
