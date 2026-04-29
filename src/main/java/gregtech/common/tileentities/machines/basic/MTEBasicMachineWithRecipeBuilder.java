@@ -122,7 +122,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     recipes,
                     inputSlotCount,
                     outputSlotCount,
-                    hasInputFluidSlot || hasOutputFluidSlot,
+                    hasInputFluidSlot,
+                    hasOutputFluidSlot,
                     sound,
                     specialEffect,
                     overlays);
@@ -137,6 +138,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
                 recipes,
                 inputSlotCount,
                 outputSlotCount,
+                hasInputFluidSlot,
+                hasOutputFluidSlot,
                 fluidTankCapacityOverride,
                 sound,
                 specialEffect,
