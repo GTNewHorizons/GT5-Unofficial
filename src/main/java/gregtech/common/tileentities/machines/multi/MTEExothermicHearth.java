@@ -187,7 +187,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, HeaRTH, MEBF, MBF")
+        tt.addMachineType("Blast Furnace, Hearth, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
@@ -250,18 +250,18 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Heating up!")
             .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoRange("Heat Absorbent Casing", 1800, 1915, false)
+            .addCasingInfoRange("Hearth Casing", 1800, 1915, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
             .addCasingInfoExactly("Heating Coils", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 332, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any Heat Absorbent Casing")
-            .addMaintenanceHatch("Any Heat Absorbent Casing")
-            .addInputBus("Any Heat Absorbent Casing")
-            .addInputHatch("Any Heat Absorbent Casing")
+            .addEnergyHatch("Any Hearth Casing")
+            .addMaintenanceHatch("Any Hearth Casing")
+            .addInputBus("Any Hearth Casing")
+            .addInputHatch("Any Hearth Casing")
             .addMufflerHatch("Top middle")
-            .addOutputBus("Any Heat Absorbent Casing")
-            .addOutputHatch("Any Heat Absorbent Casing")
+            .addOutputBus("Any Hearth Casing")
+            .addOutputHatch("Any Hearth Casing")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors("GregTech Odyssey")
