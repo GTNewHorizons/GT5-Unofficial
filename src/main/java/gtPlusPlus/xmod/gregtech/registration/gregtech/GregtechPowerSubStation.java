@@ -5,7 +5,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Battery_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
@@ -47,19 +47,19 @@ public class GregtechPowerSubStation {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_MV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_EV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_MV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_EV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
     }
 }

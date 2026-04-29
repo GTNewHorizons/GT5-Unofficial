@@ -449,7 +449,7 @@ public class RecipesMachinesCustom {
     private static void treeGrowthSimulator() {
         // Tree Growth Simulator
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_TreeFarm.get(1),
+            ItemList.TreeGrowSimulator.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "FRF", "PHP", "FXF", 'F', ItemList.Field_Generator_IV, 'R',
                 MaterialsAlloy.INCOLOY_MA956.getRotor(1), 'P', MaterialsAlloy.NITINOL_60.getPlate(1), 'H',
