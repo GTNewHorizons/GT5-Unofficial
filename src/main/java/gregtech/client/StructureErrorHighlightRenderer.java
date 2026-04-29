@@ -78,7 +78,7 @@ public class StructureErrorHighlightRenderer {
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(LINE_WIDTH);
-        GL11.glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
+        GL11.glColor4f(1.0f, 0.33f, 0.33f, 1.0f);
 
         drawBoxOutline(
             targetX - 0.002,
