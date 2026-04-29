@@ -847,13 +847,6 @@ tt.keyphrase.Hysteresis_low_set_to=滞后低通设置为
 tt.keyphrase.Tesla_radius_set_to=特斯拉半径设置为
 tt.keyphrase.Sending_power=发送功率
 tt.keyphrase.Receiving_power=接收功率
-tt.keyphrase.Stored_energy=已存储能量
-tt.keyphrase.Stored_EU=已存储EU
-tt.keyphrase.Average_IO=平均I/O
-tt.keyphrase.Average_IO_(max)=电压I/O(最大)
-tt.keyphrase.Average_IO_max=电压I/O 最大
-tt.keyphrase.Amperage_IO_(max)=电流I/O(最大)
-tt.keyphrase.Side_capabilities=辅助功能
 tt.keyphrase.Ass_line_recipe=装配线合成表
 
 #OpenTurrets compatibility
@@ -1242,3 +1235,13 @@ tt.IUPAC.Anti=反
 tt.keyword.Weird=*
 
 tt.chat.debug.generator=激光模式：%s
+
+tt.chat.eu_meter.stored_energy=已存储能量：§e%s§r/§a%s
+tt.chat.eu_meter.stored_eu=已存储EU：§e%s§r/§a%s
+tt.chat.eu_meter.average_io=平均I/O：§e%s§r/§e%s
+tt.chat.eu_meter.average_io_(max)=电压I/O(最大)：§6%s§r/§6%s
+tt.chat.eu_meter.average_io_max=电压I/O 最大：§c%s§r/§c%s
+tt.chat.eu_meter.amperage_io_(max)=电流I/O(最大)：§6%s§r/§6%s
+tt.chat.eu_meter.side_capabilities.input=辅助功能：输入
+tt.chat.eu_meter.side_capabilities.output=辅助功能：输出
+tt.chat.eu_meter.side_capabilities.io=辅助功能：输入 输出

@@ -3919,7 +3919,7 @@ item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
-miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode
+miscutils.machines.QFTFluidMode.s=Quantum Force Transformer Fluid Output Mode %s
 
 # Added 16/11/22
 item.BasicGenericChemItem.16.name=Platinum Group Catalyst
@@ -4095,6 +4095,67 @@ gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
 gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
 gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
+
+gtpp.chat.fluid_tank_infinite.mode.single=This tank is now in single fluid mode.
+gtpp.chat.fluid_tank_infinite.mode.all=This tank is now in supply all fluids mode.
+gtpp.chat.fluid_tank_infinite.contains.single=This tank contains %s.
+gtpp.chat.fluid_tank_infinite.contains.all=This tank contains %s and can supply any fluid that is requested from it.
+gtpp.chat.fluid_tank_infinite.empty.single=This tank is empty.
+gtpp.chat.fluid_tank_infinite.empty.all=This tank can supply any fluid that is requested from it.
+
+gtpp.chat.healing_device.nano_booster.whirs=Your NanoBooster Whirs! Leaving you feeling stronger.
+gtpp.chat.healing_device.healed.hp=Healed %s hp.
+gtpp.chat.healing_device.healed.hunger=Healed %s hunger.
+gtpp.chat.healing_device.saturated.hunger=Saturated Hunger by %s.
+gtpp.chat.healing_device.remain=You check its remaining uses, it has %s seconds left.
+gtpp.chat.healing_device.show_info=Showing info messages
+gtpp.chat.healing_device.hide_info=Hiding info messages
+gtpp.chat.pump.no_power=Not enough power.
+gtpp.chat.pump.drained=Drained %sL of %s.
+gtpp.chat.circuit_programmer.set=Now configuring units for type %s.
+gtpp.chat.volumetric_flask_setter.value=Value: %s
+gtpp.chat.volumetric_flask_setter.set_mode=Slot %s is now default.
+gtpp.chat.hatch_turbine.using_animation=Using Animations? %s
+gtpp.chat.hatch_turbine.has_controller=Has Controller? %s
+gtpp.chat.hatch_turbine.controller.location=Controller Location: [X: %s][Y: %s][Z: %s][Dim: %s]
+gtpp.chat.hatch_turbine.controller.active=Controller Active? %s
+gtpp.chat.hatch_turbine.active=Active? %s
+gtpp.chat.hatch_turbine.turbine_inserted=Has Turbine inserted? %s
+gtpp.chat.hatch_turbine.using=Using: %s %s
+gtpp.chat.hatch_turbine.turbine.animated=Using Animated Turbine Texture.
+gtpp.chat.hatch_turbine.turbine.static=Using Static Turbine Texture.
+gtpp.chat.hatch_turbine.remove_with_wrench=Removed turbine with wrench.
+gtpp.chat.hatch_turbine.cannot_remove_turbine=Cannot remove turbine, no free inventory space.
+gtpp.chat.hatch_turbine.no_turbine_to_remove=No turbine to remove.
+gtpp.chat.hatch_turbine.reset_linked_controller=Trying to Reset linked Controller
+gtpp.chat.hatch_turbine_provider.down=Direction: DOWN
+gtpp.chat.hatch_turbine_provider.up=Direction: UP
+gtpp.chat.hatch_turbine_provider.set=Set check time to be every %s ticks.
+gtpp.chat.hatch_turbine_provider.reset_time=Reset check time to %s ticks.
+gtpp.chat.multi_base.clear_output_hatch.count=Trying to clear %s output hatches.
+gtpp.chat.multi_base.clear_output_hatch=Clearing %sL of %s from hatch %s.
+gtpp.chat.toggle_visual.connectable=Connectable: %s
+gtpp.chat.tesseract.frequency=Frequency: %s
+gtpp.chat.tesseract_generator.frequency.occupied=Frequency: %s§c (Occupied)
+gtpp.chat.tesseract_terminal.frequency.connected=Frequency: %s§a (Connected)
+gtpp.chat.tesseract_generator.not_permit=This is not your Tesseract Generator to configure.
+gtpp.chat.tesseract_terminal.not_permit=This is not your Tesseract Terminal to configure.
+gtpp.chat.pollution_base.useless=This block is useless, Pollution is disabled.
+gtpp.chat.pollution_base.contains=This chunk now contains %s pollution.
+gtpp.chat.pollution_creator.multiplier=Pollution Multiplier is now %s.
+gtpp.chat.pollution_detector.redstone_level=Emit Redstone at pollution level: %s
+gtpp.chat.sparge_tower.clear_output_hatch.layers=Trying to clear %s layers of output hatches.
+gtpp.chat.sparge_tower.clear_output_hatch=Clearing %sL of %s from hatch %s on layer %s.
+gtpp.chat.adv_distillation_tower.too_short=Cannot switch mode if not in full height.
+gtpp.chat.power_sub_station.output=Sub-Station is now outputting power from the controller.
+gtpp.chat.power_sub_station.input=Sub-Station is now inputting power into the controller.
+gtpp.chat.energy_buffer.show.eu=Energy: %s EU at %sv (%s%%)
+gtpp.chat.energy_buffer.show.amperage=Amperage: %sA
+gtpp.chat.energy_buffer.now.amperage=Now handling %s Amps.
+gtpp.chat.infinite_item_holder.holding=Now holding %s x%s.
+gtpp.chat.infinite_item_holder.emptying=Emptying.
+gtpp.chat.infinite_item_holder.currently.holding=Currently holding: %s x%s
+gtpp.chat.infinite_item_holder.currently.nothing=Nothing
 
 gtpp.book.modular_baubles.name=How to: Modular Baubles
 gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customisation of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.

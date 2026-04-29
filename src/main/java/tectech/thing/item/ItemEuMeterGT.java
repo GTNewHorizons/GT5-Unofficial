@@ -1,7 +1,6 @@
 package tectech.thing.item;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentEnergy;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -24,7 +26,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -49,96 +50,54 @@ public class ItemEuMeterGT extends Item {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
-            final String clientLocale;
-            if (aPlayer instanceof EntityPlayerMPAccessor) {
-                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-            } else {
-                clientLocale = "en_US";
-            }
-
-            if (tTileEntity instanceof BaseMetaTileEntity) {
-                GTUtility.sendChatToPlayer(
+            if (tTileEntity instanceof BaseMetaTileEntity metaTileEntity) {
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
-                        + "-----"
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.AQUA
-                        + " X:"
-                        + aX
-                        + " Y:"
-                        + aY
-                        + " Z:"
-                        + aZ
-                        + " D:"
-                        + aWorld.provider.dimensionId
-                        + " S:"
-                        + ordinalSide
-                        + " "
-                        + EnumChatFormatting.STRIKETHROUGH
-                        + "-----");
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.position",
+                    new ChatComponentNumber(aX),
+                    new ChatComponentNumber(aY),
+                    new ChatComponentNumber(aZ),
+                    aWorld.provider.dimensionId,
+                    ordinalSide);
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyStored())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GREEN
-                        + (((BaseMetaTileEntity) tTileEntity).getUniversalEnergyCapacity()));
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.stored_energy",
+                    new ChatComponentEnergy(metaTileEntity.getUniversalEnergyStored()),
+                    new ChatComponentEnergy(metaTileEntity.getUniversalEnergyCapacity()));
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Stored_EU", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getStoredEU())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GREEN
-                        + (((BaseMetaTileEntity) tTileEntity).getEUCapacity()));
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.stored_eu",
+                    new ChatComponentEnergy(metaTileEntity.getStoredEU()),
+                    new ChatComponentEnergy(metaTileEntity.getEUCapacity()));
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO", clientLocale) + ": "
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getAverageElectricInput())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.YELLOW
-                        + (((BaseMetaTileEntity) tTileEntity).getAverageElectricOutput()));
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.average_io",
+                    new ChatComponentNumber(metaTileEntity.getAverageElectricInput()),
+                    new ChatComponentNumber(metaTileEntity.getAverageElectricOutput()));
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO_(max)", clientLocale) + ": "
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getInputVoltage())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getOutputVoltage()));
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.average_io_(max)",
+                    new ChatComponentNumber(metaTileEntity.getInputVoltage()),
+                    new ChatComponentNumber(metaTileEntity.getOutputVoltage()));
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Average_IO_max", clientLocale) + ": "
-                        + EnumChatFormatting.RED
-                        + (((BaseMetaTileEntity) tTileEntity).getMaxSafeInput())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.RED
-                        + (((BaseMetaTileEntity) tTileEntity).getMaxEnergyOutput()));
-                GTUtility.sendChatToPlayer(
+                    "tt.chat.eu_meter.average_io_max",
+                    new ChatComponentNumber(metaTileEntity.getMaxSafeInput()),
+                    new ChatComponentNumber(metaTileEntity.getMaxEnergyOutput()));
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Amperage_IO_(max)", clientLocale) + ": "
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getInputAmperage())
-                        + EnumChatFormatting.RESET
-                        + '/'
-                        + EnumChatFormatting.GOLD
-                        + (((BaseMetaTileEntity) tTileEntity).getOutputAmperage()));
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": "
-                        + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom(side)
-                            ? translateToLocalFormatted("tt.keyword.input", clientLocale) + " "
-                            : "")
-                        + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo(side)
-                            ? translateToLocalFormatted("tt.keyword.output", clientLocale)
-                            : ""));
+                    "tt.chat.eu_meter.amperage_io_(max)",
+                    new ChatComponentNumber(metaTileEntity.getInputAmperage()),
+                    new ChatComponentNumber(metaTileEntity.getOutputAmperage()));
+                boolean allowEnergyInput = metaTileEntity.inputEnergyFrom(side);
+                boolean allowEnergyOutput = metaTileEntity.outputsEnergyTo(side);
+                if (allowEnergyInput && allowEnergyOutput) {
+                    GTUtility.sendChatTrans(aPlayer, "tt.chat.eu_meter.side_capabilities.io");
+                } else if (allowEnergyInput) {
+                    GTUtility.sendChatTrans(aPlayer, "tt.chat.eu_meter.side_capabilities.input");
+                } else if (allowEnergyOutput) {
+                    GTUtility.sendChatTrans(aPlayer, "tt.chat.eu_meter.side_capabilities.output");
+                }
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {

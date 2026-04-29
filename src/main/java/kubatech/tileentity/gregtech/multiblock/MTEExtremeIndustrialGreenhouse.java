@@ -68,6 +68,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -519,28 +520,19 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private void tryChangeSetupPhase(EntityPlayer aPlayer) {
         // TODO: Create l10n entries for the setup phase change messages.
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eig.cannot_setup_when_working");
             return;
         }
         this.setupPhase++;
         if (this.setupPhase == 3) this.setupPhase = 0;
-        String phaseChangeMessage = "EIG is now running in ";
-        switch (this.setupPhase) {
-            case 0:
-                phaseChangeMessage += "operational mode.";
-                break;
-            case 1:
-                phaseChangeMessage += "seed input mode.";
-                break;
-            case 2:
-                phaseChangeMessage += "seed output mode.";
-                break;
-            default:
-                phaseChangeMessage += "an invalid mode please send us a ticket!";
-                break;
-        }
+        String phaseChangeMessageKey = switch (this.setupPhase) {
+            case 0 -> "kubatech.chat.eig.run_mode.operational";
+            case 1 -> "kubatech.chat.eig.run_mode.input";
+            case 2 -> "kubatech.chat.eig.run_mode.output";
+            default -> "kubatech.chat.eig.run_mode.invalid";
+        };
         this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
+        GTUtility.sendChatTrans(aPlayer, phaseChangeMessageKey);
     }
 
     /**
@@ -549,18 +541,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * @param aPlayer The player to notify of success and errors
      */
     private void tryChangeMode(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the mode change messages.
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if the machine is working!");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eig.cannot_change_mode.working");
             return;
         }
         if (!this.buckets.isEmpty()) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if there are seeds inside!");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eig.cannot_change_mode.seed_inside");
             return;
         }
         this.mode = EIGModes.getNextMode(this.mode);
         this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, "Changed mode to: " + this.mode.getName());
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "kubatech.chat.eig.change_mode",
+            new ChatComponentTranslation(this.mode.getNameKey()));
     }
 
     /**
@@ -572,9 +566,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         // TODO: Create l10n entries for the humidity status interactions.
         this.useNoHumidity = !this.useNoHumidity;
         if (this.useNoHumidity) {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode enabled.");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eig.no_humidity_mode.enabled");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode disabled.");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eig.no_humidity_mode.disabled");
         }
     }
 
@@ -588,7 +582,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         aNBT.setInteger("version", NBT_REVISION);
         aNBT.setByte("glassTier", this.glassTier);
         aNBT.setInteger("setupPhase", this.setupPhase);
-        aNBT.setString("mode", this.mode.getName());
+        aNBT.setString("mode", this.mode.getId());
         aNBT.setBoolean("isNoHumidity", this.useNoHumidity);
         NBTTagList bucketListNBT = new NBTTagList();
         for (EIGBucket b : this.buckets) {
@@ -655,7 +649,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             else isOldStructure = aNBT.getBoolean("isOldStructure");
             this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
-            this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
+            this.mode = EIGModes.getModeFromId(aNBT.getString("mode"));
             this.useNoHumidity = aNBT.getBoolean("isNoHumidity");
             this.mode.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
             new EIGDropTable(aNBT.getTagList("progress", 10)).addTo(this.dropTracker);
@@ -1077,7 +1071,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             // if (mte.buckets.size() >= mte.maxSeedTypes) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (mte.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.cannot_insert");
                 return super.transferStackInSlot(aPlayer, aSlotIndex);
             }
 
@@ -1412,7 +1406,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .asList(
                     StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
                         + EnumChatFormatting.GREEN
-                        + (this.setupPhase == 0 ? this.mode.getName()
+                        + (this.setupPhase == 0 ? StatCollector.translateToLocal(this.mode.getNameKey())
                             : (this.setupPhase == 1
                                 ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
                                 : StatCollector

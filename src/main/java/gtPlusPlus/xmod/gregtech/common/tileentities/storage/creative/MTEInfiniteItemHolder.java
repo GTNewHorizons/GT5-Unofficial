@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage.creative;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentItemName;
 import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
@@ -44,9 +46,11 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
                         .copy();
                     this.mItemCount = Short.MAX_VALUE;
                     aPlayer.setCurrentItemOrArmor(0, null);
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        "Now holding " + this.mItemStack.getDisplayName() + " x" + Short.MAX_VALUE + ".");
+                        "gtpp.chat.infinite_item_holder.holding",
+                        new ChatComponentItemName(this.mItemStack),
+                        Short.MAX_VALUE);
                     return true;
                 }
             } else {
@@ -54,17 +58,18 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
                     aPlayer.entityDropItem(mItemStack, 1);
                     this.mItemStack = null;
                     this.mItemCount = 0;
-                    GTUtility.sendChatToPlayer(aPlayer, "Emptying.");
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.chat.infinite_item_holder.emptying");
                     return true;
                 }
             }
         }
 
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            "Currently holding: " + (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")
-                + " x"
-                + this.mItemCount);
+            "gtpp.chat.infinite_item_holder.currently.holding",
+            (this.mItemStack != null ? new ChatComponentItemName(this.mItemStack)
+                : new ChatComponentTranslation("gtpp.chat.infinite_item_holder.currently.nothing")),
+            this.mItemCount);
         return true;
         // return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }

@@ -172,7 +172,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         if (allowComputationConfiguring) {
             openGui(aPlayer);
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Cannot configure computation on this hatch");
+            GTUtility.sendChatTrans(aPlayer, "tt.chat.hatch.data_output.cannot_config");
         }
 
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);

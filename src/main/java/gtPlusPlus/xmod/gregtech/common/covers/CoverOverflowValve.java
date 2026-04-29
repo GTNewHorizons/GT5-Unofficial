@@ -3,13 +3,13 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -245,10 +245,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+            "GTPP.chat.text.cover_overflow_valve_overflow_point.s",
+            new ChatComponentNumber(overflowPoint));
     }
 
     @Override
@@ -263,10 +263,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+            "GTPP.chat.text.cover_overflow_valve_overflow_point.s",
+            new ChatComponentNumber(overflowPoint));
         return true;
     }
     // GUI

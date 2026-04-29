@@ -1115,14 +1115,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ItemStack aTool) {
         if (canUseWireless()) {
             wireless_mode = !wireless_mode;
-            GTUtility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
-        } else {
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                "Wireless mode cannot be enabled without at least 1 " + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.RESET
-                    + "+ capacitor.");
+                wireless_mode ? "GT5U.chat.wireless_mode.enable" : "GT5U.chat.wireless_mode.disable");
+        } else {
+            GTUtility.sendChatTrans(
+                aPlayer,
+                "kekztech.chat.laportronic_super_capacitor.wireless_mode.hint",
+                GTValues.TIER_COLORS[9] + GTValues.VN[9] + EnumChatFormatting.RESET);
             wireless_mode = false;
         }
     }

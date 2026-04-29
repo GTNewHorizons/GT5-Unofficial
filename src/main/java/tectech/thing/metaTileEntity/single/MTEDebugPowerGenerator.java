@@ -72,7 +72,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
+        GTUtility.sendChatTrans(aPlayer, LASER ? "tt.chat.debug.generator.on" : "tt.chat.debug.generator.off");
     }
 
     @Override

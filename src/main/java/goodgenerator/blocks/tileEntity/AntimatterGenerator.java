@@ -232,8 +232,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
         wirelessEnabled = !wirelessEnabled;
         GTUtility.sendChatTrans(
             aPlayer,
-            wirelessEnabled ? "gg.chat.antimatter_generator.wireless_mode.enable"
-                : "gg.chat.antimatter_generator.wireless_mode.disable");
+            wirelessEnabled ? "GT5U.chat.wireless_mode.enable" : "GT5U.chat.wireless_mode.disable");
         if (wirelessEnabled) {
             GTUtility.sendChatTrans(aPlayer, "gg.chat.antimatter_generator.wireless_mode.enable.hint");
         }
