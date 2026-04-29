@@ -40,6 +40,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TooManyInputHatch;
 import gregtech.api.structure.error.WrongBlockError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -621,6 +622,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected final void checkHasInputHatch(List<StructureError> errors) {
         if (mInputHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+        }
+    }
+
+    protected final void checkMaxInputHatch(int limit, List<StructureError> errors) {
+        if (mInputHatches.size() > limit) {
+            errors.add(new TooManyInputHatch(mInputHatches.size(), limit));
         }
     }
 
