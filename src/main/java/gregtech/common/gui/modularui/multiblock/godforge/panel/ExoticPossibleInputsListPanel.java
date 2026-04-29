@@ -15,9 +15,7 @@ import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -53,7 +51,8 @@ public class ExoticPossibleInputsListPanel {
         panel.size(SIZE_W, panelHeight)
             .child(ForgeOfGodsGuiUtil.panelCloseButtonStandard());
 
-        Flow column = new Column().coverChildren()
+        Flow column = Flow.column()
+            .coverChildren()
             .margin(6);
 
         column.child(createQGPGroup(qgpItemSize, qgpFluidSize, qgpRows).marginBottom(3));
@@ -82,8 +81,8 @@ public class ExoticPossibleInputsListPanel {
                 1);
         }
 
-        Flow column = new Column().size(18 * ROW_SLOTS_WIDTH, rows * 18 + 10)
-            .alignX(0.5f);
+        Flow column = Flow.column()
+            .size(18 * ROW_SLOTS_WIDTH, rows * 18 + 10);
 
         // Title
         column.child(
@@ -92,7 +91,6 @@ public class ExoticPossibleInputsListPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .height(9)
-                .widthRel(1)
                 .marginBottom(1));
 
         // Input rows
@@ -120,8 +118,8 @@ public class ExoticPossibleInputsListPanel {
                 1);
         }
 
-        Flow column = new Column().size(18 * ROW_SLOTS_WIDTH, rows * 18 + 10)
-            .alignX(0.5f);
+        Flow column = Flow.column()
+            .size(18 * ROW_SLOTS_WIDTH, rows * 18 + 10);
 
         // Title
         column.child(
@@ -130,7 +128,6 @@ public class ExoticPossibleInputsListPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .height(9)
-                .widthRel(1)
                 .marginBottom(1));
 
         // Input rows
@@ -140,13 +137,14 @@ public class ExoticPossibleInputsListPanel {
     }
 
     private static Flow createRows(IItemHandlerModifiable items, IFluidTanksHandler fluids, int rows) {
-        Flow column = new Column().coverChildren();
+        Flow column = Flow.column()
+            .coverChildren();
 
         int itemIndex = 0;
         int fluidIndex = 0;
         for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            Flow row = new Row().size(18 * ROW_SLOTS_WIDTH, 18)
-                .alignX(0.5f);
+            Flow row = Flow.row()
+                .size(18 * ROW_SLOTS_WIDTH, 18);
 
             for (int slotIndex = 0; slotIndex < ROW_SLOTS_WIDTH; slotIndex++) {
                 if (itemIndex < items.getSlots()) {

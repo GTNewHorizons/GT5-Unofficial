@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+
+import com.cleanroommc.modularui.factory.ClientGUI;
+import com.cleanroommc.modularui.screen.OpenScreenEvent;
 
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -21,6 +25,7 @@ import gregtech.common.powergoggles.PowerGogglesClient;
 import gregtech.common.powergoggles.PowerGogglesConstants;
 import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.gui.PowerGogglesGuiHudConfig;
+import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
 
 public class PowerGogglesEventHandler {
 
@@ -107,8 +112,15 @@ public class PowerGogglesEventHandler {
     @SideOnly(Side.CLIENT)
     public void openConfig() {
         Minecraft screenInfo = Minecraft.getMinecraft();
-        Minecraft.getMinecraft()
-            .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
+        GuiScreen screen = new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight);
+        ClientGUI.open(screen);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onGuiOpen(OpenScreenEvent event) {
+        if (event.getScreen() instanceof PowerGogglesGuiHudConfig gui)
+            event.addOverlay(PowerGogglesGuiOverlay.buildScreen(gui));
     }
 
     @SideOnly(Side.CLIENT)

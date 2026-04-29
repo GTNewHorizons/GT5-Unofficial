@@ -58,9 +58,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -191,7 +189,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
+        return Flow.row()
+            .size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(createTerminalParentWidget(panel, syncManager));
     }
 
@@ -215,7 +214,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
             .childIf(
@@ -234,7 +234,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .leftRel(0, 6, 0)
             .bottomRel(0, 6, 0);
     }
@@ -261,7 +262,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("startupCheck", startupCheckSyncer);
         syncManager.syncValue("machineModeName", machineModeSyncer);
 
-        return new ListWidget<>().widthRel(1)
+        return new ListWidget<>().fullWidth()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childIf(
                 multiblock.supportsMachineModeSwitch(),
@@ -271,23 +272,23 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                             .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
                     .asWidget()
                     .marginBottom(2)
-                    .widthRel(1))
+                    .fullWidth())
 
             .child(
                 IKey.lang("GT5U.multiblock.startup")
                     .color(Color.WHITE.main)
                     .asWidget()
-                    .alignment(Alignment.CenterLeft)
+                    .textAlign(Alignment.CenterLeft)
                     .setEnabledIf(w -> startupCheckSyncer.getValue() > 0)
                     .marginBottom(2)
-                    .widthRel(1))
+                    .fullWidth())
             .childIf(
                 multiblock.hasRunningText(),
                 () -> new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
                     .color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
-                    .widthRel(1))
+                    .fullWidth())
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
             .child(createStructureErrorWidget(syncManager))
@@ -309,7 +310,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 time.getSeconds() % 60);
         })
             .asWidget()
-            .widthRel(1)
+            .fullWidth()
             .setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
                     && !baseMetaTileEntity.isAllowedToWork());
@@ -321,7 +322,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .getSyncHandlerFromMapKey("shutdownDisplayString:0");
         return IKey.dynamic(shutdownReasonSync::getValue)
             .asWidget()
-            .widthRel(1)
+            .fullWidth()
             .marginBottom(2)
             .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
     }
@@ -361,7 +362,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             () -> multiblock.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
-            .widthRel(1)
+            .fullWidth()
             .marginBottom(2)
             .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
 
@@ -464,7 +465,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             long amount = entry.getValue();
             column.child(
                 Flow.row()
-                    .widthRel(1)
+                    .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
                     .child(createItemDrawable(key))
                     .child(createHoverableTextForItem(key, amount, syncManager)));
@@ -510,7 +511,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             long amount = entry.getValue();
             column.child(
                 Flow.row()
-                    .widthRel(1)
+                    .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
                     .child(createFluidDrawable(fluidStack))
                     .child(createHoverableTextForFluid(fluidStack, amount, syncManager)));
@@ -522,7 +523,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandlerFromMapKey("recipeInfo:0")).getValue())
             .asWidget()
             .marginBottom(2)
-            .widthRel(1)
+            .fullWidth()
             .setEnabledIf(
                 widget -> Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("itemOutput:0"))
                     || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
@@ -648,7 +649,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
      *
      */
     protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .paddingRight(2)
             .paddingLeft(4)
             .height(getTextBoxToInventoryGap())
@@ -657,8 +659,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return new Row().coverChildrenWidth()
-            .heightRel(1)
+        return Flow.row()
+            .coverChildrenWidth()
+            .fullHeight()
             .childIf(shouldDisplayVoidExcess(), () -> createVoidExcessButton(syncManager))
             .childIf(shouldDisplayInputSeparation(), () -> createInputSeparationButton(syncManager))
             .childIf(shouldDisplayBatchMode(), () -> createBatchModeButton(syncManager))
@@ -671,9 +674,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .mainAxisAlignment(MainAxis.END)
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .reverseLayout(true)
-            .align(Alignment.CenterRight)
+            .verticalCenter()
+            .rightRel(0)
             .coverChildrenWidth()
-            .heightRel(1)
+            .fullHeight()
             .childIf(multiblock.supportsPowerPanel(), () -> createPowerPanelButton(syncManager, parent));
     }
 
@@ -971,7 +975,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .topRel(0)
             .size(120, 130)
             .child(
-                new Column().sizeRel(1)
+                Flow.column()
+                    .full()
                     .padding(3)
                     .child(makeTitleTextWidget())
                     .child(
@@ -985,7 +990,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected IWidget makeTitleTextWidget() {
         return new TextWidget<>(
             EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
-                .alignment(Alignment.Center)
+                .textAlign(Alignment.Center)
                 .size(120, 18)
                 .marginBottom(4);
     }
@@ -994,7 +999,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         BooleanSyncValue powerfailSyncer = new BooleanSyncValue(
             multiblock::makesPowerfailEvents,
             multiblock::setPowerfailEventCreationStatus);
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .height(18)
             .paddingLeft(3)
             .paddingRight(3)
@@ -1025,7 +1031,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
             multiblock::getPowerPanelMaxParallel,
             multiblock::setPowerPanelMaxParallel);
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .marginBottom(4)
             .height(18)
             .paddingLeft(3)
@@ -1152,9 +1159,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .height(76)
-            .alignX(0)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
                 () -> SlotGroupWidget.playerInventory(false)
@@ -1164,7 +1171,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     // children are added bottom to top
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(MainAxis.END)
             .reverseLayout(true)
@@ -1177,7 +1185,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         public int getSlotStackLimit() {
                             return multiblock.getInventoryStackLimit();
                         }
-                    }.slotGroup("item_inv"))
+                    }.singletonSlotGroup())
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));
@@ -1356,8 +1364,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val));
             });
         syncManager.syncValue("voidExcess", voidExcessSyncer);
-
-        syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
             int maintIsuses = 0;

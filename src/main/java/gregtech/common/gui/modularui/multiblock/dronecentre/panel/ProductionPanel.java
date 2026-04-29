@@ -36,7 +36,6 @@ import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
@@ -83,7 +82,8 @@ public class ProductionPanel extends ModularPanel {
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .child(ButtonWidget.panelCloseButton())
             .child(
-                new Column().margin(10)
+                Flow.column()
+                    .margin(10)
                     .child(
                         Flow.row()
                             .widthRel(0.95f)
@@ -103,7 +103,7 @@ public class ProductionPanel extends ModularPanel {
                                     .tooltipBuilder(
                                         t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_active_production")))))
                     .child(
-                        new DynamicSyncedWidget<>().widthRel(1)
+                        new DynamicSyncedWidget<>().fullWidth()
                             .heightRel(0.9f)
                             .syncHandler(productionHandler)));
     }
@@ -149,7 +149,7 @@ public class ProductionPanel extends ModularPanel {
             .child(createTimeButton(syncManager, pSyncManager))
             .child(
                 Flow.row()
-                    .widthRel(1)
+                    .fullWidth()
                     .height(18)
                     .marginBottom(4)
                     .setEnabledIf(w -> centre.productionDataRecorder.isActive())
@@ -233,7 +233,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(4)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_power_total", time)
                             .asWidget())
@@ -255,7 +255,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(2)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_item_total", time)
                             .asWidget()
@@ -264,7 +264,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(2)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_fluid_total", time)
                             .asWidget())
@@ -275,7 +275,7 @@ public class ProductionPanel extends ModularPanel {
         IntSyncValue selectTime = syncManager.findSyncHandler("selectTime", IntSyncValue.class);
         int TIME_HEIGHT = 35;
         Flow row = Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .height(18)
             .childPadding(4)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
@@ -316,7 +316,8 @@ public class ProductionPanel extends ModularPanel {
         machineStack.forEach((key, itemStack) -> {
             Flow cell = Flow.row()
                 .childPadding(4)
-                .align(Alignment.CenterLeft)
+                .verticalCenter()
+                .leftRel(0)
                 .coverChildren()
                 .paddingRight(2)
                 .child(
@@ -327,9 +328,9 @@ public class ProductionPanel extends ModularPanel {
             cell.child(new TextWidget<>(": " + itemStack.stackSize));
             cells.add(cell);
         });
-        return new Grid().mapTo(6, cells)
+        return new Grid().gridOfWidthElements(6, cells, ($x, $y, $index, cell) -> cell)
             .minElementMarginBottom(2)
-            .widthRel(1)
+            .fullWidth()
             .expanded()
             .scrollable(new VerticalScrollData());
     }
@@ -367,7 +368,8 @@ public class ProductionPanel extends ModularPanel {
                 Long stackSize = entry.getValue();
                 return (IWidget) Flow.row()
                     .childPadding(childPadding)
-                    .align(Alignment.CenterLeft)
+                    .verticalCenter()
+                    .leftRel(0)
                     .coverChildren()
                     .paddingRight(2)
                     .child(displayWidgetFactory.apply(item))
@@ -377,9 +379,9 @@ public class ProductionPanel extends ModularPanel {
             })
             .collect(Collectors.toList());
 
-        return new Grid().mapTo(5, cells)
+        return new Grid().gridOfWidthElements(5, cells, ($x, $y, $index, cell) -> cell)
             .minElementMarginBottom(2)
-            .sizeRel(1)
+            .full()
             .scrollable(new VerticalScrollData());
     }
 }

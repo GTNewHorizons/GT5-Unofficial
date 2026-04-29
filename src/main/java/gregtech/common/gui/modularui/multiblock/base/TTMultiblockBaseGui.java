@@ -12,9 +12,7 @@ import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -22,7 +20,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -54,7 +51,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
 
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .child(createPowerPassButton())
@@ -68,7 +66,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .slot(
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
             .marginTop(4)
-            .background(new DrawableStack(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH))
+            .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
             .overlay(
                 GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
                     .size(18, 6)
@@ -208,7 +206,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .child(
                 IKey.lang(parameter.getLangKey())
                     .asWidget()
-                    .alignment(Alignment.CenterLeft)
+                    .textAlign(Alignment.CenterLeft)
                     .margin(0, 14, 2, 2))
             .child(
                 ButtonWidget.panelCloseButton()
