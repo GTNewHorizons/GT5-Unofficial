@@ -80,12 +80,13 @@ public class StructureErrorHighlightRenderer {
 
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
         GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        RenderGlobal.drawOutlinedBoundingBox(box, 0xFF5555);
+        RenderGlobal.drawOutlinedBoundingBox(box, -1);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
