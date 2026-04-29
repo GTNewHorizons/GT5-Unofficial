@@ -1666,6 +1666,30 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
+        // H2O + K = KOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Potassium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.PotassiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // H2O + Cs = CsOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Caesium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.CaesiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // H + Cl = HCl
 
         GTValues.RA.stdBuilder()
@@ -1821,6 +1845,16 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.AllylChloride.getFluid(1_000))
             .fluidOutputs(Materials.Epichlorohydrin.getFluid(1_000))
             .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // Ba + H2SO4 = BaSO4 + H2
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Barium.getDust(1))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000L))
+            .itemOutputs(Materials.Barite.getDust(6))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
