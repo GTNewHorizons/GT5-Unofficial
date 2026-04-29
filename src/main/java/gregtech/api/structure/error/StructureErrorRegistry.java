@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.widget.EmptyWidget;
 
 import gregtech.api.enums.StructureErrorId;
 
@@ -28,7 +29,9 @@ public class StructureErrorRegistry {
         "GT5U.gui.text.unneeded_muffler");
     public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
         StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
-        "GT5U.gui.text.unknown_structure_error");
+        // "GT5U.gui.text.unknown_structure_error"
+        // For now just hide this, as the majority of the multiblock is using this.
+        EmptyWidget::new);
 
     static {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
