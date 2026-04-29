@@ -17,7 +17,11 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -181,11 +185,18 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mPyrotheumHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 6 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+        if (!checkPiece(mName, 1, 3, 0, errors)) return;
+        if (mCasing < 6) {
+            errors.add(new TooFewCasings(mCasing, 6));
+        }
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(new SimpleStructureError("GT5U.gui.text.coil_level_not_enough"));
+        }
+        checkHatch(errors);
     }
 
     @Override
