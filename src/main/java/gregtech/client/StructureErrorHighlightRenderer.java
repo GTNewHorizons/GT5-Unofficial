@@ -2,7 +2,9 @@ package gregtech.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -15,7 +17,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 public class StructureErrorHighlightRenderer {
 
     private static final int DURATION_TICKS = 200;
-    private static final float LINE_WIDTH = 3.0f;
+    private static final float EXPAND = 0.002f;
 
     private static StructureErrorHighlightRenderer activeHighlight;
 
@@ -71,52 +73,23 @@ public class StructureErrorHighlightRenderer {
         double pY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
         double pZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
 
-        GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-        GL11.glTranslated(-pX, -pY, -pZ);
+        AxisAlignedBB box = AxisAlignedBB
+            .getBoundingBox(targetX, targetY, targetZ, targetX + 1.0, targetY + 1.0, targetZ + 1.0)
+            .expand(EXPAND, EXPAND, EXPAND)
+            .getOffsetBoundingBox(-pX, -pY, -pZ);
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(LINE_WIDTH);
-        GL11.glColor4f(1.0f, 0.33f, 0.33f, 1.0f);
+        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        drawBoxOutline(
-            targetX - 0.002,
-            targetY - 0.002,
-            targetZ - 0.002,
-            targetX + 1.002,
-            targetY + 1.002,
-            targetZ + 1.002);
+        RenderGlobal.drawOutlinedBoundingBox(box, 0xFF5555);
 
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
-    }
-
-    private static void drawBoxOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
-        final Tessellator tess = Tessellator.instance;
-        tess.startDrawing(GL11.GL_LINE_STRIP);
-
-        tess.addVertex(x1, y1, z1);
-        tess.addVertex(x1, y2, z1);
-        tess.addVertex(x1, y2, z2);
-        tess.addVertex(x1, y1, z2);
-        tess.addVertex(x1, y1, z1);
-
-        tess.addVertex(x2, y1, z1);
-        tess.addVertex(x2, y2, z1);
-        tess.addVertex(x2, y2, z2);
-        tess.addVertex(x2, y1, z2);
-        tess.addVertex(x2, y1, z1);
-
-        tess.addVertex(x1, y1, z1);
-        tess.addVertex(x2, y1, z1);
-        tess.addVertex(x2, y1, z2);
-        tess.addVertex(x1, y1, z2);
-        tess.addVertex(x1, y2, z2);
-        tess.addVertex(x2, y2, z2);
-        tess.addVertex(x2, y2, z1);
-        tess.addVertex(x1, y2, z1);
-
-        tess.draw();
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }
