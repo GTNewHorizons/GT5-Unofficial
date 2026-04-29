@@ -124,7 +124,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addCasingInfoExactly("Grate Machine Casing", 6, false)
             .addCasingInfoExactly("Steel Gear Box", 18, false)
             .addCasingInfoExactly("HSS-G Frame Box", 20, false)
-            .addCasingInfoExactly("Any Tinted Industrial Glass", 8, false)
+            .addCasingInfoExactly("Any Tiered Glass", 8, false)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;

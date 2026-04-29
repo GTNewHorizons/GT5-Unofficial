@@ -110,7 +110,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             .addController("Front center")
             .addCasingInfoMin("Thermal Processing Casing", 50, false)
             .addCasingInfoExactly("Tungsten Frame Box", 36, false)
-            .addCasingInfoExactly("Any Tinted Industrial Glass", 12, false)
+            .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addInputBus("Any Thermal Processing Casing", 1)
             .addInputHatch("Any Thermal Processing Casing", 1)
             .addOutputBus("Any Thermal Processing Casing", 1)
