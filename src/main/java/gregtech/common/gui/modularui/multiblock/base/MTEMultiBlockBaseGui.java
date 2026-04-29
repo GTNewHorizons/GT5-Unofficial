@@ -75,6 +75,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -342,6 +343,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
+                // For now just skip these errors, they will be present in most multiblock and will cause confusion.
+                if (error == StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR) continue;
                 columns.child(error.createWidget());
             }
             return columns.setEnabledIf(
