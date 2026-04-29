@@ -48,10 +48,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.ExtendedMegaUltimateBuckConve
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremelyUltimateBuckConverter;
 import static gregtech.api.enums.MetaTileEntityIDs.EyeofHarmony;
 import static gregtech.api.enums.MetaTileEntityIDs.ForgeoftheGods;
+import static gregtech.api.enums.MetaTileEntityIDs.HV4ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.HatchCondensateDetector;
 import static gregtech.api.enums.MetaTileEntityIDs.HatchIOController;
 import static gregtech.api.enums.MetaTileEntityIDs.HatchNaniteDetector;
-import static gregtech.api.enums.MetaTileEntityIDs.HV4ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.HelioflarePowerForge;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofluxMeltingCore;
 import static gregtech.api.enums.MetaTileEntityIDs.HeliofusionExoticizer;
