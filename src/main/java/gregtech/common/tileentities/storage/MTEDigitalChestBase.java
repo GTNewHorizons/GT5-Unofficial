@@ -526,7 +526,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             }
 
-            private boolean hasStack(){
+            private boolean hasStack() {
                 ItemStack stack = getItemStack();
                 return stack != null && stack.getItem() != null && getItemCount() > 0;
             }
