@@ -113,8 +113,7 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
     }
 
     private boolean isRepairItem(ItemStack itemStack) {
-        return Arrays.stream(MTEHatchMaintenance.getAutoMaintenanceInputs())
-            .anyMatch(repairItem -> repairItem.isItemEqual(itemStack));
+        return hatch.IsAutoMaintenanceInput(itemStack);
     }
 
     @Override
