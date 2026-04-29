@@ -79,17 +79,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     private IStructureDefinition<MTESteamMacerator> STRUCTURE_DEFINITION = null;
 
-    // TODO remove by 2.10/2.11
-    private final String[][] shape_legacy = new String[][] { { "AAA", "AAA", "AAA" }, { "A~A", "A-A", "AAA" },
-        { "AAA", "AAA", "AAA" } };
-
-    // spotless:off
-    private final String[][] shape = new String[][]{
-        {" A ", "CAC", "C~C", "AAA"},
-        {"ABA", "A A", "A A", "AAA"},
-        {" A ", "CAC", "CAC", "AAA"}};
-    // spotless:on
-
     private static final int HORIZONTAL_OFFSET = 1;
     private static final int VERTICAL_OFFSET = 2;
     private static final int DEPTH_OFFSET = 0;
@@ -170,8 +159,17 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     public IStructureDefinition<MTESteamMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMacerator>builder()
-                .addShape(STRUCTURE_PIECE_LEGACY, transpose(shape_legacy))
-                .addShape(STRUCTURE_PIECE_MAIN, shape)
+                // spotless:off
+                // TODO remove legacy structure by 2.10/2.11
+                .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
+                    { "AAA", "AAA", "AAA" },
+                    { "A~A", "A-A", "AAA" },
+                    { "AAA", "AAA", "AAA" }}))
+                .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
+                    {" A ", "CAC", "C~C", "AAA"},
+                    {"ABA", "A A", "A A", "AAA"},
+                    {" A ", "CAC", "CAC", "AAA"}})
+                // spotless:on
                 .addElement(
                     'A',
                     ofChain(
