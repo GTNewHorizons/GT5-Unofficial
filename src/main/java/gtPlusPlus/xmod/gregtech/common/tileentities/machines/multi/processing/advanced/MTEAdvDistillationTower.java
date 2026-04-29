@@ -278,9 +278,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         if (mHeight == 1) {
             errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
         }
-        if (!checkHatch()) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.hatch_invalid"));
-        }
+        checkHatch(errors);
         if (!errors.isEmpty()) return;
         // check success
         if (mHeight < 11) {

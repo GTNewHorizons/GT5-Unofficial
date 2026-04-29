@@ -230,6 +230,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     // Use this, so that validateStructure can be removed
+    // Please do not remove the call to this function during refactoring.
     public void checkHatch(List<StructureError> errors) {}
 
     @Override
