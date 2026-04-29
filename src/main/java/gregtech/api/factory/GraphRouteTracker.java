@@ -14,6 +14,8 @@ import it.unimi.dsi.fastutil.Pair;
 
 public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>, TNotable extends INotableFactoryElement<TNotable, TRouteInfo>, TRouteInfo extends IRouteInfo<TRouteInfo>> {
 
+    private static final RoutedNode[] EMPTY_NODE_ARRAY = new RoutedNode[0];
+
     public final HashMap<TNotable, RoutedNode<TNotable, TRouteInfo>[]> edges = new HashMap<>();
 
     private final Class<TNotable> notableType;
@@ -41,8 +43,6 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
 
         notableElements.remove(notableElement);
     }
-
-    private static final RoutedNode[] EMPTY_NODE_ARRAY = new RoutedNode[0];
 
     public void updateEdges() {
         edges.clear();

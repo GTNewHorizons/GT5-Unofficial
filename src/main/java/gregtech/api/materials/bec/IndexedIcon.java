@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.function.Function;
 
@@ -34,7 +35,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -43,6 +43,17 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
+/// An IndexedIcon is a wrapper around several [IndexedIconSprite]s, which are a custom implementation of [IIcon].
+/// The purpose of this class is to allow you to render [indexed images](https://en.wikipedia.org/wiki/Indexed_color).
+/// This is primarily for the purpose of allowing the creation of generic indexed sprites, which can be combined with a
+/// per-material palette. Currently, the material systems have two layers: the background, and the overlay.
+/// Materials only have one color, which forces unique materials to have a custom [gregtech.api.enums.TextureSet].
+/// This class is an experimental solution for avoiding this, since indexed sprites are easier to work with on the art
+/// side of development.
+/// <br />
+/// Instances of this class must be closed after they are created, so that their [IndexedIconSprite]s are no longer
+/// added to their corresponding [TextureMap]. This is done so that [IndexedIcon]s are completely self-contained - you
+/// just have to call render on them, and they will render, the same as normal icons.
 @EventBusSubscriber
 public class IndexedIcon implements Closeable {
 
@@ -62,7 +73,7 @@ public class IndexedIcon implements Closeable {
 
     private AnimationMetadataSection animation;
 
-    private final Int2ObjectMap<IndexedIconSprite> layers = new Int2ObjectLinkedOpenHashMap<>();
+    private final ArrayList<IndexedIconSprite> layers = new ArrayList<>();
 
     public enum TextureMapType {
 
@@ -103,6 +114,7 @@ public class IndexedIcon implements Closeable {
         return new IndexedIcon(TextureMapType.ITEMS, name);
     }
 
+    /// Loads the icon's image from the resource manager and splits it into layers (one sprite per index in the image).
     public void load(IResourceManager resourceManager, TextureMap textureMap) {
         IResource resource;
         BufferedImage image;
@@ -132,7 +144,7 @@ public class IndexedIcon implements Closeable {
         IntSet usedIndices = new IntOpenHashSet();
         usedIndices.addAll(IntArrayList.wrap(indices));
 
-        // 0 is always transparent
+        // 0 is always transparent, we don't want to make a sprite for it
         usedIndices.remove(0);
 
         layers.clear();
@@ -147,7 +159,7 @@ public class IndexedIcon implements Closeable {
                 textureMap.mipmapLevels,
                 textureMap.anisotropicFiltering > 1.0F);
 
-            layers.put(index, icon);
+            layers.add(icon);
             textureMap.setTextureEntry(iconName, icon);
         }
     }
@@ -171,7 +183,7 @@ public class IndexedIcon implements Closeable {
     public void render(IItemRenderer.ItemRenderType type, Int2ObjectFunction<ImmutableColor> palette) {
         Tessellator tessellator = Tessellator.instance;
 
-        for (IndexedIconSprite icon : layers.values()) {
+        for (IndexedIconSprite icon : layers) {
             ImmutableColor colour = palette.get(icon.paletteIndex);
 
             if (colour == null || colour.getAlpha() == 0) continue;
@@ -185,6 +197,10 @@ public class IndexedIcon implements Closeable {
         }
     }
 
+    /// Loads a palette from the resource manager, and converts it into a map for easy querying.
+    /// A palette is just an indexed image - each pixel corresponds to one colour.
+    /// The dimensions don't matter - the pixels are iterated over in order (left to right, top to bottom).
+    /// Transparent pixels are skipped.
     public static Int2ObjectMap<ImmutableColor> loadPalette(ResourceLocation paletteLocation) {
         IResource resource;
         BufferedImage image;
@@ -229,7 +245,6 @@ public class IndexedIcon implements Closeable {
 
     @SubscribeEvent
     public static void registerIcons(TextureStitchEvent.Pre event) {
-
         TextureMapType type;
 
         switch (event.map.getTextureType()) {

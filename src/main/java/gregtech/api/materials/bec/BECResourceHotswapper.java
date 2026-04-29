@@ -8,6 +8,7 @@ import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/// This is used to detect resource reloads, so that the BEC texture set system can reload its assets.
 @SideOnly(Side.CLIENT)
 public class BECResourceHotswapper implements IResourceManagerReloadListener {
 
@@ -17,6 +18,7 @@ public class BECResourceHotswapper implements IResourceManagerReloadListener {
         SimpleReloadableResourceManager manager = (SimpleReloadableResourceManager) Minecraft.getMinecraft()
             .getResourceManager();
 
+        // Add this listener to the front of the list so that we can update the required
         manager.reloadListeners.add(0, this);
 
         onResourceManagerReload(null);

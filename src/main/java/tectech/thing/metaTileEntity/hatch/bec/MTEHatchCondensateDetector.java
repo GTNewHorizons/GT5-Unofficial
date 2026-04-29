@@ -133,21 +133,25 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
                     .setDividerPosition(60)
-                    .addPhantomFluidSlot(IKey.str("Filter"), () -> condensateFilter, f -> condensateFilter = f, null)
+                    .addPhantomFluidSlot(
+                        IKey.lang("GT5U.gui.text.bec-filter"),
+                        () -> condensateFilter,
+                        f -> condensateFilter = f,
+                        null)
                     .addEnumCycleButton(
-                        IKey.str("Operation"),
+                        IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
                         v -> comparison = v)
                     .addLongEditor(
-                        IKey.str("Threshold"),
+                        IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> requestedAmount,
-                        l -> requestedAmount = (int) l,
+                        l -> requestedAmount = (long) l,
                         (panel1, syncManager1, widget) -> {
                             widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE);
                         })
                     .addReadout(
-                        IKey.str("Current:"),
+                        IKey.lang("GT5U.gui.text.bec-current"),
                         new LongSyncValue(() -> actualAmount),
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
                     .build(panel, syncManager)

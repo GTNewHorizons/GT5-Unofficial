@@ -6,13 +6,15 @@ import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -44,6 +46,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -132,7 +135,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
 
         if (wasWorking) {
             wasWorking = false;
-            network.routeTracker.onElementAdded(this);
+            network.routeTracker.onElementRemoved(this);
             network.invalidateRoutes();
         }
     }
@@ -248,25 +251,26 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
             TextWidget<?> contentsWidget = IKey.dynamic(() -> {
                 StringBuilder ret = new StringBuilder();
 
-                ret.append(EnumChatFormatting.GRAY)
-                    .append("Available Condensate:\n");
+                ret.append(GRAY)
+                    .append(GTUtility.translate("GT5U.gui.text.available-condensate"))
+                    .append('\n');
 
                 if (contents.getValue()
                     .isEmpty()) {
-                    ret.append(EnumChatFormatting.GRAY)
-                        .append("None");
+                    ret.append(GRAY)
+                        .append(GTUtility.translate("GT5U.gui.text.nil"));
                 }
 
                 for (var e : contents.getValue()
                     .object2LongEntrySet()) {
                     ret.append("  ")
-                        .append(EnumChatFormatting.AQUA)
+                        .append(AQUA)
                         .append(CondensateType.getCondensateName(e.getKey()))
-                        .append(EnumChatFormatting.GRAY)
+                        .append(GRAY)
                         .append(" x ")
-                        .append(EnumChatFormatting.GOLD)
+                        .append(GOLD)
                         .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                        .append(EnumChatFormatting.GRAY)
+                        .append(GRAY)
                         .append('\n');
                 }
 
@@ -287,8 +291,11 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
             return SettingsPanel.builder()
                 .setDividerPosition(35)
-                .addHeader(IKey.str("Parameters"))
-                .addPhantomFluidSlot(IKey.str("Filter"), () -> condensateFilter, f -> condensateFilter = f)
+                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
+                .addPhantomFluidSlot(
+                    IKey.lang("GT5U.gui.text.bec-filter"),
+                    () -> condensateFilter,
+                    f -> condensateFilter = f)
                 .build(panel, syncManager)
                 .size(100, 50);
         }

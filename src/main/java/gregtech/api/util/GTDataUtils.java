@@ -291,6 +291,16 @@ public class GTDataUtils {
         };
     }
 
+    /// Converts an [Iterator] into an [Iterable], so that you can pass a custom iterator into a for-each loop.
+    /// The iterator will be exhausted after the loop breaks, but keep in mind that breaking early may cause the
+    /// iterator to still have some elements.
+    /// ```java
+    /// Iterator<T> iter = ...;
+    ///
+    /// for (T value : oneshot(iter)) {
+    /// ...
+    /// }
+    /// ```
     public static <T> Iterable<T> oneshot(Iterator<T> iter) {
         return () -> iter;
     }
@@ -302,36 +312,44 @@ public class GTDataUtils {
         return loadResourceMerged(GSON, key, value, resource);
     }
 
+    /// Scans all resource packs for the given resource and merges them into one object. Entries with identical keys are
+    /// replaced - the entry from the bottom-most resource pack takes priority over all prior entries.
     @SideOnly(Side.CLIENT)
-    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value,
-        ResourceLocation resource) {
+    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value, ResourceLocation loc) {
+        // Temporarily load the data into a string -> json map so that we can replace identical entries based on the
+        // key.
         Map<String, JsonElement> temp = new HashMap<>();
 
-        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>() {}.getType(), resource, temp::putAll);
+        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>() {}.getType(), loc, temp::putAll);
 
         Map<K, V> out = new HashMap<>();
 
         for (var e : temp.entrySet()) {
+            // Convert the String keys and JsonElement values into their proper values, now that we've scanned all
+            // resource packs
             out.put(gson.fromJson(new JsonPrimitive(e.getKey()), key), gson.fromJson(e.getValue(), value));
         }
 
         return out;
     }
 
+    /// Scans all resources packs for the given resource, and merges all of them into one object. This method does not
+    /// perform any of the merging logic, see [#loadResourceMerged(Gson, Class, Class, ResourceLocation)].
     @SideOnly(Side.CLIENT)
-    public static <T> void loadResourceMerged(Gson gson, Type type, ResourceLocation resource, Consumer<T> fn) {
+    public static <T> void loadResourceMerged(Gson gson, Type type, ResourceLocation loc, Consumer<T> fn) {
         IResourceManager manager = Minecraft.getMinecraft()
             .getResourceManager();
 
         try {
-            for (IResource colourMap : manager.getAllResources(resource)) {
-                fn.accept(gson.fromJson(new InputStreamReader(colourMap.getInputStream()), type));
+            for (IResource resource : manager.getAllResources(loc)) {
+                fn.accept(gson.fromJson(new InputStreamReader(resource.getInputStream()), type));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /// Loads a resource from the resource manager and parses it into the given [Type], with the given [Gson] object.
     @SideOnly(Side.CLIENT)
     public static <T> T loadResource(Gson gson, Type type, ResourceLocation location) {
         IResourceManager manager = Minecraft.getMinecraft()

@@ -13,11 +13,6 @@ import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -26,8 +21,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.EnumCycleButtonWidgetMUI1;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
@@ -43,15 +38,15 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         @Override
         public String toString() {
             return switch (this) {
-                case PAUSE_INSTANT -> "Pause Immediately";
-                case PAUSE_STEP -> "Pause Next Step";
+                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately");
+                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step");
             };
         }
 
         public String getTooltip() {
             return switch (this) {
-                case PAUSE_INSTANT -> "The I/O Node will stop processing when it receives a redstone signal";
-                case PAUSE_STEP -> "The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal";
+                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately.tooltip");
+                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step.tooltip");
             };
         }
     }
@@ -105,17 +100,6 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         mode = Mode.values()[aNBT == null ? 0 : aNBT.getInteger("mode")];
     }
 
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widgets(
-            new FakeSyncWidget.IntegerSyncer(() -> mode.ordinal(), index -> mode = Mode.values()[index]),
-
-            new TextWidget("Mode:").setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(10, 14),
-            new EnumCycleButtonWidgetMUI1<>(Mode.class, () -> mode, value -> mode = value).setPos(40, 9)
-                .setSize(100, 18));
-    }
-
     @Override
     protected boolean useMui2() {
         return true;
@@ -144,7 +128,7 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
                 .child(SettingsPanel.builder()
                     .setDividerPosition(40)
                     .addEnumCycleButton(
-                        IKey.str("Mode"),
+                        IKey.lang("GT5U.gui.text.bec-mode"),
                         Mode.class,
                         () -> mode,
                         v -> mode = v,

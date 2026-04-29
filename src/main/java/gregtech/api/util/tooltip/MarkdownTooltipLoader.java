@@ -356,10 +356,10 @@ public class MarkdownTooltipLoader {
                 length = Integer.parseInt(arg);
             }
 
-            switch (GTMod.proxy.separatorStyle) {
-                case 0 -> lineOutput.append(" ");
-                case 1 -> lineOutput.append(StringUtils.getRepetitionOf('-', length));
-                default -> lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+            switch (GTMod.proxy.getSeparatorStyle()) {
+                case Empty -> lineOutput.append(" ");
+                case Dashes -> lineOutput.append(StringUtils.getRepetitionOf('-', length));
+                case ContinuousLine -> lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.STRIKETHROUGH)
                     .append(StringUtils.getRepetitionOf('-', length))
                     .append(GTUtility.FORMAT_POP_STACK);

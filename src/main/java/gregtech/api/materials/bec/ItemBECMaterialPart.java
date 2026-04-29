@@ -24,6 +24,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
+    /// The metadata for a standard part is broken up into N prefixes, combined with M materials. Typically, N = 32 and
+    /// M = 1000, which allows us to use most of the 32k ([Short#MAX_VALUE]) metadata values we have available. Mods
+    /// like NEID and EID extend this further, but we don't need that many permutations.
+    public static final int MATERIALS_PER_PREFIX = 1000;
+
     public final OrePrefixes[] prefixes = { OrePrefixes.plate, OrePrefixes.foil, OrePrefixes.stickLong,
         OrePrefixes.stick, OrePrefixes.bolt, OrePrefixes.ring, OrePrefixes.wireFine, OrePrefixes.lens, };
 
@@ -95,21 +100,21 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
     }
 
     public @Nullable BECMaterial getMaterial(ItemStack stack) {
-        return GTDataUtils.getIndexSafe(BECMaterial.MATERIALS, stack.getItemDamage() % 1000);
+        return GTDataUtils.getIndexSafe(BECMaterial.MATERIALS, stack.getItemDamage() % MATERIALS_PER_PREFIX);
     }
 
     public @Nullable OrePrefixes getPrefix(ItemStack stack) {
-        return GTDataUtils.getIndexSafe(prefixes, stack.getItemDamage() / 1000);
+        return GTDataUtils.getIndexSafe(prefixes, stack.getItemDamage() / MATERIALS_PER_PREFIX);
     }
 
     public ItemStack getPart(BECMaterial material, OrePrefixes prefix, int amount) {
-        if (!material.presentParts.contains(PartOrePrefix.fromPrefix(prefix))) return null;
+        if (!material.presentParts.contains(BECPartOrePrefix.fromPrefix(prefix))) return null;
 
         int i = GTDataUtils.findIndex(prefixes, prefix);
 
         if (i == -1) return null;
 
-        return new ItemStack(this, amount, material.id + i * 1000);
+        return new ItemStack(this, amount, material.id + i * MATERIALS_PER_PREFIX);
     }
 
     private Int2ObjectMap<ImmutableColor> getPalette(ItemStack stack) {

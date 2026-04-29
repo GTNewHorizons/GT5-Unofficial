@@ -196,8 +196,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
             storedCondensate.replaceAll((mat, amount) -> decay.apply(amount));
 
-            storedCondensate.values()
-                .rem(0);
+            storedCondensate.object2LongEntrySet()
+                .removeIf(e -> e.getLongValue() <= 0);
         }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -305,7 +305,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     true,
                     GTSoundLoop.VOLUME_RAMP * 4);
                 torusFar.setVolume(2);
-                torus.setPosition(new CircularSound(this, 0, 8, 7, 0, 1, 0, 17, -90));
+                torusFar.setPosition(new CircularSound(this, 0, 8, 7, 0, 1, 0, 17, -90));
 
                 Minecraft.getMinecraft()
                     .getSoundHandler()
@@ -320,7 +320,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     true,
                     GTSoundLoop.VOLUME_RAMP * 4);
                 pillar.setVolume(2);
-                torus.setPosition(new LinearSound(this, 0, 2, 7, 0, 14, 7, 64));
+                pillar.setPosition(new LinearSound(this, 0, 2, 7, 0, 14, 7, 64));
 
                 Minecraft.getMinecraft()
                     .getSoundHandler()
@@ -453,14 +453,14 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
             return SettingsPanel.builder()
                 .setDividerPosition(50)
-                .addHeader(IKey.str("Parameters"))
+                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
                 .addLongEditor(
-                    IKey.str("Field Strength"),
+                    IKey.lang("GT5U.gui.text.bec-field-strength"),
                     () -> fieldStrength,
-                    l -> fieldStrength = (int) l,
+                    l -> fieldStrength = (long) l,
                     (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
-                    IKey.str("Stored:"),
+                    IKey.lang("GT5U.gui.text.bec-stored"),
                     new DoubleSyncValue(MTEBECStorage.this::getAmountStored),
                     amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
                 .build(panel, syncManager)

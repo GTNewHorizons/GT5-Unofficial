@@ -16,19 +16,24 @@ import com.google.gson.JsonDeserializer;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.materials.bec.BECPartOrePrefix.BECPrefixMap;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
+/// Similar to [gregtech.api.enums.TextureSet], except this is entirely controlled by the bec-materials.json file.
+/// There is no static field list, similar to GT's system, which means that textures are entirely controlled by resource
+/// packs. Maybe this is overkill - we'll have to see how well it scales in the future and how many of its features are
+/// used.
 public class BECTextureSet implements Closeable {
 
     private static final Object2ObjectMap<String, BECTextureSet> TEXTURE_SETS = new Object2ObjectOpenHashMap<>();
     private static final Set<String> UNUSED_SETS = new ObjectOpenHashSet<>();
 
     public final String root;
-    public final PartOrePrefix.PrefixMap<List<IndexedIcon>> layers = new PartOrePrefix.PrefixMap<>();
+    public final BECPrefixMap<List<IndexedIcon>> layers = new BECPrefixMap<>();
 
     public BECTextureSet(String folder) {
         Objects.requireNonNull(folder, "Texture set folder cannot be null");
@@ -40,6 +45,8 @@ public class BECTextureSet implements Closeable {
         TEXTURE_SETS.put(folder, this);
     }
 
+    /// Adds all texture sets to the static list, so that we can clean up any unused sets later on (to prevent their
+    /// icons from being registered into the texture map erroneously).
     public static void startMaterialReload() {
         UNUSED_SETS.clear();
         UNUSED_SETS.addAll(BECTextureSet.TEXTURE_SETS.keySet());
@@ -51,6 +58,7 @@ public class BECTextureSet implements Closeable {
         return TEXTURE_SETS.computeIfAbsent(folder, BECTextureSet::new);
     }
 
+    /// Removes any unused icons from unused texture sets.
     public static void endMaterialReload() {
         for (String unused : UNUSED_SETS) {
             BECTextureSet textureSet = TEXTURE_SETS.remove(unused);
@@ -70,7 +78,7 @@ public class BECTextureSet implements Closeable {
             OrePrefixes prefix = OrePrefixes.getPrefix(name);
 
             if (prefix == null) {
-                throw new IllegalStateException("Could not find prefix '" + name + "' in texture-set.json");
+                throw new IllegalStateException("Invalid ore prefix '" + name + "' in texture-set.json");
             }
 
             return prefix;
@@ -87,7 +95,7 @@ public class BECTextureSet implements Closeable {
         Map<OrePrefixes, TexturePrefixMeta> textureSetMeta = GTDataUtils
             .loadResourceMerged(GSON, OrePrefixes.class, TexturePrefixMeta.class, resource);
 
-        for (PartOrePrefix prefix : PartOrePrefix.values()) {
+        for (BECPartOrePrefix prefix : BECPartOrePrefix.values()) {
             TexturePrefixMeta meta = textureSetMeta.get(prefix.prefix);
 
             if (meta == null) {
@@ -104,7 +112,7 @@ public class BECTextureSet implements Closeable {
 
     @Override
     public void close() {
-        for (Map.Entry<PartOrePrefix, List<IndexedIcon>> entry : layers.entrySet()) {
+        for (Map.Entry<BECPartOrePrefix, List<IndexedIcon>> entry : layers.entrySet()) {
             List<IndexedIcon> indexedIcons = entry.getValue();
 
             for (IndexedIcon indexedIcon : indexedIcons) {
@@ -124,6 +132,7 @@ public class BECTextureSet implements Closeable {
         return IndexedIcon.getIcon(IndexedIcon.TextureMapType.ITEMS, root + "/" + suffix);
     }
 
+    /// DTO class that's used for loading the texture set layers from texture-set.json files
     private static class TexturePrefixMeta {
 
         public List<String> layers;

@@ -25,7 +25,7 @@ public class BECMaterialList {
     public static final BECMaterial THERMAL_CONT_1 = new BECMaterial(
         BECMaterialIds.THERMAL_CONT_1.id,
         "ThermalCont1",
-        Arrays.asList(PartOrePrefix.plate));
+        Arrays.asList(BECPartOrePrefix.plate));
 
     public static void init() {
         BECMaterial.ITEM.register();
@@ -38,6 +38,9 @@ public class BECMaterialList {
 
     private static final Gson GSON = new GsonBuilder().create();
 
+    /// Loads the colour palettes for BEC materials, and scans the texture-set.json metadata files to determine what
+    /// icons will be used when rendering parts. This must be called before [BECTextureSet#load()], and before icons are
+    /// loaded (in vanilla).
     @SideOnly(Side.CLIENT)
     public static void loadResources() {
         Map<String, MatResource> mats = GTDataUtils.loadResourceMerged(
@@ -61,7 +64,7 @@ public class BECMaterialList {
 
             mat.palettesByPrefix.clear();
 
-            for (PartOrePrefix prefix : PartOrePrefix.VALUES) {
+            for (BECPartOrePrefix prefix : BECPartOrePrefix.VALUES) {
                 String palettePath = e.getValue().prefixPalettes.getOrDefault(prefix, e.getValue().palette);
 
                 if (palettePath == null || palettePath.isEmpty()) {
@@ -105,6 +108,6 @@ public class BECMaterialList {
         public String palette;
 
         @SerializedName("prefix-palettes")
-        public Map<PartOrePrefix, String> prefixPalettes = Collections.emptyMap();
+        public Map<BECPartOrePrefix, String> prefixPalettes = Collections.emptyMap();
     }
 }

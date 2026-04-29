@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
 
@@ -16,7 +17,8 @@ public class GTMathUtils {
         }
     }
 
-    public static Vector3ic vec(ForgeDirection dir) {
-        return dir == null ? null : DIRS[dir.ordinal()];
+    @NotNull
+    public static Vector3ic vec(@NotNull ForgeDirection dir) {
+        return DIRS[dir.ordinal()];
     }
 }

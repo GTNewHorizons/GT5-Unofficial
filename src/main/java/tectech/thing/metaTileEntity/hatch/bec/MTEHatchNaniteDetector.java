@@ -26,6 +26,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
@@ -118,24 +119,24 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                 .child(SettingsPanel.builder()
                     .setDividerPosition(60)
                     .addEnumCycleButton(
-                        IKey.str("Operation"),
+                        IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
                         v -> comparison = v)
                     .addLongEditor(
-                        IKey.str("Threshold"),
+                        IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
                         l -> configuredTier = (int) l,
                         (panel1, syncManager1, widget) -> {
                             widget.setNumbers(1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt());
                         })
                     .addReadout(
-                        IKey.str("Current:"),
+                        IKey.lang("GT5U.gui.text.bec-current"),
                         new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
                         nanite -> {
                             NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
 
-                            return IKey.str(tier == null ? "None" : tier.describe());
+                            return IKey.str(tier == null ? GTUtility.translate("GT5U.gui.text.nil") : tier.describe());
                         })
                     .build(panel, syncManager)
                     .widthRel(1)

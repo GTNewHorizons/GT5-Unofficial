@@ -23,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
@@ -292,7 +292,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     public int getSlowdowns(Collection<Fluid> validMaterials) {
-        return network.getSlowdowns(this, validMaterials);
+        return network == null ? 0 : network.getSlowdowns(this, validMaterials);
     }
 
     @Override
@@ -325,7 +325,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                 igte.getXCoord(),
                 igte.getYCoord(),
                 igte.getZCoord()));
-        player.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+        player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
     }
 
     @Override
@@ -410,9 +410,11 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
             TextWidget<?> naniteWidget = IKey
                 .dynamic(
-                    () -> GRAY + "Providing Nanites:\n  "
+                    () -> GRAY + GTUtility.translate("GT5U.gui.text.providing-nanites")
+                        + "\n  "
                         + AQUA
-                        + (currentNaniteTier == null ? "None" : currentNaniteTier.describe())
+                        + (currentNaniteTier == null ? GTUtility.translate("GT5U.gui.text.nil")
+                            : currentNaniteTier.describe())
                         + GRAY
                         + " x "
                         + GOLD
@@ -425,12 +427,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                 StringBuilder ret = new StringBuilder();
 
                 ret.append(GRAY)
-                    .append("Available Condensate:\n");
+                    .append(GTUtility.translate("GT5U.gui.text.available-condensate"))
+                    .append('\n');
 
                 if (condensate.getValue()
                     .isEmpty()) {
                     ret.append(GRAY)
-                        .append("None");
+                        .append(GTUtility.translate("GT5U.gui.text.nil"));
                 }
 
                 for (var e : condensate.getValue()

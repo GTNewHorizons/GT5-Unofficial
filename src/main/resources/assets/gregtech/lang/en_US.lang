@@ -2029,10 +2029,6 @@ GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not ge
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
 
-# Misc Tooltips
-gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.max-nanite=Max Nanite Tier: %s
-
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset.s=Work Area set to %sx%s
@@ -2546,27 +2542,11 @@ GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 GT5U.gui.text.no_bec_assembler=Condensate Observation Array Offline
 GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too Low)
 GT5U.gui.text.bec_clogged=More Than 3 Condensates Present
-GT5U.gui.text.nanite_threshold=Nanite Tier
-GT5U.gui.text.nil=None
-GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
-GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
-GT5U.gui.text.required_nanite=§7Required Nanite: %s
-GT5U.gui.text.required_condensate=§7Required Condensate:
-GT5U.gui.text.remaining_condensate=  §7%s §6%sL / %sL§f
-GT5U.gui.text.ionode_status=§7Status: %s
-GT5U.gui.text.ionode_status.Idle=Idle
-GT5U.gui.text.ionode_status.Unpowered=§cUnpowered
-GT5U.gui.text.ionode_status.AssemblerOffline=§cObservation Array Offline
-GT5U.gui.text.ionode_status.NaniteTierTooLow=§eInsufficient Nanite Tier
-GT5U.gui.text.ionode_status.PausedImmediate=Paused (Immediate)
-GT5U.gui.text.ionode_status.PausedStep=Paused (Step)
-GT5U.gui.text.ionode_status.Crafting=Crafting
-GT5U.gui.text.condensate_threshold=Condensate Amount
 GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
-
+GT5U.gui.text.nil=None
 
 # NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
@@ -8160,6 +8140,52 @@ gt.blockmachines.multi.bec.diode.name=Bose-Einstein Condensate Maxwell Gate
 
 gt.blockmachines.pipe.bec.name=Bose-Einstein Condensate Conduit
 gt.blockmachines.pipe.bec.block.name=Bose-Einstein Condensate Conduit Casing
+
+# BEC UI
+GT5U.gui.text.nanite_threshold=Nanite Tier
+GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
+GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
+GT5U.gui.text.required_nanite=§7Required Nanite: %s
+GT5U.gui.text.required_condensate=§7Required Condensate:
+GT5U.gui.text.remaining_condensate=  §7%s §6%sL / %sL§f
+GT5U.gui.text.ionode_status=§7Status: %s
+GT5U.gui.text.ionode_status.Idle=Idle
+GT5U.gui.text.ionode_status.Unpowered=§cUnpowered
+GT5U.gui.text.ionode_status.AssemblerOffline=§cObservation Array Offline
+GT5U.gui.text.ionode_status.NaniteTierTooLow=§eInsufficient Nanite Tier
+GT5U.gui.text.ionode_status.PausedImmediate=Paused (Immediate)
+GT5U.gui.text.ionode_status.PausedStep=Paused (Step)
+GT5U.gui.text.ionode_status.Crafting=Crafting
+GT5U.gui.text.condensate_threshold=Condensate Amount
+GT5U.gui.text.entanglement-duration=Entanglement Duration: %s ticks
+GT5U.gui.text.bec-quota-required=Quota Required: %s
+GT5U.gui.text.pause-immediately=Pause Immediately
+GT5U.gui.text.pause-next-step=Pause Next Step
+GT5U.gui.text.providing-nanites=Providing Nanites:
+GT5U.gui.text.available-condensate=Available Condensate:
+
+# BEC Structure Hints
+GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
+GT5U.gui.text.bec-generator-bec-hatch-pos=The center casing in the last slice
+
+# BEC Settings
+GT5U.gui.text.bec-parameters=Parameters
+GT5U.gui.text.bec-filter=Filter
+GT5U.gui.text.bec-operation=Operation
+GT5U.gui.text.bec-threshold=Threshold
+GT5U.gui.text.bec-current=Current:
+GT5U.gui.text.bec-mode=Mode
+GT5U.gui.text.bec-field-strength=Field Strength
+GT5U.gui.text.bec-stored=Stored:
+
+# Misc BEC Tooltips
+gt.tooltip.nanite-tier=Nanite Tier: %s
+gt.tooltip.max-nanite=Max Nanite Tier: %s
+GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
+GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
+
+# BEC Chat Messages
+GT5U.chat.bec-saved-link-data=Saved Link Data to Data Stick
 
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe

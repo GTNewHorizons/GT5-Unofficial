@@ -3,6 +3,8 @@ package gregtech.common.blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.common.misc.GTStructureChannels;
@@ -38,6 +40,7 @@ public class BlockCasings11 extends BlockCasingsAbstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         return switch (meta) {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_BRASS.getIcon();

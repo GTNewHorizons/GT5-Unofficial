@@ -14,6 +14,7 @@ import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.materials.MaterialWithParts;
+import gregtech.api.materials.bec.BECPartOrePrefix.BECPrefixMap;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -22,18 +23,18 @@ public class BECMaterial implements MaterialWithParts {
 
     public static final ItemBECMaterialPart ITEM = new ItemBECMaterialPart();
 
-    public static final BECMaterial[] MATERIALS = new BECMaterial[1000];
+    public static final BECMaterial[] MATERIALS = new BECMaterial[ItemBECMaterialPart.MATERIALS_PER_PREFIX];
     public static final Map<String, BECMaterial> MATERIALS_BY_NAME = new Object2ObjectOpenHashMap<>();
 
     public final int id;
     public final String name;
 
     public BECTextureSet textureSet;
-    public final PartOrePrefix.PrefixMap<Int2ObjectMap<ImmutableColor>> palettesByPrefix = new PartOrePrefix.PrefixMap<>();
+    public final BECPrefixMap<Int2ObjectMap<ImmutableColor>> palettesByPrefix = new BECPrefixMap<>();
 
-    public final EnumSet<PartOrePrefix> presentParts;
+    public final EnumSet<BECPartOrePrefix> presentParts;
 
-    public BECMaterial(int id, String name, Collection<PartOrePrefix> presentParts) {
+    public BECMaterial(int id, String name, Collection<BECPartOrePrefix> presentParts) {
         this.id = id;
         this.name = name;
         this.presentParts = EnumSet.copyOf(presentParts);

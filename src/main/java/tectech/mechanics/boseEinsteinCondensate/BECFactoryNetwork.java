@@ -105,7 +105,7 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
             if (remaining == 1) {
                 split = input.getStackSize();
             } else {
-                double weight = totalCapacity / inv.getCondensateCapacity();
+                double weight = inv.getCondensateCapacity() / totalCapacity;
                 totalCapacity -= inv.getCondensateCapacity();
 
                 split = GTUtility.ceil(input.getStackSize() * weight);

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import appeng.api.storage.data.IAEFluidStack;
 
 /// Something that stores condensate in a BEC network. AE fluid stacks are used since most BEC machines use longs and
-/// not machines for storing condensate. It's very easy to put more than 2.1b condensate in a storage.
+/// not ints for storing condensate. It's very easy to put more than 2.1b condensate in a storage.
 @SuppressWarnings("UnstableApiUsage")
 public interface BECInventory {
 

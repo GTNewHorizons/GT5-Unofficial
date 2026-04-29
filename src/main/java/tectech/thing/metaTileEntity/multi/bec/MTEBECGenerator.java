@@ -36,6 +36,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
@@ -92,8 +93,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addHatchLocationOverride(
             Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),
-            "Any " + ElectromagneticallyIsolatedCasing.getLocalizedName() + " in the first slice");
-        tt.addHatchLocationOverride(BECHatches.Hatch, "The center casing in the last slice");
+            GTUtility.translate(
+                "GT5U.gui.text.bec-generator-input-hatch-pos",
+                ElectromagneticallyIsolatedCasing.getLocalizedName()));
+        tt.addHatchLocationOverride(BECHatches.Hatch, GTUtility.translate("GT5U.gui.text.bec-generator-bec-hatch-pos"));
         tt.addAllCasingInfo(
             Arrays.asList(
                 ElectromagneticallyIsolatedCasing,
@@ -190,12 +193,14 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             return;
         }
 
+        // double -> int cast clamps to upper int limit when overflowing (though this will never happen in practice)
         int parallels = (int) recipe.maxParallelCalculatedByInputs(
             Integer.MAX_VALUE,
             new FluidStack[] { fluidStack },
             GTValues.emptyItemStackArray);
 
-        parallels = Math.min(parallels, (int) (euQuota.longValue() / recipe.mEUt));
+        // Safe to cast to int here because `parallels` will never be more than int max
+        parallels = (int) Math.min(parallels, euQuota.longValue() / recipe.mEUt);
 
         if (parallels <= 0) {
             return;
