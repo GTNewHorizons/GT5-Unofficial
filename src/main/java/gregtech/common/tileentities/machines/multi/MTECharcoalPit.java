@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -32,6 +33,7 @@ import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
@@ -207,9 +209,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return true;
-    }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
