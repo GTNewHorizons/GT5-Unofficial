@@ -618,6 +618,18 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    protected final void checkHasInputHatch(List<StructureError> errors) {
+        if (mInputHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+        }
+    }
+
+    protected final void checkHasOutputHatch(List<StructureError> errors) {
+        if (mOutputHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
+        }
+    }
+
     protected final void checkHasEnergyHatch(List<StructureError> errors) {
         if (mEnergyHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);

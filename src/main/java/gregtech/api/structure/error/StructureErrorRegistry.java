@@ -23,6 +23,12 @@ public class StructureErrorRegistry {
     public static final StructureError MISSING_OUTPUT_BUS = registerSingleton(
         StructureErrorId.MISSING_OUTPUT_BUS,
         "GT5U.gui.text.missing_output_bus");
+    public static final StructureError MISSING_INPUT_HATCH = registerSingleton(
+        StructureErrorId.MISSING_INPUT_HATCH,
+        "GT5U.gui.text.missing_input_hatch");
+    public static final StructureError MISSING_OUTPUT_HATCH = registerSingleton(
+        StructureErrorId.MISSING_OUTPUT_HATCH,
+        "GT5U.gui.text.missing_output_hatch");
     public static final StructureError MISSING_ENERGY_HATCH = registerSingleton(
         StructureErrorId.MISSING_ENERGY_HATCH,
         "GT5U.gui.text.missing_energy_hatch");
