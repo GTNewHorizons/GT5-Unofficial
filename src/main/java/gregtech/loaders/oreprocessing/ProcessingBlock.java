@@ -163,7 +163,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron
                 || aMaterial == Materials.Obsidian)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 

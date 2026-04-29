@@ -129,6 +129,9 @@ public enum SoundResource {
     GT_TOOLBOX_CLOSE(282, GregTech.ID, "items.ToolboxClose"),
     GT_TOOLBOX_DRAW(283, GregTech.ID, "items.ToolboxDraw"),
 
+    GT_MACHINES_ARC_FURNACE_STARTUP(284, GregTech.ID, "machines.MTEIndustrialArcFurnaceStartup"),
+    GT_MACHINES_ARC_FURNACE_SHUTDOWN(285, GregTech.ID, "machines.MTEIndustrialArcFurnaceShutdown"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

@@ -1827,13 +1827,13 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("ironrotor", 1L),
             bits_no_remove_buffered,
             new Object[] { "dBS", "BTB", "SBw", 'B', GTModHandler.getIC2Item("ironrotorblade", 1), 'S',
-                OrePrefixes.screw.get(Materials.WroughtIron), 'T', ItemList.IC2_ShaftIron.get(1) });
+                OrePrefixes.screw.get(Materials.CastIron), 'T', ItemList.IC2_ShaftIron.get(1) });
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("woodrotor", 1L));
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("woodrotor", 1L),
             bits_no_remove_buffered,
             new Object[] { "dBS", "BTB", "SBw", 'B', GTModHandler.getIC2Item("woodrotorblade", 1), 'S',
-                OrePrefixes.screw.get(Materials.WroughtIron), 'T', OrePrefixes.stickLong.get(Materials.WroughtIron) });
+                OrePrefixes.screw.get(Materials.CastIron), 'T', OrePrefixes.stickLong.get(Materials.CastIron) });
 
         if (GTOreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L) != null) {
             tStack = GTModHandler.getRecipeOutput(
