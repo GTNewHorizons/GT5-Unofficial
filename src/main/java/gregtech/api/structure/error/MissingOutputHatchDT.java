@@ -1,12 +1,14 @@
 package gregtech.api.structure.error;
 
+import java.io.IOException;
+
+import net.minecraft.network.PacketBuffer;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
-import gregtech.api.enums.StructureErrorId;
-import net.minecraft.network.PacketBuffer;
 
-import java.io.IOException;
+import gregtech.api.enums.StructureErrorId;
 
 @Desugar
 public record MissingOutputHatchDT(int layer) implements StructureError {
@@ -28,7 +30,8 @@ public record MissingOutputHatchDT(int layer) implements StructureError {
 
     @Override
     public IWidget createWidget() {
-        return IKey.lang("GT5U.gui.text.dt_missing_output_hatch", layer).asWidget();
+        return IKey.lang("GT5U.gui.text.dt_missing_output_hatch", layer)
+            .asWidget();
     }
 
     @Override

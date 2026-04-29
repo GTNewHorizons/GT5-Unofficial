@@ -1,12 +1,14 @@
 package gregtech.api.structure.error;
 
+import java.io.IOException;
+
+import net.minecraft.network.PacketBuffer;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
-import gregtech.api.enums.StructureErrorId;
-import net.minecraft.network.PacketBuffer;
 
-import java.io.IOException;
+import gregtech.api.enums.StructureErrorId;
 
 @Desugar
 public record SimpleStructureError(String lang_key) implements StructureError {
@@ -28,7 +30,8 @@ public record SimpleStructureError(String lang_key) implements StructureError {
 
     @Override
     public IWidget createWidget() {
-        return IKey.lang(lang_key).asWidget();
+        return IKey.lang(lang_key)
+            .asWidget();
     }
 
     @Override

@@ -1292,7 +1292,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
-
     /**
      * Gets the maximum efficiency of this machine with current state.
      * <p>

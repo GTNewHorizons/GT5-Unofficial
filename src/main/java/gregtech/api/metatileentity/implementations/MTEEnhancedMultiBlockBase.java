@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
-import com.github.bsideup.jabel.Desugar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 
+import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -342,7 +342,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
-    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset, List<StructureError> errors) {
+    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
+        List<StructureError> errors) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         StructureChecker checker = new StructureChecker(!mMachine, errors);
         getCastedStructureDefinition().iterate(
@@ -691,7 +692,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
         @Override
         public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
-                             int a, int b, int c) {
+            int a, int b, int c) {
             boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
 
             if (!result) {
@@ -704,7 +705,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
         @Override
         public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
-                                      int y, int z, int a, int b, int c) {
+            int y, int z, int a, int b, int c) {
             if (forced) {
                 return visit(element, world, x, y, z, a, b, c);
             }
