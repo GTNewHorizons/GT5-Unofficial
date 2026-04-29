@@ -11,8 +11,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -28,13 +28,13 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-
-import java.util.List;
 
 public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implements ISurvivalConstructable {
 

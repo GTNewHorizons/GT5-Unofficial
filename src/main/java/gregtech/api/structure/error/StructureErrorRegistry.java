@@ -29,6 +29,9 @@ public class StructureErrorRegistry {
     public static final StructureError MISSING_OUTPUT_HATCH = registerSingleton(
         StructureErrorId.MISSING_OUTPUT_HATCH,
         "GT5U.gui.text.missing_output_hatch");
+    public static final StructureError TOO_MANY_OUTPUT_HATCH = registerSingleton(
+        StructureErrorId.TOO_MANY_OUTPUT_HATCH,
+        "GT5U.gui.text.too_many_output_hatch");
     public static final StructureError MISSING_ENERGY_HATCH = registerSingleton(
         StructureErrorId.MISSING_ENERGY_HATCH,
         "GT5U.gui.text.missing_energy_hatch");

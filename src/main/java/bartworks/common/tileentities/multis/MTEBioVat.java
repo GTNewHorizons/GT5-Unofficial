@@ -91,6 +91,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.IGTHatchAdder;
@@ -349,17 +352,25 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mRadHatches.clear();
         this.glassTier = -1;
         this.mCasing = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
 
-        return this.mCasing >= 19 && this.mRadHatches.size() <= 1
-            && !this.mEnergyHatches.isEmpty()
-            && this.mMaintenanceHatches.size() == 1
-            && this.mOutputHatches.size() == 1;
+        if (mCasing < 19) {
+            errors.add(new TooFewCasings(mCasing, 19));
+        }
+
+        if (mRadHatches.size() > 1) {
+            errors.add(new SimpleStructureError("GT5U.gui.text.too_many_radiation_hatch"));
+        }
+
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneOutputHatch(errors);
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
