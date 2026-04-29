@@ -669,9 +669,9 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Hikari, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Shijima, 1))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Hikari, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Shijima, 1))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 7400)
@@ -681,9 +681,9 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Kanae, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Churitsu, 1))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Kanae, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Churitsu, 1))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 7400)

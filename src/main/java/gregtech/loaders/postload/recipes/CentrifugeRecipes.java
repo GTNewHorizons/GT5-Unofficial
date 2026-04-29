@@ -938,10 +938,10 @@ public class CentrifugeRecipes implements Runnable {
             .eut(5)
             .addTo(centrifugeRecipes);
 
-        // Hikari and Kanae recycling
+        // Shijima and Churitsu recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Hikari, 27))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Shijima, 27))
             .itemOutputs(
                 Materials.NetherStar.getDust(8),
                 Materials.Terbium.getDust(7),
@@ -954,7 +954,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Kanae, 27))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Churitsu, 27))
             .itemOutputs(
                 Materials.TinAlloy.getDust(8),
                 WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),

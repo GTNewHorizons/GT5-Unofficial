@@ -1657,7 +1657,7 @@ public class MixerRecipes implements Runnable {
                 Materials.Flerovium.getDust(3),
                 Materials.InfinityCatalyst.getDust(1))
             .circuit(6)
-            .itemOutputs(Materials.Hikari.getDust(27))
+            .itemOutputs(Materials.Shijima.getDust(27))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);
@@ -1671,7 +1671,7 @@ public class MixerRecipes implements Runnable {
                 WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
                 MaterialsAlloy.QUANTUM.getDust(1))
             .circuit(6)
-            .itemOutputs(Materials.Kanae.getDust(27))
+            .itemOutputs(Materials.Churitsu.getDust(27))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);

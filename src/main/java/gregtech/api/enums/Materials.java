@@ -1095,8 +1095,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StargateCrystalSlurry;
     public static Materials LumipodExtract;
     public static Materials BiocatalyzedPropulsionFluid;
-    public static Materials Hikari;
-    public static Materials Kanae;
+    public static Materials Shijima;
+    public static Materials Churitsu;
     // endregion
 
     // region GTNH Materials

@@ -15387,8 +15387,8 @@ public class MaterialsInit {
         Materials.StargateCrystalSlurry = loadStargateCrystalSlurry();
         Materials.LumipodExtract = loadLumipodExtract();
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
-        Materials.Hikari = loadHikari();
-        Materials.Kanae = loadKanae();
+        Materials.Shijima = loadShijima();
+        Materials.Churitsu = loadChuritsu();
     }
 
     private static Materials loadDTCC() {
@@ -16399,9 +16399,9 @@ public class MaterialsInit {
             .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 
-    private static Materials loadHikari() {
-        return new MaterialBuilder().setName("Hikari")
-            .setDefaultLocalName("Hikari")
+    private static Materials loadShijima() {
+        return new MaterialBuilder().setName("Shijima")
+            .setDefaultLocalName("Shijima")
             .setChemicalFormula(
                 "(" + Materials.NetherStar.getChemicalFormula()
                     + ")₈Tb₇Tc₄("
@@ -16421,9 +16421,9 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadKanae() {
-        return new MaterialBuilder().setName("Kanae")
-            .setDefaultLocalName("Kanae")
+    private static Materials loadChuritsu() {
+        return new MaterialBuilder().setName("Churitsu")
+            .setDefaultLocalName("Churitsu")
             .setChemicalFormula(
                 "(SnFe)₈(Ru₂Ir)₇(Kn₅Nq₉)₄(Ad₅Nq₂La₃)₄Cf₃" + "(Co₇Cr₇Mn₄Ti₂)₃("
                     + CustomGlyphs.AIR
