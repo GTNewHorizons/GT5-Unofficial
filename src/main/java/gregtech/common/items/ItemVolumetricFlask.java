@@ -15,14 +15,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -32,27 +30,26 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.item.VolumetricFlaskGui;
+import gregtech.crossmod.backhand.Backhand;
+import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import ic2.core.util.LiquidUtil;
 
-public class ItemVolumetricFlask extends GTGenericItem implements IFluidContainerItem, IItemWithModularUI {
+public class ItemVolumetricFlask extends GTGenericItem
+    implements IFluidContainerItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private final int maxCapacity;
     private final String unlocalFlaskName;
@@ -70,8 +67,16 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            GTUIInfos.openPlayerHeldItemUI(player);
+        if (!world.isRemote && VolumetricFlaskHelper.isFlaskEmpty(stack)
+            && getMovingObjectPositionFromPlayer(world, player, true) == null) {
+            if (stack == Backhand.getOffhandItem(player)) {
+                GuiFactories.playerInventory()
+                    .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
+            } else {
+                GuiFactories.playerInventory()
+                    .openFromMainHand(player);
+            }
+        }
         return super.onItemRightClick(stack, world, player);
     }
 
@@ -111,10 +116,6 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
         return false;
     }
 
-    public boolean isEmpty(ItemStack stack) {
-        return getFluid(stack) == null;
-    }
-
     public int getFreeSpace(ItemStack stack) {
         int capacity = getCapacity(stack);
         if (capacity > 0) {
@@ -130,11 +131,7 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
 
     @Override
     public int getCapacity(ItemStack stack) {
-        int capacity = 1000;
-        if (ItemStackNBT.hasKey(stack, "Capacity", NBT.TAG_INT)) {
-            capacity = ItemStackNBT.getInteger(stack, "Capacity");
-        }
-        return Math.min(getMaxCapacity(), capacity);
+        return VolumetricFlaskHelper.getFlaskCapacity(stack);
     }
 
     @Override
@@ -145,25 +142,16 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     }
 
     public void setCapacity(ItemStack stack, int capacity) {
-        capacity = Math.min(capacity, getMaxCapacity());
-        ItemStackNBT.setInteger(stack, "Capacity", capacity);
+        VolumetricFlaskHelper.setFlaskCapacity(stack, capacity);
     }
 
     @Override
     public FluidStack getFluid(ItemStack stack) {
-        if (ItemStackNBT.hasKey(stack, "Fluid", NBT.TAG_COMPOUND)) {
-            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(stack, "Fluid"));
-        }
-        return null;
+        return VolumetricFlaskHelper.getFlaskFluid(stack);
     }
 
     public void setFluid(ItemStack stack, FluidStack fluidStack) {
-        final boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        if (removeFluid) {
-            ItemStackNBT.removeTag(stack, "Fluid");
-        } else {
-            ItemStackNBT.setTag(stack, "Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
-        }
+        VolumetricFlaskHelper.setFluid(stack, fluidStack);
     }
 
     @Override
@@ -297,62 +285,12 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
     }
 
     @Override
-    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack stack) {
-        if (!(stack.getItem() instanceof ItemVolumetricFlask)) return null;
-        return new VolumetricFlaskUIFactory(buildContext, stack).createWindow();
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new VolumetricFlaskGui(data).build();
     }
 
-    private class VolumetricFlaskUIFactory {
-
-        private final UIBuildContext buildContext;
-        private int capacity;
-        private final int maxCapacity;
-
-        public VolumetricFlaskUIFactory(UIBuildContext buildContext, ItemStack flask) {
-            this.buildContext = buildContext;
-            ItemVolumetricFlask flaskItem = (ItemVolumetricFlask) flask.getItem();
-            this.capacity = flaskItem.getCapacity(flask);
-            this.maxCapacity = flaskItem.getMaxCapacity();
-        }
-
-        public ModularWindow createWindow() {
-            ModularWindow.Builder builder = ModularWindow.builder(150, 54);
-            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-
-            NumericWidget capacityWidget = new NumericWidget();
-            builder.widget(
-                capacityWidget.setGetter(() -> capacity)
-                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
-                    .setBounds(1, maxCapacity)
-                    .setScrollValues(1, 144, 1000)
-                    .setDefaultValue(capacity)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(8, 8)
-                    .setSize(77, 12))
-                .widget(
-                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.capacity"))
-                        .setPos(88, 10))
-                .widget(
-                    new VanillaButtonWidget()
-                        .setDisplayString(StatCollector.translateToLocal("GT5U.gui.text.volumetric_flask.confirm"))
-                        .setOnClick((clickData, widget) -> {
-                            capacityWidget.onRemoveFocus();
-                            widget.getWindow()
-                                .tryClose();
-                        })
-                        .setSynced(false, false)
-                        .setPos(8, 26)
-                        .setSize(48, 20));
-
-            return builder.build();
-        }
-
-        private ItemStack getCurrentItem() {
-            return buildContext.getPlayer().inventory.getCurrentItem();
-        }
+    @Override
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(GregTech.ID, mainPanel);
     }
-
 }
