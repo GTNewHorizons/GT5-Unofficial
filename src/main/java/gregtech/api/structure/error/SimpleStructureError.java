@@ -33,7 +33,6 @@ public record SimpleStructureError(String lang_key) implements StructureError {
 
     @Override
     public StructureError copy() {
-        // this object is completely immutable
-        return this;
+        return new SimpleStructureError(lang_key);
     }
 }
