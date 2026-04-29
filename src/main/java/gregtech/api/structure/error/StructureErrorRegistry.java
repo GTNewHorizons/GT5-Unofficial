@@ -37,6 +37,7 @@ public class StructureErrorRegistry {
         StructureErrorRegistry.register(new TooManyHatch(0, 0, 0));
         StructureErrorRegistry.register(new SimpleStructureError(""));
         StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
+        StructureErrorRegistry.register(new MissingOutputHatchDT(0));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {

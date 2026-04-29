@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -193,8 +194,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 17, 41, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        checkPiece(MAIN_NAME, 17, 41, 0, errors);
     }
 
     @Override

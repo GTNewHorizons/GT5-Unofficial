@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -371,8 +372,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 26, 26, 4);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        checkPiece(MAIN_NAME, 26, 26, 4, errors);
     }
 
     @Override
