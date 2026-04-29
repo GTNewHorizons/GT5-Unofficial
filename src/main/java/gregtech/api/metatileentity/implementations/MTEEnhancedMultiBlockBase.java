@@ -655,6 +655,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     private class StructureErrorWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
 
         @Override
