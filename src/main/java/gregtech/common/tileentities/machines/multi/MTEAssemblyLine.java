@@ -54,6 +54,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
@@ -396,19 +398,45 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mDataAccessHatches.clear();
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
-        return checkMachine(true) || checkMachine(false);
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0, errors)) return;
+        int recognizedLayers = checkMachine(true, errors);
+        // If the l2r structure is already formed, we early exit
+        if (errors.isEmpty()) return;
+
+        // Otherwise, we create a new list to hold the error for the r2l structure
+        List<StructureError> errors2 = new ArrayList<>();
+        int recognizedLayers2 = checkMachine(false, errors2);
+        if (errors2.isEmpty()) {
+            // Make sure we remove all error from l2r structure from the real list
+            errors.clear();
+            return;
+        }
+
+        // Both failed, we want to emit diagnostic for whoever have more recognized layers
+        if (recognizedLayers < recognizedLayers2) {
+            // Move all diagnostic to the real error list.
+            errors.clear();
+            errors.addAll(errors2);
+        }
     }
 
-    private boolean checkMachine(boolean leftToRight) {
+    private int checkMachine(boolean leftToRight, List<StructureError> errors) {
         for (int i = 1; i < 16; i++) {
-            if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
-            if (!mOutputBusses.isEmpty())
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
+            if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
+            if (!mOutputBusses.isEmpty()) {
+                // this is the output layer
+                checkHasEnergyHatch(errors);
+                checkOneMaintenanceHatch(errors);
+                if (mDataAccessHatches.size() > 1) {
+                    errors.add(new SimpleStructureError("GT5U.gui.text.al_too_many_data_access_hatch"));
+                }
+                return i;
+            }
         }
-        return false;
+        errors.add(new SimpleStructureError("GT5U.gui.text.al_missing_output_bus"));
+        return 16;
     }
 
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
