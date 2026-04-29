@@ -606,6 +606,19 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    protected final void checkMinMaintenanceHatch(List<StructureError> errors) {
+        if (mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+        }
+    }
+
+    protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
+        checkMinMaintenanceHatch(errors);
+        if (mMaintenanceHatches.size() > 1) {
+            errors.add(StructureErrorRegistry.TOO_MANY_MAINTENANCE);
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;

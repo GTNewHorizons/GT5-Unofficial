@@ -20,6 +20,9 @@ public class StructureErrorRegistry {
     public static final StructureError MISSING_MAINTENANCE = registerSingleton(
         StructureErrorId.MISSING_MAINTENANCE,
         "GT5U.gui.text.no_maintenance");
+    public static final StructureError TOO_MANY_MAINTENANCE = registerSingleton(
+        StructureErrorId.TOO_MANY_MAINTENANCE,
+        "GT5U.gui.text.too_many_maintenance");
     public static final StructureError MISSING_MUFFLER = registerSingleton(
         StructureErrorId.MISSING_MUFFLER,
         "GT5U.gui.text.no_muffler");
