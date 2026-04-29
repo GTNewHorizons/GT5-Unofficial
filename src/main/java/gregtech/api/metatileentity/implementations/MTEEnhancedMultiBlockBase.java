@@ -678,7 +678,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    @Desugar
     private class StructureChecker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
 
         final boolean forced;
