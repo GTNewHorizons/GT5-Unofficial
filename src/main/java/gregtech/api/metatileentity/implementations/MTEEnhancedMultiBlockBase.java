@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnegative;
 
+import com.github.bsideup.jabel.Desugar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -282,6 +284,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         boolean success = getCastedStructureDefinition().check(
@@ -324,6 +328,50 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
 
         return success;
+    }
+
+    /**
+     * Explanation of the world coordinate these offset means:
+     * <p>
+     * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
+     * <p>
+     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
+     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
+     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
+     * controller itself.
+     * <p>
+     * All these offsets can be negative.
+     */
+    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset, List<StructureError> errors) {
+        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        StructureChecker checker = new StructureChecker(!mMachine, errors);
+        getCastedStructureDefinition().iterate(
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            checker);
+
+        if (checker.success) {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                centerWalker);
+        }
+
+        return checker.success;
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
@@ -625,6 +673,43 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
             int y, int z, int a, int b, int c) {
             structureStatus = StructureStatus.BLOCK_NOT_LOADED;
+            return false;
+        }
+    }
+
+    @Desugar
+    private class StructureChecker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        final boolean forced;
+        final List<StructureError> errors;
+        public boolean success = true;
+
+        StructureChecker(boolean forced, List<StructureError> errors) {
+            this.forced = forced;
+            this.errors = errors;
+        }
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+                             int a, int b, int c) {
+            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
+
+            if (!result) {
+                this.success = false;
+                errors.add(new WrongBlockError(x, y, z));
+            }
+
+            return result;
+        }
+
+        @Override
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+                                      int y, int z, int a, int b, int c) {
+            if (forced) {
+                return visit(element, world, x, y, z, a, b, c);
+            }
+            this.success = false;
+            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
             return false;
         }
     }
