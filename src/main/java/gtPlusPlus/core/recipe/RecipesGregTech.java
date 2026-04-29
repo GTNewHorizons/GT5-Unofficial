@@ -1476,9 +1476,9 @@ public class RecipesGregTech {
 
         // Apatite Distillation
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 5_200))
+            .fluidInputs(Materials.SulfuricApatite.getFluid(5_200))
             .fluidOutputs(
-                new FluidStack(GTPPFluids.SulfurousAcid, 3_800),
+                Materials.SulfurousAcid.getFluid(3_800),
                 new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1_000),
                 new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 400))
             .duration(45 * SECONDS)
@@ -1486,7 +1486,7 @@ public class RecipesGregTech {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.SulfurousAcid, 1_000))
+            .fluidInputs(Materials.SulfurousAcid.getFluid(1_000))
             .fluidOutputs(Materials.SulfurDioxide.getGas(500), Materials.Water.getFluid(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1557,14 +1557,6 @@ public class RecipesGregTech {
     private static void addFuels() {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.lava_bucket))
-            .metadata(FUEL_VALUE, 32)
-            .metadata(FUEL_TYPE, 2)
-            .duration(0)
-            .eut(0)
-            .addTo(GTRecipeConstants.Fuel);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(2, Ic2Items.lavaCell))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
@@ -1681,7 +1673,7 @@ public class RecipesGregTech {
             .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2))
             .fluidInputs(Materials.SulfuricAcid.getFluid(4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 8_000))
+            .fluidOutputs(Materials.SulfuricApatite.getFluid(8_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

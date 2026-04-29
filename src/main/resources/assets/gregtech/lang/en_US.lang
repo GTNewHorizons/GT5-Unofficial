@@ -3889,6 +3889,10 @@ gt.item.fuel_can.plastic.filled.tooltip=Burns well in Diesel Generators
 gt.item.thermos_can.empty.name=Empty Thermos Can
 gt.item.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
 
+# Empty Fluid Cell
+gt.item.fluid_cell.empty.name=Empty Fluid Cell
+gt.item.fluid_cell.empty.tooltip=Used to store Fluids
+
 ## Large Fluid Cell
 gt.item.large_fluid_cell.steel.name=Large Steel Fluid Cell
 gt.item.large_fluid_cell.steel.tooltip=

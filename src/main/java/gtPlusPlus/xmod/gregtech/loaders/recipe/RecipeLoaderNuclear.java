@@ -38,7 +38,6 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderNuclear {
@@ -138,7 +137,7 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.LithiumHydroxideDust.get(3))
+            .itemInputs(Materials.LithiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.LITHIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
             .fluidOutputs(Materials.Water.getFluid(1_000))
@@ -150,7 +149,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(Materials.Oxygen.getCells(8), MaterialsElements.getInstance().LITHIUM7.getDust(16))
             .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidInputs(Materials.Water.getFluid(8_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.LithiumHydroxide, 48 * INGOTS))
+            .fluidOutputs(Materials.LithiumHydroxide.getFluid(48 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -168,7 +167,7 @@ public class RecipeLoaderNuclear {
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1))
+            .itemInputs(Materials.HydrofluoricAcid.getCells(1))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
@@ -248,7 +247,7 @@ public class RecipeLoaderNuclear {
     private static void dehydratorRecipes() {
         // Makes 7-Lithium
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.SulfuricLithiumMix, 10 * INGOTS))
+            .fluidInputs(Materials.SulfuricLithium.getFluid(10 * INGOTS))
             .itemOutputs(
                 Materials.Sulfur.getDust(3),
                 Materials.Copper.getDust(1),
@@ -269,7 +268,7 @@ public class RecipeLoaderNuclear {
                 Materials.Fluorine.getCells(2),
                 GregtechItemList.LithiumCarbonateDust.get(3))
             .fluidInputs(Materials.SulfuricAcid.getFluid(10_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.SulfuricLithiumMix, 10_000))
+            .fluidOutputs(Materials.SulfuricLithium.getFluid(10_000))
             .eut(1_000)
             .duration(1 * MINUTES + 15 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -287,15 +286,15 @@ public class RecipeLoaderNuclear {
         // 2 LiOH + CaCO3
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Li2CO3CaOH2Dust.get(11))
-            .itemOutputs(GregtechItemList.LithiumHydroxideDust.get(6), GregtechItemList.CalciumCarbonateDust.get(5))
+            .itemOutputs(Materials.LithiumHydroxide.getDust(6), GregtechItemList.CalciumCarbonateDust.get(5))
             .eut(1_000)
             .duration(6 * MINUTES)
             .addTo(chemicalDehydratorRecipes);
 
         // LiOH Liquid to Dust
         GTValues.RA.stdBuilder()
-            .itemOutputs(GregtechItemList.LithiumHydroxideDust.get(1))
-            .fluidInputs(new FluidStack(GTPPFluids.LithiumHydroxide, 1 * INGOTS))
+            .itemOutputs(Materials.LithiumHydroxide.getDust(1))
+            .fluidInputs(Materials.LithiumHydroxide.getFluid(1 * INGOTS))
             .eut(TierEU.RECIPE_MV / 2)
             .duration(1 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -355,7 +354,7 @@ public class RecipeLoaderNuclear {
             .circuit(17)
             .itemOutputs(
                 MaterialMisc.AMMONIA.getCell(2),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+                Materials.HydrofluoricAcid.getCells(1),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
             .eut(TierEU.RECIPE_MV)

@@ -150,7 +150,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -706,7 +705,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
                 Materials.Glass.getPlates(2),
-                GregtechItemList.LithiumHydroxideDust.get(2),
+                Materials.LithiumHydroxide.getDust(2),
                 Materials.Epoxid.getDust(4))
             .fluidInputs(Materials.Hydrogen.getGas(2_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))

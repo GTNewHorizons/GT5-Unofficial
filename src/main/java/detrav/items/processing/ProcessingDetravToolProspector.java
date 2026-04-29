@@ -91,8 +91,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerLuV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+            new Object[] { "SHE", "CPC", "PXP", 'E', Materials.HydrofluoricAcid.getCells(1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
@@ -101,8 +100,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerZPM.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+            new Object[] { "SHE", "CPC", "PXP", 'E', Materials.HydrofluoricAcid.getCells(1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
@@ -111,8 +109,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerUV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+            new Object[] { "SHE", "CPC", "PXP", 'E', Materials.HydrofluoricAcid.getCells(1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
@@ -122,8 +119,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             DetravMetaGeneratedTool01.INSTANCE
                 .getToolWithStats(ProspectorScannerUHV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+            new Object[] { "SHE", "CPC", "PXP", 'E', Materials.HydrofluoricAcid.getCells(1), 'S',
                 OreDictionary.getOres("cellHydrogenPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',

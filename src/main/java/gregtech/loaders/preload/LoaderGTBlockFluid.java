@@ -10,11 +10,9 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
@@ -111,6 +109,11 @@ public class LoaderGTBlockFluid implements Runnable {
         Materials.Water.mFluid = FluidRegistry.getFluid("water");
         Materials.Ice.mFluid = FluidRegistry.getFluid("water");
         Materials.Lava.mFluid = FluidRegistry.getFluid("lava");
+
+        Materials.ConstructionFoam.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
+            .getFluid();
+        Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
+            .getFluid();
 
         GTLog.out.println("GTMod: Register Books.");
 
@@ -912,10 +915,6 @@ public class LoaderGTBlockFluid implements Runnable {
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
         GTLog.out.println("GTMod: Registering Fluids.");
-        Materials.ConstructionFoam.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
-            .getFluid();
-        Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
-            .getFluid();
 
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
@@ -1074,21 +1073,11 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Steam")
             .withStateAndTemperature(GAS, 375)
             .buildAndRegister()
-            .configureMaterials(Materials.Water)
-            .addLocalizedName(Materials.Water)
-            .registerBContainers(GTModHandler.getIC2Item("steamCell", 1), Materials.Empty.getCells(1));
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(Materials.Steam.getGas(1_000))
-            .duration(16 * TICKS)
-            .eut(1)
-            .addTo(cannerRecipes);
+            .configureMaterials(Materials.Steam)
+            .addLocalizedName(Materials.Steam)
+            .registerBContainers(ItemList.Cell_Steam.get(1), Materials.Empty.getCells(1));
 
         Materials.Ice.mGas = Materials.Water.mGas;
-        Materials.Water.mGas.setTemperature(375)
-            .setGaseous(true);
 
         ItemList.sOilExtraHeavy = GTFluidFactory.builder("liquid_extra_heavy_oil")
             .withDefaultLocalName("Very Heavy Oil")
@@ -1802,6 +1791,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
                 ItemList.Cell_Empty.get(1L));
         Materials.Water.mSolid = Materials.Ice.mSolid;
+        Materials.Water.mGas = Materials.Steam.mGas;
 
         GTFluidFactory.builder("molten.glass")
             .withDefaultLocalName("Molten Glass")

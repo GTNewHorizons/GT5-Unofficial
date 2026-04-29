@@ -897,14 +897,6 @@ public enum GregtechItemList implements IItemContainer {
     SmallLithiumCarbonateDust,
     TinyLithiumCarbonateDust,
 
-    LithiumPeroxideDust,
-    SmallLithiumPeroxideDust,
-    TinyLithiumPeroxideDust,
-
-    LithiumHydroxideDust,
-    SmallLithiumHydroxideDust,
-    TinyLithiumHydroxideDust,
-
     CalciumHydroxideDust,
     SmallCalciumHydroxideDust,
     TinyCalciumHydroxideDust,

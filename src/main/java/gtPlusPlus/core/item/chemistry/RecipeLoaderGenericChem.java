@@ -455,8 +455,8 @@ public class RecipeLoaderGenericChem {
         // 2HLiO2 = Li2O2 + H2O2
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.LithiumHydroperoxide.get(8))
-            .fluidOutputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000))
-            .itemOutputs(GregtechItemList.LithiumPeroxideDust.get(4))
+            .fluidOutputs(Materials.HydrogenPeroxide.getFluid(1_000))
+            .itemOutputs(Materials.LithiumPeroxide.getDust(4))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalDehydratorRecipes);
@@ -465,10 +465,10 @@ public class RecipeLoaderGenericChem {
     private static void recipeLithiumHydroperoxide() {
         // LiOH + H2O2 = HLiO2 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.LithiumHydroxideDust.get(3))
+            .itemInputs(Materials.LithiumHydroxide.getDust(3))
             .circuit(4)
             .itemOutputs(GregtechItemList.LithiumHydroperoxide.get(4))
-            .fluidInputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000))
+            .fluidInputs(Materials.HydrogenPeroxide.getFluid(1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -485,7 +485,7 @@ public class RecipeLoaderGenericChem {
                 new FluidStack(GTPPFluids.Anthracene, 50))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Ethylanthraquinone, 5_000),
-                new FluidStack(GTPPFluids.HydrogenPeroxide, 5_000))
+                Materials.HydrogenPeroxide.getFluid(5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -499,7 +499,7 @@ public class RecipeLoaderGenericChem {
                 new FluidStack(GTPPFluids.Anthracene, 50))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Ethylanthraquinone, 5_000),
-                new FluidStack(GTPPFluids.HydrogenPeroxide, 5_000))
+                Materials.HydrogenPeroxide.getFluid(5_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
