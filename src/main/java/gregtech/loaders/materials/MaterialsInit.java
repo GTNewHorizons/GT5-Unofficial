@@ -16194,9 +16194,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Kanae")
             .setDefaultLocalName("Kanae")
             .setChemicalFormula(
-                "(SnFe)₈(Ru₂Ir)₇(Kn₅Nq₉)₄(Ad₅Nq₂La₃)₄Cf₃"
-                    // quantum formula (perhaps we shorten this?)
-                    + "(Co₇Cr₇Mn₄Ti₂)₃("
+                "(SnFe)₈(Ru₂Ir)₇(Kn₅Nq₉)₄(Ad₅Nq₂La₃)₄Cf₃" + "(Co₇Cr₇Mn₄Ti₂)₃("
                     + CustomGlyphs.AIR
                     + CustomGlyphs.EARTH
                     + CustomGlyphs.FIRE
