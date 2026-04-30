@@ -1833,6 +1833,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialArcFurnace.get(1),
             new Object[] { GregtechItemList.Industrial_Arc_Furnace });
+
+        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.ExothermicHearth.get(1),
+            new Object[] { ItemRegistry.megaMachines[0] });
     }
 
     private static void registerSifter() {
