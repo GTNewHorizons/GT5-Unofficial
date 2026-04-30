@@ -618,6 +618,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Flerovium")
             .setElement(Element.Fl)
             .setIconSet(TextureSet.SET_SHINY)
+            .setARGB(0x00f1edfa)
             .setColor(Dyes.dyeWhite)
             .addDustItems()
             .addMetalItems()
@@ -13217,6 +13218,7 @@ public class MaterialsInit {
     private static Materials loadInfinityCatalyst() {
         return new MaterialBuilder().setName("InfinityCatalyst")
             .setDefaultLocalName("Infinity Catalyst")
+            .setChemicalFormula("If")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeLightGray)
             .setTool(1_310_720, 10, 64.0f)
@@ -15381,6 +15383,8 @@ public class MaterialsInit {
         Materials.StargateCrystalSlurry = loadStargateCrystalSlurry();
         Materials.LumipodExtract = loadLumipodExtract();
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
+        Materials.Shijima = loadShijima();
+        Materials.Churitsu = loadChuritsu();
     }
 
     private static Materials loadDTCC() {
@@ -16389,5 +16393,51 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+    }
+
+    private static Materials loadShijima() {
+        return new MaterialBuilder().setName("Shijima")
+            .setDefaultLocalName("Shijima")
+            .setChemicalFormula(
+                "(" + Materials.NetherStar.getChemicalFormula()
+                    + ")₈Tb₇Tc₄("
+                    + Materials.Dilithium.getChemicalFormula()
+                    + ")₄Fl₃If")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0x00f0f0f0)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(7400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadChuritsu() {
+        return new MaterialBuilder().setName("Churitsu")
+            .setDefaultLocalName("Churitsu")
+            .setChemicalFormula(
+                "(SnFe)₈(Ru₂Ir)₇(Kn₅Nq₉)₄(Ad₅Nq₂La₃)₄Cf₃" + "(Co₇Cr₇Mn₄Ti₂)₃("
+                    + CustomGlyphs.AIR
+                    + CustomGlyphs.EARTH
+                    + CustomGlyphs.FIRE
+                    + CustomGlyphs.WATER
+                    + ")(SiC)GaAmPdBiGe")
+            .setIconSet(TextureSet.SET_SHINY)
+            .setColor(Dyes.dyeGray)
+            .setARGB(0x00828282)
+            .addDustItems()
+            .addMetalItems()
+            .addGearItems()
+            .setBlastFurnaceTemp(7400)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
     }
 }
