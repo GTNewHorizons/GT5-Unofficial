@@ -65,6 +65,8 @@ import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.modularui2.sync.NaniteTierSyncValue;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
@@ -278,11 +280,20 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     public void addIONode(MTEBECIONode node) {
         ioNodes.add(node);
         node.setNaniteShare(currentNaniteTier, availableNanites);
+        BECFactoryGrid.INSTANCE.updateElement(this);
     }
 
     public void removeIONode(MTEBECIONode node) {
         ioNodes.remove(node);
         node.setNaniteShare(null, 0);
+        BECFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    public void getNeighbours(Collection<BECFactoryElement> neighbours) {
+        super.getNeighbours(neighbours);
+
+        neighbours.addAll(ioNodes);
     }
 
     public void drainCondensate(IAEFluidStack stack) {

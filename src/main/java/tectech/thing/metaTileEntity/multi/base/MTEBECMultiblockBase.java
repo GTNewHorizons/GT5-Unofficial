@@ -126,7 +126,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     }
 
     @Override
-    public IStructureInstance getStructureInstance() {
+    public IStructureInstance<TSelf> getStructureInstance() {
         return structureInstanceInfo;
     }
 

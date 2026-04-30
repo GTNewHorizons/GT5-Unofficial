@@ -15,6 +15,7 @@ import static gregtech.api.util.GTDataUtils.zip;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -91,6 +92,8 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
@@ -285,6 +288,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         if (igte == null || igte.isDead()) return null;
 
         if (!GTUtility.isServer()) return null;
+
+        if (!igte.getWorld()
+            .getChunkProvider()
+            .chunkExists(assemblerX >> 4, assemblerZ >> 4)) return null;
 
         if (!(igte.getTileEntity(assemblerX, assemblerY, assemblerZ) instanceof IGregTechTileEntity other)) return null;
 
@@ -535,14 +542,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             if (remainingCondensate == 0) continue;
 
-            long initial = required.getLongValue();
-
             IAEFluidStack toConsume = AEFluidStack.create(new FluidStack(required.getKey(), 1))
-                .setStackSize(initial);
+                .setStackSize(remainingCondensate);
 
             this.assembler.drainCondensate(toConsume);
 
-            long consumed = initial - toConsume.getStackSize();
+            long consumed = remainingCondensate - toConsume.getStackSize();
 
             this.consumedCondensate.addTo(required.getKey(), consumed);
         }
@@ -574,6 +579,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         if (assembler != null) {
             this.assembler = assembler;
             assembler.addIONode(this);
+            BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
 
@@ -583,6 +589,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         if (assembler != null) {
             assembler.removeIONode(this);
             assembler = null;
+            BECFactoryGrid.INSTANCE.updateElement(this);
         }
 
         setNaniteShare(null, 0);
@@ -634,7 +641,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 igte.getXCoord(),
                 igte.getYCoord(),
                 igte.getZCoord()));
-        player.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+        player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
     }
 
     @Override
@@ -647,17 +654,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         // intentionally run on the client so that the player's arm swings
         if (pasteCopiedData(player, heldItem.getTagCompound())) {
             if (GTUtility.isServer()) {
-                player.addChatMessage(
-                    new ChatComponentText(
-                        "Successfully connected to " + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
+                player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-connected-assembler"));
             }
 
             return true;
         } else {
             if (GTUtility.isServer()) {
-                player.addChatMessage(
-                    new ChatComponentText(
-                        "Could not connect to " + CustomItemList.Machine_Multi_BECAssembler.getDisplayName()));
+                player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-no-connect-assembler"));
             }
 
             return false;
@@ -678,6 +681,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null) return false;
         if (!nbt.getString("type")
             .equals(getCopiedDataIdentifier(player))) return false;
 
@@ -694,6 +698,15 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return "bec-assembler";
+    }
+
+    @Override
+    public void getNeighbours(Collection<BECFactoryElement> neighbours) {
+        super.getNeighbours(neighbours);
+
+        if (assembler != null) {
+            neighbours.add(assembler);
+        }
     }
 
     private float getProcessingSpeed() {
@@ -899,9 +912,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
             return SettingsPanel.builder()
                 .setDividerPosition(75)
-                .addHeader(IKey.str("Parameters"))
+                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
                 .addIntEditor(
-                    IKey.str("Min Parallels"),
+                    IKey.lang("GT5U.gui.text.bec-min-parallels"),
                     () -> minParallel,
                     f -> minParallel = f,
                     (panel2, sync, widget) -> {
@@ -913,7 +926,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                                     Collections.emptyMap())));
                     })
                 .addIntEditor(
-                    IKey.str("Max Parallels"),
+                    IKey.lang("GT5U.gui.text.bec-max-parallels"),
                     () -> maxParallel,
                     f -> maxParallel = f,
                     (panel2, sync, widget) -> {
@@ -925,7 +938,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                                     Collections.emptyMap())));
                     })
                 .addIntEditor(
-                    IKey.str("Speed Divisor"),
+                    IKey.lang("GT5U.gui.text.bec-speed-divisor"),
                     () -> manualSlowdown,
                     i -> manualSlowdown = i,
                     (panel2, sync, widget) -> {
@@ -991,8 +1004,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip.add(MessageFormat.format("Processing Speed: x{0}", tag.getFloat("speed")));
-        currenttip.add(MessageFormat.format("Slowdowns: {0}", tag.getInteger("slowdowns")));
+        currenttip.add(GTUtility.translate("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
+        currenttip.add(GTUtility.translate("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
     @Override

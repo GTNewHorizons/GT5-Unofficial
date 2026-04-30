@@ -52,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -147,7 +148,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .addMarkdown(new ResourceLocation("gregtech", "bec-storage"));
 
         tt.beginStructureBlock();
-        tt.addController("Outer wall of center pillar, second layer from the bottom");
+        tt.addController(GTUtility.translate("GT5U.chat.bec-storage-controller-pos"));
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addAllCasingInfo(
             Arrays.asList(
@@ -415,7 +416,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 StringBuilder ret = new StringBuilder();
 
                 ret.append(EnumChatFormatting.GRAY)
-                    .append("Stored Condensate:\n");
+                    .append(GTUtility.translate("GT5U.gui.text.bec-stored-condensate"))
+                    .append('\n');
 
                 if (contents.getValue()
                     .isEmpty()) {

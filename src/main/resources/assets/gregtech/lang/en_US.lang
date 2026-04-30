@@ -8183,6 +8183,7 @@ GT5U.gui.text.pause-immediately=Pause Immediately
 GT5U.gui.text.pause-next-step=Pause Next Step
 GT5U.gui.text.providing-nanites=Providing Nanites:
 GT5U.gui.text.available-condensate=Available Condensate:
+GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 
 # BEC Structure Hints
 GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
@@ -8197,6 +8198,9 @@ GT5U.gui.text.bec-current=Current:
 GT5U.gui.text.bec-mode=Mode
 GT5U.gui.text.bec-field-strength=Field Strength
 GT5U.gui.text.bec-stored=Stored:
+GT5U.gui.text.bec-min-parallels=Min Parallels
+GT5U.gui.text.bec-max-parallels=Min Parallels
+GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
@@ -8205,7 +8209,16 @@ GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when i
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 
 # BEC Chat Messages
-GT5U.chat.bec-saved-link-data=Saved Link Data to Data Stick
+GT5U.chat.bec-saved-link-data=Saved Link Data to the Data Stick
+GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Array
+GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
+
+# BEC Waila
+GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-slowdowns=Slowdowns: %s
+
+# BEC Structure
+GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer from the bottom
 
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe

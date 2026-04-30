@@ -315,7 +315,7 @@ public class GregTechAPI {
             if (id != null) {
                 if (id == -1) // for all-meta registrations, also with meta > 32
                     return true;
-                return aMeta < 32 && (id & B[aMeta]) != 0;
+                return (id & B[aMeta]) != 0;
             }
         }
         return false;
