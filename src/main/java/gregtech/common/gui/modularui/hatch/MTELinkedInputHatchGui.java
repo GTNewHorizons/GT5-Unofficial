@@ -50,7 +50,7 @@ public class MTELinkedInputHatchGui extends MTEHatchBaseGui<MTELinkedInputHatch>
         inputRow.child(
             new TextFieldWidget().value(channelSyncer)
                 .width(60)
-                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_bus.change_freq_warn"))));
+                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_hatch.change_freq_warn"))));
 
         // private label
         inputRow.child(
@@ -63,7 +63,7 @@ public class MTELinkedInputHatchGui extends MTEHatchBaseGui<MTELinkedInputHatch>
                 .size(18)
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_bus.private"))));
+                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_hatch.private"))));
 
         mainColumn.child(inputRow);
 

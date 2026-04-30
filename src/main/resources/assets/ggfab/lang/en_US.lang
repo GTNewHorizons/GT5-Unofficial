@@ -22,12 +22,21 @@ ggfab.info.linked_input_bus.invalid_circuit=§6Configuration data was found but 
 ggfab.info.linked_input_bus.data_pasted=§2Pasted channel ("%s§2") and configuration circuit setting!
 ggfab.info.linked_input_bus.data_copied=§2Copied channel ("%s§2") and configuration circuit setting!
 ggfab.info.linked_input_bus.no_channel=§6No channel specified yet!
+ggfab.info.linked_input_hatch.not_owned=§6The settings were copied from a different owner!
+ggfab.info.linked_input_hatch.no_data=§6Configuration data not found!
+ggfab.info.linked_input_hatch.invalid_circuit=§6Configuration data was found but it contains a circuit not valid on this hatch!
+ggfab.info.linked_input_hatch.data_pasted=§2Pasted channel ("%s§2") and configuration circuit setting!
+ggfab.info.linked_input_hatch.data_copied=§2Copied channel ("%s§2") and configuration circuit setting!
+ggfab.info.linked_input_hatch.no_channel=§6No channel specified yet!
 
 ggfab.info.biome=Biome:
 
 ggfab.tooltip.linked_input_bus.change_freq_warn=Changing channel while this is the last one on this channel will spill all items left!
 ggfab.tooltip.linked_input_bus.private=Private channel are not shared with others.
 ggfab.tooltip.linked_input_bus.private.1=Changing channel while this is the last one on this channel will spill all items left!
+ggfab.tooltip.linked_input_hatch.change_freq_warn=Changing channel while this is the last hatch on that channel will delete any fluids still stored there.
+ggfab.tooltip.linked_input_hatch.private=Private channels are only shared with linked hatches owned by the same player.
+gt.blockmachines.hatch_input_linked.desc=Shared 4-channel linked fluid input hatch|Each tank holds %s L|Same frequency shares fluids in-dimension
 
 ggfab.gui.linked_input_bus.private=Private
 ggfab.gui.linked_input_bus.channel=Channel

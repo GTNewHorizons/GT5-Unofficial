@@ -14,6 +14,7 @@ import gregtech.api.util.GTUtility;
 public enum GGItemList implements IItemContainer {
 
     LinkedInputBus,
+    LinkedInputHatch,
     AdvAssLine,
 
     // order matters, do not insert randomly like a n00b

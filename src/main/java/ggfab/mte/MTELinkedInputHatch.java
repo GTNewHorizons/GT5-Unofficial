@@ -30,7 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -40,9 +40,10 @@ import gregtech.common.gui.modularui.hatch.MTELinkedInputHatchGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcessingAwareHatch, IDataCopyable {
+public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_TANKS = 4;
+    private static final int TANK_CAPACITY = 32_000;
     public static final String COPIED_DATA_IDENTIFIER = "linkedinputhatch";
     private SharedFluidInventory mRealInventory;
     private String mChannel;
@@ -51,11 +52,11 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
     private WorldSave save;
 
     public MTELinkedInputHatch(int id, String name, String nameRegional, int tier) {
-        super(id, name, nameRegional, tier);
+        super(id, SIZE_TANKS, name, nameRegional, tier);
     }
 
     public MTELinkedInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
+        super(aName, SIZE_TANKS, aTier, aDescription, aTextures);
     }
 
     @Override
@@ -110,6 +111,11 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
     }
 
     @Override
+    public int getCapacity() {
+        return TANK_CAPACITY;
+    }
+
+    @Override
     public void startRecipeProcessing() {
         if (mRealInventory == null) return;
         if (mRealInventory.used) {
@@ -133,10 +139,7 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
     @Override
     public void updateSlots() {
         if (mChannel == null || mRealInventory == null) return;
-        for (int i = 0; i < mRealInventory.fluids.length; i++) {
-            if (mRealInventory.fluids[i] != null && mRealInventory.fluids[i].amount <= 0)
-                mRealInventory.fluids[i] = null;
-        }
+        compactFluids();
         markDirty();
         getWorldSave().markDirty();
     }
@@ -172,6 +175,22 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
             mRealInventory = getWorldSave().get(getRealChannel());
             mRealInventory.ref++;
         }
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            mFluid = getFluid();
+        }
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && mRealInventory != null) {
+            compactFluids();
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -228,7 +247,8 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) {
+        if (nbt == null || (!COPIED_DATA_IDENTIFIER.equals(nbt.getString("ggfab.type"))
+            && !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type")))) {
             return false;
         }
         ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
@@ -264,7 +284,8 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!stick.hasTagCompound() || !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("type"))) {
+        if (!stick.hasTagCompound() || (!COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))
+            && !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("type")))) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_data"));
             return true;
         }
@@ -274,7 +295,12 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
         if (channel.isEmpty()) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_data"));
             return true;
-        }
+        } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
+            .stream()
+            .noneMatch(circuit::isItemEqual)) {
+                aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.invalid_circuit"));
+                return true;
+            }
         UUID owner = stick.stackTagCompound.hasKey("owner1")
             ? new UUID(stick.stackTagCompound.getLong("owner1"), stick.stackTagCompound.getLong("owner2"))
             : null;
@@ -416,11 +442,39 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
 
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
+        if (mState == State.Blocked || mRealInventory == null) return null;
+        for (FluidStack storedFluid : mRealInventory.fluids) {
+            if (storedFluid == null) continue;
+            FluidStack drained = storedFluid.copy();
+            drained.amount = Math.min(maxDrain, drained.amount);
+            if (doDrain) {
+                storedFluid.amount -= drained.amount;
+                if (storedFluid.amount <= 0) {
+                    mRealInventory.fluids[getFluidSlot(storedFluid)] = null;
+                }
+                getWorldSave().markDirty();
+            }
+            return drained;
+        }
         return null;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
+        if (mState == State.Blocked || mRealInventory == null || aFluid == null) return null;
+        for (FluidStack storedFluid : mRealInventory.fluids) {
+            if (storedFluid == null || !aFluid.isFluidEqual(storedFluid)) continue;
+            FluidStack drained = storedFluid.copy();
+            drained.amount = Math.min(aFluid.amount, drained.amount);
+            if (doDrain) {
+                storedFluid.amount -= drained.amount;
+                if (storedFluid.amount <= 0) {
+                    mRealInventory.fluids[getFluidSlot(storedFluid)] = null;
+                }
+                getWorldSave().markDirty();
+            }
+            return drained;
+        }
         return null;
     }
 
@@ -434,11 +488,13 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
         return infos;
     }
 
+    @Override
     public FluidStack[] getStoredFluid() {
         if (mRealInventory == null || mState == State.Blocked) return new FluidStack[0];
         return mRealInventory.fluids;
     }
 
+    @Override
     public FluidStackTank[] getFluidTanks() {
         FluidStackTank[] tanks = new FluidStackTank[SIZE_TANKS];
         for (int i = 0; i < SIZE_TANKS; i++) {
@@ -451,6 +507,47 @@ public class MTELinkedInputHatch extends MTEHatchInput implements IRecipeProcess
             }, getCapacity());
         }
         return tanks;
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        if (mRealInventory == null || mState == State.Blocked) return null;
+        for (FluidStack storedFluid : mRealInventory.fluids) {
+            if (storedFluid != null && storedFluid.amount > 0) return storedFluid;
+        }
+        return null;
+    }
+
+    @Override
+    public int getFluidAmount() {
+        FluidStack fluid = getFluid();
+        return fluid == null ? 0 : fluid.amount;
+    }
+
+    @Override
+    public int getFluidSlot(FluidStack fluid) {
+        if (mRealInventory == null || fluid == null) return -1;
+        for (int i = 0; i < SIZE_TANKS; i++) {
+            if (mRealInventory.fluids[i] == fluid) return i;
+        }
+        return -1;
+    }
+
+    private void compactFluids() {
+        if (mRealInventory == null) return;
+        int nextSlot = 0;
+        for (int i = 0; i < SIZE_TANKS; i++) {
+            FluidStack fluid = mRealInventory.fluids[i];
+            if (fluid == null || fluid.amount <= 0) {
+                mRealInventory.fluids[i] = null;
+                continue;
+            }
+            if (!mRealInventory.disableSort && i != nextSlot) {
+                mRealInventory.fluids[nextSlot] = fluid;
+                mRealInventory.fluids[i] = null;
+            }
+            nextSlot++;
+        }
     }
 
     private enum State {
