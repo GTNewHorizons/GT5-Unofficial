@@ -91,7 +91,7 @@ public enum SoundResource {
 
     GT_MACHINES_MULTI_PRECISE_LOOP(247, GregTech.ID, "machines.MTEPreciseAssembler"),
     GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP(248, GregTech.ID, "machines.MTEIndustrialWashPlant"),
-    GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP(249, GregTech.ID, "machines.MTEMegaVacuumFreezer"),
+    GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP(249, GregTech.ID, "machines.MTEMegaVacuumFreezerLegacy"),
     GT_MACHINES_MULTI_VACUUM_FREEZER_LOOP(250, GregTech.ID, "machines.MTEVacuumFreezer"),
     GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP(251, GregTech.ID, "machines.MTEExtremeEntityCrusher"),
     GT_MACHINES_CUTTING_MACHINE_LOOP(252, GregTech.ID, "machines.MTEIndustrialCuttingMachine"),

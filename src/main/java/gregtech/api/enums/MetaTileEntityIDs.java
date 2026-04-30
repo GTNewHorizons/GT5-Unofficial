@@ -1758,7 +1758,7 @@ public enum MetaTileEntityIDs {
     MegaChemicalReactor(15515),
     MegaDistillationTower(15516),
     MegaBlastFurnace(15517),
-    MegaVacuumFreezer(15518),
+    EndothermicFridge(15518),
     SteamTurbineXL(15519),
     HPSteamTurbineXL(15520),
     SCSteamTurbineXL(15521),
