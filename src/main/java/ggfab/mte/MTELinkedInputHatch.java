@@ -43,7 +43,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_TANKS = 4;
-    private static final int TANK_CAPACITY = 32_000;
+    private static final int TANK_CAPACITY = 64_000;
     public static final String COPIED_DATA_IDENTIFIER = "linkedinputhatch";
     private SharedFluidInventory mRealInventory;
     private String mChannel;
