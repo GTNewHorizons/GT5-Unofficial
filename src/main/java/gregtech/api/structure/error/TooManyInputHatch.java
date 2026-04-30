@@ -6,9 +6,11 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
 
+@Desugar
 public record TooManyInputHatch(int current, int max) implements StructureError {
 
     @Override
