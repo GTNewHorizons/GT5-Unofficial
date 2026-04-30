@@ -60,6 +60,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         aNBT.setFloat("storedBeamEnergy", storedBeamEnergy);
         aNBT.setInteger("cumulativeBeamRate", cumulativeBeamRate);
         aNBT.setFloat("storedBeamFocus", storedBeamFocus);
+        aNBT.setInteger("playerTargetBeamRate", playerTargetBeamRate);
     }
 
     @Override
@@ -69,6 +70,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         storedBeamEnergy = aNBT.getFloat("storedBeamEnergy");
         cumulativeBeamRate = aNBT.getInteger("cumulativeBeamRate");
         storedBeamFocus = aNBT.getFloat("storedBeamFocus");
+        playerTargetBeamRate = aNBT.getInteger("playerTargetBeamRate");
     }
 
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
