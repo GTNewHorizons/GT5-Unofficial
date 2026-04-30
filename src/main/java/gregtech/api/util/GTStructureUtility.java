@@ -106,11 +106,14 @@ public class GTStructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (block == Blocks.water || block == distilledWater) return true;
-                if (allowFlowing && block == Blocks.flowing_water) return true;
-                if (Mods.COFHCore.isModLoaded()) {
-                    return block instanceof BlockWater || block instanceof BlockTickingWater;
-                }
+                boolean isCOFHCore = Mods.COFHCore.isModLoaded()
+                    && (block instanceof BlockWater || block instanceof BlockTickingWater);
+                boolean isFlowing = block == Blocks.flowing_water;
+                boolean isStillWater = block == Blocks.water || block == distilledWater || isCOFHCore;
+                isFlowing = isFlowing || (isStillWater && world.getBlockMetadata(x, y, z) > 0);
+                boolean isWater = isStillWater && !isFlowing;
+                if (isWater) return true;
+                if (allowFlowing && isFlowing) return true;
                 return false;
             }
 

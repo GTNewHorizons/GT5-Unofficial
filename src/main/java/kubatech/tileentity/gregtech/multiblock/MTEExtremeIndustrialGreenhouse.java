@@ -108,8 +108,6 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -117,7 +115,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -745,12 +742,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
                         xyz[1] += aBaseMetaTileEntity.getYCoord();
                         xyz[2] += aBaseMetaTileEntity.getZCoord();
-                        Block block = world.getBlock(xyz[0], xyz[1], xyz[2]);
-                        boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-                            && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                        boolean isWater = (block == Blocks.water) || isCOFHCore;
-                        boolean isAir = block == Blocks.flowing_water || block == Blocks.air;
-                        if (!isWater && isAir) {
+                        boolean isReplaceable = GTUtility.canReplaceBlockWithWater(world, xyz[0], xyz[1], xyz[2]);
+                        if (isReplaceable) {
                             world.setBlock(xyz[0], xyz[1], xyz[2], Blocks.water, 0, 3);
                             world.playSoundEffect(
                                 xyz[0] + 0.5f,
