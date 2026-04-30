@@ -35,6 +35,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -183,14 +186,23 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 4, 2, 0) && checkHatch();
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+        checkHatch(errors);
+        if (casing < 1) {
+            errors.add(new TooFewCasings(casing, 1));
+        }
     }
 
     @Override
-    public boolean checkHatch() {
-        return mEnergyHatches.size() == 2 && mMufflerHatches.size() == 2 && super.checkHatch();
+    public void checkHatch(List<StructureError> errors) {
+        if (mEnergyHatches.size() != 2) {
+            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
+        }
+        if (mMufflerHatches.size() != 2) {
+            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
+        }
     }
 
     @Override

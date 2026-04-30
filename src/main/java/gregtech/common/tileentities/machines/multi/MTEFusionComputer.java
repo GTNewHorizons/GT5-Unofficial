@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -70,6 +71,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -222,8 +225,14 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && !mOutputHatches.isEmpty() && !mEnergyHatches.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12, errors)) return;
+        if (mOutputHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
+        }
+        if (mEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
+        }
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {

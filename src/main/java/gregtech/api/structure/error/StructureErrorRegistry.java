@@ -56,6 +56,30 @@ public class StructureErrorRegistry {
     public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
         StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
         "GT5U.gui.text.unknown_structure_error");
+    public static final StructureError MISSING_ENERGY_HATCH = registerSingleton(
+        StructureErrorId.MISSING_ENERGY_HATCH,
+        "GT5U.gui.text.no_energy_hatch");
+    public static final StructureError MISSING_DYNAMO_HATCH = registerSingleton(
+        StructureErrorId.MISSING_DYNAMO_HATCH,
+        "GT5U.gui.text.no_dynamo_hatch");
+    public static final StructureError MISSING_INPUT_HATCH = registerSingleton(
+        StructureErrorId.MISSING_INPUT_HATCH,
+        "GT5U.gui.text.no_input_hatch");
+    public static final StructureError MISSING_OUTPUT_HATCH = registerSingleton(
+        StructureErrorId.MISSING_OUTPUT_HATCH,
+        "GT5U.gui.text.no_output_hatch");
+    public static final StructureError MISSING_INPUT_BUS = registerSingleton(
+        StructureErrorId.MISSING_INPUT_BUS,
+        "GT5U.gui.text.no_input_bus");
+    public static final StructureError MISSING_OUTPUT_BUS = registerSingleton(
+        StructureErrorId.MISSING_OUTPUT_BUS,
+        "GT5U.gui.text.no_output_bus");
+    public static final StructureError MISSING_BEAMLINE_INPUT = registerSingleton(
+        StructureErrorId.MISSING_BEAMLINE_INPUT,
+        "GT5U.gui.text.no_beamline_input");
+    public static final StructureError MISSING_BEAMLINE_OUTPUT = registerSingleton(
+        StructureErrorId.MISSING_BEAMLINE_OUTPUT,
+        "GT5U.gui.text.no_beamline_output");
 
     static {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));

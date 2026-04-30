@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -195,7 +196,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        checkPiece(MAIN_NAME, 17, 41, 0, errors);
+        if (!checkPiece(MAIN_NAME, 17, 41, 0, errors)) return;
+        if (mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DYNAMO_HATCH);
+        }
+        if (mInputHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+        }
     }
 
     @Override

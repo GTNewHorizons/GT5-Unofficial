@@ -103,7 +103,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     .atLeast(InputHatch)
                     .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 9))
                     .hint(2)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 9))))
+                    .buildAndChain(onElementPass(x -> x.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 9)))))
         .build();
 
     public MTEPurificationUnitOzonation(int aID, String aName, String aNameRegional) {

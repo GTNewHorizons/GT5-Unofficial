@@ -187,7 +187,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
                     .casingIndex(CASING_INDEX_HEATER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
+                    .buildAndChain(onElementPass(x -> x.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11)))))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
