@@ -150,9 +150,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_MUFFLER);
         }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
     }
 
     @Override
