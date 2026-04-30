@@ -149,10 +149,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
         final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
             && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_secondary" : "";
-        String key = "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + tSuffix;
-        if (StatCollector.canTranslate(key + "." + damage)) {
-            key = key + "." + damage;
-        }
+        final String baseKey = getDescriptionKey(metaTileEntity, tSuffix);
+        final String idKey = getIdScopedDescriptionKey(baseKey, damage);
+        final String key = StatCollector.canTranslate(idKey) || !StatCollector.canTranslate(baseKey) ? idKey : baseKey;
         final String tTranslated = StatCollector.translateToLocal(key);
         if (tTranslated.contains("%s")) {
             final String tDescription = Arrays.stream(aDescription)
@@ -175,13 +174,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
             if (isSkipGenerateDescription(tMetaTileEntity)) return;
-            String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
                     .getSecondaryDescription();
-                registerDescription(tSecondaryDescription, key + "_secondary", aDamage);
+                registerDescription(tSecondaryDescription, getDescriptionKey(tMetaTileEntity, "_secondary"), aDamage);
             }
-            registerDescription(tMetaTileEntity.getDescription(), key, aDamage);
+            registerDescription(tMetaTileEntity.getDescription(), getDescriptionKey(tMetaTileEntity, ""), aDamage);
         }
     }
 
@@ -194,11 +192,15 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (StatCollector.canTranslate(key)) {
-            GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
-            return;
-        }
-        GTLanguageManager.addStringLocalization(key, tDescription);
+        GTLanguageManager.addStringLocalization(getIdScopedDescriptionKey(key, damage), tDescription);
+    }
+
+    private static String getDescriptionKey(IMetaTileEntity metaTileEntity, String suffix) {
+        return "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip" + suffix;
+    }
+
+    private static String getIdScopedDescriptionKey(String key, int damage) {
+        return key + "." + damage;
     }
 
     @Override
