@@ -21,11 +21,13 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
 public enum ArcFurnaceElectrode {
 
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
     TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
     MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
     TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 500, 1.1d, 2),
     TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 160, 1d, 4d, 700, 1.2d, 3),
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GrapheneElectrode(5, Materials.Graphene, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
     YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 400, 0.8d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {

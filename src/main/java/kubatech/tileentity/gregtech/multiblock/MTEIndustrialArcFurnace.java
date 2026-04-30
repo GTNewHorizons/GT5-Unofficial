@@ -907,11 +907,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
 
             @Override
-            protected @NotNull CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                return super.onRecipeStart(recipe);
-            }
-
-            @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (electrode == null) return SimpleCheckRecipeResult.ofFailure("no_electrode");
                 CheckRecipeResult result = super.validateRecipe(recipe);

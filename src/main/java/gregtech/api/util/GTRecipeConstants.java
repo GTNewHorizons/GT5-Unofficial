@@ -313,7 +313,10 @@ public class GTRecipeConstants {
         boolean foundAnyItem = false;
         for (ItemStack itemStack : builder.inputsBasic) {
             if (itemStack == null) continue;
-            if (!GTUtility.isAnyIntegratedCircuit(itemStack)) foundAnyItem = true;
+            if (!GTUtility.isAnyIntegratedCircuit(itemStack)) {
+                foundAnyItem = true;
+                break;
+            }
         }
         if (!foundAnyItem) return ret;
 
