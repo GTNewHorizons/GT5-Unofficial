@@ -88,6 +88,10 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
+    /// is open.
+    ///
+    /// Accounts for extended tooltips shown when shift is held down.
     protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
         GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
 
@@ -95,6 +99,10 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             .titleMargin(2);
     }
 
+    /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
+    /// while the Gui is open.
+    ///
+    /// Accounts for extended tooltips shown when shift is held down.
     @SafeVarargs
     protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
         return t -> {
