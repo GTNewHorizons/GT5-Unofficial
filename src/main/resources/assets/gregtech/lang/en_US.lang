@@ -6791,6 +6791,9 @@ GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.flour.cauldron=Throw into Cauldron with Water to make Dough
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
+# Machine Color Indicator
+GT5U.tooltip.machine_color_indicator=Current machine color: %s
+
 # Scanner info
 GT5U.scanner.title_base_info=Block Info
 GT5U.scanner.title_fluid_handler_info=Tank Info
