@@ -35,6 +35,9 @@ public class StructureErrorRegistry {
     public static final StructureError MISSING_ENERGY_HATCH = registerSingleton(
         StructureErrorId.MISSING_ENERGY_HATCH,
         "GT5U.gui.text.missing_energy_hatch");
+    public static final StructureError TOO_MANY_ENERGY_HATCH = registerSingleton(
+        StructureErrorId.TOO_MANY_ENERGY_HATCH,
+        "GT5U.gui.text.too_many_energy_hatch");
     public static final StructureError ONE_ENERGY_HATCH_ON_MULTI_OR_LASER = registerSingleton(
         StructureErrorId.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER,
         "GT5U.gui.text.one_energy_hatch_on_laser");
@@ -75,6 +78,7 @@ public class StructureErrorRegistry {
         StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
         StructureErrorRegistry.register(new MissingOutputHatchDT(0));
         StructureErrorRegistry.register(new TooManyInputHatch(0, 0));
+        StructureErrorRegistry.register(new GlassTierNotEnough(0));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {
