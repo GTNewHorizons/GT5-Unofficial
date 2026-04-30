@@ -298,6 +298,8 @@ public final class ModItems {
             .registerOre("catalystHellishForce");
         GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
             .registerOre("catalystCrystalColorization");
+        GregtechItemList.ChlorinationCatalyst.set(new ItemStack(genericChemItem, 1, 36))
+            .registerOre("catalystChlorination");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite.set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
@@ -434,6 +436,7 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
+        MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);

@@ -41,11 +41,11 @@ import gregtech.api.render.ISBRContext;
 public abstract class SBRContextBase implements ISBRContext {
 
     protected static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
+
     /**
-     * Non-null placeholder RenderBlocks, replaced in {@link #setup}.
+     * RenderBlocks instance, replaced in {@link #setup}.
      */
-    @NotNull
-    protected RenderBlocks renderBlocks = RenderBlocks.getInstance();
+    protected RenderBlocks renderBlocks;
     /**
      * Non-null placeholder block, replaced in {@link #setup}.
      */
@@ -88,6 +88,11 @@ public abstract class SBRContextBase implements ISBRContext {
         this.modelId = modelId;
         this.renderBlocks = renderBlocks;
         return this;
+    }
+
+    @Override
+    public void doCleanup() {
+        renderBlocks = null;
     }
 
     @Override
@@ -159,7 +164,7 @@ public abstract class SBRContextBase implements ISBRContext {
 
     /**
      * Like setRenderBounds, but automatically pulling the bounds from the context's block.
-     * 
+     *
      * @see net.minecraft.client.renderer.RenderBlocks#setRenderBoundsFromBlock(Block)
      */
     @Override

@@ -81,6 +81,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Europium;
     public static Materials Flerovium;
     public static Materials Fluorine;
+    public static Materials Francium;
     public static Materials Gadolinium;
     public static Materials Gallium;
     public static Materials Gold;
@@ -570,6 +571,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Butane;
     public static Materials Butene;
     public static Materials CalciumAcetateSolution;
+    public static Materials CaesiumHydroxide;
     public static Materials CarbonMonoxide;
     public static Materials Chloramine;
     public static Materials Chloroform;
@@ -604,6 +606,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Polystyrene;
     public static Materials PolyvinylAcetate;
     public static Materials PolyvinylChloride;
+    public static Materials PotassiumHydroxide;
     public static Materials Propane;
     public static Materials Propene;
     public static Materials SaltWater;
@@ -952,6 +955,26 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials PrismaticNaquadahCompositeSlurry;
     // endregion
 
+    // region Francium Line
+    public static Materials ImpureFranciumSolution;
+    public static Materials FranciumHydroxide;
+    public static Materials FranciumSlurry;
+    public static Materials ThoriumElutionAdsorbent;
+    // endregion
+
+    // region Chlorosulfonic Acid Line
+    public static Materials PhosphorusChlorineMixture;
+    public static Materials PhosphorusPentachloride;
+    public static Materials ToxicAir;
+    public static Materials ToxicSlurry;
+    public static Materials DestabilizationSlurry;
+    public static Materials AgitatingSlurry;
+    public static Materials UltraContaminatedGas;
+    public static Materials StagnantWasteWater;
+    public static Materials ActivatedWasteWater;
+    public static Materials ChlorosulfonicAcid;
+    // endregion
+
     // region Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
@@ -1074,6 +1097,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StargateCrystalSlurry;
     public static Materials LumipodExtract;
     public static Materials BiocatalyzedPropulsionFluid;
+    public static Materials Shijima;
+    public static Materials Churitsu;
     // endregion
 
     // region GTNH Materials
