@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record MissingOutputHatchDT(int layer) implements StructureError {
@@ -29,7 +30,7 @@ public record MissingOutputHatchDT(int layer) implements StructureError {
     }
 
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return IKey.lang("GT5U.gui.text.dt_missing_output_hatch", layer)
             .asWidget();
     }
