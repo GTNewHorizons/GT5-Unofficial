@@ -307,6 +307,60 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         return material != null && material.mToolSpeed > 0;
     }
 
+    private static boolean isSameTurbineType(ItemStack firstTurbine, ItemStack secondTurbine) {
+        return isValidTurbine(firstTurbine) && isValidTurbine(secondTurbine)
+            && MetaGeneratedTool.getPrimaryMaterial(firstTurbine) == MetaGeneratedTool.getPrimaryMaterial(secondTurbine)
+            && getTurbineSize(firstTurbine) == getTurbineSize(secondTurbine);
+    }
+
+    private ItemStack extractBufferedTurbine(ItemStack referenceTurbine) {
+        for (ItemStack bufferedStack : getStoredInputs()) {
+            if (!isValidTurbine(bufferedStack)) {
+                continue;
+            }
+            if (referenceTurbine != null && !isSameTurbineType(referenceTurbine, bufferedStack)) {
+                continue;
+            }
+
+            ItemStack extractedTurbine = GTUtility.copyAmount(1, bufferedStack);
+            if (depleteInput(extractedTurbine)) {
+                return extractedTurbine;
+            }
+        }
+        return null;
+    }
+
+    private void tryRefillTurbineHolder() {
+        if (getLoadedTurbineCount() >= TURBINE_SLOTS) {
+            return;
+        }
+
+        ItemStack referenceTurbine = getPrimaryTurbine();
+        boolean didRefill = false;
+
+        for (int slot = 0; slot < turbineHolder.getSlots(); slot++) {
+            if (turbineHolder.getStackInSlot(slot) != null) {
+                continue;
+            }
+
+            ItemStack extractedTurbine = extractBufferedTurbine(referenceTurbine);
+            if (!isValidTurbine(extractedTurbine)) {
+                break;
+            }
+
+            turbineHolder.setStackInSlot(slot, extractedTurbine);
+            if (referenceTurbine == null) {
+                referenceTurbine = extractedTurbine;
+            }
+            didRefill = true;
+        }
+
+        if (didRefill) {
+            updateSlots();
+            markDirty();
+        }
+    }
+
     public boolean areAllTurbinesTheSame() {
         ItemStack aBaseTurbine = null;
         Materials aBaseMat = null;
@@ -369,6 +423,8 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         try {
+            tryRefillTurbineHolder();
+
             if (!areAllTurbinesTheSame()) {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
@@ -559,6 +615,9 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == 0) {
+                tryRefillTurbineHolder();
+            }
             if (this.maxProgresstime() <= 0) {
                 stopMachine(ShutDownReasonRegistry.NONE);
             }
