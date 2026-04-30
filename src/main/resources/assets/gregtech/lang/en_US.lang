@@ -8090,6 +8090,8 @@ gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result 
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
 
+gt.tile.data_server.name=GT-Data Server
+
 gt.item.stable_baryon_containment_unit.name=Stable Baryon Containment Unit
 gt.item.stable_baryon_containment_unit.tooltip=Maybe contains a bound baryon?
 gt.item.stable_lepton_containment_unit.name=Stable Lepton Containment Unit

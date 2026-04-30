@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -100,9 +101,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                                 GTUtility.sendChatTrans(
                                     player,
                                     "GT5U.chat.cover.wireless_controller.shutdown_at",
-                                    // FIXME: getInventoryName returns a key.
-                                    // For example, the "Vacuum Freezer" returns "multimachine.vacuumfreezer"
-                                    coverable.getInventoryName(),
+                                    new ChatComponentTranslation(coverable.getInventoryName()),
                                     new ChatComponentNumber(coverable.getXCoord()),
                                     new ChatComponentNumber(coverable.getYCoord()),
                                     new ChatComponentNumber(coverable.getZCoord()));
