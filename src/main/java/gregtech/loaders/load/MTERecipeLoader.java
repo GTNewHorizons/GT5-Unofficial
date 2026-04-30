@@ -1698,6 +1698,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Boldarnator.get(1),
             new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
 
+        // Industrial Cutting Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCuttingMachine.get(1),
+            new Object[] { GregtechItemList.Industrial_CuttingFactoryController });
+
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialPackager.get(1),

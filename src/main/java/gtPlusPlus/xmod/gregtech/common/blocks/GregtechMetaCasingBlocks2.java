@@ -112,8 +112,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
                 case 10 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
                 case 11 -> TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
                 case 12 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-                case 13 -> ordinalSide < 2 ? Textures.BlockIcons.CUTTING_FACTORY_FRAME_TOP.getIcon()
-                    : Textures.BlockIcons.CUTTING_FACTORY_FRAME_SIDE.getIcon();
+                case 13 -> Textures.BlockIcons.CUTTING_FACTORY_FRAME.getIcon();
                 case 14 -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
                 case 15 -> TexturesGtBlock.Sterile_Casing.getIcon();
                 default -> TexturesGtBlock.Overlay_UU_Matter.getIcon();

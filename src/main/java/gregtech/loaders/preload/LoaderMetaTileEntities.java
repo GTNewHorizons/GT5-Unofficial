@@ -166,6 +166,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCokeOven;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
@@ -893,6 +894,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
+
+        ItemList.IndustrialCuttingMachine.set(
+            new MTEIndustrialCuttingMachine(
+                IndustrialCuttingMachine.ID,
+                "industrialcuttingmachine.controller.tier.01",
+                "Industrial Cutting Factory").getStackForm(1L));
 
         ItemList.IndustrialFormingPress.set(
             new MTEIndustrialFormingPress(

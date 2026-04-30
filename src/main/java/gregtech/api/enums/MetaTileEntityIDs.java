@@ -1780,7 +1780,7 @@ public enum MetaTileEntityIDs {
     LargeNaquadahReactor(15537),
     LargeThermalRefinery(15538),
     MacerationStack(15539),
-    CuttingMachine(15540),
+    IndustrialCuttingMachine(15540),
     TreeGrowSimulator(15541),
     LargeSifter(15542),
     IndustrialCokeOven(15543),
