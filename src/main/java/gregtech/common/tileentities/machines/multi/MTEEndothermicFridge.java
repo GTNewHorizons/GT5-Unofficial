@@ -43,6 +43,7 @@ import gregtech.common.misc.GTStructureChannels;
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
     implements ISurvivalConstructable {
 
+    // todo: some structure tweaks, mechanic, old t2 integration, tooltip
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int HORIZONTAL_OFFSET = 2;
     private static final int VERTICAL_OFFSET = 10;
