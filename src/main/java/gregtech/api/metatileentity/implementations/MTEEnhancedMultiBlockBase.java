@@ -303,9 +303,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         boolean success = structureStatus == StructureStatus.OK;
 
         if (success) {
-            IStructureWalker<MTEEnhancedMultiBlockBase<T>> sizeWalker = mMachine
-                ? IStructureWalker.skipBlockUnloaded(centerWalker)
-                : centerWalker;
             getCastedStructureDefinition().iterate(
                 piece,
                 tTile.getWorld(),
@@ -316,7 +313,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                sizeWalker);
+                centerWalker);
         }
 
         return success;
