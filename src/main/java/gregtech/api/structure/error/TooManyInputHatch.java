@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record TooManyInputHatch(int current, int max) implements StructureError {
@@ -30,7 +31,7 @@ public record TooManyInputHatch(int current, int max) implements StructureError 
     }
 
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return IKey.lang("GT5U.gui.text.too_many_input_hatch", max, current)
             .asWidget();
     }

@@ -368,51 +368,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         return checker.success;
     }
 
-    /**
-     * Explanation of the world coordinate these offset means:
-     * <p>
-     * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
-     * <p>
-     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
-     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
-     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
-     * controller itself.
-     * <p>
-     * All these offsets can be negative.
-     */
-    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-        List<StructureError> errors) {
-        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        StructureChecker checker = new StructureChecker(!mMachine, errors);
-        getCastedStructureDefinition().iterate(
-            piece,
-            tTile.getWorld(),
-            getExtendedFacing(),
-            tTile.getXCoord(),
-            tTile.getYCoord(),
-            tTile.getZCoord(),
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            checker);
-
-        if (checker.success) {
-            getCastedStructureDefinition().iterate(
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                centerWalker);
-        }
-
-        return checker.success;
-    }
-
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
         int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();

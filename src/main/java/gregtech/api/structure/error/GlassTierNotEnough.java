@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record GlassTierNotEnough(int requiredTier) implements StructureError {
@@ -31,7 +32,7 @@ public record GlassTierNotEnough(int requiredTier) implements StructureError {
     }
 
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return IKey.lang("GT5U.gui.text.glass_tier_not_enough", VN[requiredTier])
             .asWidget();
     }
