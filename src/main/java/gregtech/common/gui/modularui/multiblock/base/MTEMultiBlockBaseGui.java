@@ -27,7 +27,6 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.HoverableIcon;
@@ -360,27 +359,23 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     public IWidget createHighlightButton(int errX, int errY, int errZ) {
         return new ButtonWidget<>().size(12, 12)
-            .marginLeft(2)
+            .marginRight(4)
             .disableHoverBackground()
             .background(IDrawable.EMPTY)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
             .onMousePressed(d -> {
-                boolean lookAt = Interactable.hasShiftDown();
                 StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
                 net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft
                     .getMinecraft().thePlayer;
                 if (player != null) {
                     player.closeScreen();
-                    if (lookAt) {
-                        double dx = errX + 0.5 - player.posX;
-                        double dy = errY + 0.5 - (player.posY + player.getEyeHeight());
-                        double dz = errZ + 0.5 - player.posZ;
-                        double dist = Math.sqrt(dx * dx + dz * dz);
-                        float yaw = (float) (Math.atan2(dz, dx) * 180.0 / Math.PI) - 90.0f;
-                        float pitch = (float) -(Math.atan2(dy, dist) * 180.0 / Math.PI);
-                        player.rotationYaw = yaw;
-                        player.rotationPitch = pitch;
-                    }
+                    net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
+                    double dx = errX + 0.5 - eyePos.xCoord;
+                    double dy = errY + 0.5 - eyePos.yCoord;
+                    double dz = errZ + 0.5 - eyePos.zCoord;
+                    double distXZ = Math.sqrt(dx * dx + dz * dz);
+                    player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                    player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
                 }
                 return true;
             })

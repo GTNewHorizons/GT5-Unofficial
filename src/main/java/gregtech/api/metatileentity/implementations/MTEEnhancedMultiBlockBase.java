@@ -284,6 +284,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        structureStatus = StructureStatus.OK;
         getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),

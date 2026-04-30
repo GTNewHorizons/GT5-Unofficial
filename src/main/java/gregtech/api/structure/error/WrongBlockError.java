@@ -34,12 +34,14 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return Flow.row()
+            .widthRel(1)
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+            .child(gui.createHighlightButton(x, y, z))
             .child(
                 IKey.lang("GT5U.gui.wrong_block", x, y, z)
-                    .asWidget())
-            .child(gui.createHighlightButton(x, y, z));
+                    .asWidget()
+                    .expanded());
     }
 
     @Override
