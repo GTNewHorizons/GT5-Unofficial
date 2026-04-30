@@ -790,7 +790,7 @@ GT5U.ECCF.temperature.threshold=Порог температуры
 GT5U.ECCF.pressure.required=Требуемое давление
 GT5U.ECCF.temperature.required=Требуемая температура
 
-GT5U.EBF.heat=Температура в печи
+GT5U.EBF.heat.s=Температура в печи: §a%s §rK
 GT5U.coil.None=Нет
 GT5U.coil.ULV=Нет
 GT5U.coil.LV=Мельхиор
