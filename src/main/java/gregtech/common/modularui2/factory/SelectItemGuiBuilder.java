@@ -202,7 +202,7 @@ public class SelectItemGuiBuilder {
                 new DynamicDrawable(() -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
                 .playClickSound(false)
                 .onMousePressed(mouseButton -> true)
-                horizontalCenter()
+                .horizontalCenter()
                 .top(22);
         if (currentItemWidgetCustomizer != null) {
             currentItemWidgetCustomizer.accept(currentItemWidget);
