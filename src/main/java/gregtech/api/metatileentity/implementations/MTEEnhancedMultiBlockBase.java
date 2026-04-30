@@ -284,8 +284,11 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        boolean success = getCastedStructureDefinition().check(
-            this,
+        structureStatus = StructureStatus.OK;
+        IStructureWalker<MTEEnhancedMultiBlockBase<T>> checkWalker = mMachine
+            ? IStructureWalker.skipBlockUnloaded(errorWalker)
+            : errorWalker;
+        getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),
             getExtendedFacing(),
@@ -295,7 +298,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             horizontalOffset,
             verticalOffset,
             depthOffset,
-            !mMachine);
+            checkWalker);
+
+        boolean success = structureStatus == StructureStatus.OK;
 
         if (success) {
             getCastedStructureDefinition().iterate(
@@ -309,18 +314,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
                 verticalOffset,
                 depthOffset,
                 centerWalker);
-        } else {
-            getCastedStructureDefinition().iterate(
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                errorWalker);
         }
 
         return success;
