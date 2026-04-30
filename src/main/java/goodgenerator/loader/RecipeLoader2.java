@@ -145,7 +145,7 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.YOTTank_Casing.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "BPB", "FOF", "BPB", 'B',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackSteel, 1), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1), 'F',
@@ -154,7 +154,7 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.YOTTank.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SPS", "ECE", "SLS", 'S', GTOreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 1),
                 'P', ItemList.Cover_Screen.get(1), 'E', "circuitData", 'L',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 1), 'C',
@@ -903,14 +903,14 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Combustion_Generator_EV.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PCP", "MHM", "GWG", 'G', GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Titanium, 1),
                 'C', "circuitData", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1), 'P',
                 ItemList.Electric_Piston_EV, 'H', ItemList.Hull_EV, 'M', ItemList.Electric_Motor_EV });
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Combustion_Generator_IV.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PCP", "MHM", "GWG", 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.TungstenSteel, 1), 'C', "circuitElite", 'W',
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1), 'P', ItemList.Electric_Piston_IV,
@@ -971,7 +971,7 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.SC_Turbine_Casing.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PhP", "GCG", "PwP", 'G', GGMaterial.marM200.get(OrePrefixes.gearGt, 1), 'C',
                 ItemList.Casing_Turbine.get(1), 'P', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), });
 
@@ -987,7 +987,7 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.SC_Fluid_Turbine.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "NPN", "GHG", "IPI", 'N', "circuitMaster", 'P', GGMaterial.marM200.get(OrePrefixes.plate, 1),
                 'H', ItemList.Hull_IV.get(1), 'G', GGMaterial.marCeM200.get(OrePrefixes.gearGt, 1), 'I',
                 GGMaterial.incoloy903.get(OrePrefixes.pipeLarge, 1) });
@@ -1017,7 +1017,7 @@ public class RecipeLoader2 {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Extreme_Heat_Exchanger.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPE", "PHP", "SPS", 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
                 ItemList.Hull_IV.get(1), 'S', GGMaterial.marCeM200.get(OrePrefixes.plate, 1), 'E',
@@ -1409,7 +1409,7 @@ public class RecipeLoader2 {
             256,
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.UHV_Coil.get(64), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemList.UEV_Coil.get(16), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(16 * INGOTS),

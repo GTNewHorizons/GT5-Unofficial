@@ -57,6 +57,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         aNBT.setFloat("storedBeamEnergy", storedBeamEnergy);
         aNBT.setInteger("cumulativeBeamRate", cumulativeBeamRate);
         aNBT.setFloat("storedBeamFocus", storedBeamFocus);
+        aNBT.setInteger("playerTargetBeamRate", playerTargetBeamRate);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         storedBeamEnergy = aNBT.getFloat("storedBeamEnergy");
         cumulativeBeamRate = aNBT.getInteger("cumulativeBeamRate");
         storedBeamFocus = aNBT.getFloat("storedBeamFocus");
+        playerTargetBeamRate = aNBT.getInteger("playerTargetBeamRate");
     }
 
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
@@ -297,7 +299,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        boolean packetStored = cumulateStoredBeamPacket();
+        cumulateStoredBeamPacket();
+        boolean packetStored = this.cumulativeBeamRate > 0;
         if (packetStored) {
             this.mMaxProgresstime = TickTime.SECOND;
             outputPacketAfterRecipe(this.playerTargetBeamRate);
@@ -306,18 +309,15 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
-    private boolean cumulateStoredBeamPacket() {
+    private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getNthInputParticle(0);
-
-        if (inputParticle.getEnergy() == 0) {
-            return false;
-        }
+        if (inputParticle.getEnergy() == 0) return;
 
         if (this.storedBeamEnergy == inputParticle.getEnergy()
             && this.storedParticleID == inputParticle.getParticleId()) {
             this.cumulativeBeamRate += inputParticle.getRate();
             this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
-            return true;
+            return;
         }
 
         if (this.cumulativeBeamRate == 0) {
@@ -327,7 +327,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             this.cumulativeBeamRate += inputParticle.getRate();
             this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
         }
-        return true;
     }
 
     private void outputPacketAfterRecipe(int rate) {

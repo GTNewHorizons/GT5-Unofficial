@@ -345,7 +345,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
-        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('Z', ofBlock(Blocks.air, 0))
         .build();
@@ -762,6 +762,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
             .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
             .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")

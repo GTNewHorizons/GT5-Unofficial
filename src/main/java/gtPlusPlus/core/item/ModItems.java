@@ -3,7 +3,6 @@ package gtPlusPlus.core.item;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
@@ -16,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -97,16 +97,7 @@ public final class ModItems {
         GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 
         GregtechItemList.AlkalusDisk.set(
-            new BaseItemDamageable(
-                "itemAlkalusDisk",
-                AddToCreativeTab.tabMisc,
-                1,
-                0,
-                "Unknown Use",
-                EnumRarity.rare,
-                EnumChatFormatting.AQUA,
-                false,
-                null));
+            new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, "Unknown Use", EnumRarity.rare, false));
 
         GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
@@ -130,13 +121,11 @@ public final class ModItems {
         GregtechItemList.LFTRControlCircuit.set(
             new CoreItem(
                 "itemCircuitLFTR",
-                EnumChatFormatting.GREEN + "Control Circuit",
                 AddToCreativeTab.tabMisc,
                 1,
                 0,
                 new String[] { "Keeps Multiblocks Stable" },
                 EnumRarity.epic,
-                EnumChatFormatting.DARK_GREEN,
                 false,
                 null));
 
@@ -309,6 +298,8 @@ public final class ModItems {
             .registerOre("catalystHellishForce");
         GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
             .registerOre("catalystCrystalColorization");
+        GregtechItemList.ChlorinationCatalyst.set(new ItemStack(genericChemItem, 1, 36))
+            .registerOre("catalystChlorination");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite.set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
@@ -400,6 +391,9 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.DRAGON_METAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.BLACK_TITANIUM);
@@ -442,6 +436,7 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
+        MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
@@ -721,7 +716,7 @@ public final class ModItems {
         // Zirconium
         // Cinter Pellet.
         GregtechItemList.ZirconiumPellet.set(
-            new CoreItem("itemZirconiumPellet", "Zirconium Pellet [" + StringUtils.subscript("ZrCl4") + "]", tabMisc)
+            new CoreItem("itemZirconiumPellet", AddToCreativeTab.tabMisc, 64, 0, GTValues.emptyStringArray)
                 .setTextureName(GTPlusPlus.ID + ":itemShard"));
         GTOreDictUnificator.registerOre("pelletZirconium", GregtechItemList.ZirconiumPellet.get(1));
 

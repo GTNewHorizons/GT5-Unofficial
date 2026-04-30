@@ -5,19 +5,16 @@ import static gregtech.api.enums.MetaTileEntityIDs.GTFluidTank_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GTFluidTank_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.GTFluidTank_ULV;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTETieredTank;
 
 public class GregtechTieredFluidTanks {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
         run1();
     }
 
     private static void run1() {
-        Logger.INFO("Only loading ULV-IV tier tanks for New Horizons Modpack.");
         GregtechItemList.GTFluidTank_ULV.set(
             new MTETieredTank(GTFluidTank_ULV.ID, "fluidtank.tier.00", "Ultra Low Voltage Fluid Tank", 0)
                 .getStackForm(1L));
