@@ -14,11 +14,11 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
-import gregtech.common.gui.modularui.cover.CoverWirelessControllerGui;
+import gregtech.common.gui.modularui.cover.CoverAdvancedWirelessControllerGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
+public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiverBase {
 
     private enum State {
         ENABLE_WITH_SIGNAL,
@@ -31,7 +31,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
     private State state = State.DISABLED;
     private boolean handledShutdown = false;
 
-    public CoverWirelessController(CoverContext context, ITexture coverTexture) {
+    public CoverAdvancedWirelessController(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
@@ -64,8 +64,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        byte signal = CoverAdvancedWirelessRedstoneBase
-            .getSignalAt(uuid, frequency, CoverAdvancedRedstoneReceiverBase.GateMode.SINGLE_SOURCE);
+        byte signal = CoverAdvancedWirelessRedstoneBase.getSignalAt(uuid, frequency, mode);
 
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {
@@ -140,6 +139,6 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverWirelessControllerGui(this);
+        return new CoverAdvancedWirelessControllerGui(this);
     }
 }

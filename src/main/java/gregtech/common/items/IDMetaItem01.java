@@ -442,11 +442,14 @@ public enum IDMetaItem01 {
     Cover_SolarPanel_LuV(757),
     Cover_SolarPanel_ZPM(758),
     Cover_SolarPanel_UV(759),
+    Cover_AdvancedWirelessController(760),
     Tool_Cheat(761),
     Tool_Scanner(762),
     NC_SensorKit(763),
     Duct_Tape(764),
     McGuffium_239(765);
+
+    // Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
 
     public final int ID;
 
