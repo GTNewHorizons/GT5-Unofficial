@@ -381,7 +381,6 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
     FormingCore
         (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
-    HearthCasing(() -> GregTechAPI.sBlockCasings12,15,gt(16,5,15)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -516,6 +515,7 @@ public enum Casings implements ICasing {
 
 
     // Block Casings 14
+    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
 
     // Block Reinforced
     NaquadahReinforcedBlock

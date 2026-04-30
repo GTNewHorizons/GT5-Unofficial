@@ -32,6 +32,7 @@ public class MTEExothermicHearthGui extends MTEMultiBlockBaseGui<MTEExothermicHe
             new ToggleButton().syncHandler("pyrotheum")
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_ON)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_OFF)
-                .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.button.pyrotheum"))));
+                .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.text.button.pyrotheum.enabled")))
+                .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.text.button.pyrotheum.disabled"))));
     }
 }
