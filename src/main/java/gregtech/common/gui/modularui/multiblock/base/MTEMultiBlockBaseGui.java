@@ -78,6 +78,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.client.StructureErrorHighlightRenderer;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -342,7 +343,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
-                columns.child(error.createWidget());
+                columns.child(error.createWidget(this));
             }
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -354,6 +355,32 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(errorSyncer);
+    }
+
+    public IWidget createHighlightButton(int errX, int errY, int errZ) {
+        return new ButtonWidget<>().size(12, 12)
+            .marginRight(4)
+            .disableHoverBackground()
+            .background(IDrawable.EMPTY)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
+            .onMousePressed(d -> {
+                StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
+                net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft
+                    .getMinecraft().thePlayer;
+                if (player != null) {
+                    player.closeScreen();
+                    net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
+                    double dx = errX + 0.5 - eyePos.xCoord;
+                    double dy = errY + 0.5 - eyePos.yCoord;
+                    double dz = errZ + 0.5 - eyePos.zCoord;
+                    double distXZ = Math.sqrt(dx * dx + dz * dz);
+                    player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                    player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private IWidget createRecipeResultWidget() {
