@@ -938,7 +938,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 3, 16, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 3, 16, 0);
     }
 
     @Override

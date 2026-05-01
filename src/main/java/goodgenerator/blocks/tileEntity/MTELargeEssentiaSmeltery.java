@@ -114,15 +114,15 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_FIRST, itemStack, hintsOnly, 2, 2, 0);
         // default
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -1, itemStack, hintsOnly);
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -2, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -1);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -2);
         int len = itemStack.stackSize;
         if (len > MAX_CONFIGURABLE_LENGTH) len = MAX_CONFIGURABLE_LENGTH;
-        structureBuild_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 3, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LAST, itemStack, hintsOnly, 2, 2, -len - 3);
         while (len > 0) {
-            structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 2, itemStack, hintsOnly);
+            buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -len - 2);
             len--;
         }
     }

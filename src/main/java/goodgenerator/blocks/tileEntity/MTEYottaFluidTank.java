@@ -593,12 +593,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(YOTTANK_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
+        buildPiece(YOTTANK_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
-        structureBuild_EM(YOTTANK_TOP, 2, height + 2, 0, stackSize, hintsOnly);
+        buildPiece(YOTTANK_TOP, stackSize, hintsOnly, 2, height + 2, 0);
         while (height > 0) {
-            structureBuild_EM(YOTTANK_MID, 2, height, 0, stackSize, hintsOnly);
+            buildPiece(YOTTANK_MID, stackSize, hintsOnly, 2, height, 0);
             height--;
         }
     }

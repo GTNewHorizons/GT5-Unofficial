@@ -1127,7 +1127,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
     }
 
     private final Map<Fluid, Long> validFluidMap = new HashMap<>() {

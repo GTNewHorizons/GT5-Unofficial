@@ -208,7 +208,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 3, 4, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 3, 4);
     }
 
     @Override

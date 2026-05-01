@@ -323,7 +323,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 1, 0);
     }
 
     @Override

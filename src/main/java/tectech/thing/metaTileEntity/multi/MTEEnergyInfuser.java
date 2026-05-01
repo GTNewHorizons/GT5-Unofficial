@@ -372,7 +372,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 2, 0);
     }
 
     @Override

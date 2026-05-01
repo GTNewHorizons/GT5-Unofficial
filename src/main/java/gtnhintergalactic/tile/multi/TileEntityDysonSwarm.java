@@ -222,7 +222,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      *************/
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 10, 18, 3);
     }
 
     @Override

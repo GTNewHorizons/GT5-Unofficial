@@ -234,47 +234,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public abstract IStructureDefinition<? extends TTMultiblockBase> getStructure_EM();
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<TTMultiblockBase> getStructure_EM_Internal() {
-        return (IStructureDefinition<TTMultiblockBase>) getStructure_EM();
-    }
-
     @Override
-    public IStructureDefinition<TTMultiblockBase> getStructureDefinition() {
-        return getStructure_EM_Internal();
-    }
-
-    public final boolean structureCheck_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().check(
-            this,
-            piece,
-            baseMetaTileEntity.getWorld(),
-            getExtendedFacing(),
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            !mMachine);
-    }
-
-    public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-        ItemStack trigger, boolean hintsOnly) {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().buildOrHints(
-            this,
-            trigger,
-            piece,
-            baseMetaTileEntity.getWorld(),
-            getExtendedFacing(),
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            hintsOnly);
+    public final IStructureDefinition<TTMultiblockBase> getStructureDefinition() {
+        return (IStructureDefinition<TTMultiblockBase>) getStructure_EM();
     }
     // endregion
 

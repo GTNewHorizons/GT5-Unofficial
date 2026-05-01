@@ -255,7 +255,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        structureBuild_EM(MAIN_NAME, 23, 3, 40, itemStack, b);
+        buildPiece(MAIN_NAME, itemStack, b, 23, 3, 40);
     }
 
     @Override

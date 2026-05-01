@@ -127,7 +127,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 5, 11, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 5, 11, 0);
     }
 
     @Override

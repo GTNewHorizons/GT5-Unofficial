@@ -329,7 +329,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override

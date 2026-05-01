@@ -365,7 +365,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 5, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 2, 5, 0);
     }
 
     @Override

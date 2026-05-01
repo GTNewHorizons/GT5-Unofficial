@@ -515,16 +515,16 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
-        structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
+        buildPiece("front", stackSize, hintsOnly, 1, 2, 0);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, -1);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            structureBuild_EM("slice", 1, 2, offset--, stackSize, hintsOnly);
+            buildPiece("slice", stackSize, hintsOnly, 1, 2, offset--);
         }
 
-        structureBuild_EM("cap", 1, 2, offset--, stackSize, hintsOnly);
-        structureBuild_EM("back", 1, 2, offset, stackSize, hintsOnly);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, offset--);
+        buildPiece("back", stackSize, hintsOnly, 1, 2, offset);
     }
 
     @Override

@@ -242,7 +242,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 63, 14, 1);
         if (stackSize.stackSize > 1) {
             buildPiece(STRUCTURE_PIECE_SECOND_RING, stackSize, hintsOnly, 55, 11, -67);
         }

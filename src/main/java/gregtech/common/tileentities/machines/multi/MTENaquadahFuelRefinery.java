@@ -78,7 +78,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override

@@ -65,7 +65,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 7, 12, 1, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, 7, 12, 1);
     }
 
     @Override

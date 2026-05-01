@@ -83,7 +83,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 3, 7, 0, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, 3, 7, 0);
     }
 
     @Override

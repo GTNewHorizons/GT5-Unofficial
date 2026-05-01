@@ -282,7 +282,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
     }
 
     @Override

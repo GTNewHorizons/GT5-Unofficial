@@ -458,21 +458,21 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(
+        buildPiece(
             STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-            stackSize,
-            hintsOnly);
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET);
         if (isExtensionEnabled) {
-            structureBuild_EM(
+            buildPiece(
                 STRUCTURE_PIECE_EXTENDED,
+                stackSize,
+                hintsOnly,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
-                stackSize,
-                hintsOnly);
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
         }
     }
 

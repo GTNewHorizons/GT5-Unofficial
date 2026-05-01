@@ -138,7 +138,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 2, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
