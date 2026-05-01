@@ -805,7 +805,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
 
-        onStructureCheckFinished();
+        onStructureCheckFinished(iGregTechTileEntity);
 
         return mMachine;
     }

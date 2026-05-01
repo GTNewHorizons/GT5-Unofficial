@@ -514,7 +514,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         debugEnergyPresent = false;
     }
 
-    public boolean checkStructure(boolean aForceReset) {
+    public final boolean checkStructure(boolean aForceReset) {
         return checkStructure(aForceReset, getBaseMetaTileEntity());
     }
 
@@ -527,13 +527,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
             mMachine = structureErrors.isEmpty();
 
-            onStructureCheckFinished();
+            onStructureCheckFinished(aBaseMetaTileEntity);
         }
         mStructureChanged = false;
         return mMachine;
     }
 
-    protected void onStructureCheckFinished() {
+    /**
+     * For TT structure check to retrieve the structure error list
+     * The error list will be cleared upon calling
+     */
+    protected final boolean checkMachine_TT(IGregTechTileEntity aBaseMetaTileEntity) {
+        structureErrors.clear();
+        checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
+        return structureErrors.isEmpty();
+    }
+
+    protected void onStructureCheckFinished(IGregTechTileEntity aBaseMetaTileEntity) {
 
         // only run validation when the structure check passes, so that we don't confuse people
         if (mMachine) {

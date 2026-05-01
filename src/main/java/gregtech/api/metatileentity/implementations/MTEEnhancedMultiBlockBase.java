@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.StructureChecker;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooManyInputHatch;
@@ -223,12 +224,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    protected void onStructureCheckFinished() {
-        super.onStructureCheckFinished();
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
 
         StructureSize size = centerWalker.finish();
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (size != null) {
             this.center.set(size.centerX, size.centerY, size.centerZ);
@@ -335,10 +334,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
-    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
+    public final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
         List<StructureError> errors) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        StructureChecker checker = new StructureChecker(!mMachine, errors);
+        StructureChecker<MTEEnhancedMultiBlockBase<T>> checker = new StructureChecker<>(this, !mMachine, errors);
         getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),
@@ -745,42 +744,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
             int y, int z, int a, int b, int c) {
             structureStatus = StructureStatus.BLOCK_NOT_LOADED;
-            return false;
-        }
-    }
-
-    private class StructureChecker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
-
-        final boolean forced;
-        final List<StructureError> errors;
-        public boolean success = true;
-
-        StructureChecker(boolean forced, List<StructureError> errors) {
-            this.forced = forced;
-            this.errors = errors;
-        }
-
-        @Override
-        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
-            int a, int b, int c) {
-            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
-
-            if (!result) {
-                this.success = false;
-                errors.add(new WrongBlockError(x, y, z));
-            }
-
-            return result;
-        }
-
-        @Override
-        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
-            int y, int z, int a, int b, int c) {
-            if (forced) {
-                return visit(element, world, x, y, z, a, b, c);
-            }
-            this.success = false;
-            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
             return false;
         }
     }
