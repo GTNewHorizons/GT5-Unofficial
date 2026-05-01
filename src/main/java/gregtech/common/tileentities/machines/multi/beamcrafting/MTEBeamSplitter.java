@@ -28,7 +28,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -209,12 +208,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
-        if (mInputBeamline.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_BEAMLINE_INPUT);
-        }
-        if (mAdvancedOutputBeamline.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_BEAMLINE_OUTPUT);
-        }
     }
 
     @Override
