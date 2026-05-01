@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -47,8 +48,16 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
                     ? EnumChatFormatting.GREEN + translateToLocal("GT5U.gui.text.nac.module.status.connected")
                     : EnumChatFormatting.RED + translateToLocal("GT5U.gui.text.nac.module.status.disconnected"))
                 .asWidget());
+
+        // Standard status (running/idle/errors) is only meaningful when connected to the NAC,
+        // since the module's onPostTick is skipped when disconnected.
+        Flow statusWrapper = Flow.column()
+            .coverChildrenHeight(0)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .setEnabledIf(w -> connected.getBoolValue());
         super.createTerminalTextWidget(syncManager, parent).getChildren()
-            .forEach(widget::child);
+            .forEach(statusWrapper::child);
+        widget.child(statusWrapper);
 
         return widget;
     }
