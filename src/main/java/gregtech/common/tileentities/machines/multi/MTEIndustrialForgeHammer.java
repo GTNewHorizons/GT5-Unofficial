@@ -147,7 +147,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        solenoidLevel = null;
+        solenoidLevel = -1;
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 10
             && !mMufflerHatches.isEmpty();
     }
@@ -196,7 +196,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public int getMaxParallelRecipes() {
-        return (6 * (solenoidLevel == null ? 0 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (6 * (solenoidLevel == null ? 1 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
