@@ -19,7 +19,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,8 +48,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.MissingHatch;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;

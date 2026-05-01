@@ -37,10 +37,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.HatchElement;
-import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
-import gregtech.api.structure.error.StructureError;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -84,6 +80,9 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.HatchCountError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -398,7 +397,8 @@ public class MTEElectricImplosionCompressorLegacy
     }
 
     @Override
-    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         int pistonTier = this.mBlockTier;
         int mMaxHatchTier = 0;
         boolean isOK;

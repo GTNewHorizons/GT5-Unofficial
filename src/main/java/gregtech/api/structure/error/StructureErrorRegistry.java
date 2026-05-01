@@ -79,8 +79,10 @@ public class StructureErrorRegistry {
         "GT5U.gui.text.one_uncertainty_hatch");
     public static final StructureError MISSING_DATA_HATCH = new SimpleStructureError(
         "GT5U.gui.text.missing_data_hatch");
-    public static final StructureError COIL_LEVEL_NOT_ENOUGH = new SimpleStructureError("GT5U.gui.text.coil_level_not_enough");
-    public static final StructureError ENERGY_TIER_EXCEED_GLASS = new SimpleStructureError("GT5U.gui.text.coil_level_not_enough");
+    public static final StructureError COIL_LEVEL_NOT_ENOUGH = new SimpleStructureError(
+        "GT5U.gui.text.coil_level_not_enough");
+    public static final StructureError ENERGY_TIER_EXCEED_GLASS = new SimpleStructureError(
+        "GT5U.gui.text.coil_level_not_enough");
 
     static {
         register(new WrongBlockError(0, 0, 0));

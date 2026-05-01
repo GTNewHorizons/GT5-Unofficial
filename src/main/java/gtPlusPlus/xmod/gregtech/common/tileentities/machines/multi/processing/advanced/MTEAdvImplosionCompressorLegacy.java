@@ -12,7 +12,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import gregtech.api.structure.error.StructureError;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -27,14 +28,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.util.List;
 
 public class MTEAdvImplosionCompressorLegacy extends GTPPMultiBlockBase<MTEAdvImplosionCompressorLegacy>
     implements ISurvivalConstructable {

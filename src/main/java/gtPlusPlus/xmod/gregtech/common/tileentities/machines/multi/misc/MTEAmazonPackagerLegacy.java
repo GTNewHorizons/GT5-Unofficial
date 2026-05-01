@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.structure.error.StructureError;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -42,6 +41,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
