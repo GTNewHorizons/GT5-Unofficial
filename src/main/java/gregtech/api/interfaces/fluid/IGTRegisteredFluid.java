@@ -4,9 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 
 public interface IGTRegisteredFluid {
 
@@ -56,9 +56,7 @@ public interface IGTRegisteredFluid {
 
     IGTRegisteredFluid addLocalizedName();
 
-    IGTRegisteredFluid addLocalizedName(final Materials material);
-
-    IGTRegisteredFluid addLocalizedName(final Werkstoff werkstoff);
+    IGTRegisteredFluid addLocalizedName(final IOreMaterial material);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}
