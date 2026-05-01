@@ -19,10 +19,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -47,7 +45,7 @@ public class BlockBaseModular extends BasicBlock {
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
         this(
             material.getUnlocalizedName(),
-            material.getLocalizedName(),
+            material.getDefaultLocalName(),
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
@@ -55,8 +53,6 @@ public class BlockBaseModular extends BasicBlock {
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-        GTLanguageManager
-            .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", this.blockType.getProperName());
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -89,10 +85,8 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public void registerComponent() {
-        Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
 
         if (this.material == null) {
-            Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return;
         }
 
@@ -104,11 +98,9 @@ public class BlockBaseModular extends BasicBlock {
         final String key = getKey(this.blockType);
 
         if (map.containsKey(key)) {
-            Logger.MATERIALS("Tried to double register a material component.");
             return;
         }
 
-        Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
         map.put(key, new ItemStack(this));
     }
 
@@ -141,9 +133,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return String.format(
-            GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name"),
-            this.material.getTranslatedName());
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material);
     }
 
     @Override

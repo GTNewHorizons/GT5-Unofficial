@@ -110,6 +110,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .customOptional("iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
+    private int ticker = 1; // just increments and drains (amountToDrain) of the given
+
     private boolean staticAnimations = false;
     // spotless:off
 
@@ -397,6 +399,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
             .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
                 "Gains " + EnumChatFormatting.WHITE
@@ -455,7 +458,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Any Tiered Glass", 81, true)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
@@ -732,8 +735,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
 
-    private int ticker = 1; // just increments and drains (amountToDrain) of the given
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
@@ -793,11 +794,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return "Unset";
     }
 
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         staticAnimations = !staticAnimations;
-        GTUtility
-            .sendChatToPlayer(aPlayer, "Using " + (staticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        GTUtility.sendChatTrans(
+            aPlayer,
+            staticAnimations ? "GT5U.chat.spinmatron.texture.static" : "GT5U.chat.spinmatron.texture.animated");
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.mUsingAnimation = staticAnimations;
         }
@@ -867,6 +870,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
         }

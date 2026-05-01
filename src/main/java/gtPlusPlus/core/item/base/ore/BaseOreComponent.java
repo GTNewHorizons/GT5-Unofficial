@@ -25,9 +25,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -49,7 +47,7 @@ public class BaseOreComponent extends Item {
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getDefaultLocalName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -62,9 +60,7 @@ public class BaseOreComponent extends Item {
     }
 
     public boolean registerComponent() {
-        Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
         if (this.componentMaterial == null) {
-            Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return false;
         }
         // Register Component
@@ -87,16 +83,9 @@ public class BaseOreComponent extends Item {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS(
-                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: ["
-                    + aKey
-                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -116,25 +105,13 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (Client.tooltip.showFormula) {
-                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                        list.add(
-                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                    } else {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                    }
-                }
-                if (Client.tooltip.showRadioactiveText) {
-                    if (this.componentMaterial.isRadioactive) {
-                        list.add(
-                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
-                                + this.componentMaterial.vRadiationLevel);
-                    }
-                }
+                componentMaterial.addTooltips(list);
             } else {
-                String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+                    if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    }
                 }
             }
         }

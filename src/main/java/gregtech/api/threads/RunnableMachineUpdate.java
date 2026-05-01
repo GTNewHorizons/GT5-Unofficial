@@ -102,11 +102,12 @@ public class RunnableMachineUpdate implements Runnable {
                 posY = CoordinatePacker.unpackY(packedCoords);
                 posZ = CoordinatePacker.unpackZ(packedCoords);
 
-                final TileEntity tTileEntity;
-                final boolean isMachineBlock;
+                if (!world.blockExists(posX, posY, posZ)) {
+                    continue;
+                }
 
-                tTileEntity = world.getTileEntity(posX, posY, posZ);
-                isMachineBlock = GregTechAPI
+                final TileEntity tTileEntity = world.getTileEntity(posX, posY, posZ);
+                final boolean isMachineBlock = GregTechAPI
                     .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
 
                 // See if the block itself needs an update

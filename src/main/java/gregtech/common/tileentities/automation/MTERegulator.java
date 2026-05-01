@@ -218,4 +218,9 @@ public class MTERegulator extends MTEBuffer {
                         .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

@@ -28,7 +28,6 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -43,7 +42,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 public abstract class TileEntityModuleAssembler extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
     /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
@@ -254,6 +253,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }
@@ -272,6 +272,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .beginStructureBlock(1, 5, 2, false)
+                .addController("Front, 4th layer")
                 .addCasingInfoMin(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, false)
                 .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
@@ -331,6 +332,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }
@@ -408,6 +410,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         /**
          * @return Maximum parallels that this module allows
          */
+        @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
         }

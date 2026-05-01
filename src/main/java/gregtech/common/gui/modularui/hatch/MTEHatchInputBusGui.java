@@ -55,11 +55,6 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
                     "GT5U.machines.one_stack_limit.tooltip"));
     }
 
-    @Override
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager);
-    }
-
     private final int BUTTON_SIZE = 18;
 
     @Override

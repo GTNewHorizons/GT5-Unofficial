@@ -136,7 +136,8 @@ public class UpgradeTreePanel {
             .pos(upgrade.getTreeX(), upgrade.getTreeY())
             // skip background since the connector lines draw over the background layer
             // no matter the order widgets are added to the panel
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .overlay(new DynamicDrawable(() -> {
                 ForgeOfGodsData data = hypervisor.getData();
                 if (data.isUpgradeActive(upgrade)) {

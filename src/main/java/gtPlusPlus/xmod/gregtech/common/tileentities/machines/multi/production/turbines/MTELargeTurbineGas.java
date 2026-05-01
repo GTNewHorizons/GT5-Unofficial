@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -68,8 +67,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return 4000;
     }
 
-    @Override
-    public int getFuelValue(FluidStack aLiquid) {
+    private int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;
         }
@@ -174,18 +172,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public String getMachineType() {
-        return "Large Gas Turbine, XLGT";
+        return "Gas Turbine, XLGT";
     }
 
     @Override
@@ -198,8 +186,4 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return "Reinforced Gas Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return false;
-    }
 }

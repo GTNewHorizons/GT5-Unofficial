@@ -9,7 +9,9 @@ import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,13 +21,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,31 +33,30 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
+import gregtech.common.gui.modularui.hatch.MTEHatchRackGui;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEHatchRack extends MTEHatch {
 
     private static IIconContainer EM_R;
     private static IIconContainer EM_R_ACTIVE;
-    public int heat = 0;
+    private int heat = 0;
     private float overClock = 1, overVolt = 1;
     private static final Map<String, RackComponent> componentBinds = new HashMap<>();
+    public static final List<ItemStack> validRackItems = new ArrayList<>();
 
     private String clientLocale = "en_US";
 
@@ -129,6 +127,10 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @Override
     public int getInventoryStackLimit() {
         return 1;
+    }
+
+    public int getHeat() {
+        return Math.max(0, heat);
     }
 
     @Override
@@ -254,67 +256,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
                 + EnumChatFormatting.RESET };
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
-                .setSize(18, 18)
-                .setPos(151, 63));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK)
-                .setPos(46, 17)
-                .setSize(84, 60));
-
-        Pos2d[] positions = new Pos2d[] { new Pos2d(68, 27), new Pos2d(90, 27), new Pos2d(68, 49), new Pos2d(90, 49), };
-        for (int i = 0; i < positions.length; i++) {
-            builder.widget(new SlotWidget(new BaseSlot(inventoryHandler, i) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-
-                @Override
-                public boolean isEnabled() {
-                    return !getBaseMetaTileEntity().isActive() && heat <= 0;
-                }
-            }).setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_RACK)
-                .setPos(positions[i]));
-
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
-                    .setPos(152, 24)
-                    .setSize(16, 16))
-                .widget(
-                    new DrawableWidget()
-                        .setDrawable(
-                            () -> getBaseMetaTileEntity().isActive() ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
-                        .setPos(152, 24)
-                        .setSize(16, 16))
-                .widget(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> getBaseMetaTileEntity().isActive(),
-                        val -> getBaseMetaTileEntity().setActive(val)));
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
-                    .setPos(152, 41)
-                    .setSize(16, 16))
-                .widget(
-                    new DrawableWidget()
-                        .setDrawable(
-                            () -> heat > 0 ? TecTechUITextures.OVERLAY_BUTTON_HEAT_ON
-                                : TecTechUITextures.OVERLAY_BUTTON_HEAT_OFF)
-                        .setPos(152, 41)
-                        .setSize(16, 16))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> heat, val -> heat = val));
-        }
-    }
-
     public static void run() { // 20k heat cap max!
         new RackComponent(ItemList.Circuit_Crystalprocessor.get(1), 60, 56, -1f, 2000, true); // IV
         new RackComponent(ItemList.Circuit_Crystalcomputer.get(1), 80, 54, -1f, 2000, true); // LuV
@@ -347,6 +288,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1), 260, 12, -1f, 9500, true); // UMV
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1), 320, 10, -1f, 10000, true); // UXV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1), 360, 8, -1f, 10000, true); // MAX
         }
 
         if (OpenComputers.isModLoaded()) {
@@ -380,6 +322,8 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
                 .eut(0)
                 .fake()
                 .addTo(quantumComputerFakeRecipes);
+
+            MTEHatchRack.validRackItems.add(is);
         }
 
         RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,
@@ -408,5 +352,15 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             }
             return false;
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchRackGui(this).build(guiData, syncManager, uiSettings);
     }
 }

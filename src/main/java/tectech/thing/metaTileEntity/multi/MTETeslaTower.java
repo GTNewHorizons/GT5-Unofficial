@@ -618,6 +618,7 @@ public class MTETeslaTower extends TTMultiblockBase
             // the Tesla Capacitor
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
+            .addController("Front bottom center")
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
                 translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
@@ -739,11 +740,6 @@ public class MTETeslaTower extends TTMultiblockBase
         popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
         popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -1123,6 +1119,10 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     protected boolean useMui2() {
         return true;
     }

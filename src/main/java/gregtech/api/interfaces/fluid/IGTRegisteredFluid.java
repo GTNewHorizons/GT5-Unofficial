@@ -6,6 +6,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 
 public interface IGTRegisteredFluid {
 
@@ -52,6 +53,10 @@ public interface IGTRegisteredFluid {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid configureMaterials(final Materials material);
+
+    IGTRegisteredFluid addLocalizedName();
+
+    IGTRegisteredFluid addLocalizedName(final IOreMaterial material);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}

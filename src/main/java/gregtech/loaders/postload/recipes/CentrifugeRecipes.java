@@ -20,6 +20,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -29,6 +31,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -897,7 +901,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1))
             .duration(41 * SECONDS + 16 * TICKS)
@@ -928,11 +932,38 @@ public class CentrifugeRecipes implements Runnable {
 
         // From ProcessingSand
         GTValues.RA.stdBuilder()
-            .itemInputs(new OreDictItemStack("sandOil", 2), ItemList.Cell_Empty.get(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2), ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), new ItemStack(Blocks.sand, 1, 0))
             .duration(50 * SECONDS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
+        // Shijima and Churitsu recycling
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Shijima, 27))
+            .itemOutputs(
+                Materials.NetherStar.getDust(8),
+                Materials.Terbium.getDust(7),
+                MaterialsElements.getInstance().TECHNETIUM.getDust(4),
+                Materials.Dilithium.getDust(4),
+                Materials.Flerovium.getDust(3),
+                Materials.InfinityCatalyst.getDust(1))
+            .duration(60 * SECONDS)
+            .eut(122880)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Churitsu, 27))
+            .itemOutputs(
+                Materials.TinAlloy.getDust(8),
+                WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),
+                MaterialsAlloy.TRINIUM_NAQUADAH.getDust(4),
+                GGMaterial.adamantiumAlloy.get(OrePrefixes.dust, 4),
+                WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
+                MaterialsAlloy.QUANTUM.getDust(1))
+            .duration(60 * SECONDS)
+            .eut(122880)
+            .addTo(centrifugeRecipes);
     }
 }

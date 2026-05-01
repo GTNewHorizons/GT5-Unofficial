@@ -67,7 +67,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketTileEntity;
@@ -83,7 +82,7 @@ import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -93,9 +92,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
-    implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
-    IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
+public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IActionHost, IGridProxyable,
+    IAlignmentProvider, IConstructableProvider, IDebugableTileEntity, ICustomNameObject {
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
@@ -435,26 +433,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                                         .getPlayerEntityByName(mOwnerName),
                                                     "badweather");
                                             } catch (Exception ignored) {}
-                                            GTLog.exp.println(
-                                                "Machine at: " + this.getXCoord()
-                                                    + " | "
-                                                    + this.getYCoord()
-                                                    + " | "
-                                                    + this.getZCoord()
-                                                    + " DIMID: "
-                                                    + this.worldObj.provider.dimensionId
-                                                    + " explosion due to rain!");
+                                            GTLog
+                                                .writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
                                             doEnergyExplosion();
                                         } else {
-                                            GTLog.exp.println(
-                                                "Machine at: " + this.getXCoord()
-                                                    + " | "
-                                                    + this.getYCoord()
-                                                    + " | "
-                                                    + this.getZCoord()
-                                                    + " DIMID: "
-                                                    + this.worldObj.provider.dimensionId
-                                                    + "  set to Fire due to rain!");
+                                            GTLog.writeExplosionLog(
+                                                this,
+                                                this.getLocalName(),
+                                                "set to fire due to rain!");
                                             setOnFire();
                                         }
                                     }
@@ -471,15 +457,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                                     .getPlayerEntityByName(mOwnerName),
                                                 "badweather");
                                         } catch (Exception ignored) {}
-                                        GTLog.exp.println(
-                                            "Machine at: " + this.getXCoord()
-                                                + " | "
-                                                + this.getYCoord()
-                                                + " | "
-                                                + this.getZCoord()
-                                                + " DIMID: "
-                                                + this.worldObj.provider.dimensionId
-                                                + " explosion due to Thunderstorm!");
+                                        GTLog.writeExplosionLog(
+                                            this,
+                                            this.getLocalName(),
+                                            "explosion due to thunderstorm!");
                                         doEnergyExplosion();
                                     }
                                 }
@@ -1285,11 +1266,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     public void doEnergyExplosion() {
         if (getUniversalEnergyCapacity() > 0 && getUniversalEnergyStored() >= getUniversalEnergyCapacity() / 5) {
-            GTLog.exp.println(
-                "Energy Explosion, injected " + getUniversalEnergyStored()
-                    + "EU >= "
-                    + getUniversalEnergyCapacity() / 5D
-                    + "Capacity of the Machine!");
+            String reason = "Energy Explosion, injected " + getUniversalEnergyStored()
+                + "EU >= "
+                + getUniversalEnergyCapacity() / 5D
+                + "Capacity of the Machine!";
+            GTLog.writeExplosionLog(this, this.getLocalName(), reason);
 
             doExplosion(
                 oldOutput * (getUniversalEnergyStored() >= getUniversalEnergyCapacity() ? 4
@@ -1393,6 +1374,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
                 if (tCurrentItem != null) {
+                    final boolean isHardHammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList);
+                    final boolean isJackhammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList);
                     if (getColorization() >= 0
                         && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
                         tCurrentItem.func_150996_a(Items.bucket);
@@ -1427,7 +1410,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return true;
                     }
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)) {
+                    if (!hasCoverAtSide(effectiveSide) && (isHardHammer || isJackhammer)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (aPlayer.isSneaking()) {
                                 mInputDisabled = !mInputDisabled;
@@ -1549,7 +1532,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                             }
                             return true;
-                        } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
+                        } else if (isHardHammer || isJackhammer) {
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 if (effectiveSideCover.isValid()) {
@@ -1801,8 +1784,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             || getStoredEU() >= getEUCapacity()
             || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
         if (aVoltage > getInputVoltage()) {
-            GTLog.exp
-                .println("Energy Explosion, injected " + aVoltage + "EU/t in a " + getInputVoltage() + "EU/t Machine!");
+            GTLog.writeExplosionLog(
+                this.mMetaTileEntity,
+                "Energy Explosion, injected " + aVoltage + "EU/t in a " + getInputVoltage() + "EU/t Machine!");
             doExplosion(aVoltage);
             return 0;
         }
@@ -2250,7 +2234,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     protected int getCoverTabHeightOffset() {
-        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBlockBase<?> ? 32 : 0;
     }
 
     @Override

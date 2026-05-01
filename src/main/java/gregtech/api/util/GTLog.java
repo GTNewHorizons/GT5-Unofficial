@@ -3,8 +3,14 @@ package gregtech.api.util;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.common.config.Gregtech;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -15,9 +21,9 @@ public class GTLog {
 
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
-    public static PrintStream ore = new LogBuffer();
-    public static PrintStream exp = new LogBuffer();
-    public static PrintStream ico = new LogBuffer();
+    public static PrintStream ore = Gregtech.general.loggingOreDict ? new LogBuffer() : new VoidLogger();
+    public static PrintStream exp = new VoidLogger();
+    public static PrintStream ico = Gregtech.debug.logRegisterIcons ? new LogBuffer() : new VoidLogger();
     public static File mLogFile;
     public static File mOreDictLogFile;
     public static File mExplosionLog;
@@ -42,4 +48,73 @@ public class GTLog {
             lineBuffer.add(aString);
         }
     }
+
+    public static class VoidLogger extends PrintStream {
+
+        public VoidLogger() {
+            super(new OutputStream() {
+
+                @Override
+                public void write(int arg0) {
+                    /* Do nothing */
+                }
+            });
+        }
+
+        @Override
+        public void println(String aString) {
+            /* Do nothing */
+        }
+    }
+
+    public static void writeExplosionLog(String message) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentTime = LocalDateTime.now();
+        GTLog.exp.printf("[%s]: %s%n", currentTime.format(formatter), message);
+    }
+
+    public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,
+        String details) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentTime = LocalDateTime.now();
+        exp.printf(
+            "[%s] DIM %s (%d,%d,%d): %s (built by %s) %s%n",
+            currentTime.format(formatter),
+            dimension,
+            x,
+            y,
+            z,
+            blockName,
+            ownerName,
+            details);
+    }
+
+    public static void writeExplosionLog(IMetaTileEntity tileEntity, String details) {
+        if (tileEntity == null) {
+            writeExplosionLog(details);
+            return;
+        }
+        IGregTechTileEntity baseTileEntity = tileEntity.getBaseMetaTileEntity();
+        if (baseTileEntity == null) {
+            writeExplosionLog(details);
+            return;
+        }
+        writeExplosionLog(baseTileEntity, tileEntity.getLocalName(), details);
+    }
+
+    public static void writeExplosionLog(IGregTechTileEntity baseTileEntity, String name, String details) {
+        if (baseTileEntity != null) {
+            writeExplosionLog(
+                baseTileEntity.getWorld().provider.getDimensionName(),
+                baseTileEntity.getXCoord(),
+                baseTileEntity.getYCoord(),
+                baseTileEntity.getZCoord(),
+                name,
+                baseTileEntity.getOwnerName(),
+                details);
+        } else {
+            writeExplosionLog(details);
+        }
+    }
+
 }

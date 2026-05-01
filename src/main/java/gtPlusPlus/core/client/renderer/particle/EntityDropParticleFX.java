@@ -15,12 +15,6 @@ public class EntityDropParticleFX extends EntityFX {
     private int bobTimer;
 
     public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
-        float particleBlue) {
-
-        this(world, x, y, z, particleRed, particleGreen, particleBlue, -1);
-    }
-
-    public EntityDropParticleFX(World world, double x, double y, double z, float particleRed, float particleGreen,
         float particleBlue, int gravityMod) {
 
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);

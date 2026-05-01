@@ -50,14 +50,11 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 posY = CoordinatePacker.unpackY(packedCoords);
                 posZ = CoordinatePacker.unpackZ(packedCoords);
 
-                final TileEntity tTileEntity;
-
                 // we don't want to go over cables that are in unloaded chunks
-                if (world.blockExists(posX, posY, posZ)) {
-                    tTileEntity = world.getTileEntity(posX, posY, posZ);
-                } else {
-                    tTileEntity = null;
+                if (!world.blockExists(posX, posY, posZ)) {
+                    continue;
                 }
+                final TileEntity tTileEntity = world.getTileEntity(posX, posY, posZ);
 
                 // See if the block itself needs an update
                 if (tTileEntity instanceof IMachineBlockUpdateable)
