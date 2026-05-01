@@ -456,6 +456,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (mCasingAmount < 950) {
             errors.add(new TooFewCasings(mCasingAmount, 950));
         }
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
+        }
         // Allow only 1 energy hatch if laser/multiamp
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
