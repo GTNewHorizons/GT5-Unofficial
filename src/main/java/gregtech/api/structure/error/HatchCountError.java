@@ -3,6 +3,7 @@ package gregtech.api.structure.error;
 import java.io.IOException;
 
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -39,26 +40,42 @@ public record HatchCountError(ErrorType type, HatchElement hatch, int current, i
 
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
-        switch (type) {
+        return switch (type) {
             case TOO_FEW -> {
                 if (target == 1) {
-                    return IKey.lang("GT5U.gui.missing_hatch", hatch.getDisplayName())
+                    yield IKey.lang("GT5U.gui.missing_hatch", hatch.getDisplayName())
                         .asWidget();
                 } else {
-                    return IKey.lang("GT5U.gui.text.too_few_hatch", hatch.getDisplayName(), target, current)
+                    yield IKey.lang("GT5U.gui.text.too_few_hatch", hatch.getDisplayName(), target, current)
                         .asWidget();
                 }
             }
-            case NOT_MATCH -> {
-                return IKey.lang("GT5U.gui.text.not_match_hatch", target, hatch.getDisplayName())
-                    .asWidget();
+            case NOT_MATCH -> IKey.lang("GT5U.gui.text.not_match_hatch", target, hatch.getDisplayName())
+                .asWidget();
+            case TOO_MANY -> IKey.lang("GT5U.gui.text.too_many_hatch", hatch.getDisplayName(), target, current)
+                .asWidget();
+        };
+    }
+
+    @Override
+    public String getDisplayString() {
+        return switch (type) {
+            case TOO_FEW -> {
+                if (target == 1) {
+                    yield StatCollector.translateToLocalFormatted("GT5U.gui.missing_hatch", hatch.getDisplayName());
+                } else {
+                    yield StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.too_few_hatch",
+                        hatch.getDisplayName(),
+                        target,
+                        current);
+                }
             }
-            case TOO_MANY -> {
-                return IKey.lang("GT5U.gui.text.too_many_hatch", hatch.getDisplayName(), target, current)
-                    .asWidget();
-            }
-        }
-        return null;
+            case NOT_MATCH -> StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.not_match_hatch", target, hatch.getDisplayName());
+            case TOO_MANY -> StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.too_many_hatch", hatch.getDisplayName(), target, current);
+        };
     }
 
     @Override
