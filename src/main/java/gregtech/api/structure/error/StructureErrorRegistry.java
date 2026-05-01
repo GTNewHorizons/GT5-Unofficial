@@ -81,16 +81,17 @@ public class StructureErrorRegistry {
         "GT5U.gui.text.missing_data_hatch");
 
     static {
-        StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
-        StructureErrorRegistry.register(new TooFewCasings(0, 0));
-        StructureErrorRegistry.register(new MissingHatch(0, 0));
-        StructureErrorRegistry.register(new TooManyHatch(0, 0, 0));
-        StructureErrorRegistry.register(new SimpleStructureError(""));
-        StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
-        StructureErrorRegistry.register(new MissingOutputHatchDT(0));
-        StructureErrorRegistry.register(new TooManyInputHatch(0, 0));
-        StructureErrorRegistry.register(new GlassTierNotEnough(0));
-        StructureErrorRegistry.register(new HatchCountError(null, null, 0, 0));
+        register(new WrongBlockError(0, 0, 0));
+        register(new TooFewCasings(0, 0));
+        register(new MissingHatch(0, 0));
+        register(new TooManyHatch(0, 0, 0));
+        register(new SimpleStructureError(""));
+        register(new MissingStructureWrapperCasings(new NBTTagList()));
+        register(new MissingOutputHatchDT(0));
+        register(new TooManyInputHatch(0, 0));
+        register(new GlassTierNotEnough(0));
+        register(new HatchCountError(null, null, 0, 0));
+        register(new EnergyHatchTierTooLow(0, 0));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {

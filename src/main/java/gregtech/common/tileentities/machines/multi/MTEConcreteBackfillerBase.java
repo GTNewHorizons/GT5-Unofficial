@@ -39,6 +39,7 @@ import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -122,8 +123,9 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     protected abstract int getRadius();
 
     @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkOneEnergyHatch(errors);
     }
 
     @Override
