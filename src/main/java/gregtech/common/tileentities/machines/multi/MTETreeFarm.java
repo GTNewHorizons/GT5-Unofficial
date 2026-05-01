@@ -269,6 +269,11 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
     public boolean supportsBatchMode() {
         // Batch mode would not do anything, processing time is fixed at 100 ticks.
         return false;
