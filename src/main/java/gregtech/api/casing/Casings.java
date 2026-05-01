@@ -363,6 +363,12 @@ public enum Casings implements ICasing {
         () -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
     NanochipFirewallProjectionCasing(
         () -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
+    StrengthenedInanimateCasing
+        (()->GregTechAPI.sBlockCasings12,5,gt(16,5,5)),
+    PreciseStationaryCasing
+        (()->GregTechAPI.sBlockCasings12,6,gt(16,5,6)),
+    UltimateStaticCasing
+        (()->GregTechAPI.sBlockCasings12,7,gt(16,5,7)),
     VibrationSafeCasing
         (() -> GregTechAPI.sBlockCasings12, 9, gt(16, 5, 9)),
     AlchemicallyResistantThaumiumCasing
@@ -506,6 +512,9 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+
+
+    // Block Casings 14
 
     // Block Reinforced
     NaquadahReinforcedBlock
@@ -833,7 +842,7 @@ public enum Casings implements ICasing {
     ReinforcedEngineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     MolecularContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),
     HighVoltageCurrentCapacitor
         (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
     ParticleContainmentCasing

@@ -40,6 +40,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -110,46 +111,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return null;
     }
 
-    private static final IStructureDefinition<MTEElectricImplosionCompressor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEElectricImplosionCompressor>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            new String[][] {
-                { "               ", "F F         F F", "F F         F F", "F F         F F", "F F         F F",
-                    "F F         F F", "               " },
-                { "F F         F F", "F F   FFF   F F", "FBF  FFAFF  FBF", "FBF  AAAAA  FBF", "FBF  FFAFF  FBF",
-                    "F F   F~F   F F", "F F         F F" },
-                { "F F         F F", "FBF  FFCFF  FBF", "F FFFEEEEEFFF F", "F FAA     AAF F", "F FFFEEEEEFFF F",
-                    "FBF  FFCFF  FBF", "F F         F F" },
-                { "F F         F F", "FBFFFFCCCFFFFBF", "F FBBBEDEBBBF F", "F F         F F", "F FBBBEDEBBBF F",
-                    "FBFFFFCCCFFFFBF", "F F         F F" },
-                { "F F         F F", "FBF  FFCFF  FBF", "F FFFEEEEEFFF F", "F FAA     AAF F", "F FFFEEEEEFFF F",
-                    "FBF  FFCFF  FBF", "F F         F F" },
-                { "F F         F F", "F F   FFF   F F", "FBF  FFAFF  FBF", "FBF  AAAAA  FBF", "FBF  FFAFF  FBF",
-                    "F F   FFF   F F", "F F         F F" },
-                { "               ", "F F         F F", "F F         F F", "F F         F F", "F F         F F",
-                    "F F         F F", "               " } })
-        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('B', Casings.RobustTungstenSteelMachineCasing.asElement())
-        .addElement('C', Casings.PTFEPipeCasing.asElement())
-        .addElement('D', ofFrame(Materials.Naquadah))
-        .addElement(
-            'E',
-            GTStructureChannels.EIC_PISTON.use(
-                StructureUtility.ofBlocksTiered(
-                    MTEElectricImplosionCompressor::getTierBlock,
-                    getTierBlockList(),
-                    -1,
-                    (t, m) -> t.pistonTier = m,
-                    t -> t.pistonTier)))
-        .addElement(
-            'F',
-            buildHatchAdder(MTEElectricImplosionCompressor.class)
-                .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
-                .casingIndex(Casings.NaquadahReinforcedBlock.textureId)
-                .hint(1)
-                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.NaquadahReinforcedBlock.asElement())))
-        .build();
+    // Lazy allocation needed to fix piston tiers not appearing in NEI viewer
+    private static IStructureDefinition<MTEElectricImplosionCompressor> STRUCTURE_DEFINITION = null;
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -170,6 +133,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addInfo("Energy Hatch Tier is limited by Glass Tier")
+            .addInfo(
+                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
+                    + "-glass unlocks all above energy tiers")
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(15, 7, 7, false)
@@ -193,6 +160,48 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public IStructureDefinition<MTEElectricImplosionCompressor> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEElectricImplosionCompressor>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] {
+                        { "               ", "F F         F F", "F F         F F", "F F         F F", "F F         F F",
+                            "F F         F F", "               " },
+                        { "F F         F F", "F F   FFF   F F", "FBF  FFAFF  FBF", "FBF  AAAAA  FBF", "FBF  FFAFF  FBF",
+                            "F F   F~F   F F", "F F         F F" },
+                        { "F F         F F", "FBF  FFCFF  FBF", "F FFFEEEEEFFF F", "F FAA     AAF F", "F FFFEEEEEFFF F",
+                            "FBF  FFCFF  FBF", "F F         F F" },
+                        { "F F         F F", "FBFFFFCCCFFFFBF", "F FBBBEDEBBBF F", "F F         F F", "F FBBBEDEBBBF F",
+                            "FBFFFFCCCFFFFBF", "F F         F F" },
+                        { "F F         F F", "FBF  FFCFF  FBF", "F FFFEEEEEFFF F", "F FAA     AAF F", "F FFFEEEEEFFF F",
+                            "FBF  FFCFF  FBF", "F F         F F" },
+                        { "F F         F F", "F F   FFF   F F", "FBF  FFAFF  FBF", "FBF  AAAAA  FBF", "FBF  FFAFF  FBF",
+                            "F F   FFF   F F", "F F         F F" },
+                        { "               ", "F F         F F", "F F         F F", "F F         F F", "F F         F F",
+                            "F F         F F", "               " } })
+                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement('B', Casings.RobustTungstenSteelMachineCasing.asElement())
+                .addElement('C', Casings.PTFEPipeCasing.asElement())
+                .addElement('D', ofFrame(Materials.Naquadah))
+                .addElement(
+                    'E',
+                    GTStructureChannels.EIC_PISTON.use(
+                        StructureUtility.ofBlocksTiered(
+                            MTEElectricImplosionCompressor::getTierBlock,
+                            getTierBlockList(),
+                            -1,
+                            (t, m) -> t.pistonTier = m,
+                            t -> t.pistonTier)))
+                .addElement(
+                    'F',
+                    buildHatchAdder(MTEElectricImplosionCompressor.class)
+                        .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
+                        .casingIndex(Casings.NaquadahReinforcedBlock.textureId)
+                        .hint(1)
+                        .buildAndChain(
+                            onElementPass(x -> ++x.casingAmount, Casings.NaquadahReinforcedBlock.asElement())))
+                .build();
+        }
         return STRUCTURE_DEFINITION;
     }
 
@@ -222,7 +231,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
         for (MTEHatch hatch : energyHatches) {
-            if (glassTier < hatch.mTier) {
+            if (glassTier < VoltageIndex.UMV && hatch.mTier > glassTier) {
                 return false;
             }
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
