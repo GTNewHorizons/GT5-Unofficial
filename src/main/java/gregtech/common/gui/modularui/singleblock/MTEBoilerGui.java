@@ -82,9 +82,10 @@ public class MTEBoilerGui {
             .coverChildren()
             .childIf(base.doesAddAshSlot(), () -> base.createAshSlot())
             .child(
-                new GTProgressWidget().value(
-                    new DoubleSyncValue(
-                        () -> base.mProcessingEnergy > 0 ? Math.max((float) base.mProcessingEnergy / 1000, 1f / 5) : 0))
+                new GTProgressWidget()
+                    .value(
+                        new DoubleSyncValue(
+                            () -> base.mFuelMaxEnergy > 0 ? (float) base.mProcessingEnergy / base.mFuelMaxEnergy : 0))
                     .direction(ProgressWidget.Direction.UP)
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
                     .size(14)
