@@ -71,6 +71,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.*;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -858,56 +859,43 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
 
         spacetimeCompressionFieldMetadata = -1;
         timeAccelerationFieldMetadata = -1;
         stabilisationFieldMetadata = -1;
 
         // Check structure of multi.
-        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 16, 0, errors)) return;
 
         // Make sure there are no Crafting Input Buffers/Buses/Slaves.
         if (!mDualInputHatches.isEmpty()) {
-            return false;
+            errors.add(new SimpleStructureError("GT5U.gui.text.crib_not_allowed"));
         }
 
-        // Check if there are output busses
-        if (mOutputBusses.isEmpty()) {
-            return false;
-        }
+        // Check if there are output buses
+        checkHasOutputBus(errors);
 
         // Check if there is 1 output hatch
-        if (mOutputHatches.size() != 1) {
-            return false;
-        }
+        checkOneOutputHatch(errors);
 
         // Check there is 1 input bus, and it is not a stocking input bus.
         {
             if (mInputBusses.size() != 1) {
-                return false;
-            }
-
-            if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
-                return false;
+                errors.add(new HatchCountError(ErrorType.NOT_MATCH, InputBus, mInputBusses.size(), 1));
+            } else if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
+                errors.add(new SimpleStructureError("GT5U.gui.text.stocking_input_bus_not_allowed"));
             }
         }
 
         // Make sure there are no energy hatches.
-        {
-            if (!mEnergyHatches.isEmpty()) {
-                return false;
-            }
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                return false;
-            }
+        if (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
         }
 
         // Make sure there are 2 input hatches.
-        return mInputHatches.size() == 2;
+        checkHatchExact(errors, InputHatch, 2);
     }
 
     private boolean animationsEnabled = true;

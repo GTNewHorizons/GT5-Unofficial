@@ -7,13 +7,11 @@ import net.minecraft.world.World;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.WrongBlockError;
 
-public class StructureChecker<T>
-    implements IStructureWalker<T> {
+public class StructureChecker<T> implements IStructureWalker<T> {
 
     T instance;
     final boolean forced;
@@ -27,8 +25,7 @@ public class StructureChecker<T>
     }
 
     @Override
-    public boolean visit(IStructureElement<T> element, World world, int x, int y, int z,
-        int a, int b, int c) {
+    public boolean visit(IStructureElement<T> element, World world, int x, int y, int z, int a, int b, int c) {
         boolean result = element.check(instance, world, x, y, z);
 
         if (!result) {
@@ -40,8 +37,7 @@ public class StructureChecker<T>
     }
 
     @Override
-    public boolean blockNotLoaded(IStructureElement<T> element, World world, int x, int y,
-        int z, int a, int b, int c) {
+    public boolean blockNotLoaded(IStructureElement<T> element, World world, int x, int y, int z, int a, int b, int c) {
         if (forced) {
             return visit(element, world, x, y, z, a, b, c);
         }

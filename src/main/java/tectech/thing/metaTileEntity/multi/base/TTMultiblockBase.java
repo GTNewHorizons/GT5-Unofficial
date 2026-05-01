@@ -32,6 +32,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
@@ -85,6 +86,8 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -283,8 +286,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      *
      * @param iGregTechTileEntity - the tile entity
      * @param itemStack           - what is in the controller input slot
+     * @param errors              - add to this list if structure is invalid
      * @return is structure valid
      */
+    protected void checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkMachine_EM(iGregTechTileEntity, itemStack) && errors.isEmpty()) {
+            // Only add this if we do not emit any diagnostics.
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return false;
     }
@@ -802,12 +816,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * internal check machine
      */
     @Override
-    public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
-
-        onStructureCheckFinished(iGregTechTileEntity);
-
-        return mMachine;
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        checkMachine_EM(iGregTechTileEntity, itemStack, errors);
     }
 
     /**
@@ -928,13 +939,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (--mUpdate == 0 || --mStartUpCheck == 0
                 || cyclicUpdate()
                 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                clearHatches_EM();
+                clearHatches();
 
                 if (aBaseMetaTileEntity instanceof BaseTileEntity) {
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
 
-                checkMachine(aBaseMetaTileEntity, mInventory[1]);
+                mMachine = checkMachine_TT(aBaseMetaTileEntity);
+                onStructureCheckFinished(aBaseMetaTileEntity);
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]
@@ -1082,16 +1094,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mOutputFluids = null;
     }
 
-    protected void clearHatches_EM() {
-        mDualInputHatches.clear();
-        mInputHatches.clear();
-        mInputBusses.clear();
-        mOutputHatches.clear();
-        mOutputBusses.clear();
-        mDynamoHatches.clear();
-        mEnergyHatches.clear();
-        mMufflerHatches.clear();
-        mMaintenanceHatches.clear();
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
 
         for (MTEHatchDataConnector<?> hatch_data : validMTEList(eOutputData)) {
             hatch_data.id = -1;

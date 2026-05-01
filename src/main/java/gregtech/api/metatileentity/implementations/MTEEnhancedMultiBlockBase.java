@@ -36,13 +36,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.StructureChecker;
-import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooManyInputHatch;
-import gregtech.api.structure.error.WrongBlockError;
+import gregtech.api.structure.error.*;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
@@ -599,80 +597,79 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    protected final void checkHasInputBus(List<StructureError> errors) {
-        if (mInputBusses.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_BUS);
+    protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {
+        int count = (int) element.count(this);
+        if (count < min) {
+            errors.add(new HatchCountError(ErrorType.TOO_FEW, element, count, min));
         }
+    }
+
+    protected final void checkHatchExact(List<StructureError> errors, HatchElement element, int target) {
+        int count = (int) element.count(this);
+        if (count != target) {
+            errors.add(new HatchCountError(ErrorType.NOT_MATCH, element, count, target));
+        }
+    }
+
+    protected final void checkHatchMax(List<StructureError> errors, HatchElement element, int max) {
+        int count = (int) element.count(this);
+        if (count > max) {
+            errors.add(new HatchCountError(ErrorType.TOO_MANY, element, count, max));
+        }
+    }
+
+    protected final void checkCasingMin(List<StructureError> errors, int current, int required) {
+        if (current < required) {
+            errors.add(new TooFewCasings(current, required));
+        }
+    }
+
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputBus, 1);
     }
 
     protected final void checkHasOutputBus(List<StructureError> errors) {
-        if (mOutputBusses.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_BUS);
-        }
+        checkHatchMin(errors, HatchElement.OutputBus, 1);
     }
 
     protected final void checkHasInputHatch(List<StructureError> errors) {
-        if (mInputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
-        }
+        checkHatchMin(errors, HatchElement.InputHatch, 1);
     }
 
     protected final void checkMaxInputHatch(int limit, List<StructureError> errors) {
-        if (mInputHatches.size() > limit) {
-            errors.add(new TooManyInputHatch(mInputHatches.size(), limit));
-        }
+        checkHatchMax(errors, HatchElement.InputHatch, limit);
     }
 
     protected final void checkHasOutputHatch(List<StructureError> errors) {
-        if (mOutputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
-        }
+        checkHatchMin(errors, HatchElement.OutputHatch, 1);
     }
 
     protected final void checkOneOutputHatch(List<StructureError> errors) {
-        checkHasOutputHatch(errors);
-        if (mOutputHatches.size() > 1) {
-            errors.add(StructureErrorRegistry.TOO_MANY_OUTPUT_HATCH);
-        }
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
     }
 
     protected final void checkHasEnergyHatch(List<StructureError> errors) {
-        if (mEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
+        checkHatchMin(errors, HatchElement.Energy, 1);
     }
 
     protected final void checkOneEnergyHatch(List<StructureError> errors) {
-        checkHasEnergyHatch(errors);
-        if (mEnergyHatches.size() > 1) {
-            errors.add(StructureErrorRegistry.TOO_MANY_ENERGY_HATCH);
-        }
+        checkHatchExact(errors, HatchElement.Energy, 1);
     }
 
     protected final void checkHasMufflerHatch(List<StructureError> errors) {
-        if (mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
+        checkHatchMin(errors, HatchElement.Muffler, 1);
     }
 
     protected final void checkOneMufflerHatch(List<StructureError> errors) {
-        checkHasMufflerHatch(errors);
-        if (mMufflerHatches.size() > 1) {
-            errors.add(StructureErrorRegistry.TOO_MANY_MUFFLER);
-        }
+        checkHatchExact(errors, HatchElement.Muffler, 1);
     }
 
     protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHatchMin(errors, HatchElement.Maintenance, 1);
     }
 
     protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
-        checkHasMaintenanceHatch(errors);
-        if (mMaintenanceHatches.size() > 1) {
-            errors.add(StructureErrorRegistry.TOO_MANY_MAINTENANCE);
-        }
+        checkHatchExact(errors, HatchElement.Maintenance, 1);
     }
 
     public static class StructureSize {

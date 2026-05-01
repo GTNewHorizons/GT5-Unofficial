@@ -534,7 +534,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * For TT structure check to retrieve the structure error list
+     * For TT structure check to retrieve the structure error list, don't use this everywhere else
      * The error list will be cleared upon calling
      */
     protected final boolean checkMachine_TT(IGregTechTileEntity aBaseMetaTileEntity) {

@@ -188,26 +188,27 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      * Checks if the given piece exists at the given offset. The offset's coordinate system is in multi space, not world
      * space.
      */
-    public void checkStructure(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
+    public boolean checkStructure(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
         ensureStructureLoaded();
 
         if (!GTValues.DEVENV) {
-            checkStructureImpl(instance, piece, pieceOffset, errors);
+            return checkStructureImpl(instance, piece, pieceOffset, errors);
         } else {
             try {
-                checkStructureImpl(instance, piece, pieceOffset, errors);
+                return checkStructureImpl(instance, piece, pieceOffset, errors);
             } catch (NoSuchMethodError e) {
                 GTMod.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
 
                 loadStructure();
 
-                checkStructureImpl(instance, piece, pieceOffset, errors);
+                return checkStructureImpl(instance, piece, pieceOffset, errors);
             }
         }
     }
 
-    private void checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
+    private boolean checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
+        StructureChecker<MTE> checker = new StructureChecker<>(instance, !instance.mMachine, errors);
         structureDefinition.iterate(
             piece,
             tTile.getWorld(),
@@ -218,7 +219,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
             controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
             controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
-            new StructureChecker<>(instance, !instance.mMachine, errors));
+            checker);
+        return checker.success;
     }
 
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly) {

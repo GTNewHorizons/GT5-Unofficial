@@ -6,6 +6,7 @@ package gregtech.api.enums;
 public enum StructureErrorId {
     WRONG_BLOCK,
     BLOCK_NOT_LOADED,
+    HATCH_COUNT_ERROR,
     MISSING_MAINTENANCE,
     TOO_MANY_MAINTENANCE,
     MISSING_INPUT_BUS,

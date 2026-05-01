@@ -261,8 +261,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mYottaHatch.clear();
     }
 

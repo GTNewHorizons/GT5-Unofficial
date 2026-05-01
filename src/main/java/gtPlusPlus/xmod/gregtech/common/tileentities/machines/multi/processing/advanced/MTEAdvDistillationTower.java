@@ -62,6 +62,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.MissingOutputHatchDT;
 import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -276,7 +277,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             errors.add(new SimpleStructureError("GT5U.gui.text.dangote_missing_top"));
         }
         if (mHeight == 1) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         checkHatch(errors);
         if (!errors.isEmpty()) return;

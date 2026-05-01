@@ -14,7 +14,6 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -216,10 +215,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     @Override
-    protected void clearHatches_EM() {
+    public void clearHatches() {
         resetDataHatches();
 
-        super.clearHatches_EM();
+        super.clearHatches();
 
         this.length = 0;
 
@@ -227,20 +226,24 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
 
-        if (!structure.checkStructure(this, STRUCTURE_SHAPE_FIRST, offset)) return false;
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_FIRST, offset, errors)) return;
 
         offset = offset.add(inc);
 
-        while (length < MAX_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset)) {
+        while (length < MAX_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset, errors)) {
             length++;
             offset = offset.add(inc);
         }
 
-        if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset)) return false;
+        // This structure check is such a hack and should probably be rewritten in the style of assembly lines.
+        errors.clear();
+
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset, errors)) return;
 
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             output.allowComputationConfiguring = true;
@@ -256,13 +259,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         GTDataUtils.dedupList(eDynamoMulti);
         GTDataUtils.dedupList(eInputData);
         GTDataUtils.dedupList(eOutputData);
-
-        return true;
-    }
-
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
 
         structureInstanceInfo.validate(errors);
     }

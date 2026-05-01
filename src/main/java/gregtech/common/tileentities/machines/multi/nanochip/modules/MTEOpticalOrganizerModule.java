@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -142,7 +143,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         if (!errors.isEmpty()) return;
         checkHasInputHatch(errors);
-        checkMaxInputHatch(2, errors);
+        checkHatchMax(errors, HatchElement.InputHatch, 2);
     }
 
     @Override

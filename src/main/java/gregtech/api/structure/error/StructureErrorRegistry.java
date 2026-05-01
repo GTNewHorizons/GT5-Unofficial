@@ -69,6 +69,12 @@ public class StructureErrorRegistry {
         StructureErrorId.MISSING_BEAMLINE_OUTPUT,
         "GT5U.gui.text.no_beamline_output");
 
+    public static final StructureError NO_ENERGY_HATCH_NEEDED = new SimpleStructureError(
+        "GT5U.gui.text.energy_hatch_not_needed");
+    public static final StructureError TOO_SHORT_HEIGHT = new SimpleStructureError("GT5U.gui.text.too_short_height");
+    public static final StructureError TOO_SHORT_LENGTH = new SimpleStructureError("GT5U.gui.text.too_short_length");
+    public static final StructureError TOO_LONG = new SimpleStructureError("GT5U.gui.text.too_long");
+
     static {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
         StructureErrorRegistry.register(new TooFewCasings(0, 0));
@@ -79,6 +85,7 @@ public class StructureErrorRegistry {
         StructureErrorRegistry.register(new MissingOutputHatchDT(0));
         StructureErrorRegistry.register(new TooManyInputHatch(0, 0));
         StructureErrorRegistry.register(new GlassTierNotEnough(0));
+        StructureErrorRegistry.register(new HatchCountError(null, null, 0, 0));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {

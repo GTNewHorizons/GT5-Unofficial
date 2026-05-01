@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GGConfigLoader.*;
+import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.HatchCountError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -109,7 +113,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
                         buildHatchAdder(MTEMultiNqGenerator.class)
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
-                                    .or(gregtech.api.enums.HatchElement.Dynamo),
+                                    .or(Dynamo),
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
                                     .or(gregtech.api.enums.HatchElement.Energy),
                                 gregtech.api.enums.HatchElement.InputHatch,
@@ -330,9 +334,13 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1
-            && mDynamoHatches.size() + eDynamoMulti.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (checkPiece(mName, 3, 7, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
+        if (dynamoCount != 1) {
+            errors.add(new HatchCountError(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));
+        }
     }
 
     @Override
