@@ -18,6 +18,7 @@ import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record MissingStructureWrapperCasings(NBTTagList list) implements StructureError {
@@ -41,7 +42,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
     }
 
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
 
         Flow column = Flow.column()
             .coverChildrenHeight(0)
