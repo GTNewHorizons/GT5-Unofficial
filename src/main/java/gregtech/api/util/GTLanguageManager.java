@@ -422,10 +422,6 @@ public class GTLanguageManager {
             .getCurrentLanguage()
             .getLanguageCode();
         LanguageCode = userLang;
-        if (userLang.equals("en_US")) {
-            reloadLanguageWithEnglish(languageDir, languageMap);
-            return;
-        }
         String l10nFileName = "GregTech_" + userLang + ".lang";
         File l10nFile = new File(languageDir, l10nFileName);
         if (!l10nFile.isFile()) {

@@ -91,28 +91,17 @@ public class GTPreLoad {
                 .getCurrentLanguage()
                 .getLanguageCode();
             GTLanguageManager.LanguageCode = userLang;
-            GT_FML_LOGGER.info("User lang is " + userLang);
-            if (userLang.equals("en_US")) {
-                GT_FML_LOGGER.info("Loading GregTech.lang");
-                GTLanguageManager.isEN_US = true;
-                GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
+            String l10nFileName = "GregTech_" + userLang + ".lang";
+            File l10nFile = new File(languageDir, l10nFileName);
+            if (l10nFile.isFile()) {
+                GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
+                GTLanguageManager.sEnglishFile = new Configuration(l10nFile);
+                GTLanguageManager.sEnglishFile.load();
             } else {
-                String l10nFileName = "GregTech_" + userLang + ".lang";
-                File l10nFile = new File(languageDir, l10nFileName);
-                if (l10nFile.isFile()) {
-                    GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
-                    GTLanguageManager.sEnglishFile = new Configuration(l10nFile);
-                } else {
-                    GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
-                    GTLanguageManager.isEN_US = true;
-                    GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
-                }
+                GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", Loading GregTech.lang");
+                GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
             }
-        } else {
-            GTLanguageManager.isEN_US = true;
-            GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
         }
-        GTLanguageManager.sEnglishFile.load();
 
         Materials.getMaterialsMap()
             .values()
