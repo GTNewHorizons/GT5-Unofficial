@@ -3,6 +3,7 @@ package gtPlusPlus.core.handler.events;
 import java.util.ArrayList;
 
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,8 +57,14 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             }
         }
         if (aCountTotal > 0) {
-            GTUtility
-                .sendServerMessage(aCountTotal + " Shards of Dragons Blood have crystallized into a metallic form.");
+            final var message = new ChatComponentTranslation("GT5U.chat.dragon_blood_shards_dropped", aCountTotal);
+            GTUtility.sendMessageInRadius(
+                event.entityLiving.worldObj,
+                event.entityLiving.posX,
+                event.entityLiving.posY,
+                event.entityLiving.posZ,
+                150d,
+                message);
         }
     }
 

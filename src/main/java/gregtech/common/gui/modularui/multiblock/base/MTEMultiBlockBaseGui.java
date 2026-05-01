@@ -66,6 +66,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -75,9 +77,11 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.client.StructureErrorHighlightRenderer;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
@@ -342,7 +346,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .crossAxisAlignment(Alignment.CrossAxis.START);
 
             for (StructureError error : errors.getValue()) {
-                columns.child(error.createWidget());
+                // For now just skip these errors, they will be present in most multiblock and will cause confusion.
+                if (error == StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR) continue;
+                columns.child(error.createWidget(this));
             }
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
@@ -354,6 +360,36 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(errorSyncer);
+    }
+
+    public IWidget createHighlightButton(int errX, int errY, int errZ) {
+        return new ButtonWidget<>().size(12, 12)
+            .marginRight(4)
+            .disableHoverBackground()
+            .background(IDrawable.EMPTY)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
+            .onMousePressed(d -> {
+                highlightAndFaceBlock(errX, errY, errZ);
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void highlightAndFaceBlock(int errX, int errY, int errZ) {
+        StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
+        net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+        if (player != null) {
+            player.closeScreen();
+            net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
+            double dx = errX + 0.5 - eyePos.xCoord;
+            double dy = errY + 0.5 - eyePos.yCoord;
+            double dz = errZ + 0.5 - eyePos.zCoord;
+            double distXZ = Math.sqrt(dx * dx + dz * dz);
+            player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+            player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
+        }
     }
 
     private IWidget createRecipeResultWidget() {
@@ -386,7 +422,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             }
             return Flow.column()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .coverChildren()
+                .coverChildren(0)
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
         });
@@ -396,7 +432,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         fluidOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(0.85f)
-            .coverChildrenHeight()
+            .coverChildrenHeight(0)
             .syncHandler(recipeHandler);
 
     }
@@ -424,7 +460,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
-            .coverChildren();
+            .coverChildren(0);
 
         Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
@@ -476,7 +512,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
-            .coverChildren();
+            .coverChildren(0);
 
         // create merged map of fluidstack to total amount in recipe
         final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
