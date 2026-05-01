@@ -2079,6 +2079,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
+    @Override
+    public String getDefaultLocalName() {
+        return mDefaultLocalName;
+    }
+
     public String getDefaultLocalizedNameForItem(String aFormat) {
         return formatStringSafe(
             aFormat.replace("%s", "%temp")
