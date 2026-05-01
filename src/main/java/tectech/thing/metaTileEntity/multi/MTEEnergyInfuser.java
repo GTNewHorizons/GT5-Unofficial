@@ -36,7 +36,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
@@ -161,15 +160,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         if (!checkPiece("main", 1, 2, 0, errors)) return;
-        if (mInputBusses.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_BUS);
-        }
-        if (mOutputBusses.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_BUS);
-        }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

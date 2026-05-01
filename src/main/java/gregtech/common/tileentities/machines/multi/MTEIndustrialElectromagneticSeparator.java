@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -50,6 +51,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -246,24 +251,24 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mMagHatch = null;
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0)) return false;
-        if (mCasingAmount < MIN_CASING) return false;
-        if (mMagHatch == null) return false;
-
-        // If there are exotic hatches, ensure there is only 1.
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0, errors)) return;
+        if (mCasingAmount < MIN_CASING) errors.add(new TooFewCasings(mCasingAmount, MIN_CASING));
+        if (mMagHatch == null) errors.add(new SimpleStructureError("GT5U.gui.text.missing_magnet_hatch"));
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        } else {
+            checkHasEnergyHatch(errors);
         }
-
-        // All checks passed!
-        return true;
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

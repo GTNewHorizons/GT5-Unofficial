@@ -333,7 +333,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         if (mCasingAmount < 90) {
             errors.add(new TooFewCasings(mCasingAmount, 90));
         }
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     public boolean addColdFluidOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

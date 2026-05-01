@@ -48,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -172,12 +171,8 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         if (casingAmount < 160) {
             errors.add(new TooFewCasings(casingAmount, 160));
         }
-        if (mEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

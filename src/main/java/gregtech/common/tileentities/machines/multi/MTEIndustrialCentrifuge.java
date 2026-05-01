@@ -43,7 +43,6 @@ import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -231,12 +230,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         if (casingAmount < 6) {
             errors.add(new TooFewCasings(casingAmount, 6));
         }
-        if (mEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     private void updateTurbineOverlay() {

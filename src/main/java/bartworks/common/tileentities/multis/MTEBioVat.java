@@ -369,7 +369,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         }
 
         checkHasEnergyHatch(errors);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkOneOutputHatch(errors);
     }
 

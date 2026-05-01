@@ -15,7 +15,11 @@ import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -159,7 +163,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         }
         if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
         checkCasingMin(errors, mCasing, 24);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         if (mEssentiaOutputHatches.isEmpty()) {
             errors.add(new SimpleStructureError("GT5U.gui.text.missing_essentia_output_hatch"));

@@ -336,7 +336,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (checkPiece(mName, 3, 7, 0, errors)) return;
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
         if (dynamoCount != 1) {
             errors.add(new HatchCountError(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));

@@ -428,7 +428,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (!mOutputBusses.isEmpty()) {
                 // this is the output layer
                 checkHasEnergyHatch(errors);
-                checkOneMaintenanceHatch(errors);
+                checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
                     errors.add(new SimpleStructureError("GT5U.gui.text.al_too_many_data_access_hatch"));
                 }

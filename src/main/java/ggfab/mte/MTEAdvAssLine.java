@@ -259,7 +259,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
                     errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
                 }
-                checkOneMaintenanceHatch(errors);
+                checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
                     errors.add(new SimpleStructureError("GT5U.gui.text.al_too_many_data_access_hatch"));
                 }

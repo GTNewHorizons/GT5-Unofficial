@@ -38,7 +38,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -188,12 +187,8 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
         if (mCasingAmount < 14) {
             errors.add(new TooFewCasings(mCasingAmount, 14));
         }
-        if (mEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
