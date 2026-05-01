@@ -130,6 +130,7 @@ import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
+import gregtech.common.gui.mui1.StructureErrorMui1Compat;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -3570,11 +3571,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setEnabled(widget -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-        screenElements.widget(
             new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
@@ -3639,6 +3635,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+
+        handleStructureErrorsMui1(screenElements);
 
         screenElements.widget(
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
@@ -3715,6 +3713,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                     return false;
                 }));
+    }
+
+    // MUI1 structure error diagnostics compat - delete this block when MUI1 is removed
+    private void handleStructureErrorsMui1(DynamicPositionedColumn screenElements) {
+        final List<StructureError> mui1ClientErrors = new ArrayList<>();
+        final ChangeableWidget structureErrorsWidget = new ChangeableWidget(
+            () -> StructureErrorMui1Compat.getDynamicPositionedColumn(mui1ClientErrors));
+        structureErrorsWidget.setEnabled(widget -> !mMachine);
+        screenElements.widget(new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(structureErrors), val -> {
+            mui1ClientErrors.clear();
+            mui1ClientErrors.addAll(val);
+            structureErrorsWidget.notifyChangeNoSync();
+        }, StructureErrorMui1Compat::writeStructureError, StructureErrorMui1Compat::readStructureError))
+            .widget(structureErrorsWidget);
     }
 
     /**

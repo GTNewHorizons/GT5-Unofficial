@@ -38,6 +38,13 @@ public record GlassTierNotEnough(int requiredTier) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector.translateToLocalFormatted(
+            "GT5U.gui.text.glass_tier_not_enough",
+            gregtech.api.enums.GTValues.VN[requiredTier]);
+    }
+
+    @Override
     public StructureError copy() {
         return new GlassTierNotEnough(requiredTier);
     }

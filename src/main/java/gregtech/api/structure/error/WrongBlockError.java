@@ -45,6 +45,11 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block", x, y, z);
+    }
+
+    @Override
     public StructureError copy() {
         return new WrongBlockError(x, y, z);
     }
