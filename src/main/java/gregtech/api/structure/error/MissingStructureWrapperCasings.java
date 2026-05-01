@@ -74,7 +74,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                 Item.getItemById(tag.getInteger("casingId")),
                 1,
                 tag.getInteger("casingMeta"));
-            if (!sb.isEmpty()) sb.append('\n');
+            if (sb.length() > 0) sb.append('\n');
             sb.append(
                 GTUtility.translate(
                     "GT5U.gui.missing_casings_specific",
