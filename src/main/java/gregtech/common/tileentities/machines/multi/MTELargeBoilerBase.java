@@ -15,12 +15,22 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import gregtech.api.util.GTWaila;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -193,7 +203,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return efficiencyIncrease;
     }
 
-    boolean isSuperheated() {
+    public boolean isSuperheated() {
         return isSuperheated;
     }
 
@@ -319,7 +329,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
@@ -403,6 +413,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
+        this.efficiencyDecrease = 1;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -546,6 +557,51 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             env,
             false,
             true);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("incompleteStructure")) {
+            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+        }
+        String efficiency = RESET
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+        }
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            currentTip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.energy.produce_steam",
+                    formatNumber(-tag.getLong("energyUsage") * 40L / (isSuperheated() ? superToNormalSteam : 1)),
+                    isSuperheated() ? translateToLocal("GT5U.machines.large_boiler.gui.shsteam")
+                        : translateToLocal("GT5U.machines.large_boiler.gui.steam")));
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            currentTip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.energy.steam_to_eu",
+                    formatNumber(-actualEnergyUsage),
+                    GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+        }
+        currentTip.add(
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    this.getBaseMetaTileEntity()
+                        .getFrontFacing()
+                        .ordinal())));
+        // super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     @SideOnly(Side.CLIENT)

@@ -92,12 +92,7 @@ public class MTELargeBoilerTitaniumLegacy extends MTELargeBoiler {
     }
 
     @Override
-    public boolean isSuperheated() {
+    boolean isSuperheated() {
         return true;
-    }
-
-    @Override
-    public float getOverdriveMult() {
-        return 1.75F;
     }
 }
