@@ -599,6 +599,10 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_HIGHLIGHT_BLOCK = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/highlight_block");
+
     public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // MTEElectricAutoWorkbench#MAX_THROUGHPUT
         .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/throughput_" + i))
         .toArray(UITexture[]::new);

@@ -86,7 +86,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -179,12 +178,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -525,20 +522,14 @@ public class GTUtility {
         player.addChatComponentMessage(component);
     }
 
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(String message) {
-        sendServerMessage(new ChatComponentText(message));
-    }
-
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
+    public static void sendMessageInRadius(World world, double x, double y, double z, double range,
+        IChatComponent component) {
+        double distSq = range * range;
+        for (var player : world.playerEntities) {
+            if (player.getDistanceSq(x, y, z) <= distSq) {
+                player.addChatMessage(component);
+            }
+        }
     }
 
     /** Uses thread analysis, works on dedicated servers. */
@@ -836,6 +827,15 @@ public class GTUtility {
         }
     }
 
+    public static boolean cleanInventory(IMetaTileEntity imte, int start, int end) {
+        if (cleanInventory(wrapInventory(imte).subList(start, end))) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean cleanInventory(List<ItemStack> inv) {
         boolean didSomething = false;
 
@@ -1096,8 +1096,6 @@ public class GTUtility {
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
-        if (aFluid instanceof GTFluid gtFluid) return gtFluid.getLocalizedName();
-        if (aFluid instanceof FluidGT6 fluidGT6) return fluidGT6.getLocalizedName();
         return aFluid.getLocalizedName();
     }
 

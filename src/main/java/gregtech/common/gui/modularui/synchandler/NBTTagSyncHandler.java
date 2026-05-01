@@ -40,6 +40,7 @@ public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound> {
         if (setSource && this.setter != null) {
             this.setter.accept(value);
         }
+        onValueChanged();
         if (sync) {
             sync(0, this::write);
         }
