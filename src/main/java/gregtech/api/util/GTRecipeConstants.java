@@ -266,6 +266,12 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
 
     /**
+     * Prevents automatic generation of a non-cell multiblock variant from this recipe.
+     */
+    public static final RecipeMetadataKey<Boolean> SKIP_CELL_RECIPE_GENERATION = SimpleRecipeMetadataKey
+        .create(Boolean.class, "skip_cell_recipe_generation");
+
+    /**
      * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).
      */
     public static final RecipeMetadataKey<Integer> NO_GAS_CIRCUIT_CONFIG = SimpleRecipeMetadataKey
