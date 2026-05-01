@@ -179,7 +179,6 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
-        checkHasMaintenanceHatch(errors);
         checkHasOutputHatch(errors);
         checkHasInputHatch(errors);
     }
