@@ -128,14 +128,10 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
         maxPower = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1, errors)) return;
         maxPower = getMaximumOutput();
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
-        boolean needsMuffler = getPollutionPerTick(null) != 0;
-        if (needsMuffler && mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
-        if (!needsMuffler && !mMufflerHatches.isEmpty()) {
+        checkHasMaintenanceHatch(errors);
+        if (getPollutionPerTick(null) != 0) {
+            checkHasMufflerHatch(errors);
+        } else if (!mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
     }
