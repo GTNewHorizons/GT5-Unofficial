@@ -2,8 +2,6 @@ package gregtech.api.structure.error;
 
 import java.io.IOException;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -14,37 +12,31 @@ import gregtech.api.enums.StructureErrorId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
-public record MissingHatch(int itemId, int itemMeta) implements StructureError {
-
-    public MissingHatch(ItemStack stack) {
-        this(Item.getIdFromItem(stack.getItem()), stack.getItemDamage());
-    }
+public record SimpleStructureError(String langKey) implements StructureError {
 
     @Override
     public StructureErrorId getId() {
-        return StructureErrorId.MISSING_HATCH;
+        return StructureErrorId.SIMPLE_STRUCTURE_ERROR;
     }
 
     @Override
     public void serialize(PacketBuffer buffer) throws IOException {
-        buffer.writeInt(itemId);
-        buffer.writeInt(itemMeta);
+        buffer.writeStringToBuffer(langKey);
     }
 
     @Override
     public StructureError deserialize(PacketBuffer buffer) throws IOException {
-        return new MissingHatch(buffer.readInt(), buffer.readInt());
+        return new SimpleStructureError(buffer.readStringFromBuffer(32767));
     }
 
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
-        return IKey
-            .lang("GT5U.gui.missing_hatch", new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName())
+        return IKey.lang(langKey)
             .asWidget();
     }
 
     @Override
     public StructureError copy() {
-        return new MissingHatch(itemId, itemMeta);
+        return new SimpleStructureError(langKey);
     }
 }
