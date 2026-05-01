@@ -200,6 +200,7 @@ public class AcidRecipes {
                 .fluidOutputs(Materials.PoisonousSlurry.getFluid(2500L))
                 .eut(TierEU.RECIPE_EV)
                 .duration(10 * SECONDS)
+                .metadata(COIL_HEAT, 3050)
                 .addTo(blastFurnaceRecipes);
         }
         GTValues.RA.stdBuilder()
@@ -207,6 +208,7 @@ public class AcidRecipes {
             .fluidOutputs(Materials.ToxicSlurry.getFluid(1000L))
             .eut(TierEU.RECIPE_IV)
             .duration(4 * SECONDS)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
             .fluidInputs(
