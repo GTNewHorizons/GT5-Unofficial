@@ -776,8 +776,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return;
         }
         mode = mode.next();
-        // FIXME: localize the display mode.
-        GTUtility.sendChatToPlayer(aPlayer, String.join("", getDisplayMode(mode)));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"),
+            String.join("", getDisplayMode(mode)));
     }
 
     @Override
@@ -802,7 +804,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mode = ProcessingMode.fromOrdinal(aNBT.getInteger("machineMode"));
+        mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
         doesVoidStone = aNBT.getBoolean("doesVoidStone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
@@ -810,7 +812,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("machineMode", mode.ordinal());
+        aNBT.setInteger("mode", mode.ordinal());
         aNBT.setBoolean("doesVoidStone", doesVoidStone);
         aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
