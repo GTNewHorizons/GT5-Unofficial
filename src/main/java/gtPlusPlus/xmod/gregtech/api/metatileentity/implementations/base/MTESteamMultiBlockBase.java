@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -437,7 +438,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     public List<IOutputBus> getOutputBusses() {
         List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
-        for (MTEHatchSteamBusOutput outputBus : mSteamOutputs) {
+        for (MTEHatchOutputBus outputBus : mSteamOutputs) {
             if (outputBus.isValid()) output.add(outputBus);
         }
         return output;
