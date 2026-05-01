@@ -186,6 +186,9 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         if (mEnergyHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
         }
+        if (mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+        }
     }
 
     @Override
