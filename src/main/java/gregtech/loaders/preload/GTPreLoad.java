@@ -101,6 +101,8 @@ public class GTPreLoad {
                 GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", Loading GregTech.lang");
                 GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
             }
+        } else {
+            GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
         }
 
         Materials.getMaterialsMap()
