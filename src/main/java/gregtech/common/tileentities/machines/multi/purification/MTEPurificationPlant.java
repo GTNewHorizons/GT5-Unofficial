@@ -336,7 +336,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 if (aTick % CYCLE_TIME_TICKS == i) {
                     LinkedPurificationUnit unit = linkedUnits.get(i);
                     boolean structure = unit.metaTileEntity()
-                        .checkStructure(true);
+                        .checkStructure(true, aBaseMetaTileEntity);
                     // If unit was active but deformed, set as inactive
                     if (unit.isActive() && !structure) {
                         unit.setActive(false);

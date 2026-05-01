@@ -515,10 +515,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         debugEnergyPresent = false;
     }
 
-    public final boolean checkStructure(boolean aForceReset) {
-        return checkStructure(aForceReset, getBaseMetaTileEntity());
-    }
-
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
         if (!aBaseMetaTileEntity.isServerSide()) return mMachine;
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
