@@ -48,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.TooFewCasings;
@@ -292,7 +291,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
         if (mCasingAmount < 35) errors.add(new TooFewCasings(mCasingAmount, 35));
-        if (laserSource == null) errors.add(new SimpleStructureError("GT5U.gui.text.missing_laser_source"));
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return;
 
         if (!mExoticEnergyHatches.isEmpty()) {
