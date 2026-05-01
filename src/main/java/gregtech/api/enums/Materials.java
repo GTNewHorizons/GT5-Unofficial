@@ -971,6 +971,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StagnantWasteWater;
     public static Materials ActivatedWasteWater;
     public static Materials ChlorosulfonicAcid;
+    public static Materials PoisonousSlurry;
     // endregion
 
     // region Magic Materials
