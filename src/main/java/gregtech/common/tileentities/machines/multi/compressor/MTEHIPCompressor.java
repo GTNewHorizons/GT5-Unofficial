@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -469,8 +470,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    public int getHeatSensorHatchNum() {
-        return sensorHatches.size();
+    public List<MTEHeatSensor> getHeatSensorHatches() {
+        return Collections.unmodifiableList(sensorHatches);
     }
 
     @Override

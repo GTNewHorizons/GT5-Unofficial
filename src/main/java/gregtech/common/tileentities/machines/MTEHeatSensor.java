@@ -180,7 +180,8 @@ public class MTEHeatSensor extends MTEHatch {
 
         @Override
         public long count(IHeatProducer heatProducer) {
-            return heatProducer.getHeatSensorHatchNum();
+            return heatProducer.getHeatSensorHatches()
+                .size();
         }
 
         @Override
