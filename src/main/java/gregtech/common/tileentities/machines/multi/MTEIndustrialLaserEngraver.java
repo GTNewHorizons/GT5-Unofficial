@@ -48,6 +48,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -281,24 +285,25 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (mCasingAmount < 35) return false;
-        if (laserSource == null) return false;
-        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
+        if (mCasingAmount < 35) errors.add(new TooFewCasings(mCasingAmount, 35));
+        if (laserSource == null) errors.add(new SimpleStructureError("GT5U.gui.text.missing_laser_source"));
+        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return;
 
-        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) return false;
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        } else {
+            checkHasEnergyHatch(errors);
         }
-
-        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     private static String getUniqueIdentifier(ItemStack is) {

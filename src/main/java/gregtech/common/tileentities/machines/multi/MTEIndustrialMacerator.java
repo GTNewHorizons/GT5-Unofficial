@@ -52,6 +52,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -202,19 +204,22 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         structureTier = -1;
-        if (!checkPiece(getActiveStructurePiece(), getActiveOffsetX(), getActiveOffsetY(), getActiveOffsetZ()))
-            return false;
+        if (!checkPiece(getActiveStructurePiece(), getActiveOffsetX(), getActiveOffsetY(), getActiveOffsetZ(), errors))
+            return;
         if (controllerTier == 2) {
             structureTier = 2;
         } else structureTier = 1;
-        if (structureTier < 1 || (structureTier == 1 && casingAmount < 26)
-            || (structureTier == 2 && casingAmount < 69)
-            || !checkHatch()) return false;
-        updateHatchTexture();
-        return true;
+        int minCasings = structureTier == 2 ? 69 : 26;
+        if (casingAmount < minCasings) errors.add(new TooFewCasings(casingAmount, minCasings));
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (errors.isEmpty()) updateHatchTexture();
     }
 
     protected void updateHatchTexture() {
@@ -226,11 +231,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         for (MTEHatch h : mMaintenanceHatches) h.updateTexture(textureID);
         for (MTEHatch h : mMufflerHatches) h.updateTexture(textureID);
         for (MTEHatch h : mEnergyHatches) h.updateTexture(textureID);
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mOutputBusses.isEmpty()
-            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
     }
 
     @Override

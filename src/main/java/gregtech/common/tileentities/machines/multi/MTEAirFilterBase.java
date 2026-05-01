@@ -61,7 +61,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
@@ -147,12 +146,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
-        if (mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
-        if (mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
-        }
+        checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
