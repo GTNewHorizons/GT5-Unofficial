@@ -62,6 +62,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -510,41 +512,43 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         boolean isMachineValid = true;
         mProjectModuleHatches.clear();
         elevatorCable = null;
         motorTier = 0;
         // Check structure
-        if (!structureCheck_EM(
+        if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET)) {
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
+            errors)) {
             if (elevatorCable != null) {
                 elevatorCable.setShouldRender(false);
             }
-            return false;
+            return;
         }
         if (motorTier > 2 && isExtensionEnabled) {
-            if (!structureCheck_EM(
+            if (!checkPiece(
                 STRUCTURE_PIECE_EXTENDED,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET)) {
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                errors)) {
                 if (elevatorCable != null) {
                     elevatorCable.setShouldRender(false);
                 }
-                return false;
+                return;
             }
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
-        isMachineValid = ElevatorUtil.getModuleSlotsUnlocked(motorTier) >= mProjectModuleHatches.size();
+        if (ElevatorUtil.getModuleSlotsUnlocked(motorTier) < mProjectModuleHatches.size()) {
+            errors.add(new SimpleStructureError("GT5U.gui.text.spelv_module_exceed"));
+        }
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(isMachineValid);
-            return isMachineValid;
         }
-        return isMachineValid;
     }
 
     /**

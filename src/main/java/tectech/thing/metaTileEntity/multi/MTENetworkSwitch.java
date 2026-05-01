@@ -10,6 +10,7 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.OutputData;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +35,7 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -117,8 +119,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        structure.checkStructure(this, errors);
     }
 
     @Override

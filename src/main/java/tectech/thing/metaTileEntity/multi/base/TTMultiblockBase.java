@@ -32,7 +32,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
@@ -280,28 +279,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // endregion
 
     // region METHODS TO OVERRIDE - general functionality, recipe check, output
-
-    /**
-     * Check structure here, also add hatches
-     *
-     * @param iGregTechTileEntity - the tile entity
-     * @param itemStack           - what is in the controller input slot
-     * @param errors              - add to this list if structure is invalid
-     * @return is structure valid
-     */
-    protected void checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
-        List<StructureError> errors) {
-        if (!checkMachine_EM(iGregTechTileEntity, itemStack) && errors.isEmpty()) {
-            // Only add this if we do not emit any diagnostics.
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
-    }
-
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return false;
-    }
 
     /**
      * Checks Recipes (when all machine is complete and can work)
@@ -811,15 +788,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // endregion
 
     // region internal
-
-    /**
-     * internal check machine
-     */
-    @Override
-    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
-        List<StructureError> errors) {
-        checkMachine_EM(iGregTechTileEntity, itemStack, errors);
-    }
 
     /**
      * internal check recipe
@@ -1943,6 +1911,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
     // endregion
+
+    protected final void checkOneUncertaintyHatch(List<StructureError> errors) {
+        if (eUncertainHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.ONE_UNCERTAINTY_HATCH);
+        }
+    }
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> classicHatches(int casingIndex, int dot,
         Block casingBlock, int casingMeta) {

@@ -56,6 +56,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.GlassTierNotEnough;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -267,26 +270,34 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mStorage = BigInteger.ZERO;
         glassTier = -1;
         maxCell = 0;
-        if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
+        if (!checkPiece(YOTTANK_BOTTOM, 2, 0, 0, errors)) return;
         int cnt = 0;
-        while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
+        while (checkPiece(YOTTANK_MID, 2, cnt + 1, 0, errors)) {
             cnt++;
         }
-        if (cnt > 15 || cnt < 1) return false;
-        if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
-        // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
-        if (maxCell + 3 <= glassTier) {
-            if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
-            if (mFluid == null) {
-                mStorageCurrent = BigInteger.ZERO;
-            }
-            return true;
+        errors.clear();
+        if (cnt > 15) {
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
-        return false;
+        if (cnt < 1) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
+        // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
+        if (maxCell + 3 > glassTier) {
+            errors.add(new GlassTierNotEnough(maxCell + 3));
+        }
+        if (!errors.isEmpty()) return;
+        if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
+        if (mFluid == null) {
+            mStorageCurrent = BigInteger.ZERO;
+        }
     }
 
     @Override

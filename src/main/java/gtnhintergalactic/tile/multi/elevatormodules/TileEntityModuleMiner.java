@@ -59,6 +59,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -1163,10 +1164,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
-            return false;
-        }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
         if (wasFilterModified) {
             wasFilterModified = false;
             generateOreConfigurationList();
@@ -1178,7 +1178,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
-        return true;
     }
 
     @Override

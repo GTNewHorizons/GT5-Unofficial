@@ -74,6 +74,11 @@ public class StructureErrorRegistry {
     public static final StructureError TOO_SHORT_HEIGHT = new SimpleStructureError("GT5U.gui.text.too_short_height");
     public static final StructureError TOO_SHORT_LENGTH = new SimpleStructureError("GT5U.gui.text.too_short_length");
     public static final StructureError TOO_LONG = new SimpleStructureError("GT5U.gui.text.too_long");
+    public static final StructureError TOO_TALL = new SimpleStructureError("GT5U.gui.text.too_tall");
+    public static final StructureError ONE_UNCERTAINTY_HATCH = new SimpleStructureError(
+        "GT5U.gui.text.one_uncertainty_hatch");
+    public static final StructureError MISSING_DATA_HATCH = new SimpleStructureError(
+        "GT5U.gui.text.missing_data_hatch");
 
     static {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));

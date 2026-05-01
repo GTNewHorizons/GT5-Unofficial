@@ -66,6 +66,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -493,7 +494,8 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
@@ -502,39 +504,35 @@ public class MTETeslaTower extends TTMultiblockBase
 
         mTier = -1;
 
-        if (structureCheck_EM("main", 3, 16, 0)) {
-            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
-                cap.getBaseMetaTileEntity()
-                    .setActive(iGregTechTileEntity.isActive());
-            }
-
-            // Only recalculate offsets on orientation or rotation change
-            if (oldRotation != getExtendedFacing().ordinal()
-                || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
-                oldRotation = (byte) getExtendedFacing().ordinal();
-                oldOrientation = iGregTechTileEntity.getFrontFacing();
-
-                Vec3Impl posBMTE = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
-
-                // Calculate coordinates of the middle bottom
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
-                    .add(posBMTE);
-
-                // Calculate coordinates of the top sphere
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
-                    .add(posBMTE);
-            }
-            // Generate node map
-            if (!getBaseMetaTileEntity().isClientSide()) {
-                TeslaUtil.teslaSimpleNodeSetAdd(this);
-                TeslaUtil.generateTeslaNodeMap(this);
-            }
-            return true;
+        if (!checkPiece("main", 3, 16, 0, errors)) return;
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
+            cap.getBaseMetaTileEntity()
+                .setActive(iGregTechTileEntity.isActive());
         }
-        return false;
+
+        // Only recalculate offsets on orientation or rotation change
+        if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
+            oldRotation = (byte) getExtendedFacing().ordinal();
+            oldOrientation = iGregTechTileEntity.getFrontFacing();
+
+            Vec3Impl posBMTE = new Vec3Impl(
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
+
+            // Calculate coordinates of the middle bottom
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
+                .add(posBMTE);
+
+            // Calculate coordinates of the top sphere
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
+                .add(posBMTE);
+        }
+        // Generate node map
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            TeslaUtil.teslaSimpleNodeSetAdd(this);
+            TeslaUtil.generateTeslaNodeMap(this);
+        }
     }
 
     @Override

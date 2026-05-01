@@ -3,6 +3,7 @@ package gtnhintergalactic.tile.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -18,6 +19,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,6 +49,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.HatchCountError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -231,11 +237,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(new HatchCountError(ErrorType.TOO_FEW, Energy, 0, 1));
+        }
     }
 
     @Override
