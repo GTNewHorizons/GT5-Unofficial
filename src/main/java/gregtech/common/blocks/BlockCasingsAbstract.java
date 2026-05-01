@@ -5,7 +5,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedTex
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -33,7 +32,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererCasing;
 
 /**
@@ -53,7 +51,6 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTechAPI.TAG_GREGTECH_CASINGS);
         GregTechAPI.registerMachineBlock(this, -1);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
     public BlockCasingsAbstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial, int aMaxMeta) {
@@ -173,16 +170,14 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         // add whatever dynamic info you need in the subclass
     }
 
-    protected void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName) {
-        register(meta, container, defaultLocalName, (Supplier<String>) null);
+    protected void register(int meta, @Nullable IItemContainer container) {
+        register(meta, container, (Supplier<String>) null);
     }
 
     @SafeVarargs
-    protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
+    protected final void register(int meta, @Nullable IItemContainer container,
         @Nullable Supplier<String>... tooltips) {
         ItemStack stack = new ItemStack(this, 1, meta);
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + meta + ".name", defaultLocalName);
 
         if (container != null) {
             container.set(stack.copy());

@@ -41,19 +41,11 @@ public class GTGenericItem extends Item implements IProjectileItem {
     protected IIcon mIcon;
 
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
-        this(aUnlocalized, aEnglish, aEnglishTooltip, true);
-    }
-
-    public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
-        final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(
-                this.mTooltip = this.mName + ".tooltip_main",
-                aEnglishTooltip,
-                aWriteToolTipIntoLangFile);
+            GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
             this.mTooltip = null;
         }
@@ -110,11 +102,6 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (GTModHandler.isElectricItem(aStack)) {
             aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(aStack)));
         }
-        this.addAdditionalToolTips(aList, aStack);
-    }
-
-    protected void addAdditionalToolTips(final List aList, final ItemStack aStack) {
-        //
     }
 
     @Override

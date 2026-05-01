@@ -89,7 +89,7 @@ public class ShutDownReasonRegistry {
      * Shut down due to insufficient dynamo size
      */
     @Nonnull
-    public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dyamo");
+    public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dynamo");
 
     /**
      * Critical shut down due to overheat.

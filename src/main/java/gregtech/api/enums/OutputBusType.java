@@ -17,6 +17,11 @@ public enum OutputBusType {
     //
     ;
 
+    /**
+     * Cached values() array for frequent read-only operations, the array should NOT be mutated.
+     */
+    public static final OutputBusType[] VALUES = values();
+
     public boolean isFiltered() {
         return switch (this) {
             case Void, StandardFiltered, MECacheFiltered, MEFiltered, CompressedFiltered -> true;

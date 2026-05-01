@@ -19,19 +19,19 @@ public class BlockCasingsNH extends BlockCasingsAbstract {
     public BlockCasingsNH() {
         super(ItemCasings.class, "gt.blockcasingsNH", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_AirFilter_Turbine_T1, "Air Filter Turbine Casing");
-        register(1, ItemList.Casing_AirFilter_Vent_T1, "Air Filter Vent Casing");
-        register(2, ItemList.Casing_Pyrolyse, "Pyrolyse Oven Casing");
-        register(3, ItemList.Casing_AirFilter_Turbine_T2, "Advanced Air Filter Turbine Casing");
-        register(4, ItemList.Casing_AirFilter_Vent_T2, "Advanced Air Filter Vent Casing");
-        register(5, ItemList.Casing_AirFilter_Turbine_T3, "Super Air Filter Turbine Casing");
-        register(6, ItemList.Casing_AirFilter_Vent_T3, "Super Air Filter Vent Casing");
+        register(0, ItemList.Casing_AirFilter_Turbine_T1);
+        register(1, ItemList.Casing_AirFilter_Vent_T1);
+        register(2, ItemList.Casing_Pyrolyse);
+        register(3, ItemList.Casing_AirFilter_Turbine_T2);
+        register(4, ItemList.Casing_AirFilter_Vent_T2);
+        register(5, ItemList.Casing_AirFilter_Turbine_T3);
+        register(6, ItemList.Casing_AirFilter_Vent_T3);
 
-        register(10, ItemList.Casing_UEV, "UEV Machine Casing");
-        register(11, ItemList.Casing_UIV, "UIV Machine Casing");
-        register(12, ItemList.Casing_UMV, "UMV Machine Casing");
-        register(13, ItemList.Casing_UXV, "UXV Machine Casing");
-        register(14, ItemList.Casing_MAXV, "MAX Machine Casing");
+        register(10, ItemList.Casing_UEV);
+        register(11, ItemList.Casing_UIV);
+        register(12, ItemList.Casing_UMV);
+        register(13, ItemList.Casing_UXV);
+        register(14, ItemList.Casing_MAXV);
     }
 
     @Override

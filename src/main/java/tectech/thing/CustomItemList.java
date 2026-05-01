@@ -26,7 +26,6 @@ public enum CustomItemList implements IItemContainer {
     Machine_BuckConverter_UIV,
     Machine_BuckConverter_UMV,
     Machine_BuckConverter_UXV,
-    Machine_DebugWriter,
     Machine_DebugGenny,
     UnusedStuff,
     Machine_DebugPollutor,
@@ -38,6 +37,7 @@ public enum CustomItemList implements IItemContainer {
     holder_Hatch,
     capacitor_Hatch,
 
+    eM_dynamoMulti4_HV,
     eM_dynamoMulti4_EV,
     eM_dynamoMulti16_EV,
     eM_dynamoMulti64_EV,

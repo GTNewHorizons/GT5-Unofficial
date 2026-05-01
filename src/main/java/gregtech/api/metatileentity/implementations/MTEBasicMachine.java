@@ -77,7 +77,6 @@ import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -99,7 +98,7 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -109,8 +108,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
-    IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
+public abstract class MTEBasicMachine extends MTEBasicTank
+    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
 
     /**
      * return values for checkRecipe()
@@ -477,7 +476,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return true;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, "No free Side!");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.no_free_side");
         return true;
     }
 
@@ -562,8 +561,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
             if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                if (mProgresstime > 0) aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
+                    aBaseMetaTileEntity.setActive(mProgresstime >= 0);
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
                             for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
@@ -928,10 +927,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                        : translateToLocal("gt.interact.desc.input_from_output_off"));
+                    mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                        : "gt.interact.desc.input_from_output_off");
             }
         }
     }
@@ -1305,18 +1304,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineBaseGui(this).build(data, syncManager, uiSettings);
-    }
-
-    // disable the entire inventory row (including corner column)
-    public boolean supportsInventoryRow() {
-        return this.doesBindPlayerInventory();
+        return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -1620,5 +1609,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             case 4 -> 128000;
             default -> 256000;
         };
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

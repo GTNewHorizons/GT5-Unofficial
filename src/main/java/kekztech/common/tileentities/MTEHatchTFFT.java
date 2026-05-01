@@ -24,6 +24,7 @@ import appeng.util.item.AEFluidStack;
 import appeng.util.item.FluidList;
 import gregtech.api.enums.Textures;
 import gregtech.api.fluid.GTFluidTank;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,8 +54,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         }
     }
 
-    private static final Textures.BlockIcons.CustomIcon TEXTURE_TFFT_HATCH = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_HATCH");
+    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.custom("iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;
@@ -70,12 +70,6 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        return super.getTexture(aBaseMetaTileEntity, side, facing, colorIndex, aActive, aRedstone);
     }
 
     @Override

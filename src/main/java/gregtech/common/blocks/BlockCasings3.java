@@ -16,22 +16,22 @@ public class BlockCasings3 extends BlockCasingsAbstract {
     public BlockCasings3() {
         super(ItemCasings.class, "gt.blockcasings3", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Stripes_A, "Yellow Stripes Block");
-        register(1, ItemList.Casing_Stripes_B, "Yellow Stripes Block");
-        register(2, ItemList.Casing_RadioactiveHazard, "Radioactive Hazard Sign Block");
-        register(3, ItemList.Casing_BioHazard, "Bio Hazard Sign Block");
-        register(4, ItemList.Casing_ExplosionHazard, "Explosion Hazard Sign Block");
-        register(5, ItemList.Casing_FireHazard, "Fire Hazard Sign Block");
-        register(6, ItemList.Casing_AcidHazard, "Acid Hazard Sign Block");
-        register(7, ItemList.Casing_MagicHazard, "Magic Hazard Sign Block");
-        register(8, ItemList.Casing_FrostHazard, "Frost Hazard Sign Block");
-        register(9, ItemList.Casing_NoiseHazard, "Noise Hazard Sign Block");
-        register(10, ItemList.Casing_Grate, "Grate Machine Casing");
-        register(11, ItemList.Casing_Vent, "Filter Machine Casing");
-        register(12, ItemList.Casing_RadiationProof, "Radiation Proof Machine Casing");
-        register(13, ItemList.Casing_Firebox_Bronze, "Bronze Firebox Casing");
-        register(14, ItemList.Casing_Firebox_Steel, "Steel Firebox Casing");
-        register(15, ItemList.Casing_Firebox_TungstenSteel, "Tungstensteel Firebox Casing");
+        register(0, ItemList.Casing_Stripes_A);
+        register(1, ItemList.Casing_Stripes_B);
+        register(2, ItemList.Casing_RadioactiveHazard);
+        register(3, ItemList.Casing_BioHazard);
+        register(4, ItemList.Casing_ExplosionHazard);
+        register(5, ItemList.Casing_FireHazard);
+        register(6, ItemList.Casing_AcidHazard);
+        register(7, ItemList.Casing_MagicHazard);
+        register(8, ItemList.Casing_FrostHazard);
+        register(9, ItemList.Casing_NoiseHazard);
+        register(10, ItemList.Casing_Grate);
+        register(11, ItemList.Casing_Vent);
+        register(12, ItemList.Casing_RadiationProof);
+        register(13, ItemList.Casing_Firebox_Bronze);
+        register(14, ItemList.Casing_Firebox_Steel);
+        register(15, ItemList.Casing_Firebox_TungstenSteel);
     }
 
     @Override

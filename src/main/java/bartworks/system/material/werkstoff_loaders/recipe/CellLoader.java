@@ -13,8 +13,6 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.OrePrefixes.capsule;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -24,7 +22,6 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -33,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
@@ -46,10 +42,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class CellLoader implements IWerkstoffRunnable {
@@ -231,27 +225,11 @@ public class CellLoader implements IWerkstoffRunnable {
         }
 
         // Tank "Recipe"
-        GTUtility.addFluidContainerData(
-            new FluidContainerRegistry.FluidContainerData(
-                new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
-                werkstoff.get(cell),
-                Materials.Empty.getCells(1)));
         FluidContainerRegistry.registerFluidContainer(
             werkstoff.getFluidOrGas(1)
                 .getFluid(),
             werkstoff.get(cell),
             Materials.Empty.getCells(1));
-
-        if (Forestry.isModLoaded()) {
-            FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-                new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
-                werkstoff.get(capsule),
-                GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1),
-                true);
-            GTUtility.addFluidContainerData(emptyData);
-            FluidContainerRegistry.registerFluidContainer(emptyData);
-
-        }
 
         if (werkstoff.hasItemType(dust)) {
 
@@ -286,7 +264,7 @@ public class CellLoader implements IWerkstoffRunnable {
             boolean ElementSet = false;
             for (Element e : Element.values()) {
                 if (e.toString()
-                    .equals(werkstoff.getToolTip())) {
+                    .equals(werkstoff.getFormulaTooltip())) {
                     werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
                         : new MaterialBuilder().setName(werkstoff.getDefaultName())
                             .setDefaultLocalName(werkstoff.getDefaultName())
@@ -306,7 +284,7 @@ public class CellLoader implements IWerkstoffRunnable {
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             BehaviourDataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-            BehaviourDataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+            BehaviourDataOrb.setDataName(scannerOutput, werkstoff.getFormulaTooltip());
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(cell))
                 .itemOutputs(scannerOutput)

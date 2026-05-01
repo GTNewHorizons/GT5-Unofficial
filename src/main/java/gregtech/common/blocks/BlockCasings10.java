@@ -18,22 +18,22 @@ public class BlockCasings10 extends BlockCasingsAbstract {
     public BlockCasings10() {
         super(ItemCasings.class, "gt.blockcasings10", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Electromagnetic_Separator, "MagTech Casing");
-        register(1, ItemList.Casing_Laser, "Laser Containment Casing");
-        register(2, ItemList.BlockQuarkContainmentCasing, "Quark Exclusion Casing");
-        register(3, ItemList.Casing_Autoclave, "Pressure Containment Casing");
-        register(4, ItemList.Compressor_Casing, "Electric Compressor Casing");
-        register(5, ItemList.Compressor_Pipe_Casing, "Compression Pipe Casing");
-        register(6, ItemList.Neutronium_Casing, "Neutronium Casing");
-        register(7, ItemList.Neutronium_Active_Casing, "Active Neutronium Casing");
-        register(8, ItemList.Neutronium_Stable_Casing, "Neutronium Stabilization Casing");
-        register(9, ItemList.Coolant_Duct_Casing, "Coolant Duct");
-        register(10, ItemList.Heating_Duct_Casing, "Heating Duct");
-        register(11, ItemList.Extreme_Density_Casing, "Extreme Density Space-Bending Casing");
-        register(12, ItemList.Background_Radiation_Casing, "Background Radiation Absorbent Casing");
-        register(13, ItemList.Casing_Fluid_Solidifier, "Solidifier Casing");
-        register(14, ItemList.Radiator_Fluid_Solidifier, "Solidifier Radiator");
-        register(15, ItemList.Casing_Reinforced_Wood, "Reinforced Wooden Casing");
+        register(0, ItemList.Casing_Electromagnetic_Separator);
+        register(1, ItemList.Casing_Laser);
+        register(2, ItemList.BlockQuarkContainmentCasing);
+        register(3, ItemList.Casing_Autoclave);
+        register(4, ItemList.Compressor_Casing);
+        register(5, ItemList.Compressor_Pipe_Casing);
+        register(6, ItemList.Neutronium_Casing);
+        register(7, ItemList.Neutronium_Active_Casing);
+        register(8, ItemList.Neutronium_Stable_Casing);
+        register(9, ItemList.Coolant_Duct_Casing);
+        register(10, ItemList.Heating_Duct_Casing);
+        register(11, ItemList.Extreme_Density_Casing);
+        register(12, ItemList.Background_Radiation_Casing);
+        register(13, ItemList.Casing_Fluid_Solidifier);
+        register(14, ItemList.Radiator_Fluid_Solidifier);
+        register(15, ItemList.Casing_Reinforced_Wood);
     }
 
     @Override

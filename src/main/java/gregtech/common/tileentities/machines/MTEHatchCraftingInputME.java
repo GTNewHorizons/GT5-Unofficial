@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static appeng.util.item.AEFluidStackType.FLUID_STACK_TYPE;
+import static appeng.util.item.AEItemStackType.ITEM_STACK_TYPE;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
@@ -12,14 +14,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
@@ -66,6 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -79,6 +83,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IAEStackType;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
@@ -96,6 +101,7 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -103,18 +109,16 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
@@ -122,9 +126,10 @@ import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
+    implements IAddGregtechLogo, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatchWithPattern,
+    ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
@@ -263,19 +268,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             dualInputs.inputItems = inputItems;
             dualInputs.inputFluid = inputFluids;
             return dualInputs;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            PatternSlot<?> that = (PatternSlot<?>) o;
-            return Objects.equals(pattern, that.pattern);
-        }
-
-        @Override
-        public int hashCode() {
-            return patternItemId.hashCode();
         }
 
         /**
@@ -465,7 +457,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
@@ -485,20 +476,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     public boolean disablePatternOptimization = false;
     public boolean showPattern = true;
 
+    private ScheduledReason scheduledReason = ScheduledReason.UNDEFINED;
+
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            supportFluids ? 10 : 6,
-            MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks",
-                "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
-                "Processes patterns directly from ME",
-                supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Ignores the contents of other buses or hatches", "Also ignores other patterns within the same bus" });
+        super(aID, aName, aNameRegional, supportFluids ? 10 : 6, MAX_INV_COUNT, null);
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -618,6 +599,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            aPlayer.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
+                te.getWorld(),
+                te.getXCoord(),
+                te.getYCoord(),
+                te.getZCoord());
+            return true;
+        }
+
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -686,15 +679,46 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             name.append(getLocalName());
         }
 
-        if (mInventory[SLOT_CIRCUIT] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+        return name.append(this.getNameSuffix())
+            .toString();
+    }
+
+    @Override
+    public String getRawName() {
+        if (hasCustomName()) {
+            return getCustomName();
         }
-        if (mInventory[SLOT_MANUAL_START] != null) {
-            name.append(" - ");
-            name.append(mInventory[SLOT_MANUAL_START].getDisplayName());
+
+        if (getCrafterIcon() != null) {
+            return getCrafterIcon().getUnlocalizedName();
+        } else {
+            return getLocalName();
         }
-        return name.toString();
+    }
+
+    @Override
+    public String getNameSuffix() {
+        StringBuilder suffix = new StringBuilder();
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base instanceof IInterfaceNameProvider nameProvider) {
+            String circuitSuffix = nameProvider.getInterfaceNameSuffix();
+            if (circuitSuffix != null) suffix.append(circuitSuffix);
+        }
+
+        StringJoiner manualSlots = new StringJoiner(", ");
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                manualSlots.add(mInventory[i].getDisplayName());
+            }
+        }
+        if (manualSlots.length() > 0) {
+            try {
+                suffix.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+            } catch (IllegalFormatException ignored) {}
+        }
+
+        return suffix.toString();
     }
 
     @Override
@@ -710,6 +734,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean allowsPatternOptimization() {
         return !disablePatternOptimization;
+    }
+
+    @Override
+    public IAEStackType<?>[] getSupportedStackTypes() {
+        if (supportFluids) {
+            return new IAEStackType<?>[] { ITEM_STACK_TYPE, FLUID_STACK_TYPE };
+        }
+        return new IAEStackType<?>[] { ITEM_STACK_TYPE };
     }
 
     @Override
@@ -917,11 +949,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
     }
@@ -1042,9 +1069,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest(), true);
-                    for (ProcessingLogic pl : processingLogics) {
-                        pl.removeInventoryRecipeCache(originalPattern);
-                    }
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -1070,29 +1094,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
         System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
         return ArrayExt.withoutNulls(sharedItems, ItemStack[]::new);
-    }
-
-    @Override
-    public void setProcessingLogic(ProcessingLogic pl) {
-        if (!processingLogics.contains(pl)) {
-            processingLogics.add(Objects.requireNonNull(pl));
-        }
-    }
-
-    @Override
-    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
-        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-            if (sl == null) continue;
-            pl.removeInventoryRecipeCache(sl);
-        }
-
-    }
-
-    @Override
-    public void resetCraftingInputRecipeMap() {
-        for (ProcessingLogic pl : processingLogics) {
-            resetCraftingInputRecipeMap(pl);
-        }
     }
 
     @Override
@@ -1179,17 +1180,29 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
         if (!(table instanceof MEInventoryCrafting meic)) return false;
 
-        if (!supportFluids) {
-            for (int i = 0; i < table.getSizeInventory(); ++i) {
-                if (meic.getAEStackInSlot(i) instanceof IAEFluidStack) return false;
+        for (int i = 0; i < table.getSizeInventory(); ++i) {
+            IAEStack<?> stackInSlot = meic.getAEStackInSlot(i);
+            if (stackInSlot == null || stackInSlot instanceof IAEItemStack
+                || (supportFluids && stackInSlot instanceof IAEFluidStack)) {
+                continue;
             }
+
+            scheduledReason = ScheduledReason.UNSUPPORTED_STACK;
+            return false;
         }
+
         if (!patternDetailsPatternSlotMap.get(patternDetails)
             .insertItemsAndFluids(meic)) {
+            scheduledReason = ScheduledReason.SOMETHING_STUCK;
             return false;
         }
         justHadNewItems = true;
         return true;
+    }
+
+    @Override
+    public ScheduledReason getScheduledReason() {
+        return scheduledReason;
     }
 
     @Override
@@ -1200,6 +1213,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventories() {
         return Arrays.stream(internalInventory)
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
+        return IntStream.range(0, internalInventory.length)
+            .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
             .filter(Objects::nonNull)
             .iterator();
     }
@@ -1275,12 +1296,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return getMachineCraftingIcon();
     }
 
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        resetCraftingInputRecipeMap();
-    }
-
     private boolean postMEPatternChange() {
         // don't post until it's active
         if (!getProxy().isActive()) return false;
@@ -1314,7 +1329,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
+                .widgetCreator(SlotWidget::new)
                 .build()
                 .setPos(7, 7));
         return builder.build();
@@ -1395,5 +1410,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
         } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (supportFluids) return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[10] + VN[10],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.support_fluid.desc") + GTSplit.LB);
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[6] + VN[6],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
+                + GTSplit.LB);
     }
 }

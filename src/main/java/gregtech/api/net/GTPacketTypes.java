@@ -51,7 +51,8 @@ public enum GTPacketTypes {
     BROADCAST_CAPES(40, new GTPacketBroadcastCapes()),
     LIST_CAPES(41, new GTPacketListCapes()),
     SET_CAPE(42, new GTPacketSetCape()),
-    SYNC_TILE_RENDER_DATA_TO_CLIENT(43, new GTPacketClientMTERendererData()),
+    TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
+    SYNC_TILE_RENDER_DATA_TO_CLIENT(44, new GTPacketClientMTERendererData()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;

@@ -46,6 +46,7 @@ public enum VoidingMode {
      * Set of voiding mode you will probably support if your machine has no fluid output
      */
     public static final Set<VoidingMode> ITEM_ONLY_MODES = EnumSet.of(VOID_ITEM, VOID_NONE);
+    private static final VoidingMode[] VALUES = values();
     public final boolean protectItem;
     public final boolean protectFluid;
     public final com.cleanroommc.modularui.drawable.UITexture buttonTexture;
@@ -71,11 +72,11 @@ public enum VoidingMode {
     }
 
     public VoidingMode next() {
-        return values()[(ordinal() + 1) % values().length];
+        return VALUES[(ordinal() + 1) % VALUES.length];
     }
 
     public VoidingMode previous() {
-        return values()[(ordinal() + values().length - 1) % values().length];
+        return VALUES[(ordinal() + VALUES.length - 1) % VALUES.length];
     }
 
     public VoidingMode nextInCollection(Collection<VoidingMode> allowed) {
@@ -101,15 +102,15 @@ public enum VoidingMode {
      */
     @Nonnull
     public static VoidingMode fromOrdinal(int ordinal) {
-        if (ordinal >= 0 && ordinal < values().length) {
-            return values()[ordinal];
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
         }
         return VOID_NONE;
     }
 
     @Nonnull
     public static VoidingMode fromName(String name) {
-        for (VoidingMode mode : values()) {
+        for (VoidingMode mode : VALUES) {
             if (mode.name.equals(name)) {
                 return mode;
             }

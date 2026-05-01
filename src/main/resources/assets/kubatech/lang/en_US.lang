@@ -153,13 +153,14 @@ kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
 
 #HTGR
 kubatech.infodata.htgr.stored_fuel=Stored Fuel:
-kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s (%s, %s, %s)
 kubatech.infodata.htgr.burned_fuel=Burned Fuel:
 kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
 kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
 kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
 kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
 kubatech.infodata.htgr.fuel_supply=Fill level %s out of %s
+kubatech.infodata.htgr.fuel_properties=Properties: %s, %s, %s
 
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
@@ -185,11 +186,11 @@ kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
 kubaitem.defc_schematic_t3.name=Awakened Core Schematic
 kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
 
-item.htgr_item.0.name=TRISO Fuel Mixture (%s)
-item.htgr_item.1.name=Incomplete BISO Fuel (%s)
-item.htgr_item.2.name=Incomplete TRISO Fuel (%s)
-item.htgr_item.3.name=TRISO Fuel (%s)
-item.htgr_item.4.name=Burned Out TRISO Fuel (%s)
+item.htgr_item.triso_mixture.name=TRISO Fuel Mixture (%s)
+item.htgr_item.incomplete_biso_fuel.name=Incomplete BISO Fuel (%s)
+item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
+item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
+item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
@@ -280,3 +281,9 @@ kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 kubatech.tooltip.structure.flowers=Flowers
 
 kubatech.tooltip.htgr_material=Material for High Temperature Gas-cooled Reactor
+defc.casing.7.name=Naquadah Alloy Fusion Casing
+defc.casing.8.name=Bloody Ichorium Fusion Casing
+defc.casing.9.name=Draconium Fusion Casing
+defc.casing.10.name=Wyvern Fusion Casing
+defc.casing.11.name=Awakened Draconium Fusion Casing
+defc.casing.12.name=Chaotic Fusion Casing

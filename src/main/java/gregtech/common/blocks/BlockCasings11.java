@@ -1,8 +1,5 @@
 package gregtech.common.blocks;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -23,14 +20,14 @@ public class BlockCasings11 extends BlockCasingsAbstract {
     public BlockCasings11() {
         super(ItemCasings.class, "gt.blockcasings11", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Item_Pipe_Tin, "Tin Item Pipe Casing");
-        register(1, ItemList.Casing_Item_Pipe_Brass, "Brass Item Pipe Casing");
-        register(2, ItemList.Casing_Item_Pipe_Electrum, "Electrum Item Pipe Casing");
-        register(3, ItemList.Casing_Item_Pipe_Platinum, "Platinum Item Pipe Casing");
-        register(4, ItemList.Casing_Item_Pipe_Osmium, "Osmium Item Pipe Casing");
-        register(5, ItemList.Casing_Item_Pipe_Quantium, "Quantium Item Pipe Casing");
-        register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum, "Fluxed Electrum Item Pipe Casing");
-        register(7, ItemList.Casing_Item_Pipe_Black_Plutonium, "Black Plutonium Item Pipe Casing");
+        register(0, ItemList.Casing_Item_Pipe_Tin);
+        register(1, ItemList.Casing_Item_Pipe_Brass);
+        register(2, ItemList.Casing_Item_Pipe_Electrum);
+        register(3, ItemList.Casing_Item_Pipe_Platinum);
+        register(4, ItemList.Casing_Item_Pipe_Osmium);
+        register(5, ItemList.Casing_Item_Pipe_Quantium);
+        register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum);
+        register(7, ItemList.Casing_Item_Pipe_Black_Plutonium);
 
         for (int i = 0; i < 8; i++) {
             GTStructureChannels.ITEM_PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
@@ -57,8 +54,4 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         };
     }
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
-        super.addInformation(stack, player, tooltip, advancedTooltips);
-    }
 }

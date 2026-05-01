@@ -6,11 +6,10 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.util.GTRenderingWorld;
 
-class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockContainer {
+class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     private final Block mBlock;
     private final byte mSide;
@@ -26,7 +25,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements ITexture, IBlockC
 
     private IIcon getIcon(int ordinalSide, int aX, int aY, int aZ, RenderBlocks aRenderer) {
         final int tSide = mSide == 6 ? ordinalSide : mSide;
-        return mBlock.getIcon(getBlockAccess(aRenderer), aX, aY, aZ, tSide);
+        GTRenderingWorld.setMetaOverride(aX, aY, aZ, mMeta);
+        IIcon icon = mBlock.getIcon(getBlockAccess(aRenderer), aX, aY, aZ, tSide);
+        GTRenderingWorld.clearMetaOverride();
+        return icon;
     }
 
     private GTRenderingWorld getBlockAccess(RenderBlocks aRenderer) {

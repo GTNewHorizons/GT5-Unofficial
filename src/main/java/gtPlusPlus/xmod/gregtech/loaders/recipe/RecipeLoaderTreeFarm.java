@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class RecipeLoaderTreeFarm {
 
@@ -34,6 +34,7 @@ public class RecipeLoaderTreeFarm {
         if (Mods.BiomesOPlenty.isModLoaded()) generateBOPTrees();
         if (Mods.PamsHarvestCraft.isModLoaded()) generatePamsTrees();
         if (Mods.PamsHarvestTheNether.isModLoaded()) generatePamsNetherTrees();
+        if (Mods.Fether.isModLoaded()) generateFetherTrees();
         if (Mods.EtFuturumRequiem.isModLoaded()) generateEtFuturumRequiemTrees();
 
         if (Mods.Forestry.isModLoaded()) {
@@ -551,6 +552,14 @@ public class RecipeLoaderTreeFarm {
             GTModHandler.getModItem(Mods.PamsHarvestTheNether.ID, "netherLog", 1, 0),
             GTModHandler.getModItem(Mods.PamsHarvestTheNether.ID, "netherLeaves", 1, 0),
             GTModHandler.getModItem(Mods.PamsHarvestTheNether.ID, "ignisfruitItem", 2, 0));
+    }
+
+    private static void generateFetherTrees() {
+        MTETreeFarm.registerTreeProducts( // Ignis Fruit
+            GTModHandler.getModItem(Mods.Fether.ID, "nether_sapling", 1, 0),
+            GTModHandler.getModItem(Mods.Fether.ID, "nether_log", 1, 0),
+            GTModHandler.getModItem(Mods.Fether.ID, "nether_leaves", 1, 0),
+            GTModHandler.getModItem(Mods.Fether.ID, "ignis_fruit", 2, 0));
     }
 
     private static void generateThaumcraftTrees() {

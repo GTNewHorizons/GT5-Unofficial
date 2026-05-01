@@ -20,6 +20,7 @@ public final class GTGuiThemes {
         .textColor(0x404040)
         .textField(Dyes.dyeWhite.toInt())
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x404040)
+        .customTextColor(GTWidgetThemes.DISPLAY_TEXT.getFullName(), 0xFAFAFA)
         .button(GTTextureIds.BUTTON_STANDARD)
         .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
@@ -94,7 +95,7 @@ public final class GTGuiThemes {
         .parent(STANDARD)
         .fullColor(Dyes.dyeLightGray)
         .build();
-    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_standard_gray")
+    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_gray")
         .parent(STANDARD)
         .fullColor(Dyes.dyeGray)
         .build();
@@ -321,5 +322,26 @@ public final class GTGuiThemes {
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
+        .parent(TECTECH_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
+
+    public static final GTGuiTheme NANOCHIP = GTGuiTheme.builder("nanochip")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_NANOCHIP)
+        .itemSlot(GTTextureIds.SLOT_ITEM_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
+        .button(GTTextureIds.BUTTON_NANOCHIP)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_NANOCHIP,
+            GTTextureIds.BUTTON_NANOCHIP_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(new Color(0xFFDBE0).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 }

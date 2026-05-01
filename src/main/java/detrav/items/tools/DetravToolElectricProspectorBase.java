@@ -34,26 +34,32 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         TextureSet.INDEX_prospectorElectricLuV, TextureSet.INDEX_prospectorElectricZPM,
         TextureSet.INDEX_prospectorElectricUV, TextureSet.INDEX_prospectorElectricUHV };
 
+    @Override
     public int getToolDamagePerBlockBreak() {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerDropConversion() {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
     }
 
+    @Override
     public int getToolDamagePerEntityAttack() {
         return 2000;
     }
 
+    @Override
     public int getBaseQuality() {
         return 0;
     }
 
+    @Override
     public float getBaseDamage() {
         return 1.0F;
     }
@@ -63,10 +69,12 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         return i;
     }
 
+    @Override
     public float getSpeedMultiplier() {
         return 1.0F;
     }
 
+    @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
     }
@@ -79,14 +87,17 @@ public class DetravToolElectricProspectorBase implements IToolStats {
             (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
+    @Override
     public String getCraftingSound() {
         return null;
     }
 
+    @Override
     public String getEntityHitSound() {
         return null;
     }
 
+    @Override
     public String getBreakingSound() {
         return SoundResource.RANDOM_BREAK.toString();
     }
@@ -101,14 +112,17 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         return GTValues.emptyIntArray;
     }
 
+    @Override
     public String getMiningSound() {
         return null;
     }
 
+    @Override
     public boolean canBlock() {
         return false;
     }
 
+    @Override
     public boolean isCrowbar() {
         return false;
     }
@@ -143,8 +157,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         return false;
     }
 
+    @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
-
         return false;
     }
 
@@ -154,6 +168,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         return 0;
     }
 
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
@@ -168,20 +183,24 @@ public class DetravToolElectricProspectorBase implements IToolStats {
         return v;
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[0]]
             : null;
     }
 
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
+    @Override
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProspector(getToolDamagePerBlockBreak()));
     }
 
+    @Override
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
 
         aPlayer.triggerAchievement(AchievementList.openInventory);

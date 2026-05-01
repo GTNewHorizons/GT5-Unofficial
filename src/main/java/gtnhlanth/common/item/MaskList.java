@@ -39,7 +39,7 @@ public enum MaskList {
     // but with
     // ender
     // eye
-    CPU("cpu", "Central Processing Unit", 10, "", BLANK2, Dyes.dyeWhite, TierEU.RECIPE_MV, 6e-3f, 12e-3f, 45, 2,
+    CPU("cpu", "Central Processing Unit", 100, "", BLANK2, Dyes.dyeWhite, TierEU.RECIPE_MV, 6e-3f, 12e-3f, 45, 2,
         ItemList.Circuit_Wafer_CPU.get(1), null),
     PrCPU("prcpu", "Prepared Central Processing Unit", 0, "", CPU, null, TierEU.RECIPE_EV, 0, 0, 0, 0, null, null),
 
@@ -89,7 +89,14 @@ public enum MaskList {
     QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 3.2f, 9, 50, 6,
         ItemList.Circuit_Wafer_QPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
-
+    PrQPIC("prqpic", "Prepared Quantum Power IC", 0, "", QPIC, null, TierEU.RECIPE_UHV, 0, 0, 0, 0, null, null), // Made
+                                                                                                                 // in
+                                                                                                                 // CR
+                                                                                                                 // from
+                                                                                                                 // QPIC
+    FPIC("fpic", "FPIC", 50, "", PrQPIC, Dyes.dyePurple, TierEU.RECIPE_UHV, 6f, 14, 50, 6,
+        ItemList.Circuit_Wafer_FPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
+        ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
     CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6,
         ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing
                                                                                                     // Crystal CPUs

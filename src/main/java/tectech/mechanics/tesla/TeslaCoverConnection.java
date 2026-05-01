@@ -2,9 +2,11 @@ package tectech.mechanics.tesla;
 
 import static tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemoveScheduled;
 
+import java.util.Objects;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.base.Objects;
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,11 +73,11 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TeslaCoverConnection that = (TeslaCoverConnection) o;
-        return Objects.equal(IGT, that.IGT);
+        return Objects.equals(IGT, that.IGT);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(IGT);
+        return Fnv1a32.hashStep(Fnv1a32.initialState(), Objects.hash(IGT));
     }
 }

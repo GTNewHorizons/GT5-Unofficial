@@ -124,7 +124,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -138,11 +138,11 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
     public void onFacingChange() {
         super.onFacingChange();
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 }

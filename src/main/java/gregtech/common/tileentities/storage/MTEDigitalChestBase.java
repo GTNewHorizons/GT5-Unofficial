@@ -27,6 +27,7 @@ import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -52,7 +53,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
@@ -101,21 +101,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mItemStack")) {
+        if (ItemStackNBT.hasKey(stack, "mItemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("mItemStack"));
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getDisplayName()
-                        + EnumChatFormatting.GRAY);
-                tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + formatNumber(tSize)
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
+                tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }
@@ -161,12 +154,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public abstract ItemStack getItemStack();
-
-    @Override
-    public abstract void setItemStack(ItemStack s);
-
-    @Override
     public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out, int iteration) {
         return meInventoryHandler.getAvailableItems(out, iteration);
     }
@@ -175,12 +162,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public IItemList<IAEItemStack> getStorageList() {
         return meInventoryHandler.getStorageList();
     }
-
-    @Override
-    public abstract int getItemCount();
-
-    @Override
-    public abstract void setItemCount(int aCount);
 
     @Override
     public int getMaxItemCount() {
@@ -230,22 +211,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal(
-                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+            mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                : "GT5U.machines.digitalchest.voidoverflow.disabled");
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         mDisableFilter = !mDisableFilter;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal(
-                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
+            mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                : "GT5U.machines.digitalchest.inputfilter.enabled");
         return true;
     }
 
@@ -642,5 +621,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 return remaining;
             }
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

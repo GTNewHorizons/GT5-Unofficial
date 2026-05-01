@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import appeng.api.interfaces.IInterfaceNameProvider;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -32,8 +34,10 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Gregtech;
 
-public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
+    implements IGregTechTileEntity, IInterfaceNameProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
         mInventoryChanged = false;
@@ -71,11 +75,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     public final void updateEntity() {
         super.updateEntity();
 
-        long tTime;
+        final long timeStart;
         if (hasTimeStatisticsStarted) {
-            tTime = System.nanoTime();
+            timeStart = System.nanoTime();
         } else {
-            tTime = 0;
+            timeStart = 0;
         }
 
         try {
@@ -103,26 +107,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             }
         }
 
-        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
-            tTime = System.nanoTime() - tTime;
+        if (hasTimeStatisticsStarted && isServerSide() && hasValidMetaTileEntity()) {
+            final long duration = System.nanoTime() - timeStart;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
-            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
+            mTimeStatistics[mTimeStatisticsIndex] = (int) duration;
+            if (duration > 0 && duration > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                 && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn(
-                    "WARNING: Possible Lag Source at [" + xCoord
-                        + ", "
-                        + yCoord
-                        + ", "
-                        + zCoord
-                        + "] in Dimension "
-                        + worldObj.provider.dimensionId
-                        + " with "
-                        + tTime
-                        + " ns caused by an instance of "
-                        + getMetaTileEntity().getClass());
+                    "WARNING: Possible Lag Source at [{}, {}, {}] in Dimension {} with {} ns caused by an instance of {}",
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    duration,
+                    getMetaTileEntity().getClass());
         }
 
     }
@@ -324,7 +324,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public boolean canAccessData() {
+    public final boolean canAccessData() {
         return !isDead && hasValidMetaTileEntity();
     }
 
@@ -389,6 +389,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return (IConfigurationCircuitSupport) getMetaTileEntity();
         }
         return null;
+    }
+
+    @Override
+    public String getInterfaceNameSuffix() {
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null || !ccs.allowSelectCircuit()) return null;
+        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+        if (stack == null || stack.getItemDamage() <= 0) return null;
+        try {
+            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
+        } catch (IllegalFormatException e) {
+            return "";
+        }
     }
 
     @Override

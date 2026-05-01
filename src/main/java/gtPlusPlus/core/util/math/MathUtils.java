@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.math;
 
-import java.text.NumberFormat;
 import java.util.Random;
 
 import gregtech.api.enums.GTValues;
@@ -10,13 +9,6 @@ import gtPlusPlus.core.util.Utils;
 public class MathUtils {
 
     private static final Random rand = GTPPCore.RANDOM;
-
-    /** Formats a number with group separator and at most 2 fraction digits. */
-    private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
-
-    static {
-        sNumberFormat.setMaximumFractionDigits(2);
-    }
 
     /**
      * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
@@ -117,21 +109,6 @@ public class MathUtils {
      */
     public static double findPercentage(final double current, final double max) {
         return Math.round(((current / max) * 100) * 100.00) / 100.00;
-    }
-
-    /**
-     * Returns a percentage. The returned number is the % of X in Y. Supports Floats.
-     *
-     * @param current Current value.
-     * @param max     Maximim value. Must be greater than min.
-     * @return double between min and max, inclusive.
-     */
-    public static float findPercentage(final float current, final float max) {
-        return (float) (Math.round(((current / max) * 100) * 100.00) / 100.00);
-    }
-
-    public static int findPercentageOfInt(long input, float percentage) {
-        return (int) (input * (percentage / 100.0f));
     }
 
     // Smooth Rounding Function

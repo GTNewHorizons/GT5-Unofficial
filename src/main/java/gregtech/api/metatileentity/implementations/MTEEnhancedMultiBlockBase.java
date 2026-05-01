@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.annotation.Nonnegative;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +16,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -34,8 +38,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.WrongBlockError;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
@@ -55,7 +61,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 
     private final StructureCenterWalker centerWalker = new StructureCenterWalker();
+    private final StructureErrorWalker errorWalker = new StructureErrorWalker();
     private final Vector3f center = new Vector3f();
+    private StructureStatus structureStatus = StructureStatus.OK;
+    private final Vector3i errorPos = new Vector3i();
     private int structureRadius;
 
     protected MTEEnhancedMultiBlockBase(int aID, String aName, String aNameRegional) {
@@ -144,8 +153,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
-    protected abstract MultiblockTooltipBuilder createTooltip();
-
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return getTooltip().getStructureHint();
@@ -197,7 +204,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         GTSoundLoop loop = super.createSoundLoop(activitySound);
 
         // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
-        loop.setVolume(Math.max(1f, structureRadius / 16f * 2f));
+        loop.setVolume(Math.max(1f, structureRadius / 16f * 4f));
 
         return loop;
     }
@@ -206,6 +213,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     protected ISoundPosition getSoundPosition() {
         return this::getCenter;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        structureStatus = StructureStatus.OK;
     }
 
     @Override
@@ -270,10 +283,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        boolean success = getCastedStructureDefinition().check(
-            this,
+        structureStatus = StructureStatus.OK;
+        IStructureWalker<MTEEnhancedMultiBlockBase<T>> checkWalker = mMachine
+            ? IStructureWalker.skipBlockUnloaded(errorWalker)
+            : errorWalker;
+        getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),
             getExtendedFacing(),
@@ -283,7 +301,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             horizontalOffset,
             verticalOffset,
             depthOffset,
-            !mMachine);
+            checkWalker);
+
+        boolean success = structureStatus == StructureStatus.OK;
 
         if (success) {
             getCastedStructureDefinition().iterate(
@@ -300,6 +320,51 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
 
         return success;
+    }
+
+    /**
+     * Explanation of the world coordinate these offset means:
+     * <p>
+     * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
+     * <p>
+     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
+     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
+     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
+     * controller itself.
+     * <p>
+     * All these offsets can be negative.
+     */
+    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
+        List<StructureError> errors) {
+        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        StructureChecker checker = new StructureChecker(!mMachine, errors);
+        getCastedStructureDefinition().iterate(
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            checker);
+
+        if (checker.success) {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                centerWalker);
+        }
+
+        return checker.success;
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
@@ -524,6 +589,16 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             Flip.byIndex(data.getByte("eFlip")));
     }
 
+    @Override
+    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
+        super.generateStructureErrorDiagnostics(errors);
+        if (structureStatus == StructureStatus.WRONG_BLOCK) {
+            errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
+        } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
+            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
@@ -570,5 +645,72 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
             return true;
         }
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    private class StructureErrorWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
+
+            if (!result) {
+                structureStatus = StructureStatus.WRONG_BLOCK;
+                errorPos.set(x, y, z);
+            }
+
+            return result;
+        }
+
+        @Override
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+            int y, int z, int a, int b, int c) {
+            structureStatus = StructureStatus.BLOCK_NOT_LOADED;
+            return false;
+        }
+    }
+
+    private class StructureChecker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        final boolean forced;
+        final List<StructureError> errors;
+        public boolean success = true;
+
+        StructureChecker(boolean forced, List<StructureError> errors) {
+            this.forced = forced;
+            this.errors = errors;
+        }
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
+
+            if (!result) {
+                this.success = false;
+                errors.add(new WrongBlockError(x, y, z));
+            }
+
+            return result;
+        }
+
+        @Override
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+            int y, int z, int a, int b, int c) {
+            if (forced) {
+                return visit(element, world, x, y, z, a, b, c);
+            }
+            this.success = false;
+            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
+            return false;
+        }
+    }
+
+    private enum StructureStatus {
+        OK,
+        WRONG_BLOCK,
+        BLOCK_NOT_LOADED,
     }
 }
