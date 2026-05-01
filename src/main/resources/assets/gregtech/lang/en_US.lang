@@ -1079,6 +1079,12 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# Toxic Residue Sensor
+gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
+gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
+gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue shown in percent
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -1678,6 +1684,7 @@ GT5U.MBTT.ConfigMenu=Configuration Menu
 GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
 GT5U.MBTT.Deprecated=§4DEPRECATED - %s
 GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
+GT5U.MBTT.Deprecated.RemovalMachine=Machine will be removed in next major update!
 GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
@@ -2061,25 +2068,15 @@ GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.autooutput.tooltip=Fluid Auto-Output
-GT5U.machines.digitaltank.autooutput.enabled=Fluid Auto Output Enabled
-GT5U.machines.digitaltank.autooutput.disabled=Fluid Auto Output Disabled
-GT5U.machines.digitaltank.lockfluid.enabled=1 specific Fluid (%s)
-GT5U.machines.digitaltank.lockfluid.disabled=Lock Fluid Mode Disabled
-GT5U.machines.digitaltank.lockfluid.none=currently none, will be locked to the next that is put in
-GT5U.machines.digitaltank.voidoverflow.enabled=Overflow Voiding Mode Enabled
-GT5U.machines.digitaltank.voidoverflow.disabled=Overflow Voiding Mode Disabled
-GT5U.machines.digitaltank.voidfull.enabled=Void Full Mode Enabled
-GT5U.machines.digitaltank.voidfull.disabled=Void Full Mode Disabled
-GT5U.machines.digitaltank.fluid.amount=Fluid Amount
+GT5U.machines.digitaltank.voidoverflow.tooltip=Overflow Voiding Mode
+GT5U.machines.digitaltank.voidoverflow.tooltip.1=§7Voids all fluid excess if the tank is full
+GT5U.machines.digitaltank.voidfull.tooltip=Void Full Mode
+GT5U.machines.digitaltank.voidfull.tooltip.1=§7Voids all fluids that enter the tank
 GT5U.machines.digitaltank.lockfluid.label=Locked Fluid
 GT5U.machines.digitaltank.lockfluid.empty=None
 GT5U.machines.digitaltank.lockfluid.tooltip=Lock Fluid Mode
 GT5U.machines.digitaltank.lockfluid.tooltip.1=§7This tank will be locked to only accept one type of fluid
 GT5U.machines.digitaltank.lockfluid.tooltip.2=§7It will be locked to the first fluid type that enters the tank
-GT5U.machines.digitaltank.voidoverflow.tooltip=Overflow Voiding Mode
-GT5U.machines.digitaltank.voidoverflow.tooltip.1=§7Voids all fluid excess if the tank is full
-GT5U.machines.digitaltank.voidfull.tooltip=Void Full Mode
-GT5U.machines.digitaltank.voidfull.tooltip.1=§7Voids all fluids that enter the tank
 GT5U.machines.digitaltank.inputfromoutput.tooltip=Input Fluid from Output Side
 GT5U.machines.select_circuit=Configure Circuit
 GT5U.machines.select_circuit.tooltip=Ghost Circuit Slot
@@ -2215,9 +2212,10 @@ GT5U.machines.debugstructurewriter.tooltip.1=Prints Multiblock NonTE structure c
 GT5U.machines.debugstructurewriter.tooltip.2=ABC axes aligned to machine front
 GT5U.machines.debugstructurewriter.printed=Printed structure to console
 GT5U.machines.debugstructurewriter.gui.origin=Origin
-GT5U.machines.debugstructurewriter.gui.size=Structure Size
+GT5U.machines.debugstructurewriter.gui.size=Size
 GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.debugstructurewriter.gui.copy.tooltip=Copy Structure To Clipboard
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
@@ -2346,6 +2344,7 @@ GT5U.gui.button.batch_mode_off=Batch Mode: OFF
 GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
 GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
+GT5U.gui.button.highlight_block=Highlight block in world
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
@@ -2376,6 +2375,8 @@ GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is m
 GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
+GT5U.gui.button.max_fluid=Maximum Fluid Consumption (L/t)
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
@@ -2491,10 +2492,13 @@ GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.toxic_residue=§fToxic Residue: §c%s §f/ %s (%s%%)
+GT5U.gui.text.residue_change=§fResidue Change: §c+%s§f/§a-%s §f(%s)
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.toxic_residue_sensor=Toxic Residue threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
@@ -2503,6 +2507,13 @@ GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
 GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
+GT5U.gui.text.unknown_structure_error=Unknown structure error
+GT5U.gui.text.dt_missing_output_hatch=Missing Output Hatch on layer %s
+GT5U.gui.text.dangote_missing_top=Top layer is invalid or muffler hatch is not placed on the top layer
+GT5U.gui.text.too_short=The structure is too short
+GT5U.gui.text.hatch_invalid=Hatch requirement is not met
+GT5U.gui.not_loaded=Some block is not chunk loaded
+GT5U.gui.wrong_block=Invalid block at (%s, %s, %s)
 GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
@@ -2514,8 +2525,8 @@ GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
-GT5U.gui.text.repair_tip=Click with a tool to repair.
 GT5U.gui.text.repair_info=Right-click hatch with Duct Tape\nor a filled Tool Box to repair all issues.
+GT5U.gui.text.autorepair_info=Consumes 4 Duct Tape, 2 Lubricant Cells,\n4 Steel Screws, and 2 HV Circuits\nfor each autorepair.
 GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
 GT5U.gui.text.microwave_energy_transmitter.x=Target X
 GT5U.gui.text.microwave_energy_transmitter.y=Target Y
@@ -2765,6 +2776,8 @@ gt.circuitcomponent.processed.wireprotohalkonite=Spooled Proto-Halkonite Steel W
 gt.circuitcomponent.processed.wirespacetime=Spooled Spacetime Wire
 gt.circuitcomponent.cable.processed.opticalfiber=Split Optical Fiber Cable
 gt.circuitcomponent.processed.wireinfinity=Spooled Infinity Wire
+gt.circuitcomponent.processed.wirehypogen=Spooled Hypogen Wire
+gt.circuitcomponent.processed.wiremagmatter=Spooled Magmatter Wire
 
 gt.circuitcomponent.processed.asmd.resistor=Prepared Advanced SMD Resistor
 gt.circuitcomponent.processed.asmd.transistor=Prepared Advanced SMD Transistor
@@ -2817,16 +2830,22 @@ gt.circuitcomponent.processed.frame.aluminium=Spliced Aluminium Framebox
 gt.circuitcomponent.processed.frame.tritanium=Spliced Tritanium Framebox
 gt.circuitcomponent.processed.frame.celestialtungsten=Spliced Celestial Tungsten Framebox
 gt.circuitcomponent.processed.frame.hypogen=Spliced Hypogen Framebox
+gt.circuitcomponent.processed.frame.magmatter=Spliced Magmatter Framebox
 
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazole Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
 gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
 gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
+gt.circuitcomponent.sheet.processed.eternity=Eternity Wrapper Spool
+
 gt.circuitcomponent.casing.processed.basicmainframe=Basic Mainframe Circuit Encasement
 gt.circuitcomponent.casing.processed.advancedmainframe=Advanced Mainframe Circuit Encasement
 gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
 gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
+gt.circuitcomponent.casing.processed.planck=Planck-Scale Circuit Encasement
+
+gt.circuitcomponent.other.processed.coiledthermalsuperconductor=Coiled Thermal Superconductor
 
 gt.circuitcomponent.bolt.processed.enrichedholmium=Filed Enriched Holmium Bolt
 gt.circuitcomponent.bolt.processed.transcendentmetal=Filed Transcendent Metal Bolt
@@ -2834,7 +2853,10 @@ gt.circuitcomponent.bolt.processed.yttriumbariumcuprate=Filed Yttrium Barium Cup
 gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
 gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
 gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
+gt.circuitcomponent.bolt.processed.whitedwarfmatter=Filed White Dwarf Matter Bolt
+gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
+gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
@@ -3130,6 +3152,7 @@ GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
+GT5U.chat.dragon_blood_shards_dropped=%s Shards of Dragons Blood have crystallized into a metallic form.
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
 GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
@@ -3304,7 +3327,12 @@ GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.loss.eu_volt=%s EU-Volt
+GT5U.item.cable.connected=Connected
+GT5U.item.cable.disconnected=Disconnected
 GT5U.item.cable.swapped.s=Cable swapped: %s
+GT5U.item.cable.multi.infinite_loop=Error: cable traversal limit exceeded. This is probably a bug, please report it.
+GT5U.item.cable.multi.success=Found %d cables, connected %d cables and %d blocks.
+
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity
@@ -3362,6 +3390,8 @@ GT5U.hatch.fluid.filter.enable=Fluid output filter set to:
 GT5U.hatch.item.filter.enable=Item output filter set to:
 GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
 GT5U.hatch.item.filter.disable=Item output filtering disabled
+GT5U.hatch.filter.none=Filter Empty
+GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
 GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
 GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
 GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode checks whether there is enough space for the output, resulting in more lag.
@@ -3369,6 +3399,8 @@ GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
 GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
 GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
+GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
+GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
@@ -4929,6 +4961,10 @@ gt.item.circuit.chip.bio_cpu.tooltip=Bio CPU
 gt.item.circuit.chip.optical.name=Raw Exposed Optical Chip
 gt.item.circuit.chip.optical.tooltip=Raw Optical Chip
 
+## Basic Electronic Circuit
+gt.item.circuit.basic_electronic.name=Basic Electronic Circuit
+gt.item.circuit.basic_electronic.tooltip=A Basic Circuit
+
 ## NAND Chip
 gt.item.nand_chip.name=NAND Chip
 gt.item.nand_chip.tooltip=A very simple Circuit
@@ -4944,6 +4980,10 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
 gt.item.circuit.good_integrated.tooltip=Good Circuit
+
+## Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
+gt.item.circuit.advanced_integrated.tooltip=An Advanced Circuit
 
 ## Nano Circuits
 gt.item.circuit.nano_processor.name=Nano Processor
@@ -5012,6 +5052,12 @@ gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
 gt.item.circuit_board.optical.tooltip=Optically Infused Board
+gt.item.circuit_board.exotic.name=Exotic Circuit Board
+gt.item.circuit_board.exotic.tooltip=Exotic Matter Infused Board
+gt.item.circuit_board.cosmic.name=Cosmic Circuit Board
+gt.item.circuit_board.cosmic.tooltip=Cosmos Infused Board
+gt.item.circuit_board.transcendent.name=Temporally Transcendent Circuit Board
+gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
@@ -6743,6 +6789,7 @@ GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only w
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
+GT5U.tooltip.flour.cauldron=Throw into Cauldron with Water to make Dough
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # Scanner info
@@ -6897,6 +6944,8 @@ GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
+
+GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
 
 GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
@@ -7703,6 +7752,9 @@ gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
 gt.blockcasings12.3.name=Nanochip Computational Matrix Casing
 gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
+gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
+gt.blockcasings12.6.name=Precise Stationary Machine Casing
+gt.blockcasings12.7.name=Ultimately Static Machine Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
@@ -8053,3 +8105,5 @@ gt.item.stable_empty_containment_unit.tooltip=Maybe contains nothing?
 
 gt.item.gravitational_lens.name=Gravitational Lens
 gt.item.gravitational_lens.tooltip=Portable gravitational well
+gt.item.planck_manifold.name=Planck-Scale Manifold
+gt.item.planck_manifold.tooltip=The smallest there can be

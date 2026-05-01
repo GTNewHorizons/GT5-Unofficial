@@ -31,13 +31,10 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.enums.StructureError;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -60,6 +57,8 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.MissingHatch;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
@@ -460,6 +459,11 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
     public void clearHatches() {
         super.clearHatches();
         mInputHatches.clear();
@@ -469,26 +473,11 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
         if (mSteamInputFluids.isEmpty()) {
-            errors.add(StructureError.MISSING_STEAM_HATCH);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
-            lines.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.missing_hatch",
-                    GregtechItemList.Hatch_Input_Steam.get(1)
-                        .getDisplayName()));
+            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Steam.get(1)));
         }
     }
 

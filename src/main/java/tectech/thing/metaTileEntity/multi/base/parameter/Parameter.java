@@ -12,6 +12,7 @@ public abstract class Parameter<T> {
     protected Supplier<T> max;
 
     private final String langKey;
+    private boolean showInGui = true;
 
     public Parameter(T value, String langKey) {
         this.value = value;
@@ -43,6 +44,15 @@ public abstract class Parameter<T> {
 
     public T getMax() {
         return max.get();
+    }
+
+    public Parameter<T> disableGui() {
+        this.showInGui = false;
+        return this;
+    }
+
+    public boolean shouldShowInGui() {
+        return showInGui;
     }
 
     public abstract SyncHandler createSyncHandler();
