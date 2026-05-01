@@ -3181,6 +3181,7 @@ GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
+GT5U.chat.dragon_blood_shards_dropped=%s Shards of Dragons Blood have crystallized into a metallic form.
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
 GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
