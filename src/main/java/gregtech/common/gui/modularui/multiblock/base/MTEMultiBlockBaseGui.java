@@ -64,6 +64,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -368,23 +370,27 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .background(IDrawable.EMPTY)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
             .onMousePressed(d -> {
-                StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
-                net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft
-                    .getMinecraft().thePlayer;
-                if (player != null) {
-                    player.closeScreen();
-                    net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
-                    double dx = errX + 0.5 - eyePos.xCoord;
-                    double dy = errY + 0.5 - eyePos.yCoord;
-                    double dz = errZ + 0.5 - eyePos.zCoord;
-                    double distXZ = Math.sqrt(dx * dx + dz * dz);
-                    player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
-                    player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
-                }
+                highlightAndFaceBlock(errX, errY, errZ);
                 return true;
             })
             .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void highlightAndFaceBlock(int errX, int errY, int errZ) {
+        StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
+        net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+        if (player != null) {
+            player.closeScreen();
+            net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
+            double dx = errX + 0.5 - eyePos.xCoord;
+            double dy = errY + 0.5 - eyePos.yCoord;
+            double dz = errZ + 0.5 - eyePos.zCoord;
+            double distXZ = Math.sqrt(dx * dx + dz * dz);
+            player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+            player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
+        }
     }
 
     private IWidget createRecipeResultWidget() {
