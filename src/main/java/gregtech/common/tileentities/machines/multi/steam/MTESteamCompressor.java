@@ -256,15 +256,17 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         casingAmount = 0;
 
         if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0)) {
-            if (tierMachineCasing == 1 && casingAmount >= 14 && checkHatches()) {
-                updateHatchTexture();
-                tierMachine = 1;
-                return true;
-            }
-            if (tierMachineCasing == 2 && casingAmount >= 14 && checkHatches()) {
-                updateHatchTexture();
-                tierMachine = 2;
-                return true;
+            if (casingAmount >= 14 && checkHatches()) {
+            	if (tierMachineCasing == 1) {
+	                updateHatchTexture();
+	                tierMachine = 1;
+	                return true;
+            	}
+            	if (tierMachineCasing == 2) {
+	                updateHatchTexture();
+	                tierMachine = 2;
+	                return true;
+            	}
             }
             return false;
         }
