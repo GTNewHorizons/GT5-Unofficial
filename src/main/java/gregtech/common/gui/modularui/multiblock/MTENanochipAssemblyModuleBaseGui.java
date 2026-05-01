@@ -47,11 +47,14 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
                 () -> connected.getBoolValue()
                     ? EnumChatFormatting.GREEN + translateToLocal("GT5U.gui.text.nac.module.status.connected")
                     : EnumChatFormatting.RED + translateToLocal("GT5U.gui.text.nac.module.status.disconnected"))
-                .asWidget());
+                .asWidget()
+                .widthRel(1)
+                .marginBottom(2));
 
         // Standard status (running/idle/errors) is only meaningful when connected to the NAC,
         // since the module's onPostTick is skipped when disconnected.
         Flow statusWrapper = Flow.column()
+            .widthRel(1)
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .setEnabledIf(w -> connected.getBoolValue());

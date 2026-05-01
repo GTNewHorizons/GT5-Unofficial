@@ -314,6 +314,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         })
             .asWidget()
             .widthRel(1)
+            .marginBottom(2)
             .setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
                     && !baseMetaTileEntity.isAllowedToWork());
@@ -343,7 +344,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         DynamicSyncHandler errorSyncer = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
             Flow columns = Flow.column()
                 .coverChildrenHeight(0)
-                .crossAxisAlignment(Alignment.CrossAxis.START);
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .childPadding(1);
 
             for (StructureError error : errors.getValue()) {
                 // For now just skip these errors, they will be present in most multiblock and will cause confusion.
