@@ -234,7 +234,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
      * refactor if needed).
      */
-    private List<StructureError> structureErrors = new ArrayList<>();
+    private final List<StructureError> structureErrors = new ArrayList<>();
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;

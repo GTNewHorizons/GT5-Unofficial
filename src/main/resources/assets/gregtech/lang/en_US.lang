@@ -2522,6 +2522,7 @@ GT5U.gui.text.unknown_machine_casing_tier=Unable to determine machine casing tie
 GT5U.gui.text.too_many_radiation_hatch=Too many radiation hatch
 GT5U.gui.text.glass_tier_not_enough=Glass tier too low, required %s-tiered glass
 GT5U.gui.text.energy_hatch_tier_too_low=Energy hatch tier too low, required %s-tiered energy hatch
+GT5U.gui.text.energy_hatch_exceed_glass=Energy hatch tier cannot exceed glass tier
 GT5U.gui.text.al_too_many_data_access_hatch=Only one Data Access Hatch is allowed
 GT5U.gui.text.al_missing_output_bus=Missing Output Bus on the last slice
 GT5U.gui.text.chemplant_casing_problem=Casing tier mismatch

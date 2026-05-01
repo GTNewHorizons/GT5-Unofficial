@@ -19,6 +19,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -196,7 +197,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             errors.add(new TooFewCasings(mCasing, 6));
         }
         if (getCoilLevel() == HeatingCoilLevel.None) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.coil_level_not_enough"));
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         checkHatch(errors);
     }
