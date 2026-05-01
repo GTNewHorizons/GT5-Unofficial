@@ -821,6 +821,15 @@ public class GTUtility {
         }
     }
 
+    public static boolean cleanInventory(IMetaTileEntity imte, int start, int end) {
+        if (cleanInventory(wrapInventory(imte).subList(start, end))) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean cleanInventory(List<ItemStack> inv) {
         boolean didSomething = false;
 
