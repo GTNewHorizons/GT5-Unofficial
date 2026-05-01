@@ -144,6 +144,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         if (mEnergyHatches.isEmpty() && eEnergyMulti.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
         }
+        if (mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+        }
     }
 
     @Override

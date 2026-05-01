@@ -27,7 +27,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gtnhlanth.common.beamline.Particle;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
@@ -57,10 +56,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-
-        Int2IntOpenHashMap bufferMap = multiblock.getBufferMap();
-        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
 
         IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
         IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);

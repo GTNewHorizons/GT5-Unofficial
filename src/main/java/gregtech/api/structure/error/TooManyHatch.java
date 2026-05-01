@@ -48,6 +48,14 @@ public record TooManyHatch(int itemId, int itemMeta, int max) implements Structu
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector.translateToLocalFormatted(
+            "GT5U.gui.too_many_hatches",
+            new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName(),
+            max);
+    }
+
+    @Override
     public StructureError copy() {
         return new TooManyHatch(itemId, itemMeta, max);
     }

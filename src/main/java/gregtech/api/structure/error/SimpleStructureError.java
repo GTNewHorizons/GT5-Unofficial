@@ -36,6 +36,11 @@ public record SimpleStructureError(String langKey) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector.translateToLocal(langKey);
+    }
+
+    @Override
     public StructureError copy() {
         return new SimpleStructureError(langKey);
     }

@@ -167,6 +167,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         if (mOutputBusses.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_OUTPUT_BUS);
         }
+        if (mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+        }
     }
 
     @Override

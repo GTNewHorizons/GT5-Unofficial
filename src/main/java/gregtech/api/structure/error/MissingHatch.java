@@ -44,6 +44,13 @@ public record MissingHatch(int itemId, int itemMeta) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector.translateToLocalFormatted(
+            "GT5U.gui.missing_hatch",
+            new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName());
+    }
+
+    @Override
     public StructureError copy() {
         return new MissingHatch(itemId, itemMeta);
     }

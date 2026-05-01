@@ -36,6 +36,12 @@ public record MissingOutputHatchDT(int layer) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.dt_missing_output_hatch", layer);
+    }
+
+    @Override
     public StructureError copy() {
         return new MissingOutputHatchDT(layer);
     }

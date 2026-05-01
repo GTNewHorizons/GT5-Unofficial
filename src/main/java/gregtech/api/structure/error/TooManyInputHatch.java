@@ -37,6 +37,12 @@ public record TooManyInputHatch(int current, int max) implements StructureError 
     }
 
     @Override
+    public String getDisplayString() {
+        return net.minecraft.util.StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.too_many_input_hatch", max, current);
+    }
+
+    @Override
     public StructureError copy() {
         return null;
     }
