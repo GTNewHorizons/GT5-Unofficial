@@ -46,9 +46,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructableProvider;
 
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.events.MENetworkBootingStatusChange;
-import appeng.api.networking.events.MENetworkEventSubscribe;
-import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
@@ -2169,20 +2166,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public AENetworkProxy getProxy() {
         return mMetaTileEntity == null ? null : mMetaTileEntity.getProxy();
-    }
-
-    @MENetworkEventSubscribe
-    public final void powerChangeME(final MENetworkPowerStatusChange c) {
-        if (mMetaTileEntity != null) {
-            mMetaTileEntity.powerChangeME(c);
-        }
-    }
-
-    @MENetworkEventSubscribe
-    public final void bootChangeME(final MENetworkBootingStatusChange c) {
-        if (mMetaTileEntity != null) {
-            mMetaTileEntity.bootChangeME(c);
-        }
     }
 
     @Override

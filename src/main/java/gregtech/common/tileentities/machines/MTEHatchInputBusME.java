@@ -39,6 +39,7 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -265,14 +266,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         return this.gridProxy;
     }
 
-    @Override
+    @MENetworkEventSubscribe
     public void powerChangeME(MENetworkPowerStatusChange c) {
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());
         }
     }
 
-    @Override
+    @MENetworkEventSubscribe
     public void bootChangeME(MENetworkBootingStatusChange c) {
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());

@@ -24,8 +24,6 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
-import appeng.api.networking.events.MENetworkBootingStatusChange;
-import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;
@@ -775,10 +773,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         }
         return "";
     }
-
-    public void powerChangeME(MENetworkPowerStatusChange c) {}
-
-    public void bootChangeME(MENetworkBootingStatusChange c) {}
 
     @Override
     public GUITextureSet getGUITextureSet() {
