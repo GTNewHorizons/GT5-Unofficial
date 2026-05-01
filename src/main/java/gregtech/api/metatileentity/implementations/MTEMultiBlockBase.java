@@ -524,8 +524,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
         if ((mStructureChanged || aForceReset)) {
             clearHatches();
-
-            mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+            structureErrors.clear();
+            checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
+            mMachine = structureErrors.isEmpty();
 
             onStructureCheckFinished();
         }
@@ -534,7 +535,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void onStructureCheckFinished() {
-        structureErrors.clear();
 
         // only run validation when the structure check passes, so that we don't confuse people
         if (mMachine) {
@@ -551,6 +551,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      *
      * @param errors Add errors to this.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {}
 
     /**
@@ -559,6 +561,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      *
      * @param errors Add errors to this.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected void validateStructure(Collection<StructureError> errors) {
 
     }
@@ -1271,8 +1275,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
+     * Do not implement this in new multiblock
      */
-    public abstract boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return false;
+    }
+
+    /**
+     * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
+     * Any error must be added to the error list.
+     */
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkMachine(aBaseMetaTileEntity, aStack) && errors.isEmpty()) {
+            // Only add this if we do not emit any diagnostics.
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+    }
 
     /**
      * Gets the maximum efficiency of this machine with current state.
