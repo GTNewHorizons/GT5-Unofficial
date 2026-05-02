@@ -45,8 +45,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountErrorSpecific;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -161,7 +161,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         super.checkHatch(errors);
         if (mMillingBallBuses.size() != 1) {
             errors.add(
-                new HatchCountErrorSpecific(
+                StructureErrors.hatchCount(
                     ErrorType.NOT_MATCH,
                     GregtechItemList.Bus_Milling_Balls.get(1),
                     mMillingBallBuses.size(),

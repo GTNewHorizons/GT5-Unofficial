@@ -42,8 +42,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -185,7 +185,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         if (!checkPiece(this.mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 64 - 48);
         if (mAirIntakes.isEmpty()) {
-            errors.add(new MissingHatch(Hatch_Air_Intake.get(1)));
+            errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
         checkHatch(errors);
     }

@@ -48,9 +48,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -223,7 +223,7 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
         super.checkHatch(errors);
         checkHasOutputBus(errors);
         if (mInputBusses.isEmpty() && mDualInputHatches.isEmpty()) {
-            errors.add(new HatchCountError(ErrorType.TOO_FEW, InputBus, 0, 1));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, InputBus, 0, 1));
         }
     }
 
