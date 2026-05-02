@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -166,12 +167,12 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[] { GTUtility.infoData("tt.keyword.ID.fmt", id),
-                GTUtility.infoData("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
-                GTUtility.infoData("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
+            return new String[] { IGregTechDeviceInformation.encode("tt.keyword.ID.fmt", id),
+                IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+                IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
         }
-        return new String[] { GTUtility.infoData("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
-            GTUtility.infoData("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
+        return new String[] { IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
     }
 
     @Override

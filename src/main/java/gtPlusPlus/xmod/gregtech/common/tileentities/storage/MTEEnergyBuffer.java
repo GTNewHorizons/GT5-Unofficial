@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
@@ -294,8 +295,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         String fmt = String.format("%%%ds", max.length());
         cur = String.format(fmt, cur);
 
-        return new String[] { GTUtility.infoData("gtpp.infodata.energy_buffer.eu_stored", cur),
-            GTUtility.infoData("gtpp.infodata.energy_buffer.eu_capacity", max) };
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.energy_buffer.eu_stored", cur),
+            IGregTechDeviceInformation.encode("gtpp.infodata.energy_buffer.eu_capacity", max) };
     }
 
     @Override
