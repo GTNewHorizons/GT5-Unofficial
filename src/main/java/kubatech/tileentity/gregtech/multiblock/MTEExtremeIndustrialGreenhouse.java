@@ -58,6 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.api.structure.error.GlassTierNotEnough;
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -302,26 +304,32 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack, List<StructureError> errors) {
         mCasing = 0;
         glassTier = -1;
         isCheckingDirtWater = false;
         if (debug) glassTier = 8;
 
-        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0)) return false;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
+        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
+        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) return;
 
-        if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-
-        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
-
-        if (valid) {
-            this.updateSeedLimits();
-            isCheckingDirtWater = true;
+        if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty()) {
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+                if (this.glassTier < hatchEnergy.mTier) {
+                    errors.add(new GlassTierNotEnough(hatchEnergy.mTier));
+                    break;
+                }
+            }
         }
 
-        return valid;
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasing, 70);
+
+        if (!errors.isEmpty()) return;
+
+        this.updateSeedLimits();
+        isCheckingDirtWater = true;
     }
 
     @Override

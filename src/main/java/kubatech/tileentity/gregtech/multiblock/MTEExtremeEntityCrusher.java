@@ -62,6 +62,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import gregtech.api.structure.error.GlassTierNotEnough;
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -927,16 +929,23 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
-        if (glassTier < VoltageIndex.UV)
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 35);
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.UV) {
+            for (MTEHatchEnergy hatch : mEnergyHatches) {
+                if (hatch.mTier > glassTier) {
+                    errors.add(new GlassTierNotEnough(hatch.mTier));
+                    break;
+                }
+            }
+        }
+        if (!errors.isEmpty()) return;
         checkRitualConnection();
         this.rotateSpikes();
-        return true;
     }
 
     @Override

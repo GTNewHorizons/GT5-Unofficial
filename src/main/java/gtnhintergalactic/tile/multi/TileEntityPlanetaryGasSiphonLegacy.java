@@ -13,9 +13,11 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import gregtech.api.structure.error.StructureError;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -382,13 +384,12 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
      * @return True if machine is valid, else false
      */
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && mMaintenanceHatches.size() == 1
-            && mInputBusses.size() == 1
-            && mOutputHatches.size() == 1
-            && mEnergyHatches.size() == 1
-            && mInputHatches.isEmpty()
-            && mOutputBusses.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputHatch, 1);
+        checkHatchExact(errors, Energy, 1);
     }
 
     /**
