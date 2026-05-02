@@ -27,6 +27,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -61,6 +62,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -332,39 +335,44 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mHeatingCapacity = 0;
         this.glassTier = -1;
-
         this.setCoilLevel(HeatingCoilLevel.None);
-
-        if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
-            || this.mMaintenanceHatches.size() != 1) return false;
-
+        if (!this.checkPiece("main", 7, 17, 0, errors)) return;
+        if (this.getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkOneMaintenanceHatch(errors);
+        if (!checkExoticAndNormalEnergyHatches()) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
         if (this.glassTier < VoltageIndex.UMV) {
             for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
             for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
-
-        this.mHeatingCapacity = (int) this.getCoilLevel()
-            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-
-        return true;
+        if (errors.isEmpty()) {
+            this.mHeatingCapacity = (int) this.getCoilLevel()
+                .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+        }
     }
 
     @Override

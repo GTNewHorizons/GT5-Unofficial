@@ -247,10 +247,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     private void resetStructureState() {
         pipeTier = -1;
         mCasingAmount = 0;
-        mEnergyHatches.clear();
-        mMaintenanceHatches.clear();
-        mInputBusses.clear();
-        mOutputBusses.clear();
+        clearHatches();
     }
 
     private boolean checkBodyPiece(List<StructureError> errors) {

@@ -131,6 +131,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -667,17 +669,25 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         mCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
-        if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
-        if (valid) updateMaxSlots();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) return;
+        if (this.glassTier < VoltageIndex.UEV) {
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+                if (this.glassTier < hatchEnergy.mTier) {
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
+                }
+            }
+        }
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, this.mCasing, 190);
+        if (errors.isEmpty()) {
+            updateMaxSlots();
+        }
         checkRequiredFlowers();
-        return valid;
     }
 
     /**

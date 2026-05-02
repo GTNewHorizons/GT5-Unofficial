@@ -2677,7 +2677,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return Returns true if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
+     * @return Returns true if there is 1 TT Energy Hatch OR at least one Energy Hatches
      */
     public boolean checkExoticAndNormalEnergyHatches() {
         if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
@@ -2694,7 +2694,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-        return mEnergyHatches.size() <= 2;
+        return true;
     }
 
     /**

@@ -13,6 +13,8 @@ import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +44,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -247,17 +251,19 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-            if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && !mInputHatches.isEmpty()
-                && mDynamoHatches.size() == 4
-                && mMufflerHatches.size() == 4) {
-                this.turnCasingActive(false);
-                return true;
-            }
+        if (!checkPiece(mName, 3, 3, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 27);
+        if (mOutputHatches.size() < 3 && !canDumpFluidToME()) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
         }
-        return false;
+        checkHasInputHatch(errors);
+        checkHatchExact(errors, Dynamo, 4);
+        checkHatchExact(errors, Muffler, 4);
+        if (errors.isEmpty()) {
+            this.turnCasingActive(false);
+        }
     }
 
     // Alk's Life Lessons from Greg.

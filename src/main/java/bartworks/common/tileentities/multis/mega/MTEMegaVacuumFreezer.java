@@ -26,6 +26,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -57,6 +58,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -420,20 +423,23 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasingFrostProof = 0;
         this.mTier = 1;
         // If check for T1 fails, also do a check for T2 structure
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) {
-            // Reset mCasing in between checks, so they don't count again
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0, new ArrayList<>())) {
+            // Reset state from failed T1 check
             this.mCasingFrostProof = 0;
-            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0)) {
-                return false;
-            }
+            clearHatches();
+            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0, errors)) return;
             // Structure is Tier 2
             this.mTier = 2;
         }
-        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 700;
+        checkOneMaintenanceHatch(errors);
+        if (!checkExoticAndNormalEnergyHatches()) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        checkCasingMin(errors, this.mCasingFrostProof, 700);
     }
 
     @Override
