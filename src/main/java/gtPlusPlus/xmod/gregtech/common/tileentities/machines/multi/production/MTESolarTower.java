@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -40,6 +41,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -307,7 +309,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         resetSolarHeaters();
         this.mMaintenanceHatches.clear();
         this.mInputHatches.clear();
@@ -316,23 +318,16 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         mCasing2 = 0;
         mCasing3 = 0;
         mCasing4 = 0;
-
-        boolean aStructureTop = checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0);
-        boolean aStructureTower = checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7);
-        boolean aStructureBase = checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22);
-        boolean aCasingCount1 = mCasing1 >= 229;
-        boolean aCasingCount2 = mCasing2 == 60;
-        boolean aCasingCount3 = mCasing3 == 66;
-        boolean aCasingCount4 = mCasing4 == 60;
-        boolean aAllStructure = aStructureTop && aStructureTower && aStructureBase;
-        boolean aAllCasings = aCasingCount1 && aCasingCount2 && aCasingCount3 && aCasingCount4;
-        if (!aAllCasings || !aAllStructure
-            || mMaintenanceHatches.size() != 1
-            || mInputHatches.isEmpty()
-            || mOutputHatches.isEmpty()) {
-            return false;
-        }
-        return aAllCasings && aAllStructure;
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22, errors)) return;
+        checkCasingMin(errors, mCasing1, 229);
+        checkCasingMin(errors, mCasing2, 60);
+        checkCasingMin(errors, mCasing3, 66);
+        checkCasingMin(errors, mCasing4, 60);
+        checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
