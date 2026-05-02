@@ -114,7 +114,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
                 MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
-            .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
+            .itemOutputs(ItemList.IndustrialForgeHammer.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(12 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
