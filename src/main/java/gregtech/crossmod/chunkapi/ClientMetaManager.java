@@ -22,7 +22,7 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
 
     @Override
     public int maxPacketSize() {
-        return 1024 * 10; // I really don't know how big to make this tbh.
+        return 16 * 16 * 256 * 10;
     }
 
     @Override
