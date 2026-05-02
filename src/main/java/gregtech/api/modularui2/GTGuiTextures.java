@@ -285,6 +285,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_STANDARD)
         .build();
+    public static final UITexture SLOT_FLUID_TANK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_tank")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_FLUID_BRONZE = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_bronze")
         .imageSize(18, 18)
