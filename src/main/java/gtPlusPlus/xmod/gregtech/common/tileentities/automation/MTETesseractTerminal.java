@@ -228,11 +228,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
             }
     }
 
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
     public MTETesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
         final MTETesseractGenerator rTesseract = TesseractHelper
             .getGeneratorByFrequency(GTMod.proxy.getPlayerMP(mOwner), aFrequency);
@@ -551,7 +546,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
                 TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
             : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                TextureFactory.of(Textures.GlobalIcons.VOID) };
     }
 
     // To-Do?
@@ -596,5 +591,10 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 .remove(this.mFrequency);
         } catch (Exception t) {}
         super.onRemoval();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

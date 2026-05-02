@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Natura;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -16,22 +17,28 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import java.util.Locale;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -1478,6 +1485,124 @@ public class MixerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
         }
+
+        // From ProcessingFood - foodDough mixer
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new OreDictItemStack("foodDough", 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
+            .itemOutputs(ItemList.Food_Dough_Sugar.get(2L))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(8)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new OreDictItemStack("foodDough", 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .itemOutputs(ItemList.Food_Dough_Chocolate.get(2L))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(8)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new OreDictItemStack("foodDough", 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chocolate, 1L))
+            .itemOutputs(ItemList.Food_Dough_Chocolate.get(2L))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(8)
+            .addTo(mixerRecipes);
+
+        // From ProcessingCrop - cropTea mixer
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropTea", 1))
+            .fluidInputs(new FluidStack(FluidRegistry.WATER, 750))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.tea"), 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(mixerRecipes);
+
+        if (IndustrialCraft2.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("cropTea", 1))
+                .fluidInputs(GTModHandler.getDistilledWater(750))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.tea"), 750))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(4)
+                .addTo(mixerRecipes);
+        }
+
+        // From ProcessingCrop - cropGrape mixer
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropGrape", 1))
+            .fluidInputs(new FluidStack(FluidRegistry.WATER, 750))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.grapejuice"), 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(mixerRecipes);
+
+        if (IndustrialCraft2.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("cropGrape", 1))
+                .fluidInputs(GTModHandler.getDistilledWater(750))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.grapejuice"), 750))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(4)
+                .addTo(mixerRecipes);
+        }
+
+        // From ProcessingCrop - cropPotato mixer
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropPotato", 1))
+            .fluidInputs(new FluidStack(FluidRegistry.WATER, 750))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(mixerRecipes);
+
+        if (IndustrialCraft2.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("cropPotato", 1))
+                .fluidInputs(GTModHandler.getDistilledWater(750))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(4)
+                .addTo(mixerRecipes);
+        }
+
+        // From ProcessingCrop - cropLemon mixer
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropLemon", 1))
+            .fluidInputs(new FluidStack(FluidRegistry.WATER, 750))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.lemonjuice"), 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(mixerRecipes);
+
+        if (IndustrialCraft2.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack("cropLemon", 1))
+                .fluidInputs(GTModHandler.getDistilledWater(750))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.lemonjuice"), 750))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(4)
+                .addTo(mixerRecipes);
+        }
+
+        // From ProcessingDye - dye mixer
+        for (Dyes dye : Dyes.VALUES) {
+            String fluidName = "dye.watermixed." + dye.name()
+                .toLowerCase(Locale.ENGLISH);
+            GTValues.RA.stdBuilder()
+                .itemInputs(new OreDictItemStack(dye.name(), 1))
+                .circuit(1)
+                .fluidInputs(GTModHandler.getDistilledWater(2 * INGOTS))
+                .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
+                .duration(16 * TICKS)
+                .eut(4)
+                .addTo(mixerRecipes);
+        }
     }
 
     public static void addMixerPotionRecipes(String aName) {
@@ -1521,6 +1646,34 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.EnrichedHolmium.getDust(5))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.NetherStar.getDust(8),
+                Materials.Terbium.getDust(7),
+                MaterialsElements.getInstance().TECHNETIUM.getDust(4),
+                Materials.Dilithium.getDust(4),
+                Materials.Flerovium.getDust(3),
+                Materials.InfinityCatalyst.getDust(1))
+            .circuit(6)
+            .itemOutputs(Materials.Shijima.getDust(27))
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.TinAlloy.getDust(8),
+                WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),
+                MaterialsAlloy.TRINIUM_NAQUADAH.getDust(4),
+                GGMaterial.adamantiumAlloy.get(OrePrefixes.dust, 4),
+                WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
+                MaterialsAlloy.QUANTUM.getDust(1))
+            .circuit(6)
+            .itemOutputs(Materials.Churitsu.getDust(27))
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);
 
         // Catalysts for Plasma Forge.

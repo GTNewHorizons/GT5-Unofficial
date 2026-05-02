@@ -677,7 +677,7 @@ public class RecipeLoader {
                 Materials.DraconiumAwakened.getMolten(32 * INGOTS),
                 GGMaterial.extremelyUnstableNaquadah.getMolten(10 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
-            .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery.get(1))
+            .itemOutputs(ItemList.NaquadahFuelRefinery.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
@@ -893,7 +893,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "PFP", "PPP", 'P', ItemRefer.Special_Ceramics_Plate.get(1), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
 
@@ -949,11 +949,11 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTModHandler.addCraftingRecipe(
-            ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            ItemList.UniversalChemicalFuelEngine.get(1),
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
-                ItemList.Machine_Multi_DieselEngine.get(1), 'B', ItemList.Machine_Multi_ExtremeDieselEngine.get(1), 'L',
+                ItemList.LargeCombustionEngine.get(1), 'B', ItemList.ExtremeCombustionEngine.get(1), 'L',
                 ItemList.Hull_LuV, 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium, 1), });
 
@@ -982,6 +982,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Plastic_Case.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 1), 'D', "dyeCyan" });
@@ -1104,7 +1105,7 @@ public class RecipeLoader {
         // Neutron Accelerator ULV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[0].copy(),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "WPM", "CHI", "WPM", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
                 'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lead, 1), 'M',
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Lead, 1), 'C',
@@ -1114,7 +1115,7 @@ public class RecipeLoader {
         // Neutron Accelerator LV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[1].copy(),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "WPM", "CHI", "WPM", 'W',
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M', ItemList.Electric_Motor_LV,
@@ -1285,6 +1286,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.RadoxPolymer, 16),
+                ItemList.UEV_Coil.get(8),
                 ItemList.Tesseract.get(8),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UIV.get(2),
@@ -1308,6 +1310,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
+                ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UMV.get(2),
@@ -1339,7 +1342,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Neutron_Source.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " P ", "PUP", " P ", 'P',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1), 'U',
                 ItemRefer.High_Density_Uranium.get(1) });

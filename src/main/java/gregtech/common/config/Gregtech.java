@@ -102,6 +102,11 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean debugChunkloaders;
+
+        @Config.Comment("Enables logging of icons registration. (May help resource-pack creators)")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean logRegisterIcons;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.features")
@@ -335,6 +340,16 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean costlyCableConnection;
 
+        @Config.Comment("if true, enables cable multi-connection using a wire cutter.")
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        public boolean cableMultiConnectEnabled;
+
+        @Config.Comment("Maximum number of cables to check during multi-connect before stopping.")
+        @Config.DefaultInt(10000)
+        @Config.RequiresMcRestart
+        public int cableMultiConnectLimit;
+
         @Config.Comment("if true, crashes on null recipe input.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
@@ -549,6 +564,18 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.Name("Enable Powerfail Notifications")
         public boolean enablePowerfailNotifications;
+
+        @Config.Comment("Format template for the ghost circuit suffix in AE2 terminal display names. Use %s as placeholder for the circuit number. Applies to all GT machines and Crafting Input Bus/Buffer.")
+        @Config.DefaultString(" [%s]")
+        @Config.Name("Ghost Circuit Suffix Format")
+        @Config.RequiresMcRestart
+        public String ghostCircuitSuffixFormat = " [%s]";
+
+        @Config.Comment("Format template for the manual slots suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for comma-separated item names.")
+        @Config.DefaultString(" {%s}")
+        @Config.Name("CIB Manual Slots Suffix Format")
+        @Config.RequiresMcRestart
+        public String cibManualSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

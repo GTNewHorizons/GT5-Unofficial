@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -19,10 +17,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -30,12 +31,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -46,20 +41,24 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchMaintenanceGui;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxItemStackHandler;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
-public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
+public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     private Rotation rotation = Rotation.NORMAL;
 
@@ -88,7 +87,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         mAuto = aAuto;
     }
 
-    private static ItemStack[] getAutoMaintenanceInputs() {
+    public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
             GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
@@ -190,6 +189,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             if (tStack != null) {
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
+                } else if (tStack.getItem() instanceof ItemGTToolbox) {
+                    applyGTToolbox(tStack, aPlayer);
                 } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
                     applyDuctTape();
                     if (--tStack.stackSize == 0) {
@@ -368,6 +369,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         if (aStack.getItem() instanceof ItemToolbox && aPlayer instanceof EntityPlayer) {
             applyToolbox(aStack, (EntityPlayer) aPlayer);
             return;
+        } else if (aStack.getItem() instanceof ItemGTToolbox && aPlayer instanceof final EntityPlayer entityPlayer) {
+            applyGTToolbox(aStack, entityPlayer);
+            return;
         }
 
         if (GTUtility.isStackInList(aStack, GregTechAPI.sWrenchList) && !mWrench
@@ -427,10 +431,34 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
     }
 
+    private void applyGTToolbox(ItemStack toolbox, EntityPlayer player) {
+        final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+        final IInventory delegateInventory = new ToolboxDelegateInventory(handler, ToolboxSlot.GENERIC_SLOTS);
+
+        // Technically, this will also try to use the wire cutters on the maintenance hatch. However, damage checks are
+        // short-circuited if the tool isn't appropriate, so it will just waste a little time. I'm leaving it as-is so
+        // that if new tools are added and maintenance starts to need them, this method doesn't have to be touched.
+        for (ToolboxSlot slot : ToolboxSlot.TOOL_SLOTS) {
+            // We can safely pass a null slot here since onToolClick has a null check at the beginning.
+            onToolClick(handler.getStackInSlot(slot.getSlotID()), player, delegateInventory);
+        }
+
+        ToolboxUtil.saveToolbox(toolbox, handler);
+        setMaintenanceSound(SoundResource.GT_MAINTENANCE_TOOLBOX, 1.0F, 1.0F);
+    }
+
     private void applyDuctTape() {
         mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_DUCT_TAPE, 1.0F, 1.0F);
         getBaseMetaTileEntity().setActive(false);
+    }
+
+    public boolean IsAutoMaintenanceInput(ItemStack aStack) {
+        for (ItemStack tInput : getAutoMaintenanceInputs()) {
+            if (GTUtility.areUnificationsEqual(tInput, aStack, true)
+                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+        }
+        return false;
     }
 
     @Override
@@ -446,54 +474,11 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            for (ItemStack tInput : getAutoMaintenanceInputs()) if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+            if (IsAutoMaintenanceInput(aStack)) {
+                return true;
+            }
         }
         return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mAuto) {
-            getBaseMetaTileEntity().add2by2Slots(builder);
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(GTUITextures.SLOT_MAINTENANCE)
-                    .setPos(78, 33)
-                    .setSize(20, 20))
-                .widget(new SlotWidget(BaseSlot.empty()) {
-
-                    @Override
-                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
-                        return false;
-                    }
-
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (cursorStack == null) return;
-                        onToolClick(cursorStack, getContext().getPlayer());
-                        if (cursorStack.stackSize < 1) {
-                            getContext().getPlayer().inventory.setItemStack(null);
-                        }
-                        if (getContext().getPlayer() instanceof EntityPlayerMP) {
-                            ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
-                        }
-                    }
-                }.disableShiftInsert()
-                    .setBackground(GTUITextures.TRANSPARENT)
-                    .setPos(79, 34))
-                .widget(
-                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 12))
-                .widget(
-                    new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
-                        .addTooltips(
-                            Arrays.asList(
-                                GTUtility.breakLines(StatCollector.translateToLocal("GT5U.gui.text.repair_info"))))
-                        .setPos(163, 5)
-                        .setSize(7, 18));
-        }
     }
 
     @Override
@@ -554,5 +539,15 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     @Override
     public boolean isRotationChangeAllowed() {
         return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
     }
 }

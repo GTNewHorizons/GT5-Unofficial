@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,8 +29,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -49,6 +52,8 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Other;
+import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -436,22 +441,27 @@ public class GTPostLoad {
     }
 
     public static void addCauldronRecipe() {
+        OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
+            OrePrefixes.dust };
+
         for (Materials material : Materials.getAll()) {
-            ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
-            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
+            for (OrePrefixes prefix : washablePrefixes) {
+                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
+                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
 
-            if (dust == null || dustImpure == null) {
-                continue;
+                if (input == null || output == null) {
+                    continue;
+                }
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(input)
+                    .fluidInputs(Materials.Water.getFluid(333))
+                    .itemOutputs(output)
+                    .duration(0)
+                    .eut(0)
+                    .fake()
+                    .addTo(RecipeMaps.cauldronRecipe);
             }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(dustImpure)
-                .fluidInputs(Materials.Water.getFluid(333))
-                .itemOutputs(dust)
-                .duration(0)
-                .eut(0)
-                .fake()
-                .addTo(RecipeMaps.cauldronRecipe);
         }
     }
 
@@ -469,5 +479,22 @@ public class GTPostLoad {
             .filter(Objects::nonNull)
             .map(FluidRegistry::getFluidID)
             .collect(Collectors.toList());
+    }
+
+    public static void processToolboxBans() {
+        final ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
+
+        for (final String name : Other.toolboxBans) {
+            final String[] nameParts = name.split(":");
+
+            if (nameParts.length == 2) {
+                final Item item = GameRegistry.findItem(nameParts[0], nameParts[1]);
+                if (item != null) {
+                    builder.add(item);
+                }
+            }
+        }
+
+        GTMod.proxy.toolboxBans = builder.build();
     }
 }

@@ -11,7 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -701,24 +700,28 @@ public class RecipesMachinesTiered {
         // Modulator I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_I.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitData", 'P', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'H',
                 ItemList.Casing_EV });
 
         // Modulator II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_II.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitElite", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'H',
                 ItemList.Casing_IV });
 
         // Modulator III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_III.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitMaster", 'P', MaterialsAlloy.ZERON_100.getPlate(1), 'H',
                 ItemList.Casing_LuV });
 
         // Modulator IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitUltimate", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'H',
                 ItemList.Casing_ZPM });
     }
@@ -727,24 +730,28 @@ public class RecipesMachinesTiered {
         // Resonance Chamber I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_I.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_LV, 'H', ItemList.Casing_EV });
 
         // Resonance Chamber II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_II.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCONEL_625.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_MV, 'H', ItemList.Casing_IV });
 
         // Resonance Chamber III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_III.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.ZERON_100.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_HV, 'H', ItemList.Casing_LuV });
 
         // Resonance Chamber IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.PIKYONIUM.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_EV, 'H', ItemList.Casing_ZPM });
     }
@@ -753,6 +760,7 @@ public class RecipesMachinesTiered {
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.LV), 'H', ItemList.Hull_LV,
                 'R', ItemList.Robot_Arm_LV });
@@ -760,6 +768,7 @@ public class RecipesMachinesTiered {
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_MV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.MV), 'H', ItemList.Hull_MV,
                 'R', ItemList.Robot_Arm_MV });
@@ -767,6 +776,7 @@ public class RecipesMachinesTiered {
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_HV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.HV), 'H', ItemList.Hull_HV,
                 'R', ItemList.Robot_Arm_HV });
@@ -774,6 +784,7 @@ public class RecipesMachinesTiered {
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_EV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.EV), 'H', ItemList.Hull_EV,
                 'R', ItemList.Robot_Arm_EV });
@@ -781,6 +792,7 @@ public class RecipesMachinesTiered {
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.IV), 'H', ItemList.Hull_IV,
                 'R', ItemList.Robot_Arm_IV });
@@ -788,6 +800,7 @@ public class RecipesMachinesTiered {
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LuV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Chrome), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.LuV), 'H',
                 ItemList.Hull_LuV, 'R', ItemList.Robot_Arm_LuV });
@@ -795,6 +808,7 @@ public class RecipesMachinesTiered {
         // ZPM
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_ZPM.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.ZPM), 'H',
                 ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_ZPM });
@@ -802,6 +816,7 @@ public class RecipesMachinesTiered {
         // UV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_UV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Osmium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.UV), 'H', ItemList.Hull_UV,
                 'R', ItemList.Robot_Arm_UV });
@@ -1274,23 +1289,25 @@ public class RecipesMachinesTiered {
     }
 
     private static void airFilters() {
-        if (!GTMod.proxy.mPollution) return;
 
         // Air Filter [Tier 1]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier1.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'D',
                 OrePrefixes.dust.get(Materials.Carbon) });
 
         // Air Filter [Tier 2]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier2.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'C',
                 "cellLithiumPeroxide", 'D', OrePrefixes.dust.get(Materials.Carbon) });
 
         // Pollution Detection Device
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Detector.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PSP", "PMP", "CHC", 'P', OrePrefixes.plate.get(Materials.Steel), 'S', ItemList.Sensor_LV,
                 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H', ItemList.Hull_LV });
 
@@ -1298,6 +1315,7 @@ public class RecipesMachinesTiered {
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
                 ItemList.Hull_LV });
@@ -1305,6 +1323,7 @@ public class RecipesMachinesTiered {
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood", 'H',
                 ItemList.Hull_MV });
@@ -1312,6 +1331,7 @@ public class RecipesMachinesTiered {
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_HV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced", 'H',
                 ItemList.Hull_HV });
@@ -1319,6 +1339,7 @@ public class RecipesMachinesTiered {
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_EV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
                 ItemList.Hull_EV });
@@ -1326,6 +1347,7 @@ public class RecipesMachinesTiered {
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite", 'H',
                 ItemList.Hull_IV });
@@ -1333,6 +1355,7 @@ public class RecipesMachinesTiered {
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LuV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C', "circuitMaster", 'H',
                 ItemList.Hull_LuV });
@@ -1340,6 +1363,7 @@ public class RecipesMachinesTiered {
         // ZPM
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_ZPM.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C', "circuitUltimate",
                 'H', ItemList.Hull_ZPM });
@@ -1347,6 +1371,7 @@ public class RecipesMachinesTiered {
         // UV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_UV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
                 "circuitSuperconductor", 'H', ItemList.Hull_UV });
@@ -1354,6 +1379,7 @@ public class RecipesMachinesTiered {
         // UHV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MAX.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 MaterialsAlloy.ZERON_100.getPlate(1), 'M', ItemList.Electric_Motor_UHV, 'C', "circuitInfinite", 'H',
                 ItemList.Hull_MAX });
@@ -1363,20 +1389,25 @@ public class RecipesMachinesTiered {
         // Allows clearing stored fluids
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_ULV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_ULV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_LV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_LV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_MV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_HV.get(1) });
 
         // ULV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_ULV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.get(Materials.Tin), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'I', OrePrefixes.plate.get(Materials.Iron), 'P',
                 OrePrefixes.pipeLarge.get(Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
@@ -1384,6 +1415,7 @@ public class RecipesMachinesTiered {
         // LV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_LV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.get(Materials.Steel), 'I',
                 OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.plate.get(Materials.Bronze), 'P',
                 OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
@@ -1391,6 +1423,7 @@ public class RecipesMachinesTiered {
         // MV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'B',
                 OrePrefixes.plate.get(Materials.Bronze), 'S', OrePrefixes.plate.get(Materials.Steel), 'P',
                 OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
@@ -1398,6 +1431,7 @@ public class RecipesMachinesTiered {
         // HV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CAC", "DPD", "CUC", 'C', "circuitPrimitive", 'A',
                 OrePrefixes.plate.get(Materials.Aluminium), 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'P',
                 OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Electric_Pump_MV });

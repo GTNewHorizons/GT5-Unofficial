@@ -34,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -45,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
@@ -73,17 +71,14 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -229,6 +224,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
             .addMaintenanceHatch("Hint Block Number 1")
@@ -312,6 +308,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
@@ -627,5 +624,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             if (built >= 0) return built;
         }
         return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

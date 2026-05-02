@@ -21,7 +21,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -49,7 +48,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -63,7 +61,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 
 public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvivalConstructable {
 
-    protected boolean boostEu = false;
     private int mCasing;
     private static IStructureDefinition<MTEIsaMill> STRUCTURE_DEFINITION = null;
 
@@ -90,7 +87,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
             .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
             .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
@@ -199,7 +196,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-            log("Found MTEHatchMillingBalls");
             return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
@@ -368,16 +364,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 1;
     }
@@ -385,12 +371,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIsaMill;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
     }
 
     @Override
@@ -432,15 +412,11 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     private void damageMillingBall(ItemStack aStack) {
         if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * 1))) {
             int damage = getMillingBallDamage(aStack) + 1;
-            log("damage milling ball " + damage);
             if (damage >= getMaxBallDurability(aStack)) {
-                log("consuming milling ball");
                 aStack.stackSize -= 1;
             } else {
                 setDamage(aStack, damage);
             }
-        } else {
-            log("not damaging milling ball");
         }
     }
 
@@ -458,6 +434,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
             ItemStack millingBall;
 
+            @Override
             public CheckRecipeResult process() {
                 if (getAvailableMillingBalls().length == 0) return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
                 return super.process();
@@ -480,7 +457,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                         return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
                     }
                 } else {
-                    Logger.ERROR("Cannot find a millingball in IsaMill Recipe.");
                     millingBall = null;
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }

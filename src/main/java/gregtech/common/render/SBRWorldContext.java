@@ -26,10 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.render.SBRContextHolder;
 
 /**
  * Represents the rendering context for a single block during a render pass.
@@ -70,11 +68,12 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     private final float[][][] AOLV = new float[3][3][3];
 
     private int worldRenderPass;
+
     /**
-     * Non-null dummy world, replaced in {@link #setup}.
+     * Reference to the world we are currently rendering in, replaced in {@link #setup}.
      */
-    @NotNull
-    private IBlockAccess blockAccess = GTValues.DW;
+    private IBlockAccess blockAccess;
+
     /**
      * Brightness for side.
      */
@@ -85,12 +84,14 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
 
+    private SBRWorldContext() {}
+
     /**
-     * Package-private constructor.
-     * <p>
-     * Instances should be obtained via {@link SBRContextHolder#getSBRWorldContext}.
+     * @return a new {@link ISBRWorldContext} instance
      */
-    public SBRWorldContext() {}
+    public static ISBRWorldContext create() {
+        return new SBRWorldContext();
+    }
 
     /**
      * Gets mixed ambient occlusion value from two inputs, with a ratio applied to the final result.
@@ -118,10 +119,11 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * @param renderBlocks the {@link RenderBlocks} renderer to use
      * @return this context instance, configured with the given parameters
      */
+    @Override
     @SuppressWarnings("MethodWithTooManyParameters")
     public
     // Blame ISimpleBlockRenderingHandler.renderWorldBlock
-    SBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
+    ISBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {
         super.setup(block, modelId, renderBlocks);
         this.blockAccess = renderBlocks.blockAccess;
         this.worldRenderPass = ForgeHooksClient.getWorldRenderPass();
@@ -135,7 +137,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     }
 
     @Override
-    public @NotNull IBlockAccess getBlockAccess() {
+    public IBlockAccess getBlockAccess() {
         return blockAccess;
     }
 
@@ -187,7 +189,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * This ensures deterministic rendering by clearing any leftover state
      * from previous use of this context instance.
      *
-     * @return this {@link SBRContextBase} instance for chaining
+     * @return this context instance for chaining
      */
     @Override
     public ISBRWorldContext reset() {
@@ -199,57 +201,99 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     }
 
     @Override
+    public void doCleanup() {
+        super.doCleanup();
+        this.blockAccess = null;
+    }
+
+    @Override
     public void renderNegativeYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, 0)) return;
+            && !block.shouldSideBeRendered(blockAccess, x, y - 1, z, ForgeDirection.DOWN.ordinal())) return;
         setupLightingYNeg();
-        super.renderNegativeYFacing(tex);
+        final double origMinY = renderBlocks.renderMinY;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinY = Math.nextDown(renderBlocks.renderMinY);
+            layer.renderYNeg(this);
+        }
+        renderBlocks.renderMinY = origMinY;
     }
 
     @Override
     public void renderPositiveYFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, 1)) return;
+            && !block.shouldSideBeRendered(blockAccess, x, y + 1, z, ForgeDirection.UP.ordinal())) return;
         setupLightingYPos();
-        super.renderPositiveYFacing(tex);
+        final double origMaxY = renderBlocks.renderMaxY;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxY = Math.nextUp(renderBlocks.renderMaxY);
+            layer.renderYPos(this);
+        }
+        renderBlocks.renderMaxY = origMaxY;
     }
 
     @Override
     public void renderNegativeZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, 2)) return;
+            && !block.shouldSideBeRendered(blockAccess, x, y, z - 1, ForgeDirection.NORTH.ordinal())) return;
         setupLightingZNeg();
-        super.renderNegativeZFacing(tex);
+        final double origMinZ = renderBlocks.renderMinZ;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinZ = Math.nextDown(renderBlocks.renderMinZ);
+            layer.renderZNeg(this);
+        }
+        renderBlocks.renderMinZ = origMinZ;
     }
 
     @Override
     public void renderPositiveZFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, 3)) return;
+            && !block.shouldSideBeRendered(blockAccess, x, y, z + 1, ForgeDirection.SOUTH.ordinal())) return;
         setupLightingZPos();
-        super.renderPositiveZFacing(tex);
+        final double origMaxZ = renderBlocks.renderMaxZ;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxZ = Math.nextUp(renderBlocks.renderMaxZ);
+            layer.renderZPos(this);
+        }
+        renderBlocks.renderMaxZ = origMaxZ;
     }
 
     @Override
     public void renderNegativeXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, 4)) return;
+            && !block.shouldSideBeRendered(blockAccess, x - 1, y, z, ForgeDirection.WEST.ordinal())) return;
         setupLightingXNeg();
-        super.renderNegativeXFacing(tex);
+        final double origMinX = renderBlocks.renderMinX;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinX = Math.nextDown(renderBlocks.renderMinX);
+            layer.renderXNeg(this);
+        }
+        renderBlocks.renderMinX = origMinX;
     }
 
     @Override
     public void renderPositiveXFacing(ITexture[] tex) {
         final RenderBlocks renderBlocks = this.renderBlocks;
         if (!renderBlocks.partialRenderBounds && !renderBlocks.renderAllFaces
-            && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, 5)) return;
+            && !block.shouldSideBeRendered(blockAccess, x + 1, y, z, ForgeDirection.EAST.ordinal())) return;
         setupLightingXPos();
-        super.renderPositiveXFacing(tex);
+        final double origMaxX = renderBlocks.renderMaxX;
+        for (ITexture layer : tex) {
+            if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxX = Math.nextUp(renderBlocks.renderMaxX);
+            layer.renderXPos(this);
+        }
+        renderBlocks.renderMaxX = origMaxX;
     }
 
     /**
@@ -332,7 +376,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
 
     /**
      * Performs an optional instanceof check
-     * 
+     *
      * @param blockAccess the world access interface to check
      * @return {@code true} if {@code blockAccess instanceof blockrenderer6343.client.world.DummyWorld}
      */

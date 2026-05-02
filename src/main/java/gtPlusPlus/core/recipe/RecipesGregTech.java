@@ -70,6 +70,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.loaders.postload.chains.AcidRecipes;
 import gregtech.loaders.postload.chains.NetheriteRecipes;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -123,6 +124,7 @@ public class RecipesGregTech {
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
         NetheriteRecipes.run();
+        AcidRecipes.run();
 
         addFuels();
 
@@ -437,13 +439,17 @@ public class RecipesGregTech {
             .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
+        /*
+         * Gem Battery Recipes
+         */
+
         // Proton Cell
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.PROTON))
+            .metadata(RESEARCH_ITEM, ItemList.StableBaryonContainmentUnit.get(1))
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_1.get(1),
-                Particle.getBaseParticle(Particle.PROTON, 16),
+                ItemList.StableBaryonContainmentUnit.get(16),
                 MaterialsAlloy.ZERON_100.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
@@ -461,11 +467,11 @@ public class RecipesGregTech {
 
         // Electron Cell
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.ELECTRON))
+            .metadata(RESEARCH_ITEM, ItemList.StableLeptonContainmentUnit.get(1))
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_2.get(1),
-                Particle.getBaseParticle(Particle.ELECTRON, 16),
+                ItemList.StableLeptonContainmentUnit.get(16),
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
@@ -483,11 +489,11 @@ public class RecipesGregTech {
 
         // Quark Entanglement
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.CHARM))
+            .metadata(RESEARCH_ITEM, ItemList.StableMesonContainmentUnit.get(1))
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_3.get(1),
-                Particle.getBaseParticle(Particle.CHARM, 16),
+                ItemList.StableMesonContainmentUnit.get(16),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
@@ -505,11 +511,11 @@ public class RecipesGregTech {
 
         // Graviton Anomaly
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.GRAVITON))
+            .metadata(RESEARCH_ITEM, ItemList.StableBosonContainmentUnit.get(1))
             .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
-                Particle.getBaseParticle(Particle.GRAVITON, 16),
+                ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
@@ -1126,8 +1132,8 @@ public class RecipesGregTech {
                 Materials.Aluminium.getDust(1))
             .circuit(6)
             .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
-            .eut(TierEU.RECIPE_IV)
-            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
 
@@ -1747,6 +1753,7 @@ public class RecipesGregTech {
         }
     }
 
+    // TODO: remove cyclotron recipes for 2.10
     private static void cyclotronRecipes() {
         // Polonium
         GTValues.RA.stdBuilder()

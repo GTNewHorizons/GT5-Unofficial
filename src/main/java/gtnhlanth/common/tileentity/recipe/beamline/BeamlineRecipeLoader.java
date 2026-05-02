@@ -4,6 +4,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.sourceChamberRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.targetChamberRecipes;
+import static gtnhlanth.common.beamline.Particle.PHOTON;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -107,6 +108,20 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .addTo(sourceChamberRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.NEUTRON.ordinal())
+                    .rate(10)
+                    .energy(100_000, 999)
+                    .focus(95)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(sourceChamberRecipes);
+
         /*
          * ALPHA
          */
@@ -123,6 +138,23 @@ public class BeamlineRecipeLoader {
                     .build())
             .duration(20)
             .eut(TierEU.RECIPE_HV)
+            .addTo(sourceChamberRecipes);
+
+        /*
+         * PROTON
+         */
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.PROTON.ordinal())
+                    .rate(10)
+                    .energy(1_000_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_UV)
             .addTo(sourceChamberRecipes);
 
         /*
@@ -154,7 +186,7 @@ public class BeamlineRecipeLoader {
                             .metadata(
                                 TARGET_CHAMBER_METADATA,
                                 TargetChamberMetadata.builder(focusItem)
-                                    .particleID(1)
+                                    .particleID(PHOTON.getId())
                                     // 2x recipe amount increase per 2 increases in wafer tier.
                                     // This greatly incentivises the use of higher tier boule wafer recipes
                                     .amount(
@@ -182,7 +214,7 @@ public class BeamlineRecipeLoader {
                 .metadata(
                     TARGET_CHAMBER_METADATA,
                     TargetChamberMetadata.builder(focusItem)
-                        .particleID(1)
+                        .particleID(PHOTON.getId())
                         .amount(mask.getBaselineAmount())
                         .energy(mask.getMinEnergy(), mask.getMaxEnergy(), 1)
                         .minFocus(mask.getMinFocus())
@@ -205,7 +237,7 @@ public class BeamlineRecipeLoader {
             .metadata(
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
-                    .particleID(1)
+                    .particleID(PHOTON.getId())
                     .amount(24)
                     .energy(5, 12, 1)
                     .minFocus(60)
@@ -223,7 +255,7 @@ public class BeamlineRecipeLoader {
             .metadata(
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
-                    .particleID(1)
+                    .particleID(PHOTON.getId())
                     .amount(36)
                     .energy(6, 14, 1)
                     .minFocus(70)

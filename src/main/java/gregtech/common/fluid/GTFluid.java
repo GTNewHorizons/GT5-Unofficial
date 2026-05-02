@@ -2,6 +2,9 @@ package gregtech.common.fluid;
 
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
+import java.util.Arrays;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 import gregtech.api.util.GTLanguageManager;
@@ -22,13 +27,14 @@ import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
 
-    private final String localizedName;
+    private final String defaultLocalName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
     private final short[] colorRGBA;
     private final FluidState fluidState;
     private final Fluid iconsFrom;
     private Fluid registeredFluid;
+    private Supplier<String> localizedName;
 
     /**
      * Constructs this {@link IGTFluid} implementation from an {@link GTFluidBuilder} instance
@@ -37,7 +43,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     protected GTFluid(@Nonnull final GTFluidBuilder builder) {
         super(builder.fluidName);
-        this.localizedName = builder.localizedName;
+        this.defaultLocalName = builder.defaultLocalName;
         this.stillIconResourceLocation = builder.stillIconResourceLocation;
         this.flowingIconResourceLocation = builder.flowingIconResourceLocation;
         this.iconsFrom = builder.iconsFrom;
@@ -93,12 +99,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
 
     // ----- IGTFluid interface implementations -----
 
+    @Override
     public IGTRegisteredFluid addFluid() {
         if (FluidRegistry.registerFluid(GTFluid.this)) {
             // Registered as a new Fluid
             registeredFluid = this;
-            // Adds a server-side localized-name
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(), localizedName);
         } else {
             // Fluid already registered, get it from the registry
             registeredFluid = FluidRegistry.getFluid(GTFluid.this.fluidName);
@@ -170,6 +175,69 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
+     * Adds a server-side localized-name
+     */
+    @Override
+    public IGTRegisteredFluid addLocalizedName() {
+        GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalName);
+        return this;
+    }
+
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] oreprefixNames) {
+        return Arrays.stream(oreprefixNames)
+            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
+    }
+
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String oreprefixName) {
+        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
+        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
+            if (String.format(oreprefixName, material.getDefaultLocalName())
+                .equals(defaultLocalName)) {
+                localizedName = () -> OrePrefixes.getLocalizedNameForItem(oreprefixName, "%s", material);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
+     * names. If neither matches, add a key for localized.
+     *
+     * @param material material from GT/BW/GT++
+     *
+     * @implNote The method checks for the following oreprefix patterns:
+     *           <ul>
+     *           <li>Molten %s</li>
+     *           <li>%s Plasma</li>
+     *           <li>Lightly Hydro-Cracked %s</li>
+     *           <li>Lightly Steam-Cracked %s</li>
+     *           <li>Moderately Hydro-Cracked %s</li>
+     *           <li>Moderately Steam-Cracked %s</li>
+     *           <li>Severely Hydro-Cracked %s</li>
+     *           <li>Severely Steam-Cracked %s</li>
+     *           </ul>
+     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
+     */
+    @Override
+    public IGTRegisteredFluid addLocalizedName(IOreMaterial material) {
+        if (material == null) return addLocalizedName();
+        if (!material.getDefaultLocalName()
+            .equals(defaultLocalName)) {
+            if (addLocalizedNameHasOreprefix(
+                material,
+                new String[] { "Molten %s", "%s Plasma", "Lightly Hydro-Cracked %s", "Lightly Steam-Cracked %s",
+                    "Moderately Hydro-Cracked %s", "Moderately Steam-Cracked %s", "Severely Hydro-Cracked %s",
+                    "Severely Steam-Cracked %s" })) {
+                return this;
+            }
+            return addLocalizedName();
+        }
+        localizedName = material::getLocalizedName;
+        return this;
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
@@ -180,7 +248,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     // ----- Runnable interface implementations -----
 
     /**
-     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTechAPI#sGTBlockIconload} to load
+     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTechAPI#sGTBlockIconload} to
+     * load
      * this {@link IGTFluid}'s texture icons.
      *
      * @see Runnable#run()
@@ -205,5 +274,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public String toString() {
         return "GTFluid{" + "fluidName='" + fluidName + '\'' + '}';
+    }
+
+    @Override
+    public String getLocalizedName() {
+        if (localizedName == null) return super.getLocalizedName();
+        return localizedName.get();
     }
 }

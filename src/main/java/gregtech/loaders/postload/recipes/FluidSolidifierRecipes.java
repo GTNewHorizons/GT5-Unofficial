@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -318,6 +319,42 @@ public class FluidSolidifierRecipes implements Runnable {
             .fluidInputs(Materials.GraniteBlack.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
+            .addTo(fluidSolidifierRecipes);
+
+        this.HexaniteRecipes();
+    }
+
+    private void HexaniteRecipes() {
+        this.addHexanitePartRecipe(OrePrefixes.frameGt, 1);
+        this.addHexanitePartRecipe(OrePrefixes.ingot, 1);
+        this.addHexanitePartRecipe(OrePrefixes.plate, 1);
+        this.addHexanitePartRecipe(OrePrefixes.plateDouble, 1);
+        this.addHexanitePartRecipe(OrePrefixes.plateDense, 1);
+        this.addHexanitePartRecipe(OrePrefixes.stick, 1);
+        this.addHexanitePartRecipe(OrePrefixes.round, 1);
+        this.addHexanitePartRecipe(OrePrefixes.bolt, 1);
+        this.addHexanitePartRecipe(OrePrefixes.screw, 1);
+        this.addHexanitePartRecipe(OrePrefixes.ring, 1);
+        this.addHexanitePartRecipe(OrePrefixes.foil, 1);
+        this.addHexanitePartRecipe(OrePrefixes.gearGtSmall, 1);
+        this.addHexanitePartRecipe(OrePrefixes.rotor, 1);
+        this.addHexanitePartRecipe(OrePrefixes.stickLong, 1);
+        this.addHexanitePartRecipe(OrePrefixes.gearGt, 1);
+        this.addHexanitePartRecipe(OrePrefixes.itemCasing, 1);
+        this.addHexanitePartRecipe(OrePrefixes.plateSuperdense, 1);
+        this.addHexanitePartRecipe(OrePrefixes.block, 1);
+    }
+
+    private void addHexanitePartRecipe(OrePrefixes prefix, final int multiplier) {
+
+        final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Hexanite, multiplier))
+            .fluidInputs(Materials.UnformedHexanite.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
+            .eut(TierEU.RECIPE_UMV)
             .addTo(fluidSolidifierRecipes);
 
     }

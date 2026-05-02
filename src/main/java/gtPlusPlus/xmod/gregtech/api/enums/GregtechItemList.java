@@ -722,9 +722,8 @@ public enum GregtechItemList implements IItemContainer {
     UltimatePlasticCatalyst,
     BiologicalIntelligenceCatalyst,
     TemporalHarmonyCatalyst,
-    ParticleAccelerationCatalyst,
-    SynchrotronCapableCatalyst,
     AlgagenicGrowthPromoterCatalyst,
+    ChlorinationCatalyst,
 
     // Algae Items
     AlgaeBiomass,

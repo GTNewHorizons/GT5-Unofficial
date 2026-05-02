@@ -77,7 +77,6 @@ import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -109,8 +108,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
-    IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
+public abstract class MTEBasicMachine extends MTEBasicTank
+    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
 
     /**
      * return values for checkRecipe()
@@ -1305,11 +1304,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
     }
@@ -1615,5 +1609,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             case 4 -> 128000;
             default -> 256000;
         };
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }
