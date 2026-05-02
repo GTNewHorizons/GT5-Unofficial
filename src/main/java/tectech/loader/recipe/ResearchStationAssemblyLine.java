@@ -110,7 +110,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 12) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
                 Materials.Neutronium.getMolten(4 * INGOTS) },
-            ItemList.OilDrillInfinite.get(1),
+            ItemList.InfiniteFluidDrillingRig.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);
 
@@ -2233,7 +2233,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(64),
                     ItemList.Quantum_Chest_IV.get(64),
                     // Void miner III.
-                    GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.OilDrillInfinite.get(64),
+                    GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.InfiniteFluidDrillingRig.get(64),
 
                     ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },

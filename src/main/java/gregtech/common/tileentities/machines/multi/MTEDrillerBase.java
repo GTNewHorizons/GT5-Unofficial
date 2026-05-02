@@ -600,7 +600,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public final IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
+    public IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
@@ -612,7 +612,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             && mMaintenanceHatches.size() == 1;
     }
 
-    private void updateCoordinates() {
+    protected void updateCoordinates() {
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();

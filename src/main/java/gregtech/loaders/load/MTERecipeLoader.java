@@ -1812,6 +1812,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
+
+        // Infinite Fluid Drilling Rig Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.InfiniteFluidDrillingRig.get(1),
+            new Object[] { ItemList.OilDrillInfinite });
     }
 
     private static void registerSifter() {

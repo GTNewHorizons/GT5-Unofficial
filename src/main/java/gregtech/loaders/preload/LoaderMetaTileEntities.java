@@ -214,6 +214,7 @@ import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill3;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill4;
 import gregtech.common.tileentities.machines.multi.MTEOilDrillInfinite;
+import gregtech.common.tileentities.machines.multi.MTEOilDrillInfiniteLegacy;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
@@ -506,7 +507,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
                 .getStackForm(1));
         ItemList.OilDrillInfinite.set(
-            new MTEOilDrillInfinite(
+            new MTEOilDrillInfiniteLegacy(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
                 "multimachine.oildrillinfinite",
                 "Infinite Fluid Drilling Rig").getStackForm(1));
@@ -942,6 +943,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Boldarnator.set(
             new MTEIndustrialRockBreaker(Boldarnator.ID, "industrialrockcrusher.controller.tier.single", "Boldarnator")
                 .getStackForm(1L));
+
+        ItemList.InfiniteFluidDrillingRig.set(
+            new MTEOilDrillInfinite(
+                InfiniteFluidDrillingRig.ID,
+                "multimachine.oildrillinfinite",
+                "Infinite Fluid Drilling Rig").getStackForm(1));
 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
