@@ -78,6 +78,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
+    protected byte oldStrongRedstone = 0;
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -200,6 +201,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    public abstract void issueClientUpdate();
+
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
@@ -256,6 +259,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverAtSide(side).asItemStack();
     }
 
+    protected byte getValidCoversMask() {
+        return validCoversMask;
+    }
+
+    abstract public void enableTicking();
+
     /**
      * @param cover the cover to apply. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
@@ -265,7 +274,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             covers[side.ordinal()] = cover;
 
             validCoversMask &= (byte) ~side.flag;
-            if (cover.isValid()) validCoversMask |= side.flag;
+            if (cover.isValid()) {
+                enableTicking();
+                validCoversMask |= side.flag;
+            }
         }
     }
 
@@ -345,6 +357,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
+            issueClientUpdate();
         }
     }
 
@@ -404,6 +417,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void setGenericRedstoneOutput(boolean aOnOff) {
         mRedstone = aOnOff;
+        issueClientUpdate();
     }
 
     @Override

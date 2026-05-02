@@ -33,6 +33,8 @@ public interface IOreMaterial extends ISubTagContainer {
 
     String getInternalName();
 
+    String getDefaultLocalName();
+
     default String getLocalizedNameKey() {
         return "Material." + getInternalName().toLowerCase();
     }

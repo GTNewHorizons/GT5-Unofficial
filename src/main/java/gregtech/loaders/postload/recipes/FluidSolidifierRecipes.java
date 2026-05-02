@@ -342,6 +342,7 @@ public class FluidSolidifierRecipes implements Runnable {
         this.addHexanitePartRecipe(OrePrefixes.gearGt, 1);
         this.addHexanitePartRecipe(OrePrefixes.itemCasing, 1);
         this.addHexanitePartRecipe(OrePrefixes.plateSuperdense, 1);
+        this.addHexanitePartRecipe(OrePrefixes.block, 1);
     }
 
     private void addHexanitePartRecipe(OrePrefixes prefix, final int multiplier) {
