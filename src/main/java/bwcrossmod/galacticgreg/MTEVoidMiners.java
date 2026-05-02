@@ -23,6 +23,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -35,6 +37,8 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.EnergyHatchTierTooLow;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
@@ -112,10 +116,13 @@ public class MTEVoidMiners {
         }
 
         @Override
-        public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1)) && checkHatches()
-                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                && mMaintenanceHatches.size() == 1;
+        public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack,
+            List<StructureError> errors) {
+            if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1, errors)) return;
+            checkHatches(errors);
+            if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
+                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+            }
         }
 
         public VMLUV(String aName, int tier) {
@@ -225,10 +232,13 @@ public class MTEVoidMiners {
         }
 
         @Override
-        public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1)) && checkHatches()
-                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                && mMaintenanceHatches.size() == 1;
+        public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack,
+            List<StructureError> errors) {
+            if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1, errors)) return;
+            checkHatches(errors);
+            if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
+                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+            }
         }
 
         public VMZPM(String aName, int tier) {
@@ -331,10 +341,13 @@ public class MTEVoidMiners {
         }
 
         @Override
-        public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2)) && checkHatches()
-                && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-                && mMaintenanceHatches.size() == 1;
+        public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack,
+            List<StructureError> errors) {
+            if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2, errors)) return;
+            checkHatches(errors);
+            if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
+                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+            }
         }
 
         public VMUV(String aName, int tier) {
