@@ -859,8 +859,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
-            return GTUtility
-                .infoData("kekztech.infodata.lapotronic_super_capacitor.time_to.empty", formatTime(timeToEmpty, false));
+            return IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.time_to.empty", formatTime(timeToEmpty, false));
         }
     }
 
@@ -901,8 +901,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             IGregTechDeviceInformation
                 .encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", nf.format(capacity)));
         ll.add(
-            GTUtility
-                .infoData("kekztech.infodata.lapotronic_super_capacitor.total_capacity", toStandardForm(capacity)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", toStandardForm(capacity)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",

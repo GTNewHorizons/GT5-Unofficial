@@ -11,7 +11,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
@@ -95,8 +94,8 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
     @Override
     public String[] getInfoData() {
         return new String[] {
-            GTUtility
-                .infoData("tt.keyword.Content.fmt", this.dataPacket != null ? this.dataPacket.getContentString() : 0),
+            IGregTechDeviceInformation
+                .encode("tt.keyword.Content.fmt", this.dataPacket != null ? this.dataPacket.getContentString() : 0),
             IGregTechDeviceInformation.encode(
                 "tt.keyword.PacketHistory.fmt",
                 this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
