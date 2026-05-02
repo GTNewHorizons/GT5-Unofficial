@@ -512,6 +512,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+    NaquadahReactorCasing
+        (() -> GregTechAPI.sBlockCasings13,15,gt(16,6,15)),
 
 
     // Block Casings 14
