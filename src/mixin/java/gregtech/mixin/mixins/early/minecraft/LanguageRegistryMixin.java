@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
 
@@ -28,6 +29,7 @@ public class LanguageRegistryMixin {
 
     @Inject(method = "mergeLanguageTable", at = @At(value = "HEAD"), remap = false)
     private void gt5u$mergeLanguageTable(Map field_135032_a, String lang, CallbackInfo ci) {
+        GTInflectionManager.loadInflectionJson(lang);
         GTLanguageManager.reloadLanguage(field_135032_a);
     }
 }

@@ -1079,6 +1079,12 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# Toxic Residue Sensor
+gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
+gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
+gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue shown in percent
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -2338,6 +2344,7 @@ GT5U.gui.button.batch_mode_off=Batch Mode: OFF
 GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
 GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
 GT5U.gui.button.structure_update=Update Structure
+GT5U.gui.button.highlight_block=Highlight block in world
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
@@ -2368,6 +2375,8 @@ GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is m
 GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
+GT5U.gui.button.max_fluid=Maximum Fluid Consumption (L/t)
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
@@ -2483,10 +2492,13 @@ GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.toxic_residue=§fToxic Residue: §c%s §f/ %s (%s%%)
+GT5U.gui.text.residue_change=§fResidue Change: §c+%s§f/§a-%s §f(%s)
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.toxic_residue_sensor=Toxic Residue threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
@@ -2495,6 +2507,13 @@ GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
 GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
+GT5U.gui.text.unknown_structure_error=Unknown structure error
+GT5U.gui.text.dt_missing_output_hatch=Missing Output Hatch on layer %s
+GT5U.gui.text.dangote_missing_top=Top layer is invalid or muffler hatch is not placed on the top layer
+GT5U.gui.text.too_short=The structure is too short
+GT5U.gui.text.hatch_invalid=Hatch requirement is not met
+GT5U.gui.not_loaded=Some block is not chunk loaded
+GT5U.gui.wrong_block=Invalid block at (%s, %s, %s)
 GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
@@ -3133,6 +3152,7 @@ GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
+GT5U.chat.dragon_blood_shards_dropped=%s Shards of Dragons Blood have crystallized into a metallic form.
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
 GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
@@ -6769,6 +6789,7 @@ GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only w
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
+GT5U.tooltip.flour.cauldron=Throw into Cauldron with Water to make Dough
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # Scanner info
@@ -6923,6 +6944,8 @@ GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
+
+GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
 
 GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
@@ -7729,6 +7752,9 @@ gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
 gt.blockcasings12.3.name=Nanochip Computational Matrix Casing
 gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
+gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
+gt.blockcasings12.6.name=Precise Stationary Machine Casing
+gt.blockcasings12.7.name=Ultimately Static Machine Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
