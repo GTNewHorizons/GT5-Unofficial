@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -243,17 +244,28 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         mCasingAmount++;
     }
 
+    private void resetStructureState() {
+        pipeTier = -1;
+        mCasingAmount = 0;
+        mEnergyHatches.clear();
+        mMaintenanceHatches.clear();
+        mInputBusses.clear();
+        mOutputBusses.clear();
+    }
+
+    private boolean checkBodyPiece(List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1, new ArrayList<>())) return true;
+        resetStructureState();
+        checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, new ArrayList<>());
+        return checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1, errors);
+    }
+
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        pipeTier = -1;
-        mEnergyHatches.clear();
-        mCasingAmount = 0;
+        resetStructureState();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1)) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-            return;
-        }
+        if (!checkBodyPiece(errors)) return;
         checkOneMaintenanceHatch(errors);
         if (pipeTier <= 0) {
             errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
