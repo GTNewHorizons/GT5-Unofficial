@@ -952,7 +952,7 @@ public class RecipesMachinesMulti {
                 ItemList.Conveyor_Module_EV.get(8),
                 ItemList.Robot_Arm_EV.get(4))
             .circuit(14)
-            .itemOutputs(GregtechItemList.Controller_IndustrialAutoChisel.get(1))
+            .itemOutputs(ItemList.IndustrialPrinter.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
