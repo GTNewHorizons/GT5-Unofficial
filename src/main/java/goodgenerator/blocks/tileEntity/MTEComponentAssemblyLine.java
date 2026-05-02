@@ -347,6 +347,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (this.glassTier < VoltageIndex.UV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
         }
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
+        checkOneMaintenanceHatch(errors);
     }
 
     @Override

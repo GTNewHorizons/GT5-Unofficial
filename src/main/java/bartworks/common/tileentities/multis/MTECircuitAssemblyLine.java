@@ -534,6 +534,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 // this is the output layer
                 checkOneEnergyHatch(errors);
                 checkHasMaintenanceHatch(errors);
+                checkHasAnyInput(errors);
                 return i;
             }
         }

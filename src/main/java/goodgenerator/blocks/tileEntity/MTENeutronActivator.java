@@ -296,6 +296,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         if (casingAmount < 7) {
             errors.add(StructureErrors.missingCasings(casingAmount, 7));
         }
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     public final boolean addAcceleratorAndSensor(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

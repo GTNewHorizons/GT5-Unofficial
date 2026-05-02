@@ -197,6 +197,8 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         }
         checkCasingMin(errors, mCasing, 120);
         checkHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

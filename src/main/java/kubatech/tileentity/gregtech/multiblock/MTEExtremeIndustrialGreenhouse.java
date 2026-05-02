@@ -326,6 +326,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasing, 70);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
 
         if (!errors.isEmpty()) return;
 

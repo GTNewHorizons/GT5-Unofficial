@@ -173,6 +173,8 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         }
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

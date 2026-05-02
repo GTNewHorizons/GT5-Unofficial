@@ -132,6 +132,8 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
         if (mEnergyHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
         }
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     public Block getCasingBlock() {

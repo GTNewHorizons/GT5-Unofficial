@@ -476,12 +476,14 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         }
     }
 
+    @Override
     protected final void checkHasAnyInput(List<StructureError> errors) {
         if (mSteamInputs.isEmpty() && mInputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.no_input"));
         }
     }
 
+    @Override
     protected final void checkHasAnyOutput(List<StructureError> errors) {
         if (mSteamOutputs.isEmpty() && mOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.no_output"));

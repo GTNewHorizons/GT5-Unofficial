@@ -270,6 +270,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         }
         checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);
         checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
     }
 
     @Override

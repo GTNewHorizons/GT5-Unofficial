@@ -214,6 +214,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         if (casingAmount < 25) {
             errors.add(StructureErrors.missingCasings(casingAmount, 25));
         }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

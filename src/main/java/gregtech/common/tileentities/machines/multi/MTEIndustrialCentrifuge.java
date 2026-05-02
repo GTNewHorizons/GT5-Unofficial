@@ -232,6 +232,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         }
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     private void updateTurbineOverlay() {

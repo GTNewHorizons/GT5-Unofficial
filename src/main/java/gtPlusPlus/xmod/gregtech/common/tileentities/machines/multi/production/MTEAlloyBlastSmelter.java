@@ -141,6 +141,8 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             errors.add(StructureErrors.missingCasings(mCasing, 3));
         }
         checkHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

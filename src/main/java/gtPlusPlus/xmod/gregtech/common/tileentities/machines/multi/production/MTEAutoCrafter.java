@@ -148,6 +148,8 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
             errors.add(StructureErrors.missingCasings(casing, 10));
         }
         checkHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

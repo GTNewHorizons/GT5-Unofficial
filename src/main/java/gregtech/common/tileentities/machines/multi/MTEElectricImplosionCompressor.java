@@ -246,6 +246,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
         checkCasingMin(errors, casingAmount, 230);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

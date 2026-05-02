@@ -341,6 +341,8 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
         if (dynamoCount != 1) {
             errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));
         }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

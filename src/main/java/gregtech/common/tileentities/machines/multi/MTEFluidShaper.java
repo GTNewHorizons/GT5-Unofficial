@@ -283,6 +283,8 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         }
 
         checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

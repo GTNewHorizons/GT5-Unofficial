@@ -465,6 +465,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             }
         }
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

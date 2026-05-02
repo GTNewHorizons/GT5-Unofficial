@@ -301,6 +301,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     turbineCasingAmount,
                     4));
         }
+        checkHasInputHatch(errors);
     }
 
     @Override

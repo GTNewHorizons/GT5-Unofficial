@@ -193,6 +193,8 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
         if (casing < 1) {
             errors.add(StructureErrors.missingCasings(casing, 1));
         }
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

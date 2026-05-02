@@ -654,6 +654,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 }
             }
             checkModules(errors);
+            checkHasAnyInput(errors);
+            checkHasOutputBus(errors);
         } else {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }

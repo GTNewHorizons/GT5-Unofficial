@@ -678,6 +678,18 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Maintenance, 1);
     }
 
+    protected void checkHasAnyInput(List<StructureError> errors) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_any_input"));
+        }
+    }
+
+    protected void checkHasAnyOutput(List<StructureError> errors) {
+        if (mOutputBusses.isEmpty() && mOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_any_output"));
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;

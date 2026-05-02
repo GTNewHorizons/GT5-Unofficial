@@ -184,6 +184,8 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         }
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
