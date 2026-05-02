@@ -64,8 +64,8 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
         this.setCreativeTab(MainMod.BWT);
     }
 
-    public void useItem(ItemStack stack, EntityPlayer player) {
-        ElectricItem.manager.use(stack, COST_PER_USE, player);
+    public boolean useItem(ItemStack stack, EntityPlayer player) {
+        return ElectricItem.manager.use(stack, COST_PER_USE, player);
     }
 
     @Override
