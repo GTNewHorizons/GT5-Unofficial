@@ -178,12 +178,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -821,6 +819,15 @@ public class GTUtility {
         }
     }
 
+    public static boolean cleanInventory(IMetaTileEntity imte, int start, int end) {
+        if (cleanInventory(wrapInventory(imte).subList(start, end))) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean cleanInventory(List<ItemStack> inv) {
         boolean didSomething = false;
 
@@ -1081,8 +1088,6 @@ public class GTUtility {
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
-        if (aFluid instanceof GTFluid gtFluid) return gtFluid.getLocalizedName();
-        if (aFluid instanceof FluidGT6 fluidGT6) return fluidGT6.getLocalizedName();
         return aFluid.getLocalizedName();
     }
 
