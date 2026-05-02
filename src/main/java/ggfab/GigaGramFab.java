@@ -2,6 +2,7 @@ package ggfab;
 
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedAssline;
 import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputBus;
+import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputHatch;
 import static gregtech.api.enums.ToolDictNames.craftingToolCrowbar;
 import static gregtech.api.enums.ToolDictNames.craftingToolFile;
 import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
@@ -32,6 +33,7 @@ import ggfab.items.GGMetaItemDumbItems;
 import ggfab.items.SingleUseTool;
 import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
+import ggfab.mte.MTELinkedInputHatch;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
@@ -69,6 +71,12 @@ public class GigaGramFab {
             GGItemList.LinkedInputBus.set(
                 new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
                     .getStackForm(1));
+            GGItemList.LinkedInputHatch.set(
+                new MTELinkedInputHatch(
+                    LinkedInputHatch.ID,
+                    "ggfab.machine.linked_input_hatch",
+                    "Linked Input Hatch",
+                    6).getStackForm(1));
 
             long plate = OrePrefixes.plate.getMaterialAmount(), ingot = OrePrefixes.ingot.getMaterialAmount(),
                 screw = OrePrefixes.screw.getMaterialAmount(), rod = OrePrefixes.stick.getMaterialAmount();
