@@ -95,6 +95,7 @@ public class StructureErrorRegistry {
         register(new TooManyInputHatch(0, 0));
         register(new GlassTierNotEnough(0));
         register(new HatchCountError(null, null, 0, 0));
+        register(new HatchCountErrorSpecific(null, 0, 0, 0, 0));
         register(new EnergyHatchTierTooLow(0, 0));
     }
 
