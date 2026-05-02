@@ -2915,7 +2915,7 @@ GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
-GT5U.gui.text.volumetric_flask.confirm=Confirm
+GT5U.gui.text.volumetric_flask.max_capacity=Max Capacity of %s
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Pattern Storage for §eLarge Molecular Assembler (LMA)§r
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.2=Capacity: %d Patterns
 
