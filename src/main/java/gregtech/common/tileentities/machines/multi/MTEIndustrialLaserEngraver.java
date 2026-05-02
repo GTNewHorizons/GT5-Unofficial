@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
+import static gregtech.api.util.GTUtility.min;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.structure.error.ErrorType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -290,18 +292,28 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 35);
         if (mCasingAmount < 35) errors.add(StructureErrors.missingCasings(mCasingAmount, 35));
-        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return;
 
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
-            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (laserSource.mTier < VoltageIndex.UEV) {
+                errors.add(StructureErrors.of("GT5U.gui.text.laser_need_uev"));
+            } else {
+                int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+                if (count != 1) {
+                    errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, count, 1));
+                }
+            }
         } else {
             checkHasEnergyHatch(errors);
         }
         checkHasMaintenanceHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
+
+        if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) {
+            errors.add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UMV, laserSource.mTier)));
+        }
+        if (!errors.isEmpty()) return;
+        findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
     }
 
     private static String getUniqueIdentifier(ItemStack is) {

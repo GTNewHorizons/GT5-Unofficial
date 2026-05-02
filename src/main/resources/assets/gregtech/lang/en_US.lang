@@ -2532,6 +2532,7 @@ GT5U.gui.text.chemplant_too_many_catalyst_hatch=Too many catalyst hatches
 GT5U.gui.text.defc_fusion_machine_casing=Tiers 3-5 require Mk-II fusion machine casings
 GT5U.gui.text.exo_foundry_too_many_hatch=Too many hatch
 GT5U.gui.text.exo_foundry_hypercooler_hatch=Missing coolant hatch for hypercooler
+GT5U.gui.text.laser_need_uev=Need UEV-tiered laser for Multi-Amp support
 GT5U.gui.text.pulse_mode=Pulse Mode
 GT5U.gui.text.no_wafer=No wafer was found
 GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
