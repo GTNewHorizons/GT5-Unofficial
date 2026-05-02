@@ -2402,8 +2402,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (hatchCount > 0) {
             info.add(
-                GTUtility
-                    .infoData("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
 
             info.add(
                 IGregTechDeviceInformation.encode(
