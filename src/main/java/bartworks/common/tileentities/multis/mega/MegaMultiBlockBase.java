@@ -2,12 +2,17 @@ package bartworks.common.tileentities.multis.mega;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
+import bartworks.util.BWTooltipReference;
+import bartworks.util.BWUtil;
+import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 
@@ -19,6 +24,75 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
 
     public MegaMultiBlockBase(String aName) {
         super(aName);
+    }
+
+    protected String[] getExtendedInfoData() {
+        return GTValues.emptyStringArray;
+    }
+
+    protected long[] getCurrentInfoData() {
+        long storedEnergy = 0, maxEnergy = 0;
+        for (MTEHatch hatch : this.getExoticAndNormalEnergyHatchList()) {
+            storedEnergy += hatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += hatch.getBaseMetaTileEntity()
+                .getEUCapacity();
+        }
+        return new long[] { storedEnergy, maxEnergy };
+    }
+
+    @Override
+    public String[] getInfoData() {
+        long[] ttHatches = this.getCurrentInfoData();
+        long storedEnergy = ttHatches[0];
+        long maxEnergy = ttHatches[1];
+
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            if (tHatch instanceof MTEHatchEnergyDebug debugHatch) {
+                storedEnergy = debugHatch.getEUVar();
+                maxEnergy = debugHatch.maxEUStore();
+                break;
+            }
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
+        }
+
+        long nominalV = this.getMaxInputEu();
+        String tName = BWUtil.getTierNameFromVoltage(nominalV);
+        if ("MAX+".equals(tName)) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
+
+        String[] extendedInfo = this.getExtendedInfoData();
+
+        String[] baseInfo = {
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(this.mProgresstime / 20),
+                formatNumber(this.mMaxProgresstime / 20)),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(-this.lEUt)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.mei.fmt.mega",
+                formatNumber(this.getMaxInputVoltage()),
+                formatNumber(this.getMaxInputAmps()),
+                formatNumber(nominalV)),
+            IGregTechDeviceInformation.encode("GT5U.machines.tier.fmt", tName),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                this.getIdealStatus() - this.getRepairStatus(),
+                this.mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
+
+        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
+
+        System.arraycopy(extendedInfo, 0, combinedInfo, baseInfo.length, extendedInfo.length);
+
+        combinedInfo[combinedInfo.length - 1] = BWTooltipReference.BW;
+
+        return combinedInfo;
     }
 
     @Override
