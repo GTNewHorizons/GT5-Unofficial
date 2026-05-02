@@ -371,7 +371,6 @@ public class BWUtil {
             (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DISMANTLEABLE) != 0L,
             (aBitMask & GTModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
             (aBitMask & GTModHandler.RecipeBits.REVERSIBLE) != 0L,
             (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
@@ -384,9 +383,9 @@ public class BWUtil {
             aRecipe);
     }
 
-    public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+    private static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
+        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
+        boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
