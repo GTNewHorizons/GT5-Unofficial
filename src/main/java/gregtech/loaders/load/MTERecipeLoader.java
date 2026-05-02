@@ -1714,6 +1714,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.LargeThermalRefinery.get(1),
             new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
 
+        // Large Sifter Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.LargeSifter.get(1),
+            new Object[] { GregtechItemList.Industrial_Sifter });
+
         // Tree Grow Simulator Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.TreeGrowSimulator.get(1),
