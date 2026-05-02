@@ -2556,6 +2556,8 @@ GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
+GT5U.gui.text.button.pyrotheum.enabled=Pyrotheum Heating: §2Enabled
+GT5U.gui.text.button.pyrotheum.disabled=Pyrotheum Heating: §4Disabled
 
 
 # NAC Keys
@@ -5566,6 +5568,8 @@ GT5U.waila.digital_chest.count=Item Count: %s
 GT5U.waila.digital_chest.type=Item Type: %s
 GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
+GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
+GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
@@ -7913,6 +7917,9 @@ gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
 gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
 gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
 gt.blockcasings13.15.name=Naquadah Reactor Casing
+
+gt.blockcasings14.3.name=Hearth Casing
+
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
