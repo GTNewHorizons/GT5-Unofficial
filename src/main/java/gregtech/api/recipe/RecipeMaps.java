@@ -58,6 +58,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.EFRBlastingBackend;
 import gregtech.api.recipe.maps.EFRSmokingBackend;
@@ -431,6 +432,11 @@ public final class RecipeMaps {
             }
             return GTGuiTextures.OVERLAY_SLOT_PAGE_BLANK;
         })
+        .build();
+    public static final RecipeMap<ChiselBackend> industrialChiselRecipes = RecipeMapBuilder
+        .of("gt.recipe.industrialchisel", ChiselBackend::new)
+        .maxIO(2, 1, 0, 0)
+        .minInputs(2, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> sifterRecipes = RecipeMapBuilder.of("gt.recipe.sifter")
         .maxIO(1, 9, 1, 1)
