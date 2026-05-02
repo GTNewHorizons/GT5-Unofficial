@@ -39,22 +39,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter> implements ISurvivalConstructable {
+public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialSifterLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialSifter> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialSifterLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialSifter(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialSifterLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialSifter(final String aName) {
+    public MTEIndustrialSifterLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialSifter(this.mName);
+        return new MTEIndustrialSifterLegacy(this.mName);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 5, false)
@@ -84,9 +86,9 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialSifter> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialSifterLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialSifter>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialSifterLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -95,7 +97,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
                             { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialSifter.class)
+                    buildHatchAdder(MTEIndustrialSifterLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(TAE.GTPP_INDEX(21))
                         .hint(1)
