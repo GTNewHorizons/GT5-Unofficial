@@ -1694,6 +1694,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
 
+        // Drone Centre Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.DroneCentre.get(1),
+            new Object[] { ItemList.Machine_Multi_DroneCentre });
+
         // Large Thermal Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),

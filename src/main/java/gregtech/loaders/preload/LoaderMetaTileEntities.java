@@ -963,6 +963,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.oildrillinfinite",
                 "Infinite Fluid Drilling Rig").getStackForm(1));
 
+        ItemList.DroneCentre
+            .set(new MTEDroneCentre(DroneCentre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
+
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
                 .getStackForm(1L));

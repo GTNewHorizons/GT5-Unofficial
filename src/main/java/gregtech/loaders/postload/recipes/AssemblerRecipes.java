@@ -657,7 +657,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Cover_WirelessNeedsMaintainance.get(1),
                 GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
-            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
+            .itemOutputs(ItemList.DroneCentre.get(1L))
             .fluidInputs(Materials.GlueAdvanced.getFluid(8_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
