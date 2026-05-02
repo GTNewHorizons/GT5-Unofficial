@@ -167,7 +167,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.WroughtIron, 2))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.CastIron, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
             .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
