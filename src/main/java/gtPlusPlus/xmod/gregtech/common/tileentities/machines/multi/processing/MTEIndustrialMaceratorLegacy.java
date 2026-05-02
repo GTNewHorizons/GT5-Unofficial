@@ -47,6 +47,9 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.HatchCountError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -207,10 +210,12 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mMaintenanceHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
+    public void checkHatch(List<StructureError> errors) {
+        super.checkHatch(errors);
+        checkHasOutputBus(errors);
+        if (mInputBusses.isEmpty() && mDualInputHatches.isEmpty()) {
+            errors.add(new HatchCountError(ErrorType.TOO_FEW, InputBus, 0, 1));
+        }
     }
 
     @Override
