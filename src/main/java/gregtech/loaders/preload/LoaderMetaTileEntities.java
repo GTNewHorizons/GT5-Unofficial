@@ -173,6 +173,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticS
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialForgeHammer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFormingPress;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
@@ -835,6 +836,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.IndustrialPrinter.set(
             new MTEIndustrialChisel(IndustrialPrinter.ID, "multimachine.adv.chisel", "Industrial 3D Copying Machine")
                 .getStackForm(1L));
+
+        ItemList.IndustrialForgeHammer.set(
+            new MTEIndustrialForgeHammer(
+                IndustrialForgeHammer.ID,
+                "industrialhammer.controller.tier.single",
+                "Industrial Sledgehammer").getStackForm(1L));
 
         ItemList.NaquadahFuelRefinery
             .set(new MTENaquadahFuelRefinery(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
