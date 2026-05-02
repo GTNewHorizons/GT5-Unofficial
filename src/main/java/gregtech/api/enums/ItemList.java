@@ -82,6 +82,7 @@ public enum ItemList implements IItemContainer {
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
+    Chaff,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
@@ -1818,6 +1819,7 @@ public enum ItemList implements IItemContainer {
 
     Block_Powderbarrel,
     GelledToluene,
+    Dynamite,
 
     FluidFilter,
     ItemFilter_Export,

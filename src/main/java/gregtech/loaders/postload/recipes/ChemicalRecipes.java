@@ -74,7 +74,7 @@ public class ChemicalRecipes implements Runnable {
     public void registerBoth() {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.paper, 1), new ItemStack(Items.string, 1))
-            .itemOutputs(GTModHandler.getIC2Item("dynamite", 1))
+            .itemOutputs(ItemList.Dynamite.get(1))
             .fluidInputs(Materials.Glyceryl.getFluid(500))
             .duration(8 * SECONDS)
             .eut(4)

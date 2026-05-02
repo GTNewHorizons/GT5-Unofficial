@@ -1027,7 +1027,7 @@ public final class RecipeMaps {
             if (tGunpowder < 65) coll.derive()
                 .setInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder));
             if (tDynamite < 17) coll.derive()
-                .setInputs(input, GTModHandler.getIC2Item("dynamite", tDynamite, null));
+                .setInputs(input, ItemList.Dynamite.get(tDynamite));
             coll.derive()
                 .setInputs(input, new ItemStack(Blocks.tnt, tTNT));
             coll.derive()

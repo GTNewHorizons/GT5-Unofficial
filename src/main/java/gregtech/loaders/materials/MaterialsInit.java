@@ -4602,6 +4602,7 @@ public class MaterialsInit {
 
     private static void loadNotExact() {
         Materials.Biomass = loadBiomass();
+        Materials.Biogas = loadBioGas();
         Materials.CharcoalByproducts = loadCharcoalByproducts();
         Materials.Cheese = loadCheese();
         Materials.Chili = loadChili();
@@ -4650,11 +4651,22 @@ public class MaterialsInit {
 
     private static Materials loadBiomass() {
         return new MaterialBuilder().setName("Biomass")
-            .setDefaultLocalName("Forestry Biomass")
+            .setDefaultLocalName("Biomass")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
-            .setARGB(0x0000ff00)
+            .setARGB(0x004e912d)
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 8)
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioGas() {
+        return new MaterialBuilder().setName("Biogas")
+            .setDefaultLocalName("Biogas")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00988D4D)
+            .setFuel(MaterialBuilder.FuelType.Gas, 40)
             .addCell()
             .constructMaterial();
     }
@@ -5449,6 +5461,7 @@ public class MaterialsInit {
         Materials.SodiumSulfide = loadSodiumSulfide();
         Materials.Titaniumtetrachloride = loadTitaniumtetrachloride();
         Materials.Water = Materials.Steam = loadWater();
+        Materials.DistilledWater = loadDistilledWater();
         Materials.Zincite = loadZincite();
     }
 
@@ -7449,6 +7462,26 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.bucket) // minecraft:water_bucket
             .removeOrePrefix(OrePrefixes.bucketClay) // IguanaTweaksTConstruct:clayBucketWater
             .removeOrePrefix(OrePrefixes.bottle) // minecraft:potion:0
+            .constructMaterial();
+    }
+
+    private static Materials loadDistilledWater() {
+        return new MaterialBuilder().setName("DistilledWater")
+            .setDefaultLocalName("Distilled Water")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0x004775ff)
+            .addCell()
+            .addMaterial(Materials.Hydrogen, 2)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 3)
+            .addSubTag(SubTag.FOOD)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .removeOrePrefix(OrePrefixes.bucket)
+            .removeOrePrefix(OrePrefixes.bucketClay)
+            .removeOrePrefix(OrePrefixes.bottle)
             .constructMaterial();
     }
 

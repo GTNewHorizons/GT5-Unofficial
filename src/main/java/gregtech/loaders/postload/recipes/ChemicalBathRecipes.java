@@ -53,14 +53,6 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("dynamite", 1))
-            .itemOutputs(GTModHandler.getIC2Item("stickyDynamite", 1))
-            .fluidInputs(Materials.Glue.getFluid(10))
-            .duration(16 * TICKS)
-            .eut(4)
-            .addTo(chemicalBathRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
             .itemOutputs(GTModHandler.getIC2Item("reinforcedStone", 1))
             .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))

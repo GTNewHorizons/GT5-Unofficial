@@ -351,6 +351,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Biomass;
+    public static Materials Biogas;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
     public static Materials Chili;
@@ -522,6 +523,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+    public static Materials DistilledWater;
     public static Materials Zincite;
     // endregion
 
