@@ -72,10 +72,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -875,7 +874,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Make sure there are no Crafting Input Buffers/Buses/Slaves.
         if (!mDualInputHatches.isEmpty()) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.crib_not_allowed"));
+            errors.add(StructureErrors.of("GT5U.gui.text.crib_not_allowed"));
         }
 
         // Check if there are output buses
@@ -887,9 +886,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         // Check there is 1 input bus, and it is not a stocking input bus.
         {
             if (mInputBusses.size() != 1) {
-                errors.add(new HatchCountError(ErrorType.NOT_MATCH, InputBus, mInputBusses.size(), 1));
+                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, InputBus, mInputBusses.size(), 1));
             } else if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
-                errors.add(new SimpleStructureError("GT5U.gui.text.stocking_input_bus_not_allowed"));
+                errors.add(StructureErrors.of("GT5U.gui.text.stocking_input_bus_not_allowed"));
             }
         }
 

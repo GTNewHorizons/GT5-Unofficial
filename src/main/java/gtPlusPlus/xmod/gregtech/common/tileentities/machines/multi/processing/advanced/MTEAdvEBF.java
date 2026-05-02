@@ -47,10 +47,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -193,7 +192,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
         if (mCasing < 6) {
-            errors.add(new TooFewCasings(mCasing, 6));
+            errors.add(StructureErrors.missingCasings(mCasing, 6));
         }
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
@@ -205,7 +204,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     public void checkHatch(List<StructureError> errors) {
         super.checkHatch(errors);
         if (mPyrotheumHatches.isEmpty()) {
-            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Pyrotheum.get(1)));
+            errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Pyrotheum.get(1)));
         }
     }
 

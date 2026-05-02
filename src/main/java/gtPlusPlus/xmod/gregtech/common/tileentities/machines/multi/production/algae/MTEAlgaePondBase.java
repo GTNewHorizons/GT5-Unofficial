@@ -46,9 +46,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
@@ -175,10 +174,10 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
 
         if (mCasing < MINIMUM_CASINGS) {
-            errors.add(new TooFewCasings(mCasing, MINIMUM_CASINGS));
+            errors.add(StructureErrors.missingCasings(mCasing, MINIMUM_CASINGS));
         } else if (checkMeta <= 0) {
             // If the player do not provide any casing, skip this diagnostic.
-            errors.add(new SimpleStructureError("GT5U.gui.text.unknown_machine_casing_tier"));
+            errors.add(StructureErrors.of("GT5U.gui.text.unknown_machine_casing_tier"));
         }
 
         checkHasInputHatch(errors);

@@ -61,9 +61,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -382,21 +381,21 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (checkCasing[i] == mCasing) {
                 mSolidCasingTier = i;
             } else if (checkCasing[i] > 0) {
-                errors.add(new SimpleStructureError("GT5U.gui.text.chemplant_casing_problem"));
+                errors.add(StructureErrors.of("GT5U.gui.text.chemplant_casing_problem"));
                 return;
             }
         }
         if (mCasing < 70) {
-            errors.add(new TooFewCasings(mCasing, 70));
+            errors.add(StructureErrors.missingCasings(mCasing, 70));
         }
         mMachineCasingTier = checkMachine - 1;
         mPipeCasingTier = checkPipe - 12;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.chemplant_hatch_problem"));
+            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_hatch_problem"));
         }
         if (mCatalystBuses.size() > 1) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();

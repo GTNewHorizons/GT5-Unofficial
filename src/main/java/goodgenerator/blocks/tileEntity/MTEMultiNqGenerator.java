@@ -43,8 +43,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -339,7 +339,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
         checkHasMaintenanceHatch(errors);
         int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
         if (dynamoCount != 1) {
-            errors.add(new HatchCountError(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));
         }
     }
 

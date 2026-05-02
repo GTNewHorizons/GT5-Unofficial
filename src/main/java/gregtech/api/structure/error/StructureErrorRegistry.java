@@ -69,34 +69,24 @@ public class StructureErrorRegistry {
         StructureErrorId.MISSING_BEAMLINE_OUTPUT,
         "GT5U.gui.text.no_beamline_output");
 
-    public static final StructureError NO_ENERGY_HATCH_NEEDED = new SimpleStructureError(
-        "GT5U.gui.text.energy_hatch_not_needed");
-    public static final StructureError TOO_SHORT_HEIGHT = new SimpleStructureError("GT5U.gui.text.too_short_height");
-    public static final StructureError TOO_SHORT_LENGTH = new SimpleStructureError("GT5U.gui.text.too_short_length");
-    public static final StructureError TOO_LONG = new SimpleStructureError("GT5U.gui.text.too_long");
-    public static final StructureError TOO_TALL = new SimpleStructureError("GT5U.gui.text.too_tall");
-    public static final StructureError ONE_UNCERTAINTY_HATCH = new SimpleStructureError(
-        "GT5U.gui.text.one_uncertainty_hatch");
-    public static final StructureError MISSING_DATA_HATCH = new SimpleStructureError(
-        "GT5U.gui.text.missing_data_hatch");
-    public static final StructureError COIL_LEVEL_NOT_ENOUGH = new SimpleStructureError(
-        "GT5U.gui.text.coil_level_not_enough");
-    public static final StructureError ENERGY_TIER_EXCEED_GLASS = new SimpleStructureError(
-        "GT5U.gui.text.coil_level_not_enough");
+    public static final StructureError NO_ENERGY_HATCH_NEEDED = StructureErrors
+        .of("GT5U.gui.text.energy_hatch_not_needed");
+    public static final StructureError TOO_SHORT_HEIGHT = StructureErrors.of("GT5U.gui.text.too_short_height");
+    public static final StructureError TOO_SHORT_LENGTH = StructureErrors.of("GT5U.gui.text.too_short_length");
+    public static final StructureError TOO_LONG = StructureErrors.of("GT5U.gui.text.too_long");
+    public static final StructureError TOO_TALL = StructureErrors.of("GT5U.gui.text.too_tall");
+    public static final StructureError ONE_UNCERTAINTY_HATCH = StructureErrors
+        .of("GT5U.gui.text.one_uncertainty_hatch");
+    public static final StructureError MISSING_DATA_HATCH = StructureErrors.of("GT5U.gui.text.missing_data_hatch");
+    public static final StructureError COIL_LEVEL_NOT_ENOUGH = StructureErrors
+        .of("GT5U.gui.text.coil_level_not_enough");
+    public static final StructureError ENERGY_TIER_EXCEED_GLASS = StructureErrors
+        .of("GT5U.gui.text.coil_level_not_enough");
 
     static {
-        register(new WrongBlockError(0, 0, 0));
-        register(new TooFewCasings(0, 0));
-        register(new MissingHatch(0, 0));
-        register(new TooManyHatch(0, 0, 0));
-        register(new SimpleStructureError(""));
+        register(new PositionedStructureError(0, 0, 0));
         register(new MissingStructureWrapperCasings(new NBTTagList()));
-        register(new MissingOutputHatchDT(0));
-        register(new TooManyInputHatch(0, 0));
-        register(new GlassTierNotEnough(0));
-        register(new HatchCountError(null, null, 0, 0));
-        register(new HatchCountErrorSpecific(null, 0, 0, 0, 0));
-        register(new EnergyHatchTierTooLow(0, 0));
+        register(new TranslatableStructureError(TranslatableText.literal("")));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {

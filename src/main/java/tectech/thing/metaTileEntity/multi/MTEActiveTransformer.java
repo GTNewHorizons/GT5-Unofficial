@@ -38,7 +38,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
@@ -80,7 +80,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         casingCount = 0;
         checkPiece("main", 1, 1, 0, errors);
         if (errors.isEmpty() && casingCount < 5) {
-            errors.add(new TooFewCasings(casingCount, 5));
+            errors.add(StructureErrors.missingCasings(casingCount, 5));
         }
         if (errors.isEmpty()) {
             grace = true;

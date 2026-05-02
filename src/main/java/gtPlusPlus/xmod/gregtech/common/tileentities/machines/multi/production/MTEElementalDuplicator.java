@@ -42,8 +42,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountErrorSpecific;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -189,7 +189,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         int hatchCount = this.mReplicatorDataOrbHatches.size();
         if (hatchCount != 1) {
             errors.add(
-                new HatchCountErrorSpecific(
+                StructureErrors.hatchCount(
                     ErrorType.NOT_MATCH,
                     GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
                     hatchCount,

@@ -9,9 +9,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElement.BlocksToPlace;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
+import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.WrongBlockError;
 
 public class StructureChecker<T> implements IStructureWalker<T> {
 
@@ -37,7 +37,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
             if (desc == null) {
                 desc = getExpectedBlockName(element, world, x, y, z);
             }
-            errors.add(new WrongBlockError(x, y, z, desc));
+            errors.add(new PositionedStructureError(x, y, z, desc));
         }
 
         return result;

@@ -36,10 +36,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
-import gregtech.api.structure.error.TooManyHatch;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
@@ -174,15 +172,15 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         super.validateStructure(errors);
 
         if (mCasing < 10) {
-            errors.add(new TooFewCasings(mCasing, 10));
+            errors.add(StructureErrors.missingCasings(mCasing, 10));
         }
 
         if (mCryotheumHatches.isEmpty()) {
-            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
+            errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
         }
 
         if (mCryotheumHatches.size() > 1) {
-            errors.add(new TooManyHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
+            errors.add(StructureErrors.tooManyHatches(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
         }
     }
 

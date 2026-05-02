@@ -37,7 +37,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -138,7 +138,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         mCasing = 0;
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
         if (mCasing < 3) {
-            errors.add(new TooFewCasings(mCasing, 3));
+            errors.add(StructureErrors.missingCasings(mCasing, 3));
         }
         checkHatch(errors);
     }

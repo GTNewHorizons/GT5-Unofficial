@@ -15,15 +15,15 @@ import gregtech.api.enums.StructureErrorId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
-public record WrongBlockError(int x, int y, int z, String description) implements StructureError {
+public record PositionedStructureError(int x, int y, int z, String description) implements StructureError {
 
-    public WrongBlockError(int x, int y, int z) {
+    public PositionedStructureError(int x, int y, int z) {
         this(x, y, z, null);
     }
 
     @Override
     public StructureErrorId getId() {
-        return StructureErrorId.WRONG_BLOCK;
+        return StructureErrorId.POSITIONED_ERROR;
     }
 
     @Override
@@ -43,13 +43,9 @@ public record WrongBlockError(int x, int y, int z, String description) implement
         int y = buffer.readInt();
         int z = buffer.readInt();
         String desc = buffer.readBoolean() ? buffer.readStringFromBuffer(32767) : null;
-        return new WrongBlockError(x, y, z, desc);
+        return new PositionedStructureError(x, y, z, desc);
     }
 
-    /**
-     * Translates the description on the client. The description is a lang key (e.g. an unlocalized item name) so that
-     * clients with a different language than the server see the correct translation.
-     */
     private String translateDescription() {
         return StatCollector.translateToLocal(description);
     }
@@ -78,6 +74,6 @@ public record WrongBlockError(int x, int y, int z, String description) implement
 
     @Override
     public StructureError copy() {
-        return new WrongBlockError(x, y, z, description);
+        return new PositionedStructureError(x, y, z, description);
     }
 }

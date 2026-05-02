@@ -46,10 +46,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.MissingOutputHatchDT;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
@@ -251,7 +250,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-                errors.add(new MissingOutputHatchDT(mHeight + 1));
+                errors.add(StructureErrors.missingOutputHatchDT(mHeight + 1));
             }
             if (mTopLayerFound) {
                 break;
@@ -266,7 +265,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             return;
         }
         if (!mTopLayerFound) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
             return;
         }
         checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);

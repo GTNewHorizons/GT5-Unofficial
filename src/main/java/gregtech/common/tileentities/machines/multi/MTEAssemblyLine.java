@@ -54,8 +54,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
@@ -430,12 +430,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 checkHasEnergyHatch(errors);
                 checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
-                    errors.add(new SimpleStructureError("GT5U.gui.text.al_too_many_data_access_hatch"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.al_too_many_data_access_hatch"));
                 }
                 return i;
             }
         }
-        errors.add(new SimpleStructureError("GT5U.gui.text.al_missing_output_bus"));
+        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
         return 16;
     }
 

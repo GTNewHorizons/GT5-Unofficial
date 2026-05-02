@@ -42,8 +42,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.GlassTierNotEnough;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -345,7 +345,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         this.glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
         if (this.glassTier < VoltageIndex.UV) {
-            errors.add(new GlassTierNotEnough(VoltageIndex.UV));
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
         }
     }
 

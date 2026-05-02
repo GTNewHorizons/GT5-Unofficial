@@ -54,7 +54,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -294,7 +294,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         }
         if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
         if (casingAmount < 7) {
-            errors.add(new TooFewCasings(casingAmount, 7));
+            errors.add(StructureErrors.missingCasings(casingAmount, 7));
         }
     }
 

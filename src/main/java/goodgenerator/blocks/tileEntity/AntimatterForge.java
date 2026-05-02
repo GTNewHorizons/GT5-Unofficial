@@ -51,8 +51,8 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.HatchElementBuilder;
@@ -377,7 +377,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!checkPiece(MAIN_NAME, 26, 26, 4, errors)) return;
         checkHasInputHatch(errors);
         if (amOutputHatches.isEmpty()) {
-            errors.add(new MissingHatch(Loaders.AMHatch));
+            errors.add(StructureErrors.missingHatch(Loaders.AMHatch));
         }
         checkHatchMin(errors, HatchElement.ExoticEnergy, 1);
     }

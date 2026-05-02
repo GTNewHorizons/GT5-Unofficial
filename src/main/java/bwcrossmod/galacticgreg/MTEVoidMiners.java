@@ -37,8 +37,8 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.structure.error.EnergyHatchTierTooLow;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
@@ -121,7 +121,7 @@ public class MTEVoidMiners {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1, errors)) return;
             checkHatches(errors);
             if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
-                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+                errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
             }
         }
 
@@ -237,7 +237,7 @@ public class MTEVoidMiners {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1, errors)) return;
             checkHatches(errors);
             if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
-                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+                errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
             }
         }
 
@@ -346,7 +346,7 @@ public class MTEVoidMiners {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2, errors)) return;
             checkHatches(errors);
             if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
-                errors.add(new EnergyHatchTierTooLow(GTUtility.getTier(getMaxInputVoltage()), getMinTier()));
+                errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
             }
         }
 

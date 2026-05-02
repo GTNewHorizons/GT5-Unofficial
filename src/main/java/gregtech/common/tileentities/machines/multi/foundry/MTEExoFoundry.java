@@ -83,8 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -650,7 +650,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             if (checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
                 if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
-                    errors.add(new SimpleStructureError("GT5U.gui.text.exo_foundry_too_many_hatch"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_too_many_hatch"));
                 }
             }
             checkModules(errors);
@@ -683,7 +683,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 return false;
             }
             if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) {
-                errors.add(new SimpleStructureError("GT5U.gui.text.exo_foundry_hypercooler_hatch"));
+                errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_hypercooler_hatch"));
                 return false;
             }
         }

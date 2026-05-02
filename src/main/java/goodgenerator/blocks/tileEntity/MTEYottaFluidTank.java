@@ -56,9 +56,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.GlassTierNotEnough;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -291,7 +291,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
-            errors.add(new GlassTierNotEnough(maxCell + 3));
+            errors.add(StructureErrors.glassTierNotEnough(maxCell + 3));
         }
         if (!errors.isEmpty()) return;
         if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;

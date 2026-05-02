@@ -62,8 +62,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -544,7 +544,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
         if (ElevatorUtil.getModuleSlotsUnlocked(motorTier) < mProjectModuleHatches.size()) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.spelv_module_exceed"));
+            errors.add(StructureErrors.of("GT5U.gui.text.spelv_module_exceed"));
         }
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(isMachineValid);

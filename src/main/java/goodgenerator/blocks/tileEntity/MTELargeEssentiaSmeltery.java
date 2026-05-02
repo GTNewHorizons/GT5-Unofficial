@@ -59,9 +59,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -166,7 +166,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         if (mEssentiaOutputHatches.isEmpty()) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.missing_essentia_output_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_essentia_output_hatch"));
         }
         if (errors.isEmpty()) return;
         this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);

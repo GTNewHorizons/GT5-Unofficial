@@ -60,8 +60,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
@@ -202,7 +202,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
 
         if (eHolders.size() != 1) {
-            errors.add(new MissingHatch(holder_Hatch.get(1)));
+            errors.add(StructureErrors.missingHatch(holder_Hatch.get(1)));
         }
     }
 

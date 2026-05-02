@@ -31,7 +31,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -145,7 +145,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 95) errors.add(new TooFewCasings(casingAmount, 95));
+        if (casingAmount < 95) errors.add(StructureErrors.missingCasings(casingAmount, 95));
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);

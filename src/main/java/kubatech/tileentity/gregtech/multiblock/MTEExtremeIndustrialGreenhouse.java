@@ -130,8 +130,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.GlassTierNotEnough;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
@@ -317,7 +317,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty()) {
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
                 if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(new GlassTierNotEnough(hatchEnergy.mTier));
+                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
                     break;
                 }
             }

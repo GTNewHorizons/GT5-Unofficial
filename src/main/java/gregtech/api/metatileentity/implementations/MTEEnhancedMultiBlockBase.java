@@ -41,11 +41,10 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.StructureChecker;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
+import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooFewCasings;
-import gregtech.api.structure.error.WrongBlockError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
@@ -596,7 +595,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
         super.generateStructureErrorDiagnostics(errors);
         if (structureStatus == StructureStatus.WRONG_BLOCK) {
-            errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
+            errors.add(new PositionedStructureError(errorPos.x, errorPos.y, errorPos.z));
         } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
             errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
         }
@@ -605,27 +604,27 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {
         int count = (int) element.count(this);
         if (count < min) {
-            errors.add(new HatchCountError(ErrorType.TOO_FEW, element, count, min));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, element, count, min));
         }
     }
 
     protected final void checkHatchExact(List<StructureError> errors, HatchElement element, int target) {
         int count = (int) element.count(this);
         if (count != target) {
-            errors.add(new HatchCountError(ErrorType.NOT_MATCH, element, count, target));
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, element, count, target));
         }
     }
 
     protected final void checkHatchMax(List<StructureError> errors, HatchElement element, int max) {
         int count = (int) element.count(this);
         if (count > max) {
-            errors.add(new HatchCountError(ErrorType.TOO_MANY, element, count, max));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, element, count, max));
         }
     }
 
     protected final boolean checkCasingMin(List<StructureError> errors, int current, int required) {
         if (current < required) {
-            errors.add(new TooFewCasings(current, required));
+            errors.add(StructureErrors.missingCasings(current, required));
             return true;
         }
         return false;

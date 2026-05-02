@@ -46,8 +46,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountErrorSpecific;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -295,9 +295,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         checkCasingMin(errors, casingAmount, 30);
         if (turbineCasingAmount < 4) {
             errors.add(
-                new HatchCountErrorSpecific(
+                StructureErrors.hatchCount(
                     ErrorType.TOO_FEW,
-                    Casings.TungstensteelTurbineCasing,
+                    Casings.TungstensteelTurbineCasing.toStack(1),
                     turbineCasingAmount,
                     4));
         }

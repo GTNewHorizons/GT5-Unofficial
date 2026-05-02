@@ -29,7 +29,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -145,7 +145,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
         casing = 0;
         checkPiece(mName, 1, 1, 0, errors);
         if (casing < 10) {
-            errors.add(new TooFewCasings(casing, 10));
+            errors.add(StructureErrors.missingCasings(casing, 10));
         }
         checkHatch(errors);
     }

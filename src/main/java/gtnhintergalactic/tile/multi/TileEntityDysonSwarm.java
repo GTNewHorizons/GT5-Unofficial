@@ -50,9 +50,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -245,7 +245,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
         if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
-            errors.add(new HatchCountError(ErrorType.TOO_FEW, Energy, 0, 1));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
     }
 

@@ -81,9 +81,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.GlassTierNotEnough;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -504,7 +503,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         this.glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0, errors)) return;
         if (this.glassTier < VoltageIndex.EV) {
-            errors.add(new GlassTierNotEnough(VoltageIndex.EV));
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
         }
         int recognizedLayers = checkMachine(true, errors);
         // If the l2r structure is already formed, we early exit
@@ -538,7 +537,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 return i;
             }
         }
-        errors.add(new SimpleStructureError("GT5U.gui.text.al_missing_output_bus"));
+        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
         return 16;
     }
 

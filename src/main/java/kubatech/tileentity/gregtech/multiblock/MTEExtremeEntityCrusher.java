@@ -143,8 +143,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.GlassTierNotEnough;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -938,7 +938,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatchEnergy hatch : mEnergyHatches) {
                 if (hatch.mTier > glassTier) {
-                    errors.add(new GlassTierNotEnough(hatch.mTier));
+                    errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
                     break;
                 }
             }

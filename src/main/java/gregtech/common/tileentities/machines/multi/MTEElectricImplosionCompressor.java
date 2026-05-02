@@ -50,9 +50,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -243,7 +243,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
         if (energyHatches.isEmpty()) {
-            errors.add(new HatchCountError(ErrorType.TOO_FEW, Energy, 0, 1));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
         checkCasingMin(errors, casingAmount, 230);
     }

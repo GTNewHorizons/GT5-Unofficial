@@ -40,7 +40,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -218,7 +218,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
         coilLevel = null;
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 85) errors.add(new TooFewCasings(casingAmount, 85));
+        if (casingAmount < 85) errors.add(StructureErrors.missingCasings(casingAmount, 85));
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);

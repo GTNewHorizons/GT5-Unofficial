@@ -69,10 +69,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.HatchCountError;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -293,9 +292,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         // Check there is 1 me output bus
         {
             if (mOutputBusses.size() != 1) {
-                errors.add(new HatchCountError(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
+                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
             } else if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                errors.add(new MissingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
+                errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
             }
         }
         // Make sure there are no energy hatches

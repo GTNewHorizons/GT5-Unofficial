@@ -74,8 +74,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.EnergyHatchTierTooLow;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -615,7 +615,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         int cTier = GTUtility.getTier(getMaxInputVoltage());
         int machineTier = getMinTier();
         if (cTier < machineTier) {
-            errors.add(new EnergyHatchTierTooLow(cTier, machineTier));
+            errors.add(StructureErrors.energyHatchTierTooLow(machineTier));
         }
     }
 

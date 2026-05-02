@@ -91,9 +91,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.IGTHatchAdder;
@@ -361,11 +360,11 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
 
         if (mCasing < 19) {
-            errors.add(new TooFewCasings(mCasing, 19));
+            errors.add(StructureErrors.missingCasings(mCasing, 19));
         }
 
         if (mRadHatches.size() > 1) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.too_many_radiation_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.too_many_radiation_hatch"));
         }
 
         checkHasEnergyHatch(errors);

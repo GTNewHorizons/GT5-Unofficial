@@ -35,7 +35,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -127,7 +127,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
         mCasing = 0;
         if (!checkPiece(mName, 7, 1, 12, errors)) return;
         if (mCasing < 40) {
-            errors.add(new TooFewCasings(mCasing, 40));
+            errors.add(StructureErrors.missingCasings(mCasing, 40));
         }
         if (mEnergyHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);

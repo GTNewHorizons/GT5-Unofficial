@@ -43,7 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -331,7 +331,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0, errors)) return;
         if (mCasingAmount < 90) {
-            errors.add(new TooFewCasings(mCasingAmount, 90));
+            errors.add(StructureErrors.missingCasings(mCasingAmount, 90));
         }
         checkHasMaintenanceHatch(errors);
     }

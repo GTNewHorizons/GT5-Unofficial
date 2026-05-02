@@ -37,7 +37,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -191,7 +191,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
         checkHatch(errors);
         if (casing < 1) {
-            errors.add(new TooFewCasings(casing, 1));
+            errors.add(StructureErrors.missingCasings(casing, 1));
         }
     }
 
