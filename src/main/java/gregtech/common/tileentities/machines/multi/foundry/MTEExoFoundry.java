@@ -83,6 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.SimpleStructureError;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -638,18 +640,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         foundryData.tier = -1;
         coolantHatches.clear();
         // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
-        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules() && casingAmount >= MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            if (checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
+                if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
+                    errors.add(new SimpleStructureError("GT5U.gui.text.exo_foundry_too_many_hatch"));
+                }
+            }
+            checkModules(errors);
+        } else {
+            getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }
-        getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-        return false;
     }
 
     @Override
@@ -664,17 +671,21 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private boolean checkModules() {
+    private boolean checkModules(List<StructureError> errors) {
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
             FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
                 moduleVerticalOffsets[i],
-                moduleDepthOffsets[i])) {
+                moduleDepthOffsets[i],
+                errors)) {
                 return false;
             }
-            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) return false;
+            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) {
+                errors.add(new SimpleStructureError("GT5U.gui.text.exo_foundry_hypercooler_hatch"));
+                return false;
+            }
         }
         return true;
 
@@ -838,7 +849,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // GUI code
     @Override
     public int getMaxParallelRecipes() {
-        checkModules();
+        checkModules(new ArrayList<>());
         return (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 

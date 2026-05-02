@@ -12,6 +12,7 @@ import net.minecraft.util.StatCollector;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.StructureErrorId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
@@ -21,6 +22,10 @@ public record HatchCountErrorSpecific(ErrorType type, int itemId, int itemMeta, 
 
     public HatchCountErrorSpecific(ErrorType type, ItemStack stack, int current, int target) {
         this(type, Item.getIdFromItem(stack.getItem()), stack.getItemDamage(), current, target);
+    }
+
+    public HatchCountErrorSpecific(ErrorType type, Casings casings, int current, int target) {
+        this(type, Item.getIdFromItem(casings.getItem()), casings.getBlockMeta(), current, target);
     }
 
     @Override
