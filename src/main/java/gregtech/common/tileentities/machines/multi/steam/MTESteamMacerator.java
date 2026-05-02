@@ -45,6 +45,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -181,29 +182,18 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tierMachineCasing = -1;
         mCounCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing == 1 && mCounCasing >= 14 && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
+            tierMachine = tierMachineCasing;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
         }
-        if (tierMachineCasing == 2 && mCounCasing >= 14 && checkHatches()) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        checkCasingMin(errors, mCounCasing, 14);
+        checkHasSteamInput(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

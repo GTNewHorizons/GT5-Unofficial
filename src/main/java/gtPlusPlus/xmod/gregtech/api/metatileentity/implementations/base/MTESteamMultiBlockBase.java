@@ -11,7 +11,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +56,7 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.MissingHatch;
+import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -66,7 +65,6 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -472,12 +470,21 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         mSteamOutputs.clear();
     }
 
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
+    protected final void checkHasSteamInput(List<StructureError> errors) {
         if (mSteamInputFluids.isEmpty()) {
-            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Steam.get(1)));
+            errors.add(new SimpleStructureError("GT5U.gui.text.missing_steam_input"));
+        }
+    }
+
+    protected final void checkHasAnyInput(List<StructureError> errors) {
+        if (mSteamInputs.isEmpty() && mInputHatches.isEmpty()) {
+            errors.add(new SimpleStructureError("GT5U.gui.text.no_input"));
+        }
+    }
+
+    protected final void checkHasAnyOutput(List<StructureError> errors) {
+        if (mSteamOutputs.isEmpty() && mOutputHatches.isEmpty()) {
+            errors.add(new SimpleStructureError("GT5U.gui.text.no_output"));
         }
     }
 
