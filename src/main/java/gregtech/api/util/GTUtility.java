@@ -183,7 +183,6 @@ import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
 import gregtech.nei.FluidDisplayStackMode;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
