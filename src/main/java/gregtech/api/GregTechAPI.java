@@ -184,6 +184,10 @@ public class GregTechAPI {
     public static Block sBlackholeRender;
     public static Block sSpaceElevatorCable;
     public static Block nanoForgeRender;
+    public static Block sBlockRubberLog;
+    public static Block sBlockRubberLogNatural;
+    public static Block sBlockRubberLeaves;
+    public static Block sBlockRubberSapling;
     /**
      * Getting assigned by the Config
      */

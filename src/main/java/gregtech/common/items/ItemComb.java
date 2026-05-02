@@ -180,7 +180,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.COAL, new Materials[] { Materials.Coal }, Voltage.LV);
         addCentrifugeToItemStack(
             CombType.STICKY,
-            new ItemStack[] { ItemList.IC2_Resin.get(1), ItemList.IC2_Plantball.get(1), ItemList.FR_Wax.get(1) },
+            new ItemStack[] { ItemList.Sticky_Resin.get(1), ItemList.IC2_Plantball.get(1), ItemList.FR_Wax.get(1) },
             new int[] { 50 * 100, 15 * 100, 50 * 100 },
             Voltage.ULV);
         addProcessGT(CombType.OIL, new Materials[] { Materials.Oilsands }, Voltage.LV);
