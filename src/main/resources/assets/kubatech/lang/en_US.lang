@@ -107,6 +107,7 @@ kubatech.chat.eec.infernal_drops_disabled=Mobs will be prevented from spawning i
 # info data
 ## general
 kubatech.infodata.running_mode=Running in mode:
+kubatech.infodata.running_mode.fmt=Running in mode: §a%s§r
 
 ## Extreme Entity Crusher
 kubatech.infodata.eec.current_mob=Current Mob: §e%s
@@ -132,35 +133,35 @@ kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%d
 kubatech.infodata.eec.total_damage=Total attack damage: §e%f
 
 ## Extreme Industrial Greenhouse
-kubatech.infodata.eig.running_mode.setup_mode.input=Setup mode (input)
-kubatech.infodata.eig.running_mode.setup_mode.output=Setup mode (output)
+kubatech.infodata.eig.running_mode.setup_mode.input=Running in mode: §aSetup mode (input)§r
+kubatech.infodata.eig.running_mode.setup_mode.output=Running in mode: §aSetup mode (output)§r
 kubatech.infodata.eig.uses.water=Uses %dL/operation of water
 kubatech.infodata.eig.uses.weedex=Uses %dL/second of Weed-EX 9000
-kubatech.infodata.eig.max_slots=Max slots:
-kubatech.infodata.eig.used_slots=Used slots:
+kubatech.infodata.eig.max_slots=Max slots: §a%d§r
+kubatech.infodata.eig.used_slots=Used slots: %s
 kubatech.infodata.bucket.humidity=Humidity:
 kubatech.infodata.bucket.humidity.on=On
 kubatech.infodata.bucket.humidity.off=Off
-kubatech.infodata.eig.too_many_types=There are too many seed types inside to run!
-kubatech.infodata.eig.too_many_seeds=There are too many seeds inside to run!
+kubatech.infodata.eig.too_many_types=§4There are too many seed types inside to run!§r
+kubatech.infodata.eig.too_many_seeds=§4There are too many seeds inside to run!§r
 
 ## Mega Industrial Apiary
-kubatech.infodata.mia.running_mode.input=Input mode
-kubatech.infodata.mia.running_mode.output=Output mode
-kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
-kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
+kubatech.infodata.mia.running_mode.input=Running in mode: §6Input mode§r
+kubatech.infodata.mia.running_mode.output=Running in mode: §6Output mode§r
+kubatech.infodata.mia.running_mode.operating.normal=Running in mode: §6Operating mode (NORMAL)§r
+kubatech.infodata.mia.running_mode.operating.swarmer=Running in mode: §6Operating mode (SWARMER)§r
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
 
 #HTGR
-kubatech.infodata.htgr.stored_fuel=Stored Fuel:
+kubatech.infodata.htgr.stored_fuel=§fStored Fuel:
 kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s (%s, %s, %s)
-kubatech.infodata.htgr.burned_fuel=Burned Fuel:
+kubatech.infodata.htgr.burned_fuel=§fBurned Fuel:
 kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
-kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
-kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
-kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
-kubatech.infodata.htgr.fuel_supply=Fill level %s out of %s
-kubatech.infodata.htgr.fuel_properties=Properties: %s, %s, %s
+kubatech.infodata.htgr.helium_supply=§fHelium Supply: §6%sL
+kubatech.infodata.htgr.coolant_per_tick=§fCoolant per tick: §6%sL
+kubatech.infodata.htgr.water_per_tick=§fWater per tick: §6%sL
+kubatech.infodata.htgr.fuel_supply=§fFill level %s out of %s
+kubatech.infodata.htgr.fuel_properties=§fProperties: %s, %s, %s
 
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s

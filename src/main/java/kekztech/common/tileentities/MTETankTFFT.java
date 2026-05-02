@@ -26,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -542,10 +541,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ArrayList<String> ll = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
 
-        ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
-                + EnumChatFormatting.RESET);
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.stored_fluids"));
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
@@ -553,43 +549,30 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     MessageFormat.format(
                         "{0} - {1}: {2}L ({3}%)",
                         i,
-                        StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
+                        GTUtility.translate("kekztech.infodata.tank.tfft.stored_fluids.null"),
                         0,
                         0));
             } else {
-                String localizedName = STORE[i].get()
-                    .getLocalizedName();
-                String amount = nf.format(STORE[i].amount());
-                String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
-                    : "";
-
-                ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
+                ll.add(
+                    MessageFormat.format(
+                        "{0} - {1}: {2}L ({3}%)",
+                        i,
+                        STORE[i].get()
+                            .getLocalizedName(),
+                        nf.format(STORE[i].amount()),
+                        capacityPerFluid > 0 ? STORE[i].amount() * 100 / capacityPerFluid : 0));
             }
         }
+        ll.add(GTUtility.infoData("kekztech.infodata.operational_data"));
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
-                + EnumChatFormatting.RESET);
-        ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
-        ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.multi.maintenance_status",
-                ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
-                        + EnumChatFormatting.RESET)));
+            GTUtility.infoData(
+                getRepairStatus() == getIdealStatus() ? "kekztech.infodata.multi.maintenance_status.ok"
+                    : "kekztech.infodata.multi.maintenance_status.bad"));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);

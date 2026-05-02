@@ -20,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -446,13 +445,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
-        return new String[] {
-            StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
-                + EnumChatFormatting.AQUA
-                + dataPacket.getContentString(),
-            StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
-                + EnumChatFormatting.RED
-                + dataPacket.getTraceSize(), };
+        return new String[] { GTUtility.infoData("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            GTUtility.infoData("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {

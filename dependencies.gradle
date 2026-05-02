@@ -149,6 +149,8 @@ dependencies {
 
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
+
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Nuclear-Control:2.7.8:dev') {transitive = true}
 }
 
 afterEvaluate {

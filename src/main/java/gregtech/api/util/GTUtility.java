@@ -2599,6 +2599,29 @@ public class GTUtility {
         }
     }
 
+    public static String infoData(String key, Object... args) {
+        if (args == null || args.length == 0) return key;
+        StringBuilder sb = new StringBuilder(key);
+        for (Object arg : args) sb.append("\\\\")
+            .append(arg);
+        return sb.toString();
+    }
+
+    public static String translateInfoData(String data) {
+        if (data == null) return "";
+        String[] parts = data.split("\\\\\\\\");
+        String translated = translateToLocal(parts[0]);
+        if (parts.length == 1) return translated;
+        Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
+        try {
+            return String.format(translated, (Object[]) args);
+        } catch (Exception e) {
+            StringBuilder sb = new StringBuilder(translated);
+            for (int i = 1; i < parts.length; i++) sb.append(parts[i]);
+            return sb.toString();
+        }
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */

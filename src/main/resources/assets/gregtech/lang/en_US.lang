@@ -3424,6 +3424,14 @@ GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
 GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone.fmt=Recipes Finished: §a%s§r
+GT5U.multiblock.Progress.fmt.s=Progress: §a%s§r s / §e%s§r s
+GT5U.multiblock.Progress.fmt.t=Progress: §a%s§r t / §e%s§r t
+GT5U.multiblock.energy.fmt=Stored Energy: §a%s§r EU / §e%s§r EU
+GT5U.multiblock.usage.fmt=Currently uses: §c%s§r EU/t
+GT5U.multiblock.mei.fmt.2A=Max Energy Income: §e%s§r EU/t(*2A) Tier: §e%s§r
+GT5U.multiblock.mei.fmt.xA=Max Energy Income: §e%s§r EU/t(*§e%s§rA) Tier: §e%s§r
+GT5U.multiblock.problems.efficiency.fmt=Problems: §c%s§r  Efficiency: §e%s
 
 
 GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
@@ -6951,6 +6959,7 @@ GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
 
 GT5U.infodata.critical_info=Critical Information
+GT5U.infodata.critical_info.hdr=§m------------§r §lCritical Information§r §m------------
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
 GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Convergence: %s

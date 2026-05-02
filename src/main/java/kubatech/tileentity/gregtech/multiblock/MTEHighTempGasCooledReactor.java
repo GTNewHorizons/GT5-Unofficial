@@ -39,7 +39,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -804,13 +803,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private String getReactorInfoText() {
         StringBuilder sb = new StringBuilder();
-        sb.append(EnumChatFormatting.WHITE)
-            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
+        sb.append("kubatech.infodata.htgr.stored_fuel")
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.infoData(
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
@@ -820,48 +818,35 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     formatNumber(prop.getRight())))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.fuel_supply",
-                    formatNumber(this.fuelsupply),
-                    formatNumber(MAX_CAPACITY)))
+        sb.append(
+            GTUtility.infoData(
+                "kubatech.infodata.htgr.fuel_supply",
+                formatNumber(this.fuelsupply),
+                formatNumber(MAX_CAPACITY)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.fuel_properties",
-                    formatNumber(this.fuelBase),
-                    formatNumber(this.fuelMultiplier),
-                    formatNumber(this.fuelExponent)))
+        sb.append(
+            GTUtility.infoData(
+                "kubatech.infodata.htgr.fuel_properties",
+                formatNumber(this.fuelBase),
+                formatNumber(this.fuelMultiplier),
+                formatNumber(this.fuelExponent)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
+        sb.append("kubatech.infodata.htgr.burned_fuel")
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
-                StatCollector.translateToLocalFormatted(
+                GTUtility.infoData(
                     "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
+        sb.append(GTUtility.infoData("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.coolant_per_tick",
-                    formatNumber(this.coolanttaking)))
+        sb.append(GTUtility.infoData("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
+        sb.append(GTUtility.infoData("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
             .append("\n");
         return sb.toString();
     }
@@ -870,10 +855,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public String[] getInfoData() {
         ArrayList<String> ll = new ArrayList<>(Arrays.asList(super.getInfoData()));
         ll.add(
-            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                + EnumChatFormatting.GOLD
-                + (empty ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
-                    : StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")));
+            empty ? "kubatech.infodata.mia.running_mode.output"
+                : "kubatech.infodata.mia.running_mode.operating.normal");
         ll.addAll(Arrays.asList(getReactorInfoText().split("\n")));
         return ll.toArray(new String[0]);
     }

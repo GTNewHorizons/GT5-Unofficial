@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -272,10 +271,9 @@ public class MTETesseractGenerator extends MTEBasicTank {
             return ((IGregTechDeviceInformation) tTileEntity).getInfoData();
         }
         return new String[] { "Tesseract Generator",
-            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
-            (getGeneratorEntity() == this) && (this.isWorking >= 20)
-                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
-                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
+            GTUtility.infoData("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            (getGeneratorEntity() == this) && (this.isWorking >= 20) ? "gtpp.infodata.tesseract_generator.status.active"
+                : "gtpp.infodata.tesseract_generator.status.inactive" };
     }
 
     @Override

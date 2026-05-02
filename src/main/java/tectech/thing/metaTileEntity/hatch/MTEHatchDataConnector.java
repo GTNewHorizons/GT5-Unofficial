@@ -1,14 +1,12 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
@@ -167,22 +166,12 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[] {
-                translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
-                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                    + EnumChatFormatting.AQUA
-                    + (q != null ? q.getContentString() : 0),
-                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                    + EnumChatFormatting.RED
-                    + (q != null ? q.getTraceSize() : 0), };
+            return new String[] { GTUtility.infoData("tt.keyword.ID.fmt", id),
+                GTUtility.infoData("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+                GTUtility.infoData("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
         }
-        return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + (q != null ? q.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (q != null ? q.getTraceSize() : 0), };
+        return new String[] { GTUtility.infoData("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+            GTUtility.infoData("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
     }
 
     @Override
