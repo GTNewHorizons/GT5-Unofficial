@@ -21,9 +21,7 @@ import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -38,7 +36,8 @@ public class CustomStarColorSelector {
     private static final int HSV_PAGE_INDEX = CustomStarColorPanel.HSV_PAGE_INDEX;
 
     protected static Flow createStarColorRGBPage(ColorData colorData) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .child(createStarColorRGBRow(StarColors.RGB.RED, colorData))
             .child(createStarColorRGBRow(StarColors.RGB.GREEN, colorData))
             .child(createStarColorRGBRow(StarColors.RGB.BLUE, colorData))
@@ -46,7 +45,8 @@ public class CustomStarColorSelector {
     }
 
     private static Flow createStarColorRGBRow(StarColors.RGB color, ColorData colorData) {
-        Flow row = new Row().size(SIZE - 16, 16)
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16)
             .marginBottom(3);
 
         // Title
@@ -140,7 +140,8 @@ public class CustomStarColorSelector {
     }
 
     protected static Flow createStarColorHSVPage(ColorData colorData) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .child(createStarColorHSVRow(StarColors.HSV.HUE, colorData))
             .child(createStarColorHSVRow(StarColors.HSV.SATURATION, colorData))
             .child(createStarColorHSVRow(StarColors.HSV.VALUE, colorData))
@@ -150,7 +151,8 @@ public class CustomStarColorSelector {
     private static Flow createStarColorHSVRow(StarColors.HSV color, ColorData colorData) {
         int maxValue = color == StarColors.HSV.HUE ? 360 : 1;
 
-        Flow row = new Row().size(SIZE - 16, 16)
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16)
             .marginBottom(3);
 
         // Title
@@ -240,7 +242,8 @@ public class CustomStarColorSelector {
 
     private static Flow createStarColorGammaRow(ColorData colorData) {
         StarColors.Extra gamma = StarColors.Extra.GAMMA;
-        Flow row = new Row().size(SIZE - 16, 16);
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16);
 
         // Title
         row.child(
@@ -277,14 +280,16 @@ public class CustomStarColorSelector {
     }
 
     protected static Flow createColorPreviewRow(PagedWidget.Controller pageController, ColorData colorData) {
-        Flow row = new Row().size(SIZE - 16, 15)
-            .marginBottom(4);
+        Flow row = Flow.row()
+            .size(SIZE - 16, 15)
+            .marginBottom(4)
+            .childPadding(24);
 
         // RGB/HSV switchers
-        Flow rgbhsvRow = new Row().coverChildrenWidth()
+        Flow rgbhsvRow = Flow.row()
+            .coverChildrenWidth()
             .childPadding(2)
-            .height(15)
-            .alignX(0);
+            .height(15);
 
         rgbhsvRow.child(
             new PageButton(RGB_PAGE_INDEX, pageController).size(24, 15)
@@ -321,9 +326,9 @@ public class CustomStarColorSelector {
         row.child(rgbhsvRow);
 
         // Hex code text field header
-        Flow colorRow = new Row().coverChildrenWidth()
-            .height(15)
-            .alignX(1);
+        Flow colorRow = Flow.row()
+            .coverChildrenWidth()
+            .height(15);
 
         colorRow.child(
             IKey.lang("fog.cosmetics.color.hex")

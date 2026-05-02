@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -42,8 +41,9 @@ public class CoverWirelessMaintenenceDetectorGui
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         // column contains 4 other rows, each has 2 enum values
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
-        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager
-            .getSyncHandlerFromMapKey("maintenanceMode:0");
+        @SuppressWarnings("unchecked")
+        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = syncManager
+            .findSyncHandler("maintenanceMode", EnumSyncValue.class);
         final ICoverable tile = data.getCoverable();
         boolean usesTurbines = false;
 
@@ -90,7 +90,8 @@ public class CoverWirelessMaintenenceDetectorGui
 
     private Flow makeMaintanenceIssueRow(EnumSyncValue syncValue,
         CoverWirelessMaintenanceDetector.MaintenanceMode value) {
-        return new Row().size(90, 18)
+        return Flow.row()
+            .size(90, 18)
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncValue, value))
                     .size(16)

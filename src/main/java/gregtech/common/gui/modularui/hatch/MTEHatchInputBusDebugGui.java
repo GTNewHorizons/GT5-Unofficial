@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -26,14 +25,15 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
         return super.createContentSection(panel, syncManager).child(
             SlotGroupWidget.builder()
                 .matrix("IIII", "IIII", "IIII", "IIII")
-                .key('I', index -> {
-                    return new PhantomItemSlot().slot(
+                .key(
+                    'I',
+                    index -> new PhantomItemSlot().slot(
                         new ModularSlot(hatch.phantomHolder, index).singletonSlotGroup(50 + index)
-                            .accessibility(true, false));
-                })
+                            .accessibility(true, false)))
                 .build()
                 .marginTop(4)
-                .align(Alignment.TopCenter));
+                .topRel(0)
+                .horizontalCenter());
     }
 
     @Override

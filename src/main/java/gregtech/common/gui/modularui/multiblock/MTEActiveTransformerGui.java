@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -49,9 +48,9 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
         IntSyncValue hatchTierSyncer = new IntSyncValue(multiblock::calculateHatchTier);
         syncManager.syncValue("hatchTier", hatchTierSyncer);
 
-        Column throughputColumn = new Column();
+        Flow throughputColumn = Flow.column();
         throughputColumn.coverChildrenHeight()
-            .widthRel(1);
+            .fullWidth();
 
         throughputColumn.child(
             createIndividualThroughputColumn(
@@ -76,7 +75,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
         String headerLangKey) {
         return Flow.column()
             .height(18)
-            .widthRel(1)
+            .fullWidth()
             .marginBottom(2)
             .child(
                 IKey.lang(headerLangKey)

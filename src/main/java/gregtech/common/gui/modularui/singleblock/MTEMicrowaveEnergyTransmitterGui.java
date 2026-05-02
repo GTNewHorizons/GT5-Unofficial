@@ -37,7 +37,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                                 GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
                                     .size(18, 18)
                                     .topRel(0.5F))
-                            .heightRel(1)
+                            .fullHeight()
                             .coverChildrenWidth())
                     .child(createSelectionColumn())
                     .crossAxisAlignment(Alignment.CrossAxis.START)
