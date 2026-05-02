@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -976,7 +977,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String mobName = getCurrentMob();
         info.add(
-            mobName != null ? GTUtility.infoData("kubatech.infodata.eec.current_mob", mobName)
+            mobName != null ? IGregTechDeviceInformation.encode("kubatech.infodata.eec.current_mob", mobName)
                 : "kubatech.infodata.eec.current_mob.none");
         info.add(
             mAnimationEnabled ? "kubatech.infodata.eec.animations.enabled"
@@ -1008,11 +1009,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (weaponCache.isValid) {
                 tAttackDamage += weaponCache.attackDamage;
-                info.add(GTUtility.infoData("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
-                info.add(GTUtility.infoData("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
+                info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
+                info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
             }
 
-            info.add(GTUtility.infoData("kubatech.infodata.eec.total_damage", tAttackDamage));
+            info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
     }

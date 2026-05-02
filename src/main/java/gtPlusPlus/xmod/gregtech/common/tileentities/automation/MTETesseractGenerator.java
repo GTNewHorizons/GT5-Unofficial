@@ -271,7 +271,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             return ((IGregTechDeviceInformation) tTileEntity).getInfoData();
         }
         return new String[] { "Tesseract Generator",
-            GTUtility.infoData("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            IGregTechDeviceInformation.encode("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
             (getGeneratorEntity() == this) && (this.isWorking >= 20) ? "gtpp.infodata.tesseract_generator.status.active"
                 : "gtpp.infodata.tesseract_generator.status.inactive" };
     }

@@ -1,5 +1,6 @@
 package gtnhlanth.common.tileentity;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
@@ -435,31 +436,31 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         return new String[] {
             // from super()
-            /* 1 */ GTUtility.infoData(
+            /* 1 */ IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.Progress.fmt.s",
                 formatNumber(mProgresstime / 20),
                 formatNumber(mMaxProgresstime / 20)),
             /* 2 */ GTUtility
                 .infoData("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
-            /* 3 */ GTUtility.infoData("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
-            /* 4 */ GTUtility.infoData(
+            /* 3 */ IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
+            /* 4 */ IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.mei.fmt.2A",
                 formatNumber(getMaxInputVoltage()),
                 VN[GTUtility.getTier(getMaxInputVoltage())]),
-            /* 5 */ GTUtility.infoData(
+            /* 5 */ IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.problems.efficiency.fmt",
                 getIdealStatus() - getRepairStatus(),
                 mEfficiency / 100.0F + " %"),
             /* 6 Pollution not included */
             // Beamline-specific
             "beamline.in_pre.hdr",
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "beamline.particle.fmt",
                 Particle.getParticleFromId(information.getParticleId())
                     .getLocalisedName()),
-            GTUtility.infoData("beamline.energy.eV.fmt", information.getEnergy() * 1000),
-            GTUtility.infoData("beamline.focus.fmt", information.getFocus()),
-            GTUtility.infoData("beamline.amount.fmt", information.getRate()) };
+            IGregTechDeviceInformation.encode("beamline.energy.eV.fmt", information.getEnergy() * 1000),
+            IGregTechDeviceInformation.encode("beamline.focus.fmt", information.getFocus()),
+            IGregTechDeviceInformation.encode("beamline.amount.fmt", information.getRate()) };
     }
 
     @Override

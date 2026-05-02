@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.init.Blocks;
@@ -347,15 +348,15 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { GTUtility.infoData("gtpp.infodata.rtg.running_at", this.mTier),
-            GTUtility.infoData(
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.rtg.running_at", this.mTier),
+            IGregTechDeviceInformation.encode(
                 "gtpp.infodata.rtg.active",
                 this.getBaseMetaTileEntity()
                     .isActive()),
-            GTUtility.infoData("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
-            GTUtility.infoData("gtpp.infodata.rtg.remaining.days", formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
-            GTUtility.infoData("gtpp.infodata.rtg.remaining.hours", formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
-            GTUtility.infoData("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.remaining.days", formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.remaining.hours", formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

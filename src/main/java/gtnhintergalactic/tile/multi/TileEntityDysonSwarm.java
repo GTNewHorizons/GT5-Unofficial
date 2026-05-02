@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
@@ -485,7 +486,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 + " EU/t",
             "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
             "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
-            GTUtility.infoData("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
     }
 

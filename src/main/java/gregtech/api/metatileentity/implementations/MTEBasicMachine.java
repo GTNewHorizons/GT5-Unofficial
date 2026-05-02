@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
@@ -897,17 +898,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public String[] getInfoData() {
         return new String[] {
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };

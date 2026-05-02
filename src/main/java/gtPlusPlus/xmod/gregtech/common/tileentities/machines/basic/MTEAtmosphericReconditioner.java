@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
@@ -667,14 +668,14 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
             aTooltipSuper.add(
-                GTUtility.infoData("gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed", reduction));
+                IGregTechDeviceInformation.encode("gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed", reduction));
         } catch (Exception t) {
             aTooltipSuper.add(
-                GTUtility.infoData(
+                IGregTechDeviceInformation.encode(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
                     mPollutionReduction));
         }
-        aTooltipSuper.add(GTUtility.infoData("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
+        aTooltipSuper.add(IGregTechDeviceInformation.encode("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;

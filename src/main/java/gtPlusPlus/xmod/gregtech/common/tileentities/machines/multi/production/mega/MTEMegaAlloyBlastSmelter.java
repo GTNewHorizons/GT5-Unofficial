@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -320,23 +321,23 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
         return new String[] { "GT5U.infodata.critical_info.hdr", GTUtility
             .infoData("GT5U.multiblock.Progress.fmt.t", formatNumber(mProgresstime), formatNumber(mMaxProgresstime)),
-            GTUtility.infoData("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
-            GTUtility.infoData("GT5U.multiblock.usage.fmt", formatNumber(-lEUt)),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(-lEUt)),
+            IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.mei.fmt.xA",
                 formatNumber(getAverageInputVoltage()),
                 formatNumber(getMaxInputAmps()),
                 GTValues.VN[GTUtility.getTier(getAverageInputVoltage())]),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "gtpp.infodata.abs.mega.parallels",
                 EnumChatFormatting.BLUE + "" + paras + EnumChatFormatting.RESET),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "gtpp.infodata.abs.mega.speed_bonus",
                 EnumChatFormatting.BLUE + "" + moreSpeed + "%" + EnumChatFormatting.RESET),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "gtpp.infodata.abs.mega.energy_discount",
                 EnumChatFormatting.BLUE + "" + lessEnergy + "%" + EnumChatFormatting.RESET),
-            GTUtility.infoData("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "§m-----------------------------------------" };
     }
 

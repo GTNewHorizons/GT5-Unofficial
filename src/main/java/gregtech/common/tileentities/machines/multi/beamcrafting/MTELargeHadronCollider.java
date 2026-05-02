@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -445,8 +446,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
-        return new String[] { GTUtility.infoData("tt.keyword.Content.fmt", dataPacket.getContentString()),
-            GTUtility.infoData("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
+        return new String[] { IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {
