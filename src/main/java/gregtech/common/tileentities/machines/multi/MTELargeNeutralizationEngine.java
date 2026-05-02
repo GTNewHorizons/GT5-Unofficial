@@ -298,7 +298,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + EnumChatFormatting.WHITE
             + frequency
             + EnumChatFormatting.GRAY
-            + "/minute";
+            + "/"
+            + EnumChatFormatting.WHITE
+            + "minute";
     }
 
     private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
@@ -373,7 +375,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "*"
                     + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L/t)"
+                    + "Fuel Consumption(L)"
                     + EnumChatFormatting.GRAY
                     + "*rand("
                     + EnumChatFormatting.WHITE
@@ -391,11 +393,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.WHITE
                     + "0.05"
                     + EnumChatFormatting.GRAY
-                    + "*("
+                    + "*"
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "Fuel Value (EU/L)"
+                    + "Base Fuel Value (EU/L)"
                     + EnumChatFormatting.GRAY
-                    + ")^"
+                    + "^"
                     + EnumChatFormatting.WHITE
                     + "0.8")
             .addInfo(
@@ -491,11 +493,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
                     + EnumChatFormatting.GRAY
-                    + ", 1/("
+                    + ", "
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + "/("
                     + EnumChatFormatting.WHITE
                     + "45"
                     + EnumChatFormatting.GRAY
-                    + "*(1+"
+                    + "*("
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + "+"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY

@@ -14100,6 +14100,7 @@ public class MaterialsInit {
         Materials.StagnantWasteWater = loadStagnantWasteWater();
         Materials.ActivatedWasteWater = loadActivatedWasteWater();
         Materials.ChlorosulfonicAcid = loadChlorosulfonicAcid();
+        Materials.PoisonousSlurry = loadPoisonousSlurry();
     }
 
     private static Materials loadImpureFranciumSolution() {
@@ -14266,6 +14267,18 @@ public class MaterialsInit {
             .addMaterial(Materials.Sulfur, 1)
             .addMaterial(Materials.Oxygen, 3)
             .addMaterial(Materials.Chlorine, 1)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadPoisonousSlurry() {
+        return new MaterialBuilder().setName("PoisonousSlurry")
+            .setDefaultLocalName("Poisonous Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGreen)
+            .setARGB(0x237745)
+            .addCell()
+            .addFluid()
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }

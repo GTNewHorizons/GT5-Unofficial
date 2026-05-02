@@ -129,7 +129,8 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
                     .child(
                         IKey.lang("GT5U.gui.button.max_fluid")
                             .asWidget()
-                            .marginBottom(4))
+                            .paddingTop(4)
+                            .marginBottom(3))
                     .child(makeMaxFluidConfigurator()));
 
     }
@@ -142,6 +143,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             .height(18)
             .paddingLeft(3)
             .paddingRight(3)
+            .horizontalCenter()
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .child(makeMaxFluidConfiguratorTextFieldWidget(maxFluidUseSyncer));
     }
@@ -152,6 +154,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
             .setNumbers(0, 300000)
             .size(70, 14)
             .marginBottom(4)
-            .marginRight(16);
+            .marginRight(16)
+            .horizontalCenter();
     }
 }
