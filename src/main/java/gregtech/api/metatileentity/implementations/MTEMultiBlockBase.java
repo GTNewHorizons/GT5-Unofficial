@@ -542,10 +542,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected void onStructureCheckFinished(IGregTechTileEntity aBaseMetaTileEntity) {
 
-        // only run validation when the structure check passes, so that we don't confuse people
         if (mMachine) {
-            validateStructure(structureErrors);
-
             if (hasStructureErrors()) mMachine = false;
         } else {
             generateStructureErrorDiagnostics(structureErrors);
@@ -560,18 +557,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {}
-
-    /**
-     * Validates this multi's structure (hatch/casing counts mainly) for any errors. The multi will not form if any
-     * errors are added to {@code errors}. Only runs when {@link #checkMachine} is successful.
-     *
-     * @param errors Add errors to this.
-     */
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    protected void validateStructure(Collection<StructureError> errors) {
-
-    }
 
     /**
      * Controls whether the error message widget is shown. If you have any new structure status fields, make sure to

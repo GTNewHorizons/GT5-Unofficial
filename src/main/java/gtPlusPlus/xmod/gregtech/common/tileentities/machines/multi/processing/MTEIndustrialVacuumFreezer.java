@@ -15,7 +15,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -165,13 +165,8 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 1, 1, 0);
-    }
-
-    @Override
-    public void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
 
         if (mCasing < 10) {
             errors.add(new TooFewCasings(mCasing, 10));

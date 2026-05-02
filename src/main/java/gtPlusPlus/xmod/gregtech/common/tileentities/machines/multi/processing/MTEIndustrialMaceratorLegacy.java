@@ -50,6 +50,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.HatchCountError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -190,13 +191,21 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         structureTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (structureTier < 1 || mCasing < 26 || !checkHatch()) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (structureTier < 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
+        checkCasingMin(errors, mCasing, 26);
+        checkHatch(errors);
+        if (structureTier < controllerTier) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
         updateHatchTexture();
-        return structureTier >= controllerTier;
     }
 
     protected void updateHatchTexture() {

@@ -10,10 +10,12 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Air_Intake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.AirIntake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -40,6 +42,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.MissingHatch;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -173,14 +177,17 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.mTecTechDynamoHatches.clear();
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
-        return checkPiece(this.mName, 1, 1, 0) && this.mCasing >= 64 - 48
-            && !this.mAirIntakes.isEmpty()
-            && checkHatch();
+        if (!checkPiece(this.mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 64 - 48);
+        if (mAirIntakes.isEmpty()) {
+            errors.add(new MissingHatch(Hatch_Air_Intake.get(1)));
+        }
+        checkHatch(errors);
     }
 
     @Override
