@@ -1671,7 +1671,6 @@ public class MTERecipeLoader implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-
         // Algae Casing
         GTModHandler.addCraftingRecipe(
             ItemList.AlgaeCasing.get(1),

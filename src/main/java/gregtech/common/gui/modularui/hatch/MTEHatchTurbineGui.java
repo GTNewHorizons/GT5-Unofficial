@@ -20,7 +20,6 @@ public class MTEHatchTurbineGui extends MTEHatchBaseGui<MTEHatchTurbine> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlot().slot(
-                    .filter(MTELargerTurbineBaseLegacy::isValidTurbine))
                 new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
                     .filter(MTELargerTurbineBaseLegacy::isValidTurbine))
                 .center());

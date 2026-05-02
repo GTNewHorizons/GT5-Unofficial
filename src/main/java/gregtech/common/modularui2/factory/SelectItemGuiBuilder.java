@@ -203,7 +203,7 @@ public class SelectItemGuiBuilder {
                 .playClickSound(false)
                 .onMousePressed(mouseButton -> true)
                 .horizontalCenter()
-                .top(22));
+                .top(22);
         if (currentItemWidgetCustomizer != null) {
             currentItemWidgetCustomizer.accept(currentItemWidget);
         }
