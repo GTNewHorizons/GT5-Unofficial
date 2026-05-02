@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +18,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
