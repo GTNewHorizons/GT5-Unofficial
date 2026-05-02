@@ -423,7 +423,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             }
             return Flow.column()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .coverChildren()
+                .coverChildren(0)
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
         });
@@ -433,7 +433,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         fluidOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
         return new DynamicSyncedWidget<>().widthRel(0.85f)
-            .coverChildrenHeight()
+            .coverChildrenHeight(0)
             .syncHandler(recipeHandler);
 
     }
@@ -461,7 +461,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
-            .coverChildren();
+            .coverChildren(0);
 
         Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
@@ -513,7 +513,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
-            .coverChildren();
+            .coverChildren(0);
 
         // create merged map of fluidstack to total amount in recipe
         final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);

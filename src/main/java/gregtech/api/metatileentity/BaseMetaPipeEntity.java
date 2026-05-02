@@ -63,8 +63,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
-    private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldConnections = 0,
-        oldUpdateData = 0;
+    private byte mColor = 0, oldColor = 0, oldRedstoneData = 63, oldConnections = 0, oldUpdateData = 0;
     private int oldX = 0, oldY = 0, oldZ = 0;
     protected Node node;
     protected NodePath nodePath;
@@ -253,9 +252,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mNeedsBlockUpdate) {
-                    updateNeighbours(mStrongRedstone, oldStrongRedstone);
-                    oldStrongRedstone = mStrongRedstone;
-                    mNeedsBlockUpdate = false;
+                    doBlockUpdate();
                 }
 
                 if (mNeedsTileUpdate) {
@@ -273,7 +270,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mMetaTileEntity.onTickFail(this, mTickTimer);
     }
 
-    private void sendClientData() {
+    @Override
+    protected void sendClientData() {
         if (mSendClientData) {
             oldConnections = mConnections;
             oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
