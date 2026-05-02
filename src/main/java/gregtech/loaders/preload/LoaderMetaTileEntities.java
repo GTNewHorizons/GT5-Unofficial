@@ -915,6 +915,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
 
+        ItemList.ThermalBoiler.set(
+            new MTEThermalBoiler(ThermalBoiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
+
         ItemList.FishingPort.set(
             new MTEIndustrialFishingPond(
                 FishingPort.ID,

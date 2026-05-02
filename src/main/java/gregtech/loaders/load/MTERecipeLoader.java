@@ -1743,6 +1743,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.FlotationCell.get(1),
             new Object[] { GregtechItemList.Controller_Flotation_Cell });
 
+        // Thermal Boiler Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.ThermalBoiler.get(1),
+            new Object[] { GregtechItemList.GT4_Thermal_Boiler });
+
         // Bending Machine Conversion Recipe
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialBendingMachine.get(1),
