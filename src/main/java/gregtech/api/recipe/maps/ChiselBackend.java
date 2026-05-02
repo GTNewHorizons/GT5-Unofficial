@@ -48,7 +48,7 @@ public class ChiselBackend extends RecipeMapBackend {
     @Nullable
     @Override
     protected GTRecipe overwriteFindRecipe(ItemStack[] items, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-                                           @Nullable GTRecipe cachedRecipe) {
+        @Nullable GTRecipe cachedRecipe) {
         int circuitConfiguration = getCircuitConfiguration(items);
 
         // Circuit mode: use circuit number to pick variant
@@ -103,14 +103,14 @@ public class ChiselBackend extends RecipeMapBackend {
         for (int i = 0; i < results.size(); i++) {
             if (GTUtility.areStacksEqual(results.get(i), target, true)) {
                 return GTRecipeBuilder.builder()
-                        .itemInputs(GTUtility.copyAmount(1, input))
-                        .itemOutputs(GTUtility.copyAmount(1, target))
-                        .duration(20)
-                        .eut(16)
-                        .specialValue(0)
-                        .noBuffer()
-                        .build()
-                        .orElse(null);
+                    .itemInputs(GTUtility.copyAmount(1, input))
+                    .itemOutputs(GTUtility.copyAmount(1, target))
+                    .duration(20)
+                    .eut(16)
+                    .specialValue(0)
+                    .noBuffer()
+                    .build()
+                    .orElse(null);
             }
         }
         return null;
