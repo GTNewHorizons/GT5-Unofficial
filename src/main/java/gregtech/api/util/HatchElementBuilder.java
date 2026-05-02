@@ -42,6 +42,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.structure.DescribedElement;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
@@ -342,13 +343,13 @@ public class HatchElementBuilder<T> {
     // region intermediate
 
     /**
-     * Looks up the localized name of a registered MTE matching the given class. Falls back to the class simple name if
-     * no registered instance is found.
+     * Returns the unlocalized lang key for a registered MTE matching the given class, so it can be translated on the
+     * client. Falls back to the class simple name if no registered instance is found.
      */
-    private static String mteClassToLocalName(Class<? extends IMetaTileEntity> clazz) {
+    private static String mteClassToLangKey(Class<? extends IMetaTileEntity> clazz) {
         for (IMetaTileEntity mte : GregTechAPI.METATILEENTITIES) {
-            if (mte != null && clazz.isInstance(mte)) {
-                return mte.getLocalName();
+            if (mte != null && clazz.isInstance(mte) && mte instanceof CommonMetaTileEntity commonMTE) {
+                return "gt.blockmachines." + commonMTE.mName + ".name";
             }
         }
         return clazz.getSimpleName();
@@ -356,7 +357,7 @@ public class HatchElementBuilder<T> {
 
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
-            .cacheHint(() -> mteClassToLocalName(clazz))
+            .cacheHint(() -> mteClassToLangKey(clazz))
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
@@ -371,7 +372,8 @@ public class HatchElementBuilder<T> {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
         return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
-                .map(HatchElementBuilder::mteClassToLocalName)
+                .map(HatchElementBuilder::mteClassToLangKey)
+                .map(StatCollector::translateToLocal)
                 .sorted()
                 .collect(Collectors.joining(StatCollector.translateToLocal("gt.hatch_element_or"), "", "")))
             .shouldSkip(
@@ -543,7 +545,10 @@ public class HatchElementBuilder<T> {
                 if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
                     String type = getHint();
                     env.getChatter()
-                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
+                        .accept(
+                            new ChatComponentTranslation(
+                                "GT5U.autoplace.error.no_placeable",
+                                new ChatComponentTranslation(type)));
                     return PlaceResult.REJECT;
                 }
                 ItemStack taken = env.getSource()
@@ -551,7 +556,10 @@ public class HatchElementBuilder<T> {
                 if (GTUtility.isStackInvalid(taken)) {
                     String type = getHint();
                     env.getChatter()
-                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                        .accept(
+                            new ChatComponentTranslation(
+                                "GT5U.autoplace.error.no_hatch",
+                                new ChatComponentTranslation(type)));
                     return PlaceResult.REJECT;
                 }
                 if (com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
