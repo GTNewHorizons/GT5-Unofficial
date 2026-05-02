@@ -53,6 +53,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -242,15 +244,22 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         pipeTier = -1;
         mEnergyHatches.clear();
         mCasingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
-            return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
+        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1)) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            return;
+        }
+        checkOneMaintenanceHatch(errors);
+        if (pipeTier <= 0) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasingAmount, 42);
     }
 
     @Override

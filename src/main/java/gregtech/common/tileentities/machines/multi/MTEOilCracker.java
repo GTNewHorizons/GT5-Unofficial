@@ -47,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -261,17 +263,24 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
         mMiddleInputHatches.clear();
         mInputOnSide = -1;
         mOutputOnSide = -1;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0) && mInputOnSide != -1
-            && mOutputOnSide != -1
-            && mCasingAmount >= 18
-            && mMaintenanceHatches.size() == 1
-            && !mMiddleInputHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0, errors)) return;
+        if (mInputOnSide == -1) {
+            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+        }
+        if (mOutputOnSide == -1) {
+            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
+        }
+        checkCasingMin(errors, mCasingAmount, 18);
+        checkOneMaintenanceHatch(errors);
+        if (mMiddleInputHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+        }
     }
 
     @Override

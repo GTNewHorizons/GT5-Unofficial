@@ -18,6 +18,8 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -41,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
@@ -177,12 +180,13 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         coilHeat = HeatingCoilLevel.None;
         mCasingAmount = 0;
-        return checkPiece("main", 2, 3, 0) && mCasingAmount >= 60
-            && mMaintenanceHatches.size() == 1
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece("main", 2, 3, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 60);
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
