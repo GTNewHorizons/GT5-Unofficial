@@ -206,6 +206,7 @@ public class GlassTier {
             // --- UIV ---
             addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 11, 1);
 
             // --- UMV ---
             addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);

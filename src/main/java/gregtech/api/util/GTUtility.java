@@ -182,6 +182,7 @@ import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
+import gregtech.nei.FluidDisplayStackMode;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -1144,6 +1145,13 @@ public class GTUtility {
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
         return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
             : aMaterial.getProcessingMaterialTierEU();
+    }
+
+    public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {
+        return getFluidDisplayStack(
+            fluid,
+            stackMode == FluidDisplayStackMode.SHOWN,
+            stackMode == FluidDisplayStackMode.HIDDEN);
     }
 
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {
@@ -3376,6 +3384,11 @@ public class GTUtility {
             if (l > first) first = l;
         }
         return first;
+    }
+
+    public static long ceil(double k) {
+        long l = (long) k;
+        return k > (double) l ? l + 1 : l;
     }
 
     public static int ceilDiv(int lhs, int rhs) {
