@@ -184,7 +184,7 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_STEEL)
         .fluidSlot(GTTextureIds.SLOT_FLUID_STEEL)
         .color(Dyes.dyeWhite.toInt())
-        .textColor(0xfafaff)
+        .textColor(0x404040)
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
         .button(GTTextureIds.BUTTON_STEEL)
         .simpleToggleButton(GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_STEEL_PRESSED, Dyes.dyeWhite.toInt())
