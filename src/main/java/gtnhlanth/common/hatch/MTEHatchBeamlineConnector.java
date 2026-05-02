@@ -1,6 +1,5 @@
 package gtnhlanth.common.hatch;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static tectech.util.CommonValues.MOVE_AT;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTUtility;

@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -41,6 +40,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -446,7 +446,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
-        return new String[] { IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+        return new String[] {
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
             IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 

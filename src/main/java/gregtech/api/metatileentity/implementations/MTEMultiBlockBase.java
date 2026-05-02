@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
@@ -102,6 +101,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -2349,23 +2349,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (getActualEnergyUsage() > 0) {
-            info.add(IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
+            info.add(
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
         }
 
         info.add(
-            IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 
         if (mEfficiency > 0) {
-            info.add(IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
+            info.add(
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
         }
 
         if (getPollutionPerSecond(getStackForm(1)) > 0) {
             info.add(
-                IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
         }
 
         if (recipesDone > 0) {
-            info.add(IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
+            info.add(
+                IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
         }
 
         info.add(IGregTechDeviceInformation.encode(timeKey, timeValue));

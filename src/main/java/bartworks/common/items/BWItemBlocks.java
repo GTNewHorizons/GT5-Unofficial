@@ -13,7 +13,6 @@
 
 package bartworks.common.items;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -29,7 +28,7 @@ import bartworks.API.ITileAddsInformation;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTUtility;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 
 public class BWItemBlocks extends ItemBlock {
 

@@ -57,7 +57,8 @@ public interface IGregTechDeviceInformation {
     static String encode(String key, Object... args) {
         if (args == null || args.length == 0) return key;
         StringBuilder sb = new StringBuilder(key);
-        for (Object arg : args) sb.append("\\\\").append(arg);
+        for (Object arg : args) sb.append("\\\\")
+            .append(arg);
         return sb.toString();
     }
 

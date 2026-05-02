@@ -20,7 +20,6 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -137,6 +136,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -1009,8 +1009,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             if (weaponCache.isValid) {
                 tAttackDamage += weaponCache.attackDamage;
-                info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
-                info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
+                info.add(
+                    IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
+                info.add(
+                    IGregTechDeviceInformation
+                        .encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
             }
 
             info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.total_damage", tAttackDamage));

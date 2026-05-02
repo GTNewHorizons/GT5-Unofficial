@@ -20,7 +20,6 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -72,6 +71,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -843,11 +843,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
-        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
+        sb.append(
+            IGregTechDeviceInformation.encode("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
             .append("\n");
-        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
+        sb.append(
+            IGregTechDeviceInformation
+                .encode("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
             .append("\n");
-        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
+        sb.append(
+            IGregTechDeviceInformation.encode("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
             .append("\n");
         return sb.toString();
     }

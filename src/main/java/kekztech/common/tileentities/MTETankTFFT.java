@@ -1,6 +1,5 @@
 package kekztech.common.tileentities;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -51,6 +50,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -567,7 +567,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
