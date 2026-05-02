@@ -45,6 +45,11 @@ public abstract class MTEFilterBase extends MTEBuffer {
     }
 
     @Override
+    protected int getMovableInventoryEnd() {
+        return NUM_INVENTORY_SLOTS;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("bInvertFilter", this.invertFilter);
