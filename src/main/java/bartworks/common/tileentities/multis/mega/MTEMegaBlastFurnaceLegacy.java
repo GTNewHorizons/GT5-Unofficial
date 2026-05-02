@@ -69,28 +69,29 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 
-public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
+public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFurnaceLegacy>
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 11;
-    private static final IStructureDefinition<MTEMegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaBlastFurnace>builder()
+    private static final IStructureDefinition<MTEMegaBlastFurnaceLegacy> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaBlastFurnaceLegacy>builder()
         .addShape("main", createShape())
         .addElement('=', StructureElementAirNoHint.getInstance())
         .addElement(
             't',
-            buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
+            buildHatchAdder(MTEMegaBlastFurnaceLegacy.class).atLeast(OutputHatch)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
-            GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL.use(
+                activeCoils(ofCoil(MTEMegaBlastFurnaceLegacy::setCoilLevel, MTEMegaBlastFurnaceLegacy::getCoilLevel))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'b',
-            buildHatchAdder(MTEMegaBlastFurnace.class)
+            buildHatchAdder(MTEMegaBlastFurnaceLegacy.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .hint(1)
@@ -138,26 +139,28 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity;
     private int glassTier = -1;
+    // TODO: remove with old MEBF controller in next major update, alongside given configuration.
     private final static int polPtick = PollutionConfig.basePollutionMBFSecond / 20
         * Configuration.Multiblocks.megaMachinesMax;
 
-    public MTEMegaBlastFurnace(int aID, String aName, String aNameRegional) {
+    public MTEMegaBlastFurnaceLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMegaBlastFurnace(String aName) {
+    public MTEMegaBlastFurnaceLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEMegaBlastFurnace(this.mName);
+        return new MTEMegaBlastFurnaceLegacy(this.mName);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, MEBF, MBF")
+            .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
@@ -285,14 +288,14 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MTEMegaBlastFurnace.this.mHeatingCapacity)
+                    .setMachineHeat(MTEMegaBlastFurnaceLegacy.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true);
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= MTEMegaBlastFurnace.this.mHeatingCapacity
+                return recipe.mSpecialValue <= MTEMegaBlastFurnaceLegacy.this.mHeatingCapacity
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
@@ -305,7 +308,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public IStructureDefinition<MTEMegaBlastFurnace> getStructureDefinition() {
+    public IStructureDefinition<MTEMegaBlastFurnaceLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

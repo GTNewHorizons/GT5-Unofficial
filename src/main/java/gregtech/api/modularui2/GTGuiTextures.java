@@ -1555,6 +1555,17 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_PYROTHEUM_ON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mebf_pyro_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_PYROTHEUM_OFF = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mebf_pyro_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion button overlay
 
     // region picture
