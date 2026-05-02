@@ -142,18 +142,28 @@ item.masked_mask_substrate.name=Processed Mask Substrate
 
 
 beamline.info=Machine Information
+beamline.info.hdr=§lMachine Information: §r
 
 beamline.in_pre=Multiblock Beamline Input
+beamline.in_pre.hdr=§lMultiblock Beamline Input: §r
 beamline.particle=Particle
+beamline.particle.fmt=Particle: §6%s§r
 beamline.energy=Energy
+beamline.energy.eV.fmt=Energy: §4%s§r eV
+beamline.energy.keV.fmt=Energy: §4%s§r keV
 beamline.focus=Focus
+beamline.focus.fmt=Focus: §9%s §r
 beamline.amount=Amount
+beamline.amount.fmt=Amount: §d%s
 beamline.rate=Rate
 
 beamline.temperature=Temperature
+beamline.temperature.fmt=Temperature: §4%s§r K
 beamline.coolusage=Coolant Usage
+beamline.coolusage.fmt=Coolant Usage: §b%s§r kL/s
 
 beamline.out_pre=Multiblock Beamline Output
+beamline.out_pre.hdr=§lMultiblock Beamline Output: §r
 
 beamline.pipe.desc.0=Transport for particles
 beamline.pipe.desc.1=Signal does not cross or bend

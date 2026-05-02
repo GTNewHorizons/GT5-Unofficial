@@ -1427,7 +1427,10 @@ tt.keyword.input=ввод
 tt.keyword.output=вывод
 tt.keyword.Status=Статус
 tt.keyword.Content=Содержимое
+tt.keyword.Content.fmt=Содержимое: §b%s
 tt.keyword.PacketHistory=История пакетов
+tt.keyword.PacketHistory.fmt=История пакетов: §c%s
+tt.keyword.ID.fmt=ID: §b%s
 
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=Нет содержимого

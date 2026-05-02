@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -297,10 +296,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("Coil", 360, true)
             .addCasingInfoExactly("Any Tiered Glass", 339, true)
             .addMaintenanceHatch("Around the controller", 2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.many_bus_hatch"),
-                "Bottom Casing",
-                1)
+            .addOtherStructurePart(GTUtility.translate("GTPP.tooltip.structure.many_bus_hatch"), "Bottom Casing", 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
@@ -322,65 +318,26 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.STRIKETHROUGH + "------------"
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getAverageInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getMaxInputAmps())
-                + EnumChatFormatting.RESET
-                + "A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + GTValues.VN[GTUtility.getTier(getAverageInputVoltage())]
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+        return new String[] { "GT5U.infodata.critical_info.hdr", GTUtility
+            .infoData("GT5U.multiblock.Progress.fmt.t", formatNumber(mProgresstime), formatNumber(mMaxProgresstime)),
+            GTUtility.infoData("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            GTUtility.infoData("GT5U.multiblock.usage.fmt", formatNumber(-lEUt)),
+            GTUtility.infoData(
+                "GT5U.multiblock.mei.fmt.xA",
+                formatNumber(getAverageInputVoltage()),
+                formatNumber(getMaxInputAmps()),
+                GTValues.VN[GTUtility.getTier(getAverageInputVoltage())]),
+            GTUtility.infoData(
                 "gtpp.infodata.abs.mega.parallels",
-                "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+                EnumChatFormatting.BLUE + "" + paras + EnumChatFormatting.RESET),
+            GTUtility.infoData(
                 "gtpp.infodata.abs.mega.speed_bonus",
-                "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+                EnumChatFormatting.BLUE + "" + moreSpeed + "%" + EnumChatFormatting.RESET),
+            GTUtility.infoData(
                 "gtpp.infodata.abs.mega.energy_discount",
-                "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
+                EnumChatFormatting.BLUE + "" + lessEnergy + "%" + EnumChatFormatting.RESET),
+            GTUtility.infoData("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
+            "§m-----------------------------------------" };
     }
 
     @Override

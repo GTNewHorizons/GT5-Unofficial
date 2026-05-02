@@ -6,10 +6,10 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
 import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.GTUtility.translateInfoData;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -259,12 +259,12 @@ public class ScannerHelper {
     private static void addMachineInfo(List<String> list, TileEntity tileEntity) {
         try {
             if (tileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
-                final List<String> resultList = Arrays.asList(info.getInfoData());
+                final String[] infoData = info.getInfoData();
 
-                if (resultList.isEmpty()) return;
+                if (infoData.length == 0) return;
 
                 list.add(addTitle("title_machine_info"));
-                list.addAll(resultList);
+                for (String s : infoData) list.add(translateInfoData(s));
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_machine_info"));

@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -295,8 +294,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         String fmt = String.format("%%%ds", max.length());
         cur = String.format(fmt, cur);
 
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_stored", cur),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_capacity", max) };
+        return new String[] { GTUtility.infoData("gtpp.infodata.energy_buffer.eu_stored", cur),
+            GTUtility.infoData("gtpp.infodata.energy_buffer.eu_capacity", max) };
     }
 
     @Override
