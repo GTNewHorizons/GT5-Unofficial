@@ -23,6 +23,7 @@ package kubatech.api.implementations;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static kubatech.api.Variables.ln4;
 import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -65,6 +67,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.Tags;
 
@@ -268,6 +271,16 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     @Override
     protected boolean useMui2() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new KubaTechGTMultiBlockBaseGUI<>(this);
+    }
+
+    protected @NotNull String[] getCreditsText() {
+        return new String[] {
+            translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba), };
     }
 
     @Override
