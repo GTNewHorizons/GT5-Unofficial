@@ -82,6 +82,7 @@ public class StructureErrorRegistry {
         .of("GT5U.gui.text.coil_level_not_enough");
     public static final StructureError ENERGY_TIER_EXCEED_GLASS = StructureErrors
         .of("GT5U.gui.text.coil_level_not_enough");
+    public static final StructureError UNKNOWN_TIER = StructureErrors.of("GT5U.gui.text.unknown_multiblock_tier");
 
     static {
         register(new PositionedStructureError(0, 0, 0));
