@@ -90,8 +90,13 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerPotassiumHydroxideTransformer() {
+        // For players updating from dailies
         ItemStackReplacementManager
             .addSimpleReplacement("dreamcraft:PotassiumHydroxideDust", Materials.PotassiumHydroxide.getDust(1), true);
-        ItemStackReplacementManager.ignoreMissingMapping("dreamcraft:PotassiumHydroxideDust");
+        // For players updating directly from 2.8.4 or before
+        ItemStackReplacementManager.addSimpleReplacement(
+            "dreamcraft:item.PotassiumHydroxideDust",
+            Materials.PotassiumHydroxide.getDust(1),
+            true); // FML Warning suppression in coremod
     }
 }
