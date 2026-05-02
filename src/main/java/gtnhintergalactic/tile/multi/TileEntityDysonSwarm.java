@@ -26,8 +26,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -52,6 +50,7 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -496,10 +495,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 + " EU/t",
             "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
             "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+            GTUtility.infoData("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
     }
 

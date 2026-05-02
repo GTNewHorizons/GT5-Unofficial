@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -348,20 +347,15 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
-            StatCollector.translateToLocalFormatted(
+        return new String[] { GTUtility.infoData("gtpp.infodata.rtg.running_at", this.mTier),
+            GTUtility.infoData(
                 "gtpp.infodata.rtg.active",
                 this.getBaseMetaTileEntity()
                     .isActive()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.rtg.remaining.days",
-                formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.rtg.remaining.hours",
-                formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
+            GTUtility.infoData("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
+            GTUtility.infoData("gtpp.infodata.rtg.remaining.days", formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
+            GTUtility.infoData("gtpp.infodata.rtg.remaining.hours", formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
+            GTUtility.infoData("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

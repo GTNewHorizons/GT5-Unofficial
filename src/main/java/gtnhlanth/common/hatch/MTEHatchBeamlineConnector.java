@@ -1,6 +1,5 @@
 package gtnhlanth.common.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.MOVE_AT;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
@@ -94,12 +94,11 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + (this.dataPacket != null ? this.dataPacket.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
+            GTUtility
+                .infoData("tt.keyword.Content.fmt", this.dataPacket != null ? this.dataPacket.getContentString() : 0),
+            GTUtility.infoData(
+                "tt.keyword.PacketHistory.fmt",
+                this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
     }
 
     @Override

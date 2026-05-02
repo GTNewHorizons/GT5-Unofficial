@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -250,11 +249,8 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.pollution_creator.pollution.avg",
-                getAveragePollutionOverLastTen()) };
+            GTUtility.infoData("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            GTUtility.infoData("gtpp.infodata.pollution_creator.pollution.avg", getAveragePollutionOverLastTen()) };
     }
 
     @Override
