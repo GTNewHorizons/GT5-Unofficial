@@ -2553,6 +2553,7 @@ GT5U.gui.text.one_uncertainty_hatch=Require exactly 1 Uncertainty Hatch
 GT5U.gui.text.hatch_invalid=Hatch requirement is not met
 GT5U.gui.not_loaded=Some block is not chunk loaded
 GT5U.gui.wrong_block=Invalid block at (%s, %s, %s)
+GT5U.gui.wrong_block_expected=Expected %s at (%s, %s, %s)
 GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
