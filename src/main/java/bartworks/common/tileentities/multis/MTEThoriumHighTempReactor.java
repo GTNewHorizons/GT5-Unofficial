@@ -31,7 +31,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,6 +52,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -344,24 +344,20 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.thtr.progress",
                 formatNumber(this.mProgresstime / 20),
                 formatNumber(this.mMaxProgresstime / 20)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.triso_pebbles",
-                formatNumber(this.fuelSupply),
-                formatNumber(this.fuelSupply)),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.triso_pebbles", formatNumber(this.fuelSupply), formatNumber(this.fuelSupply)),
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.htr.helium_level",
                 formatNumber(this.HeliumSupply),
                 formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.coolant",
-                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.coolant", formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
+            IGregTechDeviceInformation
+                .encode("BW.infoData.htr.problems", String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override

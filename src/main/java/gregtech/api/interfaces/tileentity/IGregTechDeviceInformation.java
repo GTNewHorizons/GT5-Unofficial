@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
@@ -63,9 +65,24 @@ public interface IGregTechDeviceInformation {
     }
 
     /**
+     * Converts a string produced by {@link #encode} (or a bare translation key) into an {@link IChatComponent} so
+     * the client resolves the translation key in the player's own language.
+     * <p>
+     * Prefer this over {@link #decode} when sending chat messages from the server.
+     */
+    static IChatComponent toComponent(String encoded) {
+        if (encoded == null) return new ChatComponentTranslation("");
+        String[] parts = encoded.split("\\\\\\\\");
+        if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
+        return new ChatComponentTranslation(parts[0], (Object[]) Arrays.copyOfRange(parts, 1, parts.length));
+    }
+
+    /**
      * Decodes and translates a string previously produced by {@link #encode} (or a bare translation key).
      * <p>
-     * Must be called on the client side so that {@link StatCollector} resolves the key in the player's language.
+     * When called on the client side {@link StatCollector} resolves the key in the player's language. When called
+     * server-side (e.g. for item tooltips stored in NBT) the server locale is used, but the result is still
+     * human-readable rather than a raw encoded string. For server-side chat messages prefer {@link #toComponent}.
      */
     static String decode(String data) {
         if (data == null) return "";

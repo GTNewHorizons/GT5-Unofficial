@@ -263,7 +263,7 @@ public class ScannerHelper {
                 if (infoData.length == 0) return;
 
                 list.add(addTitle("title_machine_info"));
-                for (String s : infoData) list.add(IGregTechDeviceInformation.decode(s));
+                for (String s : infoData) list.add(s);
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_machine_info"));
