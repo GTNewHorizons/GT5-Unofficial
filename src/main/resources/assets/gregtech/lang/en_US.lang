@@ -2518,6 +2518,7 @@ GT5U.gui.text.one_energy_hatch_on_laser=Only one energy hatch if using Multi-Amp
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.no_exotic_energy_hatch=Missing Exotic Energy Hatch
+GT5U.gui.text.unknown_multiblock_tier=Unknown multiblock tier
 GT5U.gui.text.unknown_machine_casing_tier=Unable to determine machine casing tier
 GT5U.gui.text.too_many_radiation_hatch=Too many radiation hatch
 GT5U.gui.text.glass_tier_not_enough=Glass tier too low, required %s-tiered glass

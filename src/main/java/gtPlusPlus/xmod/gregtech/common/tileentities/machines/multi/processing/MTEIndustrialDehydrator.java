@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -47,6 +48,8 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -168,10 +171,15 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 4, 0) && mCasing >= 5 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+        if (!checkPiece(mName, 1, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 5);
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkHatch(errors);
     }
 
     @Override
