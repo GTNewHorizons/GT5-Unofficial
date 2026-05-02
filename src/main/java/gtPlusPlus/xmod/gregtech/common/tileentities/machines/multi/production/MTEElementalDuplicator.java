@@ -41,10 +41,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.HatchCountErrorSpecific;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -179,13 +183,20 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mReplicatorDataOrbHatches.size() != 1) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
+        int hatchCount = this.mReplicatorDataOrbHatches.size();
+        if (hatchCount != 1) {
+            errors.add(
+                new HatchCountErrorSpecific(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
-        return aDidBuild && mCasing >= 120 && checkHatch();
+        checkCasingMin(errors, mCasing, 120);
+        checkHatch(errors);
     }
 
     @Override

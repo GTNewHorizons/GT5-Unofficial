@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -427,8 +428,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
 
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkOneMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
