@@ -9,6 +9,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -68,6 +69,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -259,23 +262,24 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
         this.glassTier = -1;
         this.energyHatchTier = 0;
-        if (checkPiece(mName, 4, 4, 0)) {
-            energyHatchTier = checkEnergyHatchTier();
-            if (casingTier >= -1) {
-                reUpdate(CASING_INDEX + casingTier);
-            }
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42 && mMaintenanceHatches.size() == 1
-                && glassTier >= VoltageIndex.EV
-                && !mMufflerHatches.isEmpty();
+        if (!checkPiece(mName, 4, 4, 0, errors)) return;
+        energyHatchTier = checkEnergyHatchTier();
+        if (casingTier >= -1) {
+            reUpdate(CASING_INDEX + casingTier);
         }
-        return false;
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        checkCasingMin(errors, casingAmount, 42);
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        if (glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override
