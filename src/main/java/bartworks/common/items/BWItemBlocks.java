@@ -13,6 +13,7 @@
 
 package bartworks.common.items;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class BWItemBlocks extends ItemBlock {
 
         if (this.field_150939_a instanceof ITileAddsInformation) {
             for (String s : ((ITileAddsInformation) this.field_150939_a).getInfoData())
-                aList.add(GTUtility.translateInfoData(s));
+                aList.add(IGregTechDeviceInformation.decode(s));
         }
         aList.add(translateToLocal("gt.casing.no-mob-spawning"));
         if (!(this.field_150939_a instanceof ITileEntityProvider))

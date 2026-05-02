@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -263,7 +264,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             return tTileEntity.getInfoData();
         }
         return new String[] { "gtpp.infodata.tesseract_generator.name",
-            GTUtility.infoData("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            IGregTechDeviceInformation.encode("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
             this.getTesseract(this.mFrequency, false) != null ? "gtpp.infodata.tesseract_generator.status.active"
                 : "gtpp.infodata.tesseract_generator.status.inactive" };
     }

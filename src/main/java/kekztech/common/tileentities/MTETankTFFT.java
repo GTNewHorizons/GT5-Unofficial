@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -541,7 +542,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ArrayList<String> ll = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
 
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.stored_fluids"));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.stored_fluids"));
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
@@ -563,14 +564,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                         capacityPerFluid > 0 ? STORE[i].amount() * 100 / capacityPerFluid : 0));
             }
         }
-        ll.add(GTUtility.infoData("kekztech.infodata.operational_data"));
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(GTUtility.infoData("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 getRepairStatus() == getIdealStatus() ? "kekztech.infodata.multi.maintenance_status.ok"
                     : "kekztech.infodata.multi.maintenance_status.bad"));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");

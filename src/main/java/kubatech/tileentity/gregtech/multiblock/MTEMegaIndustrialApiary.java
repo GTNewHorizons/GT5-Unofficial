@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksMap;
@@ -635,7 +636,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     : (mSecondaryMode == 0 ? "kubatech.infodata.mia.running_mode.operating.normal"
                         : "kubatech.infodata.mia.running_mode.operating.swarmer")));
         info.add(
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "kubatech.infodata.mia.running_mode.bee_storage",
                 "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
                 (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()

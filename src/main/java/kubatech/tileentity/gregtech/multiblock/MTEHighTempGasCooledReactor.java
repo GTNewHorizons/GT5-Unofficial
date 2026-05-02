@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -808,7 +809,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
-                GTUtility.infoData(
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
@@ -819,13 +820,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 .append("\n");
         }
         sb.append(
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "kubatech.infodata.htgr.fuel_supply",
                 formatNumber(this.fuelsupply),
                 formatNumber(MAX_CAPACITY)))
             .append("\n");
         sb.append(
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "kubatech.infodata.htgr.fuel_properties",
                 formatNumber(this.fuelBase),
                 formatNumber(this.fuelMultiplier),
@@ -835,18 +836,18 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
-                GTUtility.infoData(
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
-        sb.append(GTUtility.infoData("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
+        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
             .append("\n");
-        sb.append(GTUtility.infoData("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
+        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
             .append("\n");
-        sb.append(GTUtility.infoData("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
+        sb.append(IGregTechDeviceInformation.encode("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
             .append("\n");
         return sb.toString();
     }

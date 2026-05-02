@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.ArrayList;
@@ -136,12 +137,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
         if (this.mFluid == null) {
             return new String[] {
-                GTUtility.infoData("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+                IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
                 "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty", 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
-            GTUtility.infoData("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
             "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(), this.mFluid.amount + "L",
             this.getCapacity() + "L" };
     }

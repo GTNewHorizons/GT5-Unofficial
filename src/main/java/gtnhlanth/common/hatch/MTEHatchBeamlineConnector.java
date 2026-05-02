@@ -1,5 +1,6 @@
 package gtnhlanth.common.hatch;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static tectech.util.CommonValues.MOVE_AT;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,7 +97,7 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
         return new String[] {
             GTUtility
                 .infoData("tt.keyword.Content.fmt", this.dataPacket != null ? this.dataPacket.getContentString() : 0),
-            GTUtility.infoData(
+            IGregTechDeviceInformation.encode(
                 "tt.keyword.PacketHistory.fmt",
                 this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
     }

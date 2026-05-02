@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.block.Block;
@@ -175,10 +176,10 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             }
         }
 
-        return new String[] { GTUtility.infoData("gtpp.infodata.adv_fusion.name", tier),
-            GTUtility.infoData("gtpp.infodata.adv_fusion.eu_required", powerRequired),
-            GTUtility.infoData("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            GTUtility.infoData("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
-            GTUtility.infoData("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.name", tier),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 }

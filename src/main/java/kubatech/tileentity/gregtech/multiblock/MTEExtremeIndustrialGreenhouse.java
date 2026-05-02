@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -1409,13 +1410,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
             Arrays.asList(
-                this.setupPhase == 0 ? GTUtility.infoData("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                this.setupPhase == 0 ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
                     : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
                         : "kubatech.infodata.eig.running_mode.setup_mode.output"),
-                GTUtility.infoData("kubatech.infodata.eig.uses.water", waterUsage),
-                GTUtility.infoData("kubatech.infodata.eig.uses.weedex", weedEXUsage),
-                GTUtility.infoData("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
-                GTUtility.infoData(
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.eig.used_slots",
                     ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
                         + Integer.toString(this.buckets.size())

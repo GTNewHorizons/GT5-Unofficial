@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -242,9 +243,9 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            GTUtility.infoData("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            GTUtility.infoData("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
-            GTUtility.infoData("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
     }
 
     @Override

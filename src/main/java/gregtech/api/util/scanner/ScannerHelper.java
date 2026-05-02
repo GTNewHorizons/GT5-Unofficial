@@ -6,7 +6,7 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
 import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.translate;
-import static gregtech.api.util.GTUtility.translateInfoData;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
@@ -264,7 +264,7 @@ public class ScannerHelper {
                 if (infoData.length == 0) return;
 
                 list.add(addTitle("title_machine_info"));
-                for (String s : infoData) list.add(translateInfoData(s));
+                for (String s : infoData) list.add(IGregTechDeviceInformation.decode(s));
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_machine_info"));
