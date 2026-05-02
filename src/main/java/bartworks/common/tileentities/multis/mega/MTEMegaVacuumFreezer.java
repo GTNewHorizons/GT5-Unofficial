@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
@@ -26,34 +25,33 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -62,7 +60,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.blocks.BlockCasingsAbstract;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
 
@@ -82,39 +80,45 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     private int mCasingFrostProof = 0;
     private int mTier = 1;
 
-    private static class SubspaceCoolingFluid {
+    private enum SubspaceCoolingFluid {
 
-        public Materials material;
-        public int perfectOverclocks;
+        SpaceTime(Materials.SpaceTime, 1, 75),
+        Space(Materials.Space, 2, 50),
+        Eternity(Materials.Eternity, 3, 25),
+
+        ;
+
+        private final Fluid fluid;
+        private final int perfectOverclocks;
         // Consumption per second of runtime
-        public long amount;
+        private final int amount;
+        private final static Map<Fluid, SubspaceCoolingFluid> FLUID_MAP = new Object2ObjectOpenHashMap<>();
+        private final static SubspaceCoolingFluid[] values = values();
 
-        public SubspaceCoolingFluid(Materials material, int perfectOverclocks, long amount) {
-            this.material = material;
+        SubspaceCoolingFluid(Materials material, int perfectOverclocks, int amount) {
             this.perfectOverclocks = perfectOverclocks;
             this.amount = amount;
+            this.fluid = material.mFluid == null ? material.mStandardMoltenFluid : material.mFluid;
+            assert this.fluid != null : "Subspace cooling fluid " + material.getLocalizedName()
+                + " has no fluid associated with it!";
+        }
+
+        public static SubspaceCoolingFluid find(FluidStack stack) {
+            if (FLUID_MAP.isEmpty()) {
+                Arrays.stream(values)
+                    .forEach(fluid -> FLUID_MAP.put(fluid.fluid, fluid));
+            }
+            return FLUID_MAP.get(stack.getFluid());
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
-            // FUCK THIS FUCK THIS FUCK THIS
-            if (stack == null) {
-                return material.getMolten(amount);
-            }
-            return stack;
+            return new FluidStack(this.fluid, this.amount);
         }
     }
-
-    private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
-        Arrays.asList(
-            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
-            new SubspaceCoolingFluid(Materials.Space, 2, 50),
-            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
     private static final int CASING_INDEX = 17;
-    private static final int CASING_INDEX_T2 = ((BlockCasingsAbstract) GregTechAPI.sBlockCasings8).getTextureIndex(14);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_T2 = "main_t2";
 
@@ -222,9 +226,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
-                .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTechAPI.sBlockCasings2, 1))))
+                .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, Casings.FrostProofMachineCasing.asElement())))
         // Infinity Cooled Casing
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 14))
+        .addElement('B', Casings.InfinityCooledCasing.asElement())
         .build();
 
     @Override
@@ -320,24 +324,13 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         if (stackSize.stackSize == 1) {
-            return this
-                .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+            return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, env, true);
         } else {
-            return this.survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN_T2,
-                stackSize,
-                7,
-                7,
-                0,
-                realBudget,
-                source,
-                actor,
-                false,
-                true);
+            return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN_T2, stackSize, 7, 7, 0, realBudget, env, true);
         }
     }
 
@@ -354,13 +347,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         }
     }
 
-    public SubspaceCoolingFluid findSubspaceCoolingFluid() {
-        // Loop over all hatches and find the first match with a valid fluid
-        for (MTEHatchInput hatch : mInputHatches) {
-            Optional<SubspaceCoolingFluid> fluid = SUBSPACE_COOLING_FLUIDS.stream()
-                .filter(candidate -> drain(hatch, candidate.getStack(), false))
-                .findFirst();
-            if (fluid.isPresent()) return fluid.get();
+    private SubspaceCoolingFluid findSubspaceCoolingFluid() {
+        for (FluidStack stack : getStoredFluids()) {
+            SubspaceCoolingFluid fluid = SubspaceCoolingFluid.find(stack);
+            if (fluid != null) return fluid;
         }
         return null;
     }
@@ -403,15 +393,10 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 // Try to drain the coolant fluid if it exists. If failed, stop the machine with an error
                 if (this.currentCoolingFluid != null) {
                     FluidStack fluid = this.currentCoolingFluid.getStack();
-                    for (MTEHatchInput hatch : mInputHatches) {
-                        if (drain(hatch, fluid, false)) {
-                            drain(hatch, fluid, true);
-                            return;
-                        }
-                    }
-                    // If we exited this loop without returning from the function, no matching fluid was found, so
-                    // stop the machine - we ran out of coolant
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+                    startRecipeProcessing();
+                    if (!depleteInput(fluid)) stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+                    updateSlots();
+                    endRecipeProcessing();
                 }
             }
         }
