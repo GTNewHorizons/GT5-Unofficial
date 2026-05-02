@@ -304,8 +304,8 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 "GT5U.multiblock.Progress.fmt.s",
                 formatNumber(mProgresstime / 20),
                 formatNumber(mMaxProgresstime / 20)),
-            /* 2 */ GTUtility
-                .infoData("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            /* 2 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
             /* 3 */ IGregTechDeviceInformation
                 .encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
             /* 4 */ IGregTechDeviceInformation.encode(
