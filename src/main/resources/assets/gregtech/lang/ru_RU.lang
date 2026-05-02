@@ -1513,6 +1513,9 @@ GT5U.multiblock.energy.fmt=Накоплено энергии: §a%s§r EU / §e%
 GT5U.multiblock.usage.fmt=Потребление: §c%s§r EU/t
 GT5U.multiblock.mei.fmt.2A=Макс. входная энергия: §e%s§r EU/t(*2A) Уровень: §e%s§r
 GT5U.multiblock.mei.fmt.xA=Макс. входная энергия: §e%s§r EU/t(*§e%s§rA) Уровень: §e%s§r
+GT5U.multiblock.mei.fmt.mega=Макс. входная энергия: §e%s§r EU/t(*%sA) = §e%s§r
+GT5U.machines.tier.fmt=Уровень: §e%s§r
+GT5U.multiblock.pollution.fmt=Загрязнение снижено до: §a%s§r %%
 GT5U.multiblock.problems.efficiency.fmt=Проблемы: §c%s§r  Эффективность: §e%s
 GT5U.multiblock.efficiency=Эффективность
 GT5U.multiblock.problems=Проблемы

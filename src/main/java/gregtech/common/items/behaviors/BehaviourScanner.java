@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
@@ -38,8 +39,7 @@ public class BehaviourScanner extends BehaviourNone {
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {
                     tNBT.setString("dataLines" + i, list.get(i));
-                    // FIXME: localize scanner data
-                    GTUtility.sendChatToPlayer(aPlayer, list.get(i));
+                    ((EntityPlayerMP) aPlayer).addChatMessage(IGregTechDeviceInformation.toComponent(list.get(i)));
                 }
             }
             return true;
@@ -55,7 +55,9 @@ public class BehaviourScanner extends BehaviourNone {
         if (0 < lines) {
             aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
             for (int i = 0; i < lines; i++) {
-                aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
+                aList.add(
+                    EnumChatFormatting.RESET
+                        + IGregTechDeviceInformation.decode(ItemStackNBT.getString(aStack, "dataLines" + i)));
             }
         } else {
             aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));

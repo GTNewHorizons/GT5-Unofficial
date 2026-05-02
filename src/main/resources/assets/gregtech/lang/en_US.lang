@@ -3431,6 +3431,9 @@ GT5U.multiblock.energy.fmt=Stored Energy: §a%s§r EU / §e%s§r EU
 GT5U.multiblock.usage.fmt=Currently uses: §c%s§r EU/t
 GT5U.multiblock.mei.fmt.2A=Max Energy Income: §e%s§r EU/t(*2A) Tier: §e%s§r
 GT5U.multiblock.mei.fmt.xA=Max Energy Income: §e%s§r EU/t(*§e%s§rA) Tier: §e%s§r
+GT5U.multiblock.mei.fmt.mega=Max Energy Income: §e%s§r EU/t(*%sA) = §e%s§r
+GT5U.machines.tier.fmt=Tier: §e%s§r
+GT5U.multiblock.pollution.fmt=Pollution reduced to: §a%s§r %%
 GT5U.multiblock.problems.efficiency.fmt=Problems: §c%s§r  Efficiency: §e%s
 
 
