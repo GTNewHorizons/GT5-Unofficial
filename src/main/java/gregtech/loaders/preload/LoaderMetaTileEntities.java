@@ -139,6 +139,7 @@ import gregtech.common.tileentities.machines.multi.MTEAdvImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
+import gregtech.common.tileentities.machines.multi.MTEAlgaePond;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
@@ -859,6 +860,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialElectrolyzer.ID,
                 "industrialelectrolyzer.controller.tier.single",
                 "Industrial Electrolyzer").getStackForm(1L));
+
+        ItemList.AlgaeFarm
+            .set(new MTEAlgaePond(AlgaeFarm.ID, "algaefarm.controller.tier.single", "Algae Farm").getStackForm(1L));
 
         ItemList.BronzeBoilerLarge.set(
             new MTELargeBoilerBronze(BronzeBoilerLarge.ID, "multimachine.boiler.bronze", "Large Bronze Boiler")
