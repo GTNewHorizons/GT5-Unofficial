@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
 
 public class MTEHatchTurbineGui extends MTEHatchBaseGui<MTEHatchTurbine> {
 
@@ -20,8 +20,9 @@ public class MTEHatchTurbineGui extends MTEHatchBaseGui<MTEHatchTurbine> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlot().slot(
+                    .filter(MTELargerTurbineBaseLegacy::isValidTurbine))
                 new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(MTELargerTurbineBase::isValidTurbine))
+                    .filter(MTELargerTurbineBaseLegacy::isValidTurbine))
                 .center());
     }
 }

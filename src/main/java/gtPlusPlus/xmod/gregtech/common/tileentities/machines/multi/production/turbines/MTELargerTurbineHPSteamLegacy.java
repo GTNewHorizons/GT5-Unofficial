@@ -1,58 +1,49 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
-import static gtPlusPlus.core.lib.GTPPCore.RANDOM;
-
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.TurbineStatCalculator;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
-public class MTELargeTurbineSteam extends MTELargerTurbineBase {
+public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
 
-    private float water;
-    private boolean achievement = false;
+    public boolean achievement = false;
     private boolean isUsingDenseSteam;
 
-    public MTELargeTurbineSteam(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbineHPSteamLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbineSteam(String aName) {
+    public MTELargerTurbineHPSteamLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbineSteam(mName);
+        return new MTELargerTurbineHPSteamLegacy(mName);
     }
 
     @Override
     public int getCasingMeta() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int getCasingTextureIndex() {
-        return 57;
+        return 59;
     }
 
     @Override
     protected boolean requiresOutputHatch() {
         return true;
-    }
-
-    private int useWater(float input) {
-        water = water + input;
-        int usage = (int) water;
-        water = water - usage;
-        return usage;
     }
 
     @Override
@@ -62,7 +53,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
         float denseFlow = 0;
-        float steamFlowForWater = 0;
+        float steamFlowForNextSteam = 0;
         int steamInHatch = 0;
 
         // Variable required outside of loop for
@@ -70,22 +61,19 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         this.realOptFlow = getSpeedMultiplier()
             * (looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow());
 
-        int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to
-        // use up to
-        // 125% of
-        // optimal flow.
+        int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
+        // 125% of optimal flow.
         float remainingDenseFlow = 0;
 
         boolean hasConsumedSteam = false;
 
         storedFluid = 0;
-        for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
-                                                                        // track totals.
+        for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             String fluidName = aFluids.get(i)
                 .getFluid()
                 .getUnlocalizedName(aFluids.get(i));
             switch (fluidName) {
-                case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> {
+                case "ic2.fluidSuperheatedSteam" -> {
                     if (!hasConsumedSteam) {
                         hasConsumedSteam = true;
                         isUsingDenseSteam = false;
@@ -98,17 +86,19 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                     totalFlow += flow; // track total input used
                     if (!achievement) {
-                        GTMod.achievements.issueAchievement(
-                            this.getBaseMetaTileEntity()
-                                .getWorld()
-                                .getPlayerEntityByName(
-                                    this.getBaseMetaTileEntity()
-                                        .getOwnerName()),
-                            "muchsteam");
+                        try {
+                            GTMod.achievements.issueAchievement(
+                                this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .getPlayerEntityByName(
+                                        this.getBaseMetaTileEntity()
+                                            .getOwnerName()),
+                                "efficientsteam");
+                        } catch (Exception e) {}
                         achievement = true;
                     }
                 }
-                case "fluid.densesteam" -> {
+                case "fluid.densesuperheatedsteam" -> {
                     if (!hasConsumedSteam) {
                         hasConsumedSteam = true;
                         isUsingDenseSteam = true;
@@ -123,21 +113,19 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
                     this.storedFluid += aFluids.get(i).amount;
                     remainingFlow -= denseFlow * 1000; // track amount we're allowed to continue depleting from hatches
                     totalFlow += denseFlow * 1000; // track total input used
-                    steamFlowForWater += denseFlow * 1000;
+                    steamFlowForNextSteam += denseFlow;
                 }
-                case "ic2.fluidSuperheatedSteam" -> depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> depleteInput(
+                    new FluidStack(aFluids.get(i), aFluids.get(i).amount));
             }
         }
         if (totalFlow <= 0) return 0;
-        tEU = (long) (totalFlow * 0.5f);
-        int waterToOutput;
+        tEU = totalFlow; // SH Steam has 1 EU per litre so the flow equals base EU produced
         if (isUsingDenseSteam) {
-            // Water return is lower to counteract water generation from rounding errors
-            waterToOutput = useWater(steamFlowForWater / 160.1f);
+            addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            waterToOutput = useWater(totalFlow / 160.0f);
+            addOutput(Materials.Steam.getGas(totalFlow));
         }
-        addOutput(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
@@ -156,22 +144,22 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        return (looseFit && RANDOM.nextInt(4) == 0) ? 0 : 1;
+        return (looseFit && GTPPCore.RANDOM.nextInt(4) == 0) ? 0 : 1;
     }
 
     @Override
     public String getMachineType() {
-        return "Steam Turbine, XLST";
+        return "Steam Turbine, XLST-HP";
     }
 
     @Override
     protected String getTurbineType() {
-        return "Steam";
+        return "Super-heated Steam";
     }
 
     @Override
     protected String getCasingName() {
-        return "Reinforced Steam Turbine Casing";
+        return "Reinforced HP Steam Turbine Casing";
     }
 
 }

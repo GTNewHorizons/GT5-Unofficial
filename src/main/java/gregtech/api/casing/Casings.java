@@ -831,13 +831,13 @@ public enum Casings implements ICasing {
     TurbineShaft
         (() -> ModBlocks.blockSpecialMultiCasings, 0, gtpp(1, 0)),
     ReinforcedSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, gtpp(1, 1)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 1, 57),
     ReinforcedHPSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, gtpp(1, 2)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 2, 59),
     ReinforcedGasTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, gtpp(1, 3)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 3, 58),
     ReinforcedPlasmaTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, gtpp(1, 4)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, 60),
     TeslaContainmentCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
     StructuralSolarCasing
@@ -859,7 +859,7 @@ public enum Casings implements ICasing {
     ReinforcedHeatExchangerCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 14, gtpp(1, 14)),
     ReinforcedSCTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 15, gtpp(1, 15)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 15, 1538),
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
