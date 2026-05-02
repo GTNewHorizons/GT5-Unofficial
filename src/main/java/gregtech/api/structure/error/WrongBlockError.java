@@ -46,6 +46,14 @@ public record WrongBlockError(int x, int y, int z, String description) implement
         return new WrongBlockError(x, y, z, desc);
     }
 
+    /**
+     * Translates the description on the client. The description is a lang key (e.g. an unlocalized item name) so that
+     * clients with a different language than the server see the correct translation.
+     */
+    private String translateDescription() {
+        return StatCollector.translateToLocal(description);
+    }
+
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return Flow.row()
@@ -54,7 +62,7 @@ public record WrongBlockError(int x, int y, int z, String description) implement
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .child(gui.createHighlightButton(x, y, z))
             .child(
-                (description != null ? IKey.lang("GT5U.gui.wrong_block_expected", description, x, y, z)
+                (description != null ? IKey.lang("GT5U.gui.wrong_block_expected", translateDescription(), x, y, z)
                     : IKey.lang("GT5U.gui.wrong_block", x, y, z)).asWidget()
                         .expanded());
     }
@@ -62,7 +70,8 @@ public record WrongBlockError(int x, int y, int z, String description) implement
     @Override
     public String getDisplayString() {
         if (description != null) {
-            return StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block_expected", description, x, y, z);
+            return StatCollector
+                .translateToLocalFormatted("GT5U.gui.wrong_block_expected", translateDescription(), x, y, z);
         }
         return StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block", x, y, z);
     }

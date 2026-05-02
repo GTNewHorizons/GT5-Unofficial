@@ -52,7 +52,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
                     var it = stacks.iterator();
                     if (it.hasNext()) {
                         return it.next()
-                            .getDisplayName();
+                            .getUnlocalizedName() + ".name";
                     }
                 }
             }
