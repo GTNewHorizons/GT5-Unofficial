@@ -17,21 +17,12 @@ public class StructureErrorRegistry {
     public static final StructureError BLOCK_NOT_LOADED = registerSingleton(
         StructureErrorId.BLOCK_NOT_LOADED,
         "GT5U.gui.not_loaded");
-    public static final StructureError MISSING_INPUT_BUS = registerSingleton(
-        StructureErrorId.MISSING_INPUT_BUS,
-        "GT5U.gui.text.missing_input_bus");
-    public static final StructureError MISSING_OUTPUT_BUS = registerSingleton(
-        StructureErrorId.MISSING_OUTPUT_BUS,
-        "GT5U.gui.text.missing_output_bus");
     public static final StructureError MISSING_INPUT_HATCH = registerSingleton(
         StructureErrorId.MISSING_INPUT_HATCH,
         "GT5U.gui.text.missing_input_hatch");
     public static final StructureError MISSING_OUTPUT_HATCH = registerSingleton(
         StructureErrorId.MISSING_OUTPUT_HATCH,
         "GT5U.gui.text.missing_output_hatch");
-    public static final StructureError TOO_MANY_OUTPUT_HATCH = registerSingleton(
-        StructureErrorId.TOO_MANY_OUTPUT_HATCH,
-        "GT5U.gui.text.too_many_output_hatch");
     public static final StructureError MISSING_ENERGY_HATCH = registerSingleton(
         StructureErrorId.MISSING_ENERGY_HATCH,
         "GT5U.gui.text.missing_energy_hatch");
@@ -44,30 +35,15 @@ public class StructureErrorRegistry {
     public static final StructureError MISSING_MAINTENANCE = registerSingleton(
         StructureErrorId.MISSING_MAINTENANCE,
         "GT5U.gui.text.no_maintenance");
-    public static final StructureError TOO_MANY_MAINTENANCE = registerSingleton(
-        StructureErrorId.TOO_MANY_MAINTENANCE,
-        "GT5U.gui.text.too_many_maintenance");
     public static final StructureError MISSING_MUFFLER = registerSingleton(
         StructureErrorId.MISSING_MUFFLER,
         "GT5U.gui.text.no_muffler");
     public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
         StructureErrorId.UNNEEDED_MUFFLER,
         "GT5U.gui.text.unneeded_muffler");
-    public static final StructureError TOO_MANY_MUFFLER = registerSingleton(
-        StructureErrorId.TOO_MANY_MUFFLER,
-        "GT5U.gui.text.too_many_muffler");
     public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
         StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
         "GT5U.gui.text.unknown_structure_error");
-    public static final StructureError MISSING_DYNAMO_HATCH = registerSingleton(
-        StructureErrorId.MISSING_DYNAMO_HATCH,
-        "GT5U.gui.text.no_dynamo_hatch");
-    public static final StructureError MISSING_BEAMLINE_INPUT = registerSingleton(
-        StructureErrorId.MISSING_BEAMLINE_INPUT,
-        "GT5U.gui.text.no_beamline_input");
-    public static final StructureError MISSING_BEAMLINE_OUTPUT = registerSingleton(
-        StructureErrorId.MISSING_BEAMLINE_OUTPUT,
-        "GT5U.gui.text.no_beamline_output");
 
     public static final StructureError NO_ENERGY_HATCH_NEEDED = StructureErrors
         .of("GT5U.gui.text.energy_hatch_not_needed");

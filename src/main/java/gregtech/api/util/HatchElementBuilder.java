@@ -38,12 +38,9 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
-import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.CommonMetaTileEntity;
-import gregtech.api.structure.DescribedElement;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -341,23 +338,9 @@ public class HatchElementBuilder<T> {
     // endregion
 
     // region intermediate
-
-    /**
-     * Returns the unlocalized lang key for a registered MTE matching the given class, so it can be translated on the
-     * client. Falls back to the class simple name if no registered instance is found.
-     */
-    private static String mteClassToLangKey(Class<? extends IMetaTileEntity> clazz) {
-        for (IMetaTileEntity mte : GregTechAPI.METATILEENTITIES) {
-            if (mte != null && clazz.isInstance(mte) && mte instanceof CommonMetaTileEntity commonMTE) {
-                return "gt.blockmachines." + commonMTE.mName + ".name";
-            }
-        }
-        return clazz.getSimpleName();
-    }
-
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
-            .cacheHint(() -> mteClassToLangKey(clazz))
+            .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_class") + clazz.getSimpleName())
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
@@ -372,10 +355,13 @@ public class HatchElementBuilder<T> {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
         return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
-                .map(HatchElementBuilder::mteClassToLangKey)
-                .map(StatCollector::translateToLocal)
+                .map(Class::getSimpleName)
                 .sorted()
-                .collect(Collectors.joining(StatCollector.translateToLocal("gt.hatch_element_or"), "", "")))
+                .collect(
+                    Collectors.joining(
+                        StatCollector.translateToLocal("gt.hatch_element_or"),
+                        StatCollector.translateToLocal("gt.hatch_element_of_class"),
+                        "")))
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream()
                     .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
@@ -434,7 +420,7 @@ public class HatchElementBuilder<T> {
         }
         if (mHatchItemFilter == null) {
             // no item filter -> no placement
-            IStructureElement<T> element = new IStructureElementNoPlacement<>() {
+            return new IStructureElementNoPlacement<>() {
 
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
@@ -456,12 +442,8 @@ public class HatchElementBuilder<T> {
                     return true;
                 }
             };
-            if (mHatchItemType != null) {
-                return new DescribedElement<>(element, mHatchItemType);
-            }
-            return element;
         }
-        IStructureElement<T> element = new IStructureElement<>() {
+        return new IStructureElement<>() {
 
             private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
 
@@ -612,9 +594,5 @@ public class HatchElementBuilder<T> {
                 return mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP;
             }
         };
-        if (mHatchItemType != null) {
-            return new DescribedElement<>(element, mHatchItemType);
-        }
-        return element;
     }
 }
