@@ -25,8 +25,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         ItemStack aStack) {
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "sLf", 'L', GTUtility.copyAmount(1, aStack) });
+            new Object[] { "sLf", 'L', OrePrefixes.log.get(Materials.Wood) });
 
         short aMeta = (short) aStack.getItemDamage();
 
