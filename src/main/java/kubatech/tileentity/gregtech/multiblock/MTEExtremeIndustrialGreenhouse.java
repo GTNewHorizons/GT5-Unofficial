@@ -20,7 +20,6 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -123,6 +122,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -1410,7 +1410,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
             Arrays.asList(
-                this.setupPhase == 0 ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                this.setupPhase == 0
+                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
                     : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
                         : "kubatech.infodata.eig.running_mode.setup_mode.output"),
                 IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),

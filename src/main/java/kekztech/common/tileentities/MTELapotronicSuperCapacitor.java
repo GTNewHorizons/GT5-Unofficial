@@ -1,6 +1,5 @@
 package kekztech.common.tileentities;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -54,6 +53,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -852,9 +852,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             // Calculate time to full if charging
             if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
-                return IGregTechDeviceInformation.encode(
-                    "kekztech.infodata.lapotronic_super_capacitor.time_to.full",
-                    formatTime(timeToFull, true));
+                return IGregTechDeviceInformation
+                    .encode("kekztech.infodata.lapotronic_super_capacitor.time_to.full", formatTime(timeToFull, true));
             }
             return "kekztech.infodata.lapotronic_super_capacitor.time_to.sth";
         } else {
@@ -888,13 +887,19 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", toStandardForm(stored)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", toStandardForm(stored)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
                 toPercentageFrom(stored, capacity)));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", nf.format(capacity)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", nf.format(capacity)));
         ll.add(
             GTUtility
                 .infoData("kekztech.infodata.lapotronic_super_capacitor.total_capacity", toStandardForm(capacity)));
@@ -902,8 +907,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
-        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
+        ll.add(
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",

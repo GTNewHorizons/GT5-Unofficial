@@ -1,6 +1,5 @@
 package gtnhlanth.common.tileentity;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
@@ -41,6 +40,7 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -491,7 +491,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 formatNumber(mMaxProgresstime / 20)),
             /* 2 */ GTUtility
                 .infoData("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
-            /* 3 */ IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
+            /* 3 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
             /* 4 */ IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.mei.fmt.xA",
                 formatNumber(getMaxInputVoltage()),

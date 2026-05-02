@@ -1,6 +1,5 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,10 +16,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
@@ -171,7 +170,8 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
                 IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
                 IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
         }
-        return new String[] { IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+        return new String[] {
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
             IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
     }
 

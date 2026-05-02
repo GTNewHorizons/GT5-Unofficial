@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
 import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.translate;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
