@@ -343,20 +343,19 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     private void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput0 = nbt.getCompoundTag("eParamsInD");
-        NBTTagCompound legacyInput1 = nbt.getCompoundTag("eParamsInS");
-        NBTTagCompound legacyOutput1 = nbt.getCompoundTag("eParamsOutS");
+        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
+        NBTTagCompound legacyOutput = nbt.getCompoundTag("eParamsOutD");
 
         ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER))
-            .setValue((int) legacyInput0.getDouble(String.valueOf(0)));
+            .setValue((int) legacyInput.getDouble(String.valueOf(0)));
         ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(0)));
-        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(legacyInput0.getDouble(String.valueOf(2)) != 0);
+            .setValue((int) legacyInput.getDouble(String.valueOf(10)));
+        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(legacyInput.getDouble(String.valueOf(2)) != 0);
         ((IntegerParameter) parameterMap.get(RANGE_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(2)));
-        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue((int) legacyInput0.getDouble(String.valueOf(3)));
+            .setValue((int) legacyInput.getDouble(String.valueOf(12)));
+        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue((int) legacyInput.getDouble(String.valueOf(3)));
         ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-            .setValue((int) legacyOutput1.getDouble(String.valueOf(0)));
+            .setValue((int) legacyOutput.getDouble(String.valueOf(10)));
     }
 
     @Override
