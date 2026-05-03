@@ -140,10 +140,11 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -3706,7 +3707,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
-                    if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {
+                    if (getErrorDisplayID() == 0
+                        && (this instanceof MTELargeTurbineLegacy || this instanceof MTELargeTurbineBase)) {
                         final ItemStack tItem = inventorySlot.getMcSlot()
                             .getStack();
                         return tItem == null

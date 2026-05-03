@@ -1,21 +1,20 @@
-package gregtech.common.tileentities.machines.multi;
+package gregtech.common.tileentities.machines.multi.turbines;
 
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_EMPTY5;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,7 +25,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
-public class MTELargeTurbineHPSteam extends MTELargeTurbine {
+public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
 
     public boolean achievement = false;
 
@@ -36,6 +35,26 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
 
     public MTELargeTurbineHPSteam(String aName) {
         super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTELargeTurbineHPSteam(mName);
+    }
+
+    @Override
+    public Casings getTurbineCasing() {
+        return Casings.TitaniumTurbineCasing;
+    }
+
+    @Override
+    public Materials getFrameMaterial() {
+        return Materials.Titanium;
+    }
+
+    @Override
+    public Casings getPipeCasing() {
+        return Casings.TitaniumPipeCasing;
     }
 
     @Override
@@ -51,7 +70,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
                     : TextureFactory.builder()
                         .addIcon(LARGETURBINE_NEW_EMPTY5)
                         .build())
-                : casingTexturePages[0][59] };
+                : getTurbineCasing().getCasingTexture() };
     }
 
     @Override
@@ -62,69 +81,40 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
             .addInfo("Outputs Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 3, 6, false)
             .addController("Front center")
-            .addCasingInfoRange("Titanium Turbine Casing", 8, 31, false)
+            .addCasingInfoRange("Titanium Turbine Casing", 8, 16, false)
+            .addCasingInfoExactly("Titanium Frame Box", 14, false)
+            .addCasingInfoExactly("Titanium Pipe Casing", 12, false)
             .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Superheated Steam, Side centered", 2)
-            .addOutputHatch("Steam, Side centered", 2)
+            .addMaintenanceHatch("Any Titanium Turbine Casing except the front 8", 2)
+            .addInputHatch("Superheated Steam, Any Titanium Turbine Casing except the front 8", 2)
+            .addOutputHatch("Steam, Any Titanium Turbine Casing except the front 8", 2)
+            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbineHPSteam(mName);
-    }
-
-    @Override
-    public Block getCasingBlock() {
-        return GregTechAPI.sBlockCasings4;
-    }
-
-    @Override
-    public byte getCasingMeta() {
-        return 11;
-    }
-
-    @Override
-    public int getCasingTextureIndex() {
-        return 59;
-    }
-
-    @Override
-    public boolean isNewStyleRendering() {
-        return true;
-    }
-
-    @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
+    public int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         int tEU = 0;
-        int totalFlow = 0; // Byproducts are based on actual flow
+        int totalFlow = 0;
         int flow = 0;
 
-        // Allowed to use up to 300% optimal flow rate, depending on the value of overflowMultiplier.
-        // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula
-        // used
-        // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow
-        // rate):
-        // - 200% if it is 1
-        // - 250% if it is 2
-        // - 300% if it is 3
-        // Variable required outside of loop for multi-hatch scenarios.
         this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        // HP steam allows up to 300% optimal flow (vs 250% for normal steam)
         int remainingFlow = GTUtility.safeInt((long) (realOptFlow * (0.5f * turbine.getOverflowEfficiency() + 1.5)));
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             final FluidStack aFluidStack = aFluids.get(i);
             if (GTModHandler.isSuperHeatedSteam(aFluidStack)) {
-                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
-                depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
+                flow = Math.min(aFluidStack.amount, remainingFlow);
+                depleteInput(new FluidStack(aFluidStack, flow));
                 this.storedFluid += aFluidStack.amount;
-                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-                totalFlow += flow; // track total input used
+                remainingFlow -= flow;
+                totalFlow += flow;
                 if (!achievement) {
                     try {
                         GTMod.achievements.issueAchievement(
@@ -138,19 +128,24 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
                     achievement = true;
                 }
             } else if (GTModHandler.isAnySteam(aFluidStack)) {
+                // Consume regular steam as waste but don't count it toward power
                 depleteInput(new FluidStack(aFluidStack, aFluidStack.amount));
             }
         }
+
         if (totalFlow <= 0) return 0;
+
         tEU = totalFlow;
+        // HP steam outputs regular steam instead of distilled water
         addOutput(Materials.Steam.getGas(totalFlow));
-        if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
+
+        if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
-                (GTUtility.safeInt((long) realOptFlow)),
+                GTUtility.safeInt((long) realOptFlow),
                 overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(
@@ -159,10 +154,6 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
                     (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         }
 
-        // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
-        // turbine
-        // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can
-        // explode turbines on world load
         if (tEU > getMaximumOutput()) {
             tEU = GTUtility.safeInt(getMaximumOutput());
         }
@@ -171,22 +162,16 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     }
 
     @Override
-    float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
-        // overflowMultiplier changes how quickly the turbine loses efficiency after flow goes beyond the optimal value
-        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of
-        // fuel used
-        // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
-        // Superheated steam is the second least efficient out of all turbine fuels in this regard, with steam being the
-        // least efficient
-        float efficiency = 0;
-
+    protected float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
+        // HP steam is second least efficient after regular steam
+        // Uses overflowMultiplier + 2 instead of + 1 (steam) or * 3 + 1 (plasma)
+        float efficiency;
         if (totalFlow > actualOptimalFlow) {
             efficiency = 1.0f
                 - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * (overflowMultiplier + 2));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }
-
         return efficiency;
     }
 
