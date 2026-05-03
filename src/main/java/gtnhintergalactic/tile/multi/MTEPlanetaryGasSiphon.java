@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -56,7 +57,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -405,17 +405,12 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         casingAmount = 0;
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (!checkHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
+        checkHatchExact(errors, HatchElement.Energy, 1);
+        checkHatchMax(errors, HatchElement.InputHatch, 0);
+        checkHatchMax(errors, HatchElement.OutputBus, 0);
         checkCasingMin(errors, casingAmount, 175);
-    }
-
-    public boolean checkHatches() {
-        return mInputBusses.size() == 1 && mOutputHatches.size() == 1
-            && mEnergyHatches.size() == 1
-            && mInputHatches.isEmpty()
-            && mOutputBusses.isEmpty();
     }
 
     @Override

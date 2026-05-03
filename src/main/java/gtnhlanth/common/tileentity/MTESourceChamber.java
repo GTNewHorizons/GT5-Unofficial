@@ -44,7 +44,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -395,7 +395,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         checkHasAnyInput(errors);
         checkHatchExact(errors, OutputBus, 1);
         if (this.mOutputBeamline.size() != 1) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_beamline_output"));
         }
         checkOneEnergyHatch(errors);
     }

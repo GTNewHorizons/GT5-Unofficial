@@ -84,7 +84,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -438,10 +438,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         this.mHardenedClay = 0;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
         if (this.tileEntityDispensers.isEmpty()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_dispenser"));
         }
         if (this.mDoor > 2) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            errors.add(StructureErrors.of("GT5U.gui.text.too_many_doors"));
         }
         checkCasingMin(errors, this.mHardenedClay, 40);
     }

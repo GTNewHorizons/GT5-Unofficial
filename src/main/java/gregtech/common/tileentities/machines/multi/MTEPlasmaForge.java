@@ -68,8 +68,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -848,31 +850,23 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-        if (mInputBusses.size() > max_input_bus) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
-        if (mOutputBusses.size() > max_output_bus) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
-        if (mInputHatches.size() > max_input_hatch) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
-        if (mOutputHatches.size() > max_output_hatch) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHatchMax(errors, InputBus, max_input_bus);
+        checkHatchMax(errors, OutputBus, max_output_bus);
+        checkHatchMax(errors, InputHatch, max_input_hatch);
+        checkHatchMax(errors, OutputHatch, max_output_hatch);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
-                errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+                errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             }
         }
         if (!mEnergyHatches.isEmpty()) {
             if (mEnergyHatches.size() > 2) {
-                errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size(), 2));
             } else {
                 byte tier_of_hatch = mEnergyHatches.get(0).mTier;
                 for (MTEHatchEnergy energyHatch : mEnergyHatches) {
                     if (energyHatch.mTier != tier_of_hatch) {
-                        errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+                        errors.add(StructureErrors.of("GT5U.gui.text.energy_hatch_tier_mismatch"));
                         break;
                     }
                 }

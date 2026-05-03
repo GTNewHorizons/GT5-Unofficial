@@ -48,7 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -406,13 +406,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
         if (this.mInputBeamline.size() != 1) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_beamline_input"));
         }
         checkOneMaintenanceHatch(errors);
         checkHatchExact(errors, InputBus, 1);
         checkHatchExact(errors, OutputBus, 1);
         if (this.mInputFocus.size() != 1) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_focus_input"));
         }
     }
 
