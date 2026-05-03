@@ -15,7 +15,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 
 public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
 
