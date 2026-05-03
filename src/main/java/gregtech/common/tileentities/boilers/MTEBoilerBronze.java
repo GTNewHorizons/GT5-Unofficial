@@ -183,7 +183,7 @@ public class MTEBoilerBronze extends MTEBoiler {
         int burnTime = TileEntityFurnace.getItemBurnTime(fuel);
         getCombustionPotential(fuel, burnTime).ifPresent(ashMaterial -> {
             aBaseMetaTileEntity.decrStackSize(2, 1);
-            this.mProcessingEnergy += burnTime / 10;
+            addProcessingEnergy(burnTime / 10);
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
             combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))

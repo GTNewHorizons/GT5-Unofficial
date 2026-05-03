@@ -50,6 +50,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
+    public int mFuelMaxEnergy = 0;
     public int mLossTimer = 0;
     public FluidStack mSteam = null;
     protected final FluidStackTank steamTank = new FluidStackTank(
@@ -190,6 +191,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         aNBT.setInteger("mLossTimer", this.mLossTimer);
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
+        aNBT.setInteger("mFuelMaxEnergy", this.mFuelMaxEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
         if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
@@ -202,6 +204,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         this.mLossTimer = aNBT.getInteger("mLossTimer");
         this.mTemperature = aNBT.getInteger("mTemperature");
         this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
+        this.mFuelMaxEnergy = Math.max(aNBT.getInteger("mFuelMaxEnergy"), this.mProcessingEnergy);
         this.mExcessWater = aNBT.getInteger("mExcessWater");
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
@@ -312,6 +315,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         if (wasHeating) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
+        }
+        if (this.mProcessingEnergy <= 0) {
+            this.mFuelMaxEnergy = 0;
         }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
@@ -451,6 +457,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     protected int getHeatUpAmount() {
         return 1;
+    }
+
+    protected void addProcessingEnergy(int amount) {
+        this.mProcessingEnergy += amount;
+        this.mFuelMaxEnergy = Math.max(this.mFuelMaxEnergy, this.mProcessingEnergy);
     }
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
