@@ -280,12 +280,21 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
 
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            while (checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE, errors)) {
+            while (checkPiece(
+                STRUCTURE_PIECE_NEXT,
+                OFFSET_X_SLICE - (width + 1) * 2,
+                OFFSET_Y_SLICE,
+                OFFSET_Z_SLICE,
+                errors)) {
                 width++;
             }
         } else {
-            while (width < MAX_LENGTH - 1
-                && checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE, errors)) {
+            while (width < MAX_LENGTH - 1 && checkPiece(
+                STRUCTURE_PIECE_NEXT,
+                OFFSET_X_SLICE - (width + 1) * 2,
+                OFFSET_Y_SLICE,
+                OFFSET_Z_SLICE,
+                errors)) {
                 width++;
             }
         }
