@@ -149,7 +149,6 @@ public class RedstoneSnifferGui {
                         .child(
                             new TextWidget<>(
                                 entry.isPrivate ? StatCollector.translateToLocal("gui.yes")
-
                                     : StatCollector.translateToLocal("gui.no")).widthRel(0.5f)
                                         .color(textColor)
                                         .alignment(Alignment.Center)));
