@@ -270,7 +270,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         if (aBaseMetaTileEntity.isServerSide()) {
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
-            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+            if (mRunningOnLoad && checkStructure(true, aBaseMetaTileEntity)) {
                 checkRecipe();
             }
             if (mUpdated) {

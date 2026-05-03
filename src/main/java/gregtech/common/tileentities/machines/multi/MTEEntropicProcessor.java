@@ -176,17 +176,12 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    public void onStructureCheckFinished(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onStructureCheckFinished(aBaseMetaTileEntity);
-
-        aBaseMetaTileEntity.issueTileUpdate();
-        structureInstanceInfo.onPostCheck(this);
-    }
-
-    @Override
     public void checkMachine(IGregTechTileEntity base, ItemStack itemStack, List<StructureError> errors) {
         if (!structure.checkStructure(this, errors)) return;
         structureInstanceInfo.validate(errors);
+
+        base.issueTileUpdate();
+        structureInstanceInfo.onPostCheck(this);
     }
 
     @Override

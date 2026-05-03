@@ -321,7 +321,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
         // Polling updates.
         if (tick % 20 == 0) {
-            mMachine = checkMachine(baseMetaTileEntity, null);
+            mMachine = checkStructure(true, baseMetaTileEntity);
 
             // Sets "Incomplete Structure" text in WAILA
             setErrorDisplayID(mMachine ? 0 : 64);

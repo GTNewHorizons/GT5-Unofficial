@@ -591,16 +591,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             Flip.byIndex(data.getByte("eFlip")));
     }
 
-    @Override
-    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
-        super.generateStructureErrorDiagnostics(errors);
-        if (structureStatus == StructureStatus.WRONG_BLOCK) {
-            errors.add(new PositionedStructureError(errorPos.x, errorPos.y, errorPos.z));
-        } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
-            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
-        }
-    }
-
     protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {
         int count = (int) element.count(this);
         if (count < min) {

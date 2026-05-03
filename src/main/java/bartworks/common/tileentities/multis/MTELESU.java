@@ -327,7 +327,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        this.checkMachine(aBaseMetaTileEntity, null);
+        this.checkStructure(true, aBaseMetaTileEntity);
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
@@ -335,7 +335,7 @@ public class MTELESU extends MTEMultiBlockBase {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             this.mMaxProgresstime = 1;
-            if (aTick % 20 == 0) this.checkMachine(aBaseMetaTileEntity, null);
+            if (aTick % 20 == 0) this.checkStructure(true, aBaseMetaTileEntity);
         }
     }
 

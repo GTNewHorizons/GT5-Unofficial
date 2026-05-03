@@ -354,7 +354,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         if (aBaseMetaTileEntity.isServerSide()) {
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
-            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+            if (mRunningOnLoad && checkStructure(true, aBaseMetaTileEntity)) {
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                 checkRecipe();
             }
