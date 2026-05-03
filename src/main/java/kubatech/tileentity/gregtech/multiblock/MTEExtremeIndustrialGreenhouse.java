@@ -122,6 +122,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -1408,37 +1409,27 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
-            Arrays
-                .asList(
-                    StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                        + EnumChatFormatting.GREEN
-                        + (this.setupPhase == 0 ? this.mode.getName()
-                            : (this.setupPhase == 1
-                                ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
-                                : StatCollector
-                                    .translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage),
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage),
-                    StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
-                        + this.maxSeedTypes
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
-                        + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                        + this.buckets.size()
-                        + EnumChatFormatting.RESET));
+            Arrays.asList(
+                this.setupPhase == 0
+                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                    : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
+                        : "kubatech.infodata.eig.running_mode.setup_mode.output"),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
+                IGregTechDeviceInformation.encode(
+                    "kubatech.infodata.eig.used_slots",
+                    ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
+                        + Integer.toString(this.buckets.size())
+                        + EnumChatFormatting.RESET)));
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());
         }
         if (this.buckets.size() > this.maxSeedTypes) {
-            info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_types")
-                    + EnumChatFormatting.RESET);
+            info.add("kubatech.infodata.eig.too_many_types");
         }
         if (this.getTotalSeedCount() > this.maxSeedCount) {
-            info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_seeds")
-                    + EnumChatFormatting.RESET);
+            info.add("kubatech.infodata.eig.too_many_seeds");
         }
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);

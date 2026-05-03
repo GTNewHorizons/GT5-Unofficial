@@ -101,6 +101,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -2315,14 +2316,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (getBaseMetaTileEntity() != null) {
             IGregTechTileEntity te = getBaseMetaTileEntity();
 
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.owned_by", te.getOwnerName()));
+            info.add(IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.owned_by", te.getOwnerName()));
 
             if (te.getMetaTileEntity() != null) {
-                info.add(GTUtility.translate("GT5U.multiblock.scanner.meta_tile_entity", te.getMetaTileID())
-                    + " "
-                    + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"));
+                info.add(IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.meta_tile_entity", te.getMetaTileID()));
+                info.add(te.canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid");
             } else {
-                info.add(GTUtility.translate("GT5U.multiblock.scanner.is_meta_tile_entity"));
+                info.add("GT5U.multiblock.scanner.is_meta_tile_entity");
             }
         }
 
@@ -2330,7 +2330,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (mProgresstime > 0) {
             info.add(
-                GTUtility.translate(
+                IGregTechDeviceInformation.encode(
                     "GT5U.multiblock.scanner.Progress",
                     formatNumber(mProgresstime / 20),
                     formatNumber(mMaxProgresstime / 20)));
@@ -2338,39 +2338,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (hatchCount > 0) {
             info.add(
-                GTUtility
-                    .translate("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
 
             info.add(
-                GTUtility.translate(
+                IGregTechDeviceInformation.encode(
                     "GT5U.multiblock.scanner.mei",
                     formatNumber(getMaxInputVoltage()),
                     VN[GTUtility.getTier(getMaxInputVoltage())]));
         }
 
         if (getActualEnergyUsage() > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
+            info.add(
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
         }
 
         info.add(
-            GTUtility
-                .translate("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 
         if (mEfficiency > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
+            info.add(
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
         }
 
         if (getPollutionPerSecond(getStackForm(1)) > 0) {
             info.add(
-                GTUtility
-                    .translate("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
+                IGregTechDeviceInformation
+                    .encode("GT5U.multiblock.scanner.pollution", formatNumber(getAveragePollutionPercentage())));
         }
 
         if (recipesDone > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
+            info.add(
+                IGregTechDeviceInformation.encode("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
         }
 
-        info.add(GTUtility.translate(timeKey, timeValue));
+        info.add(IGregTechDeviceInformation.encode(timeKey, timeValue));
 
         return info.toArray(new String[0]);
     }

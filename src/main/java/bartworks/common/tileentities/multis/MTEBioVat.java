@@ -82,6 +82,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -764,19 +765,14 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
         // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
         // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMachine
+        infoData[infoData.length - 2] = IGregTechDeviceInformation.encode(
+            "BW.infoData.BioVat.expectedProduction.fmt",
+            (this.mMachine
                 ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
                     * 100
-                : -1)
-            + EnumChatFormatting.RESET
-            + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100
-            + EnumChatFormatting.RESET
-            + " %";
+                : -1));
+        infoData[infoData.length - 1] = IGregTechDeviceInformation
+            .encode("BW.infoData.BioVat.production.fmt", (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100);
         return infoData;
     }
 

@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -12,6 +10,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -176,13 +175,10 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             }
         }
 
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.name", tier),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 }

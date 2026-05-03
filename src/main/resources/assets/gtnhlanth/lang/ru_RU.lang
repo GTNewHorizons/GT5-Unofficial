@@ -138,18 +138,28 @@ item.masked_mask_substrate.name=Обработанная маска-субстр
 
 
 beamline.info=Информация о механизме
+beamline.info.hdr=§lИнформация о механизме: §r
 
 beamline.in_pre=Мультиблоковый вход установки для литографии
+beamline.in_pre.hdr=§lМультиблоковый вход: §r
 beamline.particle=Частица
+beamline.particle.fmt=Частица: §6%s§r
 beamline.energy=Энергия
+beamline.energy.eV.fmt=Энергия: §4%s§r эВ
+beamline.energy.keV.fmt=Энергия: §4%s§r кэВ
 beamline.focus=Фокус
+beamline.focus.fmt=Фокус: §9%s §r
 beamline.amount=Количество
+beamline.amount.fmt=Количество: §d%s
 beamline.rate=Скорость
 
 beamline.temperature=Температура
+beamline.temperature.fmt=Температура: §4%s§r К
 beamline.coolusage=Потребляется хладогента
+beamline.coolusage.fmt=Потребляется хладогента: §b%s§r кЛ/с
 
 beamline.out_pre=Мультиблоковый выход установки для литографии
+beamline.out_pre.hdr=§lМультиблоковый выход: §r
 
 beamline.particleinput=Входная информация о частицах:
 

@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -13,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
@@ -250,11 +250,9 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.pollution_creator.pollution.avg",
-                getAveragePollutionOverLastTen()) };
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            IGregTechDeviceInformation
+                .encode("gtpp.infodata.pollution_creator.pollution.avg", getAveragePollutionOverLastTen()) };
     }
 
     @Override

@@ -1459,7 +1459,10 @@ tt.keyword.input=input
 tt.keyword.output=output
 tt.keyword.Status=Status
 tt.keyword.Content=Content
+tt.keyword.Content.fmt=Content: §b%s
 tt.keyword.PacketHistory=PacketHistory
+tt.keyword.PacketHistory.fmt=PacketHistory: §c%s
+tt.keyword.ID.fmt=ID: §b%s
 
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=No Stacks

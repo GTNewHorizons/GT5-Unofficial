@@ -124,6 +124,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -630,16 +631,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                + EnumChatFormatting.GOLD
-                + (mPrimaryMode == 0 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
-                    : (mPrimaryMode == 1 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
-                        : (mSecondaryMode == 0
-                            ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")
-                            : StatCollector
-                                .translateToLocal("kubatech.infodata.mia.running_mode.operating.swarmer")))));
+            mPrimaryMode == 0 ? "kubatech.infodata.mia.running_mode.input"
+                : (mPrimaryMode == 1 ? "kubatech.infodata.mia.running_mode.output"
+                    : (mSecondaryMode == 0 ? "kubatech.infodata.mia.running_mode.operating.normal"
+                        : "kubatech.infodata.mia.running_mode.operating.swarmer")));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kubatech.infodata.mia.running_mode.bee_storage",
                 "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
                 (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
