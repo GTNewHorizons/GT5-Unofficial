@@ -37,6 +37,7 @@ public final class GTInflectionManager {
     private static final boolean IS_SERVER = FMLCommonHandler.instance()
         .getEffectiveSide()
         .isServer();
+    private static final Pattern CAPITALIZE_WORDS_PATTERN = Pattern.compile("\\p{L}+");
 
     private GTInflectionManager() {}
 
@@ -211,9 +212,26 @@ public final class GTInflectionManager {
                     word = word.toUpperCase(LOCALE);
                     continue;
                 }
-                case "capitalize" -> {
+                case "capitalize_first" -> {
                     word = word.substring(0, 1)
-                        .toUpperCase(LOCALE) + word.substring(1);
+                        .toUpperCase(LOCALE)
+                        + word.substring(1)
+                            .toLowerCase(LOCALE);
+                    continue;
+                }
+                case "capitalize_words" -> {
+                    Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
+                    StringBuilder sb = new StringBuilder(word.length());
+                    while (matcher.find()) {
+                        String matchedWord = matcher.group();
+                        String capitalized = matchedWord.substring(0, 1)
+                            .toUpperCase(LOCALE)
+                            + matchedWord.substring(1)
+                                .toLowerCase(LOCALE);
+                        matcher.appendReplacement(sb, Matcher.quoteReplacement(capitalized));
+                    }
+                    matcher.appendTail(sb);
+                    word = sb.toString();
                     continue;
                 }
             }
