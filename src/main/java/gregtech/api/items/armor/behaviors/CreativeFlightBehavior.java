@@ -27,11 +27,13 @@ public class CreativeFlightBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorTick(@NotNull ArmorContext context) {
-        if (!context.isRemote()) return;
-
         EntityPlayer player = context.getPlayer();
 
-        // Constantly re-check because alloyFlying is reset when you travel between dimensions
+        player.fallDistance = 0;
+
+        if (!context.isRemote()) return;
+
+        // Constantly re-check because allowFlying is reset when you travel between dimensions
         if (!player.capabilities.allowFlying) {
             player.capabilities.allowFlying = true;
             player.sendPlayerAbilities();
