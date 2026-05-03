@@ -2649,29 +2649,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return Returns true if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
-     */
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    public boolean checkExoticAndNormalEnergyHatches() {
-        if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
-            return false;
-        }
-
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) {
-                return false;
-            }
-
-            if (mExoticEnergyHatches.size() != 1) {
-                return false;
-            }
-        }
-
-        return mEnergyHatches.size() <= 2;
-    }
-
-    /**
      * Check if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
      */
     public void checkExoticAndNormalEnergyHatches(List<StructureError> errors) {
