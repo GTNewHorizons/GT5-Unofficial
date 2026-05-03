@@ -193,7 +193,12 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         hatches.add(Maintenance);
         hatches.add(Dynamo.or(ExoticDynamo));
         if (requiresOutputHatch()) hatches.add(OutputHatch);
-        if (requiresMufflerHatch()) hatches.add(Muffler);
+        if (requiresMufflerHatch()) {
+            hatches.add(Muffler);
+            hatches.add(Muffler);
+            hatches.add(Muffler);
+            hatches.add(Muffler);
+        }
         return hatches;
     }
 
