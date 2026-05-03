@@ -94,6 +94,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
+import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
@@ -364,6 +365,7 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
+        MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
