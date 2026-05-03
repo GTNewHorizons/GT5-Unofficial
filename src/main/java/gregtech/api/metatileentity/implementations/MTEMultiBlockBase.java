@@ -1252,11 +1252,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
+     * Implement the other function instead
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return false;
+    }
+
+    /**
      * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
      * Any error must be added to the error list.
      */
-    abstract public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack,
-        List<StructureError> errors);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkMachine(aBaseMetaTileEntity, aStack) && errors.isEmpty()) {
+            // Only add this if we do not emit any diagnostics.
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+    }
 
     /**
      * Gets the maximum efficiency of this machine with current state.
