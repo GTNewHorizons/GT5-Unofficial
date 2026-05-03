@@ -464,6 +464,16 @@ public class GTUtility {
     }
 
     /**
+     * Applies secondary formatting to tooltip text
+     *
+     * @param tooltip the tooltip text
+     * @return formatted tooltip string
+     */
+    public static String getColoredSecondaryTooltip(String tooltip) {
+        return EnumChatFormatting.GRAY + tooltip + EnumChatFormatting.RESET;
+    }
+
+    /**
      * @return e.g. {@code " (LV)"}
      */
     @Nonnull

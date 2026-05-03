@@ -1,6 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -846,14 +848,21 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         tooltip.addLine(tooltipFeatureName);
         if (supportsFeature.get()) {
             tooltip.addLine(IKey.dynamic(() -> {
-                return isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
-                    : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled");
+                if (isFeatureEnabled.get()) {
+                    return GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED));
+                } else {
+                    return GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED));
+                }
             }));
         } else {
-            tooltip.addLine(
-                isFeatureEnabled.get() ? StatCollector.translateToLocal("GT5U.gui.button.feature_enabled")
-                    : StatCollector.translateToLocal("GT5U.gui.button.feature_disabled"));
-            tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+            if (isFeatureEnabled.get()) {
+                tooltip.addLine(
+                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED)));
+            } else {
+                tooltip.addLine(
+                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED)));
+            }
         }
     }
 
@@ -873,7 +882,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-            .addLine(IKey.dynamic(multiblock::getMachineModeName));
+            .addLine(IKey.dynamic(() -> GTUtility.getColoredSecondaryTooltip(multiblock.getMachineModeName())));
     }
 
     protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
