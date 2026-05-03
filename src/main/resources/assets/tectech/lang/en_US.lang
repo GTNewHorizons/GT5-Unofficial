@@ -758,8 +758,8 @@ gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
 gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
 gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
-gt.blockmachines.multimachine.em.research.mode.0=§7Research Station
-gt.blockmachines.multimachine.em.research.mode.1=§7Scanner
+gt.blockmachines.multimachine.em.research.mode.0=Research Station
+gt.blockmachines.multimachine.em.research.mode.1=Scanner
 gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
