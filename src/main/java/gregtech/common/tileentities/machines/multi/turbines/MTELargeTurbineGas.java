@@ -53,7 +53,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
 
     @Override
     public Casings getPipeCasing() {
-        return Casings.InsulatedFluidPipeCasing;
+        return Casings.TinItemPipeCasing;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addController("Front center")
             .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 16, false)
             .addCasingInfoExactly("Stainless Steel Frame Box", 14, false)
-            .addCasingInfoExactly("Insulated Fluid Pipe Casing", 12, false)
+            .addCasingInfoExactly("Tin Item Pipe Casing", 12, false)
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Any Stainless Steel Turbine Casing except the front 8", 2)
             .addMufflerHatch("Stainless Steel Turbine Casing except the front 8", 2)
