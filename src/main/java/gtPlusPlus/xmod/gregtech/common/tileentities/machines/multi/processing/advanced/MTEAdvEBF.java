@@ -191,9 +191,8 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         mPyrotheumHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
-        if (mCasing < 6) {
-            errors.add(StructureErrors.missingCasings(mCasing, 6));
-        }
+        checkCasingMin(errors,mCasing, 6);
+
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }

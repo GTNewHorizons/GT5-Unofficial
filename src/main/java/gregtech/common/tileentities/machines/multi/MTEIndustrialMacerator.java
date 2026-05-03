@@ -213,7 +213,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             structureTier = 2;
         } else structureTier = 1;
         int minCasings = structureTier == 2 ? 69 : 26;
-        if (casingAmount < minCasings) errors.add(StructureErrors.missingCasings(casingAmount, minCasings));
+        checkCasingMin(errors,casingAmount, minCasings);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

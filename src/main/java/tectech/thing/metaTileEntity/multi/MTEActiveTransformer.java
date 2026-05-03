@@ -79,9 +79,9 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         List<StructureError> errors) {
         casingCount = 0;
         checkPiece("main", 1, 1, 0, errors);
-        if (errors.isEmpty() && casingCount < 5) {
-            errors.add(StructureErrors.missingCasings(casingCount, 5));
-        }
+
+        checkCasingMin(errors, casingCount, 5);
+
         if (errors.isEmpty()) {
             grace = true;
         } else if (grace) {

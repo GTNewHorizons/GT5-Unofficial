@@ -133,7 +133,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 5) errors.add(StructureErrors.missingCasings(casingAmount, 5));
+        checkCasingMin(errors,casingAmount, 5);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

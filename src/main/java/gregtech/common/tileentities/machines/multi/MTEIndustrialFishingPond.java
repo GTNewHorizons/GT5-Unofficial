@@ -168,9 +168,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 160) {
-            errors.add(StructureErrors.missingCasings(casingAmount, 160));
-        }
+        checkCasingMin(errors,casingAmount, 160);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);

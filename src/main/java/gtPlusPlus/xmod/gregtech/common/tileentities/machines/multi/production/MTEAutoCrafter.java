@@ -144,9 +144,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
         checkPiece(mName, 1, 1, 0, errors);
-        if (casing < 10) {
-            errors.add(StructureErrors.missingCasings(casing, 10));
-        }
+        checkCasingMin(errors,casing, 10);
         checkHatch(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);

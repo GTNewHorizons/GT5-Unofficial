@@ -131,7 +131,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 4) errors.add(StructureErrors.missingCasings(casingAmount, 4));
+        checkCasingMin(errors,casingAmount, 4);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

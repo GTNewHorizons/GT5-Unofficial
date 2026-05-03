@@ -330,9 +330,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         mInputHotFluidHatch = null;
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0, errors)) return;
-        if (mCasingAmount < 90) {
-            errors.add(StructureErrors.missingCasings(mCasingAmount, 90));
-        }
+        checkCasingMin(errors,mCasingAmount, 90);
         checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);

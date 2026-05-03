@@ -137,9 +137,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
-        if (mCasing < 3) {
-            errors.add(StructureErrors.missingCasings(mCasing, 3));
-        }
+        checkCasingMin(errors,mCasing, 3);
         checkHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);

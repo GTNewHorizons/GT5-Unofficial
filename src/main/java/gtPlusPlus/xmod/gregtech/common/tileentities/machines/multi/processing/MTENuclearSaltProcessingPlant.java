@@ -190,9 +190,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
         casing = 0;
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
         checkHatch(errors);
-        if (casing < 1) {
-            errors.add(StructureErrors.missingCasings(casing, 1));
-        }
+        checkCasingMin(errors,casing, 1);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
     }

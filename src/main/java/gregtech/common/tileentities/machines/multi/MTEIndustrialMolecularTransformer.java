@@ -145,7 +145,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 95) errors.add(StructureErrors.missingCasings(casingAmount, 95));
+        checkCasingMin(errors,casingAmount, 95);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);

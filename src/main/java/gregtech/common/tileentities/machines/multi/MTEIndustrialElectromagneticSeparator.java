@@ -257,7 +257,7 @@ public class MTEIndustrialElectromagneticSeparator
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0, errors)) return;
-        if (mCasingAmount < MIN_CASING) errors.add(StructureErrors.missingCasings(mCasingAmount, MIN_CASING));
+        checkCasingMin(errors,mCasingAmount, MIN_CASING);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);

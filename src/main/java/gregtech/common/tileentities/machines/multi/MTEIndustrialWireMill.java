@@ -209,9 +209,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         itemPipeTier = -1;
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (mCasingAmount < 14) {
-            errors.add(StructureErrors.missingCasings(mCasingAmount, 14));
-        }
+        checkCasingMin(errors,mCasingAmount, 14);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);

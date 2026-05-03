@@ -126,9 +126,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         if (!checkPiece(mName, 7, 1, 12, errors)) return;
-        if (mCasing < 40) {
-            errors.add(StructureErrors.missingCasings(mCasing, 40));
-        }
+        checkCasingMin(errors,mCasing, 40);
         if (mEnergyHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
         }

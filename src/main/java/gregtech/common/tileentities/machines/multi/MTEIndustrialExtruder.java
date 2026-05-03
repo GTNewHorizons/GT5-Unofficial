@@ -137,8 +137,8 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         casingAmount = 0;
         casingAmountStainless = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmountStainless < 3) errors.add(StructureErrors.missingCasings(casingAmountStainless, 3));
-        if (casingAmount < 8) errors.add(StructureErrors.missingCasings(casingAmount, 8));
+        checkCasingMin(errors,casingAmountStainless, 3);
+        checkCasingMin(errors,casingAmount, 8);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

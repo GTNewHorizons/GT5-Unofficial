@@ -359,9 +359,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
 
-        if (mCasing < 19) {
-            errors.add(StructureErrors.missingCasings(mCasing, 19));
-        }
+        checkCasingMin(errors,mCasing, 19);
 
         if (mRadHatches.size() > 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.too_many_radiation_hatch"));

@@ -293,9 +293,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             return;
         }
         if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
-        if (casingAmount < 7) {
-            errors.add(StructureErrors.missingCasings(casingAmount, 7));
-        }
+        checkCasingMin(errors,casingAmount, 7);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
     }

@@ -292,8 +292,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 35);
-        if (mCasingAmount < 35) errors.add(StructureErrors.missingCasings(mCasingAmount, 35));
-
         if (!mExoticEnergyHatches.isEmpty()) {
             if (laserSource.mTier < VoltageIndex.UEV) {
                 errors.add(StructureErrors.of("GT5U.gui.text.laser_need_uev"));

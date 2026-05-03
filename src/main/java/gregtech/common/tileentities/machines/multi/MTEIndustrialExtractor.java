@@ -199,7 +199,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         mCasingAmount = 0;
         itemPipeTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
-        if (mCasingAmount < 45) errors.add(StructureErrors.missingCasings(mCasingAmount, 45));
+        checkCasingMin(errors,mCasingAmount, 45);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);

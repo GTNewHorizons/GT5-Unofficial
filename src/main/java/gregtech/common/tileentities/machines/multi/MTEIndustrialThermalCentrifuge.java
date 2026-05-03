@@ -218,7 +218,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
         coilLevel = null;
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        if (casingAmount < 85) errors.add(StructureErrors.missingCasings(casingAmount, 85));
+        checkCasingMin(errors,casingAmount, 85);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);

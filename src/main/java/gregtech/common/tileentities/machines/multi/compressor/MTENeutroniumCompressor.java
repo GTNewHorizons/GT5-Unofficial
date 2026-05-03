@@ -191,6 +191,8 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
         checkCasingMin(errors, mCasingAmount, 220);
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
