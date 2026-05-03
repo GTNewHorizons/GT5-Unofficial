@@ -221,7 +221,7 @@ public final class GTInflectionManager {
                 }
                 case "capitalize_words" -> {
                     Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
-                    StringBuilder sb = new StringBuilder(word.length());
+                    StringBuffer sb = new StringBuffer(word.length());
                     while (matcher.find()) {
                         String matchedWord = matcher.group();
                         String capitalized = matchedWord.substring(0, 1)
