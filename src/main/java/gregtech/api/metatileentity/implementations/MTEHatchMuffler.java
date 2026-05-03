@@ -92,6 +92,9 @@ public class MTEHatchMuffler extends MTEHatch {
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
         }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
+        }
     }
 
     @Override
