@@ -1,13 +1,13 @@
 package gregtech.mixin.mixins.early.minecraft;
 
-import java.util.Locale;
 import java.util.Map;
 
-import com.ibm.icu.impl.LocaleUtility;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.ibm.icu.impl.LocaleUtility;
 
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.LanguageRegistry;
