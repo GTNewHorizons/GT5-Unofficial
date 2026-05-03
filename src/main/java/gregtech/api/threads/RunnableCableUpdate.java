@@ -1,5 +1,7 @@
 package gregtech.api.threads;
 
+import java.util.HashMap;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,10 +19,25 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
         super(aWorld, posX, posY, posZ);
     }
 
+    private final static HashMap<World, RunnableCableUpdate> perWorldHandler = new HashMap<>();
+
     public static void setCableUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled) {
-            postTaskToRun(new RunnableCableUpdate(aWorld, posX, posY, posZ));
+            RunnableCableUpdate handler = perWorldHandler.get(aWorld);
+            if (handler == null) {
+                handler = new RunnableCableUpdate(aWorld, posX, posY, posZ);
+                perWorldHandler.put(aWorld, handler);
+            } else {
+                final long coords = CoordinatePacker.pack(posX, posY, posZ);
+                handler.tQueue.enqueue(coords);
+                handler.visited.add(coords);
+            }
         }
+    }
+
+    public static void endTick() {
+        for (RunnableCableUpdate handler : perWorldHandler.values()) handler.run();
+        perWorldHandler.clear();
     }
 
     @Override
@@ -33,20 +50,11 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 posY = CoordinatePacker.unpackY(packedCoords);
                 posZ = CoordinatePacker.unpackZ(packedCoords);
 
-                final TileEntity tTileEntity;
-
-                // Check chunk availability without holding TICK_LOCK so the server thread can
-                // create the chunk map snapshot if needed (same fix as RunnableMachineUpdate)
+                // we don't want to go over cables that are in unloaded chunks
                 if (!world.blockExists(posX, posY, posZ)) {
                     continue;
                 }
-
-                GTMod.proxy.TICK_LOCK.lock();
-                try {
-                    tTileEntity = world.getTileEntity(posX, posY, posZ);
-                } finally {
-                    GTMod.proxy.TICK_LOCK.unlock();
-                }
+                final TileEntity tTileEntity = world.getTileEntity(posX, posY, posZ);
 
                 // See if the block itself needs an update
                 if (tTileEntity instanceof IMachineBlockUpdateable)
