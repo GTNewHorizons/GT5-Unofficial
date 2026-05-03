@@ -62,7 +62,7 @@ public class ChaosLocatorGui {
         panel.child(
             new TextWidget<>(IKey.lang("gt.item.chaos_locator.coords")).sizeRel(1f, 0.2f)
                 .posRel(0f, 0.1f)
-                .alignment(Alignment.Center)
+                .textAlign(Alignment.Center)
                 .color(10227735));
 
         panel.child(
@@ -84,7 +84,7 @@ public class ChaosLocatorGui {
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.chaos_locator.x")).widthRel(1f)
                                 .height(9)
-                                .alignment(Alignment.Center)
+                                .textAlign(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2))
                 .child(
@@ -104,7 +104,7 @@ public class ChaosLocatorGui {
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.chaos_locator.z")).widthRel(1f)
                                 .height(9)
-                                .alignment(Alignment.Center)
+                                .textAlign(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2)));
 

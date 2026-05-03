@@ -17,9 +17,7 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -57,12 +55,14 @@ public class StarColorImportPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .align(Alignment.TopCenter)
+                .topRel(0)
+                .horizontalCenter()
                 .marginTop(9));
 
-        Flow mainColumn = new Column().coverChildren()
+        Flow mainColumn = Flow.column()
+            .coverChildren()
             .marginTop(23)
-            .alignX(0.5f);
+            .horizontalCenter();
 
         // Serialized star color text field
         mainColumn.child(
@@ -78,7 +78,6 @@ public class StarColorImportPanel {
                     importedColor.setValue(ForgeOfGodsStarColor.deserialize(val));
                 }))
                 .setTooltipOverride(true)
-                .alignX(0.5f)
                 .marginBottom(4));
 
         // Color preview row
@@ -99,7 +98,6 @@ public class StarColorImportPanel {
         })
             .alignment(Alignment.CENTER)
             .asWidget()
-            .alignX(0.5f)
             .size(184, 15));
 
         // Reset/Apply row
@@ -110,8 +108,8 @@ public class StarColorImportPanel {
     }
 
     private static Flow createPreviewRow(MutableObject<ForgeOfGodsStarColor> color) {
-        Flow row = new Row().size(184, 18)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(184, 18);
 
         // Color previews
         for (int i = 0; i < ForgeOfGodsStarColor.MAX_COLORS; i++) {
@@ -167,9 +165,9 @@ public class StarColorImportPanel {
 
     private static Flow createApplyResetRow(SyncHypervisor hypervisor, MutableObject<ForgeOfGodsStarColor> color,
         MutableObject<String> colorStr) {
-        Flow row = new Row().size(76, 15)
-            .childPadding(2)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(76, 15)
+            .childPadding(2);
 
         // Reset button
         row.child(

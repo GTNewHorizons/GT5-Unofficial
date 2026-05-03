@@ -3,10 +3,9 @@ package gregtech.common.gui.modularui.hatch;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor.componentBinds;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -22,11 +21,11 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
     }
 
     @Override
-    protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
-
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         syncManager.registerSlotGroup("capacitor_inventory", 4);
         String[] matrix = { "xxxx", "xxxx", "xxxx", "xxxx" };
-        return super.createContentHolderRow(panel, syncManager).child(
+
+        return super.createContentSection(panel, syncManager).child(
             SlotGroupWidget.builder()
                 .matrix(matrix)
                 .key(
@@ -38,15 +37,16 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
                                     .get(TTUtility.getUniqueIdentifier(a));
                                 return cap != null;
                             })
+                            // accessibility does not refresh while gui is open!
+                            // this should probably be fixed
                             .accessibility(
                                 !hatch.getBaseMetaTileEntity()
                                     .isActive(),
                                 !hatch.getBaseMetaTileEntity()
                                     .isActive()))
-                        .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                        .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
                 .build()
                 .coverChildren()
-                .align(Alignment.Center));
-
+                .center());
     }
 }

@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import java.util.Arrays;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -62,6 +61,6 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
                         .slotGroup(PATTERN_INV_NAME)))
             .build()
             .coverChildren()
-            .alignX(Alignment.CENTER);
+            .horizontalCenter();
     }
 }

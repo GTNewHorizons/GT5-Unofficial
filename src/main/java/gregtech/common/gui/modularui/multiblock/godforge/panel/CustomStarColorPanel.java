@@ -29,9 +29,7 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -76,12 +74,14 @@ public class CustomStarColorPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .align(Alignment.TopCenter)
+                .topRel(0)
+                .horizontalCenter()
                 .marginTop(9));
 
-        Flow mainColumn = new Column().coverChildren()
+        Flow mainColumn = Flow.column()
+            .coverChildren()
             .marginTop(22)
-            .alignX(0.5f);
+            .horizontalCenter();
 
         // Color rows
         PagedWidget.Controller controller = new PagedWidget.Controller();
@@ -101,9 +101,9 @@ public class CustomStarColorPanel {
         mainColumn.child(createAddApplyResetRow(hypervisor, colorData, editingIndex));
 
         // Color list
-        Flow colorListRow = new Row().size(184, 18)
-            .marginBottom(4)
-            .alignX(0.5f);
+        Flow colorListRow = Flow.row()
+            .size(184, 18)
+            .marginBottom(4);
 
         for (int i = 0; i < ForgeOfGodsStarColor.MAX_COLORS; i++) {
             colorListRow.child(createColorButton(hypervisor, controller, colorData, i, editingIndex));
@@ -177,6 +177,7 @@ public class CustomStarColorPanel {
         parent.child(
             new ButtonWidget<>().size(18)
                 .background(GTGuiTextures.UNSELECTED_OPTION)
+                .disableHoverThemeBackground(true)
                 .overlay(new DynamicDrawable(() -> {
                     if (index == editingIndex.intValue()) {
                         return GTGuiTextures.SLOT_OUTLINE_GREEN;
@@ -242,10 +243,10 @@ public class CustomStarColorPanel {
 
     private static Flow createAddApplyResetRow(SyncHypervisor hypervisor, ColorData colorData,
         MutableInt editingIndex) {
-        Flow row = new Row().size(76, 15)
+        Flow row = Flow.row()
+            .size(76, 15)
             .childPadding(2)
-            .marginBottom(3)
-            .alignX(0.5f);
+            .marginBottom(3);
 
         // Add/Apply button
         row.child(
@@ -309,9 +310,9 @@ public class CustomStarColorPanel {
     }
 
     private static Flow createNameRow(SyncHypervisor hypervisor) {
-        Flow row = new Row().size(184, 16)
-            .marginBottom(3)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(184, 16)
+            .marginBottom(3);
 
         // Name header
         row.child(
@@ -346,9 +347,9 @@ public class CustomStarColorPanel {
     private static Flow createSaveDeleteRow(SyncHypervisor hypervisor) {
         IPanelHandler importerPanel = Panels.STAR_COLOR_IMPORT.getFrom(Panels.CUSTOM_STAR_COLOR, hypervisor);
 
-        Flow row = new Row().size(154, 15)
-            .childPadding(2)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(154, 15)
+            .childPadding(2);
 
         // Export button
         row.child(

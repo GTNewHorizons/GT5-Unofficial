@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -64,16 +65,13 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
         IItemHandlerModifiable handler = cover.getItems();
 
-        column.child(
-            // A bit of a hack to force the flow to be the same width as the window so the slot group gets centered
-            Flow.row()
-                .width((getGUIWidth() - 10))
-                .height(0))
+        column.disableCoverChildren()
+            .width(getGUIWidth() - WIDGET_MARGIN * 2)
+            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .child(
                 SlotGroupWidget.builder()
                     .matrix(matrix)
                     .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
-                    .build()
-                    .alignX(0.5f));
+                    .build());
     }
 }

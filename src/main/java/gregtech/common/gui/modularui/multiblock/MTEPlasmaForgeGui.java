@@ -96,7 +96,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
             .topRel(0.9f);
         IntSyncValue catalystSyncer = syncManager.findSyncHandler("catalystType", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1)
+            .full()
             .paddingTop(4);
         holdingColumn.child(
             IKey.lang("GT5U.DTPF.catalysttier")

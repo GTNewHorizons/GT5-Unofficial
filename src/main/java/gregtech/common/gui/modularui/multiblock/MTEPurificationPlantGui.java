@@ -13,8 +13,8 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -24,7 +24,6 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -100,14 +99,14 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
 
         widget.child(machineTierRow(unitByTier));
         widget.childIf(
-            multiblock.getBaseMetaTileEntity()
-                .isActive(),
-            createProgressBar().align(Alignment.TopLeft));
+            baseMetaTileEntity.isActive(),
+            () -> createProgressBar().topRel(0)
+                .leftRel(0));
         return widget;
     }
 
-    public Row machineTierRow(Map<Integer, LinkedPurificationUnit> unitByTier) {
-        Row row = new Row();
+    public Flow machineTierRow(Map<Integer, LinkedPurificationUnit> unitByTier) {
+        Flow row = Flow.row();
         row.paddingTop(4)
             .paddingBottom(4)
             .coverChildrenHeight();
@@ -147,10 +146,10 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         };
     }
 
-    private ParentWidget<Flow> createProgressBar() {
-        ParentWidget<Flow> holder = new ParentWidget<>();
+    private ParentWidget<?> createProgressBar() {
+        ParentWidget<?> holder = new ParentWidget<>();
         ProgressWidget widget = new ProgressWidget();
-        widget.progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
+        widget.value(new DoubleSyncValue(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime()))
             .direction(ProgressWidget.Direction.RIGHT)
             .size(182, 11)
             .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147);
@@ -162,7 +161,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
             .color(0x999999);
 
         holder.height(11);
-        holder.widthRel(1);
+        holder.fullWidth();
         holder.child(widget);
         holder.child(text);
         return holder;

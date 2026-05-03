@@ -39,28 +39,31 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
-    protected Flow createScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow screen = Flow.col()
-            .size(71, 45)
+    protected ParentWidget<?> createScreen(ModularPanel panel, PanelSyncManager syncManager) {
+        ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
             .padding(3, 2, 3, 2)
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
 
+        Flow textColumn = Flow.column()
+            .childPadding(1)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+
         // liquid amount label
-        screen.child(
+        textColumn.child(
             IKey.lang("GT5U.machines.basic_tank.liquid_amount")
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // liquid amount
-        screen.child(
+        textColumn.child(
             IKey.dynamic(
                 () -> formatNumber(
                     machine.getFluidTank()
                         .getFluidAmount()))
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+
+        screen.child(textColumn);
 
         // fluid slot
         screen.child(createFluidSlot(panel, syncManager));
@@ -70,13 +73,14 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
 
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
-            .align(Alignment.BottomRight)
+            .bottomRel(0)
+            .rightRel(0)
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow ioColumn = Flow.col()
+        Flow ioColumn = Flow.column()
             .coverChildren()
             .childPadding(9);
 
@@ -89,11 +93,11 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new ItemSlot()
             .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot()).singletonSlotGroup())
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_IN_STANDARD);
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_IN_STANDARD);
     }
 
     protected ItemSlot createOutputSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.getOutputSlot()).canPut(false))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
     }
 }

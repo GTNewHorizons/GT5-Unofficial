@@ -6,13 +6,11 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -49,7 +47,7 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
         return panel.child(
             Flow.column()
-                .sizeRel(1)
+                .full()
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
                 .child(createInventoryRow(panel, syncManager)));
@@ -86,7 +84,7 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     }
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ParentWidget<>().sizeRel(1)
+        return new ParentWidget<>().full()
             .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
             .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
     }
@@ -103,7 +101,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow cornerFlow = Flow.row()
             .coverChildren()
-            .align(Alignment.BottomLeft)
+            .bottomRel(0)
+            .leftRel(0)
             .paddingBottom(4)
             .paddingLeft(3);
         return cornerFlow;
@@ -118,7 +117,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
         Flow cornerFlow = Flow.row()
             .coverChildren()
             .reverseLayout(true)
-            .align(Alignment.BottomRight)
+            .bottomRel(0)
+            .rightRel(0)
             .paddingBottom(2)
             .paddingRight(3);
         cornerFlow.childIf(this.doesAddGregTechLogo(), this::createLogo)
@@ -153,13 +153,13 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .height(76)
-            .alignX(0)
             .childIf(
                 hatch.doesBindPlayerInventory(),
                 () -> SlotGroupWidget.playerInventory(false)
-                    .align(Alignment.CENTER));
+                    .marginLeft(3));
     }
 
 }
