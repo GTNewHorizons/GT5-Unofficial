@@ -494,8 +494,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + "minute"
                     + EnumChatFormatting.GRAY
                     + ", "
-                    + EnumChatFormatting.WHITE
-                    + "1"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Amount"
                     + EnumChatFormatting.GRAY
                     + "/("
                     + EnumChatFormatting.WHITE
@@ -509,11 +509,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY
-                    + "))chance for "
+                    + ")) chance for "
                     + EnumChatFormatting.WHITE
-                    + "all "
+                    + "one "
                     + EnumChatFormatting.GRAY
-                    + "used robot arms to "
+                    + "used robot arm to "
                     + EnumChatFormatting.RED
                     + "void")
             .addSeparator()
@@ -788,15 +788,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
-        robotArmTier = getRobotArmTier();
+        robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
         if (robotArmTier != -1) {
             int amount = Math.min(robotArmAmount, 16);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {
-                int random = getBaseMetaTileEntity().getRandomNumber(45 * (1 + robotArmTier));
-                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
-                if (random == 0) depleteInput(robotArmItemStack);
+                int random = getBaseMetaTileEntity().getRandomNumber(45 * (2 + robotArmTier));
+                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(1);
+                if (random < amount) depleteInput(robotArmItemStack);
             }
         } else {
             this.robotArmDecayBoost = 1;
