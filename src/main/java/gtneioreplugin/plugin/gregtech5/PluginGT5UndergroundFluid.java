@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.util.GTUtility;
@@ -21,6 +23,8 @@ import gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
 
 public class PluginGT5UndergroundFluid extends PluginBase {
 
+    private static final int HEADER_Y_POS = 27;
+    private static final int ROW_START_Y = 43;
     private static final int lineSpace = 20;
     private static final int xDimensionDisplay = 30;
     private static final int halfItemLength = 16 / 2;
@@ -87,27 +91,45 @@ public class PluginGT5UndergroundFluid extends PluginBase {
 
     @Override
     public void drawExtras(int recipeIndex) {
-        drawSeeAllRecipesLabel();
+        CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
+        drawTitle(recipe.title);
 
         int xChance = 85;
         int xAmount = 140;
-        int yHeader = 30;
-        int black = 0x404040;
+        int yHeader = HEADER_Y_POS + recipe.titleHeight;
 
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.dimension") + ":", xDimensionDisplay, yHeader, black, false);
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.chance") + ":", xChance, yHeader, black, false);
-        GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.fluidAmount") + ":", xAmount, yHeader, black, false);
-
-        int y = 50;
-        CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.dimension"),
+            xDimensionDisplay,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.chance"),
+            xChance,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
+        GuiDraw.drawStringC(
+            ChatFormatting.UNDERLINE + I18n.format("gtnop.gui.nei.fluidAmount"),
+            xAmount,
+            yHeader,
+            LINE_KEY_COLOR,
+            false);
+        int y = ROW_START_Y + recipe.titleHeight;
         for (int i = 0; i < recipe.dimensionDisplayItems.size(); i++) {
             String chanceValue = format.format((double) recipe.chances.get(i) / 100);
-            GuiDraw.drawStringC(I18n.format("gtnop.gui.nei.chance.value", chanceValue), xChance, y, black, false);
+            GuiDraw.drawStringC(
+                I18n.format("gtnop.gui.nei.chance.value", chanceValue),
+                xChance,
+                y,
+                LINE_VALUE_COLOR,
+                false);
             GuiDraw.drawStringC(
                 I18n.format("gtnop.gui.nei.fluidAmount.value", recipe.minAmounts.get(i), recipe.maxAmounts.get(i)),
                 xAmount,
                 y,
-                black,
+                LINE_VALUE_COLOR,
                 false);
             y += lineSpace;
         }
@@ -123,6 +145,12 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         return I18n.format("gtnop.gui.undergroundFluid.name");
     }
 
+    @Override
+    public int getRecipeHeight(int recipeIndex) {
+        CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
+        return recipe.totalHeight;
+    }
+
     private class CachedUndergroundFluidRecipe extends CachedRecipe {
 
         private final PositionedStack targetFluidDisplay;
@@ -131,12 +159,23 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         private final List<Integer> maxAmounts = new ArrayList<>();
         private final List<Integer> minAmounts = new ArrayList<>();
 
+        private final List<String> title;
+        public final int titleHeight;
+        public final int totalHeight;
+
         private CachedUndergroundFluidRecipe(Fluid fluid, List<UndergroundFluidWrapper> wrappers) {
+            String titleText = fluid.getLocalizedName(new FluidStack(fluid, 1));
+            if (titleText == null) {
+                titleText = fluid.getName();
+            }
+            title = getTitleLines(titleText);
+            titleHeight = title.size() * 10 + 1;
+
             targetFluidDisplay = new PositionedStack(
                 GTUtility.getFluidDisplayStack(fluid),
                 getGuiWidth() / 2 - halfItemLength,
-                3);
-            int y = 50 - halfItemLength;
+                3 + titleHeight);
+            int y = ROW_START_Y - halfItemLength + titleHeight;
             for (UndergroundFluidWrapper wrapper : wrappers) {
                 ItemStack dimensionDisplay = ItemDimensionDisplay.getItem(wrapper.dimension);
                 if (dimensionDisplay != null) {
@@ -151,6 +190,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
                     minAmounts.add(wrapper.minAmount);
                 }
             }
+            totalHeight = y + 6 + RECIPE_COLUMN_PADDING;
         }
 
         @Override

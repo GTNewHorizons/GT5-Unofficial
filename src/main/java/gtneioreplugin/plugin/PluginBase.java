@@ -1,19 +1,27 @@
 package gtneioreplugin.plugin;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
+
+import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import gregtech.api.gui.modularui.GTUITextures;
 
 public abstract class PluginBase extends TemplateRecipeHandler {
 
-    @Override
-    public int recipiesPerPage() {
-        return 1;
-    }
+    protected static final int LEFT_PADDING = 3;
+    protected static final int TITLE_Y_POS = 3;
+    protected static final int BOTTOM_PADDING = 2;
+    protected static final int BACKGROUND_TEXTURE_LEFT = -2;
+    protected static final int BACKGROUND_TEXTURE_RIGHT = 2;
+    protected static final int RECIPE_COLUMN_PADDING = 2;
+
+    protected static final int LINE_KEY_COLOR = 0x404040;
+    protected static final int LINE_VALUE_COLOR = 0x303030;
 
     @Override
     public String getRecipeName() {
@@ -22,14 +30,22 @@ public abstract class PluginBase extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-        return "gtneioreplugin:textures/gui/nei/guiBase.png";
+        return GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location.toString() + ".png";
     }
 
     @Override
     public void loadTransferRects() {
-        int stringLength = GuiDraw.getStringWidth(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"));
-        transferRects.add(
-            new RecipeTransferRect(new Rectangle(getGuiWidth() - stringLength - 3, 5, stringLength, 9), getOutputId()));
+        transferRects.add(new RecipeTransferRect(new Rectangle(0, TITLE_Y_POS, getGuiWidth(), 10), getOutputId()));
+    }
+
+    @Override
+    public void drawBackground(int recipe) {
+        GL11.glColor4f(1, 1, 1, 1);
+        GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.draw(
+            BACKGROUND_TEXTURE_LEFT,
+            0,
+            getGuiWidth() - BACKGROUND_TEXTURE_LEFT + BACKGROUND_TEXTURE_RIGHT,
+            getRecipeHeight(recipe) - 2 - RECIPE_COLUMN_PADDING);
     }
 
     public abstract String getOutputId();
@@ -38,15 +54,16 @@ public abstract class PluginBase extends TemplateRecipeHandler {
         return 166;
     }
 
-    /**
-     * Draw the "see all recipes" transfer label
-     */
-    protected void drawSeeAllRecipesLabel() {
-        GuiDraw.drawStringR(
-            EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"),
-            getGuiWidth() - 3,
-            5,
-            0x404040,
-            false);
+    protected List<String> getTitleLines(String text) {
+        text = I18n.format("gtnop.gui.nei.title", text);
+        return GuiDraw.fontRenderer.listFormattedStringToWidth(text, getGuiWidth() - BOTTOM_PADDING);
+    }
+
+    protected void drawTitle(List<String> lines) {
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            int x = (getGuiWidth() - GuiDraw.fontRenderer.getStringWidth(line)) / 2;
+            GuiDraw.drawString(line, x, TITLE_Y_POS + i * 10, 0xffffff, true);
+        }
     }
 }

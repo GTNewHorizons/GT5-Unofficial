@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableMap;
 
 import gregtech.GTMod;
 import gregtech.api.enums.OreMixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
@@ -108,12 +109,17 @@ public class GT5OreLayerHelper {
                 .collect(Collectors.toSet());
         }
 
-        public List<ItemStack> getVeinLayerOre(int veinLayer) {
+        public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (IStoneType stoneType : ores[veinLayer].getValidStones()) {
-                if (!stoneType.isExtraneous()) {
+            List<IStoneType> validStones = ores[veinLayer].getValidStones();
+            for (IStoneType stoneType : validStones) {
+                if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));
                 }
+            }
+            // Fallback just in case so we at least show *some* ore
+            if (stackList.isEmpty() && !validStones.isEmpty()) {
+                stackList.add(getLayerOre(veinLayer, validStones.get(0)));
             }
             return stackList;
         }
