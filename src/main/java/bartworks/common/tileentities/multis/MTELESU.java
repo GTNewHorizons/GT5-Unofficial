@@ -18,6 +18,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,6 +66,8 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 
 public class MTELESU extends MTEMultiBlockBase {
@@ -363,7 +366,8 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
         this.connectedcells.get_connected(
@@ -387,7 +391,8 @@ public class MTELESU extends MTEMultiBlockBase {
             this.mStorage = 0;
             this.mMaxProgresstime = 0;
             this.mProgresstime = 0;
-            return false;
+            errors.add(StructureErrors.of("GT5U.gui.text.lesu_error"));
+            return;
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
@@ -425,7 +430,6 @@ public class MTELESU extends MTEMultiBlockBase {
                 + " DIM-ID: "
                 + this.getBaseMetaTileEntity()
                     .getWorld().provider.dimensionId);
-        return true;
     }
 
     public World getWorld() {

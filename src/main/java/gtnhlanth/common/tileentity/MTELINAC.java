@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -47,6 +48,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -349,7 +354,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity mte, ItemStack stack) {
+    public void checkMachine(IGregTechTileEntity mte, ItemStack stack, List<StructureError> errors) {
         mInputBeamline.clear();
         mOutputBeamline.clear();
 
@@ -362,12 +367,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         length = 8; // Base piece length
 
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0, errors)) return;
 
         while (length < 128) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length)) {
-                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) {
-                    return false;
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length, errors)) {
+                errors.clear();
+                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length, errors)) {
+                    return;
                 }
                 break;
             }
@@ -376,9 +382,29 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         length += 9;
 
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
-            && this.mEnergyHatches.size() <= 2
-            && this.glassTier >= VoltageIndex.LuV;
+        if (mInputBeamline.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                    mInputBeamline.size(),
+                    1));
+        }
+
+        if (mOutputBeamline.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
+                    mOutputBeamline.size(),
+                    1));
+        }
+
+        checkHatchMax(errors, Energy, 2);
+
+        if (glassTier < VoltageIndex.LuV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
+        }
     }
 
     @Override

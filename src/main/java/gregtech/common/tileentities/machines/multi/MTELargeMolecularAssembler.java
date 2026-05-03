@@ -79,6 +79,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -334,21 +335,18 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casing = 0;
         if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             STRUCTURE_HORIZONTAL_OFFSET,
             STRUCTURE_VERTICAL_OFFSET,
-            STRUCTURE_DEPTH_OFFSET)) {
-            return false;
-        }
+            STRUCTURE_DEPTH_OFFSET,
+            errors)) return;
 
-        if (mMaintenanceHatches.size() != 1 || mEnergyHatches.isEmpty()) {
-            return false;
-        }
-
-        return casing >= MIN_CASING_COUNT;
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, casing, MIN_CASING_COUNT);
     }
 
     @Override

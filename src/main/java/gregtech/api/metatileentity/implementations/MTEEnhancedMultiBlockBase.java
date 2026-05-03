@@ -679,7 +679,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     protected void checkHasAnyInput(List<StructureError> errors) {
-        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty()
+            && mDualInputHatches.isEmpty()
+            && mSmartInputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.missing_any_input"));
         }
     }
@@ -687,6 +689,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected void checkHasAnyOutput(List<StructureError> errors) {
         if (mOutputBusses.isEmpty() && mOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.missing_any_output"));
+        }
+    }
+
+    protected void checkHasAnyEnergy(List<StructureError> errors) {
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
         }
     }
 
