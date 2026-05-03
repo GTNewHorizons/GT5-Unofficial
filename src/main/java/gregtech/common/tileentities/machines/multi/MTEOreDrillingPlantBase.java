@@ -7,6 +7,8 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
@@ -760,11 +762,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                         (val) -> replaceWithCobblestone = val),
                     builder,
                     (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
-                                : "GT5U.gui.button.ore_drill_cobblestone_off")))
+                .dynamicTooltip(() -> {
+                    String title = StatCollector.translateToLocal("GT5U.gui.button.ore_drill_cobblestone");
+                    String statusKey = replaceWithCobblestone ? BUTTON_FEATURE_ENABLED_TOOLTIP
+                        : BUTTON_FEATURE_DISABLED_TOOLTIP;
+                    String statusText = StatCollector.translateToLocal(statusKey);
+                    return ImmutableList.of(title, GTUtility.getColoredSecondaryTooltip(statusText));
+
+                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16));
     }

@@ -1,6 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -819,8 +821,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsInputSeparation,
             multiblock::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation"));
     }
 
     /**
@@ -833,35 +834,39 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
      * message</li>
      * </ul>
      *
-     * @param tooltip                the RichTooltip to add the line to
-     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
-     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
-     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
-     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     * @param tooltip            the RichTooltip to add the line to
+     * @param supportsFeature    supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled   supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureName tooltip text to display as the name of the feature
      *
      * @see gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures#addDynamicTooltipOfFeatureToButton(com.gtnewhorizons.modularui.api.widget.Widget,
-     *      java.util.function.Supplier, java.util.function.Supplier, String, String)
+     *      java.util.function.Supplier, java.util.function.Supplier, String)
      *      For equivalent method but made for ModularUI
      */
     private void addDynamicTooltipOfFeatureToButton(RichTooltip tooltip, Supplier<Boolean> supportsFeature,
-        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
-
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
+        tooltip.addLine(tooltipFeatureName);
         if (supportsFeature.get()) {
             tooltip.addLine(IKey.dynamic(() -> {
                 if (isFeatureEnabled.get()) {
-                    return tooltipFeatureEnabled;
+                    return GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP));
                 } else {
-                    return tooltipFeatureDisabled;
+                    return GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP));
                 }
             }));
         } else {
             if (isFeatureEnabled.get()) {
-                tooltip.addLine(tooltipFeatureEnabled);
+                tooltip.addLine(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
             } else {
-                tooltip.addLine(tooltipFeatureDisabled);
+                tooltip.addLine(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
             }
-
-            tooltip.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+            tooltip.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
     }
 
@@ -881,7 +886,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-            .addLine(IKey.dynamic(multiblock::getMachineModeName));
+            .addLine(IKey.dynamic(() -> GTUtility.getColoredSecondaryTooltip(multiblock.getMachineModeName())));
     }
 
     protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
@@ -927,8 +932,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsBatchMode,
             multiblock::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
     }
 
     protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
@@ -976,8 +980,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             t,
             multiblock::supportsSingleRecipeLocking,
             multiblock::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
     }
 
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
