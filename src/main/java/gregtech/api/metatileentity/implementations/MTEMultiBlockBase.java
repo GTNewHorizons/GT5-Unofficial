@@ -2677,8 +2677,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return Returns true if there is 1 TT Energy Hatch OR at least one Energy Hatches
+     * @return Returns true if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public boolean checkExoticAndNormalEnergyHatches() {
         if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
             return false;
@@ -2694,7 +2696,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-        return true;
+        return mEnergyHatches.size() <= 2;
     }
 
     /**
