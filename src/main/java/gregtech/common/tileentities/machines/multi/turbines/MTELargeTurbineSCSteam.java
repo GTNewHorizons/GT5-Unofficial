@@ -53,12 +53,12 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
     @Override
     public Materials getFrameMaterial() {
-        return Materials.BlackPlutonium;
+        return Materials.Polybenzimidazole;
     }
 
     @Override
     public Casings getPipeCasing() {
-        return Casings.BlackPlutoniumItemPipeCasing;
+        return Casings.PBIPipeCasing;
     }
 
     @Override
@@ -143,8 +143,8 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center")
             .addCasingInfoRange("SC Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("Black Plutonium Frame Box", 14, false)
-            .addCasingInfoExactly("Black Plutonium Pipe Casing", 12, false)
+            .addCasingInfoExactly("PBI Frame Box", 14, false)
+            .addCasingInfoExactly("PBI Pipe Casing", 12, false)
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Any SC Turbine Casing except the front 8", 2)
             .addInputHatch("Any SC Turbine Casing except the front 8", 2)
