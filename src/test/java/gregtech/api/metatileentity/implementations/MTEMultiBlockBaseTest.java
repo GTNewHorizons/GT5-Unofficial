@@ -5,11 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.structure.error.StructureError;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Answers;
 import org.mockito.Mockito;
+
+import gregtech.api.structure.error.StructureError;
 
 /**
  * Tests some functions of {@link MTEMultiBlockBase}.

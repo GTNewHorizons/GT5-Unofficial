@@ -1255,7 +1255,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
      * Any error must be added to the error list.
      */
-    abstract public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors);
+    abstract public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack,
+        List<StructureError> errors);
 
     /**
      * Gets the maximum efficiency of this machine with current state.

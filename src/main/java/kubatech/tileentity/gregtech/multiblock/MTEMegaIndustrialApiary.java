@@ -290,7 +290,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     /**
      * The map used to check the flowers in the apiary.
      * <p>
-     * The instance is updated in {@link #checkMachine(IGregTechTileEntity, ItemStack, List)} and entries will be removed
+     * The instance is updated in {@link #checkMachine(IGregTechTileEntity, ItemStack, List)} and entries will be
+     * removed
      * during structural check defined in the structure definition, via {@link #flowerCheck(World, int, int, int)}.
      * After {@code checkMachine}, the remaining entries are the missing flowers, which is shown on the GUI as error
      * message.

@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnegative;
@@ -41,9 +40,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.StructureChecker;
 import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
