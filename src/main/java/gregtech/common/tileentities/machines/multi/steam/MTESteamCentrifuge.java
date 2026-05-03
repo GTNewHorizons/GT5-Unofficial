@@ -250,7 +250,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
         }
         checkCasingMin(errors, tCountCasing, 60);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
+        checkHasSteamInputBus(errors);
         checkHasAnyOutput(errors);
     }
 

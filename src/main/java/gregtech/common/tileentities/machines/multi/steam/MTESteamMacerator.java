@@ -192,8 +192,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         }
         checkCasingMin(errors, mCounCasing, 14);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

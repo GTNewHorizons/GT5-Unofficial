@@ -269,7 +269,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
         checkCasingMin(errors, tCountCasing, 55);
         checkHasSteamInput(errors);
         checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

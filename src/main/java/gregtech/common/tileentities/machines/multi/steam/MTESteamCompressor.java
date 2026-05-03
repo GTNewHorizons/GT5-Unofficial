@@ -196,8 +196,8 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         }
         checkCasingMin(errors, mCountCasing, 25);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

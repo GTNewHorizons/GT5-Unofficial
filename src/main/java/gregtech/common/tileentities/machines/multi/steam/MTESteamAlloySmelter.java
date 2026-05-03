@@ -236,8 +236,8 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
         }
         checkCasingMin(errors, mCountCasing, 25);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

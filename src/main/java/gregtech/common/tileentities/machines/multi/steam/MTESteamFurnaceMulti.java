@@ -346,8 +346,8 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
         }
         checkCasingMin(errors, casingCount, 2);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

@@ -247,8 +247,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         }
         checkCasingMin(errors, tCountCasing, 35);
         checkHasSteamInput(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override

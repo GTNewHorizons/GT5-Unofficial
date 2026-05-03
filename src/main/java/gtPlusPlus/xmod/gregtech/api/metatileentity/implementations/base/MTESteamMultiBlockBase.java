@@ -490,6 +490,18 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         }
     }
 
+    protected final void checkHasSteamInputBus(List<StructureError> errors) {
+        if (mSteamInputs.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_steam_input_bus"));
+        }
+    }
+
+    protected final void checkHasSteamOutputBus(List<StructureError> errors) {
+        if (mSteamOutputs.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_steam_output_bus"));
+        }
+    }
+
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
