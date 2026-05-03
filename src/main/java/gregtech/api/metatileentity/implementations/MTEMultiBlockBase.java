@@ -1256,7 +1256,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
-    boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return false;
     }
 
