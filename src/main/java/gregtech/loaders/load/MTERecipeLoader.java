@@ -12,6 +12,7 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -1676,6 +1677,19 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AlgaeCasing.get(1),
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
+
+        // Naquadah Reactor Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Radiation_Protection_Plate.get(2),
+                Materials.PrismaticNaquadah.getPlates(2),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
+            .circuit(1)
+            .itemOutputs(ItemList.NaquadahReactorCasing.get(1))
+            .fluidInputs(Materials.NaquadahEnriched.getMolten(4 * INGOTS))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
