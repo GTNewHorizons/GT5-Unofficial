@@ -68,7 +68,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -245,9 +244,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
         checkHatchMax(errors, Maintenance, 1);
-        if (!checkExoticAndNormalEnergyHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHasAnyEnergy(errors);
     }
 
     @Override

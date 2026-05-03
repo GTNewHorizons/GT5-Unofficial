@@ -44,6 +44,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -214,20 +215,22 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         this.glassTier = -1;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkHasMaintenanceHatch(errors);
-        if (!checkExoticAndNormalEnergyHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHasAnyEnergy(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
-                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER || this.glassTier < hatch.mTier) {
+                if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
+                    return;
+                }
+                if (this.glassTier < hatch.mTier) {
                     errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
+                    return;
                 }
             }
             for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
                     errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
+                    return;
                 }
             }
         }

@@ -64,6 +64,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -344,14 +345,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         checkOneMaintenanceHatch(errors);
-        if (!checkExoticAndNormalEnergyHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHasAnyEnergy(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
+                    return;
                 }
             }
         }

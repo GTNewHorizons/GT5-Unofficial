@@ -59,7 +59,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -436,9 +435,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             this.mTier = 2;
         }
         checkOneMaintenanceHatch(errors);
-        if (!checkExoticAndNormalEnergyHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHasAnyEnergy(errors);
         checkCasingMin(errors, this.mCasingFrostProof, 700);
     }
 

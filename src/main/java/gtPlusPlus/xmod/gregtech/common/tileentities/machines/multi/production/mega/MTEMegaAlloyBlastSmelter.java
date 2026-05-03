@@ -217,9 +217,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (coilType == CoilType.BasicCoil) coilLevel = HeatingCoilLevel.None;
         checkOneMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
-        if (!checkExoticAndNormalEnergyHatches()) {
-            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
+        checkHasAnyEnergy(errors);
         if (this.glassTier < VoltageIndex.UMV) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
