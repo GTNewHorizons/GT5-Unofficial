@@ -47,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -126,14 +128,20 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mTierCasing = -1;
         mFusionTierCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0)) return false;
-        if (mCasing < 19) return false;
-        if (mTierCasing > 3 && mFusionTierCasing < 2) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0, errors)) return;
+        if (mCasing < 19) {
+            errors.add(StructureErrors.missingCasings(mCasing, 19));
+        }
+        if (mTierCasing > 3 && mFusionTierCasing < 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.defc_fusion_machine_casing"));
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

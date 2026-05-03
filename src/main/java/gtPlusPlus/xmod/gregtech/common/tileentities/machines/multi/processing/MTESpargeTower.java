@@ -39,6 +39,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -253,7 +256,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // reset
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
@@ -261,22 +264,23 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         mCasing = 0;
 
         // check base
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         // check each layer
-        while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0) && !mTopLayerFound) {
+        while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors) && !mTopLayerFound) {
             if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-
-                return false;
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, OutputHatch, 0, 1));
+                return;
             }
             // not top
             mHeight++;
         }
-
-        return mCasing >= 45 && mTopLayerFound && mMaintenanceHatches.size() == 1;
+        checkCasingMin(errors, mCasing, 45);
+        if (!mTopLayerFound) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+        }
+        checkOneMaintenanceHatch(errors);
     }
 
     @Override

@@ -60,6 +60,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
@@ -104,27 +105,25 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                             { "c~c", "ccc", "ccc" }, }))
                 .addElement(
                     'c',
-                    ofChain(
-                        lazy(
-                            x -> ofChain(
-                                buildHatchAdder(MTEAirFilterBase.class)
-                                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
-                                    .hint(1)
-                                    .casingIndex(x.getCasingIndex())
-                                    .build(),
-                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
+                    lazy(
+                        x -> ofChain(
+                            buildHatchAdder(MTEAirFilterBase.class)
+                                .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
+                                .hint(1)
+                                .casingIndex(x.getCasingIndex())
+                                .build(),
+                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta()))))
                 .addElement('x', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))
                 .addElement('v', lazy(x -> ofBlock(GregTechAPI.sBlockCasingsNH, x.getPipeMeta())))
                 .addElement(
                     'm',
-                    ofChain(
-                        lazy(
-                            x -> ofChain(
-                                buildHatchAdder(MTEAirFilterBase.class).atLeast(Muffler)
-                                    .hint(2)
-                                    .casingIndex(x.getCasingIndex())
-                                    .build(),
-                                ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
+                    lazy(
+                        x -> ofChain(
+                            buildHatchAdder(MTEAirFilterBase.class).atLeast(Muffler)
+                                .hint(2)
+                                .casingIndex(x.getCasingIndex())
+                                .build(),
+                            ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta()))))
                 .build();
         }
     };
@@ -145,9 +144,10 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0) && !mMufflerHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
+        checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

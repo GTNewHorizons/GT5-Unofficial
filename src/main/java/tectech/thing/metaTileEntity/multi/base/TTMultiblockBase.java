@@ -85,6 +85,8 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -232,62 +234,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public abstract IStructureDefinition<? extends TTMultiblockBase> getStructure_EM();
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<TTMultiblockBase> getStructure_EM_Internal() {
-        return (IStructureDefinition<TTMultiblockBase>) getStructure_EM();
-    }
-
     @Override
-    public IStructureDefinition<TTMultiblockBase> getStructureDefinition() {
-        return getStructure_EM_Internal();
-    }
-
-    public final boolean structureCheck_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().check(
-            this,
-            piece,
-            baseMetaTileEntity.getWorld(),
-            getExtendedFacing(),
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            !mMachine);
-    }
-
-    public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-        ItemStack trigger, boolean hintsOnly) {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().buildOrHints(
-            this,
-            trigger,
-            piece,
-            baseMetaTileEntity.getWorld(),
-            getExtendedFacing(),
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord(),
-            horizontalOffset,
-            verticalOffset,
-            depthOffset,
-            hintsOnly);
+    public final IStructureDefinition<TTMultiblockBase> getStructureDefinition() {
+        return (IStructureDefinition<TTMultiblockBase>) getStructure_EM();
     }
     // endregion
 
     // region METHODS TO OVERRIDE - general functionality, recipe check, output
-
-    /**
-     * Check structure here, also add hatches
-     *
-     * @param iGregTechTileEntity - the tile entity
-     * @param itemStack           - what is in the controller input slot
-     * @return is structure valid
-     */
-    protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return false;
-    }
 
     /**
      * Checks Recipes (when all machine is complete and can work)
@@ -799,18 +752,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region internal
 
     /**
-     * internal check machine
-     */
-    @Override
-    public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
-
-        onStructureCheckFinished();
-
-        return mMachine;
-    }
-
-    /**
      * internal check recipe
      */
     @Override
@@ -928,13 +869,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (--mUpdate == 0 || --mStartUpCheck == 0
                 || cyclicUpdate()
                 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                clearHatches_EM();
+                clearHatches();
 
                 if (aBaseMetaTileEntity instanceof BaseTileEntity) {
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
 
-                checkMachine(aBaseMetaTileEntity, mInventory[1]);
+                mMachine = checkMachine_TT(aBaseMetaTileEntity);
+                onStructureCheckFinished(aBaseMetaTileEntity);
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]
@@ -1082,16 +1024,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mOutputFluids = null;
     }
 
-    protected void clearHatches_EM() {
-        mDualInputHatches.clear();
-        mInputHatches.clear();
-        mInputBusses.clear();
-        mOutputHatches.clear();
-        mOutputBusses.clear();
-        mDynamoHatches.clear();
-        mEnergyHatches.clear();
-        mMufflerHatches.clear();
-        mMaintenanceHatches.clear();
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
 
         for (MTEHatchDataConnector<?> hatch_data : validMTEList(eOutputData)) {
             hatch_data.id = -1;
@@ -1938,6 +1873,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
     // endregion
+
+    protected final void checkOneUncertaintyHatch(List<StructureError> errors) {
+        if (eUncertainHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.ONE_UNCERTAINTY_HATCH);
+        }
+    }
 
     protected static <T extends TTMultiblockBase> IStructureElement<T> classicHatches(int casingIndex, int dot,
         Block casingBlock, int casingMeta) {

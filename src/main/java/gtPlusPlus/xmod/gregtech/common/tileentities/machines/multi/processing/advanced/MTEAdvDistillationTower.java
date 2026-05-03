@@ -59,9 +59,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.structure.error.MissingOutputHatchDT;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -264,7 +264,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-                errors.add(new MissingOutputHatchDT(mHeight + 1));
+                errors.add(StructureErrors.missingOutputHatchDT(mHeight + 1));
             }
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
                 break;
@@ -273,10 +273,10 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             mHeight++;
         }
         if (!mTopLayerFound) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.dangote_missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.dangote_missing_top"));
         }
         if (mHeight == 1) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         checkHatch(errors);
         if (!errors.isEmpty()) return;

@@ -43,6 +43,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -77,7 +78,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
@@ -241,9 +242,9 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
-        return structureCheck_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors);
     }
 
     @Override

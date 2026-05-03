@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,6 +35,8 @@ import gregtech.api.net.GTPacketNodeInfo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -279,22 +282,32 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         mLength = 1;
         mCasing = 0;
         endFound = false;
 
         // check front
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0, errors)) return;
 
         // check middle pieces
         while (!endFound && mLength++ < MAX_LENGTH) {
-            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1))) return false;
+            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1), errors)) return;
         }
 
-        return endFound && mLength >= 3
-            && checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1))
-            && mCasing >= mLength * 3;
+        if (!endFound) {
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
+        }
+
+        if (mLength < 3) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+        }
+
+        if (!checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1), errors)) return;
+
+        checkCasingMin(errors, mCasing, mLength * 3);
     }
 
     @Override

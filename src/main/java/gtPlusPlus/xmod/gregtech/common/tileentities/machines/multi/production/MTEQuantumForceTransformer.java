@@ -67,6 +67,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -234,22 +235,16 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.mCraftingTier = 0;
         this.mFocusingTier = 0;
         catalystHounsings.clear();
-        if (!checkPiece(MAIN_PIECE, 7, 20, 4)) {
-            return false;
-        }
-
+        if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
-        if (mMaintenanceHatches.size() > 1) {
-            return false;
-        }
-
-        return checkExoticAndNormalEnergyHatches();
+        checkHatchMax(errors, Maintenance, 1);
+        checkHasAnyEnergy(errors);
     }
 
     @Override

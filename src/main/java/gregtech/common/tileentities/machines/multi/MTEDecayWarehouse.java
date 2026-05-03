@@ -16,7 +16,6 @@ import static gregtech.api.util.GTUtility.areStacksEqual;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -160,13 +159,6 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        structureInstanceInfo.validate(errors);
-    }
-
-    @Override
     public IStructureInstance<MTEDecayWarehouse> getStructureInstance() {
         return structureInstanceInfo;
     }
@@ -201,8 +193,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!structure.checkStructure(this, errors)) return;
+        structureInstanceInfo.validate(errors);
     }
 
     @Override

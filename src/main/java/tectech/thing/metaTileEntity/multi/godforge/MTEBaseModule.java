@@ -6,6 +6,7 @@ import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -32,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -280,7 +282,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
     }
 
     @Override
@@ -290,20 +292,15 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
-        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
 
         if (this instanceof MTEExoticModule) {
-            if (mOutputHatches.isEmpty()) {
-                return false;
-            }
-            return !mOutputBusses.isEmpty();
+            checkHasOutputBus(errors);
+            checkHasOutputHatch(errors);
         }
 
-        return true;
     }
 
     @Override

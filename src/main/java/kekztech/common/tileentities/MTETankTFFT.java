@@ -57,6 +57,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -406,7 +409,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(FIELDS, 0);
 
         this.capacity = BigInteger.ZERO;
@@ -415,33 +418,48 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         this.runningCost = 0;
         this.glassTier = -1;
 
-        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
 
         int layer = 1;
-        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer)) layer++;
-        if (layer - 1 > MAX_LAYER_AMOUNT || layer - 1 < DEFAULT_LAYER_AMOUNT) return false;
-        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
-        if (casingAmount >= MIN_CASING_AMOUNT
-            && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
-            BigInteger tempCap = BigInteger.ZERO;
-            for (int i = 0; i < this.FIELDS.length; i++) {
-                tempCap = tempCap.add(
-                    BigInteger.valueOf(Field.VALUES[i].getCapacity())
-                        .multiply(BigInteger.valueOf(this.FIELDS[i])));
-                this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
-            }
-            this.setCapacity(tempCap);
-
-            if (tfftHatch != null) tfftHatch.bind(this);
-
-            if (this.runningCost == 0) {
-                return true;
-            }
-
-            return !mEnergyHatches.isEmpty() && this.glassTier >= VoltageIndex.EV;
+        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer, errors)) layer++;
+        errors.clear();
+        if (layer - 1 > MAX_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
-        return false;
+        if (layer - 1 < DEFAULT_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;
+        checkCasingMin(errors, casingAmount, MIN_CASING_AMOUNT);
+        if (tfftHatch == null) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+        if (mInputHatches.size() + mOutputHatches.size() > MAX_DISTINCT_FLUIDS * 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.tfft_too_many_hatch"));
+        }
+        if (!errors.isEmpty()) return;
+        BigInteger tempCap = BigInteger.ZERO;
+        for (int i = 0; i < this.FIELDS.length; i++) {
+            tempCap = tempCap.add(
+                BigInteger.valueOf(Field.VALUES[i].getCapacity())
+                    .multiply(BigInteger.valueOf(this.FIELDS[i])));
+            this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
+        }
+        this.setCapacity(tempCap);
+
+        if (tfftHatch != null) tfftHatch.bind(this);
+
+        if (this.runningCost == 0) {
+            // skip later check
+            return;
+        }
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override

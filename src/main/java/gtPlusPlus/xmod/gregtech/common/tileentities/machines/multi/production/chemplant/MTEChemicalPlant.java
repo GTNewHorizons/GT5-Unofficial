@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -60,6 +61,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -358,7 +361,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         for (int i = 0; i < 8; i++) {
             checkCasing[i] = 0;
@@ -372,20 +375,30 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         maxTierOfHatch = 0;
         mCatalystBuses.clear();
         setCoilMeta(HeatingCoilLevel.None);
-        if (checkPiece(mName, 3, 6, 0) && mCasing >= 70) {
-            for (int i = 0; i < 8; i++) {
-                if (checkCasing[i] == mCasing) {
-                    mSolidCasingTier = i;
-                } else if (checkCasing[i] > 0) return false;
+
+        if (!checkPiece(mName, 3, 6, 0, errors)) return;
+        for (int i = 0; i < 8; i++) {
+            if (checkCasing[i] == mCasing) {
+                mSolidCasingTier = i;
+            } else if (checkCasing[i] > 0) {
+                errors.add(StructureErrors.of("GT5U.gui.text.chemplant_casing_problem"));
+                return;
             }
-            mMachineCasingTier = checkMachine - 1;
-            mPipeCasingTier = checkPipe - 12;
-            mCoilTier = checkCoil.getTier();
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            updateHatchTexture();
-            return (mMachineCasingTier >= 9 || mMachineCasingTier >= maxTierOfHatch) && mCatalystBuses.size() <= 1;
         }
-        return false;
+        if (mCasing < 70) {
+            errors.add(StructureErrors.missingCasings(mCasing, 70));
+        }
+        mMachineCasingTier = checkMachine - 1;
+        mPipeCasingTier = checkPipe - 12;
+        mCoilTier = checkCoil.getTier();
+        if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
+            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_hatch_problem"));
+        }
+        if (mCatalystBuses.size() > 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
+        }
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        updateHatchTexture();
     }
 
     public void updateHatchTexture() {

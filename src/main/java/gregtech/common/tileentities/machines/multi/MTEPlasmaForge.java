@@ -68,6 +68,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -839,63 +841,50 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
-        // Reset heating capacity.
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mHeatingCapacity = 0;
-
-        // Get heating capacity from coils in structure.
         setCoilLevel(HeatingCoilLevel.None);
-
-        // Check the main structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16)) return false;
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        // Item input bus check.
-        if (mInputBusses.size() > max_input_bus) return false;
-
-        // Item output bus check.
-        if (mOutputBusses.size() > max_output_bus) return false;
-
-        // Fluid input hatch check.
-        if (mInputHatches.size() > max_input_hatch) return false;
-
-        // Fluid output hatch check.
-        if (mOutputHatches.size() > max_output_hatch) return false;
-
-        // If there is more than 1 TT energy hatch, the structure check will fail.
-        // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-
-        // If there is 0 or more than 2 energy hatches structure check will fail.
+        if (mInputBusses.size() > max_input_bus) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        if (mOutputBusses.size() > max_output_bus) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        if (mInputHatches.size() > max_input_hatch) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        if (mOutputHatches.size() > max_output_hatch) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
+                errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            }
+        }
         if (!mEnergyHatches.isEmpty()) {
-            if (mEnergyHatches.size() > 2) return false;
-
-            // Check will also fail if energy hatches are not of the same tier.
-            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-            for (MTEHatchEnergy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != tier_of_hatch) {
-                    return false;
+            if (mEnergyHatches.size() > 2) {
+                errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+            } else {
+                byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+                for (MTEHatchEnergy energyHatch : mEnergyHatches) {
+                    if (energyHatch.mTier != tier_of_hatch) {
+                        errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+                        break;
+                    }
                 }
             }
         }
-
-        // If there are no energy hatches or TT energy hatches, structure will fail to form.
-        if ((mEnergyHatches.isEmpty()) && (mExoticEnergyHatches.isEmpty())) return false;
-
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        if (mMaintenanceHatches.size() > 1) return false;
-
-        // Heat capacity of coils used on multi. No free heat from extra EU!
-        mHeatingCapacity = (int) getCoilLevel().getHeat();
-
-        // All structure checks passed, return true.
-        return true;
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
+            checkHasEnergyHatch(errors);
+        }
+        checkHatchMax(errors, Maintenance, 1);
+        if (errors.isEmpty()) {
+            mHeatingCapacity = (int) getCoilLevel().getHeat();
+        }
     }
 
     @Override

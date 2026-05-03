@@ -54,6 +54,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -67,6 +68,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -244,7 +249,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 63, 14, 1);
         if (stackSize.stackSize > 1) {
             buildPiece(STRUCTURE_PIECE_SECOND_RING, stackSize, hintsOnly, 55, 11, -67);
         }
@@ -263,56 +268,51 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     };
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
 
         moduleHatches.clear();
         // Check structure of multi
         if (data.isRenderActive()) {
-            if (!structureCheck_EM(STRUCTURE_PIECE_SHAFT, 63, 14, 1)
-                || !structureCheck_EM(STRUCTURE_PIECE_FIRST_RING_AIR, 63, 14, -59)) {
+            if (!checkPiece(STRUCTURE_PIECE_SHAFT, 63, 14, 1, errors)
+                || !checkPiece(STRUCTURE_PIECE_FIRST_RING_AIR, 63, 14, -59, errors)) {
                 destroyRenderer();
-                return false;
+                return;
             }
-        } else if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1)) {
-            return false;
+        } else if (!checkPiece(STRUCTURE_PIECE_MAIN, 63, 14, 1, errors)) {
+            return;
         }
 
         if (data.getInternalBattery() != 0 && !data.isRenderActive() && !data.isRendererDisabled()) {
             createRenderer();
         }
         // Check there is 1 input bus
-        if (mInputBusses.size() != 1) {
-            return false;
-        }
+        checkHatchExact(errors, InputBus, 1);
 
         // Check there is 1 me output bus
         {
             if (mOutputBusses.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                return false;
+                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
+            } else if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
+                errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
             }
         }
         // Make sure there are no energy hatches
         {
             if (!mEnergyHatches.isEmpty()) {
-                return false;
-            }
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                return false;
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            } else if (!mExoticEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
             }
         }
 
         // Make sure there is 1 input hatch
-        if (mInputHatches.size() != 1) {
-            return false;
-        }
+        checkHatchExact(errors, InputHatch, 1);
+
+        if (!errors.isEmpty()) return;
 
         if (data.isUpgradeActive(CD)) {
-            if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
+            if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67, errors)) {
                 data.setRingAmount(2);
                 if (!data.isRendererDisabled()) {
                     destroySecondRing();
@@ -320,7 +320,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 }
             }
             if (data.isRenderActive() && data.getRingAmount() >= 2
-                && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
+                && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67, errors)) {
                 destroyRenderer();
             }
         } else {
@@ -337,7 +337,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         }
 
         if (data.isUpgradeActive(END)) {
-            if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
+            if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76, errors)) {
                 data.setRingAmount(3);
                 if (!data.isRendererDisabled()) {
                     destroyThirdRing();
@@ -345,7 +345,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 }
             }
             if (data.isRenderActive() && data.getRingAmount() == 3
-                && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
+                && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76, errors)) {
                 destroyRenderer();
             }
         } else {
@@ -357,8 +357,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 buildThirdRing();
             }
         }
-
-        return true;
+        // clear the errors during ring checking, so the main structure can form
+        errors.clear();
     }
 
     long ticker = 0;

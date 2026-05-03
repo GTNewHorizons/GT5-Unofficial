@@ -69,6 +69,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -393,7 +396,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mEnergyHatches.clear();
         mDynamoHatches.clear();
@@ -404,17 +407,20 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         for (int i = 0; i < 6; i++) {
             cellCount[i] = 0;
         }
-        if (!checkPiece(mName + "bottom", 2, 0, 0)) {
-            return false;
+        if (!checkPiece(mName + "bottom", 2, 0, 0, errors)) {
+            return;
         }
         int layer = 1;
         topState = TopState.MayBeTop;
         while (true) {
-            if (!checkPiece(mName + "layer", 2, layer, 0)) return false;
+            if (!checkPiece(mName + "layer", 2, layer, 0, errors)) return;
             layer++;
             if (topState == TopState.Top) break; // top found, break out
             topState = TopState.MayBeTop;
-            if (layer > 18) return false; // too many layers
+            if (layer > 18) {
+                errors.add(StructureErrorRegistry.TOO_TALL);
+                return;
+            }
         }
         int level = 0;
         for (int i = 0; i < 6; i++) {
@@ -422,7 +428,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 if (level == 0) {
                     level = i + 4;
                 } else {
-                    return false;
+                    errors.add(StructureErrors.of("GT5U.gui.text.pss_cell"));
+                    return;
                 }
             }
         }
@@ -430,13 +437,15 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         long volSum = 0;
         for (MTEHatch hatch : mAllDynamoHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
-                return false;
+                errors.add(StructureErrors.of("GT5U.gui.text.pss_dynamo"));
+                return;
             }
             volSum += (8L << (hatch.mTier * 2));
         }
         for (MTEHatch hatch : mAllEnergyHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
-                return false;
+                errors.add(StructureErrors.of("GT5U.gui.text.pss_energy"));
+                return;
             }
             volSum += (8L << (hatch.mTier * 2));
         }
@@ -444,7 +453,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         if (mAllEnergyHatches.size() + mAllDynamoHatches.size() > 0) {
             mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());
         } else mAverageEuUsage = 0;
-        return true;
     }
 
     public final boolean addPowerSubStationList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

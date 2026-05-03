@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -45,6 +46,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
@@ -163,19 +166,26 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         tier = -1;
         checkMeta = -1;
 
-        if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
-            && checkMeta > 0
-            && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()) {
-            tier = checkMeta - 1;
-            return true;
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+
+        if (mCasing < MINIMUM_CASINGS) {
+            errors.add(StructureErrors.missingCasings(mCasing, MINIMUM_CASINGS));
+        } else if (checkMeta <= 0) {
+            // If the player do not provide any casing, skip this diagnostic.
+            errors.add(StructureErrors.of("GT5U.gui.text.unknown_machine_casing_tier"));
         }
-        return false;
+
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+
+        if (errors.isEmpty()) {
+            tier = checkMeta - 1;
+        }
     }
 
     @Override

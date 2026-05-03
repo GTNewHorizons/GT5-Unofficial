@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -64,6 +65,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -563,21 +565,22 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = 0;
         if (lastCheckedTierIndex != 0) Collections.swap(tierCheckOrderList, 0, lastCheckedTierIndex);
         for (int i = 0; i < tierCheckOrderList.size(); i++) {
             StructureData piece = tierCheckOrderList.get(i);
             resetParameters();
-            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
+            errors.clear();
+            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset, errors)) {
                 tier = piece.machineTier;
                 lastCheckedTierIndex = i;
                 rotateTurbines();
-                return casingAmount >= 550;
+                checkCasingMin(errors, casingAmount, 550);
+                return;
             }
         }
-
-        return false;
+        errors.add(UNKNOWN_TIER);
     }
 
     private void resetParameters() {

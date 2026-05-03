@@ -74,6 +74,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -605,11 +607,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         updateCoordinates();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches()
-            && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-            && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkHatches(errors);
+        checkOneMaintenanceHatch(errors);
+        int cTier = GTUtility.getTier(getMaxInputVoltage());
+        int machineTier = getMinTier();
+        if (cTier < machineTier) {
+            errors.add(StructureErrors.energyHatchTierTooLow(machineTier));
+        }
     }
 
     private void updateCoordinates() {
@@ -654,7 +661,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected abstract int getMinTier();
 
-    protected abstract boolean checkHatches();
+    protected abstract void checkHatches(List<StructureError> errors);
 
     protected abstract void setElectricityStats();
 

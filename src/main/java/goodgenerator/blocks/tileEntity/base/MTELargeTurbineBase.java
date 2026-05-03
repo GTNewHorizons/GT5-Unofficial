@@ -39,6 +39,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.RenderOverlay;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
@@ -70,7 +72,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                         t -> buildHatchAdder(MTELargeTurbineBase.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(2)
-                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                            .buildAndChain(ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
                 .build();
         }
     };
@@ -122,14 +124,16 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         maxPower = 0;
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1) && mMaintenanceHatches.size() == 1
-            && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0)) {
-            maxPower = getMaximumOutput();
-            return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1, errors)) return;
+        maxPower = getMaximumOutput();
+        checkHasMaintenanceHatch(errors);
+        if (getPollutionPerTick(null) != 0) {
+            checkHasMufflerHatch(errors);
+        } else if (!mMufflerHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
-        return false;
     }
 
     public abstract Block getCasingBlock();

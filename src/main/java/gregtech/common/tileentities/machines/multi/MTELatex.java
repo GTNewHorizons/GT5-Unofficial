@@ -23,6 +23,7 @@ import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -55,6 +56,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -313,18 +316,24 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         itemPipeTier = -1;
         mCasingAmount = 0;
         clearHatches();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
         ItemStack controllerStack = this.getControllerSlot();
         boolean singularityPresent = controllerStack != null && controllerStack.isItemEqual(
             UniversalSingularities.isModLoaded()
                 ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
                 : ItemList.Tool_DataStick.get(1));
-        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) return false;
-        return mCasingAmount >= 14;
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasAnyEnergy(errors);
+        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
+            errors.add(StructureErrors.of("GT5U.gui.text.latex_singularity"));
+        }
+        checkCasingMin(errors, mCasingAmount, 14);
     }
 
     @Override

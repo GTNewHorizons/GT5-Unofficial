@@ -17,6 +17,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -46,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -397,17 +400,20 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity arg0, ItemStack arg1) {
+    public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
         mInputBeamline.clear();
         mInputFocus.clear();
         this.lastRecipe = null;
-
-        if (!checkPiece("base", 2, 4, 0)) return false;
-
-        return this.mInputBeamline.size() == 1 && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() == 1
-            && this.mOutputBusses.size() == 1
-            && this.mInputFocus.size() == 1;
+        if (!checkPiece("base", 2, 4, 0, errors)) return;
+        if (this.mInputBeamline.size() != 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
+        checkOneMaintenanceHatch(errors);
+        checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputBus, 1);
+        if (this.mInputFocus.size() != 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
+        }
     }
 
     @Override

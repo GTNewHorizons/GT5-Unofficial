@@ -68,6 +68,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -323,27 +325,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
         glassTier = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
         mStructureBadGlassTier = false;
-
         for (MTEHatch energyHatch : mExoticEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
-
             if (energyHatch.getTierForStructure() > glassTier) {
                 mStructureBadGlassTier = true;
                 break;
             }
         }
-
-        return !mStructureBadGlassTier;
+        if (mStructureBadGlassTier) {
+            errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+        }
     }
 
     @Override

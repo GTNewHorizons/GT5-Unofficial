@@ -50,6 +50,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -202,7 +203,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     // Only checks the base structure piece
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.vacuumConveyorInputs.clear();
         this.vacuumConveyorOutputs.clear();
         fixAllIssues();
@@ -211,9 +212,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             STRUCTURE_PIECE_BASE,
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
-            BASE_STRUCTURE_OFFSET_Z)) return false;
+            BASE_STRUCTURE_OFFSET_Z,
+            errors)) return;
         // Module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, structureOffsetX(), structureOffsetY(), structureOffsetZ());
+        checkPiece(STRUCTURE_PIECE_MAIN, structureOffsetX(), structureOffsetY(), structureOffsetZ(), errors);
     }
 
     @Override

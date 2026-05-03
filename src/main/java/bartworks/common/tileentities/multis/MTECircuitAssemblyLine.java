@@ -81,6 +81,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -497,29 +499,47 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
-        if (!this.checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0)) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0, errors)) return;
+        if (this.glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
         }
-        if (this.glassTier < VoltageIndex.EV) return false;
-        return this.checkMachine(true) || this.checkMachine(false);
+        int recognizedLayers = checkMachine(true, errors);
+        // If the l2r structure is already formed, we early exit
+        if (errors.isEmpty()) return;
+
+        // Otherwise, we create a new list to hold the error for the r2l structure
+        List<StructureError> errors2 = new ArrayList<>();
+        int recognizedLayers2 = checkMachine(false, errors2);
+        if (errors2.isEmpty()) {
+            // Make sure we remove all error from l2r structure from the real list
+            errors.clear();
+            return;
+        }
+
+        // Both failed, we want to emit diagnostic for whoever have more recognized layers
+        if (recognizedLayers < recognizedLayers2) {
+            // Move all diagnostic to the real error list.
+            errors.clear();
+            errors.addAll(errors2);
+        }
     }
 
-    private boolean checkMachine(boolean leftToRight) {
-
-        for (int i = 1; i < 7; ++i) {
-            if (!this.checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0)) {
-                return false;
-            }
+    private int checkMachine(boolean leftToRight, List<StructureError> errors) {
+        for (int i = 1; i < 7; i++) {
+            if (!checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0, errors)) return i;
             length = i + 1;
-
-            if (!this.mOutputBusses.isEmpty()) {
-                return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
+            if (!mOutputBusses.isEmpty()) {
+                // this is the output layer
+                checkOneEnergyHatch(errors);
+                checkHasMaintenanceHatch(errors);
+                checkHasAnyInput(errors);
+                return i;
             }
         }
-
-        return false;
+        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
+        return 16;
     }
 
     @Override

@@ -53,6 +53,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -256,29 +258,33 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         width = 0;
         casingAmount = 0;
         glassTier = -1;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0) && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0)) {
-                    width++;
-                } else break;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
+        while (width < 6) {
+            if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0, errors)
+                && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0, errors)) {
+                width++;
+            } else {
+                errors.clear();
             }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        }
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {
+            return;
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
-                return false;
+                errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

@@ -143,6 +143,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -927,16 +929,25 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
-        if (glassTier < VoltageIndex.UV)
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 35);
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.UV) {
+            for (MTEHatchEnergy hatch : mEnergyHatches) {
+                if (hatch.mTier > glassTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+                    break;
+                }
+            }
+        }
+        checkHasInputBus(errors);
+        checkHasAnyOutput(errors);
+        if (!errors.isEmpty()) return;
         checkRitualConnection();
         this.rotateSpikes();
-        return true;
     }
 
     @Override

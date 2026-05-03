@@ -40,6 +40,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -88,7 +90,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
                 .casingIndex(BlockGTCasingsTT.textureOffset)
                 .hint(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 0)))
         .addElement(
             'D',
             buildHatchAdder(MTEDataBank.class)
@@ -158,12 +160,17 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
         eWirelessStacksDataOutputs.clear();
         slave = false;
-        return structureCheck_EM("main", 2, 1, 0);
+        if (!checkPiece("main", 2, 1, 0, errors)) return;
+        if (mEnergyHatches.isEmpty() && eEnergyMulti.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
+        }
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -294,7 +301,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 1, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 1, 0);
     }
 
     @Override

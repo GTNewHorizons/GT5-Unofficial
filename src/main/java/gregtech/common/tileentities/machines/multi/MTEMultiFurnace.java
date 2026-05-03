@@ -47,6 +47,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
@@ -281,20 +283,16 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mLevel = 0;
-
         setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1) return false;
-
-        this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
-
-        return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        } else {
+            this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
+        }
+        checkOneMaintenanceHatch(errors);
     }
 
     @Override

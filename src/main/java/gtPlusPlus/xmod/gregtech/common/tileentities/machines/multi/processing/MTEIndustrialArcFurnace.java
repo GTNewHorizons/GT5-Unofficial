@@ -14,6 +14,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -51,6 +52,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -207,19 +209,20 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mSize = 0;
         int tier = 0;
-        while (tier < MAX_TIER && checkPiece(STRUCTURE_PIECE_FRONT + (tier + 1), (tier + 1), (tier + 1), 0)) {
+        while (tier < MAX_TIER && checkPiece(STRUCTURE_PIECE_FRONT + (tier + 1), (tier + 1), (tier + 1), 0, errors)) {
             tier++;
         }
-        if (tier <= 0) return false;
-        if (checkPiece(STRUCTURE_PIECE_REST + tier, tier, tier, -1)) {
+        if (tier <= 0) return;
+        errors.clear();
+        if (checkPiece(STRUCTURE_PIECE_REST + tier, tier, tier, -1, errors)) {
             mSize = 2 * tier + 1;
-            return mCasing >= 10 && checkHatch();
+            checkCasingMin(errors, mCasing, 10);
+            checkHatch(errors);
         }
-        return false;
     }
 
     @Override

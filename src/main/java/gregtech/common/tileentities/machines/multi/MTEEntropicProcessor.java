@@ -13,7 +13,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -177,25 +176,12 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity base) {
-        boolean successful = super.checkStructure(aForceReset, base);
+    public void checkMachine(IGregTechTileEntity base, ItemStack itemStack, List<StructureError> errors) {
+        if (!structure.checkStructure(this, errors)) return;
+        structureInstanceInfo.validate(errors);
 
         base.issueTileUpdate();
         structureInstanceInfo.onPostCheck(this);
-
-        return successful;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity base, ItemStack itemStack) {
-        return structure.checkStructure(this);
-    }
-
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        structureInstanceInfo.validate(errors);
     }
 
     @Override

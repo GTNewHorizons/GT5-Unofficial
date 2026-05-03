@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.Uncertainty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -110,7 +113,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 .atLeast(
                     Energy.or(HatchElement.EnergyMulti),
                     Maintenance,
-                    HatchElement.Uncertainty,
+                    Uncertainty,
                     HatchElement.InputData,
                     HatchElement.OutputData,
                     WirelessComputationHatchElement.INSTANCE)
@@ -185,41 +188,37 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
         eRacks.clear();
-        if (!structureCheck_EM("front", 1, 2, 0)) {
-            return false;
-        }
-        if (!structureCheck_EM("cap", 1, 2, -1)) {
-            return false;
-        }
+        if (!checkPiece("front", 1, 2, 0, errors)) return;
+        if (!checkPiece("cap", 1, 2, -1, errors)) return;
         byte offset = -2, totalLen = 4;
         while (offset > -16) {
-            if (!structureCheck_EM("slice", 1, 2, offset)) {
+            if (!checkPiece("slice", 1, 2, offset, errors)) {
                 break;
             }
             totalLen++;
             offset--;
         }
+        errors.clear();
         if (totalLen > 17) {
-            return false;
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
         }
-        if (!structureCheck_EM("cap", 1, 2, ++offset)) {
-            return false;
-        }
-        if (!structureCheck_EM("back", 1, 2, --offset)) {
-            return false;
-        }
+        if (!checkPiece("cap", 1, 2, ++offset, errors)) return;
+        if (!checkPiece("back", 1, 2, --offset, errors)) return;
+        checkOneUncertaintyHatch(errors);
+        if (!errors.isEmpty()) return;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
-        return eUncertainHatches.size() == 1;
     }
 
     @Override
@@ -516,16 +515,16 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
-        structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
+        buildPiece("front", stackSize, hintsOnly, 1, 2, 0);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, -1);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            structureBuild_EM("slice", 1, 2, offset--, stackSize, hintsOnly);
+            buildPiece("slice", stackSize, hintsOnly, 1, 2, offset--);
         }
 
-        structureBuild_EM("cap", 1, 2, offset--, stackSize, hintsOnly);
-        structureBuild_EM("back", 1, 2, offset, stackSize, hintsOnly);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, offset--);
+        buildPiece("back", stackSize, hintsOnly, 1, 2, offset);
     }
 
     @Override
