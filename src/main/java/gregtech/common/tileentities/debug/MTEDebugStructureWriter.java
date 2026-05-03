@@ -148,17 +148,17 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
             boundingBox.showHighlightBox = showHighlightBox;
-            abc[0] = numbers[0] - 0.5;
-            abc[1] = numbers[1] - 0.5;
-            abc[2] = numbers[2] - 0.5;
+            abc[0] = -numbers[0] - 0.5;
+            abc[1] = -numbers[1] - 0.5;
+            abc[2] = -numbers[2] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos1 = new Vec3Impl(
                 aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
                 aBaseMetaTileEntity.getYCoord() + (int) (xyz[1] + 0.5),
                 aBaseMetaTileEntity.getZCoord() + (int) (xyz[2] + 0.5));
-            abc[0] = numbers[0] + numbers[3] - 0.5;
-            abc[1] = numbers[1] + numbers[4] - 0.5;
-            abc[2] = numbers[2] + numbers[5] - 0.5;
+            abc[0] = -numbers[0] + numbers[3] - 0.5;
+            abc[1] = -numbers[1] + numbers[4] - 0.5;
+            abc[2] = -numbers[2] + numbers[5] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos2 = new Vec3Impl(
                 aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
@@ -180,9 +180,9 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         aBaseMetaTileEntity.disableWorking();
     }
 
-    public void printStructure(EntityPlayer aPlayer) {
+    public String getPseudoJavaCode() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
+        return StructureUtility.getPseudoJavaCode(
             aBaseMetaTileEntity.getWorld(),
             ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
             aBaseMetaTileEntity.getXCoord(),
@@ -197,6 +197,10 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
             numbers[4],
             numbers[5],
             transpose);
+    }
+
+    public void printStructure(EntityPlayer aPlayer) {
+        String pseudoJavaCode = getPseudoJavaCode();
         GT_FML_LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
         aPlayer.addChatMessage(
@@ -297,7 +301,8 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         }
 
         @SideOnly(Side.CLIENT)
-        static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
+        private static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2,
+            double z2) {
             final Tessellator tess = Tessellator.instance;
             tess.startDrawing(GL11.GL_LINE_STRIP);
 
