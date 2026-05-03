@@ -734,6 +734,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + getCurrentParallelism()
                 + EnumChatFormatting.RESET);
         info.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", doesVoidStone));
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
         info.addAll(getDisplayMode(mode));
         return info.toArray(new String[0]);
     }
