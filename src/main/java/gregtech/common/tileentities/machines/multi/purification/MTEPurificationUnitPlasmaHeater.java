@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -176,7 +177,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
                     .casingIndex(CASING_INDEX_TOWER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
+                    .build()))
         // Plasma input hatch
         .addElement(
             'P',
@@ -187,7 +188,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
                     .casingIndex(CASING_INDEX_HEATER)
-                    .buildAndChain(onElementPass(x -> x.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11)))))
+                    .build()))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
@@ -558,13 +559,15 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        if (casingCount < MIN_CASING) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkCasingMin(errors, casingCount, MIN_CASING);
         // Do not form without positioned hatches
-        if (plasmaInputHatch == null || coolantInputHatch == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (plasmaInputHatch == null || coolantInputHatch == null) {
+            throw new IllegalArgumentException("This should not happen because structure def include mandatory hatch");
+        }
     }
 
     @Override

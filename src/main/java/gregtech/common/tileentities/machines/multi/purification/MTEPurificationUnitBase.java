@@ -128,12 +128,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        // The individual purification unit structures cannot have maintenance issues, so do nothing.
-        return true;
-    }
-
-    @Override
     public boolean supportsPowerPanel() {
         return false;
     }
@@ -480,18 +474,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // The individual purification unit structures cannot have maintenance issues, so fix them all.
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftMallet = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-        return true;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         // If a linked controller was found, load its coordinates.
@@ -741,11 +723,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public void setMaxParallel(int value) {
         maxParallel = value;
-    }
-
-    @Override
-    public boolean supportsMaintenanceIssueHoverable() {
-        return false;
     }
 
     @Override

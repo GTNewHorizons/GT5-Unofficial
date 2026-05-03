@@ -49,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -302,24 +303,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check self
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
 
         // Check hatches
-        if (!checkHatches()) {
-            return false;
-        }
+        checkOneMaintenanceHatch(errors);
 
         // using nano forge method of detecting hatches.
-        return checkExoticAndNormalEnergyHatches();
-    }
-
-    private boolean checkHatches() {
-        // Exactly one maintenance hatch is required
-        return mMaintenanceHatches.size() == 1;
+        checkExoticAndNormalEnergyHatches(errors);
     }
 
     public boolean debugModeOn() {
