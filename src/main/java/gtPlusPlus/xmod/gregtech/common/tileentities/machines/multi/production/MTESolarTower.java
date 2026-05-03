@@ -450,28 +450,29 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public boolean getConnectedSolarReflectors() {
 
         resetSolarHeaters();
+        List<StructureError> ignored = new ArrayList<>();
 
         if (this.mSolarHeaters.size() < 36) {
             // 15x15
-            checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27);
+            checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27, ignored);
 
         }
         if (this.mSolarHeaters.size() < 88) {
             // 17x17
-            checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27);
+            checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27, ignored);
 
         }
         if (this.mSolarHeaters.size() < 156) {
             // 19x19
-            checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27);
+            checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27, ignored);
         }
         if (this.mSolarHeaters.size() < 240) {
             // 21x21
-            checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27);
+            checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27, ignored);
         }
         if (this.mSolarHeaters.size() < 340) {
             // 23x23
-            checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27);
+            checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27, ignored);
         }
         return !mSolarHeaters.isEmpty();
     }

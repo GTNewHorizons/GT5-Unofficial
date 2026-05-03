@@ -701,7 +701,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         // check the flowers in the machine structure
         // the found flower types are removed from the flowerCheckingMap.
-        checkPiece(STRUCTURE_PIECE_FLOWERS, 7, 8, 0);
+        checkPiece(STRUCTURE_PIECE_FLOWERS, 7, 8, 0, new ArrayList<>());
 
         missingFlowers = !flowerCheckingMap.isEmpty();
     }
