@@ -1,8 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -849,20 +849,24 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         if (supportsFeature.get()) {
             tooltip.addLine(IKey.dynamic(() -> {
                 if (isFeatureEnabled.get()) {
-                    return GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED));
+                    return GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP));
                 } else {
                     return GTUtility
-                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED));
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP));
                 }
             }));
         } else {
             if (isFeatureEnabled.get()) {
                 tooltip.addLine(
-                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED)));
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
             } else {
                 tooltip.addLine(
-                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED)));
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
             }
+            tooltip.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
     }
 

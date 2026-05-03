@@ -15,8 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -802,7 +802,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(() -> {
                     String title = StatCollector.translateToLocal("GT5U.gui.button.chunk_loading");
-                    String statusKey = mChunkLoadingEnabled ? BUTTON_FEATURE_ENABLED : BUTTON_FEATURE_DISABLED;
+                    String statusKey = mChunkLoadingEnabled ? BUTTON_FEATURE_ENABLED_TOOLTIP
+                        : BUTTON_FEATURE_DISABLED_TOOLTIP;
                     String statusText = StatCollector.translateToLocal(statusKey);
                     return ImmutableList.of(title, GTUtility.getColoredSecondaryTooltip(statusText));
                 })

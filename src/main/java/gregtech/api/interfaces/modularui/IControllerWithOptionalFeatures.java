@@ -1,8 +1,8 @@
 package gregtech.api.interfaces.modularui;
 
 import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_POWER_PANEL;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -471,19 +471,23 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             widget.dynamicTooltip(() -> {
                 if (isFeatureEnabled.get()) {
                     return Collections.singletonList(
-                        GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED)));
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
                 } else {
                     return Collections.singletonList(
-                        GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED)));
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
                 }
             });
         } else {
             if (isFeatureEnabled.get()) {
                 widget.addTooltip(
-                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED)));
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
             } else {
                 widget.addTooltip(
-                    GTUtility.getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED)));
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
             }
 
             widget.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
