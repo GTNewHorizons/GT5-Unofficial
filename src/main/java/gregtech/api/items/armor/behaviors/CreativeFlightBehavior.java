@@ -29,7 +29,9 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        player.fallDistance = 0;
+        if (context.drainEnergy(75)) {
+            player.fallDistance = 0;
+        }
 
         if (!context.isRemote()) return;
 
