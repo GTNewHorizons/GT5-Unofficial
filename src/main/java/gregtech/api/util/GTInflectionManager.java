@@ -102,7 +102,8 @@ public final class GTInflectionManager {
      * Special cases can be defined via the localization key <code>formatterKey.key</code> to override the default
      * inflection result.<br>
      * Supports a slash ({@code /}) in {@code rule key} for multiple replacement:<br>
-     * {@code part1/part2/part3} will execute the {@code part1} rule, {@code part2} rule, and {@code part3} rule in sequence.<br>
+     * {@code part1/part2/part3} will execute the {@code part1} rule, {@code part2} rule, and {@code part3} rule in
+     * sequence.<br>
      * See ({@code assets/gregtech/inflection/en_US.example.json} for an example JSON format.<br>
      * See also: {@link <a href="https://gist.github.com/iouter/efcfb45dbc337e5c45f1c177df3cbaa0">document in gist</a>}
      * <p>
