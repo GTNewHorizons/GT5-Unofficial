@@ -33,7 +33,7 @@ import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
-import goodgenerator.blocks.tileEntity.MTEMultiNqGenerator;
+import goodgenerator.blocks.tileEntity.MTEMultiNqGeneratorLegacy;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
 import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
@@ -276,8 +276,10 @@ public class Loaders {
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
-        Loaders.MAR = new MTEMultiNqGenerator(MetaTileEntityIDs.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
-            .getStackForm(1L);
+        Loaders.MAR = new MTEMultiNqGeneratorLegacy(
+            MetaTileEntityIDs.MultiNqGenerator.ID,
+            "NaG",
+            "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new MTEFuelRefineFactoryLegacy(
             MetaTileEntityIDs.FuelRefineFactory.ID,
             "FRF",
