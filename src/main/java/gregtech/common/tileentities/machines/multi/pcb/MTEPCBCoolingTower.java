@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,6 +31,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -231,19 +235,25 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check self, last known tier first.
         checkFactories();
 
-        if (checkPiece(isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2, 2, 9, 0))
-            return true;
+        if (checkPiece(isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2, 2, 9, 0, errors))
+            return;
         else {
-            if (checkPiece(!isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2, 2, 9, 0)) {
+            if (checkPiece(
+                !isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2,
+                2,
+                9,
+                0,
+                errors)) {
                 isTier1 = false;
-                return true;
+                return;
             }
         }
-        return false;
+        errors.clear();
+        errors.add(StructureErrorRegistry.UNKNOWN_TIER);
     }
 
     @Override

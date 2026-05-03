@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -108,8 +109,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
@@ -2697,6 +2700,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         return mEnergyHatches.size() <= 2;
+    }
+
+    /**
+     * Check if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
+     */
+    public void checkExoticAndNormalEnergyHatches(List<StructureError> errors) {
+        if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
+        }
+
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) {
+                errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+                return;
+            }
+
+            if (mExoticEnergyHatches.size() != 1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+                return;
+            }
+        }
+        if (mEnergyHatches.size() > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+        }
     }
 
     /**
