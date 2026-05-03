@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTLanguageManager.LOCALE;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -199,6 +201,20 @@ public final class GTInflectionManager {
             if (StatCollector.canTranslate(specialCaseKey)) {
                 word = StatCollector.translateToLocal(specialCaseKey);
                 continue;
+            }
+            switch (rule) {
+                case "lowercase" -> {
+                    word = word.toLowerCase(LOCALE);
+                    continue;
+                }
+                case "uppercase" -> {
+                    word = word.toUpperCase(LOCALE);
+                    continue;
+                }
+                case "capitalize" -> {
+                    word = word.substring(0, 1).toUpperCase(LOCALE) + word.substring(1);
+                    continue;
+                }
             }
             LinkedHashMap<Pattern, String> ruleMap = INFLECTION_MAP.get(rule);
             if (ruleMap == null || ruleMap.isEmpty()) {
