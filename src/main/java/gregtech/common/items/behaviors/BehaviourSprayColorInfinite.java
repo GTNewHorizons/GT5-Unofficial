@@ -6,7 +6,6 @@ import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
