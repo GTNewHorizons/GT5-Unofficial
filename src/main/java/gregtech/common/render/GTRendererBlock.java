@@ -233,6 +233,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         aRenderer.useInventoryTint = false;
+        ctx.doCleanup();
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {
@@ -253,7 +254,12 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
         final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final boolean b = renderInWorld(aWorld, aX, aY, aZ, aBlock, ctx);
+        ctx.doCleanup();
+        return b;
+    }
 
+    private boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, ISBRWorldContext ctx) {
         final TileEntity tileEntity = ctx.getTileEntity();
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
 

@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
@@ -164,6 +165,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
             .color(Color.WHITE.main));
 
         screen.child(textColumn);

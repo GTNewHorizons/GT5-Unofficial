@@ -508,7 +508,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             for (int i = 0; i < mPipeAmount; i++) {
                 if (this.mFluids[i] != null) {
                     newPipe.mFluids[i] = this.mFluids[i].copy();
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.getCapacity());
                 }
             }
         }

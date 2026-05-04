@@ -1,9 +1,9 @@
 package gtneioreplugin.plugin.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -62,6 +62,6 @@ public class ItemDimensionDisplay extends ItemBlock {
 
         String i18nName = DimensionHelper.getDimLocalizedName(dimName);
 
-        return I18n.format(DimensionHelper.getDimTier(dimName), i18nName);
+        return StatCollector.translateToLocalFormatted(DimensionHelper.getDimTier(dimName), i18nName);
     }
 }

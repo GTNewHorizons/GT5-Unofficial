@@ -1280,23 +1280,24 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private List<Pair<Integer, GTRecipe>> getReachableAsteroids(Integer distance, Integer moduleTier,
         Integer droneTier) {
-        return SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
-            .computeIfAbsent(distance, w -> new ArrayList<>())
-            .stream()
-            .filter(pair -> {
-                GTRecipe recipe = pair.second();
-                Integer requiredModuleTier = recipe.getMetadata(IGRecipeMaps.MODULE_TIER);
-                assert requiredModuleTier != null;
-                return moduleTier >= requiredModuleTier;
-            })
-            .sorted(
-                (a, b) -> Objects.requireNonNull(
-                    b.second()
-                        .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight
-                    - Objects.requireNonNull(
-                        a.second()
-                            .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight)
-            .collect(toList());
+        return droneTier < 0 ? new ArrayList<>()
+            : SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
+                .computeIfAbsent(distance, w -> new ArrayList<>())
+                .stream()
+                .filter(pair -> {
+                    GTRecipe recipe = pair.second();
+                    Integer requiredModuleTier = recipe.getMetadata(IGRecipeMaps.MODULE_TIER);
+                    assert requiredModuleTier != null;
+                    return moduleTier >= requiredModuleTier;
+                })
+                .sorted(
+                    (a, b) -> Objects.requireNonNull(
+                        b.second()
+                            .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight
+                        - Objects.requireNonNull(
+                            a.second()
+                                .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight)
+                .collect(toList());
     }
 
     private AtomicInteger getAsteroidWeightSum(List<Pair<Integer, GTRecipe>> asteroids) {
