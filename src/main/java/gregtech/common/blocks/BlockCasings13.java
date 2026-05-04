@@ -32,7 +32,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(12, ItemList.ATLASCasing);
         register(13, ItemList.ALICECasing);
         register(14, ItemList.LHCbCasing);
-
+        register(15, ItemList.NaquadahReactorCasing);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
             case 12 -> Textures.BlockIcons.ATLAS_CASING.getIcon();
             case 13 -> Textures.BlockIcons.ALICE_CASING.getIcon();
             case 14 -> Textures.BlockIcons.LHCB_CASING.getIcon();
+            case 15 -> Textures.BlockIcons.NAQUADAH_REACTOR_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
