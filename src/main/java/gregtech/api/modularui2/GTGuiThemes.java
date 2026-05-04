@@ -3,7 +3,6 @@ package gregtech.api.modularui2;
 import java.awt.Color;
 
 import gregtech.api.enums.Dyes;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
 /**
  * Holds all the {@link GTGuiTheme}s registered.
@@ -60,7 +59,7 @@ public final class GTGuiThemes {
         .themedButton(
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
-        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTPPTextureIds.PICTURE_CANISTER_DARK)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
     public static final GTGuiTheme STANDARD_BLACK = GTGuiTheme.builder("gregtech:standard_black")

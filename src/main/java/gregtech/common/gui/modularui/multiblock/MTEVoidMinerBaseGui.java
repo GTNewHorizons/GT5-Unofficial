@@ -29,9 +29,7 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import bwcrossmod.galacticgreg.MTEVoidMinerBase;
@@ -72,11 +70,13 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
         GTUtility.ItemId[] ores = sortOres(multiblock.dropMap);
         return new ModularPanel("gt:vm:filter").child(ButtonWidget.panelCloseButton())
             .child(
-                new Column().child(
-                    IKey.lang("GT5U.gui.text.vm.title")
-                        .asWidget())
+                Flow.column()
                     .child(
-                        new Row().child(createOreToggleButtonGrid(syncManager, ores))
+                        IKey.lang("GT5U.gui.text.vm.title")
+                            .asWidget())
+                    .child(
+                        Flow.row()
+                            .child(createOreToggleButtonGrid(syncManager, ores))
                             .child(createRightButtonColumn(listSyncer, ores))
                             .childPadding(3)
                             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -129,7 +129,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
-        return new Column()
+        return Flow.column()
             .child(
                 new ToggleButton()
                     .value(new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool))

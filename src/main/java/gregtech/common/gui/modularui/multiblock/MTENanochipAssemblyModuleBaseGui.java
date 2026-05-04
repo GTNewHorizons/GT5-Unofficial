@@ -185,7 +185,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             .style(EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .color(0xFFFFFFFF)
             .asWidget()
-            .alignX(Alignment.CenterLeft)
+            .leftRel(0)
             .marginBottom(8);
     }
 
@@ -194,7 +194,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             .style(EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .color(0xFFCE4242)
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 

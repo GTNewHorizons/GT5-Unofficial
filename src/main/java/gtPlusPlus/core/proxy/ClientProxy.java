@@ -21,7 +21,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gregtech.api.enums.Mods;
-import gregtech.common.powergoggles.gui.PowerGogglesGuiOverlay;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
@@ -48,7 +47,6 @@ public class ClientProxy extends CommonProxy {
     public void preInit(final FMLPreInitializationEvent e) {
         super.preInit(e);
         // Do this weird things for textures.
-        PowerGogglesGuiOverlay.init();
     }
 
     @Override
