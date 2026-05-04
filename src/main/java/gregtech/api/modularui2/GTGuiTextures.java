@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -1973,47 +1972,42 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
-        .builder()
+
+    public static final UITexture PICTURE_ARROW_22_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_blue")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_white")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_RED = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_red")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_blue")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_white")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
     // endregion picture
 
