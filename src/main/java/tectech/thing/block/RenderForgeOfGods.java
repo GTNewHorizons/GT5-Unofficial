@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import gregtech.GTMod;
 import tectech.Reference;
@@ -57,7 +57,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
     private static final ResourceLocation beamTexture = new ResourceLocation(Reference.MODID, "models/spaceLayer.png");
 
-    private VertexBuffer ringOne, ringTwo, ringThree;
+    private IVertexArrayObject ringOne, ringTwo, ringThree;
     // These are nudges/translations for each ring to align with the structure
     private static final Vector3f ringOneNudge = new Vector3f(0, -1, 0);
     private static final Vector3f ringTwoNudge = new Vector3f(0, -1, 0);

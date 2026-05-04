@@ -27,7 +27,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -59,7 +58,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
@@ -360,11 +359,6 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     protected MTEMultiBlockBaseGui<?> getGui() {
         return new TileEntityModuleBaseGui<>(this);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     /**

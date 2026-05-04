@@ -288,6 +288,7 @@ public class MTEHatchRack extends MTEHatch {
 
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1), 260, 12, -1f, 9500, true); // UMV
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1), 320, 10, -1f, 10000, true); // UXV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1), 360, 8, -1f, 10000, true); // MAX
         }
 
         if (OpenComputers.isModLoaded()) {

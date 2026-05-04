@@ -33,10 +33,10 @@ import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
-import goodgenerator.blocks.tileEntity.MTEMultiNqGenerator;
+import goodgenerator.blocks.tileEntity.MTEMultiNqGeneratorLegacy;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
-import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
+import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbineLegacy;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngineLegacy;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
@@ -276,8 +276,10 @@ public class Loaders {
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
-        Loaders.MAR = new MTEMultiNqGenerator(MetaTileEntityIDs.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
-            .getStackForm(1L);
+        Loaders.MAR = new MTEMultiNqGeneratorLegacy(
+            MetaTileEntityIDs.MultiNqGenerator.ID,
+            "NaG",
+            "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new MTEFuelRefineFactoryLegacy(
             MetaTileEntityIDs.FuelRefineFactory.ID,
             "FRF",
@@ -314,7 +316,7 @@ public class Loaders {
             MetaTileEntityIDs.AntimatterHatch.ID,
             "AntimatterHatch",
             "Antimatter Hatch").getStackForm(1L);
-        Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
+        Loaders.SCTurbine = new MTESupercriticalFluidTurbineLegacy(
             MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
             "Large Supercritical Steam Turbine").getStackForm(1L);
@@ -536,30 +538,22 @@ public class Loaders {
 
     public static void initLoad() {
         GTMetaTileRegister();
-        initLoadRecipes();
-    }
-
-    public static void postInitLoad() {
-        postInitLoadRecipes();
-    }
-
-    public static void completeLoad() {
-        RecipeLoader2.FinishLoadRecipe();
-        MaterialFix.addRecipeForMultiItems();
-        ComponentAssemblyLineLoader.run();
-    }
-
-    public static void initLoadRecipes() {
         RecipeLoader.InitLoadRecipe();
         RecipeLoader2.InitLoadRecipe();
         FuelRecipeLoader.RegisterFuel();
         NaquadahReworkRecipeLoader.RecipeLoad();
     }
 
-    public static void postInitLoadRecipes() {
+    public static void postInitLoad() {
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
+        MaterialFix.addRecipeForMultiItems();
+        ComponentAssemblyLineLoader.run();
+    }
+
+    public static void completeLoad() {
+        RecipeLoader2.FinishLoadRecipe();
     }
 }

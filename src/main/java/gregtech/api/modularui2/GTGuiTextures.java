@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -228,6 +227,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_ITEM_STANDARD)
         .build();
+    public static final UITexture SLOT_ITEM_TANK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_tank")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_ITEM_BRONZE = UITexture.builder()
         .location(GregTech.ID, "gui/slot/item_bronze")
         .imageSize(18, 18)
@@ -284,6 +289,12 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_STANDARD)
+        .build();
+    public static final UITexture SLOT_FLUID_TANK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_tank")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
         .build();
     public static final UITexture SLOT_FLUID_BRONZE = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_bronze")
@@ -534,6 +545,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_COPY = fullImage(GregTech.ID, "gui/overlay_button/copy_to_clipboard");
     public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
         GregTech.ID,
         "gui/overlay_button/redstoneSnifferLocate");
@@ -566,6 +578,10 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_BUTTON_HIGHLIGHT_BLOCK = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/highlight_block");
 
     public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // MTEElectricAutoWorkbench#MAX_THROUGHPUT
         .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/throughput_" + i))
@@ -1956,47 +1972,42 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
-        .builder()
+
+    public static final UITexture PICTURE_ARROW_22_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_blue")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_white")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_RED = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_red")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_blue")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_white")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
 
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.builder()

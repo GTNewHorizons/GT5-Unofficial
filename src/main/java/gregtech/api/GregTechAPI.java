@@ -167,12 +167,13 @@ public class GregTechAPI {
     public static Block sBlockOres1,
         /* sBlockGem, */
         sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
-        sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced, sBlockSheetmetalGT, sBlockSheetmetalBW;
+        sBlockMetal9, sBlockMetal10, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced, sBlockSheetmetalGT,
+        sBlockSheetmetalBW;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
-        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsSE, sBlockCasingsSEMotor,
-        sBlockCasingsDyson, sBlockCasingsSiphon;
+        sBlockCasings14, sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsSE,
+        sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;

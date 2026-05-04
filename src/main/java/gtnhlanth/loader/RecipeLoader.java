@@ -652,7 +652,7 @@ public class RecipeLoader {
          * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3_000), Materials.Ammonia.getFluid(4_000))
          * .fluidOutputs(Materials.HydrochloricAcid.getFluid(12_000))
          * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GTRecipeBuilder.SECONDS *
-         * 30) .eut(TierEU.EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
+         * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
          */
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {
@@ -681,7 +681,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 4))
+                Materials.PotassiumHydroxide.getDust(4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -1077,7 +1077,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Pyrolusite.getDust(6),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6),
+                Materials.PotassiumHydroxide.getDust(6),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .itemOutputs(
                 WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
@@ -1100,7 +1100,7 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 18))
+            .itemInputs(Materials.PotassiumHydroxide.getDust(18))
             .circuit(3)
             .itemOutputs(
                 Materials.RockSalt.getDust(10),
