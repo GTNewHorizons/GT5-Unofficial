@@ -745,30 +745,13 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public void saveParameters(NBTTagCompound nbt) {
         nbt.setLong("eEnergyCapacity", energyCapacity);
-        nbt.setDouble(
-            PARAMETER_HYSTERESIS_LOW,
-            (double) parameterMap.get(PARAMETER_HYSTERESIS_LOW)
-                .getValue());
-        nbt.setDouble(
-            PARAMETER_HYSTERESIS_HIGH,
-            (double) parameterMap.get(PARAMETER_HYSTERESIS_HIGH)
-                .getValue());
-        nbt.setInteger(
-            PARAMETER_TRANSFER_RADIUS,
-            (int) parameterMap.get(PARAMETER_TRANSFER_RADIUS)
-                .getValue());
-        nbt.setInteger(
-            PARAMETER_OUTPUT_VOLTAGE,
-            (int) parameterMap.get(PARAMETER_OUTPUT_VOLTAGE)
-                .getValue());
-        nbt.setInteger(
-            PARAMETER_OUTPUT_CURRENT,
-            (int) parameterMap.get(PARAMETER_OUTPUT_CURRENT)
-                .getValue());
-        nbt.setBoolean(
-            PARAMETER_OVERDRIVE,
-            (boolean) parameterMap.get(PARAMETER_OVERDRIVE)
-                .getValue());
+
+        DoubleParameter.saveValue(nbt, parameterMap, PARAMETER_HYSTERESIS_LOW);
+        DoubleParameter.saveValue(nbt, parameterMap, PARAMETER_HYSTERESIS_HIGH);
+        IntegerParameter.saveValue(nbt, parameterMap, PARAMETER_TRANSFER_RADIUS);
+        IntegerParameter.saveValue(nbt, parameterMap, PARAMETER_OUTPUT_VOLTAGE);
+        IntegerParameter.saveValue(nbt, parameterMap, PARAMETER_OUTPUT_CURRENT);
+        BooleanParameter.saveValue(nbt, parameterMap, PARAMETER_OVERDRIVE);
     }
 
     @Override
@@ -785,17 +768,13 @@ public class MTETeslaTower extends TTMultiblockBase
             loadLegacyParameters(nbt);
             return;
         }
-        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_LOW))
-            .setValue(nbt.getDouble(PARAMETER_HYSTERESIS_LOW));
-        ((DoubleParameter) parameterMap.get(PARAMETER_HYSTERESIS_HIGH))
-            .setValue(nbt.getDouble(PARAMETER_HYSTERESIS_HIGH));
-        ((IntegerParameter) parameterMap.get(PARAMETER_TRANSFER_RADIUS))
-            .setValue(nbt.getInteger(PARAMETER_TRANSFER_RADIUS));
-        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_VOLTAGE))
-            .setValue(nbt.getInteger(PARAMETER_OUTPUT_VOLTAGE));
-        ((IntegerParameter) parameterMap.get(PARAMETER_OUTPUT_CURRENT))
-            .setValue(nbt.getInteger(PARAMETER_OUTPUT_CURRENT));
-        ((BooleanParameter) parameterMap.get(PARAMETER_OVERDRIVE)).setValue(nbt.getBoolean(PARAMETER_OVERDRIVE));
+
+        DoubleParameter.loadValue(nbt, parameterMap, PARAMETER_HYSTERESIS_LOW);
+        DoubleParameter.loadValue(nbt, parameterMap, PARAMETER_HYSTERESIS_HIGH);
+        IntegerParameter.loadValue(nbt, parameterMap, PARAMETER_TRANSFER_RADIUS);
+        IntegerParameter.loadValue(nbt, parameterMap, PARAMETER_OUTPUT_VOLTAGE);
+        IntegerParameter.loadValue(nbt, parameterMap, PARAMETER_OUTPUT_CURRENT);
+        BooleanParameter.loadValue(nbt, parameterMap, PARAMETER_OVERDRIVE);
     }
 
     private void loadLegacyParameters(NBTTagCompound nbt) {

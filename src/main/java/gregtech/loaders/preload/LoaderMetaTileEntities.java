@@ -146,6 +146,7 @@ import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
@@ -195,11 +196,12 @@ import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteamLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasmaLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
@@ -279,6 +281,11 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineGas;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineHPSteam;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbinePlasma;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineSCSteam;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
@@ -459,15 +466,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Integrated Ore Factory").getStackForm(1L));
 
         ItemList.LargeSteamTurbine.set(
-            new MTELargeTurbineSteam(
+            new MTELargeTurbineSteamLegacy(
                 LARGE_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largeturbine",
                 "Large Steam Turbine").getStackForm(1L));
         ItemList.LargeGasTurbine.set(
-            new MTELargeTurbineGas(LARGE_GAS_TURBINE_CONTROLLER.ID, "multimachine.largegasturbine", "Large Gas Turbine")
-                .getStackForm(1L));
+            new MTELargeTurbineGasLegacy(
+                LARGE_GAS_TURBINE_CONTROLLER.ID,
+                "multimachine.largegasturbine",
+                "Large Gas Turbine").getStackForm(1L));
         ItemList.LargeHPSteamTurbine.set(
-            new MTELargeTurbineHPSteam(
+            new MTELargeTurbineHPSteamLegacy(
                 LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largehpturbine",
                 "Large HP Steam Turbine").getStackForm(1L));
@@ -478,7 +487,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Transcendent Plasma Mixer").getStackForm(1));
 
         ItemList.LargePlasmaTurbine.set(
-            new MTELargeTurbinePlasma(
+            new MTELargeTurbinePlasmaLegacy(
                 LARGE_PLASMA_TURBINE_CONTROLLER.ID,
                 "multimachine.largeplasmaturbine",
                 "Large Plasma Turbine").getStackForm(1L));
@@ -829,6 +838,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeSifter.ID,
                 "industrialsifter.controller.tier.single",
                 "Large Sifter Control Block").getStackForm(1L));
+      
+        ItemList.CryogenicFreezer.set(
+            new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
+                .getStackForm(1L));
 
         ItemList.NaquadahFuelRefinery
             .set(new MTENaquadahFuelRefinery(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
@@ -885,6 +898,28 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.boiler.tungstensteel",
                 "Large Tungstensteel Boiler").getStackForm(1L));
 
+        ItemList.SteamTurbine.set(
+            new MTELargeTurbineSteam(SteamTurbine.ID, "multimachine.largeturbine", "Large Steam Turbine")
+                .getStackForm(1L));
+
+        ItemList.HPSteamTurbine.set(
+            new MTELargeTurbineHPSteam(HPSteamTurbine.ID, "multimachine.largehpturbine", "Large HP Steam Turbine")
+                .getStackForm(1L));
+
+        ItemList.SCSteamTurbine.set(
+            new MTELargeTurbineSCSteam(
+                SCSteamTurbine.ID,
+                "SupercriticalSteamTurbine",
+                "Large Supercritical Steam Turbine").getStackForm(1L));
+
+        ItemList.GasTurbine.set(
+            new MTELargeTurbineGas(GasTurbine.ID, "multimachine.largegasturbine", "Large Gas Turbine")
+                .getStackForm(1L));
+
+        ItemList.PlasmaTurbine.set(
+            new MTELargeTurbinePlasma(PlasmaTurbine.ID, "multimachine.largeplasmaturbine", "Large Plasma Turbine")
+                .getStackForm(1L));
+
         ItemList.FlotationCell.set(
             new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
                 .getStackForm(1L));
@@ -939,6 +974,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 AdvancedImplosionCompressor.ID,
                 "multimachine.adv.implosioncompressor",
                 "Density^2").getStackForm(1L));
+
+        ItemList.LargeNaquadahReactor
+            .set(new MTELargeNaquadahReactor(LargeNaquadahReactor.ID, "NaG", "Large Naquadah Reactor").getStackForm(1));
 
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
