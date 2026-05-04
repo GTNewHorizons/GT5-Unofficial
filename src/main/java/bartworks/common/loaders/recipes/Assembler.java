@@ -44,9 +44,10 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
+        // todo: put new recipes for MEBF, MVF, MDT in coremod and change them to be zpm appropriate
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Machine_Multi_BlastFurnace.get(64))
-            .itemOutputs(ItemRegistry.megaMachines[0])
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
