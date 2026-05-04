@@ -815,6 +815,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     max(this.mEnergyHatches.size(), this.mExoticEnergyHatches.size()),
                     4));
         }
+        checkHasMaintenanceHatch(errors);
         if (glassTier < VoltageIndex.LuV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
         }

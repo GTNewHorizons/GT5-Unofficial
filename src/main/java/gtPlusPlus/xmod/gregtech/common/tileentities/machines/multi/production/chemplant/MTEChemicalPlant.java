@@ -395,6 +395,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (mCatalystBuses.size() > 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
         }
+        checkHasMaintenanceHatch(errors);
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
     }

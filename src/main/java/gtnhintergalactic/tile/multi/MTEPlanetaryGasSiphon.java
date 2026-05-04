@@ -410,6 +410,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         checkHatchExact(errors, HatchElement.Energy, 1);
         checkHatchMax(errors, HatchElement.InputHatch, 0);
         checkHatchMax(errors, HatchElement.OutputBus, 0);
+        checkHasMaintenanceHatch(errors);
         checkCasingMin(errors, casingAmount, 175);
     }
 

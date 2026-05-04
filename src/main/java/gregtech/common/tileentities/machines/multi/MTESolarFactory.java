@@ -251,6 +251,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
         checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

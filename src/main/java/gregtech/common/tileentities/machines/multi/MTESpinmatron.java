@@ -577,6 +577,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                 lastCheckedTierIndex = i;
                 rotateTurbines();
                 checkCasingMin(errors, casingAmount, 550);
+                checkHasMaintenanceHatch(errors);
                 return;
             }
         }

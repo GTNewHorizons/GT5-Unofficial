@@ -401,6 +401,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         checkHatchMax(errors, Energy, 2);
+        checkHasMaintenanceHatch(errors);
 
         if (glassTier < VoltageIndex.LuV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));

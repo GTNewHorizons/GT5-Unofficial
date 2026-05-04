@@ -165,6 +165,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
 
     public void checkHatch(List<StructureError> errors) {
         checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
     }
 
