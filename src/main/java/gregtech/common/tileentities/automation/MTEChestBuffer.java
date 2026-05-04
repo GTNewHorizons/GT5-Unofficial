@@ -11,7 +11,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -107,17 +106,8 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addSortStacksButton(builder);
-        addEmitRedstoneIfFullButton(builder);
-        addInvertRedstoneButton(builder);
-        addStockingModeButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(98, 60)
-                .setSize(51, 22));
-        addMainUI(builder);
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEChestBufferGui(this).build(guiData, syncManager, uiSettings);
     }
 
     protected void addMainUI(ModularWindow.Builder builder) {
