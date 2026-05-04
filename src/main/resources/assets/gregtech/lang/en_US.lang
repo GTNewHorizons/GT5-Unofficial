@@ -3137,6 +3137,7 @@ gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beaml
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
 gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
+gt.blockmachines.multimachine.beamcrafting.machineoff=Machine is off
 
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
@@ -7777,6 +7778,7 @@ gt.blockcasings13.11.name=Charged Matter Sensor Casing
 gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
 gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
 gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
+gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
