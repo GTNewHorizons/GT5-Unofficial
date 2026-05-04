@@ -678,17 +678,15 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
 
+            if (rate == 0) {
+                o.dataPacket = null;
+                continue;
+            }
             int rolledId = generateOutputParticleID(this.outputEnergy, o.acceptedInputMap);
             if (rolledId < 0) { // energy too low for any valid particle
                 o.dataPacket = null;
                 continue;
             }
-
-            if (rate == 0) {
-                o.dataPacket = null;
-                continue;
-            }
-
             o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }
