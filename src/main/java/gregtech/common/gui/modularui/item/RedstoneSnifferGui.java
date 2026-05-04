@@ -147,12 +147,10 @@ public class RedstoneSnifferGui {
                                 .textAlign(Alignment.Center))
                         .child(
                             new TextWidget<>(
-                                entry.isPrivate ? IKey.lang("gui.yes")
-                                    .toString()
-                                    : IKey.lang("gui.no")
-                                        .toString()).widthRel(0.5f)
-                                            .color(textColor)
-                                            .textAlign(Alignment.Center)));
+                                entry.isPrivate ? StatCollector.translateToLocal("gui.yes")
+                                    : StatCollector.translateToLocal("gui.no")).widthRel(0.5f)
+                                        .color(textColor)
+                                        .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
         });
