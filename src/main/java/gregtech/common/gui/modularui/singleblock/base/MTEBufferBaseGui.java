@@ -4,9 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,19 +12,15 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import xyz.wagyourtail.jvmdg.util.Pair;
 
@@ -86,35 +80,6 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             .tooltipDynamic(tooltipBuilder)
             .tooltipAutoUpdate(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
-    }
-
-    /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
-    /// is open.
-    ///
-    /// Accounts for extended tooltips shown when shift is held down.
-    protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
-        GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
-
-        return t -> t.addStringLines(Interactable.hasShiftDown() ? data.shiftText : data.text)
-            .titleMargin(2);
-    }
-
-    /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
-    /// while the Gui is open.
-    ///
-    /// Accounts for extended tooltips shown when shift is held down.
-    @SafeVarargs
-    protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
-        return t -> {
-            GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getUncachedTooltipData(
-                key,
-                Arrays.stream(args)
-                    .map(Supplier::get)
-                    .toArray());
-
-            t.addStringLines(Interactable.hasShiftDown() ? data.shiftText : data.text)
-                .titleMargin(2);
-        };
     }
 
     /// Subclasses should add their own buttons to this list.
@@ -179,12 +144,5 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip"))));
 
         return buttons;
-    }
-
-    protected Widget<?> createArrow(BiFunction<Integer, Boolean, UITexture> arrowSupplier, int width, int height,
-        boolean fromRight) {
-        return arrowSupplier.apply(width, fromRight)
-            .asWidget()
-            .size(width, height);
     }
 }
