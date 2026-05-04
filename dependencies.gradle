@@ -41,9 +41,9 @@ dependencies {
     api("com.falsepattern:chunkapi-mc1.7.10:0.8.1:dev")
     api("com.falsepattern:endlessids-mc1.7.10:1.7.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.4:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.59-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.60-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.25:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-923-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-924-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.80-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
 
@@ -68,7 +68,7 @@ dependencies {
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
     compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.8:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.9:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.15:dev") { transitive = false }
@@ -113,7 +113,7 @@ dependencies {
     // For testing forestry integration (iApiary, combs, tree growth simulator)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.11.19:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.18.1:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.8-GTNH:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.9-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.27:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
