@@ -233,6 +233,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
+import gregtech.common.tileentities.machines.multi.MTEThermalBoiler;
 import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
