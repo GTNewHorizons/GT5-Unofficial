@@ -46,7 +46,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -211,7 +210,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         this.casingAmount = 0;
         if (!checkPiece(mName, 2, 5, 0, errors)) return;
         checkHasMaintenanceHatch(errors);
-        checkCasingMin(errors,casingAmount, 25);
+        checkCasingMin(errors, casingAmount, 25);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }

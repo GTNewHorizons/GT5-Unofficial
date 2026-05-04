@@ -326,9 +326,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             UniversalSingularities.isModLoaded()
                 ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
                 : ItemList.Tool_DataStick.get(1));
-        checkOneMaintenanceHatch(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
         checkHasAnyEnergy(errors);
         if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
             errors.add(StructureErrors.of("GT5U.gui.text.latex_singularity"));

@@ -43,7 +43,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -330,7 +329,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         mInputHotFluidHatch = null;
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0, errors)) return;
-        checkCasingMin(errors,mCasingAmount, 90);
+        checkCasingMin(errors, mCasingAmount, 90);
         checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);

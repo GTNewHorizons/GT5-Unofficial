@@ -385,7 +385,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 return;
             }
         }
-        checkCasingMin(errors,mCasing, 70);
+        checkCasingMin(errors, mCasing, 70);
         mMachineCasingTier = checkMachine - 1;
         mPipeCasingTier = checkPipe - 12;
         mCoilTier = checkCoil.getTier();

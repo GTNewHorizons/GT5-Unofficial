@@ -181,7 +181,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
         checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
-
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;

@@ -197,6 +197,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         List<StructureError> errors) {
         if (!structure.checkStructure(this, errors)) return;
         structureInstanceInfo.validate(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

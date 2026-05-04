@@ -471,8 +471,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 24);
         checkCasingMin(errors, mFireboxAmount, 3);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {

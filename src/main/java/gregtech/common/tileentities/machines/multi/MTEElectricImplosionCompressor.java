@@ -248,6 +248,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         checkCasingMin(errors, casingAmount, 230);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

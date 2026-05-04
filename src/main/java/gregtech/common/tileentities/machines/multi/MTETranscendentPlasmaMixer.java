@@ -261,6 +261,8 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
         checkHatchMax(errors, Maintenance, 1);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

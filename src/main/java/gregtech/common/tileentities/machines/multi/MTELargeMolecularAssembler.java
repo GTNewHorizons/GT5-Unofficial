@@ -346,6 +346,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
         checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
         checkCasingMin(errors, casing, MIN_CASING_COUNT);
     }
 

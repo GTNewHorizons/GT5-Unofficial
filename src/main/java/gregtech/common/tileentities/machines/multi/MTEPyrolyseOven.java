@@ -188,6 +188,10 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 60);
         checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasEnergyHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

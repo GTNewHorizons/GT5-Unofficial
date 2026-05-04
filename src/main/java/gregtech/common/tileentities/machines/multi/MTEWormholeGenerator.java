@@ -343,6 +343,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         if (mStructureBadGlassTier) {
             errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
         }
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -50,7 +50,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
@@ -300,7 +299,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
         errors.clear();
 
-        checkCasingMin(errors,casingAmount, 35);
+        checkCasingMin(errors, casingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
@@ -309,8 +308,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyInput(errors);
     }
 
     @Override
