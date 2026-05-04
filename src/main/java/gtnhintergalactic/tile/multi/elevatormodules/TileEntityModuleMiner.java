@@ -300,30 +300,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     public void saveParameters(NBTTagCompound nbt) {
-        nbt.setInteger(
-            DISTANCE_PARAMETER,
-            (int) parameterMap.get(DISTANCE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            PARALLEL_PARAMETER,
-            (int) parameterMap.get(PARALLEL_PARAMETER)
-                .getValue());
-        nbt.setBoolean(
-            CYCLE_PARAMETER,
-            (boolean) parameterMap.get(CYCLE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            RANGE_PARAMETER,
-            (int) parameterMap.get(RANGE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            STEP_PARAMETER,
-            (int) parameterMap.get(STEP_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            CYCLE_DISTANCE_PARAMETER,
-            (int) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-                .getValue());
+        IntegerParameter.saveValue(nbt, parameterMap, DISTANCE_PARAMETER);
+        IntegerParameter.saveValue(nbt, parameterMap, PARALLEL_PARAMETER);
+        BooleanParameter.saveValue(nbt, parameterMap, CYCLE_PARAMETER);
+        IntegerParameter.saveValue(nbt, parameterMap, RANGE_PARAMETER);
+        IntegerParameter.saveValue(nbt, parameterMap, STEP_PARAMETER);
+        IntegerParameter.saveValue(nbt, parameterMap, CYCLE_DISTANCE_PARAMETER);
     }
 
     @Override
@@ -333,13 +315,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             return;
         }
 
-        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(nbt.getInteger(DISTANCE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER)).setValue(nbt.getInteger(PARALLEL_PARAMETER));
-        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(nbt.getBoolean(CYCLE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER)).setValue(nbt.getInteger(RANGE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue(nbt.getInteger(STEP_PARAMETER));
-        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-            .setValue(nbt.getInteger(CYCLE_DISTANCE_PARAMETER));
+        IntegerParameter.loadValue(nbt, parameterMap, DISTANCE_PARAMETER);
+        IntegerParameter.loadValue(nbt, parameterMap, PARALLEL_PARAMETER);
+        BooleanParameter.loadValue(nbt, parameterMap, CYCLE_PARAMETER);
+        IntegerParameter.loadValue(nbt, parameterMap, RANGE_PARAMETER);
+        IntegerParameter.loadValue(nbt, parameterMap, STEP_PARAMETER);
+        IntegerParameter.loadValue(nbt, parameterMap, CYCLE_DISTANCE_PARAMETER);
     }
 
     private void loadLegacyParameters(NBTTagCompound nbt) {
