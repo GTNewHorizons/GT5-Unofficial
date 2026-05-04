@@ -1662,7 +1662,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AlgaeCasing.get(1),
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
-      
+
         // Naquadah Reactor Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
