@@ -1811,6 +1811,7 @@ public enum MetaTileEntityIDs {
     CryogenicFreezer(15565),
     IndustrialMixer(15566),
     InfiniteFluidDrillingRig(15567),
+    DroneCentre(15568),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
