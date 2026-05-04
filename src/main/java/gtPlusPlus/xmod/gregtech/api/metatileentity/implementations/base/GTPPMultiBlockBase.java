@@ -29,10 +29,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
-import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import org.jetbrains.annotations.ApiStatus;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
