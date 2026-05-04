@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import goodgenerator.blocks.tileEntity.base.MTELargeTurbineBase;
+import goodgenerator.blocks.tileEntity.base.MTELargeTurbineBaseLegacy;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -24,7 +24,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
-public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
+public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegacy {
 
     private boolean looseFit = false;
 
@@ -32,11 +32,11 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     private static final IIconContainer turbineOff = Textures.BlockIcons.custom("icons/turbines/TURBINE_15");
     private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom("icons/turbines/TURBINE_25");
 
-    public MTESupercriticalFluidTurbine(int aID, String aName, String aNameRegional) {
+    public MTESupercriticalFluidTurbineLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTESupercriticalFluidTurbine(String aName) {
+    public MTESupercriticalFluidTurbineLegacy(String aName) {
         super(aName);
     }
 
@@ -140,6 +140,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, LST-SC")
+            .addStructureDeprecatedLine()
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use Supercritical Steam to generate power")
             .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
@@ -158,7 +159,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESupercriticalFluidTurbine(mName);
+        return new MTESupercriticalFluidTurbineLegacy(mName);
     }
 
     @Override
