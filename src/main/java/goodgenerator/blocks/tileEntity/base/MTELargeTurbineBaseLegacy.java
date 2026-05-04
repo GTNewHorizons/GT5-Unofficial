@@ -1,20 +1,14 @@
-package gregtech.common.tileentities.machines.multi;
+// copied from gregtech.common.tileentities.machines.multi.MTELargeTurbine
+// The origin one in gt made the abstract method private so i can't imp it.
+package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.Dynamo;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
-import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -23,7 +17,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,18 +24,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -59,15 +45,15 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
-public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELargeTurbine>
+public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBase<MTELargeTurbineBaseLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<MTELargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
+    private static final ClassValue<IStructureDefinition<MTELargeTurbineBaseLegacy>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
-        protected IStructureDefinition<MTELargeTurbine> computeValue(Class<?> type) {
-            return StructureDefinition.<MTELargeTurbine>builder()
+        protected IStructureDefinition<MTELargeTurbineBaseLegacy> computeValue(Class<?> type) {
+            return StructureDefinition.<MTELargeTurbineBaseLegacy>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
@@ -81,7 +67,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 .addElement(
                     'h',
                     lazy(
-                        t -> buildHatchAdder(MTELargeTurbine.class).atLeast(t.getHatchElements())
+                        t -> buildHatchAdder(MTELargeTurbineBaseLegacy.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
@@ -96,7 +82,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     protected int counter = 0;
     protected boolean looseFit = false;
     protected int overflowMultiplier = 0;
-    protected final float[] flowMultipliers = new float[] { 1, 1, 1 };
+    protected long maxPower = 0;
 
     // client side stuff
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
@@ -105,14 +91,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     // so we use a separate field for this
     protected boolean mFormed;
 
-    public MTELargeTurbine(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineBaseLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        usesTurbine = true;
     }
 
-    public MTELargeTurbine(String aName) {
+    public MTELargeTurbineBaseLegacy(String aName) {
         super(aName);
-        usesTurbine = true;
     }
 
     @Override
@@ -121,33 +105,17 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public IStructureDefinition<MTELargeTurbine> getStructureDefinition() {
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public IStructureDefinition<MTELargeTurbineBaseLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> r.isNotRotated() && f.isNotFlipped();
-    }
-
-    @Override
-    protected ExtendedFacing getCorrectedAlignment(ExtendedFacing aOldFacing) {
-        return aOldFacing.with(Flip.NONE)
-            .with(Rotation.NORMAL);
-    }
-
-    @Override
-    public boolean isFlipChangeAllowed() {
-        return false;
-    }
-
-    @Override
-    public boolean isRotationChangeAllowed() {
-        return false;
-    }
-
     @SuppressWarnings("unchecked")
-    protected IHatchElement<? super MTELargeTurbine>[] getHatchElements() {
+    protected IHatchElement<? super MTELargeTurbineBaseLegacy>[] getHatchElements() {
         if (getPollutionPerTick(null) == 0)
             return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus };
         return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };
@@ -155,32 +123,20 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1) && mMaintenanceHatches.size() == 1
-            && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0);
+        maxPower = 0;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1) && mMaintenanceHatches.size() == 1
+            && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0)) {
+            maxPower = getMaximumOutput();
+            return true;
+        }
+        return false;
     }
 
     public abstract Block getCasingBlock();
 
-    public abstract byte getCasingMeta();
+    public abstract int getCasingMeta();
 
     public abstract int getCasingTextureIndex();
-
-    @Deprecated
-    public boolean isNewStyleRendering() {
-        return false;
-    }
-
-    public IIconContainer[] getTurbineTextureActive() {
-        return TURBINE_NEW_ACTIVE;
-    }
-
-    public IIconContainer[] getTurbineTextureFull() {
-        return TURBINE_NEW;
-    }
-
-    public IIconContainer[] getTurbineTextureEmpty() {
-        return TURBINE_NEW_EMPTY;
-    }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -212,12 +168,24 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         setTurbineOverlay();
     }
 
+    public IIconContainer[] getTurbineTextureActive() {
+        return TURBINE_NEW_ACTIVE;
+    }
+
+    public IIconContainer[] getTurbineTextureFull() {
+        return TURBINE_NEW;
+    }
+
+    public IIconContainer[] getTurbineTextureEmpty() {
+        return TURBINE_NEW_EMPTY;
+    }
+
     @Override
     public void onValueUpdate(byte aValue) {
         mHasTurbine = (aValue & 0x1) != 0;
         mFormed = (aValue & 0x2) != 0;
-        super.onValueUpdate(aValue);
         setTurbineOverlay();
+        super.onValueUpdate(aValue);
     }
 
     @Override
@@ -240,20 +208,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("turbineFitting", looseFit);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        looseFit = aNBT.getBoolean("turbineFitting");
-    }
-
-    @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
         if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
             || controllerSlot.getItemDamage() < 170
@@ -276,7 +231,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = (int) (100 * turbine.getBaseEfficiency());
+                baseEff = (int) turbine.getBaseEfficiency();
                 optFlow = (int) turbine.getOptimalFlow();
 
                 overflowMultiplier = turbine.getOverflowEfficiency();
@@ -290,10 +245,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, turbine); // How much the
-                                                         // turbine should
-                                                         // be producing
-                                                         // with this flow
+        int newPower = fluidIntoPower(tFluids, turbine); // How much the turbine should be producing with this
+                                                         // flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in
@@ -319,19 +272,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
-
-    abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
-
-    // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
-    public long getMaximumOutput() {
-        long aTotal = 0;
-        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
-            long aVoltage = aDynamo.maxEUOutput();
-            aTotal = aDynamo.maxAmperesOut() * aVoltage;
-        }
-        return aTotal;
-    }
+    public abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
@@ -352,6 +293,16 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return true;
+    }
+
+    public long getMaximumOutput() {
+        long aTotal = 0;
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            break;
+        }
+        return aTotal;
     }
 
     @Override
@@ -384,11 +335,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         }
         return new String[] {
             // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency) / 10000)
-                + EnumChatFormatting.RESET
-                + " EU/t", /* 1 */
+            tRunning + ": " + EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET + " EU/t", /* 1 */
             tMaintainance, /* 2 */
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW
@@ -408,8 +355,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.YELLOW
                 + formatNumber(GTUtility.safeInt((long) realOptFlow))
                 + EnumChatFormatting.RESET
-                + " L/" // based on processing time uses ticks or seconds (for plasma)
-                + (this.mMaxProgresstime == 1 ? 't' : 's')
+                + " L/t"
                 + /* 4 */ EnumChatFormatting.YELLOW
                 + " ("
                 + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
@@ -451,11 +397,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public boolean showRecipeTextInGUI() {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 1);
     }
@@ -464,12 +405,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_LARGE_TURBINES_LOOP;
     }
 
     @Override
