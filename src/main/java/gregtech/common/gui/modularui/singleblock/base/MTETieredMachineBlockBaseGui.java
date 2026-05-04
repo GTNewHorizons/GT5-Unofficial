@@ -255,7 +255,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     ///
     /// Accounts for extended tooltips shown when shift is held down.
     protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
-        return addToRichTooltip(() -> machine.mTooltipCache.getData(key, args));
+        GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
+        return addToRichTooltip(() -> data);
     }
 
     /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
