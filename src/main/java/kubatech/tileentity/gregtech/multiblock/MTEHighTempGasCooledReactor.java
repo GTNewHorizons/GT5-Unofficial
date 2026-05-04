@@ -62,6 +62,7 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -99,7 +100,7 @@ import kubatech.loaders.item.htgritem.HTGRItem;
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
 
-    private static final int BASECASINGINDEX = 181;
+    private static final int BASECASINGINDEX = Casings.IVMachineCasing.textureId;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition

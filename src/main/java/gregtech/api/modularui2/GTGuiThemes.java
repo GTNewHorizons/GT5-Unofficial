@@ -95,7 +95,7 @@ public final class GTGuiThemes {
         .parent(STANDARD)
         .fullColor(Dyes.dyeLightGray)
         .build();
-    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_standard_gray")
+    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_gray")
         .parent(STANDARD)
         .fullColor(Dyes.dyeGray)
         .build();
