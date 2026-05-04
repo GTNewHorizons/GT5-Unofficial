@@ -156,9 +156,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 if (!parameter.shouldShowInGui()) {
                     return;
                 }
-                String key = parameter.getLangKey();
-                Object args = parameter.getLangArgs();
-                ButtonWidget<?> parameterEditButton = new ButtonWidget<>().overlay(IKey.lang(key, args))
+                ButtonWidget<?> parameterEditButton = new ButtonWidget<>()
+                    .overlay(IKey.lang(parameter.getLangKey(), parameter.getLangArgs()))
                     .width(100)
                     .marginBottom(2);
 
@@ -204,7 +203,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         return Flow.row()
             .coverChildren()
             .child(
-                IKey.lang(parameter.getLangKey())
+                IKey.lang(parameter.getLangKey(), parameter.getLangArgs())
                     .asWidget()
                     .alignment(Alignment.CenterLeft)
                     .margin(0, 14, 2, 2))

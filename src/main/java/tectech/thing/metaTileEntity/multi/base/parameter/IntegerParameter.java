@@ -27,7 +27,7 @@ public class IntegerParameter extends Parameter<Integer> {
 
     @Override
     public void saveToParameterCard(NBTTagCompound tag) {
-        tag.setString("key", this.getLangKey());
+        super.saveToParameterCard(tag);
         tag.setString("type", "integer");
         tag.setInteger("value", this.getValue());
     }

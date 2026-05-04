@@ -3,6 +3,8 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 import java.util.function.Supplier;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
@@ -67,7 +69,16 @@ public abstract class Parameter<T> {
 
     public abstract void loadNBT(NBTTagCompound tag);
 
-    public abstract void saveToParameterCard(NBTTagCompound tag);
+    public void saveToParameterCard(NBTTagCompound tag) {
+        tag.setString("langKey", langKey);
+        if (langArgs != null) {
+            NBTTagList tagList = new NBTTagList();
+
+            for (Object arg : langArgs) tagList.appendTag(new NBTTagString(arg.toString()));
+
+            tag.setTag("langArgs", tagList);
+        }
+    }
 
     public abstract void loadFromParameterCard(NBTTagCompound tag);
 

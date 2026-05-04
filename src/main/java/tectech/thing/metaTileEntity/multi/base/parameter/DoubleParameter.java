@@ -27,7 +27,7 @@ public class DoubleParameter extends NumericParameter<Double> {
 
     @Override
     public void saveToParameterCard(NBTTagCompound tag) {
-        tag.setString("key", this.getLangKey());
+        super.saveToParameterCard(tag);
         tag.setString("type", "double");
         tag.setDouble("value", this.getValue());
     }

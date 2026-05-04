@@ -24,14 +24,14 @@ public class BooleanParameter extends Parameter<Boolean> {
 
     @Override
     public void saveToParameterCard(NBTTagCompound tag) {
-        tag.setString("key", this.getLangKey());
+        super.saveToParameterCard(tag);
         tag.setString("type", "boolean");
         tag.setBoolean("value", this.getValue());
     }
 
     @Override
     public void loadFromParameterCard(NBTTagCompound tag) {
-
+        this.setValue(tag.getBoolean("value"));
     }
 
     @Override
