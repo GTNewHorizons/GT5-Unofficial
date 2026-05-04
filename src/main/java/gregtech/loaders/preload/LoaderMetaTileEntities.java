@@ -285,6 +285,11 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineGas;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineHPSteam;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbinePlasma;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineSCSteam;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineSteam;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbinePlasma;
@@ -958,6 +963,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialBendingMachine.ID,
                 "industrialbender.controller.tier.single",
                 "Industrial Bending Machine").getStackForm(1L));
+
+        ItemList.SteamTurbineXL.set(
+            new MTEXLTurbineSteam(SteamTurbineXL.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
+                .getStackForm(1L));
+        ItemList.HPSteamTurbineXL.set(
+            new MTEXLTurbineHPSteam(HPSteamTurbineXL.ID, "multimachine.largerhpturbine", "XL Turbo HP Steam Turbine")
+                .getStackForm(1L));
+        ItemList.SCSteamTurbineXL.set(
+            new MTEXLTurbineSCSteam(SCSteamTurbineXL.ID, "multimachine.largerscturbine", "XL Turbo SC Steam Turbine")
+                .getStackForm(1L));
+        ItemList.GasTurbineXL.set(
+            new MTEXLTurbineGas(GasTurbineXL.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
+                .getStackForm(1L));
+        ItemList.PlasmaTurbineXL.set(
+            new MTEXLTurbinePlasma(PlasmaTurbineXL.ID, "multimachine.largerplasmaturbine", "XL Turbo Plasma Turbine")
+                .getStackForm(1L));
 
         ItemList.PyrolyzeOven
             .set(new MTEPyrolyseOven(PyrolyzeOven.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
