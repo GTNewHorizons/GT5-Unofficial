@@ -146,6 +146,7 @@ import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
@@ -194,6 +195,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteamLegacy;
@@ -830,6 +832,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Large Thermal Refinery").getStackForm(1));
 
+        ItemList.CryogenicFreezer.set(
+            new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
+                .getStackForm(1L));
+
         ItemList.NaquadahFuelRefinery
             .set(new MTENaquadahFuelRefinery(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
 
@@ -961,6 +967,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 AdvancedImplosionCompressor.ID,
                 "multimachine.adv.implosioncompressor",
                 "Density^2").getStackForm(1L));
+
+        ItemList.LargeNaquadahReactor
+            .set(new MTELargeNaquadahReactor(LargeNaquadahReactor.ID, "NaG", "Large Naquadah Reactor").getStackForm(1));
 
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
