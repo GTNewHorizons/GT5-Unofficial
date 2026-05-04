@@ -1863,7 +1863,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.SCSteamTurbineXL.get(1),
             new Object[] { GregtechItemList.Large_SCSteam_Turbine });
-      
+
         // Large Turbines Conversion Recipes
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.SteamTurbine.get(1), new Object[] { ItemList.LargeSteamTurbine });
