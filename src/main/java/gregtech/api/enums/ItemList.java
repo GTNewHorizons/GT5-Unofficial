@@ -2907,6 +2907,7 @@ public enum ItemList implements IItemContainer {
     CryogenicFreezer,
     IndustrialMixer,
     MegaChemicalReactor,
+    InfiniteFluidDrillingRig,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
