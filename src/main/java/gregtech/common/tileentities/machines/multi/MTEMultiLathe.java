@@ -263,12 +263,14 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkBodyPiece(errors)) return;
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         if (pipeTier <= 0) {
             errors.add(StructureErrors.of("GT5U.gui.text.missing_pipe_casing"));
         }
         checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasingAmount, 42);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

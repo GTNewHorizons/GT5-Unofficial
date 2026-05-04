@@ -133,7 +133,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         mTierCasing = -1;
         mFusionTierCasing = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0, errors)) return;
-        checkCasingMin(errors,mCasing, 19);
+        checkCasingMin(errors, mCasing, 19);
         if (mTierCasing > 3 && mFusionTierCasing < 2) {
             errors.add(StructureErrors.of("GT5U.gui.text.defc_fusion_machine_casing"));
         }

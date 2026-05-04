@@ -299,8 +299,10 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHasMufflerHatch(errors);
         checkCasingMin(errors, casingAmount, 10);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -31,7 +31,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -209,11 +208,12 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         itemPipeTier = -1;
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors,mCasingAmount, 14);
+        checkCasingMin(errors, mCasingAmount, 14);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override

@@ -63,7 +63,10 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         mCasing = 0;
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 16);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasEnergyHatch(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

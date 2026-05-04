@@ -5,12 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -195,6 +193,9 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
         checkCasingMin(errors, casingAmount, 8);
         checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -304,14 +305,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                 .addElement(
                     'C',
                     buildHatchAdder(MTETreeFarm.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(MultiAmpEnergy),
-                            Muffler)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy), Muffler)
                         .casingIndex(Casings.SterileFarmCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SterileFarmCasing.asElement())))

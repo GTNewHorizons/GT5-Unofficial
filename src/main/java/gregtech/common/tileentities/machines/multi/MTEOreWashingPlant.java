@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -98,7 +97,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         .addElement(
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)
-                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
@@ -136,7 +135,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputBus("Any Wash Plant Casing", 1)
             .addOutputBus("Any Wash Plant Casing", 1)
             .addInputHatch("Any Wash Plant Casing", 1)
-            .addOutputHatch("Any Wash Plant Casing", 1)
             .addEnergyHatch("Any Wash Plant Casing", 1)
             .addMaintenanceHatch("Any Wash Plant Casing", 1)
             .addMufflerHatch("Any Wash Plant Casing", 1)
@@ -177,6 +175,10 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         checkCasingMin(errors, casingAmount, 70);
         checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
+            .addCasingInfoRange("Heat Proof Machine Casing", 7, 14, false)
             .addOtherStructurePart("Heating Coils", "Middle layer")
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
@@ -292,7 +292,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         } else {
             this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
         }
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
     }
 
     @Override

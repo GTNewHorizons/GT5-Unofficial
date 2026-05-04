@@ -48,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -100,7 +99,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fish Trap")
             .addInfo("Can process (Tier + 1) * 2 recipes")
-            .addInfo("Put a numbered circuit into the input bus")
+            .addInfo("Put a numbered circuit into the input bus or controller")
             .addInfo("Circuit " + FISH_MODE + " for Fish")
             .addInfo("Circuit " + JUNK_MODE + " for Junk")
             .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
@@ -168,11 +167,12 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors,casingAmount, 160);
+        checkCasingMin(errors, casingAmount, 160);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasAnyInput(errors);
+        checkHasInputHatch(errors);
         checkHasOutputBus(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override

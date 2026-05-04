@@ -173,7 +173,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
 
-        checkCasingMin(errors,mCasing, MINIMUM_CASINGS);
+        checkCasingMin(errors, mCasing, MINIMUM_CASINGS);
         if (checkMeta <= 0) {
             // If the player do not provide any casing, skip this diagnostic.
             errors.add(StructureErrors.of("GT5U.gui.text.unknown_machine_casing_tier"));

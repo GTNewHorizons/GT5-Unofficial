@@ -38,7 +38,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
@@ -184,7 +183,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
-        checkCasingMin(errors,mCasingAmount, 14);
+        checkCasingMin(errors, mCasingAmount, 14);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);

@@ -305,6 +305,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             checkHasEnergyHatch(errors);
         }
         checkHasMaintenanceHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasAnyInput(errors);
 
         if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) {
             errors.add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UMV, laserSource.mTier)));

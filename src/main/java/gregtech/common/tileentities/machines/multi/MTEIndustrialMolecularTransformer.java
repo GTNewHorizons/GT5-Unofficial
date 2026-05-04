@@ -31,7 +31,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -145,10 +144,10 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors,casingAmount, 95);
+        checkCasingMin(errors, casingAmount, 95);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkOneMufflerHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }

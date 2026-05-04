@@ -61,8 +61,11 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
         mCasing = 0;
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 16);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override

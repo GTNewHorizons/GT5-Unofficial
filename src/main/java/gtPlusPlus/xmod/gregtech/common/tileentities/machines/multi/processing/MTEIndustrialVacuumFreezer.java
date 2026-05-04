@@ -166,8 +166,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
 
-        checkCasingMin(errors,mCasing, 10);
-
+        checkCasingMin(errors, mCasing, 10);
 
         if (mCryotheumHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));

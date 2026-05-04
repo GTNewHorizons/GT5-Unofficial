@@ -272,6 +272,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         checkCasingMin(errors, casingAmount, MIN_CASINGS);
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override

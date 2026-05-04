@@ -655,8 +655,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
             return;
         }
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkExoticAndNormalEnergyHatches(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
 
         if (!errors.isEmpty()) return;
 

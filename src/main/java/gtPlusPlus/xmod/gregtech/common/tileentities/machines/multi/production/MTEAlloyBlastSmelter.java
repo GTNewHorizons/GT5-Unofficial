@@ -37,7 +37,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -138,7 +137,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
-        checkCasingMin(errors,mCasing, 3);
+        checkCasingMin(errors, mCasing, 3);
         checkHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);

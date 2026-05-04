@@ -277,7 +277,8 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
         }
         checkCasingMin(errors, mCasingAmount, 18);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
         if (mMiddleInputHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
         }

@@ -54,7 +54,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -293,7 +292,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             return;
         }
         if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
-        checkCasingMin(errors,casingAmount, 7);
+        checkCasingMin(errors, casingAmount, 7);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
         if (mNeutronAccelerator.isEmpty()) {

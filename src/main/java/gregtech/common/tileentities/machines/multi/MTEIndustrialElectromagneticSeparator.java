@@ -53,7 +53,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -257,7 +256,7 @@ public class MTEIndustrialElectromagneticSeparator
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0, errors)) return;
-        checkCasingMin(errors,mCasingAmount, MIN_CASING);
+        checkCasingMin(errors, mCasingAmount, MIN_CASING);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);

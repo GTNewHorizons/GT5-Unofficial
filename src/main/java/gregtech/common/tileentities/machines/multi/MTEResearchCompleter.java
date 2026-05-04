@@ -308,6 +308,10 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         if (!checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1), errors)) return;
 
         checkCasingMin(errors, mCasing, mLength * 3);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

@@ -52,7 +52,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -315,7 +314,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0, errors)) return;
-        checkCasingMin(errors,mCasingAmount, 95);
+        checkCasingMin(errors, mCasingAmount, 95);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);

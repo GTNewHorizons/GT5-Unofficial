@@ -34,7 +34,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -145,8 +144,8 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors,casingAmount, 50);
-        checkOneMufflerHatch(errors);
+        checkCasingMin(errors, casingAmount, 50);
+        checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);

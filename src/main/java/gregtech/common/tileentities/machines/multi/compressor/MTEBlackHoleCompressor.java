@@ -74,7 +74,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -453,10 +452,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10, errors)) return;
-        checkCasingMin(errors,mCasingAmount, 950);
-        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
+        checkCasingMin(errors, mCasingAmount, 950);
+        checkHasAnyEnergy(errors);
         // Allow only 1 energy hatch if laser/multiamp
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {

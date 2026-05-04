@@ -201,6 +201,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkHatchMax(errors, ExoticEnergy, 1);
         checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     private static int getRecipeTickTime(ProcessingMode mode) {

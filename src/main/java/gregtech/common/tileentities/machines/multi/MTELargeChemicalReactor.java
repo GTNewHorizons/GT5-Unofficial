@@ -183,6 +183,8 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         }
         checkHasEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
