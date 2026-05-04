@@ -2137,6 +2137,7 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME,
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
+    Hatch_CraftingInput_Bus_Slave_ItemOnly,
     Hatch_PatternProvider_Crafting,
     DebugStructureWriter,
 
