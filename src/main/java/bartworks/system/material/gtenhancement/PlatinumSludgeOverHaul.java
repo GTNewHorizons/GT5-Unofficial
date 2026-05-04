@@ -377,27 +377,27 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(PTConcentrate.get(cell, 8))
+            .itemInputs(PTConcentrate.get(cell, 4))
             .itemOutputs(
-                PTSaltCrude.get(dustTiny, 32),
-                PTRawPowder.get(dustTiny, 8),
-                Materials.NitrogenDioxide.getCells(2),
-                Materials.HydrochloricAcid.getCells(6))
-            .fluidInputs(AmmoniumChloride.getFluidOrGas(800))
-            .fluidOutputs(PDAmmonia.getFluidOrGas(800))
-            .duration(2 * MINUTES)
+                PTSaltCrude.get(dustTiny, 16),
+                PTRawPowder.get(dustTiny, 4),
+                Materials.NitrogenDioxide.getCells(1),
+                Materials.HydrochloricAcid.getCells(3))
+            .fluidInputs(AmmoniumChloride.getFluidOrGas(400))
+            .fluidOutputs(PDAmmonia.getFluidOrGas(400))
+            .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(PTSaltCrude.get(dustTiny, 32), PTRawPowder.get(dustTiny, 8))
-            .fluidInputs(PTConcentrate.getFluidOrGas(8_000), AmmoniumChloride.getFluidOrGas(800))
+            .itemOutputs(PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny, 4))
+            .fluidInputs(PTConcentrate.getFluidOrGas(4_000), AmmoniumChloride.getFluidOrGas(400))
             .fluidOutputs(
-                PDAmmonia.getFluidOrGas(800),
-                Materials.NitrogenDioxide.getGas(2_000),
-                Materials.HydrochloricAcid.getFluid(6_000))
-            .duration(1200)
+                PDAmmonia.getFluidOrGas(400),
+                Materials.NitrogenDioxide.getGas(1_000),
+                Materials.HydrochloricAcid.getFluid(3_000))
+            .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 

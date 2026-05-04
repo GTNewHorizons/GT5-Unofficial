@@ -44,7 +44,7 @@ public abstract class GTWorldgen {
 
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
         int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        return ORE_PLACED; // This is for the empty Orevein
+        return NO_OVERLAP_AIR_BLOCK; // This is for the empty Orevein
     }
 
     /**
