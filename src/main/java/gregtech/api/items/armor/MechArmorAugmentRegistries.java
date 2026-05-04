@@ -3,7 +3,6 @@ package gregtech.api.items.armor;
 import java.util.Collection;
 import java.util.HashMap;
 
-import gregtech.api.items.armor.behaviors.*;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
@@ -16,6 +15,7 @@ import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
+import gregtech.api.items.armor.behaviors.*;
 
 public class MechArmorAugmentRegistries {
 
@@ -512,20 +512,20 @@ public class MechArmorAugmentRegistries {
             .setCategory(AugmentCategory.Movement)
             .setRarity(EnumRarity.rare)
         ),
+        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
+            .setId("WaterBreathing")
+            .setItemId("augmentwaterbreathing")
+            .fitsInto(ArmorType.Helmet)
+            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
+            .setCategory(AugmentCategory.Utility)
+            .setRarity(EnumRarity.uncommon)
+        ),
         MilkInfusion(ItemList.Augment_MilkInfusion, new AugmentBuilder()
             .setId("MilkInfusion")
             .setItemId("augmentmilkinfusion")
             .fitsInto(ArmorType.Helmet)
             .providesBehaviors(MilkInfusionBehavior.INSTANCE)
             .setMinimumCore(1)
-            .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.uncommon)
-        ),
-        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
-            .setId("WaterBreathing")
-            .setItemId("augmentwaterbreathing")
-            .fitsInto(ArmorType.Helmet)
-            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
         );

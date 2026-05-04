@@ -3391,6 +3391,7 @@ GT5U.armor.part.name.SpaceSuit=Augment: Astronaut's Equipment
 GT5U.armor.part.name.ForceField=Augment: Energy Grid Defense
 GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
+GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -3411,6 +3412,7 @@ GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Must be applied to 
 GT5U.armor.part.tooltip.ForceField=Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu
 GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in all directions
 GT5U.armor.part.tooltip.WaterBreathing=Restore's the user's air if they run out underwater
+GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
@@ -3434,6 +3436,7 @@ GT5U.armor.behavior.InfiniteEnergy=Infinite Energy
 GT5U.armor.behavior.ForceField=Force Field
 GT5U.armor.behavior.WaterBreathing=Water Breathing
 GT5U.armor.behavior.Teleporter=Personal Teleporter
+GT5U.armor.behavior.MilkInfusion=Milk Infusion
 
 GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
