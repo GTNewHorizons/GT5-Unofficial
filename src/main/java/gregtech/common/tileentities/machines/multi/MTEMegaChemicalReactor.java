@@ -38,7 +38,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -229,8 +228,8 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
                     return;
                 }
             }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
+            for (MTEHatch energyHatch : this.getExoticAndNormalEnergyHatchList()) {
+                if (this.glassTier < energyHatch.mTier) {
                     errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                     return;
                 }
