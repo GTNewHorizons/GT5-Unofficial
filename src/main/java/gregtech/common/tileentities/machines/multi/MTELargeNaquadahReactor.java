@@ -1,9 +1,17 @@
-package goodgenerator.blocks.tileEntity;
+package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static goodgenerator.main.GGConfigLoader.*;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +35,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.GGMaterial;
-import goodgenerator.loader.Loaders;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -50,36 +57,81 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurvivalConstructable {
 
-    protected IStructureDefinition<MTEMultiNqGenerator> multiDefinition = null;
+    private static final int OFFSET_X = 3;
+    private static final int OFFSET_Y = 10;
+    private static final int OFFSET_Z = 0;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private int casingAmount = 0;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected FluidStack lockedFluid = null;
     protected int times = 1;
     protected int basicOutput;
 
-    private static final List<Pair<FluidStack, Integer>> excitedLiquid;
+    private static List<Pair<FluidStack, Integer>> excitedLiquid;
 
-    private static final List<Pair<FluidStack, Integer>> coolant;
+    private static List<Pair<FluidStack, Integer>> coolant;
 
-    static {
-        excitedLiquid = Arrays.asList(
-            Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
-            Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
-            Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
-            Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
-            Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
-        coolant = Arrays.asList(
-            Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
-            Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
-            Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
+    private static List<Pair<FluidStack, Integer>> getExcitedLiquid() {
+        if (excitedLiquid == null) {
+            excitedLiquid = Arrays.asList(
+                Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+                Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
+                Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
+                Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
+                Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
+        }
+        return excitedLiquid;
     }
+
+    private static List<Pair<FluidStack, Integer>> getCoolant() {
+        if (coolant == null) {
+            coolant = Arrays.asList(
+                Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
+                Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
+                Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
+                Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
+        }
+        return coolant;
+    }
+
+    private static final IStructureDefinition<MTELargeNaquadahReactor> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTELargeNaquadahReactor>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            new String[][] {
+                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ",
+                    "   A   ", "  A~A  " },
+                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "   A   ", "       ",
+                    "  ACA  ", " AAAAA " },
+                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ",
+                    " ACACA ", "AAAAAAA" },
+                { "AAAAAAA", "ACAAACA", "C A A C", "CABBBAC", "ABBBBBA", "ABBBBBA", "ABBBBBA", "CABBBAC", "C A A C",
+                    "ACA ACA", "AAAAAAA" },
+                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ",
+                    " ACACA ", "AAAAAAA" },
+                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "       ", "       ",
+                    "  ACA  ", " AAAAA " },
+                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ",
+                    "   A   ", "  AAA  " } })
+        .addElement(
+            'A',
+            ofChain(
+                buildHatchAdder(MTELargeNaquadahReactor.class)
+                    .atLeast(DynamoMulti.or(Dynamo), EnergyMulti.or(Energy), InputHatch, OutputHatch, Maintenance)
+                    .casingIndex(Casings.NaquadahReactorCasing.textureId)
+                    .hint(1)
+                    .build(),
+                onElementPass(x -> x.casingAmount++, Casings.NaquadahReactorCasing.asElement())))
+        .addElement('B', Casings.FieldRestrictionCasing.asElement())
+        .addElement('C', Casings.RadiantProofSteelFrameBox.asElement())
+        .build();
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 3, 7, 0, itemStack, hintsOnly);
+        structureBuild_EM(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, itemStack, hintsOnly);
     }
 
     @Override
@@ -88,51 +140,15 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    public IStructureDefinition<MTEMultiNqGenerator> getStructure_EM() {
-        if (multiDefinition == null) {
-            multiDefinition = StructureDefinition.<MTEMultiNqGenerator>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] {
-                            { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" },
-                            { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
-                            { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
-                            { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
-                            { "N     N", "       ", "  CCC  ", "  CPC  ", "  CCC  ", "       ", "N     N" },
-                            { "AAAAAAA", "A     A", "A CCC A", "A CPC A", "A CCC A", "A     A", "AAAAAAA" },
-                            { "ANNNNNA", "N     N", "N CCC N", "N CPC N", "N CCC N", "N     N", "ANNNNNA" },
-                            { "XXX~XXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX" }, }))
-                .addElement(
-                    'X',
-                    ofChain(
-                        buildHatchAdder(MTEMultiNqGenerator.class)
-                            .atLeast(
-                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
-                                    .or(gregtech.api.enums.HatchElement.Dynamo),
-                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                    .or(gregtech.api.enums.HatchElement.Energy),
-                                gregtech.api.enums.HatchElement.InputHatch,
-                                gregtech.api.enums.HatchElement.OutputHatch,
-                                gregtech.api.enums.HatchElement.Maintenance)
-                            .casingIndex(44)
-                            .hint(1)
-                            .build(),
-                        ofBlock(GregTechAPI.sBlockCasings3, 12)))
-                .addElement('A', ofBlock(GregTechAPI.sBlockCasings3, 12))
-                .addElement('N', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
-                .addElement('C', ofBlock(Loaders.MAR_Casing, 0))
-                .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
-                .build();
-        }
-        return multiDefinition;
+    public IStructureDefinition<MTELargeNaquadahReactor> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
-    public MTEMultiNqGenerator(String name) {
+    public MTELargeNaquadahReactor(String name) {
         super(name);
     }
 
-    public MTEMultiNqGenerator(int id, String name, String nameRegional) {
+    public MTELargeNaquadahReactor(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
     }
 
@@ -173,7 +189,6 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
-
         ArrayList<FluidStack> tFluids = getStoredFluids();
         for (int i = 0; i < tFluids.size() - 1; i++) {
             for (int j = i + 1; j < tFluids.size(); j++) {
@@ -206,7 +221,6 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
                 return CheckRecipeResultRegistry.GENERATING;
             }
         }
-
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -271,7 +285,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     }
 
     public Pair<FluidStack, Integer> getExcited(FluidStack[] input, boolean isConsume) {
-        for (Pair<FluidStack, Integer> fluidPair : excitedLiquid) {
+        for (Pair<FluidStack, Integer> fluidPair : getExcitedLiquid()) {
             FluidStack tFluid = fluidPair.getKey();
             for (FluidStack inFluid : input) {
                 if (inFluid != null && inFluid.isFluidEqual(tFluid) && inFluid.amount >= tFluid.amount) {
@@ -290,7 +304,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
      * @return Efficiency of the coolant. 100 if not found.
      */
     private int consumeCoolant(FluidStack[] input) {
-        for (Pair<FluidStack, Integer> fluidPair : coolant) {
+        for (Pair<FluidStack, Integer> fluidPair : getCoolant()) {
             FluidStack tFluid = fluidPair.getKey();
             for (FluidStack inFluid : input) {
                 if (inFluid != null && inFluid.isFluidEqual(tFluid) && inFluid.amount >= tFluid.amount) {
@@ -331,8 +345,13 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1
-            && mDynamoHatches.size() + eDynamoMulti.size() == 1;
+        casingAmount = 0;
+        return structureCheck_EM(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && checkHatch()
+            && casingAmount >= 130;
+    }
+
+    public boolean checkHatch() {
+        return mMaintenanceHatches.size() == 1 && (mDynamoHatches.size() + eDynamoMulti.size()) == 1;
     }
 
     @Override
@@ -342,7 +361,7 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMultiNqGenerator(this.mName);
+        return new MTELargeNaquadahReactor(this.mName);
     }
 
     @Override
@@ -396,16 +415,16 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addTecTechHatchInfo()
-            .beginStructureBlock(7, 8, 7, true)
+            .beginStructureBlock(7, 11, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoExactly("Field Restriction Casing", 48, false)
+            .addCasingInfoMin("Naquadah Reactor Casing", 130, false)
+            .addCasingInfoExactly("Field Restriction Casing", 81, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
-            .addDynamoHatch("Any bottom layer casing, only accept ONE!")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addDynamoHatch("Any Naquadah Reactor Casing, only accepts ONE!")
+            .addInputHatch("Any Naquadah Reactor Casing")
+            .addOutputHatch("Any Naquadah Reactor Casing")
+            .addMaintenanceHatch("Any Naquadah Reactor Casing")
+            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
     }
@@ -414,36 +433,41 @@ public class MTEMultiNqGenerator extends TTMultiblockBase implements ISurvivalCo
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
+            return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
                 .extFacing()
                 .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44) };
+        return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture() };
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public boolean showRecipeTextInGUI() {
-        return false;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 
