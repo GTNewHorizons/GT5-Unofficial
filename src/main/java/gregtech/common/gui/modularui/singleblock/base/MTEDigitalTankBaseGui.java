@@ -100,8 +100,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         return new FluidSlot().syncHandler(fluidSlotSH)
             .bottomRel(0)
             .rightRel(0)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true);
+            .background(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
@@ -165,8 +164,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-            .color(Color.WHITE.main));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         screen.child(textColumn);
 
@@ -175,8 +173,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
                 .bottomRel(0)
                 .rightRel(0)
-                .disableThemeBackground(true)
-                .disableHoverThemeBackground(true));
+                .background(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
     }

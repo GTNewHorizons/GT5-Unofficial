@@ -999,7 +999,7 @@ public class RecipeLoader2 {
                 GGMaterial.incoloy903.get(OrePrefixes.pipeLarge, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 ItemList.Hull_IV.get(1))
-            .itemOutputs(ItemRefer.SC_Fluid_Turbine.get(1))
+            .itemOutputs(ItemList.SCSteamTurbine.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

@@ -236,10 +236,6 @@ public class GTPPRecipeMaps {
         .frontend(SpargeTowerFrontend::new)
         .maxIO(0, 0, 9, 9)
         .build();
-    public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder
-        .of("gtpp.recipe.cryogenicfreezer")
-        .maxIO(1, 1, 2, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multicentrifuge")
         .maxIO(6, 6, 6, 6)
