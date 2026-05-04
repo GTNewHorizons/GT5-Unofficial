@@ -403,15 +403,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                                            // last
                                                                                                            // slice
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
-                                                                                                                // Hatch:
-                                                                                                                // Any
-                                                                                                                // Computer
-                                                                                                                // Casing
-                                                                                                                // on
-                                                                                                                // first
-                                                                                                                // or
-                                                                                                                // last
-                                                                                                                // slice
+                                                                                                                // Hatch
+            .addOtherStructurePart(
+                "Cloud Computation Server Hatch",
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                1) // Wireless Computation Output: Any Computer Casing on first or last slice
             .toolTipFinisher();
         return tt;
     }

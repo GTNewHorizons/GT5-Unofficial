@@ -447,7 +447,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
         int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
-        if (energyCount == 1) {
+        if (energyCount != 1) {
             errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
         }
 

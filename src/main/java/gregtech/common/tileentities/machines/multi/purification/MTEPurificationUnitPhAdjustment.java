@@ -440,7 +440,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1-2",
                 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),

@@ -628,6 +628,9 @@ public class MTETeslaTower extends TTMultiblockBase
                                                                                                       // Hatch: Any
                                                                                                       // outer Tesla
                                                                                                       // Base Casing
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any outer Tesla Base Casing
+            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any outer Tesla Base Casing
+            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any outer Tesla Base Casing
             .toolTipFinisher();
         return tt;
     }

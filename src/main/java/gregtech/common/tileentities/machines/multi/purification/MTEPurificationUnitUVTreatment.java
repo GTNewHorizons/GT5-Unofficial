@@ -7,6 +7,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.ItemList.Hatch_LensHousing;
+import static gregtech.api.enums.ItemList.Hatch_LensIndicator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -453,6 +454,9 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         // Do not form without lens bus
         if (lensInputBus == null) {
             errors.add(StructureErrors.missingHatch(Hatch_LensHousing.get(1)));
+        }
+        if (lensIndicator == null) {
+            errors.add(StructureErrors.missingHatch(Hatch_LensIndicator.get(1)));
         }
     }
 

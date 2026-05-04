@@ -278,6 +278,8 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             // Output Bus: Any High Power Casing
             .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            // Input Hatch: Any High Power Casing
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .toolTipFinisher();
         return tt;
     }

@@ -187,7 +187,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 4,
                 false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }

@@ -213,7 +213,6 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly("Field Restriction Glass", 192, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
-            .addMaintenanceHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addInputBus("Any Naquadah Fuel Refinery Casing", 1)
             .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)

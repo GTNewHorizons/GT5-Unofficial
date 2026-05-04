@@ -155,6 +155,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
                                                                                                  // Hatch: Any High
                                                                                                  // Power Casing
+            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any High Power Casing
             .toolTipFinisher();
         return tt;
     }
