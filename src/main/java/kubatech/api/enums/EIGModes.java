@@ -20,12 +20,12 @@ public class EIGModes {
     private EIGModes() {}
 
     private static @NotNull EIGMode addMode(@NotNull EIGMode mode) {
-        modes.put(mode.getName(), mode);
+        modes.put(mode.getId(), mode);
         return mode;
     }
 
-    public static EIGMode getModeFromName(String name) {
-        return modes.get(name);
+    public static EIGMode getModeFromId(String id) {
+        return modes.get(id);
     }
 
     public static @NotNull EIGMode getNextMode(@NotNull EIGMode from) {

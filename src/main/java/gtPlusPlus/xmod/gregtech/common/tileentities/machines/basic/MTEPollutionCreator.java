@@ -8,6 +8,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -133,7 +135,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             pollutionMultiplier++;
         }
-        GTUtility.sendChatToPlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
+        GTUtility.sendChatTrans(aPlayer, "gtpp.chat.pollution_creator.multiplier", pollutionMultiplier);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
@@ -214,11 +216,13 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
-            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
+            GTUtility.sendChatTrans(playerIn, "gtpp.chat.pollution_base.useless");
         } else {
             addPollution();
-            GTUtility
-                .sendChatToPlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
+            GTUtility.sendChatTrans(
+                playerIn,
+                "gtpp.chat.pollution_base.contains",
+                new ChatComponentNumber(getCurrentChunkPollution()));
         }
     }
 

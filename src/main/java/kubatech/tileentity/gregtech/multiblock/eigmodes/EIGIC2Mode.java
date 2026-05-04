@@ -19,8 +19,13 @@ public class EIGIC2Mode extends EIGMode {
     }
 
     @Override
-    public String getName() {
+    public String getId() {
         return "IC2";
+    }
+
+    @Override
+    public String getNameKey() {
+        return "kubatech.chat.eig.mode.ic2";
     }
 
     @Override

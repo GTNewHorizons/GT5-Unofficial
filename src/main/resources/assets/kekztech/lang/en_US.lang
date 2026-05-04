@@ -164,3 +164,7 @@ kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b
 
 kekztech.structure.glass_incompatible=§cGlass configuration incompatible
+
+kekztech.chat.laportronic_super_capacitor.wireless_mode.hint=Wireless mode cannot be enabled without at least 1 %s+ capacitor.
+kekztech.chat.tfft.auto_voiding.enabled=Auto-voiding enabled
+kekztech.chat.tfft.auto_voiding.disabled=Auto-voiding disabled

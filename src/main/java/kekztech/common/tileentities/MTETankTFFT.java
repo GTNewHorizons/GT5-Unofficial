@@ -634,7 +634,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ItemStack aTool) {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         this.setDoVoidExcess(!doVoidExcess);
-        GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.doVoidExcess ? "kekztech.chat.tfft.auto_voiding.enabled" : "kekztech.chat.tfft.auto_voiding.disabled");
     }
 
     @Override

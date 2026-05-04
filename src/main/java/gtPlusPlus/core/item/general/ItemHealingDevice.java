@@ -15,6 +15,7 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import baubles.api.BaubleType;
@@ -246,7 +247,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override // TODO
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
-        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g))
+        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer player))
             return;
         // Try Charge First
 
@@ -297,7 +298,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         int hunger = 0;
         float saturation = 0;
-        FoodStats aFood = g.getFoodStats();
+        FoodStats aFood = player.getFoodStats();
         if (aFood != null) {
             // Hunger Check
             hunger = 20 - aFood.getFoodLevel();
@@ -314,18 +315,20 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         if (!getShowMessages(baubleStack)) return;
 
         if (hp > 0 || hunger > 0 || saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+            GTUtility.sendChatTrans(player, "gtpp.chat.healing_device.nano_booster.whirs");
 
-        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
+        if (hp > 0) GTUtility.sendChatTrans(player, "gtpp.chat.healing_device.healed.hp", new ChatComponentNumber(hp));
 
-        if (hunger > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
+        if (hunger > 0)
+            GTUtility.sendChatTrans(player, "gtpp.chat.healing_device.healed.hunger", new ChatComponentNumber(hunger));
 
-        if (saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
+        if (saturation > 0) GTUtility
+            .sendChatTrans(player, "gtpp.chat.healing_device.saturated.hunger", new ChatComponentNumber(saturation));
 
-        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
-            (EntityPlayer) arg1,
-            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack)) + " seconds left.");
+        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatTrans(
+            player,
+            "gtpp.chat.healing_device.remain",
+            new ChatComponentNumber(secondsLeft(baubleStack)));
 
     }
 
@@ -364,7 +367,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
-            GTUtility.sendChatToPlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
+            GTUtility.sendChatTrans(
+                aPlayer,
+                (!oldState ? "gtpp.chat.healing_device.show_info" : "gtpp.chat.healing_device.hide_info"));
         }
         return superStack;
     }

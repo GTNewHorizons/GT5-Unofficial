@@ -351,9 +351,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "kubatech.chat.mia.auto_place.water_flower");
             return 0;
         }
         return built;
@@ -451,7 +449,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         if (!aPlayer.isSneaking()) {
@@ -459,28 +457,28 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (mPrimaryMode == 3) mPrimaryMode = 0;
             switch (mPrimaryMode) {
                 case 0:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Input mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.mode_change.input");
                     break;
                 case 1:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Output mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.mode_change.output");
                     break;
                 case 2:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Operating mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.mode_change.operating");
                     break;
             }
         } else {
             if (!mStorage.isEmpty()) {
-                GTUtility.sendChatToPlayer(aPlayer, "Can't change operating mode when the multi is not empty !");
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.mode_change.not_empty");
                 return;
             }
             mSecondaryMode++;
             if (mSecondaryMode == 2) mSecondaryMode = 0;
             switch (mSecondaryMode) {
                 case 0:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Normal mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.secondary_mode.normal");
                     break;
                 case 1:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Swarmer mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.secondary_mode.swarmer");
                     break;
             }
         }
@@ -765,7 +763,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (mte.mStorage.size() >= mte.mMaxSlots) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (beeRoot.getType(aStack) == EnumBeeType.QUEEN) {
                 if (mte.mMaxProgresstime > 0) {
-                    GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.cannot_insert");
                     return super.transferStackInSlot(aPlayer, aSlotIndex);
                 }
                 World w = mte.getBaseMetaTileEntity()
@@ -921,7 +919,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         .setGetter(() -> mPrimaryMode)
                         .setSetter(val -> {
                             if (this.mMaxProgresstime > 0) {
-                                GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
+                                GTUtility.sendChatTrans(player, "kubatech.chat.forbidden_while_running");
                                 return;
                             }
                             mPrimaryMode = val;
@@ -929,13 +927,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             if (!(player instanceof EntityPlayerMP)) return;
                             switch (mPrimaryMode) {
                                 case 0:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
+                                    GTUtility.sendChatTrans(player, "kubatech.chat.mia.mode_change.input");
                                     break;
                                 case 1:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
+                                    GTUtility.sendChatTrans(player, "kubatech.chat.mia.mode_change.output");
                                     break;
                                 case 2:
-                                    GTUtility.sendChatToPlayer(player, "Changed primary mode to: Operating mode");
+                                    GTUtility.sendChatTrans(player, "kubatech.chat.mia.mode_change.operating");
                                     break;
                             }
                         })
@@ -973,7 +971,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             .setGetter(() -> mSecondaryMode)
                             .setSetter(val -> {
                                 if (this.mMaxProgresstime > 0) {
-                                    GTUtility.sendChatToPlayer(player, "Can't change mode when running !");
+                                    GTUtility.sendChatTrans(player, "kubatech.chat.forbidden_while_running");
                                     return;
                                 }
 
@@ -982,10 +980,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 switch (mSecondaryMode) {
                                     case 0:
-                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Normal mode");
+                                        GTUtility.sendChatTrans(player, "kubatech.chat.mia.secondary_mode.normal");
                                         break;
                                     case 1:
-                                        GTUtility.sendChatToPlayer(player, "Changed secondary mode to: Swarmer mode");
+                                        GTUtility.sendChatTrans(player, "kubatech.chat.mia.secondary_mode.swarmer");
                                         break;
                                 }
                             })

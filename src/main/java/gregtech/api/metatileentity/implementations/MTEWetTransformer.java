@@ -112,10 +112,6 @@ public class MTEWetTransformer extends MTETransformer {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
-        if (this.mHalfMode) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.enable");
-        } else {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.disable");
-        }
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.transformer.ratio", this.mHalfMode ? "8A:32A" : "16A:64A");
     }
 }

@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -75,9 +77,9 @@ public class BlockFluidTankInfinite extends BlockContainer {
                 if (player.isSneaking()) {
                     switch (tank.changeMode()) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank is now in single fluid mode.");
+                            .sendChatTrans(player, "gtpp.chat.fluid_tank_infinite.mode.single");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                            .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
+                            .sendChatTrans(player, "gtpp.chat.fluid_tank_infinite.mode.all");
                     }
                     return true;
                 }
@@ -101,21 +103,23 @@ public class BlockFluidTankInfinite extends BlockContainer {
 
                 // report new stats after update
                 if (tank.getFluid() != null) {
-                    String fluidName = tank.getFluid()
-                        .getLocalizedName();
+                    FluidStack fluidStack = tank.getFluid();
                     switch (tank.mode) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatToPlayer(
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility.sendChatTrans(
                             player,
-                            "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
+                            "gtpp.chat.fluid_tank_infinite.contains.single",
+                            new ChatComponentFluidName(fluidStack));
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatTrans(
+                            player,
+                            "gtpp.chat.fluid_tank_infinite.contains.all",
+                            new ChatComponentFluidName(fluidStack));
                     }
                 } else {
                     switch (tank.mode) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank is empty.");
+                            .sendChatTrans(player, "gtpp.chat.fluid_tank_infinite.empty.single");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                            .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
+                            .sendChatTrans(player, "gtpp.chat.fluid_tank_infinite.empty.all");
                     }
                 }
                 return true;

@@ -540,8 +540,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    default String getLocalNameKey() {
+        return "GT5U.gui.title.unknown";
+    }
+
+    /**
+     * You should override {@link #getLocalNameKey()} instead of this one.
+     *
+     * @return localized name
+     */
     default String getLocalName() {
-        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     default boolean doesBindPlayerInventory() {

@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -275,9 +274,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                         .parseInt(StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
                 } catch (NumberFormatException e) {
                     player.addChatComponentMessage(
-                        new ChatComponentText(
-                            "Error in translation GT5U.item.programmed_circuit.no_screwdriver.count: "
-                                + e.getMessage()));
+                        new ChatComponentTranslation("GT5U.chat.integrated_circuit.error_in_trans", e.getMessage()));
                     count = 1;
                 }
                 player.addChatComponentMessage(

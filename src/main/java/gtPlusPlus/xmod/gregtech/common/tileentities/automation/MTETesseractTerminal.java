@@ -5,7 +5,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -166,14 +165,16 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         } catch (Exception t) {}
                         break;
                 }
-                GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
-                    GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
+                    GTUtility
+                        .sendChatTrans(aPlayer, "gtpp.chat.tesseract_terminal.frequency.connected", this.mFrequency);
+                } else {
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.chat.tesseract.frequency", this.mFrequency);
                 }
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {
-                GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+                GTUtility.sendChatTrans(aPlayer, "gtpp.chat.tesseract_terminal.not_permit");
             }
         return true;
     }
@@ -216,15 +217,15 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         this.mFrequency += 512;
                     }
                 }
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    "Frequency: " + this.mFrequency
-                        + (this.getTesseract(this.mFrequency, false) == null ? ""
-                            : EnumChatFormatting.GREEN + " (Connected)"));
+                    this.getTesseract(this.mFrequency, false) == null ? "gtpp.chat.tesseract.frequency"
+                        : "gtpp.chat.tesseract_terminal.frequency.connected",
+                    this.mFrequency);
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {
-                GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+                GTUtility.sendChatTrans(aPlayer, "gtpp.chat.tesseract_terminal.not_permit");
             }
     }
 
