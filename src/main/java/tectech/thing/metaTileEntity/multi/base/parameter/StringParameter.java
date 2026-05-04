@@ -13,22 +13,25 @@ public class StringParameter extends Parameter<String> {
 
     @Override
     public void saveNBT(NBTTagCompound tag) {
-
+        tag.setString(this.getNbtKey(), this.getValue());
     }
 
     @Override
     public void loadNBT(NBTTagCompound tag) {
-
+        if (!tag.hasKey(this.getNbtKey())) return;
+        this.setValue(tag.getString(this.getNbtKey()));
     }
 
     @Override
     public void saveToParameterCard(NBTTagCompound tag) {
-
+        tag.setString("key", this.getNbtKey());
+        tag.setString("type", "double");
+        tag.setString("value", this.getValue());
     }
 
     @Override
     public void loadFromParameterCard(NBTTagCompound tag) {
-
+        this.setValue(tag.getString(this.getNbtKey()));
     }
 
     @Override
