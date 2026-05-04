@@ -17,9 +17,7 @@ import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -198,8 +196,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         numberFormat.setMaximumFractionDigits(8);
     }
 
-    // Parameters for IParametrized multiblocks
-    public Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
     // endregion
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
@@ -659,7 +655,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setTag("eParamsOutS", paramOs);
 
         if (this instanceof IParametrized parametrized) {
-            parametrized.saveParameters(aNBT);
+            NBTTagCompound parameterTag = new NBTTagCompound();
+
+            for (Parameter<?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
+
+            aNBT.setTag("parameters", parameterTag);
         }
     }
 
@@ -739,8 +739,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
 
+        // this needs to be last because legacy loading will return from this function
         if (this instanceof IParametrized parametrized) {
-            parametrized.loadParameters(aNBT);
+            if (!aNBT.hasKey("parameters")) {
+                parametrized.loadLegacyParameters(aNBT);
+                return;
+            }
+
+            NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
+
+            for (Parameter<?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
         }
     }
 
@@ -2059,21 +2067,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
-    protected <T> T getParamValue(String key, Class<T> tClass) {
-        if (!parameterMap.containsKey(key)) {
-            throw new IllegalArgumentException("Tried to access nonexistent parameter " + key);
-        }
-
-        Object value = parameterMap.get(key)
-            .getValue();
-        if (value.getClass()
-            .equals(tClass)) {
-            return tClass.cast(value);
-        }
-
-        throw new IllegalArgumentException(
-            String.format("Tried to cast parameter %s to %s when its type is %s", key, tClass, value.getClass()));
-    }
     // region ModularUI
 
     @Override
@@ -2115,7 +2108,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new TTMultiblockBaseGui(this);
+        return new TTMultiblockBaseGui<>(this);
     }
 
     @Override
