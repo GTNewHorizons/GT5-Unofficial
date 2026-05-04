@@ -69,11 +69,6 @@ public enum Mixin implements IMixins {
             .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
             .setPhase(Phase.EARLY)),
 
-    RESOURCE_MANAGER_DEDUP_GET_ALL(new MixinBuilder("Deduplicates the results of FallbackResourceManager.getAllResources")
-        .addClientMixins("minecraft.FallbackResourceManagerMixin")
-        .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)),
-
     GTWorldgenSortingFix(new MixinBuilder("Forces GTWorldgenerator to the end of the world gen list")
         .addCommonMixins("forge.GameRegistryMixin")
         .setPhase(Phase.EARLY)),
