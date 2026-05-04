@@ -24,7 +24,7 @@ public class StringParameter extends Parameter<String> {
 
     @Override
     public void saveToParameterCard(NBTTagCompound tag) {
-        tag.setString("key", this.getNbtKey());
+        tag.setString("key", this.getLangKey());
         tag.setString("type", "double");
         tag.setString("value", this.getValue());
     }
