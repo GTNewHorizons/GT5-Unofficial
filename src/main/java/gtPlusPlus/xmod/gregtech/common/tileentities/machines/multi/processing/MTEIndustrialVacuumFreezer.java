@@ -16,11 +16,8 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -33,13 +30,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.MissingHatch;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.TooManyHatch;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
@@ -170,40 +170,19 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    public void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
         if (mCasing < 10) {
-            errors.add(StructureError.TOO_FEW_CASINGS);
-            context.setInteger("casings", mCasing);
+            errors.add(new TooFewCasings(mCasing, 10));
         }
 
         if (mCryotheumHatches.isEmpty()) {
-            errors.add(StructureError.MISSING_CRYO_HATCH);
+            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
         }
 
         if (mCryotheumHatches.size() > 1) {
-            errors.add(StructureError.TOO_MANY_CRYO_HATCHES);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
-            lines.add(
-                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
-        }
-
-        if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {
-            lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.missing_hatch", HATCH_NAME));
-        }
-
-        if (errors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
-            lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
+            errors.add(new TooManyHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
         }
     }
 

@@ -63,6 +63,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         aRenderer.useInventoryTint = false;
+        ctx.doCleanup();
     }
 
     private void setupBlockTexturesOnly(Block aBlock, int aMeta, boolean noCoord) {
@@ -115,6 +116,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
         ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
         ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
+        ctx.doCleanup();
         // spotless:on
 
         return tessAccess.gt5u$hasVertices();

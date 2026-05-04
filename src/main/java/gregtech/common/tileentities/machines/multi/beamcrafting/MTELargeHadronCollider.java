@@ -499,13 +499,23 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     }
 
-    @Override
-    public void stopMachine(@NotNull ShutDownReason reason) {
+    private void resetLHCState() {
         initialParticleInfo = null;
         cachedOutputParticle = null;
         accelerationCycleCounter = 0;
         machineMode = MACHINEMODE_ACCELERATOR;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        resetLHCState();
         super.stopMachine(reason);
+    }
+
+    @Override
+    public void onDisableWorking() {
+        resetLHCState();
+        super.onDisableWorking();
     }
 
     @Override
@@ -570,6 +580,13 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 }
             }
         } else {
+
+            if (initialParticleInfo != null) {
+                if (!initialParticleInfo.isEqual(inputInfo)) {
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+            }
 
             float inputEnergy = cachedOutputParticle.getEnergy();
             Particle inputParticle = Particle.getParticleFromId(cachedOutputParticle.getParticleId());
@@ -663,15 +680,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
             }
         }
-    }
-
-    @Override
-    public void onDisableWorking() {
-        initialParticleInfo = null;
-        cachedOutputParticle = null;
-        accelerationCycleCounter = 0;
-        machineMode = MACHINEMODE_ACCELERATOR;
-        super.onDisableWorking();
     }
 
     @Override

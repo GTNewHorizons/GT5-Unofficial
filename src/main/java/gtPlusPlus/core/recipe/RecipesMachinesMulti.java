@@ -3,7 +3,7 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -73,7 +73,7 @@ public class RecipesMachinesMulti {
     private static void multiFluidHeater() {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_IndustrialFluidHeater.get(1),
-            BITSD,
+            BITS,
             new Object[] { "PCP", "IHI", "PDP", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'C', "circuitElite", 'I',
                 "pipeHugeTantalloy60", 'H', ItemList.Machine_IV_FluidHeater.get(1), 'D', "circuitData" });
     }
@@ -122,7 +122,7 @@ public class RecipesMachinesMulti {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_IndustrialForgeHammer.get(1),
-            BITSD,
+            BITS,
             new Object[] { "IBI", "HCH", "IHI", 'I', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'B',
                 MaterialsAlloy.BABBIT_ALLOY.getPlate(1), 'C', ItemList.Casing_HeatProof.get(1), 'H',
                 MaterialsAlloy.HASTELLOY_X.getRod(1) });

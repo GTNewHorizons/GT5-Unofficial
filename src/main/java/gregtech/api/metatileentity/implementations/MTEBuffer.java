@@ -468,11 +468,16 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         if (transfer.transfer() > 0 || igte.hasInventoryBeenModified()) {
             mSuccess = 50;
 
-            GTUtility.cleanInventory(this);
+            int end = getMovableInventoryEnd();
+            GTUtility.cleanInventory(this, 0, end);
             if (bSortStacks) {
-                GTUtility.compactInventory(this);
+                GTUtility.compactInventory(this, 0, end);
             }
         }
+    }
+
+    protected int getMovableInventoryEnd() {
+        return mInventory.length;
     }
 
     @Override
