@@ -72,7 +72,9 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
             .tooltip(t -> t.addLine(GTUtility.translate("GT5U.machines.item_distributor.open_config_panel.tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(
-                createArrow(GTGuiTextures.PICTURE_ARROW_22_RED, 68, 22, true).marginBottom(1)
+                GTGuiTextures.PICTURE_ARROW_22_RED.asWidget()
+                    .size(68, 22)
+                    .marginBottom(1)
                     .marginLeft(1));
     }
 
