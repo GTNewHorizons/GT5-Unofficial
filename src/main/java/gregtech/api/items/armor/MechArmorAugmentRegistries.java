@@ -15,7 +15,31 @@ import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
-import gregtech.api.items.armor.behaviors.*;
+import gregtech.api.items.armor.behaviors.ApiaristBehavior;
+import gregtech.api.items.armor.behaviors.BehaviorName;
+import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
+import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
+import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
+import gregtech.api.items.armor.behaviors.ForceFieldBehavior;
+import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
+import gregtech.api.items.armor.behaviors.HazmatBehavior;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
+import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
+import gregtech.api.items.armor.behaviors.JetpackBehavior;
+import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
+import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
+import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
+import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
+import gregtech.api.items.armor.behaviors.NightVisionBehavior;
+import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
+import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
+import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
+import gregtech.api.items.armor.behaviors.StepAssistBehavior;
+import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
+import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
 public class MechArmorAugmentRegistries {
 
