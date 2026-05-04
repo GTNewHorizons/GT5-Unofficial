@@ -28,7 +28,6 @@ import bartworks.MainMod;
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
-import bartworks.util.BioCulture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -95,10 +94,6 @@ public class ItemLabParts extends SimpleSubItemClass {
             super.addInformation(itemStack, entityPlayer, list, b);
             return;
         }
-
-        BioCulture culture = BioCulture.getBioCulture(
-            itemStack.getTagCompound()
-                .getString("Name"));
 
         switch (itemStack.getItemDamage()) {
             case 0:
