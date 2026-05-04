@@ -1672,6 +1672,12 @@ public class MTERecipeLoader implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
+        // Algae Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.AlgaeCasing.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
+      
         // Naquadah Reactor Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1731,6 +1737,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.TreeGrowSimulator.get(1),
             new Object[] { GregtechItemList.Industrial_TreeFarm });
+
+        // Algae Farm Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AlgaeFarm.get(1),
+            new Object[] { GregtechItemList.AlgaeFarm_Controller });
 
         // Naquadah Fuel Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
