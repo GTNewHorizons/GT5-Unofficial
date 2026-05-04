@@ -60,6 +60,10 @@ public final class StructureErrors {
         return of("GT5U.gui.missing_hatch", TranslatableText.itemName(stack));
     }
 
+    public static TranslatableStructureError missingHatch(HatchElement hatch) {
+        return of("GT5U.gui.missing_hatch", TranslatableText.hatchName(hatch));
+    }
+
     public static TranslatableStructureError tooManyHatches(ItemStack stack, int max) {
         return of("GT5U.gui.too_many_hatches", TranslatableText.itemName(stack), TranslatableText.literal(max));
     }
@@ -76,10 +80,7 @@ public final class StructureErrors {
         return of("GT5U.gui.text.dt_missing_output_hatch", TranslatableText.literal(layer));
     }
 
-    public static TranslatableStructureError tooManyInputHatch(int max, int current) {
-        return of(
-            "GT5U.gui.text.too_many_input_hatch",
-            TranslatableText.literal(max),
-            TranslatableText.literal(current));
+    public static TranslatableStructureError tooManyInputHatch(int current, int max) {
+        return hatchCount(ErrorType.TOO_MANY, HatchElement.InputHatch, current, max);
     }
 }

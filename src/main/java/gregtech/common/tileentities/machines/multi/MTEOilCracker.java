@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import gregtech.api.structure.error.StructureErrors;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -271,16 +272,16 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         mOutputOnSide = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0, errors)) return;
         if (mInputOnSide == -1) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
         }
         if (mOutputOnSide == -1) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
+            errors.add(StructureErrors.missingHatch(HatchElement.OutputHatch));
         }
         checkCasingMin(errors, mCasingAmount, 18);
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         if (mMiddleInputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
         }
     }
 

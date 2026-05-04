@@ -169,9 +169,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         eWirelessStacksDataOutputs.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
-        if (mEnergyHatches.isEmpty() && eEnergyMulti.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
     }
 

@@ -55,7 +55,7 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator> implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
@@ -202,9 +202,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
         if (mExoticDynamoHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.ExoticDynamo, 0, 1));
         }
-        if (mInputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
-        }
+        checkHasInputHatch(errors);
     }
 
     @Override

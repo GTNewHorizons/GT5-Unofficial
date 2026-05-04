@@ -102,12 +102,8 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(mName, 5, 11, 0, errors)) return;
-        if (mInputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
-        }
-        if (mOutputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
-        }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

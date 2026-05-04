@@ -256,9 +256,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // this is the output layer
-                if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
-                    errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-                }
+                checkHasAnyEnergy(errors);
                 checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
                     errors.add(StructureErrors.of("GT5U.gui.text.al_too_many_data_access_hatch"));

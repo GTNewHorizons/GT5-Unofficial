@@ -196,12 +196,8 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public void checkHatch(List<StructureError> errors) {
-        if (mEnergyHatches.size() != 2) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
-        if (mMufflerHatches.size() != 2) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
+        checkHatchExact(errors, Energy, 2);
+        checkHatchExact(errors, Muffler, 2);
     }
 
     @Override

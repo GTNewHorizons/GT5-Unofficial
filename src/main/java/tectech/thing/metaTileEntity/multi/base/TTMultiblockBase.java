@@ -23,6 +23,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.*;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureErrors;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -60,10 +63,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -1873,6 +1872,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
     // endregion
+
+    @Override
+    protected void checkHasAnyEnergy(List<StructureError> errors) {
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty() && eEnergyMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, gregtech.api.enums.HatchElement.Energy, 0, 1));
+        }
+    }
 
     protected final void checkOneUncertaintyHatch(List<StructureError> errors) {
         if (eUncertainHatches.isEmpty()) {

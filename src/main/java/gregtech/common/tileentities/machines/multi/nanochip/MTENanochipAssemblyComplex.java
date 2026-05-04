@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureErrors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -207,13 +209,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
         // Exactly one energy hatch is accepted
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        } else if (mEnergyHatches.isEmpty()) {
-            if (mExoticEnergyHatches.size() != 1) {
-                errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
-            }
-        } else if (mEnergyHatches.size() != 1) {
-            errors.add(StructureErrorRegistry.TOO_MANY_ENERGY_HATCH);
+            errors.add(StructureErrors.missingHatch(Energy));
+        } else if (mEnergyHatches.size() + mExoticEnergyHatches.size() > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size() + mExoticEnergyHatches.size(), 1));
         }
 
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());

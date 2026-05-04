@@ -205,12 +205,12 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public void checkHatch(List<StructureError> errors) {
-        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+        if (shouldCheckMaintenance()) {
+            checkHasMaintenanceHatch(errors);
         }
 
-        if (requiresMuffler() && mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
+        if (requiresMuffler()) {
+            checkHasMufflerHatch(errors);
         }
 
         if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {

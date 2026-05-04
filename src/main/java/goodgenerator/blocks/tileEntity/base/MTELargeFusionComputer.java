@@ -229,15 +229,9 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.eEnergyMulti.clear();
         if (!checkPiece(MAIN_NAME, 23, 3, 40, errors)) return;
-        if (mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_INPUT_HATCH);
-        }
-        if (mOutputHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_OUTPUT_HATCH);
-        }
-        if (mEnergyHatches.isEmpty() && eEnergyMulti.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_ENERGY_HATCH);
-        }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasAnyEnergy(errors);
     }
 
     @Override
