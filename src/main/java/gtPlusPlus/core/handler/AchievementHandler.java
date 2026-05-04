@@ -136,13 +136,7 @@ public class AchievementHandler {
             "dust.eglin",
             false);
         this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.boiler.thermal",
-            -12,
-            -7,
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
-            "multi.abs",
-            false);
+        this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
         this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings

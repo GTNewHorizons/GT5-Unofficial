@@ -702,7 +702,7 @@ public enum Casings implements ICasing {
     CyclotronOuterCasing
         (() -> ModBlocks.blockCasings2Misc, 10, -1),
     ThermalContainmentCasing
-        (() -> ModBlocks.blockCasings2Misc, 11, -1),
+        (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
         (() -> ModBlocks.blockCasings2Misc, 12, -1),
     CuttingFactoryFrame
