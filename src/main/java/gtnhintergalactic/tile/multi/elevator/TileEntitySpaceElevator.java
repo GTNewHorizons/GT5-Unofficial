@@ -513,7 +513,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        boolean isMachineValid = true;
         mProjectModuleHatches.clear();
         elevatorCable = null;
         motorTier = 0;
@@ -547,7 +546,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             errors.add(StructureErrors.of("GT5U.gui.text.spelv_module_exceed"));
         }
         if (elevatorCable != null) {
-            elevatorCable.setShouldRender(isMachineValid);
+            elevatorCable.setShouldRender(errors.isEmpty());
         }
     }
 

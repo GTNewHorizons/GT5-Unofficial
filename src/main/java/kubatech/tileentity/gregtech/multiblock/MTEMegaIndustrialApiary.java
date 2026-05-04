@@ -132,7 +132,7 @@ import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -677,7 +677,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (this.glassTier < VoltageIndex.UEV) {
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
                 if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
                     break;
                 }
             }
