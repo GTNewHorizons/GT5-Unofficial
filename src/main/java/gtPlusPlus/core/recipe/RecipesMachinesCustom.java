@@ -102,7 +102,7 @@ public class RecipesMachinesCustom {
         // XL Turbo Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeSteamTurbine.get(1),
+                ItemList.SteamTurbine.get(1),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCOLOY_DS.getScrew(16),
                 MaterialsAlloy.INCOLOY_DS.getGear(4),
@@ -130,7 +130,7 @@ public class RecipesMachinesCustom {
         // XL Turbo Gas Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeGasTurbine.get(1),
+                ItemList.GasTurbine.get(1),
                 MaterialsAlloy.ZERON_100.getPlate(8),
                 MaterialsAlloy.ZERON_100.getScrew(16),
                 MaterialsAlloy.ZERON_100.getGear(4),
@@ -158,7 +158,7 @@ public class RecipesMachinesCustom {
         // XL Turbo HP Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeHPSteamTurbine.get(1),
+                ItemList.HPSteamTurbine.get(1),
                 MaterialsAlloy.INCONEL_625.getPlate(8),
                 MaterialsAlloy.INCONEL_625.getScrew(16),
                 MaterialsAlloy.INCONEL_625.getGear(4),
@@ -186,7 +186,7 @@ public class RecipesMachinesCustom {
         // XL Turbo Plasma Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargePlasmaTurbine.get(1),
+                ItemList.PlasmaTurbine.get(1),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
                 MaterialsAlloy.PIKYONIUM.getScrew(16),
                 MaterialsAlloy.PIKYONIUM.getGear(4),
@@ -214,7 +214,7 @@ public class RecipesMachinesCustom {
         // XL Turbo SC Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemRefer.SC_Fluid_Turbine.get(1),
+                ItemList.SCSteamTurbine.get(1),
                 GGMaterial.dalisenite.get(OrePrefixes.plate, 8),
                 GGMaterial.dalisenite.get(OrePrefixes.screw, 16),
                 GGMaterial.dalisenite.get(OrePrefixes.gearGt, 4),
