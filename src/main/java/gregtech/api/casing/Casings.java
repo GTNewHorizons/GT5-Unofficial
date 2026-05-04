@@ -602,11 +602,11 @@ public enum Casings implements ICasing {
 
     // BEC
     SuperconductivePlasmaEnergyConduit
-        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(16, 112 + 0)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(16, 6, 0)),
     ElectromagneticallyIsolatedCasing
-        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(16, 112 + 1)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(16, 6, 1)),
     FineStructureConstantManipulator
-        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(16, 112 + 2)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(16, 6, 2)),
 
     // Block Glass 1
     ChemicalGradeGlass
