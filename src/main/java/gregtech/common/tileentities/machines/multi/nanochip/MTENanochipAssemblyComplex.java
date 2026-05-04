@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import gregtech.api.structure.error.ErrorType;
-import gregtech.api.structure.error.StructureErrors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -63,8 +61,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -211,7 +210,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Energy));
         } else if (mEnergyHatches.size() + mExoticEnergyHatches.size() > 1) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size() + mExoticEnergyHatches.size(), 1));
+            errors.add(
+                StructureErrors
+                    .hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size() + mExoticEnergyHatches.size(), 1));
         }
 
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
