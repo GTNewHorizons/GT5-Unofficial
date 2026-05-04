@@ -67,11 +67,13 @@ public class JetpackBehavior implements IArmorBehavior {
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
         boolean ascend = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
         boolean descend = ArmorKeybinds.VANILLA_SNEAK.isKeyDown(player);
+        boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
+        boolean isGuiOpen = context.getPlayer().worldObj.isRemote && ClientGuiHelper.isGuiOpen();
 
-        if (ascend || context.isBehaviorActive(BehaviorName.JetpackHover) && !player.onGround) {
+        if (ascend || isHovering && !player.onGround) {
             if (!player.isInWater() && context.drainEnergy(20)) {
-                if (ascend) {
-                    if (!context.isBehaviorActive(BehaviorName.JetpackHover)) {
+                if (ascend && !isGuiOpen) {
+                    if (!isHovering) {
                         player.motionY = Math.min(player.motionY + currentAccel, currentSpeedVertical);
                     } else {
                         if (descend) player.motionY = Math
@@ -79,7 +81,7 @@ public class JetpackBehavior implements IArmorBehavior {
                         else player.motionY = Math
                             .min(player.motionY + currentAccel, jetpackStats.getVerticalHoverSpeed());
                     }
-                } else if (descend) {
+                } else if (descend && !isGuiOpen) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
                     player.motionY = Math.min(
@@ -93,16 +95,30 @@ public class JetpackBehavior implements IArmorBehavior {
                     ? speedSideways * jetpackStats.getSprintSpeedModifier()
                     : speedSideways);
 
-                if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player)) player.moveFlying(0, speedForward, speedForward);
-                if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
-                    player.moveFlying(0, -speedSideways, speedSideways * 0.8f);
-                if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player)) player.moveFlying(speedSideways, 0, speedSideways);
-                if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player)) player.moveFlying(-speedSideways, 0, speedSideways);
+                if (!isGuiOpen) {
+                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player))
+                        player.moveFlying(0, speedForward, speedForward);
+                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
+                        player.moveFlying(0, -speedSideways, speedSideways * 0.8f);
+                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player))
+                        player.moveFlying(speedSideways, 0, speedSideways);
+                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player))
+                        player.moveFlying(-speedSideways, 0, speedSideways);
+                }
+
                 if (!player.getEntityWorld().isRemote) {
                     player.fallDistance = 0;
                 }
                 // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
+    }
+}
+
+class ClientGuiHelper {
+
+    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+    static boolean isGuiOpen() {
+        return net.minecraft.client.Minecraft.getMinecraft().currentScreen != null;
     }
 }

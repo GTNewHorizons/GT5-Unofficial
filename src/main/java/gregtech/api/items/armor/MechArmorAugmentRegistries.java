@@ -31,6 +31,7 @@ import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
 import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
 import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
@@ -540,6 +541,15 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentwaterbreathing")
             .fitsInto(ArmorType.Helmet)
             .providesBehaviors(WaterBreathingBehavior.INSTANCE)
+            .setCategory(AugmentCategory.Utility)
+            .setRarity(EnumRarity.uncommon)
+        ),
+        MilkInfusion(ItemList.Augment_MilkInfusion, new AugmentBuilder()
+            .setId("MilkInfusion")
+            .setItemId("augmentmilkinfusion")
+            .fitsInto(ArmorType.Helmet)
+            .providesBehaviors(MilkInfusionBehavior.INSTANCE)
+            .setMinimumCore(1)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
         );
