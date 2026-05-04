@@ -39,7 +39,9 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
             .marginLeft(3);
 
         // white arrow
-        mainRow.child(createArrow(GTGuiTextures.PICTURE_ARROW_24_WHITE, 9, 24, false));
+        mainRow.child(
+            GTGuiTextures.PICTURE_ARROW_24_WHITE.asWidget()
+                .size(9, 24));
 
         // filter grid
         mainRow.child(
@@ -64,7 +66,9 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
 
         // blue arrow
-        mainRow.child(createArrow(GTGuiTextures.PICTURE_ARROW_24_BLUE, 25, 24, true));
+        mainRow.child(
+            GTGuiTextures.PICTURE_ARROW_24_BLUE.asWidget()
+                .size(25, 24));
 
         // inventory grid
         mainRow.child(
@@ -77,7 +81,9 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
                 .build());
 
         // red arrow
-        mainRow.child(createArrow(GTGuiTextures.PICTURE_ARROW_24_RED, 19, 24, true));
+        mainRow.child(
+            GTGuiTextures.PICTURE_ARROW_24_RED.asWidget()
+                .size(19, 24));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
