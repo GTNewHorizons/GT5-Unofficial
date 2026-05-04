@@ -121,7 +121,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     protected long getAvailableData_EM() {
-        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        if (eInputData.isEmpty()) {
+            if (this.parent == null) return 0;
+            return this.parent.getAvailableDataForModules();
+        }
         return super.getAvailableData_EM();
     }
 

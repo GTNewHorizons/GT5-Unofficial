@@ -1778,6 +1778,7 @@ gt.multiblock.ExtremeHeatExchanger.throttle2=§d-1.5%§7 SC Threshold and §r-1.
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
+GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
