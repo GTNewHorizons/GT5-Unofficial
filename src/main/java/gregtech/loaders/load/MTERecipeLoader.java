@@ -1723,6 +1723,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.DroneCentre.get(1),
             new Object[] { ItemList.Machine_Multi_DroneCentre });
 
+        // Industrial Sledgehammer/Forge Hammer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialForgeHammer.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialForgeHammer });
+
         // Large Thermal Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
