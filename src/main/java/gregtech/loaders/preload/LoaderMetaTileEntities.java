@@ -838,7 +838,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialForgeHammer.ID,
                 "industrialhammer.controller.tier.single",
                 "Industrial Sledgehammer").getStackForm(1L));
-      
+
         ItemList.CryogenicFreezer.set(
             new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
                 .getStackForm(1L));
