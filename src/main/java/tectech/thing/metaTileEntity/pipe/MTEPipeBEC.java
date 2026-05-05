@@ -31,15 +31,11 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     private BECFactoryNetwork network;
     private int oldColour;
 
-    private final Lazy<List<String>> tooltip;
+    private Lazy<List<String>> tooltip = null;
 
     public MTEPipeBEC(int aID, String aName) {
         super(aID, aName);
         mThickness = 3f / 4f;
-
-        tooltip = new Lazy<>(
-            () -> MarkdownTooltipLoader.STANDARD
-                .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
     }
 
     public MTEPipeBEC(MTEPipeBEC prototype) {
@@ -55,6 +51,11 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD
+                    .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
+        }
         return ArrayUtils.addAll(
             super.getDescription(),
             tooltip.get()
