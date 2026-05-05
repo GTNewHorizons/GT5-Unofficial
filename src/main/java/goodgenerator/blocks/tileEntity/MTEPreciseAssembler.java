@@ -277,6 +277,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         checkCasingMin(errors, casingAmount, 42);
         checkOneMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
         if (glassTier < VoltageIndex.EV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
         }

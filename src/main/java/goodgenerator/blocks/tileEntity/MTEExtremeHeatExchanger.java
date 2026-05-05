@@ -209,8 +209,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
         if (!checkPiece(mName, 2, 5, 0, errors)) return;
-        checkHasMaintenanceHatch(errors);
         checkCasingMin(errors, casingAmount, 25);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }

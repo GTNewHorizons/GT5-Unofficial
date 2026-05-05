@@ -165,6 +165,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         maxPower = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1, errors)) return;
         checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
         if (getPollutionPerTick(null) != 0) {
             checkHasMufflerHatch(errors);
         }
