@@ -837,7 +837,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.IndustrialPrinter.set(
             new MTEIndustrialChisel(IndustrialPrinter.ID, "multimachine.adv.chisel", "Industrial 3D Copying Machine")
                 .getStackForm(1L));
-      
+
         ItemList.LargeSifter.set(
             new MTEIndustrialSifter(
                 LargeSifter.ID,
