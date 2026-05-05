@@ -180,6 +180,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialRockBreaker;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialSifter;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
@@ -836,6 +837,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.IndustrialPrinter.set(
             new MTEIndustrialChisel(IndustrialPrinter.ID, "multimachine.adv.chisel", "Industrial 3D Copying Machine")
                 .getStackForm(1L));
+      
+        ItemList.LargeSifter.set(
+            new MTEIndustrialSifter(
+                LargeSifter.ID,
+                "industrialsifter.controller.tier.single",
+                "Large Sifter Control Block").getStackForm(1L));
 
         ItemList.CryogenicFreezer.set(
             new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
@@ -9971,8 +9978,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Splitter Redstone Input",
                 10).getStackForm(1));
 
-        ItemList.VacuumConveyorPipe.set(
-            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
+        ItemList.VacuumConveyorPipe
+            .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
     @Override
