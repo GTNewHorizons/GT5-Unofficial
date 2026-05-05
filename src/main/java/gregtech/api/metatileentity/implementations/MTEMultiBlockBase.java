@@ -3873,4 +3873,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean hasRunningText() {
         return true;
     }
+
+    public boolean isDebugEnergyPresent() {
+        return debugEnergyPresent;
+    }
 }
