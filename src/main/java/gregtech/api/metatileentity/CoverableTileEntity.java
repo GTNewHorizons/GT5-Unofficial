@@ -9,7 +9,6 @@ import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -389,8 +388,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public boolean getRedstone() {
-        return Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-            .anyMatch(this::getRedstone);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (getRedstone(dir)) return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -400,10 +402,15 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public byte getStrongestRedstone() {
-        return Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-            .map(this::getInternalInputRedstoneSignal)
-            .max(Comparator.comparing(Byte::valueOf))
-            .orElse((byte) 0);
+        byte strongest = 0;
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            byte signal = getInternalInputRedstoneSignal(dir);
+
+            if (signal > strongest) strongest = signal;
+        }
+
+        return strongest;
     }
 
     @Override
