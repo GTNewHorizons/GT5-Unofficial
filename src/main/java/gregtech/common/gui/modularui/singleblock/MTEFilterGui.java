@@ -8,12 +8,13 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -31,38 +32,37 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        String[] matrix = new String[] { "sss", "sss", "sss" };
-
         Flow mainRow = Flow.row()
             .childPadding(1)
             .coverChildren()
             .marginLeft(3);
 
-        // white arrow
+        // white arrow shaft
         mainRow.child(
-            GTGuiTextures.PICTURE_ARROW_24_WHITE.asWidget()
-                .size(9, 24));
+            new Rectangle().asWidget()
+                .size(9, 6));
 
         // filter grid
         mainRow.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key('s', index -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 9) {
+            new Grid().coverChildren()
+                .gridOfWidthHeight(
+                    3,
+                    3,
+                    ($x, $y, index) -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 9) {
 
-                    // both of these are needed
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
+                        // both of these are needed
+                        @Override
+                        public int getSlotStackLimit() {
+                            return 1;
+                        }
 
-                    @Override
-                    public int getItemStackLimit(@NotNull ItemStack stack) {
-                        return 1;
-                    }
-                })
-                    .disableThemeBackground(true)
-                    .disableHoverThemeBackground(true))
-                .build()
+                        @Override
+                        public int getItemStackLimit(@NotNull ItemStack stack) {
+                            return 1;
+                        }
+                    })
+                        .disableThemeBackground(true)
+                        .disableHoverThemeBackground(true))
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
 
         // blue arrow
@@ -72,13 +72,12 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
         // inventory grid
         mainRow.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    's',
-                    index -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv")))
-                .build());
+            new Grid().coverChildren()
+                .gridOfWidthHeight(
+                    3,
+                    3,
+                    ($x, $y, index) -> new ItemSlot()
+                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv"))));
 
         // red arrow
         mainRow.child(
