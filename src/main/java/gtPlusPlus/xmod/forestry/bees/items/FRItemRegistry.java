@@ -16,14 +16,13 @@ public class FRItemRegistry {
         GregtechItemList.HiveFrameVoid
             .set(new MBItemFrame(MBFrameType.USELESS, EnumRarity.common, "gtpp.tooltip.frame.void"));
 
-        GregtechItemList.HiveFrameAccelerated.set(
-            new MBItemFrame(MBFrameType.ACCELERATED, "gtpp.tooltip.frame.accelerated"));
+        GregtechItemList.HiveFrameAccelerated
+            .set(new MBItemFrame(MBFrameType.ACCELERATED, "gtpp.tooltip.frame.accelerated"));
 
-        GregtechItemList.HiveFrameMutagenic.set(
-            new MBItemFrame(MBFrameType.MUTAGENIC, EnumRarity.epic, "gtpp.tooltip.frame.mutagenic"));
+        GregtechItemList.HiveFrameMutagenic
+            .set(new MBItemFrame(MBFrameType.MUTAGENIC, EnumRarity.epic, "gtpp.tooltip.frame.mutagenic"));
 
-        GregtechItemList.HiveFrameBusy
-            .set(new MBItemFrame(MBFrameType.BUSY, "gtpp.tooltip.frame.busy"));
+        GregtechItemList.HiveFrameBusy.set(new MBItemFrame(MBFrameType.BUSY, "gtpp.tooltip.frame.busy"));
 
         GregtechItemList.HiveFrameDecay
             .set(new MBItemFrame(MBFrameType.DECAYING, EnumRarity.uncommon, "gtpp.tooltip.frame.decaying"));
@@ -31,8 +30,8 @@ public class FRItemRegistry {
         GregtechItemList.HiveFrameSlow
             .set(new MBItemFrame(MBFrameType.SLOWING, EnumRarity.common, "gtpp.tooltip.frame.slowing"));
 
-        GregtechItemList.HiveFrameStabilize.set(
-            new MBItemFrame(MBFrameType.STABILIZING, EnumRarity.rare, "gtpp.tooltip.frame.stabilizing"));
+        GregtechItemList.HiveFrameStabilize
+            .set(new MBItemFrame(MBFrameType.STABILIZING, EnumRarity.rare, "gtpp.tooltip.frame.stabilizing"));
 
         GregtechItemList.HiveFrameArborist
             .set(new MBItemFrame(MBFrameType.ARBORISTS, EnumRarity.common, "gtpp.tooltip.frame.arborists"));
