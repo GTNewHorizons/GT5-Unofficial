@@ -252,6 +252,10 @@ public class MTEPurificationUnitBaryonicPerfection
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
         checkCasingMin(errors, numCasings, MIN_CASINGS);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

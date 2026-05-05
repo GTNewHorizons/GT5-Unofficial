@@ -564,6 +564,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
         checkCasingMin(errors, casingCount, MIN_CASING);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
         if (plasmaInputHatch == null || coolantInputHatch == null) {
             throw new IllegalArgumentException("This should not happen because structure def include mandatory hatch");

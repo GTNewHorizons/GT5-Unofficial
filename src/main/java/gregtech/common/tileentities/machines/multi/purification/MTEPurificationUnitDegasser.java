@@ -717,6 +717,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
         checkCasingMin(errors, casingCount, MIN_CASING);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without a valid control hatch
         if (this.controlHatch == null || !this.controlHatch.isValid()) {
             errors.add(StructureErrors.missingHatch(Hatch_DegasifierControl.get(1)));

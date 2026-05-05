@@ -555,6 +555,9 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
         // Do not form without positioned hatches
         if (acidInputHatch == null || alkalineInputBus == null) {
             throw new IllegalArgumentException(
