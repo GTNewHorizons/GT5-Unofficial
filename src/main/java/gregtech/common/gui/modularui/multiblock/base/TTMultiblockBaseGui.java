@@ -175,15 +175,15 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     true,
                     (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager));
 
-            column.child(parameterEditButton.onMousePressed(d -> {
-                if (!editParameterPanel.isPanelOpen()) {
-                    editParameterPanel.openPanel();
-                } else {
-                    editParameterPanel.closePanel();
-                }
-                return true;
-            }));
-        });
+                column.child(parameterEditButton.onMousePressed(d -> {
+                    if (!editParameterPanel.isPanelOpen()) {
+                        editParameterPanel.openPanel();
+                    } else {
+                        editParameterPanel.closePanel();
+                    }
+                    return true;
+                }));
+            });
         return column;
     }
 
