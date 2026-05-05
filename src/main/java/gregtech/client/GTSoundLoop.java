@@ -16,7 +16,7 @@ import gregtech.client.volumetric.ISoundPosition;
 @SideOnly(Side.CLIENT)
 public class GTSoundLoop extends MovingSound {
 
-    private static final float VOLUME_RAMP = 0.0625f;
+    public static final float VOLUME_RAMP = 0.0625f;
     private final boolean whileActive;
     private final boolean whileInactive;
     private final int worldID;
@@ -33,28 +33,43 @@ public class GTSoundLoop extends MovingSound {
      * Constructs a GTSoundLoop.
      *
      * @param soundResource    the sound file location
-     * @param tileEntity       the tile entity associated with this sound
+     * @param base             the tile entity associated with this sound
      * @param stopWhenActive   flag to stop the sound when the block is active
      * @param stopWhenInactive flag to stop the sound when the block is inactive
      * @param soundX           positional sound X coordinate
      * @param soundY           positional sound Y coordinate
      * @param soundZ           positional sound Z coordinate
      */
-    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity base, boolean stopWhenActive,
         boolean stopWhenInactive, float soundX, float soundY, float soundZ) {
 
         super(soundResource);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
-        tileX = tileEntity.getXCoord();
-        tileY = tileEntity.getYCoord();
-        tileZ = tileEntity.getZCoord();
+        tileX = base.getXCoord();
+        tileY = base.getYCoord();
+        tileZ = base.getZCoord();
         xPosF = soundX;
         yPosF = soundY;
         zPosF = soundZ;
-        worldID = tileEntity.getWorld().provider.dimensionId;
+        worldID = base.getWorld().provider.dimensionId;
         repeat = true;
+        targetVolume = VOLUME_RAMP;
         volume = VOLUME_RAMP;
+    }
+
+    public GTSoundLoop(ResourceLocation soundResource, IGregTechTileEntity base, boolean stopWhenActive,
+        boolean stopWhenInactive, float volumeRamp) {
+        this(
+            soundResource,
+            base,
+            stopWhenActive,
+            stopWhenInactive,
+            base.getXCoord(),
+            base.getYCoord(),
+            base.getZCoord());
+        this.targetVolume = volumeRamp;
+        volume = volumeRamp;
     }
 
     /**
