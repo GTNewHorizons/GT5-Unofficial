@@ -607,7 +607,7 @@ public class RecipesMachinesMulti {
     private static void multiSifter() {
         // Large Sifter Control Block
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Sifter.get(1),
+            ItemList.LargeSifter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'C', "circuitAdvanced",
                 'W', OrePrefixes.cableGt04.get(Materials.Gold), 'M', ItemList.Machine_HV_Sifter });
