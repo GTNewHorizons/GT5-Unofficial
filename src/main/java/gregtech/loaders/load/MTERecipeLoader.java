@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
@@ -1928,9 +1929,13 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { ItemList.OilDrillInfinite });
 
         // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ExothermicHearth.get(1),
-            new Object[] { ItemRegistry.megaMachines[0] });
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[0]))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
     }
 
     private static void registerSifter() {
