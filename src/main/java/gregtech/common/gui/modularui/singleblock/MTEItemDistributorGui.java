@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.singleblock;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,8 +13,8 @@ import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -44,17 +43,13 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        String[] matrix = new String[3];
-        Arrays.fill(matrix, "sssssssss");
-
         return super.createContentSection(panel, syncManager).child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    's',
-                    index -> new ItemSlot()
+            new Grid().coverChildren()
+                .gridOfWidthHeight(
+                    9,
+                    3,
+                    ($x, $y, index) -> new ItemSlot()
                         .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv")))
-                .build()
                 .horizontalCenter());
     }
 
