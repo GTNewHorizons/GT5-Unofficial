@@ -839,7 +839,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialForgeHammer.ID,
                 "industrialhammer.controller.tier.single",
                 "Industrial Sledgehammer").getStackForm(1L));
-      
+
         ItemList.LargeSifter.set(
             new MTEIndustrialSifter(
                 LargeSifter.ID,
