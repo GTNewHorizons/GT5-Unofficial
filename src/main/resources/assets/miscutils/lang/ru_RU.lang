@@ -4050,3 +4050,12 @@ gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Разблокировано
 gtpp.chat.wireless_charger.enter=Вы вошли в радиус зарядки. [%s м - %s]
 gtpp.chat.wireless_charger.leave=Вы покинули радиус зарядки. [%s м - %s]
+
+gtpp.tooltip.frame.void=Никаких читерских рамок для игроков GTNH.
+gtpp.tooltip.frame.accelerated=Долголетие пчёл — редкость, особенно когда они работают усерднее.
+gtpp.tooltip.frame.mutagenic=Эволюция самых приспособленных, лучших и быстрых.
+gtpp.tooltip.frame.busy=Ваша пчела будет работать усерднее и дольше, чем вы ожидали.
+gtpp.tooltip.frame.decaying=Кому нужна стабильная генетика?
+gtpp.tooltip.frame.slowing=Сам путь и есть награда.
+gtpp.tooltip.frame.stabilizing=Если вы хотите, чтобы ваши пчёлы сохранили свою форму.
+gtpp.tooltip.frame.arborists=Зачем нужны пчёлы, если есть деревья?
