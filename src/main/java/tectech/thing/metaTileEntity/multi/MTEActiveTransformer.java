@@ -80,6 +80,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         checkPiece("main", 1, 1, 0, errors);
 
         checkCasingMin(errors, casingCount, 5);
+        checkHasAnyEnergy(errors);
 
         if (errors.isEmpty()) {
             grace = true;

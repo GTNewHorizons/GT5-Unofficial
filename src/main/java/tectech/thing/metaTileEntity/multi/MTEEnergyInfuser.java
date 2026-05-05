@@ -160,6 +160,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         if (!checkPiece("main", 1, 2, 0, errors)) return;
+        checkHasAnyEnergy(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
         checkHasMaintenanceHatch(errors);

@@ -222,6 +222,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         mCasingAmount = 0;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, CASINGS_MIN);
+        checkHasInputBus(errors);
     }
 
     @Override

@@ -346,6 +346,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         checkOneMaintenanceHatch(errors);
         checkExoticAndNormalEnergyHatches(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     /**

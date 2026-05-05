@@ -509,6 +509,8 @@ public class MTETeslaTower extends TTMultiblockBase
             cap.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
 
         // Only recalculate offsets on orientation or rotation change
         if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {

@@ -194,6 +194,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         eHolders.clear();
 
         if (!checkPiece("main", 1, 3, 4, errors)) return;
+        checkHasAnyEnergy(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
 
         if (iGregTechTileEntity.isActive()) {
             lockHolders();
