@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.Multimaps;
@@ -27,6 +29,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 
@@ -334,6 +337,16 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, Collections.emptyMap()));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc, Map<String, Object> vars) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, vars));
+        return this;
+    }
+
     /**
      * Add a separator line
      *
@@ -352,16 +365,23 @@ public class MultiblockTooltipBuilder {
         return addSeparator(color, 41);
     }
 
+    /// Tooltip separators are spaces
+    public static final int TT_SEPARATOR_SPACES = 0;
+    /// Tooltip separators are dashed lines
+    public static final int TT_SEPARATOR_DASHES = 1;
+    /// Tooltip separators are continuous lines
+    public static final int TT_SEPARATOR_SOLID_LINE = 2;
+
     /**
      * Add a colored separator line with specified length
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.proxy.separatorStyle) {
-            case 0 -> iLines.add(" ");
-            case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
-            default -> iLines
+        switch (GTMod.proxy.getSeparatorStyle()) {
+            case Empty -> iLines.add(" ");
+            case Dashes -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
+            case ContinuousLine -> iLines
                 .add(color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
@@ -1049,10 +1069,10 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.proxy.separatorStyle) {
-                case 0 -> sLines.add(TAB + " ");
-                case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
-                default -> sLines
+            switch (GTMod.proxy.getSeparatorStyle()) {
+                case Empty -> sLines.add(TAB + " ");
+                case Dashes -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
+                case ContinuousLine -> sLines
                     .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
             }
         }

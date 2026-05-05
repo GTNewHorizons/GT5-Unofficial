@@ -861,6 +861,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialhammer.controller.tier.single",
                 "Industrial Sledgehammer").getStackForm(1L));
 
+        ItemList.LargeSifter.set(
+            new MTEIndustrialSifter(
+                LargeSifter.ID,
+                "industrialsifter.controller.tier.single",
+                "Large Sifter Control Block").getStackForm(1L));
+
         ItemList.CryogenicFreezer.set(
             new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
                 .getStackForm(1L));
@@ -10043,8 +10049,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Splitter Redstone Input",
                 10).getStackForm(1));
 
-        ItemList.VacuumConveyorPipe.set(
-            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
+        ItemList.VacuumConveyorPipe
+            .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
     @Override
