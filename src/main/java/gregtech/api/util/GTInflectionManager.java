@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTLanguageManager.LOCALE;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -12,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +37,7 @@ public final class GTInflectionManager {
     private static final boolean IS_SERVER = FMLCommonHandler.instance()
         .getEffectiveSide()
         .isServer();
+    private static final Pattern CAPITALIZE_WORDS_PATTERN = Pattern.compile("\\p{L}+");
 
     private GTInflectionManager() {}
 
@@ -58,12 +61,12 @@ public final class GTInflectionManager {
 
             Map<String, LinkedHashMap<Pattern, String>> inflectionTempMap = new ConcurrentHashMap<>();
 
-            for (Map.Entry<String, LinkedHashMap<String, String>> entry : fileData.entrySet()) {
+            for (Entry<String, LinkedHashMap<String, String>> entry : fileData.entrySet()) {
                 String typeKey = entry.getKey();
                 LinkedHashMap<String, String> stringRules = entry.getValue();
                 LinkedHashMap<Pattern, String> compiledRules = new LinkedHashMap<>();
 
-                for (Map.Entry<String, String> rule : stringRules.entrySet()) {
+                for (Entry<String, String> rule : stringRules.entrySet()) {
                     try {
                         String pattern = rule.getKey();
                         if (!pattern.startsWith("^")) pattern = "^" + pattern;
@@ -98,10 +101,11 @@ public final class GTInflectionManager {
      * and replacement.<br>
      * Special cases can be defined via the localization key <code>formatterKey.key</code> to override the default
      * inflection result.<br>
-     * Supports a slash ({@code /}) in {@code key} for secondary replacement:<br>
-     * {@code "prefix/rest"} first attempts to translate {@code formatterKey.prefix} as the base word, then applies the
-     * {@code rest} inflection rule.<br>
-     * See <code>assets/gregtech/inflection/en_US.example.json</code> for an example JSON format.
+     * Supports a slash ({@code /}) in {@code rule key} for multiple replacement:<br>
+     * {@code part1/part2/part3} will execute the {@code part1} rule, {@code part2} rule, and {@code part3} rule in
+     * sequence.<br>
+     * See ({@code assets/gregtech/inflection/en_US.example.json} for an example JSON format.<br>
+     * See also: {@link <a href="https://gist.github.com/iouter/efcfb45dbc337e5c45f1c177df3cbaa0">document in gist</a>}
      * <p>
      * On the client side, words are replaced according to the inflection rules; on the server side, inflection markers
      * are automatically removed (no inflection applied).<br>
@@ -188,36 +192,59 @@ public final class GTInflectionManager {
         if (key == null || key.isEmpty()) {
             return word;
         }
-        if (key.contains("/")) {
-            String[] temp = key.split("/", 2);
-            String secondaryKey = formatterKey + "." + temp[0];
-            key = temp[1];
-            if (key.isEmpty()) {
-                GT_FML_LOGGER.warn("Rule key is empty");
-                return word;
+        String specialCaseKey = formatterKey;
+        final String[] rules = key.split("/");
+        for (String rule : rules) {
+            if (rule.isEmpty()) {
+                GT_FML_LOGGER.warn("A rule key is empty, full rule key: {}", key);
             }
-            if (StatCollector.canTranslate(secondaryKey)) {
-                word = StatCollector.translateToLocal(secondaryKey);
-            } else {
-                GT_FML_LOGGER
-                    .warn("Set key '{}', but unable to translate key '{}', using base word", temp[0], secondaryKey);
+            specialCaseKey += "." + rule;
+            if (StatCollector.canTranslate(specialCaseKey)) {
+                word = StatCollector.translateToLocal(specialCaseKey);
+                continue;
             }
-        }
-        String specialCaseKey = formatterKey + "." + key;
-        if (StatCollector.canTranslate(specialCaseKey)) {
-            return StatCollector.translateToLocal(specialCaseKey);
-        }
-
-        LinkedHashMap<Pattern, String> rules = INFLECTION_MAP.get(key);
-        if (rules == null || rules.isEmpty()) {
-            return word;
-        }
-
-        for (Map.Entry<Pattern, String> rule : rules.entrySet()) {
-            Matcher m = rule.getKey()
-                .matcher(word);
-            if (m.matches()) {
-                return m.replaceFirst(rule.getValue());
+            switch (rule) {
+                case "lowercase" -> {
+                    word = word.toLowerCase(LOCALE);
+                    continue;
+                }
+                case "uppercase" -> {
+                    word = word.toUpperCase(LOCALE);
+                    continue;
+                }
+                case "capitalize_first" -> {
+                    word = word.substring(0, 1)
+                        .toUpperCase(LOCALE)
+                        + word.substring(1)
+                            .toLowerCase(LOCALE);
+                    continue;
+                }
+                case "capitalize_words" -> {
+                    Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
+                    StringBuffer sb = new StringBuffer(word.length());
+                    while (matcher.find()) {
+                        String matchedWord = matcher.group();
+                        String capitalized = matchedWord.substring(0, 1)
+                            .toUpperCase(LOCALE)
+                            + matchedWord.substring(1)
+                                .toLowerCase(LOCALE);
+                        matcher.appendReplacement(sb, Matcher.quoteReplacement(capitalized));
+                    }
+                    matcher.appendTail(sb);
+                    word = sb.toString();
+                    continue;
+                }
+            }
+            LinkedHashMap<Pattern, String> ruleMap = INFLECTION_MAP.get(rule);
+            if (ruleMap == null || ruleMap.isEmpty()) {
+                continue;
+            }
+            for (Entry<Pattern, String> ruleEntry : ruleMap.entrySet()) {
+                Matcher m = ruleEntry.getKey()
+                    .matcher(word);
+                if (m.matches()) {
+                    word = m.replaceFirst(ruleEntry.getValue());
+                }
             }
         }
         return word;
