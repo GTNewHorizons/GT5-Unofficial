@@ -221,7 +221,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     }
 
     protected int getParallelCount() {
-        System.out.println("1");
         return (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * parallels + 1;
     }
 }
