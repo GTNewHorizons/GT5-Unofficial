@@ -9,7 +9,6 @@ import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.CYCLE_PARAMETER;
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.DISTANCE_PARAMETER;
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.RANGE_PARAMETER;
-import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.STEP_PARAMETER;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -69,8 +68,6 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
 import gtnhintergalactic.recipe.SpaceMiningRecipes;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
-import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 
 public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntityModuleMiner> {
 
@@ -93,9 +90,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue distanceSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
-        IntSyncValue cycleDistanceSyncer = syncManager.findSyncHandler("cycleDistanceParameter", IntSyncValue.class);
-        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler("cycleParameter", BooleanSyncValue.class);
+        IntSyncValue distanceSyncer = syncManager.findSyncHandler(DISTANCE_PARAMETER, IntSyncValue.class);
+        IntSyncValue cycleDistanceSyncer = syncManager.findSyncHandler(CYCLE_DISTANCE_PARAMETER, IntSyncValue.class);
+        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler(CYCLE_PARAMETER, BooleanSyncValue.class);
 
         ListWidget<IWidget, ?> minerInfo = new ListWidget<>().child(
             IKey.dynamic(
@@ -225,7 +222,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IDrawable createFilterSlotBackground(int index, PanelSyncManager syncManager) {
-        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
+        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler(DISTANCE_PARAMETER, IntSyncValue.class);
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
 
         return new DynamicDrawable(() -> {
@@ -294,8 +291,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         if (distance <= 0 || droneTier < 0) return false;
         Map<Integer, List<Pair<Integer, GTRecipe>>> asteroids = asteroidDistanceMap.get(droneTier);
 
-        IntSyncValue rangeSyncer = syncManager.findSyncHandler("rangeParameter", IntSyncValue.class);
-        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler("cycleParameter", BooleanSyncValue.class);
+        IntSyncValue rangeSyncer = syncManager.findSyncHandler(RANGE_PARAMETER, IntSyncValue.class);
+        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler(CYCLE_PARAMETER, BooleanSyncValue.class);
 
         // results cached as this is a pretty expensive search
         int range = cycleSyncer.getValue() ? rangeSyncer.getValue() : 0;
@@ -341,7 +338,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private IWidget createFilterPanelConfiguration(PanelSyncManager syncManager, ModularPanel panel) {
 
-        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
+        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler(DISTANCE_PARAMETER, IntSyncValue.class);
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
 
         Flow resultColumn = new Column().heightRel(1)
@@ -397,9 +394,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private void generateAsteroidButtons(Flow resultColumn, PanelSyncManager syncManager) {
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
-        IntSyncValue distanceSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
-        IntSyncValue rangeSyncer = syncManager.findSyncHandler("rangeParameter", IntSyncValue.class);
-        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler("cycleParameter", BooleanSyncValue.class);
+        IntSyncValue distanceSyncer = syncManager.findSyncHandler(DISTANCE_PARAMETER, IntSyncValue.class);
+        IntSyncValue rangeSyncer = syncManager.findSyncHandler(RANGE_PARAMETER, IntSyncValue.class);
+        BooleanSyncValue cycleSyncer = syncManager.findSyncHandler(CYCLE_PARAMETER, BooleanSyncValue.class);
 
         int droneTier = droneTierSyncer.getValue();
         int distance = distanceSyncer.getValue();
@@ -996,7 +993,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private List<List<IWidget>> createDroneSelectorMatrix(PanelSyncManager syncManager, IPanelHandler syncHandler) {
-        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
+        IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler(DISTANCE_PARAMETER, IntSyncValue.class);
         IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
 
@@ -1333,47 +1330,15 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue distanceParameterSyncer = new IntSyncValue(
-            () -> (int) multiblock.parameterMap.get(DISTANCE_PARAMETER)
-                .getValue(),
-            val -> ((IntegerParameter) multiblock.parameterMap.get(DISTANCE_PARAMETER)).setValue(val));
 
-        syncManager.syncValue("distanceParameter", distanceParameterSyncer);
-        syncManager.syncValue(
-            "cycleDistanceParameter",
-            new IntSyncValue(
-                () -> (int) multiblock.parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-                    .getValue(),
-                val -> ((IntegerParameter) multiblock.parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(val)));
-        syncManager.syncValue(
-            "rangeParameter",
-            new IntSyncValue(
-                () -> (int) multiblock.parameterMap.get(RANGE_PARAMETER)
-                    .getValue(),
-                val -> ((IntegerParameter) multiblock.parameterMap.get(RANGE_PARAMETER)).setValue(val)));
-        syncManager.syncValue(
-            "stepParameter",
-            new IntSyncValue(
-                () -> (int) multiblock.parameterMap.get(STEP_PARAMETER)
-                    .getValue(),
-                val -> ((IntegerParameter) multiblock.parameterMap.get(STEP_PARAMETER)).setValue(val)));
-
-        syncManager.syncValue(
-            "cycleParameter",
-            new BooleanSyncValue(
-                () -> (boolean) multiblock.parameterMap.get(CYCLE_PARAMETER)
-                    .getValue(),
-                val -> {
-                    ((BooleanParameter) multiblock.parameterMap.get(CYCLE_PARAMETER)).setValue(val);
-                    checked = new boolean[64];
-                }));
+        syncManager.findSyncHandler(CYCLE_PARAMETER, BooleanSyncValue.class)
+            .setChangeListener(() -> checked = new boolean[64]);
 
         BooleanSyncValue isWhiteListedSyncer = new BooleanSyncValue(
             () -> multiblock.isWhitelisted,
             val -> multiblock.isWhitelisted = val);
         syncManager.syncValue("isWhiteListed", isWhiteListedSyncer);
 
-        syncManager.syncValue("distanceParameter", distanceParameterSyncer);
         IntSyncValue droneTierSyncer = new IntSyncValue(
             () -> multiblock.currentDroneMask <= 0 ? -1
                 : (int) Math.round((Math.log(multiblock.currentDroneMask) / Math.log(2))));
