@@ -138,6 +138,11 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     }
 
     @Override
+    protected boolean checkHatches() {
+        return !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
