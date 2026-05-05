@@ -515,6 +515,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return true;
     }
 
+    default void onAdjacentBlockChange(int x, int y, int z) {
+        /* do nothing */
+    }
+
     /**
      * A randomly called display update to be able to add particles or other items for display
      *
