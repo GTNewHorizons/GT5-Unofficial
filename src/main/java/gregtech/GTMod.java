@@ -52,6 +52,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -59,6 +60,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.materials.bec.BECMaterialList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -101,6 +103,7 @@ import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
+import gregtech.loaders.load.BECRecipeLoader;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
@@ -331,6 +334,8 @@ public class GTMod {
 
         GTUIInfos.init();
 
+        CondensateType.registerFluids();
+
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
         }
@@ -371,6 +376,8 @@ public class GTMod {
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
+        BECMaterialList.init();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -384,6 +391,8 @@ public class GTMod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
+
+        CondensateType.registerRecipes();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
@@ -561,6 +570,7 @@ public class GTMod {
         GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
+        BECRecipeLoader.run();
 
         achievements = new GTAchievements();
 

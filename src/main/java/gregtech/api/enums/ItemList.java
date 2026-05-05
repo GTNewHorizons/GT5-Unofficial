@@ -1747,6 +1747,11 @@ public enum ItemList implements IItemContainer {
     Casing_Beryllium_Integrated_Reactor,
     Casing_Refined_Graphite,
 
+    SuperconductivePlasmaEnergyConduit,
+    ElectromagneticallyIsolatedCasing,
+    FineStructureConstantManipulator,
+    ElectromagneticWaveguide,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
