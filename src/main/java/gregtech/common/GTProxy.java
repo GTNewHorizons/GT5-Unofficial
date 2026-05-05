@@ -657,8 +657,24 @@ public class GTProxy implements IFuelHandler {
      * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
      */
     public int mTitleTabStyle = 0;
-    /** Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line */
+    /// Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
+    /// Use [#getSeparatorStyle()] instead.
     public int separatorStyle = 2;
+
+    public enum SeparatorStyle {
+        Empty,
+        Dashes,
+        ContinuousLine
+    }
+
+    public SeparatorStyle getSeparatorStyle() {
+        return switch (separatorStyle) {
+            case 0 -> SeparatorStyle.Empty;
+            case 1 -> SeparatorStyle.Dashes;
+            default -> SeparatorStyle.ContinuousLine;
+        };
+    }
+
     /**
      * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
      * continuous line
