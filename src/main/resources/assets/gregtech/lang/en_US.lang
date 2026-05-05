@@ -8208,7 +8208,7 @@ GT5U.gui.text.bec-mode=Mode
 GT5U.gui.text.bec-field-strength=Field Strength
 GT5U.gui.text.bec-stored=Stored:
 GT5U.gui.text.bec-min-parallels=Min Parallels
-GT5U.gui.text.bec-max-parallels=Min Parallels
+GT5U.gui.text.bec-max-parallels=Max Parallels
 GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
