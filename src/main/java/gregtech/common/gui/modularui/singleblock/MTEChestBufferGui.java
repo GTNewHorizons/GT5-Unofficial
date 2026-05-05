@@ -1,12 +1,10 @@
 package gregtech.common.gui.modularui.singleblock;
 
-import java.util.Arrays;
-
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -22,17 +20,13 @@ public class MTEChestBufferGui extends MTEBufferBaseGui<MTEChestBuffer> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        String[] matrix = new String[3];
-        Arrays.fill(matrix, "sssssssss");
-
         return super.createContentSection(panel, syncManager).child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    's',
-                    index -> new ItemSlot()
+            new Grid().coverChildren()
+                .gridOfWidthHeight(
+                    9,
+                    3,
+                    ($x, $y, index) -> new ItemSlot()
                         .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv")))
-                .build()
                 .horizontalCenter());
     }
 
