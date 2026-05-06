@@ -81,15 +81,14 @@ public class MTEBoilerGui {
         IWidget fuelSlots = Flow.column()
             .coverChildren()
             .childIf(base.doesAddAshSlot(), () -> base.createAshSlot())
-            .child(
-                new GTProgressWidget()
-                    .value(
-                        new DoubleSyncValue(
-                            () -> base.fuelMaxEnergy > 0 ? (float) base.mProcessingEnergy / base.fuelMaxEnergy : 0))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
-                    .size(14)
-                    .margin(2))
+            .child(new GTProgressWidget().value(new DoubleSyncValue(() -> {
+                if (base.mProcessingEnergy <= 0 || base.fuelMaxEnergy <= 0) return 0f;
+                return Math.max(2f / 14f, (float) base.mProcessingEnergy / base.fuelMaxEnergy);
+            }))
+                .direction(ProgressWidget.Direction.UP)
+                .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
+                .size(14)
+                .margin(2))
             .childIf(base.doesAddFuelSlot(), () -> base.createFuelSlot());
 
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)

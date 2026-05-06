@@ -462,7 +462,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     protected void addProcessingEnergy(int amount) {
         this.mProcessingEnergy += amount;
-        this.fuelMaxEnergy = this.mProcessingEnergy;
+        this.fuelMaxEnergy = Math.max(this.fuelMaxEnergy, this.mProcessingEnergy);
     }
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
