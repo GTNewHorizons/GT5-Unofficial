@@ -91,7 +91,7 @@ public final class GTInflectionManager {
         }
     }
 
-    private static String unEscape(String input) {
+    private static String unescape(String input) {
         return input.replace("\\{", "{")
             .replace("\\}", "}");
     }
@@ -126,14 +126,14 @@ public final class GTInflectionManager {
         final String input = StatCollector.translateToLocal(inputKey);
         if (!input.contains("s{")) {
             return String.format(
-                unEscape(input),
+                unescape(input),
                 Arrays.stream(formatterKey)
                     .map(StatCollector::translateToLocal)
                     .toArray(Object[]::new));
         }
         if (IS_SERVER) {
             return String.format(
-                unEscape(input),
+                unescape(input),
                 Arrays.stream(formatterKey)
                     .map(StatCollector::translateToLocal)
                     .toArray(Object[]::new));
@@ -173,7 +173,7 @@ public final class GTInflectionManager {
         matcher.appendTail(sb);
         Object[] formattedArgs = params.toArray();
 
-        String cleanedPattern = unEscape(sb.toString());
+        String cleanedPattern = unescape(sb.toString());
         return String.format(cleanedPattern, formattedArgs);
     }
 
