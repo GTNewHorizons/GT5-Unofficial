@@ -178,7 +178,6 @@ public final class GTInflectionManager {
         try {
             return String.format(cleanedPattern, formattedArgs);
         } catch (IllegalFormatException e) {
-            GT_FML_LOGGER.warn("Illegal Format in Inflection: {}", input, e);
             return "Illegal Format in Inflection: " + input;
         }
     }
