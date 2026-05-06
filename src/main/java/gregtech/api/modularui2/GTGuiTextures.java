@@ -1565,6 +1565,11 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture OVERLAY_BUTTON_NBT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/nbt")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     // endregion button overlay
 

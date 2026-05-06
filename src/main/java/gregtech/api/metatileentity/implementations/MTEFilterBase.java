@@ -12,7 +12,7 @@ import gregtech.api.util.GTTooltipDataCache;
 public abstract class MTEFilterBase extends MTEBuffer {
 
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
-    protected static final int FILTER_SLOT_INDEX = 9;
+    public static final int FILTER_SLOT_INDEX = 9;
     protected static final int NUM_INVENTORY_SLOTS = 9;
     private static final String EMIT_REDSTONE_GRADUALLY_TOOLTIP = "GT5U" + ".machines.emit_redstone_gradually.tooltip";
     protected boolean invertFilter = false;
