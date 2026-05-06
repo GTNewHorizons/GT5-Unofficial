@@ -269,6 +269,13 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
+     * @return True if the module is connected to a Space Elevator, else false
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This
@@ -324,6 +331,11 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 1, 0);
+    }
+
+    @Override
+    protected boolean cyclicUpdate_EM() {
+        return !mMachine ? mUpdate <= -20 : super.cyclicUpdate_EM();
     }
 
     @Override
