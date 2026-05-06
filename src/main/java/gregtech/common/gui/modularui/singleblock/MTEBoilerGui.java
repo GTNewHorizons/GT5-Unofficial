@@ -85,7 +85,7 @@ public class MTEBoilerGui {
                 new GTProgressWidget()
                     .value(
                         new DoubleSyncValue(
-                            () -> base.mFuelMaxEnergy > 0 ? (float) base.mProcessingEnergy / base.mFuelMaxEnergy : 0))
+                            () -> base.fuelMaxEnergy > 0 ? (float) base.mProcessingEnergy / base.fuelMaxEnergy : 0))
                     .direction(ProgressWidget.Direction.UP)
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
                     .size(14)
