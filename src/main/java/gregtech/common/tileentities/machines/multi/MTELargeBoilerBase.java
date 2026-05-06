@@ -282,7 +282,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
-                this.mEUt = 0;
+                this.lEUt = 0;
                 return false;
             }
         }
@@ -384,9 +384,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             }
         }
         this.mMaxProgresstime = 0;
-        this.mEUt = 0;
         this.mEfficiencyIncrease = 0;
         this.efficiencyChangePerTick = 0;
+        this.lEUt = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -395,7 +395,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         this.mMaxProgresstime = adjustBurnTimeForConfig(safeBurnTime);
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 0;
-        this.mEUt = adjustEUtForConfig(getEUt());
+        this.lEUt = adjustEUtForConfig(getEUt());
     }
 
     private int getEfficiencyChangePerTick(int burnTime, int changePerTick) {
@@ -411,10 +411,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        if (this.lEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             adjustEfficiencyTowards(maxEff, Math.max(1, efficiencyChangePerTick));
-            int tGeneratedEU = GTUtility.safeInt(this.mEUt * 2L * this.mEfficiency / 10000L);
+            int tGeneratedEU = GTUtility.safeInt(this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 int waterToConsume = getWaterConsumptionForSteam(tGeneratedEU);
                 startRecipeProcessing();
