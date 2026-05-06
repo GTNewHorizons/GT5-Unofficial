@@ -55,4 +55,9 @@ public class MTESuperBuffer extends MTEChestBuffer {
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTESuperBufferGui(this).build(guiData, syncManager, uiSettings);
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
