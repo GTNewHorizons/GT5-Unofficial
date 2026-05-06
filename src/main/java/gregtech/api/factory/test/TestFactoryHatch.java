@@ -25,11 +25,10 @@ import tectech.util.CommonValues;
 
 public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactoryElement {
 
-    public TestFactoryHatch(int aID, String aName, String aNameRegional, int aTier) {
+    public TestFactoryHatch(int aID, String aName, int aTier) {
         super(
             aID,
             aName,
-            aNameRegional,
             aTier,
             new String[] { CommonValues.TEC_MARK_EM,
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),

@@ -1,7 +1,5 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
-import java.util.Map;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -9,30 +7,35 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 public class BooleanParameter extends Parameter<Boolean> {
 
-    public BooleanParameter(Boolean value, String langKey) {
-        super(value, langKey);
+    public BooleanParameter(Boolean value, String langKey, String nbtKey, Object... langArgs) {
+        super(value, langKey, nbtKey, langArgs);
+    }
+
+    @Override
+    public void saveNBT(NBTTagCompound tag) {
+        tag.setBoolean(this.getNbtKey(), this.getValue());
+    }
+
+    @Override
+    public void loadNBT(NBTTagCompound tag) {
+        if (!tag.hasKey(this.getNbtKey())) return;
+        setValue(tag.getBoolean(this.getNbtKey()));
+    }
+
+    @Override
+    public void saveToParameterCard(NBTTagCompound tag) {
+        super.saveToParameterCard(tag);
+        tag.setString("type", "boolean");
+        tag.setBoolean("value", this.getValue());
+    }
+
+    @Override
+    public void loadFromParameterCard(NBTTagCompound tag) {
+        this.setValue(tag.getBoolean("value"));
     }
 
     @Override
     public SyncHandler createSyncHandler() {
         return new BooleanSyncValue(this::getValue, this::setValue);
-    }
-
-    /**
-     * Loads the value of the parameter at {@code key} from {@code nbt} into {@code parameterMap}.
-     * The element at {@code key} in {@code parameterMap} must be of type {@link BooleanParameter}
-     * and be already present.
-     */
-    public static void loadValue(NBTTagCompound nbt, Map<String, Parameter<?>> parameterMap, String key) {
-        ((BooleanParameter) parameterMap.get(key)).setValue(nbt.getBoolean(key));
-    }
-
-    /**
-     * Saves the value of the parameter at {@code key} from {@code parameterMap} into {@code nbt}.
-     * The element at {@code key} in {@code parameterMap} must be of type {@link BooleanParameter}
-     * and be already present.
-     */
-    public static void saveValue(NBTTagCompound nbt, Map<String, Parameter<?>> parameterMap, String key) {
-        nbt.setBoolean(key, ((BooleanParameter) parameterMap.get(key)).getValue());
     }
 }
