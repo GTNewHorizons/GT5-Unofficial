@@ -8,13 +8,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +22,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import com.github.bsideup.jabel.Desugar;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -31,9 +33,9 @@ import gregtech.api.enums.Mods;
 public final class GTInflectionManager {
 
     private static final Type MAP_TYPE = new TypeToken<Map<String, LinkedHashMap<String, String>>>() {}.getType();
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!%)%(\\d+\\$)?s(?:\\{([^}]+)})?");
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!%)%(?:(\\d+)\\$)?s(?:\\{([^}]+)})?");
     private static final Gson GSON = new Gson();
-    private static volatile Map<String, LinkedHashMap<Pattern, String>> INFLECTION_MAP = new ConcurrentHashMap<>();
+    private static volatile Map<String, List<Rule>> INFLECTION_MAP = new HashMap<>();
     private static final boolean IS_SERVER = FMLCommonHandler.instance()
         .getEffectiveSide()
         .isServer();
@@ -59,19 +61,19 @@ public final class GTInflectionManager {
                 return;
             }
 
-            Map<String, LinkedHashMap<Pattern, String>> inflectionTempMap = new ConcurrentHashMap<>();
+            Map<String, List<Rule>> inflectionTempMap = new HashMap<>();
 
             for (Entry<String, LinkedHashMap<String, String>> entry : fileData.entrySet()) {
                 String typeKey = entry.getKey();
                 LinkedHashMap<String, String> stringRules = entry.getValue();
-                LinkedHashMap<Pattern, String> compiledRules = new LinkedHashMap<>();
+                List<Rule> compiledRules = new ArrayList<>();
 
                 for (Entry<String, String> rule : stringRules.entrySet()) {
                     try {
                         String pattern = rule.getKey();
                         if (!pattern.startsWith("^")) pattern = "^" + pattern;
                         if (!pattern.endsWith("$")) pattern = pattern + "$";
-                        compiledRules.put(Pattern.compile(pattern), rule.getValue());
+                        compiledRules.add(new Rule(Pattern.compile(pattern), rule.getValue()));
                     } catch (Exception e) {
                         GT_FML_LOGGER.warn("Invalid regex pattern '{}' for type '{}'", rule.getKey(), typeKey, e);
                     }
@@ -84,10 +86,12 @@ public final class GTInflectionManager {
 
         } catch (IOException e) {
             GT_FML_LOGGER.warn("Failed to load inflection file: {}", json, e);
+        } catch (JsonParseException e) {
+            GT_FML_LOGGER.warn("Successfully found the file: {}, but an error occurred.", json, e);
         }
     }
 
-    private static String escape(String input) {
+    private static String unEscape(String input) {
         return input.replace("\\{", "{")
             .replace("\\}", "}");
     }
@@ -122,24 +126,25 @@ public final class GTInflectionManager {
         final String input = StatCollector.translateToLocal(inputKey);
         if (!input.contains("s{")) {
             return String.format(
-                escape(input),
+                unEscape(input),
                 Arrays.stream(formatterKey)
                     .map(StatCollector::translateToLocal)
                     .toArray(Object[]::new));
         }
         if (IS_SERVER) {
             return String.format(
-                escape(input.replaceAll(PLACEHOLDER_PATTERN.pattern(), "%$1s")),
+                unEscape(input),
                 Arrays.stream(formatterKey)
                     .map(StatCollector::translateToLocal)
                     .toArray(Object[]::new));
         }
 
-        List<String> params = new LinkedList<>();
+        List<String> params = new ArrayList<>();
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
         boolean hasImplicit = false;
         boolean hasExplicit = false;
         int sequentialPos = 0;
+        StringBuffer sb = new StringBuffer();
 
         while (matcher.find()) {
             String indexPart = matcher.group(1);
@@ -147,43 +152,28 @@ public final class GTInflectionManager {
 
             int targetPos;
             if (indexPart != null) {
-                targetPos = Integer.parseInt(indexPart.substring(0, indexPart.length() - 1)) - 1;
+                try {
+                    targetPos = Integer.parseInt(indexPart) - 1;
+                } catch (NumberFormatException e) {
+                    return "Inflection Format Error: " + input;
+                }
                 hasExplicit = true;
             } else {
                 targetPos = sequentialPos++;
                 hasImplicit = true;
             }
 
-            if (targetPos >= formatterKey.length) {
-                GT_FML_LOGGER.warn(
-                    "Inflection Format Error: Placeholder index {} out of bounds for inputKey '{}' (only {} arguments provided)",
-                    targetPos + 1,
-                    inputKey,
-                    formatterKey.length);
-                return String.format(
-                    escape(input),
-                    Arrays.stream(formatterKey)
-                        .map(StatCollector::translateToLocal)
-                        .toArray(Object[]::new));
-            }
-
-            if (hasImplicit && hasExplicit) {
-                GT_FML_LOGGER.warn(
-                    "Inflection Format Error: Mixed implicit (%s) and explicit (%2$s) placeholders in inflection string: '{}'",
-                    inputKey);
-                return String.format(
-                    escape(input),
-                    Arrays.stream(formatterKey)
-                        .map(StatCollector::translateToLocal)
-                        .toArray(Object[]::new));
+            if (targetPos >= formatterKey.length || (hasImplicit && hasExplicit)) {
+                return "Inflection Format Error: " + input;
             }
 
             params.add(getInflection(formatterKey[targetPos], inflectionKey));
+            matcher.appendReplacement(sb, "%s");
         }
-
+        matcher.appendTail(sb);
         Object[] formattedArgs = params.toArray();
 
-        String cleanedPattern = escape(input.replaceAll(PLACEHOLDER_PATTERN.pattern(), "%s"));
+        String cleanedPattern = unEscape(sb.toString());
         return String.format(cleanedPattern, formattedArgs);
     }
 
@@ -193,17 +183,17 @@ public final class GTInflectionManager {
             return word;
         }
         String specialCaseKey = formatterKey;
-        final String[] rules = key.split("/");
-        for (String rule : rules) {
-            if (rule.isEmpty()) {
+        final String[] targetRules = key.split("/");
+        for (String targetRule : targetRules) {
+            if (targetRule.isEmpty()) {
                 GT_FML_LOGGER.warn("A rule key is empty, full rule key: {}", key);
             }
-            specialCaseKey += "." + rule;
+            specialCaseKey += "." + targetRule;
             if (StatCollector.canTranslate(specialCaseKey)) {
                 word = StatCollector.translateToLocal(specialCaseKey);
                 continue;
             }
-            switch (rule) {
+            switch (targetRule) {
                 case "lowercase" -> {
                     word = word.toLowerCase(LOCALE);
                     continue;
@@ -235,18 +225,21 @@ public final class GTInflectionManager {
                     continue;
                 }
             }
-            LinkedHashMap<Pattern, String> ruleMap = INFLECTION_MAP.get(rule);
-            if (ruleMap == null || ruleMap.isEmpty()) {
+            List<Rule> rules = INFLECTION_MAP.get(targetRule);
+            if (rules == null || rules.isEmpty()) {
                 continue;
             }
-            for (Entry<Pattern, String> ruleEntry : ruleMap.entrySet()) {
-                Matcher m = ruleEntry.getKey()
+            for (Rule rule : rules) {
+                Matcher m = rule.pattern()
                     .matcher(word);
                 if (m.matches()) {
-                    word = m.replaceFirst(ruleEntry.getValue());
+                    word = m.replaceFirst(rule.replacement());
                 }
             }
         }
         return word;
     }
+
+    @Desugar
+    private record Rule(Pattern pattern, String replacement) {}
 }
