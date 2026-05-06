@@ -1776,7 +1776,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ThermalBoiler.get(1),
             new Object[] { GregtechItemList.GT4_Thermal_Boiler });
-      
+
         // Large Naquadah Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeNaquadahReactor.get(1),
