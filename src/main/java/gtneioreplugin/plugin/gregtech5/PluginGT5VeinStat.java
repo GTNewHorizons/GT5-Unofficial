@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.google.common.collect.ImmutableList;
 
@@ -226,6 +227,17 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             for (String dim : getDimNameArrayFromVeinName(this.veinName)) {
                 ItemStack item = ItemDimensionDisplay.getItem(dim);
                 if (item != null) {
+
+                    OreLayerWrapper vein = GT5OreLayerHelper.getVeinByName(this.veinName);
+                    GT5OreLayerHelper.NormalOreDimensionWrapper dimWrapper = GT5OreLayerHelper.getVeinByDim(dim);
+
+                    if (dimWrapper != null) {
+                        double chance = dimWrapper.oreVeinToProbabilityInDimension.get(vein);
+                        NBTTagCompound tag = new NBTTagCompound();
+                        tag.setDouble("VeinChance", chance);
+                        item.setTagCompound(tag);
+                    }
+
                     int xPos = x + itemSize * (count % itemsPerLine);
                     int yPos = y + itemSize * (count / itemsPerLine);
                     dimensionDisplayItems.add(new PositionedStack(item, xPos, yPos, false));
