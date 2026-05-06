@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,7 +175,12 @@ public final class GTInflectionManager {
         Object[] formattedArgs = params.toArray();
 
         String cleanedPattern = unescape(sb.toString());
-        return String.format(cleanedPattern, formattedArgs);
+        try {
+            return String.format(cleanedPattern, formattedArgs);
+        } catch (IllegalFormatException e) {
+            GT_FML_LOGGER.warn("Illegal Format in Inflection: {}", input, e);
+            return "Illegal Format in Inflection: " + input;
+        }
     }
 
     private static String getInflection(String formatterKey, String key) {
