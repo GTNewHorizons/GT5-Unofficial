@@ -204,7 +204,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         this.mLossTimer = aNBT.getInteger("mLossTimer");
         this.mTemperature = aNBT.getInteger("mTemperature");
         this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
-        this.fuelMaxEnergy = aNBT.getInteger("fuelMaxEnergy") > 0 ? aNBT.getInteger("fuelMaxEnergy") : this.mProcessingEnergy;
+        this.fuelMaxEnergy = aNBT.getInteger("fuelMaxEnergy") > 0 ? aNBT.getInteger("fuelMaxEnergy")
+            : this.mProcessingEnergy;
         this.mExcessWater = aNBT.getInteger("mExcessWater");
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
