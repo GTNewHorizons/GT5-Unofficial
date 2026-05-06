@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.cover.base;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -28,6 +29,7 @@ public class CoverBaseGui<T extends Cover> {
     protected static final int WIDGET_MARGIN = 5;
     protected static final int ROW_PADDING = 3;
     protected static final int ROW_ELEMENT_PADDING = 2;
+    protected static final int MIN_WIDTH_WITH_INV = 176;
 
     /**
      * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.
@@ -57,15 +59,29 @@ public class CoverBaseGui<T extends Cover> {
      */
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
-        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
+        int height = getGUIHeight();
+        int width = getGUIWidth();
         if (doesBindPlayerInventory()) {
             int slotHeight = 18;
             int inventoryRows = 4;
             int hotbarToInventoryGap = 4;
             int inventoryMargin = 4;
-            basePanel.height(getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin);
+            height = getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin;
+            width = Math.max(width, MIN_WIDTH_WITH_INV);
+        }
+        ModularPanel basePanel = createPanel(width, height);
+        createBasePanel(basePanel, syncManager, uiSettings, data);
+        if (doesBindPlayerInventory()) {
             basePanel.bindPlayerInventory();
         }
+        return basePanel;
+    }
+
+    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
+        int height = getGUIHeight();
+        int width = getGUIWidth();
+        ModularPanel basePanel = createPanel(width, height);
+        createBasePanel(basePanel, syncManager, uiSettings, data);
         return basePanel;
     }
 
@@ -73,11 +89,10 @@ public class CoverBaseGui<T extends Cover> {
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}. Override this method if you want to
      * implement more customized GUI. Otherwise, implement {@link #addUIWidgets} instead.
      *
-     * @param panelName   the unique name of this panel in the context of your UI.
+     * @param panel       the UI panel to add children to
      * @param syncManager sync handler where widget sync handlers should be registered
-     * @return UI panel to show
      */
-    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings,
+    protected void createBasePanel(ModularPanel panel, PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
@@ -85,7 +100,6 @@ public class CoverBaseGui<T extends Cover> {
                     .markDirty();
             }
         });
-        final ModularPanel panel = ModularPanel.defaultPanel(getGuiId(), getGUIWidth(), getGUIHeight());
         final Flow widgetsColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -100,8 +114,6 @@ public class CoverBaseGui<T extends Cover> {
                 new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
         }
-
-        return panel;
     }
 
     protected void addTitleToUI(Flow column) {
@@ -116,8 +128,37 @@ public class CoverBaseGui<T extends Cover> {
                     IKey.str(coverItem.getDisplayName())
                         .asWidget()
                         .marginLeft(4)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                        .onUpdateListener(flow -> {
+                            // Hide the title text if it doesn't fit
+                            IWidget parent = flow.getParent();
+                            int windowWidth = parent.getParent()
+                                .getParentArea()
+                                .w();
+                            if (windowWidth > 0) {
+                                boolean enabled = parent.getArea()
+                                    .w() < windowWidth;
 
+                                if (!enabled) {
+                                    flow.widthRel(0);
+                                    flow.heightRel(0);
+                                    parent.scheduleResize();
+                                }
+                                flow.onUpdateListener(null);
+                                flow.setEnabled(enabled);
+                            }
+                        })));
+    }
+
+    protected ModularPanel createPanel(int width, int height) {
+        return ModularPanel.defaultPanel(getGuiId(), width, height);
+    }
+
+    public void layoutPopUp(ModularPanel panel, IWidget button) {
+        if (positionRelativeToCoverButton()) {
+            panel.relative(button)
+                .left(-getGUIWidth() - 5);
+        }
     }
 
     /**
@@ -157,7 +198,7 @@ public class CoverBaseGui<T extends Cover> {
     }
 
     protected int getGUIWidth() {
-        return 176;
+        return MIN_WIDTH_WITH_INV;
     }
 
     protected int getGUIHeight() {
@@ -165,6 +206,10 @@ public class CoverBaseGui<T extends Cover> {
     }
 
     protected boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    protected boolean positionRelativeToCoverButton() {
         return false;
     }
 

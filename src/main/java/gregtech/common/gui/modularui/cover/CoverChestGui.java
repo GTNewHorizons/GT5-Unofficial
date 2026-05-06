@@ -41,7 +41,7 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
     protected int getGUIWidth() {
         int widthPerSlot = 18;
         int additionalSpace = 15;
-        return widthPerSlot * 9 + additionalSpace;
+        return widthPerSlot * 3 + additionalSpace;
     }
 
     @Override
@@ -67,7 +67,18 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
         column.child(
             // A bit of a hack to force the flow to be the same width as the window so the slot group gets centered
             Flow.row()
-                .width((getGUIWidth() - 10))
+                .onUpdateListener(flow -> {
+                    int width = flow.getParent()
+                        .getParentArea()
+                        .w();
+                    if (width > 0) {
+                        flow.width(
+                            flow.getParent()
+                                .getParentArea()
+                                .w() - WIDGET_MARGIN * 2);
+                        flow.onUpdateListener(null);
+                    }
+                })
                 .height(0))
             .child(
                 SlotGroupWidget.builder()
@@ -75,5 +86,10 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
                     .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
                     .build()
                     .alignX(0.5f));
+    }
+
+    @Override
+    protected boolean positionRelativeToCoverButton() {
+        return true;
     }
 }
