@@ -549,14 +549,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private double getCurrentSteamOutputPerTick() {
-        if (mEUt <= 0 || mMaxProgresstime <= 0) return 0D;
-        double steamEquivalent = mEUt * 2D * mEfficiency / 10000D;
+        if (lEUt <= 0 || mMaxProgresstime <= 0) return 0D;
+        double steamEquivalent = lEUt * 2D * mEfficiency / 10000D;
         return isSuperheated() ? steamEquivalent / superToNormalSteam : steamEquivalent;
     }
 
     private double getCurrentWaterConsumptionPerTick() {
-        if (mEUt <= 0 || mMaxProgresstime <= 0) return 0D;
-        double steamEquivalent = mEUt * 2D * mEfficiency / 10000D;
+        if (lEUt <= 0 || mMaxProgresstime <= 0) return 0D;
+        double steamEquivalent = lEUt * 2D * mEfficiency / 10000D;
         return steamEquivalent / STEAM_PER_WATER / (isSuperheated() ? superToNormalSteam : 1);
     }
 
