@@ -59,6 +59,7 @@ public class MTEHatchUncertainty extends MTEHatch {
 
     public void setMatrixElemet(short matrixElement, int index) {
         matrix[index] = matrixElement;
+        compute();
     }
 
     public byte getSelection() {
