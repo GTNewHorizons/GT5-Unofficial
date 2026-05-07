@@ -897,6 +897,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             checkHasEnergyHatch(errors);
         }
+        // Maintenance hatch not required but left for compatibility.
         checkHatchMax(errors, Maintenance, 1);
         // max 1273 - 2 - 7 - 6 - 1 - 1 = 1256
         checkCasingMin(errors, mCasing, 1250);
