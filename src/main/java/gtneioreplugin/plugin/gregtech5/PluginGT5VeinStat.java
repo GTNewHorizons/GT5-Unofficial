@@ -9,7 +9,6 @@ import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import codechicken.nei.PositionedStack;
