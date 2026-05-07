@@ -83,6 +83,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -429,10 +430,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         if (!checkPiece("main", 16, 13, 1, errors)) return;
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
         checkHasEnergyHatch(errors);
+        if (heliumInputHatch == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.htgr_missing_helium_hatch"));
+        }
     }
 
     @Override

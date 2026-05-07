@@ -44,6 +44,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -201,8 +203,13 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         this.mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, this.mCasing, 12);
-        checkOneMaintenanceHatch(errors);
-        checkHatchMin(errors, InputHatch, 2);
+        checkHasMaintenanceHatch(errors);
+        if (mInputHatches.size() < 2) {
+            errors.add(
+                StructureErrors
+                    .of("GT5U.gui.text.sofc_missing_input_hatches", TranslatableText.literal(mInputHatches.size())));
+        }
+        checkHasOutputHatch(errors);
     }
 
     @Override

@@ -433,6 +433,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;
         checkCasingMin(errors, casingAmount, MIN_CASING_AMOUNT);
+        checkHasMaintenanceHatch(errors);
         if (tfftHatch == null) {
             checkHasInputHatch(errors);
             checkHasOutputHatch(errors);
