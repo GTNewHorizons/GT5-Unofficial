@@ -239,7 +239,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                         NormalOreDimensionWrapper wrapper = GT5OreLayerHelper.getVeinByDim(dimAbbr);
                         if (wrapper != null && wrapper.oreVeinToProbabilityInDimension.containsKey(oreVein)) {
                             String percent = format.format(wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
-                            currentTip.add(EnumChatFormatting.AQUA + I18n.format("gtnop.gui.nei.genChance", percent));
+                            currentTip.add(I18n.format("gtnop.gui.nei.orechunkchance.value", percent));
                         }
                     }
                 }
