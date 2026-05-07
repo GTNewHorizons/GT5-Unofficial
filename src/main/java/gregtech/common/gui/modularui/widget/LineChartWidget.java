@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.Tessellator;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.value.ISyncOrValue;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -123,8 +125,14 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         return this;
     }
 
+    @Override
+    public boolean isValidSyncOrValue(@NotNull ISyncOrValue syncOrValue) {
+        return syncOrValue instanceof GenericListSyncHandler<?>;
+    }
+
     public LineChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
         this.dataSyncHandler = dataSyncHandler;
+        setSyncOrValue(dataSyncHandler);
         return this;
     }
 

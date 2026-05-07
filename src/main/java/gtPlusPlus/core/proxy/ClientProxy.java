@@ -18,7 +18,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gregtech.api.enums.Mods;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
@@ -42,12 +41,6 @@ import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
 
 public class ClientProxy extends CommonProxy {
-
-    @Override
-    public void preInit(final FMLPreInitializationEvent e) {
-        super.preInit(e);
-        // Do this weird things for textures.
-    }
 
     @Override
     public void init(final FMLInitializationEvent e) {

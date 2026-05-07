@@ -5,6 +5,8 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gtnhlanth.common.beamline.Particle.getParticleFromId;
 
+import java.util.Arrays;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -144,11 +146,10 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
         Particle[] particles = Particle.values();
 
         return new Grid()
-            .gridOfSizeWidth(
-                particles.length,
+            .gridOfWidthElements(
                 5,
-                (xIndex, yIndex,
-                    index) -> index < particles.length ? createButtonForParticle(syncManager, particles[index]) : null)
+                Arrays.asList(particles),
+                ($x, $y, $index, particle) -> createButtonForParticle(syncManager, particle))
             .coverChildren()
             .minElementMarginBottom(2);
     }

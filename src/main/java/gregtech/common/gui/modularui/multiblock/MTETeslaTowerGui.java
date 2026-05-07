@@ -269,17 +269,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
-        List<List<Widget<?>>> matrix = new ArrayList<>();
-
-        for (int i = 0; i < gridChunkSize; i++) {
-            matrix.add(new ArrayList<>());
-            for (int j = 0; j < gridChunkSize; j++) {
-                matrix.get(i)
-                    .add(createMapSlot(syncManager, i, j).size(gridSquareSize));
-            }
-        }
-
-        return new Grid().grid(matrix)
+        return new Grid()
+            .gridOfWidthHeight(gridChunkSize, gridChunkSize, (x, y, $index) -> createMapSlot(syncManager, x, y))
             .size(gridSquareSize * gridChunkSize)
             .marginTop(borderRadius)
             .marginLeft(borderRadius);

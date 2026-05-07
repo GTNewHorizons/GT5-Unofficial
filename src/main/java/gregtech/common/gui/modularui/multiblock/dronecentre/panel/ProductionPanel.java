@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -312,27 +311,27 @@ public class ProductionPanel extends ModularPanel {
             else result.stackSize += machine.stackSize;
         });
 
-        List<Flow> cells = new ArrayList<>();
-        machineStack.forEach((key, itemStack) -> {
-            Flow cell = Flow.row()
-                .childPadding(4)
-                .verticalCenter()
-                .leftRel(0)
-                .coverChildren()
-                .paddingRight(2)
-                .child(
-                    new ItemDisplayWidget().item(itemStack)
-                        .displayAmount(false)
-                        .size(16)
-                        .tooltipBuilder(builder -> DroneCentreGuiUtil.getTooltipFromItemSafely(builder, itemStack)));
-            cell.child(new TextWidget<>(": " + itemStack.stackSize));
-            cells.add(cell);
-        });
-        return new Grid().gridOfWidthElements(6, cells, ($x, $y, $index, cell) -> cell)
+        return new Grid()
+            .gridOfWidthElements(6, machineStack.values(), ($x, $y, $index, itemStack) -> createMachineCell(itemStack))
             .minElementMarginBottom(2)
             .fullWidth()
             .expanded()
             .scrollable(new VerticalScrollData());
+    }
+
+    private Flow createMachineCell(ItemStack itemStack) {
+        return Flow.row()
+            .childPadding(4)
+            .verticalCenter()
+            .leftRel(0)
+            .coverChildren()
+            .paddingRight(2)
+            .child(
+                new ItemDisplayWidget().item(itemStack)
+                    .displayAmount(false)
+                    .size(16)
+                    .tooltipBuilder(builder -> DroneCentreGuiUtil.getTooltipFromItemSafely(builder, itemStack)))
+            .child(new TextWidget<>(": " + itemStack.stackSize));
     }
 
     private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
