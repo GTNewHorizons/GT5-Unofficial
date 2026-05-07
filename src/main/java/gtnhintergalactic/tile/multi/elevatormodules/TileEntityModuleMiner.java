@@ -78,7 +78,6 @@ import gtnhintergalactic.recipe.SpaceMiningRecipes;
 import gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -88,6 +87,7 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -146,11 +146,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     // region Parameters
 
-    /** Input parameters */
     Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
         stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
+
+    private IntegerParameter distanceParameter;
+    private IntegerParameter parallelParameter;
+    private BooleanParameter cycleParameter;
+    private IntegerParameter cycleDistanceParameter;
+    private IntegerParameter rangeParameter;
+    private IntegerParameter stepParameter;
+
     public static final String DISTANCE_PARAMETER = "distance";
     public static final String PARALLEL_PARAMETER = "parallel";
     public static final String CYCLE_PARAMETER = "cycle";
@@ -160,37 +167,37 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     // TODO: REMOVE AFTER 2.9
     /** Name of the distance setting */
-    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
     /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
     /** Name of the overdrive setting */
-    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
     /** Status of the overdrive setting */
     private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
     /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
     /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
     /** Name of the step setting */
-    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
     /** Status of the step setting */
     private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
@@ -271,93 +278,65 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     public void initParameters() {
-        parameterMap.put(
+        distanceParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.distance",
             DISTANCE_PARAMETER,
-            new IntegerParameter(0, "tt.spaceminer.distance", () -> 0, () -> (int) MAX_DISTANCE));
-        parameterMap.put(
+            () -> 0,
+            () -> (int) MAX_DISTANCE);
+        parallelParameter = new IntegerParameter(
+            getMaxParallels(),
+            "tt.spaceminer.parallel",
             PARALLEL_PARAMETER,
-            new IntegerParameter(getMaxParallels(), "tt.spaceminer.parallel", () -> 0, this::getMaxParallels));
-        parameterMap.put(CYCLE_PARAMETER, new BooleanParameter(false, "tt.spaceminer.cycle"));
-
-        parameterMap
-            .put(RANGE_PARAMETER, new IntegerParameter(0, "tt.spaceminer.range", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap
-            .put(STEP_PARAMETER, new IntegerParameter(0, "tt.spaceminer.step", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap.put(
+            () -> 0,
+            this::getMaxParallels);
+        cycleParameter = new BooleanParameter(false, "tt.spaceminer.cycle", CYCLE_PARAMETER);
+        cycleDistanceParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.range",
             CYCLE_DISTANCE_PARAMETER,
-            new IntegerParameter(
-                (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue(),
-                "",
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    - (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue(),
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    + (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue()).disableGui());
-    }
-
-    @Override
-    public void saveParameters(NBTTagCompound nbt) {
-        nbt.setInteger(
-            DISTANCE_PARAMETER,
-            (int) parameterMap.get(DISTANCE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            PARALLEL_PARAMETER,
-            (int) parameterMap.get(PARALLEL_PARAMETER)
-                .getValue());
-        nbt.setBoolean(
-            CYCLE_PARAMETER,
-            (boolean) parameterMap.get(CYCLE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
+            () -> 0,
+            () -> Integer.MAX_VALUE);
+        rangeParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.step",
             RANGE_PARAMETER,
-            (int) parameterMap.get(RANGE_PARAMETER)
-                .getValue());
-        nbt.setInteger(
+            () -> 0,
+            () -> Integer.MAX_VALUE);
+        stepParameter = new IntegerParameter(
+            distanceParameter.getValue(),
+            "",
             STEP_PARAMETER,
-            (int) parameterMap.get(STEP_PARAMETER)
-                .getValue());
-        nbt.setInteger(
-            CYCLE_DISTANCE_PARAMETER,
-            (int) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-                .getValue());
+            () -> distanceParameter.getValue() - rangeParameter.getValue(),
+            () -> distanceParameter.getValue() + rangeParameter.getValue());
+        stepParameter.disableGui();
     }
 
     @Override
-    public void loadParameters(NBTTagCompound nbt) {
-        if (!nbt.hasKey(DISTANCE_PARAMETER)) {
-            loadLegacyParameters(nbt);
-            return;
-        }
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
+        NBTTagCompound legacyOutput = nbt.getCompoundTag("eParamsOutD");
 
-        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(nbt.getInteger(DISTANCE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER)).setValue(nbt.getInteger(PARALLEL_PARAMETER));
-        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(nbt.getBoolean(CYCLE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER)).setValue(nbt.getInteger(RANGE_PARAMETER));
-        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue(nbt.getInteger(STEP_PARAMETER));
-        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-            .setValue(nbt.getInteger(CYCLE_DISTANCE_PARAMETER));
+        distanceParameter.setValue((int) legacyInput.getDouble(String.valueOf(0)));
+        parallelParameter.setValue((int) legacyInput.getDouble(String.valueOf(10)));
+        cycleParameter.setValue(legacyInput.getDouble(String.valueOf(2)) != 0);
+        rangeParameter.setValue((int) legacyInput.getDouble(String.valueOf(12)));
+        stepParameter.setValue((int) legacyInput.getDouble(String.valueOf(3)));
+        cycleDistanceParameter.setValue((int) legacyOutput.getDouble(String.valueOf(10)));
     }
 
-    private void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput0 = nbt.getCompoundTag("eParamsInD");
-        NBTTagCompound legacyInput1 = nbt.getCompoundTag("eParamsInS");
-        NBTTagCompound legacyOutput1 = nbt.getCompoundTag("eParamsOutS");
+    @Override
+    public List<Parameter<?>> getParameters() {
+        List<Parameter<?>> parameters = new ArrayList<>();
 
-        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER))
-            .setValue((int) legacyInput0.getDouble(String.valueOf(0)));
-        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(0)));
-        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(legacyInput0.getDouble(String.valueOf(2)) != 0);
-        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(2)));
-        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue((int) legacyInput0.getDouble(String.valueOf(3)));
-        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-            .setValue((int) legacyOutput1.getDouble(String.valueOf(0)));
+        parameters.add(distanceParameter);
+        parameters.add(parallelParameter);
+        parameters.add(cycleParameter);
+        parameters.add(cycleDistanceParameter);
+        parameters.add(rangeParameter);
+        parameters.add(stepParameter);
+
+        return parameters;
     }
 
     @Override
@@ -515,11 +494,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
 
-        boolean cycling = (boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue();
-        String distanceKey = cycling ? CYCLE_DISTANCE_PARAMETER : DISTANCE_PARAMETER;
-        int distance = (int) parameterMap.get(distanceKey)
-            .getValue();
+        int distance = cycleParameter.getValue() ? cycleDistanceParameter.getValue() : distanceParameter.getValue();
+
         int availDroneMask = getAvailDroneMask(inputs);
         currentDroneMask = availDroneMask;
 
@@ -812,10 +788,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
         return Math.min(
-            Math.min(
-                getMaxParallels(),
-                (Integer) parameterMap.get(PARALLEL_PARAMETER)
-                    .getValue()),
+            Math.min(getMaxParallels(), parallelParameter.getValue()),
             (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
@@ -837,27 +810,21 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * Cycle the current distance according to parameters
      */
     protected void cycleDistance() {
-        boolean shouldCycle = (Boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue();
-        int distance = (Integer) parameterMap.get(DISTANCE_PARAMETER)
-            .getValue();
-        int cycleDistance = (Integer) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-            .getValue();
-        int step = (Integer) parameterMap.get(STEP_PARAMETER)
-            .getValue();
-        int range = (Integer) parameterMap.get(RANGE_PARAMETER)
-            .getValue();
+        boolean shouldCycle = cycleParameter.getValue();
+        int distance = distanceParameter.getValue();
+        int cycleDistance = cycleDistanceParameter.getValue();
+        int step = stepParameter.getValue();
+        int range = rangeParameter.getValue();
         if (shouldCycle) {
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
             if (cycleDistance + step <= Math.min(MAX_DISTANCE, distance + range)) {
-                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(cycleDistance + step);
+                cycleDistanceParameter.setValue(cycleDistance + step);
             } else {
-                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(Math.max(0, distance - range));
+                cycleDistanceParameter.setValue(Math.max(0, distance - range));
             }
         } else {
-            ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-                .setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
+            cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
         }
     }
 
@@ -1486,5 +1453,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .toolTipFinisher();
             return tt;
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

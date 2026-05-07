@@ -301,7 +301,8 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         }
 
         @SideOnly(Side.CLIENT)
-        static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
+        private static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2,
+            double z2) {
             final Tessellator tess = Tessellator.instance;
             tess.startDrawing(GL11.GL_LINE_STRIP);
 

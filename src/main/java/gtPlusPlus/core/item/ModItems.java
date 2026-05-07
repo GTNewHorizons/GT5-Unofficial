@@ -436,6 +436,7 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
+        MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);

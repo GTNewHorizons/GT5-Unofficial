@@ -453,6 +453,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         getBaseMetaTileEntity().setActive(false);
     }
 
+    public boolean IsAutoMaintenanceInput(ItemStack aStack) {
+        for (ItemStack tInput : getAutoMaintenanceInputs()) {
+            if (GTUtility.areUnificationsEqual(tInput, aStack, true)
+                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -466,8 +474,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            for (ItemStack tInput : getAutoMaintenanceInputs()) if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+            if (IsAutoMaintenanceInput(aStack)) {
+                return true;
+            }
         }
         return false;
     }

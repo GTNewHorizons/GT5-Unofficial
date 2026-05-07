@@ -28,6 +28,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -221,9 +223,15 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public boolean checkHatch() {
         return true;
     }
+
+    // Use this, so that validateStructure can be removed
+    // Please do not remove the call to this function during refactoring.
+    public void checkHatch(List<StructureError> errors) {}
 
     @Override
     public void clearHatches() {

@@ -26,13 +26,18 @@ public class StructureErrorRegistry {
     public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
         StructureErrorId.UNNEEDED_MUFFLER,
         "GT5U.gui.text.unneeded_muffler");
+    public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
+        StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
+        "GT5U.gui.text.unknown_structure_error");
 
     static {
         StructureErrorRegistry.register(new WrongBlockError(0, 0, 0));
         StructureErrorRegistry.register(new TooFewCasings(0, 0));
         StructureErrorRegistry.register(new MissingHatch(0, 0));
         StructureErrorRegistry.register(new TooManyHatch(0, 0, 0));
+        StructureErrorRegistry.register(new SimpleStructureError(""));
         StructureErrorRegistry.register(new MissingStructureWrapperCasings(new NBTTagList()));
+        StructureErrorRegistry.register(new MissingOutputHatchDT(0));
     }
 
     public static StructureError registerSingleton(StructureErrorId id, String lang_key) {
