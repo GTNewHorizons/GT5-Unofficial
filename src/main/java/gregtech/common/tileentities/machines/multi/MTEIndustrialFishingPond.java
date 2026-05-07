@@ -104,7 +104,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Circuit " + JUNK_MODE + " for Junk")
             .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
             .addInfo("Needs to be filled with water")
-            .addInfo("Will automatically fill water from input hatch")
+            .addInfo("Will automatically fill water from input hatch or a reservoir hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center")
@@ -129,11 +129,17 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
                 .addShape(mName, shape)
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialFishingPond.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
-                        .casingIndex(Casings.AquaticCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AquaticCasing.asElement())))
+                    ofChain(
+                        buildHatchAdder(MTEIndustrialFishingPond.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                            .casingIndex(Casings.AquaticCasing.textureId)
+                            .hint(1)
+                            .build(),
+                        buildHatchAdder(MTEIndustrialFishingPond.class).anyOf(InputHatch)
+                            .casingIndex(Casings.AquaticCasing.textureId)
+                            .hint(1)
+                            .build(),
+                        onElementPass(x -> ++x.casingAmount, Casings.AquaticCasing.asElement())))
                 .addElement('A', ofFrame(Materials.StainlessSteel))
                 .addElement('B', ofSheetMetal(Materials.StainlessSteel))
                 .addElement('D', ofChain(isAir(), ofAnyWater(false)))
@@ -170,7 +176,6 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         checkCasingMin(errors, casingAmount, 160);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
         checkHasOutputBus(errors);
         checkHasMufflerHatch(errors);
     }
