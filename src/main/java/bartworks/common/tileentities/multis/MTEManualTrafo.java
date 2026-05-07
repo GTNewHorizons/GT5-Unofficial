@@ -391,4 +391,9 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         mTiers = mHeight - 1;
         return survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 1, mHeight + 1, 0, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

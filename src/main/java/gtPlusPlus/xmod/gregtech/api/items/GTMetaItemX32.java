@@ -82,21 +82,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
-     * @return the Color Modulation the Material is going to be rendered with.
-     */
-    @Override
-    public short[] getRGBa(final ItemStack aStack) {
-        if (!Materials.isMaterialItem(this.getDamage(aStack))) {
-            return Materials._NULL.mRGBa;
-        }
-        final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
-        if (tMaterial == null) {
-            return Materials._NULL.mRGBa;
-        }
-        return tMaterial.mRGBa;
-    }
-
-    /**
      * @param aPrefix   this can be null, you have to return false in that case
      * @param aMaterial this can be null, you have to return false in that case
      * @return if this Item should be generated and visible.
@@ -132,18 +117,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                 : null;
     }
 
-    /**
-     * @param aPrefix         always != null
-     * @param aMaterial       always != null
-     * @param aDoShowAllItems this is the Configuration Setting of the User, if he wants to see all the Stuff like Tiny
-     *                        Dusts or Crushed Ores as well.
-     * @return if this Item should be visible in NEI or Creative
-     */
-    public boolean doesShowInCreative(final OrePrefixes aPrefix, final Materials aMaterial,
-        final boolean aDoShowAllItems) {
-        return true;
-    }
-
     /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
@@ -162,23 +135,12 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     }
 
     @Override
-    public final IIconContainer getIconContainer(final int aMetaData) {
-        if (!Materials.isMaterialItem(aMetaData)) return null;
-        return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
-            : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
                 this.mGeneratedPrefixList[i / 1000],
-                GregTechAPI.sGeneratedMaterials[i % 1000])
-                && this.doesShowInCreative(
-                    this.mGeneratedPrefixList[i / 1000],
-                    GregTechAPI.sGeneratedMaterials[i % 1000],
-                    GregTechAPI.sDoShowAllItemsInCreative)) {
+                GregTechAPI.sGeneratedMaterials[i % 1000])) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
                 aList.add(tStack);

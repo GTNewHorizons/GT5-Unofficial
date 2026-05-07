@@ -77,7 +77,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -1093,6 +1092,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
             .beginStructureBlock(33, 33, 33, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
             .addStructureInfo(
@@ -1548,12 +1548,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         while (amount >= Integer.MAX_VALUE) {
             FluidStack tmpFluid = fluid.copy();
             tmpFluid.amount = Integer.MAX_VALUE;
-            ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+            dumpFluid(mOutputHatches, tmpFluid, false);
             amount -= Integer.MAX_VALUE;
         }
         FluidStack tmpFluid = fluid.copy();
         tmpFluid.amount = (int) amount;
-        ((MTEHatchOutputME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+        dumpFluid(mOutputHatches, tmpFluid, false);
     }
 
     @Override
@@ -1883,6 +1883,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             tempFluidTag.getLong(1 + FLUID_AMOUNT));
 
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

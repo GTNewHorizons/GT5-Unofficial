@@ -48,6 +48,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -132,11 +133,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private boolean checkRatio(GTRecipe tRecipe, List<FluidStack> tFluidInputs) {
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
@@ -213,7 +209,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addInfo("Input Water and Fluid, output Fluid")
             .addInfo("Fluids must be input in the exact ratio as listed in NEI")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Any Borosilicate Glass", 24, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)
@@ -222,6 +218,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addOutputHatch("Any Stainless Steel Casing")
             .addOutputBus("Any Stainless Steel Casing")
             .addMaintenanceHatch("Any Stainless Steel Casing")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 
         return tt;

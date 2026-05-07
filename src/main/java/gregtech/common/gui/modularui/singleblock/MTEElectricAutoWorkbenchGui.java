@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.singleblock;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -76,7 +75,8 @@ public class MTEElectricAutoWorkbenchGui {
                 .key(
                     'S',
                     index -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 19))
-                        .background(IDrawable.EMPTY))
+                        .disableThemeBackground(true)
+                        .disableHoverThemeBackground(true))
                 .build());
         row.child(funny3x3);
 
@@ -103,7 +103,7 @@ public class MTEElectricAutoWorkbenchGui {
 
         topRow.child(
             new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, 28).accessibility(false, false))
-                .overlay(GTGuiTextures.OVERLAY_SLOT_ARROW_4));
+                .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_ARROW_4));
 
         Flow middleRow = new Row().widthRel(1)
             .height(18);
@@ -145,7 +145,7 @@ public class MTEElectricAutoWorkbenchGui {
 
         bottomRow.child(
             new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 18).accessibility(false, true))
-                .overlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
+                .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
 
         column.child(topRow);
         column.child(middleRow);

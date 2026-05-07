@@ -109,7 +109,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverAdvancedRedstoneTransmitterBaseGui(this);
+        return new CoverAdvancedRedstoneTransmitterBaseGui<>(this);
     }
 
 }

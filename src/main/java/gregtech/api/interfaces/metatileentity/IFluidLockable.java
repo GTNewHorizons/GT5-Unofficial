@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.Fluid;
 /**
  * Implement this interface if your MetaTileEntity supports fluid lock mechanism.
  */
+@Deprecated
 @SuppressWarnings({ "BooleanMethodIsAlwaysInverted" })
 public interface IFluidLockable {
 

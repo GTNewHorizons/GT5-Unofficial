@@ -17,7 +17,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 
 public class PowerGogglesCommand extends GTBaseCommand {
 
-    private static final String[] SUBCOMMANDS = { "config", "chart" };
+    private static final String[] SUBCOMMANDS = { "config", "chart", "measurements" };
 
     public PowerGogglesCommand() {
         super("goggles", "pg");
@@ -50,6 +50,7 @@ public class PowerGogglesCommand extends GTBaseCommand {
         messages.add(new ChatComponentText(getCommandUsage(null)));
         messages.add(new ChatComponentText(" config - Opens power goggles configuration menu"));
         messages.add(new ChatComponentText(" chart - Toggles the power goggles chart"));
+        messages.add(new ChatComponentText(" measurements - Toggles the power goggles measurements section"));
         messages.add(new ChatComponentText(""));
         messages.add(new ChatComponentText("Aliases: powergoggles, goggles, pg"));
         return messages;
@@ -84,6 +85,8 @@ public class PowerGogglesCommand extends GTBaseCommand {
             case "config" -> DelayedGuiDisplayTicker.create(new PowerGogglesGuiHudConfig(), 1);
             case "chart" -> PowerGogglesEventHandler.getInstance()
                 .toggleChart();
+            case "measurements" -> PowerGogglesEventHandler.getInstance()
+                .toggleMeasurements();
             default -> {
                 sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
                 sendHelpMessage(sender);

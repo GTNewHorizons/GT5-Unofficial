@@ -15,18 +15,15 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 
 public class BaseItemDamageable extends Item {
 
     private final EnumRarity rarity;
     private final String itemDescription;
-    protected String itemName;
     private final boolean hasEffect;
 
-    public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
-        final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
-        final boolean Effect, final ItemStack OverrideItem) {
+    public BaseItemDamageable(final String unlocalizedName, final CreativeTabs creativeTab, final String description,
+        final EnumRarity regRarity, final boolean Effect) {
         this.setUnlocalizedName(unlocalizedName);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
@@ -37,10 +34,6 @@ public class BaseItemDamageable extends Item {
         this.itemDescription = description;
         this.hasEffect = Effect;
         GameRegistry.registerItem(this, unlocalizedName);
-    }
-
-    public String getItemDescription() {
-        return this.itemDescription;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -82,14 +75,6 @@ public class BaseItemDamageable extends Item {
             return true;
         }
         return this.hasEffect;
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack tItem) {
-        if ((this.itemName == null) || this.itemName.isEmpty()) {
-            return super.getItemStackDisplayName(tItem);
-        }
-        return this.itemName;
     }
 
     private static boolean createNBT(ItemStack rStack) {
@@ -134,9 +119,7 @@ public class BaseItemDamageable extends Item {
             createNBT(stack);
         }
         double currentDamage = getItemDamage(stack);
-        double durabilitypercent = currentDamage / 100;
-        double inverse = (100 - durabilitypercent);
-        return durabilitypercent;
+        return currentDamage / 100;
     }
 
     @Override
@@ -154,12 +137,6 @@ public class BaseItemDamageable extends Item {
             return item;
         }
         return null;
-    }
-
-    @Override
-    public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
-        Logger.INFO("Does Leave Table? " + stack.getDisplayName());
-        return true;
     }
 
     @Override

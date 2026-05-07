@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.core.slots.SlotNoInput;
@@ -33,12 +32,6 @@ public class ContainerVolumetricFlaskSetter extends Container {
     private final int posZ;
 
     public static final int SLOT_OUTPUT = 8;
-
-    public static int StorageSlotNumber = 8; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
 
     public ContainerVolumetricFlaskSetter(final InventoryPlayer inventory, final TileEntityVolumetricFlaskSetter te) {
         this.mTileEntity = te;
@@ -161,9 +154,5 @@ public class ContainerVolumetricFlaskSetter extends Container {
         if (par1 == 0) {
             mCustomValue = par2;
         }
-    }
-
-    public void log(String aString) {
-        Logger.INFO("[Flask-Container] " + aString);
     }
 }

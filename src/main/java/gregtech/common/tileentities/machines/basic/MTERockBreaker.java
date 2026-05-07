@@ -39,6 +39,7 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -49,6 +50,7 @@ import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERockBreaker extends MTEBasicMachine {
 
     private static final Int2ObjectMap<Set<RockBreakerRecipe>> ROCK_BREAKER_RECIPES = new Int2ObjectOpenHashMap<>();

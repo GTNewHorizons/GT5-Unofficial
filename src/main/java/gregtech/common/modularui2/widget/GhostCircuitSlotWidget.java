@@ -7,7 +7,6 @@ import static gregtech.common.modularui2.sync.GhostCircuitSyncHandler.SYNC_CIRCU
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -54,8 +53,8 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     }
 
     @Override
-    public IDrawable getCurrentBackground(ITheme theme, WidgetThemeEntry<?> widgetTheme) {
-        IDrawable background = super.getCurrentBackground(theme, widgetTheme);
+    public IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {
+        IDrawable background = super.getCurrentBackground(widgetTheme);
         return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT);
     }
 

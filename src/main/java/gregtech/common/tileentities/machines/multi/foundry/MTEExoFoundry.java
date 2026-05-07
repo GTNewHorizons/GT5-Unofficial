@@ -510,7 +510,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
             .beginStructureBlock(15, 55, 15, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,
@@ -557,6 +557,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
             .addStructureInfoSeparator()
             .addStructureInfo("Check NEI for Module structure costs");
 

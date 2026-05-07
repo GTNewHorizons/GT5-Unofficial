@@ -32,6 +32,11 @@ public abstract class MTEFilterBase extends MTEBuffer {
     }
 
     @Override
+    protected int getMovableInventoryEnd() {
+        return NUM_INVENTORY_SLOTS;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("bInvertFilter", this.invertFilter);
@@ -44,7 +49,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
     }
 
     @Override
-    protected int getRedstoneOutput() {
+    public int getRedstoneOutput() {
         if (!bRedstoneIfFull) {
             return 0;
         }
@@ -91,5 +96,10 @@ public abstract class MTEFilterBase extends MTEBuffer {
                 val -> invertFilter = val,
                 GTUITextures.OVERLAY_BUTTON_INVERT_FILTER,
                 () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

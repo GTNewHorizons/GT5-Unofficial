@@ -53,8 +53,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         return true;
     }
 
-    @Override
-    public int getFuelValue(FluidStack aLiquid) {
+    private int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;
         }
@@ -281,8 +280,4 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
         return "Reinforced Plasma Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return false;
-    }
 }

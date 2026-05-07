@@ -31,6 +31,8 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
                     IKey.str(StatCollector.translateToLocal("GT5U.machines.laser_hatch.amperage"))
                         .asWidget())
                 .child(new TextFieldWidget().value(new IntSyncValue(hatch::getAmperes, amps -> {
+                    hatch.setAmperes(amps);
+
                     // If max amperage gets changed, update the multi structure
                     IGregTechTileEntity igte = hatch.getBaseMetaTileEntity();
 
@@ -38,8 +40,6 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
                         GregTechAPI
                             .causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
                     }
-
-                    hatch.setAmperes(amps);
                 }))
                     .setNumbers(0, hatch.maxAmperes)
                     .setFormatAsInteger(true)

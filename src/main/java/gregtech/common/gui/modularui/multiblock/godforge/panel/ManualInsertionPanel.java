@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -113,12 +114,11 @@ public class ManualInsertionPanel {
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
         panel.child(
-            new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
-                .overlay(
-                    IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
-                        .style(EnumChatFormatting.DARK_GRAY)
-                        .alignment(Alignment.CENTER)
-                        .scale(0.75f))
+            new ButtonWidget<>().overlay(
+                IKey.lang("gt.blockmachines.multimachine.FOG.consumeUpgradeMats")
+                    .style(EnumChatFormatting.DARK_GRAY)
+                    .alignment(Alignment.CENTER)
+                    .scale(0.75f))
                 .disableHoverBackground()
                 .disableHoverOverlay()
                 .onMousePressed(d -> {
@@ -189,6 +189,7 @@ public class ManualInsertionPanel {
                 .alignment(Alignment.CENTER)
                 .scale(0.8f)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(18)
                 .alignX(1)
                 .setEnabledIf(

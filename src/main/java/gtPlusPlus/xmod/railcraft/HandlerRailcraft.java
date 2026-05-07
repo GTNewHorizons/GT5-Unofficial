@@ -30,21 +30,12 @@ public class HandlerRailcraft {
 
     public static void preInit() {
         GregtechItemList.CustomCoalCoke.set(
-            new BaseItemBurnable(
-                "itemCoalCoke",
-                "Coking Coal",
-                tabMisc,
-                64,
-                0,
-                "Used for metallurgy.",
-                "fuelCoke",
-                3200,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemCoalCoke"));
+            new BaseItemBurnable("itemCoalCoke", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemCoalCoke"));
 
         GregtechItemList.CactusCharcoal.set(
             new BaseItemBurnable(
                 "itemCactusCharcoal",
-                "Cactus Charcoal",
                 tabMisc,
                 64,
                 0,
@@ -54,40 +45,16 @@ public class HandlerRailcraft {
                 0).setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCharcoal"));
 
         GregtechItemList.SugarCharcoal.set(
-            new BaseItemBurnable(
-                "itemSugarCharcoal",
-                "Sugar Charcoal",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelSugarCharcoal",
-                400,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCharcoal"));
+            new BaseItemBurnable("itemSugarCharcoal", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCharcoal", 400, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCharcoal"));
 
         GregtechItemList.CactusCoke.set(
-            new BaseItemBurnable(
-                "itemCactusCoke",
-                "Cactus Coke",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelCactusCoke",
-                800,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCoke"));
+            new BaseItemBurnable("itemCactusCoke", tabMisc, 64, 0, "Used for smelting.", "fuelCactusCoke", 800, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCoke"));
 
         GregtechItemList.SugarCoke.set(
-            new BaseItemBurnable(
-                "itemSugarCoke",
-                "Sugar Coke",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelSugarCoke",
-                800,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCoke"));
+            new BaseItemBurnable("itemSugarCoke", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCoke", 800, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCoke"));
 
         GTOreDictUnificator.registerOre("itemCharcoalCactus", GregtechItemList.CactusCharcoal.get(1));
         GTOreDictUnificator.registerOre("itemCokeCactus", GregtechItemList.CactusCoke.get(1));

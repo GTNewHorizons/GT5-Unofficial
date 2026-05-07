@@ -9,8 +9,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -24,6 +26,7 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicGeneratorBaseGui;
 import gregtech.common.pollution.Pollution;
 
 public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMapWorkable {
@@ -252,12 +255,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         }
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(createMuffleButton());
-    }
-
     public abstract int getPollution();
 
     public abstract int getEfficiency();
@@ -318,7 +315,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicGeneratorBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

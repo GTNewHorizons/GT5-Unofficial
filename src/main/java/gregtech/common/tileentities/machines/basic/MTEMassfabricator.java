@@ -35,6 +35,7 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -49,6 +50,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMassfabricator extends MTEBasicMachine {
 
     public static int sUUAperUUM = 1;

@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ToolboxSlot;
@@ -75,7 +76,7 @@ public class ToolboxUtil {
             return;
         }
 
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+        final NBTTagCompound tag = ItemStackNBT.get(toolbox);
         final int selectedTool = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)
             ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY)
             : ItemGTToolbox.NO_TOOL_SELECTED;
@@ -97,7 +98,9 @@ public class ToolboxUtil {
             additionalAction.accept(tag);
         }
 
-        toolbox.setTagCompound(tag);
+        if (tag.hasNoTags()) {
+            toolbox.setTagCompound(null);
+        }
     }
 
     /**
@@ -131,9 +134,7 @@ public class ToolboxUtil {
      * @return The {@link ToolboxSlot} of the current tool, or empty if no tool is selected
      */
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
-        if (toolbox == null || !toolbox.hasTagCompound()
-            || !toolbox.getTagCompound()
-                .hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
+        if (toolbox == null || !ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
             return Optional.empty();
         }
 
@@ -193,9 +194,8 @@ public class ToolboxUtil {
      * @return true if the toolbox can be charged
      */
     public static boolean canCharge(final ItemStack toolbox) {
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-
-        return !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
+        final NBTTagCompound tag = toolbox.getTagCompound();
+        return tag == null || !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
             && !tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY);
     }
 }

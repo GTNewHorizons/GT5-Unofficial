@@ -5,11 +5,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Battery_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Battery_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -18,7 +17,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPo
 public class GregtechPowerSubStation {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
         run1();
     }
 
@@ -27,7 +25,6 @@ public class GregtechPowerSubStation {
         GregtechItemList.PowerSubStation.set(
             new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
                 .getStackForm(1L));
-        int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
             new MTEHatchInputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)
                 .getStackForm(1L));
@@ -50,19 +47,19 @@ public class GregtechPowerSubStation {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_MV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_EV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_MV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_EV.get(1L),
-            BITSD,
+            BITS,
             new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
     }
 }

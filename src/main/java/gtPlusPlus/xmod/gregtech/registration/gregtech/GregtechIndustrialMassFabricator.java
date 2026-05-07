@@ -10,14 +10,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEMassFabricator;
 
 public class GregtechIndustrialMassFabricator {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
         generateRecipes();
         run1();
     }
@@ -86,9 +84,5 @@ public class GregtechIndustrialMassFabricator {
             .duration(40 * SECONDS)
             .eut(65536)
             .addTo(multiblockMassFabricatorRecipes);
-
-        Logger.INFO(
-            "Generated " + multiblockMassFabricatorRecipes.getAllRecipes()
-                .size() + " Matter Fabricator recipes.");
     }
 }

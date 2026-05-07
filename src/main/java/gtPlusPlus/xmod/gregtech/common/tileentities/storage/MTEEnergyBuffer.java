@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -20,7 +19,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -240,17 +238,14 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        Logger.WARNING("Right Click on MTE by Player");
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-
-        Logger.WARNING("MTE is Client-side");
-        this.showEnergy(aPlayer.getEntityWorld(), aPlayer);
+        this.showEnergy(aPlayer);
         return true;
     }
 
-    protected void showEnergy(final World worldIn, final EntityPlayer playerIn) {
+    private void showEnergy(final EntityPlayer playerIn) {
         final long tempStorage = this.getBaseMetaTileEntity()
             .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;
@@ -360,9 +355,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             .getStoredEU();
         if (aEU > 0) {
             aNBT.setLong("aStoredEU", aEU);
-            if (aNBT.hasKey("aStoredEU")) {
-                Logger.WARNING("Set aStoredEU to NBT.");
-            }
         }
     }
 

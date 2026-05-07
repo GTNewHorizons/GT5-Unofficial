@@ -2,11 +2,14 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
@@ -396,20 +400,202 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         }
     }
 
+    /**
+     * Consumes enough durability to connect one cable.
+     *
+     * @param aPlayer The player using the tool.
+     * @return True if the tool has enough durability.
+     */
+    private boolean consumeDurabilityForConnection(EntityPlayer aPlayer) {
+        return GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer);
+    }
+
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (GTMod.proxy.gt6Cable
-            && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
-            if (isConnectedAtSide(wrenchingSide)) {
-                disconnect(wrenchingSide);
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.disconnected");
-            } else if (!GTMod.proxy.costlyCableConnection) {
-                if (connect(wrenchingSide) > 0) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.connected");
+        if (GTMod.proxy.gt6Cable) {
+            if (!aPlayer.isSneaking() || !GTMod.proxy.cableMultiConnectEnabled) {
+                // Regular connection.
+                if (consumeDurabilityForConnection(aPlayer)) {
+                    if (isConnectedAtSide(wrenchingSide)) {
+                        disconnect(wrenchingSide);
+                        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.disconnected");
+                    } else if (!GTMod.proxy.costlyCableConnection) {
+                        if (connect(wrenchingSide) > 0) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.connected");
+                    }
+                    return true;
+                }
+            } else {
+                // Multi-connection.
+
+                // Two concurrent BFS queues. The first one looks for cables which are already connected to the starting
+                // point, so that we don't connect them again. The second one looks for new cables to connect.
+                Queue<MTECable> ConnectedNext = new ArrayDeque<>();
+                Queue<ForgeDirection> ConnectedFrom = new ArrayDeque<>();
+                Set<MTECable> ConnectedAll = new HashSet<>();
+
+                Queue<MTECable> ToConnectNext = new ArrayDeque<>();
+                Queue<ForgeDirection> ToConnectFrom = new ArrayDeque<>();
+                Set<MTECable> ToConnectAll = new HashSet<>();
+
+                if (wrenchingSide == side) {
+                    // Clicked the middle of the block, search in all directions other than the one clicked.
+                    ConnectedNext.add(this);
+                    ConnectedFrom.add(wrenchingSide);
+                } else {
+                    // Search in the direction that was clicked.
+                    IMetaTileEntity mte = getConnectableMTE(wrenchingSide);
+                    if (mte instanceof MTECable cable) {
+                        // Connect to a cable and begin search for other connectable cables.
+                        ForgeDirection from = wrenchingSide.getOpposite();
+                        if (this.isConnectedAtSide(wrenchingSide) && cable.isConnectedAtSide(from)) {
+                            // Already connected, search for more connections.
+                            ConnectedNext.add(cable);
+                            ConnectedFrom.add(from);
+                            ConnectedAll.add(cable);
+                        } else {
+                            // Connect here.
+                            ToConnectNext.add(cable);
+                            ToConnectFrom.add(from);
+                            ToConnectAll.add(cable);
+                        }
+                    } else if (mte != null) {
+                        // Connect to a single machine.
+                        if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
+                        connect(wrenchingSide);
+                        return true;
+                    } else {
+                        // Nothing to do.
+                        return true;
+                    }
+                }
+                ConnectedAll.add(this);
+
+                // Begin search.
+
+                int cablesTraversed = 0;
+                int cablesConnected = 0;
+                int blocksConnected = 0;
+
+                // While there is still something to do
+                while (!ConnectedNext.isEmpty() || !ToConnectNext.isEmpty()) {
+                    // First add any cables that are already connected.
+                    while (!ConnectedNext.isEmpty()) {
+                        MTECable cable = ConnectedNext.remove();
+                        ForgeDirection from = ConnectedFrom.remove();
+                        ++cablesTraversed;
+                        if (cablesTraversed > GTMod.proxy.cableMultiConnectLimit) {
+                            GTUtility.sendChatTrans(aPlayer, "GT5U.item.cable.multi.infinite_loop");
+                            return true;
+                        }
+
+                        // Start search continuing in the same direction.
+                        // This makes connections more consistent with different cardinal orientations.
+                        int start = from.getOpposite()
+                            .ordinal();
+                        for (int offset = 0; offset < 6; ++offset) {
+                            ForgeDirection to = ForgeDirection.VALID_DIRECTIONS[(start + offset) % 6];
+                            if (to == from) continue; // Do not go backwards.
+
+                            if (cable.isConnectedAtSide(to) && cable.getBaseMetaTileEntity()
+                                .getAirAtSide(to)) {
+                                // Clean up loose ends.
+                                if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
+                                cable.disconnect(to);
+                                continue;
+                            }
+                            // Check for a connection.
+                            IMetaTileEntity mte = cable.getConnectableMTE(to);
+                            if (mte instanceof MTECable nextCable) {
+                                // Connect to a cable and continue search.
+                                ForgeDirection nextFrom = to.getOpposite();
+                                if (cable.isConnectedAtSide(to) && nextCable.isConnectedAtSide(nextFrom)) {
+                                    if (!ConnectedAll.contains(nextCable)) {
+                                        // Keep searching this way.
+                                        ConnectedNext.add(nextCable);
+                                        ConnectedFrom.add(nextFrom);
+                                        ConnectedAll.add(nextCable);
+                                    }
+                                } else {
+                                    if (!ConnectedAll.contains(nextCable) && !ToConnectAll.contains(nextCable)) {
+                                        // Mark for connecting.
+                                        ToConnectNext.add(nextCable);
+                                        ToConnectFrom.add(nextFrom);
+                                        ToConnectAll.add(nextCable);
+                                    }
+                                }
+                            } else if (mte != null) {
+                                // Connect to a machine.
+                                if (!cable.isConnectedAtSide(to)) {
+                                    if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
+                                    cable.connect(to);
+                                    ++blocksConnected;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!ToConnectNext.isEmpty()) {
+                        MTECable cable = ToConnectNext.remove();
+                        ForgeDirection from = ToConnectFrom.remove();
+                        if (ConnectedAll.contains(cable)) continue; // This triggers if we already connected this cable
+                                                                    // from another direction.
+                        if (!consumeDurabilityForConnection(aPlayer)) return true; // Not enough durability.
+                        cable.connect(from);
+                        ++cablesConnected;
+
+                        // Find other connections this cable may have.
+                        ConnectedNext.add(cable);
+                        ConnectedFrom.add(from);
+                        ConnectedAll.add(cable);
+                    }
+                }
+
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "GT5U.item.cable.multi.success",
+                    cablesTraversed,
+                    cablesConnected,
+                    blocksConnected);
+                return true;
             }
-            return true;
         }
         return false;
+    }
+
+    /**
+     * This method is a part of the multi-connection algorithm. It checks whether the given side of the cable is facing
+     * a MetaTileEntity that can be safely connected to this cable. This can be:
+     * <ul>
+     * <li>A machine that can output or accept power of the same voltage as this cable on that side.</li>
+     * <li>A cable that is made of the same material and colored by the same color as this cable.</li>
+     * </ul>
+     * If a valid MTE is found, it is returned. Otherwise, the method returns null.
+     *
+     * @param side The side to check.
+     * @return A connectable tile or null.
+     */
+    public IMetaTileEntity getConnectableMTE(ForgeDirection side) {
+        IGregTechTileEntity thisBMTE = this.getBaseMetaTileEntity();
+        if (thisBMTE.getTileEntityAtSide(side) instanceof IGregTechTileEntity otherBMTE) {
+            IMetaTileEntity otherMTE = otherBMTE.getMetaTileEntity();
+            if (otherMTE instanceof MTECable cable) {
+                return (cable.mMaterial == this.mMaterial && cable.mInsulated == this.mInsulated
+                // Do not connect uncolored cables to colored ones for electrical safety.
+                    && otherBMTE.getColorization() == thisBMTE.getColorization()) ? cable : null;
+            }
+            if (otherMTE instanceof MetaTileEntity metaTile) {
+                if (metaTile.isEnetInput() && metaTile.isInputFacing(side.getOpposite())
+                    && metaTile.maxEUInput() == this.mVoltage) {
+                    return otherMTE;
+                }
+                if (metaTile.isEnetOutput() && metaTile.isOutputFacing(side.getOpposite())
+                    && metaTile.maxEUOutput() == this.mVoltage) {
+                    return otherMTE;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -629,9 +815,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 }
             }
             if (dontAllow) {
-                pipe.addToLock(pipe, DOWN);
+                pipe.addToLock(pipe, ForgeDirection.DOWN);
             } else {
-                pipe.removeFromLock(pipe, DOWN);
+                pipe.removeFromLock(pipe, ForgeDirection.DOWN);
             }
         }
     }
@@ -640,25 +826,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
 
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")");
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mAmperage));
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(mCableLossPerMeter)
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt"));
+        Collections.addAll(
+            currenttip,
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.cable.desc",
+                TooltipHelper.voltageText(mVoltage),
+                TooltipHelper.ampText(mAmperage),
+                TooltipHelper.cableLossText(mCableLossPerMeter)));
     }
 
     @Override

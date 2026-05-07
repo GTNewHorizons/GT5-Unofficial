@@ -106,7 +106,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
             .addCasingInfoMin("Reactor Shield Casing", 26, false)
             .addInputHatch("Top or bottom layer edges", 1)
@@ -119,18 +119,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
-        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
-            : "Needs Maintainance");
-
-        return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency." };
     }
 
     @Override

@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -38,6 +37,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.api.util.DimensionalCoord;
 import appeng.client.render.BlockPosHighlighter;
@@ -73,25 +73,10 @@ public class RedstoneSnifferGui {
         }
         int textColor = Color.rgb(255, 255, 255);
 
-        AtomicInteger lastPage = new AtomicInteger(0);
-        if (guiData.getMainHandItem()
-            .getTagCompound() != null && guiData.getMainHandItem()
-                .getTagCompound()
-                .hasKey("last_page")) {
-            lastPage.set(
-                guiData.getMainHandItem()
-                    .getTagCompound()
-                    .getInteger("last_page"));
-        }
+        AtomicInteger lastPage = new AtomicInteger(ItemStackNBT.getInteger(guiData.getMainHandItem(), "last_page"));
         IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
             lastPage.set(page);
-            if (guiData.getMainHandItem()
-                .getTagCompound() == null)
-                guiData.getMainHandItem()
-                    .setTagCompound(new NBTTagCompound());
-            NBTTagCompound tag = guiData.getMainHandItem()
-                .getTagCompound();
-            tag.setInteger("last_page", page);
+            ItemStackNBT.setInteger(guiData.getMainHandItem(), "last_page", page);
         });
         guiSyncManager.syncValue("last_page", pageSyncer);
 
@@ -163,12 +148,10 @@ public class RedstoneSnifferGui {
                                 .alignment(Alignment.Center))
                         .child(
                             new TextWidget<>(
-                                entry.isPrivate ? IKey.lang("gui.yes")
-                                    .toString()
-                                    : IKey.lang("gui.no")
-                                        .toString()).widthRel(0.5f)
-                                            .color(textColor)
-                                            .alignment(Alignment.Center)));
+                                entry.isPrivate ? StatCollector.translateToLocal("gui.yes")
+                                    : StatCollector.translateToLocal("gui.no")).widthRel(0.5f)
+                                        .color(textColor)
+                                        .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
         });

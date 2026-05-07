@@ -82,7 +82,6 @@ public class DroneCentreGuiUtil {
                     }
                 })))
             .size(16)
-            .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
             .tooltipBuilder(
                 t -> t.addLine("x:" + conn.getMachineCoord().posX)

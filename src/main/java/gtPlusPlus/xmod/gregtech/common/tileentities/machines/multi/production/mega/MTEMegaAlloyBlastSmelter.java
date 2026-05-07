@@ -291,7 +291,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
-            .addController("Mid of the fourth layer")
+            .addController("Front center")
             .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
             .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
             .addCasingInfoExactly("Coil", 360, true)

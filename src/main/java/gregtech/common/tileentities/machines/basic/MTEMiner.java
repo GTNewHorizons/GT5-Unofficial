@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,6 +32,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateOwner {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
@@ -49,14 +49,15 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     private final int mSpeed;
 
-    private static String[] MTEMinerTooltip(int aTier) {
-        return new String[] { StatCollector.translateToLocal(("GT5U.tooltip.miner.0")),
-            StatCollector.translateToLocal("GT5U.tooltip.miner.1"),
-            StatCollector.translateToLocal("GT5U.tooltip.miner.2"),
-            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.3", ENERGY[aTier], SPEED[aTier] / 20),
-            StatCollector
-                .translateToLocalFormatted("GT5U.tooltip.miner.4", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.5", aTier) };
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicmachine.miner.tooltip",
+            ENERGY[mTier],
+            SPEED[mTier] / 20,
+            (RADIUS[mTier] * 2 + 1),
+            (RADIUS[mTier] * 2 + 1),
+            mTier);
     }
 
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {
@@ -66,7 +67,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             aNameRegional,
             aTier,
             1,
-            MTEMinerTooltip(aTier),
+            new String[0],
             2,
             2,
             TextureFactory.of(
@@ -364,15 +365,15 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             String.format(
                 "%s%s%s",
                 EnumChatFormatting.BLUE,
-                StatCollector.translateToLocal("GT5U.machines.miner"),
+                GTUtility.translate("GT5U.machines.miner"),
                 EnumChatFormatting.RESET),
             String.format(
                 "%s: %s%d%s %s",
-                StatCollector.translateToLocal("GT5U.machines.workarea"),
+                GTUtility.translate("GT5U.machines.workarea"),
                 EnumChatFormatting.GREEN,
                 (radiusConfig * 2 + 1),
                 EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.blocks")) };
+                GTUtility.translate("GT5U.machines.blocks")) };
     }
 
     @Override

@@ -109,7 +109,9 @@ public class ExoticInputsListPanel {
         row.child(
             new ButtonWidget<>().size(18)
                 .marginRight(1)
-                .background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
+                .overlay(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
+                .disableThemeBackground(true)
+                .disableHoverThemeBackground(true)
                 .onMousePressed(d -> {
                     if (tickerSyncer.getLongValue() > RECIPE_REFRESH_LIMIT) {
                         SyncActions.REFRESH_EXOTIC_RECIPE
@@ -143,10 +145,12 @@ public class ExoticInputsListPanel {
         row.child(
             new ButtonWidget<>().size(18)
                 .marginLeft(1)
-                .background(
+                .overlay(
                     GTGuiTextures.PICTURE_INFO.asIcon()
                         .size(16)
                         .margin(1))
+                .disableThemeBackground(true)
+                .disableHoverThemeBackground(true)
                 .onMousePressed(d -> {
                     if (!possibleInputsPanel.isPanelOpen()) {
                         possibleInputsPanel.openPanel();

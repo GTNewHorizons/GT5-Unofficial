@@ -3,10 +3,8 @@ package gregtech.common.tileentities.machines.outputme;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,16 +14,16 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
@@ -60,6 +58,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -129,15 +128,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
     public int fill(FluidStack aFluid, boolean doFill) {
         boolean ok = provider.storePartial(aFluid, !doFill);
         return ok ? aFluid.amount : 0;
-    }
-
-    public int tryFillAE(final FluidStack aFluid) {
-        if (aFluid == null) return 0;
-        if (canAcceptFluid() || (provider.getTickCounter() == provider.getLastInputTick())) {
-            provider.addToCache(aFluid);
-            return aFluid.amount;
-        }
-        return 0;
     }
 
     @Override
@@ -298,41 +288,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-
-        NBTTagList stacks = tag.getTagList("stacks", 10);
-        int stackCount = tag.getInteger("stackCount");
-
-        if (stackCount == 0) {
-            ss.add(translateToLocal("GT5U.waila.hatch.outputme.fluid_cache_empty"));
-        } else {
-            ss.add(
-                translateToLocalFormatted(
-                    "GT5U.waila.hatch.outputme.fluid_cache_detail",
-                    stackCount,
-                    stackCount > 1 ? "s" : ""));
-
-            for (int i = 0; i < stacks.tagCount(); i++) {
-                NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
-                FluidStack stack = FluidStack.loadFluidStackFromNBT(stackTag);
-
-                ss.add(
-                    String.format(
-                        "%s: %s%s L%s",
-                        stack.getLocalizedName(),
-                        EnumChatFormatting.GOLD,
-                        formatNumber(stackTag.getLong("Amount")),
-                        EnumChatFormatting.RESET));
-            }
-
-            if (stackCount > stacks.tagCount()) {
-                ss.add(
-                    translateToLocalFormatted(
-                        "GT5U.waila.hatch.outputme.fluid_cache_detail.more",
-                        stackCount - stacks.tagCount()));
-            }
-        }
+        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("fluid", ss, accessor);
     }
 
     @Override
@@ -464,40 +420,11 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public String[] getInfoData() {
-        List<String> ss = new ArrayList<>();
-        ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
-        ss.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(provider.getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
-        List<IAEFluidStack> fluidList = provider.getCacheList();
-        if (fluidList.isEmpty()) {
-            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
-        } else {
-            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidList.size()));
-            fluidList.stream()
-                .limit(100)
-                .forEach(s -> {
-                    ss.add(
-                        s.getFluidStack()
-                            .getLocalizedName() + ": "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber(s.getStackSize())
-                            + " L"
-                            + EnumChatFormatting.RESET);
-                });
-        }
-        return ss.toArray(new String[Math.min(fluidList.size(), 100) + 2]);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        provider.addUIWidgets(builder, buildContext);
+        return provider.getInfoData(
+            getAEDiagnostics(),
+            "GT5U.infodata.hatch.output_me",
+            (IAEFluidStack s) -> s.getFluidStack()
+                .getLocalizedName());
     }
 
     @Override
@@ -552,5 +479,15 @@ public class MTEHatchOutputME extends MTEHatchOutput
     @Override
     public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
     }
 }

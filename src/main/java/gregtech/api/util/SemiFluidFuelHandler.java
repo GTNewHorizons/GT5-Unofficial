@@ -14,7 +14,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
-import gtPlusPlus.api.objects.Logger;
 
 public class SemiFluidFuelHandler {
 
@@ -44,11 +43,6 @@ public class SemiFluidFuelHandler {
                     }
                 }
                 g.mSpecialValue *= aContainsCreosote ? 6 : 3;
-                Logger.INFO(
-                    "Added " + g.mFluidInputs[0].getLocalizedName()
-                        + " to the Semifluid Generator fuel map. Fuel Produces "
-                        + g.mSpecialValue
-                        + "EU per 1000L.");
                 semiFluidFuels.add(g);
             }
         }
@@ -71,25 +65,12 @@ public class SemiFluidFuelHandler {
                     }
 
             if (aFuelValue <= (128 * 4)) {
-
                 GTValues.RA.stdBuilder()
                     .fluidInputs(p.getKey())
                     .duration(0)
                     .eut(0)
                     .metadata(FUEL_VALUE, aFuelValue)
                     .addTo(semiFluidFuels);
-
-                Logger.INFO(
-                    "Added " + p.getKey()
-                        .getLocalizedName()
-                        + " to the Semifluid Generator fuel map. Fuel Produces "
-                        + (aFuelValue * 1000)
-                        + "EU per 1000L.");
-
-            } else {
-                Logger.INFO(
-                    "Boosted Fuel value for " + p.getKey()
-                        .getLocalizedName() + " exceeds 512k, ignoring.");
             }
 
         }

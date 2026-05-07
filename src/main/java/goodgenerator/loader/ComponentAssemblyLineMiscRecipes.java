@@ -47,7 +47,7 @@ import tectech.recipe.TTRecipeAdder;
 public class ComponentAssemblyLineMiscRecipes {
 
     public static final String[] circuitTierMaterials = { "Primitive", "Basic", "Good", "Advanced", "Data", "Elite",
-        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Exotic", "Cosmic" };
+        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Exotic", "Cosmic", "Transcendent" };
 
     static final HashMap<String, Integer> NameToTier = new HashMap<>();
 
@@ -419,7 +419,7 @@ public class ComponentAssemblyLineMiscRecipes {
     }
 
     private static void generateWrapRecipes() {
-        for (int i = 0; i <= 11; i++) {
+        for (int i = 0; i <= 14; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getCircuit(i, 16))
                 .circuit(16)
@@ -429,22 +429,6 @@ public class ComponentAssemblyLineMiscRecipes {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16))
-            .circuit(16)
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
-            .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 12))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16))
-            .circuit(16)
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
-            .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
     }
 
     @SuppressWarnings("unused")

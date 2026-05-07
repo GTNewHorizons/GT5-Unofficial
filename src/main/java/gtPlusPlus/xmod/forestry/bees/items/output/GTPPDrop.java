@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -101,31 +100,16 @@ public class GTPPDrop extends Item {
 
     public static void initDropsRecipes() {
         ItemStack tDrop;
-        Logger.BEES("Processing recipes for " + GTPP_Bees.sDropMappings.size() + " Drops.");
         for (GTPPDropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
-            if (addProcess(
-                tDrop,
-                new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]),
-                aDrop.mMaterial.vTier * 20 * 30,
-                aDrop.mMaterial.vVoltageMultiplier)) {
-                Logger.BEES("Added Drop extraction recipe for: " + aDrop.getName());
-            } else {
-                Logger.BEES("Failed to add Drop extraction recipe for: " + aDrop.getName());
-            }
-        }
-    }
+            FluidStack aOutput = new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]);
+            GTValues.RA.stdBuilder()
+                .itemInputs(tDrop)
+                .fluidOutputs(aOutput)
+                .duration(aDrop.mMaterial.vTier * 30 * SECONDS)
+                .eut(aDrop.mMaterial.vVoltageMultiplier)
+                .addTo(fluidExtractionRecipes);
 
-    public static boolean addProcess(ItemStack tDrop, FluidStack aOutput, int aDuration, int aEUt) {
-        if (aOutput == null) {
-            return false;
         }
-        GTValues.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .fluidOutputs(aOutput)
-            .duration(aDuration * TICKS)
-            .eut(aEUt)
-            .addTo(fluidExtractionRecipes);
-        return true;
     }
 }
