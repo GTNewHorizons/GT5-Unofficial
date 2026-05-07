@@ -267,6 +267,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0, errors)) return;
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {

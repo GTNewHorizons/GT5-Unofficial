@@ -434,9 +434,11 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             // Structure is Tier 2
             this.mTier = 2;
         }
-        checkOneMaintenanceHatch(errors);
-        checkHasAnyEnergy(errors);
         checkCasingMin(errors, this.mCasingFrostProof, 700);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

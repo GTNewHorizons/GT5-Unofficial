@@ -346,6 +346,9 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         }
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {

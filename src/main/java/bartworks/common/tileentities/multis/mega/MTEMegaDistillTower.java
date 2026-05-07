@@ -323,6 +323,8 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
         }
         checkOneMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override

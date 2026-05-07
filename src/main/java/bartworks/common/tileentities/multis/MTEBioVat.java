@@ -368,7 +368,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkOneOutputHatch(errors);
-        checkHasAnyInput(errors);
+        checkHasInputHatch(errors);
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,

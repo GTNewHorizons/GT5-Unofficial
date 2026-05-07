@@ -207,7 +207,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.mCasingAmount = 0;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0, errors)) return;
         checkCasingMin(errors, this.mCasingAmount, 500);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         checkHasInputBus(errors);
