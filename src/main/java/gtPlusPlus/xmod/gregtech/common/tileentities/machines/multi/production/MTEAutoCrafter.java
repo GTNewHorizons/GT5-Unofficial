@@ -145,8 +145,9 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
         checkPiece(mName, 1, 1, 0, errors);
         checkCasingMin(errors, casing, 10);
         checkHatch(errors);
-        checkHasAnyInput(errors);
+        checkHasInputBus(errors);
         checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override

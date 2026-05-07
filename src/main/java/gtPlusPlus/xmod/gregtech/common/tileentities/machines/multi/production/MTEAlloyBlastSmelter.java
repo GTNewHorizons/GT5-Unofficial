@@ -139,8 +139,10 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 3);
         checkHatch(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasEnergyHatch(errors);
+
     }
 
     @Override

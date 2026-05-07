@@ -6,11 +6,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -123,8 +121,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEIsaMill.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                        buildHatchAdder(MTEIsaMill.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),
@@ -154,6 +151,9 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 48 - 8);
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

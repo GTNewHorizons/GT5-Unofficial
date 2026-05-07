@@ -180,6 +180,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

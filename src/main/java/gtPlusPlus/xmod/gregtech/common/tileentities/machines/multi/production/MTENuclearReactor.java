@@ -267,6 +267,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         if (errors.isEmpty()) {
             this.turnCasingActive(false);
         }
+        checkHasMaintenanceHatch(errors);
     }
 
     // Alk's Life Lessons from Greg.

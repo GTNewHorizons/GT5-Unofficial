@@ -93,7 +93,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
+    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off
     // y-axis offset by +0.5 to counter the coordinate adjustment when rendering
     private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
@@ -239,12 +239,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         this.mCasing = 0;
         this.mCraftingTier = 0;
         this.mFocusingTier = 0;
-        catalystHounsings.clear();
+        catalystHousings.clear();
         if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
         checkHatchMax(errors, Maintenance, 1);
         checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -373,11 +375,11 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 ItemStack requiredCatalyst = recipe.getMetadata(GTRecipeConstants.QFT_CATALYST);
                 assert requiredCatalyst != null;
                 int catalystMeta = requiredCatalyst.getItemDamage();
-                if (catalystHounsings.isEmpty()) {
+                if (catalystHousings.isEmpty()) {
                     return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                 }
                 boolean catalystsFound = false;
-                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHounsings) {
+                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHousings) {
                     ItemStack storedCatalysts = catalystHousing.getItemStack();
                     int storedCatalystMeta = catalystHousing.getStoredCatalystMeta();
                     if (storedCatalysts == null || storedCatalystMeta != catalystMeta) {
@@ -646,7 +648,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
             catalystHousing.updateTexture(baseCasingIndex);
-            this.catalystHounsings.add(catalystHousing);
+            this.catalystHousings.add(catalystHousing);
             return true;
         }
         return false;
@@ -659,7 +661,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
             @Override
             public long count(MTEQuantumForceTransformer gtMetaTileEntityQFT) {
-                return gtMetaTileEntityQFT.catalystHounsings.size();
+                return gtMetaTileEntityQFT.catalystHousings.size();
             }
         };
 

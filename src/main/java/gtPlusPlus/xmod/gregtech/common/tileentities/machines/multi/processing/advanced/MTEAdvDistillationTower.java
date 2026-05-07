@@ -279,6 +279,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         // check success
         if (mHeight < 11) {
