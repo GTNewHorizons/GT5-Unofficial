@@ -114,7 +114,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
                 MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
-            .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
+            .itemOutputs(ItemList.IndustrialForgeHammer.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(12 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -607,7 +607,7 @@ public class RecipesMachinesMulti {
     private static void multiSifter() {
         // Large Sifter Control Block
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Sifter.get(1),
+            ItemList.LargeSifter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'C', "circuitAdvanced",
                 'W', OrePrefixes.cableGt04.get(Materials.Gold), 'M', ItemList.Machine_HV_Sifter });

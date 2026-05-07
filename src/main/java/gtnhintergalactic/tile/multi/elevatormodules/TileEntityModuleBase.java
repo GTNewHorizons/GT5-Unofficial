@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
@@ -372,7 +374,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
-    protected MTEMultiBlockBaseGui<?> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new TileEntityModuleBaseGui<>(this);
     }
 
