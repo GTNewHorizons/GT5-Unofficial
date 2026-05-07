@@ -2437,17 +2437,20 @@ public class GTUtility {
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin,
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
-    // TODO: use clamp()
     public static float[] getClickedFacingCoords(ForgeDirection side, float aX, float aY, float aZ) {
         return switch (side) {
-            case DOWN -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case UP -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case NORTH -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case SOUTH -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case WEST -> new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case EAST -> new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case DOWN -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(aZ) };
+            case UP -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(aZ) };
+            case NORTH -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(1 - aY) };
+            case SOUTH -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(1 - aY) };
+            case WEST -> new float[] { clampClickedFacingCoord(aZ), clampClickedFacingCoord(1 - aY) };
+            case EAST -> new float[] { clampClickedFacingCoord(1 - aZ), clampClickedFacingCoord(1 - aY) };
             default -> new float[] { 0.5F, 0.5F };
         };
+    }
+
+    private static float clampClickedFacingCoord(float coord) {
+        return MathHelper.clamp_float(coord, 0.0F, 0.99F);
     }
 
     /**
