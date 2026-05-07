@@ -60,6 +60,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -88,6 +89,7 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -121,7 +123,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     protected long getAvailableData_EM() {
-        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        if (eInputData.isEmpty()) {
+            if (this.parent == null) return 0;
+            return this.parent.getAvailableDataForModules();
+        }
         return super.getAvailableData_EM();
     }
 
@@ -146,11 +151,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     // region Parameters
 
-    /** Input parameters */
     Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
         stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
+
+    private IntegerParameter distanceParameter;
+    private IntegerParameter parallelParameter;
+    private BooleanParameter cycleParameter;
+    private IntegerParameter cycleDistanceParameter;
+    private IntegerParameter rangeParameter;
+    private IntegerParameter stepParameter;
+
     public static final String DISTANCE_PARAMETER = "distance";
     public static final String PARALLEL_PARAMETER = "parallel";
     public static final String CYCLE_PARAMETER = "cycle";
@@ -271,74 +283,65 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     public void initParameters() {
-        parameterMap.put(
+        distanceParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.distance",
             DISTANCE_PARAMETER,
-            new IntegerParameter(0, "tt.spaceminer.distance", () -> 0, () -> (int) MAX_DISTANCE));
-        parameterMap.put(
+            () -> 0,
+            () -> (int) MAX_DISTANCE);
+        parallelParameter = new IntegerParameter(
+            getMaxParallels(),
+            "tt.spaceminer.parallel",
             PARALLEL_PARAMETER,
-            new IntegerParameter(getMaxParallels(), "tt.spaceminer.parallel", () -> 0, this::getMaxParallels));
-        parameterMap.put(CYCLE_PARAMETER, new BooleanParameter(false, "tt.spaceminer.cycle"));
-
-        parameterMap
-            .put(RANGE_PARAMETER, new IntegerParameter(0, "tt.spaceminer.range", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap
-            .put(STEP_PARAMETER, new IntegerParameter(0, "tt.spaceminer.step", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap.put(
+            () -> 0,
+            this::getMaxParallels);
+        cycleParameter = new BooleanParameter(false, "tt.spaceminer.cycle", CYCLE_PARAMETER);
+        cycleDistanceParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.range",
             CYCLE_DISTANCE_PARAMETER,
-            new IntegerParameter(
-                (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue(),
-                "",
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    - (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue(),
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    + (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue()).disableGui());
+            () -> 0,
+            () -> Integer.MAX_VALUE);
+        rangeParameter = new IntegerParameter(
+            0,
+            "tt.spaceminer.step",
+            RANGE_PARAMETER,
+            () -> 0,
+            () -> Integer.MAX_VALUE);
+        stepParameter = new IntegerParameter(
+            distanceParameter.getValue(),
+            "",
+            STEP_PARAMETER,
+            () -> distanceParameter.getValue() - rangeParameter.getValue(),
+            () -> distanceParameter.getValue() + rangeParameter.getValue());
+        stepParameter.disableGui();
     }
 
     @Override
-    public void saveParameters(NBTTagCompound nbt) {
-        IntegerParameter.saveValue(nbt, parameterMap, DISTANCE_PARAMETER);
-        IntegerParameter.saveValue(nbt, parameterMap, PARALLEL_PARAMETER);
-        BooleanParameter.saveValue(nbt, parameterMap, CYCLE_PARAMETER);
-        IntegerParameter.saveValue(nbt, parameterMap, RANGE_PARAMETER);
-        IntegerParameter.saveValue(nbt, parameterMap, STEP_PARAMETER);
-        IntegerParameter.saveValue(nbt, parameterMap, CYCLE_DISTANCE_PARAMETER);
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
+        NBTTagCompound legacyOutput = nbt.getCompoundTag("eParamsOutD");
+
+        distanceParameter.setValue((int) legacyInput.getDouble(String.valueOf(0)));
+        parallelParameter.setValue((int) legacyInput.getDouble(String.valueOf(10)));
+        cycleParameter.setValue(legacyInput.getDouble(String.valueOf(2)) != 0);
+        rangeParameter.setValue((int) legacyInput.getDouble(String.valueOf(12)));
+        stepParameter.setValue((int) legacyInput.getDouble(String.valueOf(3)));
+        cycleDistanceParameter.setValue((int) legacyOutput.getDouble(String.valueOf(10)));
     }
 
     @Override
-    public void loadParameters(NBTTagCompound nbt) {
-        if (!nbt.hasKey(DISTANCE_PARAMETER)) {
-            loadLegacyParameters(nbt);
-            return;
-        }
+    public List<Parameter<?>> getParameters() {
+        List<Parameter<?>> parameters = new ArrayList<>();
 
-        IntegerParameter.loadValue(nbt, parameterMap, DISTANCE_PARAMETER);
-        IntegerParameter.loadValue(nbt, parameterMap, PARALLEL_PARAMETER);
-        BooleanParameter.loadValue(nbt, parameterMap, CYCLE_PARAMETER);
-        IntegerParameter.loadValue(nbt, parameterMap, RANGE_PARAMETER);
-        IntegerParameter.loadValue(nbt, parameterMap, STEP_PARAMETER);
-        IntegerParameter.loadValue(nbt, parameterMap, CYCLE_DISTANCE_PARAMETER);
-    }
+        parameters.add(distanceParameter);
+        parameters.add(parallelParameter);
+        parameters.add(cycleParameter);
+        parameters.add(cycleDistanceParameter);
+        parameters.add(rangeParameter);
+        parameters.add(stepParameter);
 
-    private void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput0 = nbt.getCompoundTag("eParamsInD");
-        NBTTagCompound legacyInput1 = nbt.getCompoundTag("eParamsInS");
-        NBTTagCompound legacyOutput1 = nbt.getCompoundTag("eParamsOutS");
-
-        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER))
-            .setValue((int) legacyInput0.getDouble(String.valueOf(0)));
-        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(0)));
-        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER)).setValue(legacyInput0.getDouble(String.valueOf(2)) != 0);
-        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER))
-            .setValue((int) legacyInput1.getDouble(String.valueOf(2)));
-        ((IntegerParameter) parameterMap.get(STEP_PARAMETER)).setValue((int) legacyInput0.getDouble(String.valueOf(3)));
-        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-            .setValue((int) legacyOutput1.getDouble(String.valueOf(0)));
+        return parameters;
     }
 
     @Override
@@ -496,11 +499,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
 
-        boolean cycling = (boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue();
-        String distanceKey = cycling ? CYCLE_DISTANCE_PARAMETER : DISTANCE_PARAMETER;
-        int distance = (int) parameterMap.get(distanceKey)
-            .getValue();
+        int distance = cycleParameter.getValue() ? cycleDistanceParameter.getValue() : distanceParameter.getValue();
+
         int availDroneMask = getAvailDroneMask(inputs);
         currentDroneMask = availDroneMask;
 
@@ -793,10 +793,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
         return Math.min(
-            Math.min(
-                getMaxParallels(),
-                (Integer) parameterMap.get(PARALLEL_PARAMETER)
-                    .getValue()),
+            Math.min(getMaxParallels(), parallelParameter.getValue()),
             (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
@@ -818,27 +815,21 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * Cycle the current distance according to parameters
      */
     protected void cycleDistance() {
-        boolean shouldCycle = (Boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue();
-        int distance = (Integer) parameterMap.get(DISTANCE_PARAMETER)
-            .getValue();
-        int cycleDistance = (Integer) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-            .getValue();
-        int step = (Integer) parameterMap.get(STEP_PARAMETER)
-            .getValue();
-        int range = (Integer) parameterMap.get(RANGE_PARAMETER)
-            .getValue();
+        boolean shouldCycle = cycleParameter.getValue();
+        int distance = distanceParameter.getValue();
+        int cycleDistance = cycleDistanceParameter.getValue();
+        int step = stepParameter.getValue();
+        int range = rangeParameter.getValue();
         if (shouldCycle) {
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
             if (cycleDistance + step <= Math.min(MAX_DISTANCE, distance + range)) {
-                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(cycleDistance + step);
+                cycleDistanceParameter.setValue(cycleDistance + step);
             } else {
-                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(Math.max(0, distance - range));
+                cycleDistanceParameter.setValue(Math.max(0, distance - range));
             }
         } else {
-            ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
-                .setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
+            cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
         }
     }
 
@@ -1148,6 +1139,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         if (!errors.isEmpty()) return;
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty() && this.parent != null && !this.parent.hasDataHatches()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
         if (wasFilterModified) {
             wasFilterModified = false;
             generateOreConfigurationList();

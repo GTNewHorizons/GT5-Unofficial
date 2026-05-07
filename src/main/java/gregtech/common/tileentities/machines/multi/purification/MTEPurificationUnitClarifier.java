@@ -308,6 +308,10 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputBus(errors);
         needsWaterFill = true;
     }
 

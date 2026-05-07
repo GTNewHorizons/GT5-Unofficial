@@ -304,13 +304,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        // Check self
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
 
-        // Check hatches
         checkOneMaintenanceHatch(errors);
-
-        // using nano forge method of detecting hatches.
         checkExoticAndNormalEnergyHatches(errors);
     }
 

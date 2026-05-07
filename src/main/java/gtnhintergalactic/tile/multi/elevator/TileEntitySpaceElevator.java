@@ -404,6 +404,13 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
+     * @return True if the elevator has data input hatches, else false
+     */
+    public boolean hasDataHatches() {
+        return !eInputData.isEmpty();
+    }
+
+    /**
      * Get the chunk X coordinate in which the controller resides
      *
      * @return Chunk X coordinate
@@ -750,6 +757,10 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
             .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+            .addOtherStructurePart(
+                GTUtility.translate("ig.elevator.structure.DataInputHatch"),
+                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                1)
             .addSubChannelUsage(GTStructureChannels.SE_MOTOR)
             .toolTipFinisher(GTAuthors.Authorminecraft7771);
         return tt;

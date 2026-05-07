@@ -1,8 +1,6 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
+package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -11,11 +9,13 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -25,25 +25,31 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TAE;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter> implements ISurvivalConstructable {
+public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndustrialSifter>
+    implements ISurvivalConstructable {
 
-    private int mCasing;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int OFFSET_X = 2;
+    private static final int OFFSET_Y = 4;
+    private static final int OFFSET_Z = 0;
+    private int casingAmount;
     private static IStructureDefinition<MTEIndustrialSifter> STRUCTURE_DEFINITION = null;
 
     public MTEIndustrialSifter(final int aID, final String aName, final String aNameRegional) {
@@ -60,27 +66,24 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     }
 
     @Override
-    public String getMachineType() {
-        return "Sifter";
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("Sifter")
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 3, 5, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Sieve Grate", 18, false)
-            .addCasingInfoMin("Sieve Casings", 35, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .beginStructureBlock(5, 6, 5, false)
+            .addController("Front center, 2nd layer")
+            .addCasingInfoMin("Industrial Sieve Casing", 45, false)
+            .addCasingInfoExactly("Large Sieve Grate", 19, false)
+            .addCasingInfoExactly("Steel Frame Box", 16, false)
+            .addInputBus("Any Sieve Casing", 1)
+            .addOutputBus("Any Sieve Casing", 1)
+            .addInputHatch("Any Sieve Casing", 1)
+            .addOutputHatch("Any Sieve Casing", 1)
+            .addEnergyHatch("Any Sieve Casing", 1)
+            .addMaintenanceHatch("Any Sieve Casing", 1)
+            .addMufflerHatch("Any Sieve Casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }
@@ -90,19 +93,21 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialSifter>builder()
                 .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCCCC", "CMMMC", "CMMMC", "CMMMC", "CCCCC" },
-                            { "CCCCC", "CMMMC", "CMMMC", "CMMMC", "CCCCC" },
-                            { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] { { "BBBBB", "ABBBA", "A   A", "A   A", "AB~BA", "BBBBB" },
+                        { "B   B", "BCCCB", " CCC ", "     ", "B   B", "BBBBB" },
+                        { "B   B", "BCCCB", " CCC ", "  C  ", "B   B", "BBBBB" },
+                        { "B   B", "BCCCB", " CCC ", "     ", "B   B", "BBBBB" },
+                        { "BBBBB", "ABBBA", "A   A", "A   A", "ABBBA", "BBBBB" } })
+                .addElement('A', ofFrame(Materials.Steel))
                 .addElement(
-                    'C',
+                    'B',
                     buildHatchAdder(MTEIndustrialSifter.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                        .casingIndex(TAE.GTPP_INDEX(21))
+                        .casingIndex(Casings.IndustrialSieveCasing.textureId)
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 5))))
-                .addElement('M', ofBlock(ModBlocks.blockCasings2Misc, 6))
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.IndustrialSieveCasing.asElement())))
+                .addElement('C', Casings.LargeSieveGrate.asElement())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -110,46 +115,57 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 2, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mCasing = 0;
-        if (!checkPiece(mName, 2, 2, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 35);
-        checkHatch(errors);
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 45);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCDIndustrialSifterActive;
-    }
-
-    @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.oMCDIndustrialSifterActiveGlow;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCDIndustrialSifter;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.oMCDIndustrialSifterGlow;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(21);
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstone) {
+        if (side == facing) {
+            if (active) return new ITexture[] { Casings.IndustrialSieveCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialSifterActive)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialSifterActiveGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Casings.IndustrialSieveCasing.getCasingTexture(), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCDIndustrialSifter)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCDIndustrialSifterGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { Casings.IndustrialSieveCasing.getCasingTexture() };
     }
 
     @Override
@@ -209,5 +225,25 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_SIFTER_LOOP;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 }

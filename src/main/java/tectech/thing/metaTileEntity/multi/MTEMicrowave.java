@@ -140,8 +140,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         if (!checkPiece("main", 2, 2, 0, errors)) return;
-        checkHasAnyEnergy(errors);
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

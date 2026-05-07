@@ -252,6 +252,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 return;
             }
         }
+        checkHasInputHatch(errors);
         errors.clear();
         errors.add(StructureErrorRegistry.UNKNOWN_TIER);
     }

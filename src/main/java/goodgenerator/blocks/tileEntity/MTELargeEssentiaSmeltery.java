@@ -164,7 +164,8 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
         checkCasingMin(errors, mCasing, 24);
         checkHasMaintenanceHatch(errors);
-        checkHasInputBus(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyEnergy(errors);
         if (mEssentiaOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.missing_essentia_output_hatch"));
         }

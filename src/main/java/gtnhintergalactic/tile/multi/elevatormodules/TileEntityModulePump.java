@@ -191,6 +191,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        checkHasOutputHatch(errors);
         hasMeOutputHatch = false;
         if (errors.isEmpty()) {
             for (MTEHatchOutput output : mOutputHatches) {

@@ -361,6 +361,8 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

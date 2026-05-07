@@ -877,6 +877,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             errors.add(StructureErrors.of("GT5U.gui.text.crib_not_allowed"));
         }
 
+        checkHatchExact(errors, InputHatch, 2);
         // Check if there are output buses
         checkHasOutputBus(errors);
 

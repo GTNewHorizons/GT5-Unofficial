@@ -451,6 +451,8 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
             return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without lens bus
         if (lensInputBus == null) {
             errors.add(StructureErrors.missingHatch(Hatch_LensHousing.get(1)));

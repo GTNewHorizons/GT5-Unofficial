@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
@@ -269,6 +271,13 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
+     * @return True if the module is connected to a Space Elevator, else false
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This
@@ -327,6 +336,11 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
+    protected boolean cyclicUpdate_EM() {
+        return !mMachine ? mUpdate <= -20 : super.cyclicUpdate_EM();
+    }
+
+    @Override
     protected boolean filtersFluid() {
         return false;
     }
@@ -360,7 +374,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
-    protected MTEMultiBlockBaseGui<?> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new TileEntityModuleBaseGui<>(this);
     }
 

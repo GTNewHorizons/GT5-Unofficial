@@ -122,6 +122,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         structure.checkStructure(this, errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
