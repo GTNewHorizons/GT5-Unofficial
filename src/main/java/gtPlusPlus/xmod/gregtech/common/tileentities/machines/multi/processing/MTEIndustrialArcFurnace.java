@@ -10,13 +10,13 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -280,22 +280,20 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings4Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 3;
-    }
-
     public byte getCasingTextureIndex() {
         return (byte) mCasingTextureID;
     }
 
     @Override
+    public int nextMachineMode() {
+        if (mSize <= 5) return MACHINE_MODE_ARC;
+        else return super.nextMachineMode();
+    }
+
+    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mSize <= 5) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cannot change mode, structure not large enough.");
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE_INSUFFICIENT"));
             return;
         }
         setMachineMode(nextMachineMode());

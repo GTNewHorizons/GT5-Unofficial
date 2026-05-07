@@ -328,6 +328,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
                     })
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .left(4)
                         .size(120, 20)
                         .marginBottom(2))
@@ -337,6 +338,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + data.getParallelsString();
                     })
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .size(120, 20)
                         .marginBottom(2)
                         .left(4))
@@ -345,6 +347,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
                     })
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .size(120, 20)
                         .marginBottom(2)
                         .left(4))
@@ -353,6 +356,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + data.getOCFactorString();
                     })
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .size(120, 20)
                         .marginBottom(2)
                         .left(4))
@@ -373,6 +377,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     })
                         .scale(0.9f)
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .size(120, 20)
                         .alignX(0.5f))
                     .child(

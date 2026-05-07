@@ -26,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EnderFluidLinkUIFactory;
-import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import io.netty.buffer.ByteBuf;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
@@ -98,11 +97,8 @@ public class CoverEnderFluidLink extends Cover {
     public static UUID getOwner(Object te) {
         if (te instanceof IGregTechTileEntity igte) {
             return igte.getOwnerUuid();
-        } else if (te instanceof TileEntityBase teb) {
-            return teb.getOwnerUUID();
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override

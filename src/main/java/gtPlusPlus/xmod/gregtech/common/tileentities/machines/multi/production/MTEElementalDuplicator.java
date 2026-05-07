@@ -185,7 +185,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         if (this.mReplicatorDataOrbHatches.size() != 1) {
             return false;
         }
-        log("Casings: " + mCasing);
         return aDidBuild && mCasing >= 120 && checkHatch();
     }
 

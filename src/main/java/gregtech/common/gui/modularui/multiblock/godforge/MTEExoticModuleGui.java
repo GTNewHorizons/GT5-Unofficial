@@ -6,7 +6,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
@@ -95,8 +94,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
         IPanelHandler expectedInputsPanel = Panels.EXOTIC_INPUTS_LIST.getFrom(getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.PICTURE_INFO)
-            .background(IDrawable.EMPTY)
-            .disableHoverBackground()
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .onMousePressed(d -> {
                 if (!expectedInputsPanel.isPanelOpen()) {
                     expectedInputsPanel.openPanel();

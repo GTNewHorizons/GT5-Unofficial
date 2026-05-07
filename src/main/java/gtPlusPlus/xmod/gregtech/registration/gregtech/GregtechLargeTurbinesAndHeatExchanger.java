@@ -8,7 +8,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Large_SCSteam_Turbine;
 import static gregtech.api.enums.MetaTileEntityIDs.Large_Steam_Turbine;
 import static gregtech.api.enums.MetaTileEntityIDs.XL_HeatExchanger;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvHeatExchanger;
@@ -21,7 +20,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.tu
 public class GregtechLargeTurbinesAndHeatExchanger {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Larger Turbines & Extra Large Heat Exchanger.");
         run1();
     }
 

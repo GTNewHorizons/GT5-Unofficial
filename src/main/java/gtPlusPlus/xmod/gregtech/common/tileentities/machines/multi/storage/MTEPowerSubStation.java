@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -25,7 +24,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -74,9 +72,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -167,21 +163,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         // if (mBatteryCapacity <= 0) return false;
         openGui(aPlayer);
         return true;
-    }
-
-    private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
-        final IGregTechTileEntity te = this.getBaseMetaTileEntity();
-        final Block tBlock = te.getBlockOffset(xOff, yOff, zOff);
-        final int tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
-        String name = tBlock.getLocalizedName();
-        String problem = msg + ": (" + xOff + ", " + yOff + ", " + zOff + ") " + name + ":" + tMeta;
-        checkMachineProblem(problem);
-    }
-
-    private void checkMachineProblem(String msg) {
-        if (!ASMConfiguration.debug.disableAllLogging) {
-            Logger.INFO("Power Sub-Station problem: " + msg);
-        }
     }
 
     public static int getCellTier(Block aBlock, int aMeta) {
@@ -390,18 +371,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 18);
-        log("Layer: " + layer);
-        log("Building 0");
         buildPiece(mName + "bottom", stackSize, hintsOnly, 2, 0, 0);
-        log("Built 0");
         for (int i = 1; i < layer - 1; i++) {
-            log("Building " + i);
             buildPiece(mName + "mid", stackSize, hintsOnly, 2, i, 0);
-            log("Built " + i);
         }
-        log("Building " + (layer - 1));
         buildPiece(mName + "top", stackSize, hintsOnly, 2, layer - 1, 0);
-        log("Built " + (layer - 1));
     }
 
     @Override
@@ -430,12 +404,9 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         for (int i = 0; i < 6; i++) {
             cellCount[i] = 0;
         }
-        log("Checking 0");
         if (!checkPiece(mName + "bottom", 2, 0, 0)) {
-            log("Failed on Layer 0");
             return false;
         }
-        log("Pass 0");
         int layer = 1;
         topState = TopState.MayBeTop;
         while (true) {
@@ -678,63 +649,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        String mode;
-        if (mIsOutputtingPower) {
-            mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
-        } else {
-            mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
-        }
-
-        String storedEnergyText;
-        if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        } else {
-            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        }
-
-        int errorCode = getErrorDisplayID();
-        boolean mMaint = (errorCode != 0);
-
-        return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET,
-            "Running Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.computeEnergyTax())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Controller Mode: " + mode,
-            "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + mMaint
-                + EnumChatFormatting.RESET
-                + " | Code: ["
-                + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + errorCode
-                + EnumChatFormatting.RESET
-                + "]",
-            EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
-            "Average Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.getAverageEuAdded())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Average Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.getAverageEuConsumed())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.mTotalEnergyAdded)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.mTotalEnergyConsumed)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.mTotalEnergyLost)
-                + EnumChatFormatting.RESET
-                + " EU", };
-    }
-
-    @Override
     public void explodeMultiblock() {
         // TODO Auto-generated method stub
         super.explodeMultiblock();
@@ -947,6 +861,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
     private float getProgress() {
         return (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity();
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

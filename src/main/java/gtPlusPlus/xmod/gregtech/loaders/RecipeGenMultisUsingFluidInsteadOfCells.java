@@ -12,7 +12,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
 
@@ -73,9 +72,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
     public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
         init();
         int aRecipesHandled = 0;
-        int aInvalidRecipesToConvert = 0;
-        int aOriginalCount = aInputs.getAllRecipes()
-            .size();
         ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
         recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
@@ -152,7 +148,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
                 if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
                     && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
-                    aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
                 GTRecipe aNewRecipe = new GTRecipe(
@@ -174,21 +169,14 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 deDuplicationInputArray.add(aNewRecipe);
 
                 aRecipesHandled++;
-            } else {
-                aInvalidRecipesToConvert++;
             }
         }
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
-        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils
-            .removeDuplicates(deDuplicationInputArray, aOutputs.unlocalizedName);
+        List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils.removeDuplicates(deDuplicationInputArray);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
-        Logger.INFO("Generated Recipes for " + aOutputs.unlocalizedName);
-        Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
-        Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
-        Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");
         return aRecipesHandled;
     }
 }

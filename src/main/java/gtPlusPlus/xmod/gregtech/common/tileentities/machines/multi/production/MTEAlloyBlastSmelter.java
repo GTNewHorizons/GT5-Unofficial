@@ -38,7 +38,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -174,7 +173,6 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         if (!getBaseMetaTileEntity().isServerSide()) {
-            Logger.WARNING("No Circuit, clientside.");
             return false;
         }
 
@@ -189,7 +187,6 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             return true;
         }
 
-        Logger.WARNING("Not circuit in GUI inputs.");
         return false;
     }
 

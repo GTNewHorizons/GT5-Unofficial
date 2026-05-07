@@ -67,8 +67,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return 4000;
     }
 
-    @Override
-    public int getFuelValue(FluidStack aLiquid) {
+    private int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;
         }
@@ -174,7 +173,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Gas Turbine, XLGT";
+        return "Gas Turbine, XLGT";
     }
 
     @Override
@@ -187,8 +186,4 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
         return "Reinforced Gas Turbine Casing";
     }
 
-    @Override
-    protected boolean isDenseSteam() {
-        return false;
-    }
 }

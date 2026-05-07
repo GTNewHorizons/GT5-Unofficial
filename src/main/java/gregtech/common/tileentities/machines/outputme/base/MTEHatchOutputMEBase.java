@@ -29,12 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -55,7 +50,6 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IAEStackType;
 import appeng.api.util.AEColor;
-import appeng.core.localization.GuiText;
 import appeng.items.AEBaseCell;
 import appeng.items.storage.ItemVoidStorageCell;
 import appeng.me.GridAccessException;
@@ -70,7 +64,6 @@ import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterBase;
@@ -664,7 +657,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+        if (ItemStackNBT.hasKey(stack, "baseCapacity")) {
             tooltip.add(
                 translateToLocalFormatted(
                     "GT5U.hatch.outputme.cache_capacity_label",
@@ -705,25 +698,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             iter.forEach(cacheList::add);
             processWailaNBTData(tag, "cacheStacks", "cacheCount", cacheList);
         }
-    }
-
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        env.getBaseMetaTileEntity()
-            .add1by1Slot(builder);
-        builder.widget(
-            new TextFieldWidget().setSynced(true, true)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setGetterInt(this::getPriority)
-                .setSetterInt(this::setPriority)
-                .setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.dark(1))
-                .setFocusOnGuiOpen(false)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                .addTooltip(GuiText.Priority.getLocal())
-                .setEnabled(widget -> getCacheMode())
-                .setPos(7, 63)
-                .setSize(40, 14))
-            .widget(new FakeSyncWidget.BooleanSyncer(this::getCacheMode, this::setCacheMode));
     }
 
     private void processInfoData(String langBaseKey, Function<T, String> nameGetter, List<T> list, List<String> ss) {

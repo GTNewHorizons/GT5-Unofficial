@@ -14,8 +14,8 @@ import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -53,40 +53,19 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     private final RecipeMap<?> mRecipes;
     private final int mTankCapacity;
+    private final boolean hasInputFluidSlot;
+    private final boolean hasOutputFluidSlot;
     private final SpecialEffects mSpecialEffect;
     private final SoundResource mSoundResource;
     private FallbackableUITexture progressBarTexture;
     private int recipeCatalystPriority;
 
     /**
-     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource.
-     */
-    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { aDescription },
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aSound,
-            aSpecialEffect,
-            aOverlays,
-            aRecipe);
-
-    }
-
-    /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean hasInputFluidSlot, boolean hasOutputFluidSlot,
+        int aTankCapacity, SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(
             aID,
             aName,
@@ -177,6 +156,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     .glow()
                     .build()));
         this.mTankCapacity = aTankCapacity;
+        this.hasInputFluidSlot = hasInputFluidSlot;
+        this.hasOutputFluidSlot = hasOutputFluidSlot;
         this.mSoundResource = aSound;
         this.mSpecialEffect = aSpecialEffect;
         this.mRecipes = aRecipes;
@@ -191,8 +172,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean hasInputFluidSlot, boolean hasOutputFluidSlot,
+        SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays) {
         this(
             aID,
             aName,
@@ -202,30 +183,9 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aRecipes,
             aInputSlots,
             aOutputSlots,
-            usesFluids ? getCapacityForTier(aTier) : 0,
-            aSound,
-            aSpecialEffect,
-            aOverlays,
-            null);
-    }
-
-    /**
-     * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource. Has
-     * no recipe.
-     */
-    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
+            hasInputFluidSlot,
+            hasOutputFluidSlot,
+            hasInputFluidSlot || hasOutputFluidSlot ? getCapacityForTier(aTier) : 0,
             aSound,
             aSpecialEffect,
             aOverlays,
@@ -237,8 +197,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean hasInputFluidSlot, boolean hasOutputFluidSlot,
+        int aTankCapacity, SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays) {
         this(
             aID,
             aName,
@@ -248,6 +208,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aRecipes,
             aInputSlots,
             aOutputSlots,
+            hasInputFluidSlot,
+            hasOutputFluidSlot,
             aTankCapacity,
             aSound,
             aSpecialEffect,
@@ -259,30 +221,15 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * For {@link #newMetaEntity}.
      */
     public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
-        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-        SoundResource aSound, SpecialEffects aSpecialEffect) {
+        int aInputSlots, int aOutputSlots, boolean hasInputFluidSlot, boolean hasOutputFluidSlot, int aTankCapacity,
+        int aAmperage, ITexture[][][] aTextures, SoundResource aSound, SpecialEffects aSpecialEffect) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
         this.mTankCapacity = aTankCapacity;
+        this.hasInputFluidSlot = hasInputFluidSlot;
+        this.hasOutputFluidSlot = hasOutputFluidSlot;
         this.mSpecialEffect = aSpecialEffect;
         this.mRecipes = aRecipes;
         this.mSoundResource = aSound;
-    }
-
-    public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
-        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-        ResourceLocation aSound, SpecialEffects aSpecialEffect) {
-        this(
-            aName,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aAmperage,
-            aTextures,
-            SoundResource.get(aSound.toString()),
-            aSpecialEffect);
     }
 
     @Override
@@ -294,6 +241,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             this.mRecipes,
             this.mInputSlotCount,
             this.mOutputItems == null ? 0 : this.mOutputItems.length,
+            this.hasInputFluidSlot,
+            this.hasOutputFluidSlot,
             this.mTankCapacity,
             this.mAmperage,
             this.mTextures,
@@ -506,6 +455,20 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
         return this.mTankCapacity;
     }
 
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        if (hasInputFluidSlot && hasOutputFluidSlot) {
+            return new FluidTankInfo[] { new FluidTankInfo(getFillableStack(), getCapacity()),
+                new FluidTankInfo(getDrainableStack(), getCapacity()) };
+        } else if (hasInputFluidSlot) {
+            return new FluidTankInfo[] { new FluidTankInfo(getFillableStack(), getCapacity()) };
+        } else if (hasOutputFluidSlot) {
+            return new FluidTankInfo[] { new FluidTankInfo(getDrainableStack(), getCapacity()) };
+        }
+
+        return super.getTankInfo(side);
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
@@ -515,6 +478,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
+            .maxFluidInputs(hasInputFluidSlot ? 1 : 0)
+            .maxFluidOutputs(hasOutputFluidSlot ? 1 : 0)
             .progressBarTexture(progressBarTexture)
             .build();
     }

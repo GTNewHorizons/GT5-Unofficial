@@ -7,7 +7,6 @@ import java.util.Arrays;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -160,28 +159,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected ItemSlot createChargerSlot() {
-
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
-                    (newItem, onlyAmountChanged, client, init) -> {
-                        if (!client && !init) machine.getBaseMetaTileEntity()
-                            .markInventoryBeenModified();
-                    }))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
-            .tooltip(this::createTooltipForChargerSlot)
-            .tooltipShowUpTimer(TOOLTIP_DELAY);
-    }
-
-    private void createTooltipForChargerSlot(RichTooltip tooltip) {
-        final byte machineTier = machine.mTier;
-        String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
-    }
-
     protected ProgressWidget createProgressBar() {
         return new GTProgressWidget()
             .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
@@ -222,7 +199,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
     }
 
     protected FluidSlot createFluidInputSlot() {
-        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
+        return new FluidSlot().backgroundOverlay(slotOverlayFunction.apply(0, true, false, false))
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()) {
 
                 @Override
@@ -261,7 +238,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
     }
 
     protected FluidSlot createFluidOutputSlot() {
-        return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
+        return new FluidSlot().backgroundOverlay(slotOverlayFunction.apply(0, true, true, false))
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()) {
 
                 @Override

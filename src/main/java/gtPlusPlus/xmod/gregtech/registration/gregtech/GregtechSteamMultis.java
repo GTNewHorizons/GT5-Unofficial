@@ -22,7 +22,6 @@ import gregtech.common.tileentities.machines.multi.steam.MTESteamFurnaceMulti;
 import gregtech.common.tileentities.machines.multi.steam.MTESteamMacerator;
 import gregtech.common.tileentities.machines.multi.steam.MTESteamMixer;
 import gregtech.common.tileentities.machines.multi.steam.MTESteamWasher;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -30,9 +29,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 public class GregtechSteamMultis {
 
     public static void run() {
-
-        Logger.INFO("Gregtech5u Content | Registering Steam Multiblocks.");
-
         GregtechItemList.Controller_SteamMaceratorMulti.set(
             new MTESteamMacerator(
                 Controller_SteamMaceratorMulti.ID,

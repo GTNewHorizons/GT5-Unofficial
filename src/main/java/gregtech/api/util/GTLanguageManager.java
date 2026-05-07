@@ -11,10 +11,11 @@ import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -196,13 +197,9 @@ public class GTLanguageManager {
     @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display")
-                .getString("Name");
-            if (GTUtility.isStringValid(tName)) {
-                return tName;
-            }
+        final String tName = ItemStackNBT.getDisplayName(aStack);
+        if (GTUtility.isStringValid(tName)) {
+            return tName;
         }
         return aStack.getUnlocalizedName() + ".name";
     }

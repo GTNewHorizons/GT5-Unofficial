@@ -23,8 +23,8 @@ public class RowHelper {
                     .size(16))
             .child(
                 IKey.dynamic(
-                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
-                        : translateToLocal("gt.interact.desc.inverted"))
+                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
                     .asWidget());
     }
 }

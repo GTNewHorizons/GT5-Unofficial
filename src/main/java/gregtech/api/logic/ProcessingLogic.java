@@ -42,6 +42,8 @@ public class ProcessingLogic {
     protected ItemStack specialSlotItem;
     protected int maxParallel = 1;
     protected Supplier<Integer> maxParallelSupplier;
+    protected Supplier<Double> euModSupplier;
+    protected Supplier<Double> speedBoostSupplier;
     protected int batchSize = 1;
     protected Supplier<RecipeMap<?>> recipeMapSupplier;
     protected double euModifier = 1.0;
@@ -215,8 +217,18 @@ public class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic setEuModifierSupplier(Supplier<Double> supplier) {
+        this.euModSupplier = supplier;
+        return this;
+    }
+
     public ProcessingLogic setSpeedBonus(double speedModifier) {
         this.speedBoost = speedModifier;
+        return this;
+    }
+
+    public ProcessingLogic setSpeedBonusSupplier(Supplier<Double> supplier) {
+        this.speedBoostSupplier = supplier;
         return this;
     }
 
@@ -375,6 +387,14 @@ public class ProcessingLogic {
 
         if (maxParallelSupplier != null) {
             maxParallel = maxParallelSupplier.get();
+        }
+
+        if (euModSupplier != null) {
+            euModifier = euModSupplier.get();
+        }
+
+        if (speedBoostSupplier != null) {
+            speedBoost = speedBoostSupplier.get();
         }
 
         if (inputItems == null) {

@@ -16,7 +16,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAbstract {
 
@@ -73,14 +72,14 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     public static IIcon getStaticIcon(final byte aSide, final int aMeta) {
         return switch (aMeta) {
-            case 0 -> TexturesGtBlock.Casing_Resonance_1.getIcon();
-            case 1 -> TexturesGtBlock.Casing_Resonance_2.getIcon();
-            case 2 -> TexturesGtBlock.Casing_Resonance_3.getIcon();
-            case 3 -> TexturesGtBlock.Casing_Resonance_4.getIcon();
-            case 4 -> TexturesGtBlock.Casing_Modulator_1.getIcon();
-            case 5 -> TexturesGtBlock.Casing_Modulator_2.getIcon();
-            case 6 -> TexturesGtBlock.Casing_Modulator_3.getIcon();
-            case 7 -> TexturesGtBlock.Casing_Modulator_4.getIcon();
+            case 0 -> Textures.BlockIcons.Casing_Resonance_1.getIcon();
+            case 1 -> Textures.BlockIcons.Casing_Resonance_2.getIcon();
+            case 2 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
+            case 3 -> Textures.BlockIcons.Casing_Resonance_4.getIcon();
+            case 4 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
+            case 5 -> Textures.BlockIcons.Casing_Modulator_2.getIcon();
+            case 6 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
+            case 7 -> Textures.BlockIcons.Casing_Modulator_4.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }

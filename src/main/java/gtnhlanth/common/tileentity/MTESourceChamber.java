@@ -424,6 +424,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private String particleText(String text) {
         return String.format("%s%s%s", EnumChatFormatting.GOLD, text, EnumChatFormatting.GRAY);
     }

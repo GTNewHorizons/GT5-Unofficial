@@ -11,10 +11,9 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
 import gregtech.mixin.interfaces.accessors.WeightedRandomFishableAccessor;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPond;
 
 public class FishPondRecipes {
 
@@ -34,7 +33,6 @@ public class FishPondRecipes {
             generateRecipes(MTEIndustrialFishingPond.JUNK_MODE, junkList, 1.35);
             generateRecipes(MTEIndustrialFishingPond.TREASURE_MODE, treasureList, 20D);
         } catch (Exception e) {
-            Logger.INFO("Error reading the vanilla fishing loot table.");
             e.printStackTrace();
         }
     }

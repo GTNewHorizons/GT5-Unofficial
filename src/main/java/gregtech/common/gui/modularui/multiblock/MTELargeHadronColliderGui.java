@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 
@@ -207,11 +208,19 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(new TextWidget<>(beamEnergyTextKey).marginBottom(9))
-            .child(new TextWidget<>(beamRateTextKey).marginBottom(9))
-            .child(new TextWidget<>(powerCostTextKey).marginBottom(9))
-            .child(new TextWidget<>(accelCycleTextKey).marginBottom(9))
-            .child(new TextWidget<>(statusTextKey));
+            .child(
+                new TextWidget<>(beamEnergyTextKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+            .child(
+                new TextWidget<>(beamRateTextKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+            .child(
+                new TextWidget<>(powerCostTextKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+            .child(
+                new TextWidget<>(accelCycleTextKey).marginBottom(9)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+            .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {

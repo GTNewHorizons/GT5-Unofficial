@@ -637,4 +637,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

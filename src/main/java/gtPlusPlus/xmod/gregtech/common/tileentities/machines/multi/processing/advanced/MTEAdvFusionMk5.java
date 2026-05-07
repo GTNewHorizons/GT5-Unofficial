@@ -128,7 +128,7 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
                 TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
             return new ITexture[] {
-                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1)) };
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY, Dyes.getModulation(-1)) };
         }
     }
 

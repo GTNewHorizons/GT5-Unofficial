@@ -5,12 +5,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
@@ -90,10 +90,7 @@ public class GTPacketToolboxEvent extends GTPacket {
 
             @Override
             void execute(final EntityPlayerMP player, final ItemStack itemStack, int toolboxSlot, final int unused) {
-                final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
-                    : new NBTTagCompound();
-                tag.setBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY, true);
-                itemStack.setTagCompound(tag);
+                ItemStackNBT.setBoolean(itemStack, ItemGTToolbox.TOOLBOX_OPEN_KEY, true);
 
                 player.inventory.setInventorySlotContents(toolboxSlot, itemStack);
                 GTUtility.sendSoundToPlayers(
@@ -112,8 +109,7 @@ public class GTPacketToolboxEvent extends GTPacket {
             @Override
             void execute(final EntityPlayerMP player, final ItemStack itemStack, final int toolboxSlot,
                 final int selectedTool) {
-                final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
-                    : new NBTTagCompound();
+                final ItemStackNBT tag = ItemStackNBT.of(itemStack);
                 boolean dirty = false;
 
                 if (selectedTool == ItemGTToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
@@ -130,7 +126,6 @@ public class GTPacketToolboxEvent extends GTPacket {
                 }
 
                 if (dirty) {
-                    itemStack.setTagCompound(tag);
                     player.inventory.setInventorySlotContents(toolboxSlot, itemStack);
 
                     GTUtility.sendSoundToPlayers(

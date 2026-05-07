@@ -336,7 +336,7 @@ ig.nei.siphon.planet=Планета
 ig.nei.siphon.depth=Глубина
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Спереди внизу
+ig.siphon.structure.ControllerPos2=Спереди внизу
 ig.siphon.structure.AnySiphonCasing=Любой блок Корпуса планетарного сифона
 ig.siphon.structure.PillarMiddle=1x4x1 столб посередине
 ig.siphon.structure.Sides=По бокам каждой колонны и 1x3x1 сверху

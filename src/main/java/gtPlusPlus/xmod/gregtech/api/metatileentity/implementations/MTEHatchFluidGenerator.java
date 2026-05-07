@@ -92,7 +92,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             mMaxProgresstime = getMaxTickTime();
             if (++mProgresstime >= mMaxProgresstime) {
                 if (this.canTankBeFilled()) {
-                    addFluidToHatch(aTick);
+                    addFluidToHatch();
                 }
                 mProgresstime = 0;
             }
@@ -122,9 +122,9 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     public abstract boolean doesHatchMeetConditionsToGenerate();
 
-    public boolean addFluidToHatch(long aTick) {
+    private void addFluidToHatch() {
         if (!doesHatchMeetConditionsToGenerate()) {
-            return false;
+            return;
         }
         int aFillAmount = this.fill(new FluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
         if (aFillAmount > 0) {
@@ -136,7 +136,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
                     "cloud");
             }
         }
-        return aFillAmount > 0;
     }
 
     @Override

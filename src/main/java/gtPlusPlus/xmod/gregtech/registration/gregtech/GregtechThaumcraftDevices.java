@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.MetaTileEntityIDs.Thaumcraft_Researcher;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionCreator;
 
@@ -11,7 +10,6 @@ public class GregtechThaumcraftDevices {
 
     public static void run() {
         if (Thaumcraft.isModLoaded()) {
-            Logger.INFO("Gregtech5u Content | Registering Thaumcraft content.");
             run1();
         }
     }

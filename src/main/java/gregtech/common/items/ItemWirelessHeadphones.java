@@ -13,6 +13,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import gregtech.api.enums.ItemList;
@@ -65,31 +67,29 @@ public class ItemWirelessHeadphones extends GTGenericItem implements IBauble {
             return false;
         }
         if (!world.isRemote) {
-            final NBTTagCompound tag = (stack.getTagCompound() == null) ? new NBTTagCompound() : stack.getTagCompound();
-            tag.setLong(MTEBetterJukebox.NBTKEY_UUID_LOW, uuid.getLeastSignificantBits());
-            tag.setLong(MTEBetterJukebox.NBTKEY_UUID_HIGH, uuid.getMostSignificantBits());
-            tag.setString(
-                NBTKEY_JUKEBOX_COORDINATES,
-                String.format("(%d, %d, %d) @ %d", x, y, z, world.provider.dimensionId));
-            stack.setTagCompound(tag);
-
+            ItemStackNBT.of(stack)
+                .setLong(MTEBetterJukebox.NBTKEY_UUID_LOW, uuid.getLeastSignificantBits())
+                .setLong(MTEBetterJukebox.NBTKEY_UUID_HIGH, uuid.getMostSignificantBits())
+                .setString(
+                    NBTKEY_JUKEBOX_COORDINATES,
+                    String.format("(%d, %d, %d) @ %d", x, y, z, world.provider.dimensionId));
             player.addChatMessage(new ChatComponentTranslation("GT5U.machines.betterjukebox.headphonesbound"));
         }
         return true;
     }
 
     public static UUID getBoundJukeboxUUID(ItemStack stack) {
-        if (stack == null || stack.getTagCompound() == null) {
+        if (ItemStackNBT.hasNoTags(stack)) {
             return null;
         }
         final NBTTagCompound tag = stack.getTagCompound();
-        if (!tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_LOW, Constants.NBT.TAG_ANY_NUMERIC)
-            || !tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_HIGH, Constants.NBT.TAG_ANY_NUMERIC)) {
-            return null;
+        if (tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_LOW, Constants.NBT.TAG_ANY_NUMERIC)
+            && tag.hasKey(MTEBetterJukebox.NBTKEY_UUID_HIGH, Constants.NBT.TAG_ANY_NUMERIC)) {
+            final long idLow = tag.getLong(MTEBetterJukebox.NBTKEY_UUID_LOW);
+            final long idHigh = tag.getLong(MTEBetterJukebox.NBTKEY_UUID_HIGH);
+            return new UUID(idHigh, idLow);
         }
-        final long idLow = tag.getLong(MTEBetterJukebox.NBTKEY_UUID_LOW);
-        final long idHigh = tag.getLong(MTEBetterJukebox.NBTKEY_UUID_HIGH);
-        return new UUID(idHigh, idLow);
+        return null;
     }
 
     @Override

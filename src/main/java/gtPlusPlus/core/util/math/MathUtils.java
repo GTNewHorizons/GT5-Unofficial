@@ -111,21 +111,6 @@ public class MathUtils {
         return Math.round(((current / max) * 100) * 100.00) / 100.00;
     }
 
-    /**
-     * Returns a percentage. The returned number is the % of X in Y. Supports Floats.
-     *
-     * @param current Current value.
-     * @param max     Maximim value. Must be greater than min.
-     * @return double between min and max, inclusive.
-     */
-    public static float findPercentage(final float current, final float max) {
-        return (float) (Math.round(((current / max) * 100) * 100.00) / 100.00);
-    }
-
-    public static int findPercentageOfInt(long input, float percentage) {
-        return (int) (input * (percentage / 100.0f));
-    }
-
     // Smooth Rounding Function
 
     /**
@@ -207,7 +192,7 @@ public class MathUtils {
         return GTValues.emptyLongArray;
     }
 
-    private static long gcd(long a, long b) {
+    public static long gcd(long a, long b) {
         while (b > 0) {
             final long temp = b;
             b = a % b; // % is remainder
@@ -216,7 +201,7 @@ public class MathUtils {
         return a;
     }
 
-    private static long gcd(final long[] input) {
+    public static long gcd(final long[] input) {
         long result = input[0];
         for (int i = 1; i < input.length; i++) {
             result = gcd(result, input[i]);

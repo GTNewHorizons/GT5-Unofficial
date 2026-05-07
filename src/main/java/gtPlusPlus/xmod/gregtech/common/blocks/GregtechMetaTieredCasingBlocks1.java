@@ -14,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbstract {
 
@@ -59,7 +58,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
         if (aMeta < 10) {
-            return TexturesGtBlock.TIERED_MACHINE_HULLS[aMeta].getIcon();
+            return Textures.BlockIcons.INTEGRAL_FRAMEWORK[aMeta].getIcon();
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }

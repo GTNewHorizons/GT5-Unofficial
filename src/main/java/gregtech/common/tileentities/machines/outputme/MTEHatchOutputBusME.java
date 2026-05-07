@@ -17,8 +17,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
@@ -54,6 +56,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
@@ -493,11 +496,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        provider.addUIWidgets(builder, buildContext);
-    }
-
-    @Override
     public boolean acceptsItemLock() {
         return false;
     }
@@ -559,5 +557,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusMEGui(this).build(guiData, syncManager, uiSettings);
     }
 }

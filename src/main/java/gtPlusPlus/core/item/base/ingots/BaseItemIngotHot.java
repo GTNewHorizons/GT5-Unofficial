@@ -16,16 +16,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 
 public class BaseItemIngotHot extends BaseItemIngot {
 
     private final ItemStack outputIngot;
-    private final int tickCounter = 0;
-    private final int tickCounterMax = 200;
-    private final int mTier;
 
     private IIcon base;
     private IIcon overlay;
@@ -34,7 +30,6 @@ public class BaseItemIngotHot extends BaseItemIngot {
         super(material, ComponentTypes.HOTINGOT);
         this.setTextureName(GTPlusPlus.ID + ":" + "itemIngotHot");
         this.outputIngot = material.getIngot(1);
-        this.mTier = material.vTier;
         this.generateRecipe();
     }
 
@@ -50,7 +45,6 @@ public class BaseItemIngotHot extends BaseItemIngot {
     }
 
     private void generateRecipe() {
-        Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of " + this.materialName + ".");
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(this))
             .itemOutputs(this.outputIngot.copy())

@@ -346,7 +346,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addInfo("Mode can be switched by using a screwdriver on the controller")
-            .beginStructureBlock(5, 5, 5, false)
+            .beginStructureBlock(9, 6, 5, false)
             .addController("Front center of the 3x3x3 section")
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)

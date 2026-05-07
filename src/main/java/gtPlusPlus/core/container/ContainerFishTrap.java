@@ -22,14 +22,6 @@ public class ContainerFishTrap extends Container {
     private final int posY;
     private final int posZ;
 
-    public static int StorageSlotNumber = 15; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
-
-    private final int[] slotStorage = new int[15];
-
     public ContainerFishTrap(final InventoryPlayer inventory, final TileEntityFishTrap te) {
         this.tile_entity = te;
         this.inventoryChest = te.getInventory();
@@ -47,7 +39,6 @@ public class ContainerFishTrap extends Container {
         // Storage Side
         for (var6 = 0; var6 < 3; var6++) {
             for (var7 = 0; var7 < 5; var7++) {
-                this.slotStorage[o] = o;
                 this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, 44 + (var7 * 18), 15 + (var6 * 18)));
             }
         }
