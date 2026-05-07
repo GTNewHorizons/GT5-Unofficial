@@ -103,8 +103,7 @@ public class CoverBaseGui<T extends Cover> {
         });
         final Flow widgetsColumn = Flow.column()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .margin(WIDGET_MARGIN)
-            .widthRel(1);
+            .margin(WIDGET_MARGIN);
         panel.child(widgetsColumn);
         addTitleToUI(widgetsColumn, data);
         addUIWidgets(syncManager, widgetsColumn, data);
