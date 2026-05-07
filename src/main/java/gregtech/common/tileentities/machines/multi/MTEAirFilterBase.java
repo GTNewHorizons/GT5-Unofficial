@@ -8,11 +8,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -107,8 +105,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                     'c',
                     lazy(
                         x -> ofChain(
-                            buildHatchAdder(MTEAirFilterBase.class)
-                                .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
+                            buildHatchAdder(MTEAirFilterBase.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
                                 .hint(1)
                                 .casingIndex(x.getCasingIndex())
                                 .build(),
@@ -148,6 +145,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
         checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

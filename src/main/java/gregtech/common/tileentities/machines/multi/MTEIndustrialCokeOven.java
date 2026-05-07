@@ -309,7 +309,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
-        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

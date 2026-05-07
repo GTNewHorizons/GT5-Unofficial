@@ -350,7 +350,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
         checkOneMaintenanceHatch(errors);
-        checkHasMufflerHatch(errors);
         checkHasAnyEnergy(errors);
     }
 
