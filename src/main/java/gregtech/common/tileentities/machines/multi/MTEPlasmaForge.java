@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -136,6 +138,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     // Current discount rate. 1 = 0%, 0 = 100%.
     private double discount = 1;
     private int mHeatingCapacity = 0;
+    private int mCasing = 0;
     private long running_time = 0;
     private boolean convergence = false;
     private HeatingCoilLevel mCoilLevel;
@@ -551,11 +554,15 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 .use(activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))))
         .addElement(
             'b',
-            buildHatchAdder(MTEPlasmaForge.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
-                .casingIndex(DIM_INJECTION_CASING)
-                .hint(3)
-                .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
+            ofChain(
+                buildHatchAdder(MTEPlasmaForge.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
+                    .casingIndex(DIM_INJECTION_CASING)
+                    .hint(3)
+                    .build(),
+                onElementPass(
+                    MTEPlasmaForge::onCasingFound,
+                    ofBlock(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
         .build();
@@ -623,7 +630,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,270" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
+                EnumChatFormatting.GOLD + "1,250" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
@@ -842,18 +849,33 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return tRecipe;
     }
 
+    private void onCasingFound() {
+        mCasing++;
+    }
+
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mHeatingCapacity = 0;
+        mCasing = 0;
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16, errors)) return;
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-        checkHatchMax(errors, InputBus, max_input_bus);
-        checkHatchMax(errors, OutputBus, max_output_bus);
-        checkHatchMax(errors, InputHatch, max_input_hatch);
-        checkHatchMax(errors, OutputHatch, max_output_hatch);
+        if (mInputBusses.size() > max_input_bus) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, InputBus, mInputBusses.size(), max_input_bus));
+        }
+        if (mOutputBusses.size() > max_output_bus) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, OutputBus, mOutputBusses.size(), max_output_bus));
+        }
+        if (mInputHatches.size() > max_input_hatch) {
+            errors
+                .add(StructureErrors.hatchCount(ErrorType.TOO_MANY, InputHatch, mInputHatches.size(), max_input_hatch));
+        }
+        if (mOutputHatches.size() > max_output_hatch) {
+            errors.add(
+                StructureErrors.hatchCount(ErrorType.TOO_MANY, OutputHatch, mOutputHatches.size(), max_output_hatch));
+        }
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
                 errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
@@ -876,6 +898,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             checkHasEnergyHatch(errors);
         }
         checkHatchMax(errors, Maintenance, 1);
+        // max 1273 - 2 - 7 - 6 - 1 - 1 = 1256
+        checkCasingMin(errors, mCasing, 1250);
         if (errors.isEmpty()) {
             mHeatingCapacity = (int) getCoilLevel().getHeat();
         }
