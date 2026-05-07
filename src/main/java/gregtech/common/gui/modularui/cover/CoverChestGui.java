@@ -65,31 +65,20 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
         IItemHandlerModifiable handler = cover.getItems();
 
         column.child(
-            // A bit of a hack to force the flow to be the same width as the window so the slot group gets centered
-            Flow.row()
-                .onUpdateListener(flow -> {
-                    int width = flow.getParent()
-                        .getParentArea()
-                        .w();
-                    if (width > 0) {
-                        flow.width(
-                            flow.getParent()
-                                .getParentArea()
-                                .w() - WIDGET_MARGIN * 2);
-                        flow.onUpdateListener(null);
-                    }
-                })
-                .height(0))
-            .child(
-                SlotGroupWidget.builder()
-                    .matrix(matrix)
-                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
-                    .build()
-                    .alignX(0.5f));
+            SlotGroupWidget.builder()
+                .matrix(matrix)
+                .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
+                .build()
+                .alignX(0.5f));
     }
 
     @Override
     protected boolean positionRelativeToCoverButton() {
         return true;
+    }
+
+    @Override
+    protected boolean shouldIncludeTitleInPopUp() {
+        return false;
     }
 }

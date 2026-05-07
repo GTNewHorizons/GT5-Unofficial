@@ -102,12 +102,11 @@ public class CoverBaseGui<T extends Cover> {
             }
         });
         final Flow widgetsColumn = Flow.column()
-            .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginLeft(WIDGET_MARGIN)
-            .marginTop(WIDGET_MARGIN);
+            .margin(WIDGET_MARGIN)
+            .widthRel(1);
         panel.child(widgetsColumn);
-        addTitleToUI(widgetsColumn);
+        addTitleToUI(widgetsColumn, data);
         addUIWidgets(syncManager, widgetsColumn, data);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
@@ -118,7 +117,7 @@ public class CoverBaseGui<T extends Cover> {
         return panel;
     }
 
-    protected void addTitleToUI(Flow column) {
+    protected void addTitleToUI(Flow column, CoverGuiData data) {
         ItemStack coverItem = GTUtility.intToStack(cover.getCoverID());
         if (coverItem == null) return;
         column.child(
@@ -126,30 +125,12 @@ public class CoverBaseGui<T extends Cover> {
                 .coverChildren()
                 .marginBottom(4)
                 .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
-                .child(
-                    IKey.str(coverItem.getDisplayName())
+                .childIf(
+                    !data.isPopUp() || shouldIncludeTitleInPopUp(),
+                    () -> IKey.str(coverItem.getDisplayName())
                         .asWidget()
                         .marginLeft(4)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                        .onUpdateListener(flow -> {
-                            // Hide the title text if it doesn't fit
-                            IWidget parent = flow.getParent();
-                            int windowWidth = parent.getParent()
-                                .getParentArea()
-                                .w();
-                            if (windowWidth > 0) {
-                                boolean enabled = parent.getArea()
-                                    .w() < windowWidth;
-
-                                if (!enabled) {
-                                    flow.widthRel(0);
-                                    flow.heightRel(0);
-                                    parent.scheduleResize();
-                                }
-                                flow.onUpdateListener(null);
-                                flow.setEnabled(enabled);
-                            }
-                        })));
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
     }
 
     private void layoutPopUp(ModularPanel panel, IWidget button) {
@@ -209,6 +190,10 @@ public class CoverBaseGui<T extends Cover> {
 
     protected boolean positionRelativeToCoverButton() {
         return false;
+    }
+
+    protected boolean shouldIncludeTitleInPopUp() {
+        return true;
     }
 
 }

@@ -191,7 +191,8 @@ public final class GTBaseGuiBuilder {
             posGuiData.getX(),
             posGuiData.getY(),
             posGuiData.getZ(),
-            side);
+            side,
+            true);
         return syncManager.syncedPanel(
             panelKey,
             true,
