@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
@@ -15,6 +14,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
@@ -35,7 +35,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
         Flow column = Flow.column()
             .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childPadding(2);
 
         addParameterButton(column, parameters.get(parameters.size() - 1), syncManager);
 
@@ -44,9 +45,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                 column.child(
                     IKey.lang("gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe", i + 1)
                         .asWidget()
-                        .color(Color.WHITE.main)
-                        .marginTop(4)
-                        .marginBottom(2));
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                        .marginTop(4));
             }
             for (int j = 0; j < PARAMS_PER_RECIPE; j++) {
                 addParameterButton(column, parameters.get(i * PARAMS_PER_RECIPE + j), syncManager);
@@ -71,8 +71,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
         ButtonWidget<?> parameterEditButton = new ButtonWidget<>()
             .overlay(IKey.lang(parameter.getLangKey(), parameter.getLangArgs()))
             .tooltip(t -> t.addLine(IKey.dynamic(() -> String.valueOf(parameter.getValue()))))
-            .width(100)
-            .marginBottom(2);
+            .width(100);
 
         IPanelHandler editParameterPanel = syncManager.syncedPanel(
             "parameterEditPanel_" + parameter.getNbtKey(),
@@ -101,8 +100,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                         .isAllowedToWork()
                         || multiblock.getBaseMetaTileEntity()
                             .isActive())
-                .color(Color.WHITE.main)
-                .widthRel(1)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .fullWidth()
                 .marginBottom(2));
 
         for (int i = 0; i < multiblock.getParallelRecipes(); i++) {
@@ -122,8 +121,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                         || multiblock.getBaseMetaTileEntity()
                             .isActive())
                         && multiblock.getPumpedFluid(index) != null)
-                .color(Color.WHITE.main)
-                .widthRel(1)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .fullWidth()
                 .marginBottom(2));
         }
 
