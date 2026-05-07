@@ -306,10 +306,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     public final ModularPanel buildPopUpUI(CoverGuiData guiData, String panelName, PanelSyncManager syncManager,
         UISettings uiSettings, IWidget parent) {
-        CoverBaseGui<?> gui = getCoverGui();
-        ModularPanel panel = gui.createPopUpPanel(syncManager, uiSettings, guiData);
-        gui.layoutPopUp(panel, parent);
-        return panel;
+        return getCoverGui().createPopUpPanel(syncManager, uiSettings, guiData, parent);
     }
 
     /**

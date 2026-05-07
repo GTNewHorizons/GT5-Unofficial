@@ -69,19 +69,21 @@ public class CoverBaseGui<T extends Cover> {
             height = getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin;
             width = Math.max(width, MIN_WIDTH_WITH_INV);
         }
-        ModularPanel basePanel = createPanel(width, height);
-        createBasePanel(basePanel, syncManager, uiSettings, data);
+        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).width(width)
+            .height(height);
         if (doesBindPlayerInventory()) {
             basePanel.bindPlayerInventory();
         }
         return basePanel;
     }
 
-    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
+    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
+        IWidget parent) {
         int height = getGUIHeight();
         int width = getGUIWidth();
-        ModularPanel basePanel = createPanel(width, height);
-        createBasePanel(basePanel, syncManager, uiSettings, data);
+        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).width(width)
+            .height(height);
+        layoutPopUp(basePanel, parent);
         return basePanel;
     }
 
@@ -89,11 +91,10 @@ public class CoverBaseGui<T extends Cover> {
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}. Override this method if you want to
      * implement more customized GUI. Otherwise, implement {@link #addUIWidgets} instead.
      *
-     * @param panel       the UI panel to add children to
      * @param syncManager sync handler where widget sync handlers should be registered
      */
-    protected void createBasePanel(ModularPanel panel, PanelSyncManager syncManager, UISettings uiSettings,
-        CoverGuiData data) {
+    protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
+        ModularPanel panel = new ModularPanel(getGuiId());
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
@@ -114,6 +115,7 @@ public class CoverBaseGui<T extends Cover> {
                 new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
         }
+        return panel;
     }
 
     protected void addTitleToUI(Flow column) {
@@ -150,11 +152,7 @@ public class CoverBaseGui<T extends Cover> {
                         })));
     }
 
-    protected ModularPanel createPanel(int width, int height) {
-        return ModularPanel.defaultPanel(getGuiId(), width, height);
-    }
-
-    public void layoutPopUp(ModularPanel panel, IWidget button) {
+    private void layoutPopUp(ModularPanel panel, IWidget button) {
         if (positionRelativeToCoverButton()) {
             panel.relative(button)
                 .left(-getGUIWidth() - 5);
