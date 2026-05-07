@@ -139,6 +139,10 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 45);
         checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
