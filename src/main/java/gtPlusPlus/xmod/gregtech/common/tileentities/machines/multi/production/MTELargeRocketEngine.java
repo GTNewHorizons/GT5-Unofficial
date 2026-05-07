@@ -188,6 +188,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
         checkHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override

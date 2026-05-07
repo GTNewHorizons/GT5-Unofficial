@@ -225,6 +225,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 16);
         checkHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     public Block getCasingBlock() {

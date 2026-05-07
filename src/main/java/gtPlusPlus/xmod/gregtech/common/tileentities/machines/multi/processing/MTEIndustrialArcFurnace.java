@@ -222,6 +222,11 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             mSize = 2 * tier + 1;
             checkCasingMin(errors, mCasing, 10);
             checkHatch(errors);
+            checkHasEnergyHatch(errors);
+            checkHasInputBus(errors);
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+            checkHasOutputBus(errors);
         }
     }
 

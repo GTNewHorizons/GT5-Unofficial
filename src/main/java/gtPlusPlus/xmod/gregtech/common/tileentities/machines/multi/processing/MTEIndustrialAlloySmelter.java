@@ -191,6 +191,9 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         checkCasingMin(errors, mCasing, 8);
         mLevel = getCoilLevel().getTier() + 1;
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

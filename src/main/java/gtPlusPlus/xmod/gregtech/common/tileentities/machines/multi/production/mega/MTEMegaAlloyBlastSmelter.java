@@ -218,6 +218,8 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         checkOneMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasOutputHatch(errors);
+        checkHasAnyInput(errors);
         if (this.glassTier < VoltageIndex.UMV) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {

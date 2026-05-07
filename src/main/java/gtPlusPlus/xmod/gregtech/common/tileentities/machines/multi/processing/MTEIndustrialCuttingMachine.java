@@ -120,6 +120,10 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 14);
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

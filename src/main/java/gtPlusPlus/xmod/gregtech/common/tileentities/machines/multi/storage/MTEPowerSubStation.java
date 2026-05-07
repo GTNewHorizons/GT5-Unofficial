@@ -449,6 +449,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             }
             volSum += (8L << (hatch.mTier * 2));
         }
+        checkHatch(errors);
         mBatteryCapacity = getCapacityFromCellTier(level) * cellCount[level - 4];
         if (mAllEnergyHatches.size() + mAllDynamoHatches.size() > 0) {
             mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());

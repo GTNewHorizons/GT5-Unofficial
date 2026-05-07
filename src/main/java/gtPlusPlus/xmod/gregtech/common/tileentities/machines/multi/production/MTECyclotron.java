@@ -128,6 +128,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
         checkHasEnergyHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     public Block getCasingBlock() {

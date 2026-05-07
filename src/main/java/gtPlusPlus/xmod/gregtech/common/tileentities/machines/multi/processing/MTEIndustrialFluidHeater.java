@@ -132,6 +132,9 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
         if (!checkPiece(mName, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasing1, 34);
         checkHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override

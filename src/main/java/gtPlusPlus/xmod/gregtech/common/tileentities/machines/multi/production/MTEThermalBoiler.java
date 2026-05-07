@@ -359,5 +359,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 10);
         checkHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
     }
 }
