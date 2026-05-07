@@ -77,11 +77,13 @@ public class CoverBaseGui<T extends Cover> {
         return basePanel;
     }
 
-    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
+    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
+        IWidget parent) {
         int height = getGUIHeight();
         int width = getGUIWidth();
         ModularPanel basePanel = createPanel(width, height);
         createBasePanel(basePanel, syncManager, uiSettings, data);
+        layoutPopUp(basePanel, parent);
         return basePanel;
     }
 
@@ -154,7 +156,7 @@ public class CoverBaseGui<T extends Cover> {
         return ModularPanel.defaultPanel(getGuiId(), width, height);
     }
 
-    public void layoutPopUp(ModularPanel panel, IWidget button) {
+    private void layoutPopUp(ModularPanel panel, IWidget button) {
         if (positionRelativeToCoverButton()) {
             panel.relative(button)
                 .left(-getGUIWidth() - 5);
