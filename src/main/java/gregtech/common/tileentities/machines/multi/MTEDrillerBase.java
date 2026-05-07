@@ -287,6 +287,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return isPickingPipes = false;
     }
 
+    protected boolean requiresMiningPipes() {
+        return true;
+    }
+
     protected enum PipeActionResult {
         SUCCESS,
         INVALID_BLOCK,
@@ -393,6 +397,11 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.AT_BOTTOM;
+            return true;
+        }
+
         switch (tryLowerPipeState()) {
             case NO_PIPE -> {
                 mMaxProgresstime = 0;
@@ -425,6 +434,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -453,6 +468,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     // exclusively on the workingUpward phase. It also allows for more distinct status messages.
     protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
         int zPipe, int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -491,7 +512,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
-        putMiningPipesFromInputsInController();
+        if (requiresMiningPipes()) {
+            putMiningPipesFromInputsInController();
+        }
 
         final boolean wasSuccessful;
         switch (workState) {

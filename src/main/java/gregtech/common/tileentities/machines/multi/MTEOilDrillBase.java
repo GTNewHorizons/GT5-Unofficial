@@ -182,7 +182,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
-        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
+        batchMultiplier = (batchMode && (!requiresMiningPipes() || reachingVoidOrBedrock())) ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
@@ -207,19 +207,21 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        switch (tryLowerPipeState(true)) {
-            case SUCCESS -> {
-                workState = WorkState.DOWNWARD;
-                setElectricityStats();
-                return true;
-            }
-            case CANCELED -> {
-                workState = WorkState.UPWARD;
-                return true;
+        if (requiresMiningPipes()) {
+            switch (tryLowerPipeState(true)) {
+                case SUCCESS -> {
+                    workState = WorkState.DOWNWARD;
+                    setElectricityStats();
+                    return true;
+                }
+                case CANCELED -> {
+                    workState = WorkState.UPWARD;
+                    return true;
+                }
             }
         }
 
-        if (reachingVoidOrBedrock() && tryFillChunkList()) {
+        if ((!requiresMiningPipes() || reachingVoidOrBedrock()) && tryFillChunkList()) {
             if (mWorkChunkNeedsReload) {
                 mCurrentChunk = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
                 GTChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), null);

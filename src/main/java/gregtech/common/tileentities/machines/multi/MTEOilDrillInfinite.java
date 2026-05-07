@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -11,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,7 +20,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -57,7 +56,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                         { "         ", "         ", "         ", "    G    ", "    G    ", "   GBG   ", "   BBB   ",
                             "   BBB   ", "  GBABG  ", "  B A B  ", "  B A B  ", "    A    ", "    A    ", "BFCDDDCFB" },
                         { "    G    ", "    G    ", "    B    ", "   GBG   ", "   GBG   ", "   BHB   ", "  GBHBG  ",
-                            "  GBHBG  ", "  BAHAB  ", "   AHA   ", "   AHA   ", "   AHA   ", "   AHA   ", "EFCDDDCFE" },
+                            "  GBHBG  ", "  BAHAB  ", "   AHA   ", "   AHA   ", "   AHA   ", "   AHA   ", "BFCDDDCFB" },
                         { "         ", "         ", "         ", "    G    ", "    G    ", "   GBG   ", "   BBB   ",
                             "   BBB   ", "  GBABG  ", "  B A B  ", "  B A B  ", "    A    ", "    A    ", "BFCDDDCFB" },
                         { "         ", "         ", "         ", "         ", "         ", "         ", "    G    ",
@@ -66,7 +65,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                             "         ", "         ", "         ", "         ", "  B   B  ", " GB   BG ", " BBFFFBB " },
                         { "         ", "         ", "         ", "         ", "         ", "         ", "         ",
                             "         ", "         ", "         ", "         ", "         ", "         ",
-                            "  BBEBB  " } })
+                            "  BBBBB  " } })
                 .addElement('A', chainAllGlasses())
                 .addElement(
                     'B',
@@ -77,10 +76,9 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                             onElementPass(x -> ++x.casingAmount, Casings.MiningNeutroniumCasing.asElement())))
                 .addElement('C', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
                 .addElement('D', Casings.PBIPipeCasing.asElement())
-                .addElement('E', Casings.ComputerHeatVent.asElement())
                 .addElement('F', Casings.AdvancedComputerCasing.asElement())
                 .addElement('G', ofFrame(Materials.Neutronium))
-                .addElement('H', ofBlock(LudicrousBlocks.resource_block, 1))
+                .addElement('H', ofSheetMetal(Materials.Infinity))
                 .build();
         }
         return (IStructureDefinition<MTEDrillerBase>) (IStructureDefinition<?>) STRUCTURE_DEFINITION;
@@ -113,15 +111,14 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addController("Front bottom center")
             .addCasingInfoMin("Mining Neutronium Casing", 90, false)
             .addCasingInfoExactly("Any Tiered Glass", 20, false)
-            .addCasingInfoExactly("Computer Heat Vent", 3, false)
             .addCasingInfoExactly("PBI Pipe Casing", 9, false)
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 12, false)
             .addCasingInfoExactly("Advanced Computer Casing", 12, false)
             .addCasingInfoExactly("Neutronium Frame Box", 38, false)
-            .addCasingInfoExactly("Infinity Block", 8, false)
+            .addCasingInfoExactly("Infinity Sheetmetal", 8, false)
             .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any Mining Neutronium Casing", 1)
             .addMaintenanceHatch("Any Mining Neutronium Casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any Mining Neutronium Casing", 1)
+            .addInputBus("Programmed Circuits, optional, any Mining Neutronium Casing", 1)
             .addOutputHatch("Any Mining Neutronium Casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
@@ -184,6 +181,11 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    protected boolean requiresMiningPipes() {
+        return false;
     }
 
     @Override
