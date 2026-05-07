@@ -261,9 +261,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
         checkCasingMin(errors, casingAmount, 14);
-        if (tierFrame >= 1 && tierFrame <= 2
-            && tierFrame == tierMachineCasing
-            && tierFrame == tierGearboxCasing) {
+        if (tierFrame >= 1 && tierFrame <= 2 && tierFrame == tierMachineCasing && tierFrame == tierGearboxCasing) {
             tierMachine = tierFrame;
             updateHatchTexture();
         }
