@@ -2,6 +2,9 @@ package gregtech.api.structure.error;
 
 import static gregtech.api.enums.GTValues.VN;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.HatchElement;
@@ -76,8 +79,13 @@ public final class StructureErrors {
         return of("GT5U.gui.text.energy_hatch_tier_too_low", TranslatableText.literal(VN[needed]));
     }
 
-    public static TranslatableStructureError missingOutputHatchDT(int layer) {
-        return of("GT5U.gui.text.dt_missing_output_hatch", TranslatableText.literal(layer));
+    public static TranslatableStructureError missingOutputHatchDT(List<Integer> layers) {
+        String joined = layers.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(", "));
+        String key = layers.size() == 1 ? "GT5U.gui.text.dt_missing_output_hatch"
+            : "GT5U.gui.text.dt_missing_output_hatches";
+        return of(key, TranslatableText.literal(joined));
     }
 
     public static TranslatableStructureError tooManyInputHatch(int current, int max) {

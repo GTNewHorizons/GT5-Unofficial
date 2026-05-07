@@ -259,12 +259,14 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         // check base
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
+        List<Integer> missingLayers = new ArrayList<>();
+
         // check each layer
         while (mHeight < 12) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-                errors.add(StructureErrors.missingOutputHatchDT(mHeight + 1));
+                missingLayers.add(mHeight + 1);
             }
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
                 break;
@@ -272,6 +274,11 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             // not top
             mHeight++;
         }
+
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
+        }
+
         if (!mTopLayerFound) {
             errors.add(StructureErrors.of("GT5U.gui.text.dangote_missing_top"));
         }

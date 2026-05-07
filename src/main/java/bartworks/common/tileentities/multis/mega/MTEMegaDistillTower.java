@@ -297,6 +297,8 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
         // check base
         if (!checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0, errors)) return;
 
+        List<Integer> missingLayers = new ArrayList<>();
+
         // check each layer
         while (this.mHeight < 12) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0, errors)) {
@@ -304,7 +306,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             }
             if (this.mOutputHatchesByLayer.size() < this.mHeight || this.mOutputHatchesByLayer.get(this.mHeight - 1)
                 .isEmpty()) {
-                errors.add(StructureErrors.missingOutputHatchDT(mHeight + 1));
+                missingLayers.add(mHeight + 1);
             }
             if (mTopLayerFound) {
                 break;
@@ -312,6 +314,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             this.mTopState = -1;
             // not top
             this.mHeight++;
+        }
+
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
 
         // validate final invariants...
