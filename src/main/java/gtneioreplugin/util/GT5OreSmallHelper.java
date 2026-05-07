@@ -15,7 +15,6 @@ import com.google.common.collect.MultimapBuilder;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SmallOres;
-import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
@@ -129,28 +128,8 @@ public class GT5OreSmallHelper {
             this.enabledDims = new HashSet<>();
 
             for (String dimName : ore.dimsEnabled) {
-                if (!ore.dimsEnabled.contains(dimName)) {
-                    continue;
-                }
-
                 this.enabledDims.add(DimensionHelper.getDimAbbreviatedName(dimName));
             }
-        }
-
-        public List<ItemStack> getOreVariants() {
-            List<ItemStack> oreVariants = new ArrayList<>();
-
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
-                info.material = material;
-                info.isSmall = true;
-
-                for (StoneType stoneType : StoneType.VISUAL_STONE_TYPES) {
-                    info.stoneType = stoneType;
-                    oreVariants.add(OreManager.getStack(info, 1));
-                }
-            }
-
-            return oreVariants;
         }
 
         public boolean generatesInDimension(String abbr) {
