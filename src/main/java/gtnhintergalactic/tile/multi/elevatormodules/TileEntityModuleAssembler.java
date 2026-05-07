@@ -230,9 +230,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         if (!errors.isEmpty()) return;
-        checkHasInputBus(errors);
+        checkHasAnyInput(errors);
         checkHasOutputBus(errors);
-        checkHasInputHatch(errors);
     }
 
     @Override

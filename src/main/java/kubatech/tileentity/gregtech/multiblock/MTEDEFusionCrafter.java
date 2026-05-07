@@ -138,6 +138,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             errors.add(StructureErrors.of("GT5U.gui.text.defc_fusion_machine_casing"));
         }
         checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
     }

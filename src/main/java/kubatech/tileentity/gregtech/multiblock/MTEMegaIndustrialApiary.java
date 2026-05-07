@@ -682,8 +682,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 }
             }
         }
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasOutputBus(errors);
         checkCasingMin(errors, this.mCasing, 190);
         if (errors.isEmpty()) {
             updateMaxSlots();

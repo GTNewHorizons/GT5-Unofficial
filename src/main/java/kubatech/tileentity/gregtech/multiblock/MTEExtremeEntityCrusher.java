@@ -357,6 +357,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
             .addCasingInfoExactly("Diamond Spike", 9, false)
+            .addInputBus("Any bottom casing (optional, for weapon with Looting)", 1)
             .addOutputBus("Any bottom casing", 1)
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
@@ -934,6 +935,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
         checkCasingMin(errors, mCasing, 35);
+        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatchEnergy hatch : mEnergyHatches) {
