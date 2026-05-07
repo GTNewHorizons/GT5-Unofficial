@@ -171,7 +171,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     .marginBottom(2);
 
                 IPanelHandler editParameterPanel = syncManager.syncedPanel(
-                    "parameterEditPanel_" + parameter.getLangKey(),
+                    "parameterEditPanel_" + parameter.getNbtKey(),
                     true,
                     (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager));
 
@@ -187,9 +187,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         return column;
     }
 
-    private @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
+    protected @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
         PanelSyncManager syncManager) {
-        return new ModularPanel("parameterEditPanel_" + parameter.getLangKey()) {
+        return new ModularPanel("parameterEditPanel_" + parameter.getNbtKey()) {
 
             @Override
             public boolean isDraggable() {
