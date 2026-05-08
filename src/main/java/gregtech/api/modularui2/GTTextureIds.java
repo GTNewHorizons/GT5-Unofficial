@@ -54,7 +54,7 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_BLOCK_STEEL = "gregtech:overlay_slot_block_steel";
     public static final String OVERLAY_SLOT_BLOCK_PRIMITIVE = "gregtech:overlay_slot_block_primitive";
 
-    public static final String OVERLAY_SLOT_CANISTER_STANDARD = "gregtech:overlay_slot_canister_standard";
+    public static final String OVERLAY_SLOT_CANISTER_DARK = "gregtech:overlay_slot_canister_dark";
     public static final String OVERLAY_SLOT_CANISTER_BRONZE = "gregtech:overlay_slot_canister_bronze";
     public static final String OVERLAY_SLOT_CANISTER_STEEL = "gregtech:overlay_slot_canister_steel";
 
