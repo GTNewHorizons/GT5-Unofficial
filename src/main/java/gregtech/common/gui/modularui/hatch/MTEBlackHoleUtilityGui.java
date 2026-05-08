@@ -4,7 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -40,7 +39,8 @@ public class MTEBlackHoleUtilityGui extends MTEHatchBaseGui<MTEBlackHoleUtility>
                         : translateToLocal("GT5U.gui.text.pulse_mode"))
                     .asWidget())
             .coverChildren()
-            .align(Alignment.TopLeft)
+            .topRel(0)
+            .leftRel(0)
             .paddingTop(4)
             .paddingLeft(4)
             .childPadding(2);
