@@ -59,7 +59,7 @@ public final class GTGuiThemes {
         .themedButton(
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
-        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_DARK)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
     public static final GTGuiTheme STANDARD_BLACK = GTGuiTheme.builder("gregtech:standard_black")
