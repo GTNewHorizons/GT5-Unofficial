@@ -18,7 +18,7 @@ public final class CommonGuiComponents {
     public static Grid gridTemplate1by1(IntFunction<IWidget> widgetCreator) {
         return new Grid().coverChildren()
             .pos(79, 34)
-            .mapTo(1, 1, widgetCreator);
+            .gridOfWidthHeight(1, 1, ($x, $y, index) -> widgetCreator.apply(index));
     }
 
     /**
@@ -29,7 +29,7 @@ public final class CommonGuiComponents {
     public static Grid gridTemplate2by2(IntFunction<IWidget> widgetCreator) {
         return new Grid().coverChildren()
             .pos(70, 25)
-            .mapTo(2, 4, widgetCreator);
+            .gridOfWidthHeight(2, 2, ($x, $y, index) -> widgetCreator.apply(index));
     }
 
     /**
@@ -40,7 +40,7 @@ public final class CommonGuiComponents {
     public static Grid gridTemplate3by3(IntFunction<IWidget> widgetCreator) {
         return new Grid().coverChildren()
             .pos(61, 16)
-            .mapTo(3, 9, widgetCreator);
+            .gridOfWidthHeight(3, 3, ($x, $y, index) -> widgetCreator.apply(index));
     }
 
     /**
@@ -51,6 +51,6 @@ public final class CommonGuiComponents {
     public static Grid gridTemplate4by4(IntFunction<IWidget> widgetCreator) {
         return new Grid().coverChildren()
             .pos(52, 7)
-            .mapTo(4, 16, widgetCreator);
+            .gridOfWidthHeight(4, 4, ($x, $y, index) -> widgetCreator.apply(index));
     }
 }
