@@ -946,7 +946,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.max_energy_income_tier_xa",
                 EnumChatFormatting.YELLOW + formatNumber(voltage) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + amps + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(amps) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(voltage)] + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.ebf.heat",
