@@ -182,7 +182,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_coil"));
         }
         checkHasEnergyHatch(errors);
-        checkOneMaintenanceHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
     }

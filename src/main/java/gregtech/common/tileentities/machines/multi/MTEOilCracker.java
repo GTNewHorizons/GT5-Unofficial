@@ -280,7 +280,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         if (mMiddleInputHatches.isEmpty()) {
-            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
+            errors.add(StructureErrors.of("GT5U.cracker.missing_middle_input_hatch"));
         }
     }
 
