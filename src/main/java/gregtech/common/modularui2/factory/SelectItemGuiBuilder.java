@@ -159,14 +159,14 @@ public class SelectItemGuiBuilder {
         // noinspection DataFlowIssue
         panel.childIf(
             headerItem != null || title != null,
-            Flow.row()
+            () -> Flow.row()
                 .coverChildren()
                 .childPadding(4)
                 .pos(5, 5)
                 .child(
                     new ItemDrawable(headerItem).asWidget()
                         .size(16))
-                .childIf(title != null, title.asWidget()));
+                .childIf(title != null, () -> title.asWidget()));
 
         panel.child(
             IKey.lang("GT5U.gui.select.current")
@@ -182,7 +182,7 @@ public class SelectItemGuiBuilder {
                         () -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
                 .playClickSound(false)
                 .onMousePressed(mouseButton -> true)
-                .alignX(0.5f)
+                .horizontalCenter()
                 .top(22));
 
         List<List<IWidget>> choiceWidgets = new ArrayList<>();
@@ -217,7 +217,7 @@ public class SelectItemGuiBuilder {
         panel.child(
             new Grid().coverChildren()
                 .pos(7, 46)
-                .matrix(choiceWidgets));
+                .grid(choiceWidgets));
 
         if (selectedSyncHandler != null) {
             // Correct current selected
