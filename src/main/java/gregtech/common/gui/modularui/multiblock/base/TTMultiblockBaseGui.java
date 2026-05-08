@@ -9,9 +9,7 @@ import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -19,7 +17,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -50,7 +47,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
 
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .child(createPowerPassButton())
@@ -62,9 +60,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     private IWidget createControllerSlot() {
         return new ItemSlot()
             .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
             .marginTop(4)
-            .background(new DrawableStack(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH))
+            .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
             .overlay(
                 GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
                     .size(18, 6)
@@ -74,7 +72,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
             .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18, 18)
+            .size(18)
             .overlay(createPowerPassOverlay());
     }
 
@@ -107,7 +105,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
             .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18, 18)
+            .size(18)
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 
@@ -119,10 +117,10 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         return new DynamicDrawable(() -> {
             if (isParametrized()) {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             } else {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             }
         });
     }
@@ -213,7 +211,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .child(
                 IKey.lang(parameter.getLangKey(), parameter.getLangArgs())
                     .asWidget()
-                    .alignment(Alignment.CenterLeft)
+                    .textAlign(Alignment.CenterLeft)
                     .margin(0, 14, 2, 2))
             .child(
                 ButtonWidget.panelCloseButton()
