@@ -94,7 +94,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + GTUtility.translate("tt.keyphrase.Hint_Details") + ":",
         GTUtility.translate("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
-                                                                               // Power Casing
+                                                                                  // Power Casing
     };
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEActiveTransformer>builder()
@@ -170,25 +170,26 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine
+                                                                                                           // Type:
             // Transformer
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
-                                                                                              // and from any
-                                                                                              // voltage
+                                                                                                 // and from any
+                                                                                                 // voltage
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
-                                                                                              // loss, HAYO!
+                                                                                                 // loss, HAYO!
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController(GTUtility.translate("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(GTUtility.translate("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
-                                                                                      // (minimum)
+                                                                                         // (minimum)
             .addOtherStructurePart(
                 GTUtility.translate("tt.keyword.Structure.SuperconductingCoilBlock"),
                 GTUtility.translate("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
             .addEnergyHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
+                                                                                               // High Power Casing
             .addDynamoHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
-                                                                                            // High Power Casing
+                                                                                               // High Power Casing
             .toolTipFinisher();
         return tt;
     }
@@ -352,7 +353,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public String[] getInfoData() {
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        lines.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.min_hatch_tier", calculateHatchTier()));
+        lines.add(
+            IGregTechDeviceInformation.encode("tt.infodata.active_transformer.min_hatch_tier", calculateHatchTier()));
         lines.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_5s", transferredLast5Secs));
         lines.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_30s", transferredLast30Secs));
         lines.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_1min", transferredLast1Min));

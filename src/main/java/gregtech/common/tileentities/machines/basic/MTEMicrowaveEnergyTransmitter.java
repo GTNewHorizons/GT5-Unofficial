@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,11 +27,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
@@ -103,11 +102,9 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.dimension",
                 EnumChatFormatting.GREEN + "" + this.mTargetD + EnumChatFormatting.RESET),
-            GTUtility.isRealDimension(this.mTargetD)
-                ? "GT5U.infodata.dimension.valid.yes"
+            GTUtility.isRealDimension(this.mTargetD) ? "GT5U.infodata.dimension.valid.yes"
                 : "GT5U.infodata.dimension.valid.no",
-            DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? "GT5U.infodata.dimension.registered.yes"
+            DimensionManager.isDimensionRegistered(this.mTargetD) ? "GT5U.infodata.dimension.registered.yes"
                 : "GT5U.infodata.dimension.registered.no" };
     }
 
