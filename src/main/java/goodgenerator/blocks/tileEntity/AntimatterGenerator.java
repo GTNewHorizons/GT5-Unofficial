@@ -8,7 +8,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,7 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -406,47 +406,20 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
         if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_generator")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(this.euLastCycle)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                + EnumChatFormatting.AQUA
-                + formatNumber(Math.ceil(this.annihilationEfficiency * 100))
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                + EnumChatFormatting.AQUA
-                + formatNumber(Math.ceil(this.avgEffCache * 100))
-                + EnumChatFormatting.RESET
-                + " % ⟩₁₀",
-            translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        return new String[] { "gg.infodata.antimatter_generator.header",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.Progress.fmt.t", formatNumber(mProgresstime), formatNumber(mMaxProgresstime)),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_generator.eu_produced", formatNumber(this.euLastCycle)),
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency",
+                formatNumber(Math.ceil(this.annihilationEfficiency * 100))),
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency.avg",
+                formatNumber(Math.ceil(this.avgEffCache * 100))),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     public long getEnergyProduced() {

@@ -40,6 +40,7 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -726,52 +727,20 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(getAntimatterAmount())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getPassiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getActiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                + EnumChatFormatting.AQUA
-                + formatNumber(getAntimatterChange())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        return new String[] { "gg.infodata.antimatter_forge.header",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.Progress.fmt.t", formatNumber(mProgresstime), formatNumber(mMaxProgresstime)),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.antimatter", formatNumber(getAntimatterAmount())),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.passive", formatNumber(getPassiveConsumption())),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.active", formatNumber(getActiveConsumption())),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.change", formatNumber(getAntimatterChange())),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     public long getAntimatterAmount() {

@@ -20,6 +20,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -240,14 +241,16 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocalFormatted(
-            "GT5U.infodata.boiler_solar.heat",
-            String.format(
-                EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
-                formatNumber(getHeatCapacityPercent())),
-            String
-                .format(EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET, formatNumber(getHotTimeSeconds()))),
-            StatCollector.translateToLocalFormatted(
+        return new String[] {
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.boiler_solar.heat",
+                String.format(
+                    EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
+                    formatNumber(getHeatCapacityPercent())),
+                String.format(
+                    EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
+                    formatNumber(getHotTimeSeconds()))),
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
@@ -255,7 +258,7 @@ public class MTEBoilerSolar extends MTEBoiler {
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
                     formatNumber(getMaxOutputPerSecond()))),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,

@@ -3,7 +3,6 @@ package gregtech.common.tileentities.storage;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,13 +27,8 @@ public class MTESuperTank extends MTEDigitalTankBase {
     public String[] getInfoData() {
 
         if (mFluid == null) {
-            return new String[] {
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
-                    + EnumChatFormatting.RESET,
+            return new String[] { "GT5U.infodata.super_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
+                "GT5U.infodata.digital_tank.stored_fluid.empty",
                 EnumChatFormatting.GREEN + "0 L"
                     + EnumChatFormatting.RESET
                     + " "
@@ -43,10 +37,7 @@ public class MTESuperTank extends MTEDigitalTankBase {
                     + " L"
                     + EnumChatFormatting.RESET };
         }
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+        return new String[] { "GT5U.infodata.super_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
                 + " L"

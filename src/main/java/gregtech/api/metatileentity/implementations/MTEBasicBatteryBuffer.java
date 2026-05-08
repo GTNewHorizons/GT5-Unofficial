@@ -31,6 +31,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.modularui2.GTGuis;
@@ -286,14 +287,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         updateStorageInfo();
 
         return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.stored_items",
                 EnumChatFormatting.GREEN + formatNumber(mStored) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMax) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.average_input",
                 formatNumber(getBaseMetaTileEntity().getAverageElectricInput())),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.average_output",
                 formatNumber(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
