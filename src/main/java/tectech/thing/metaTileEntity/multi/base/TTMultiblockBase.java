@@ -1871,6 +1871,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
     }
 
+    protected final void checkHasDataInput(List<StructureError> errors) {
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_data_input_hatch"));
+        }
+    }
+
+    protected final void checkHasDataOutput(List<StructureError> errors) {
+        if (eOutputData.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_data_output_hatch"));
+        }
+    }
+
     protected static <T extends TTMultiblockBase> IStructureElement<T> classicHatches(int casingIndex, int dot,
         Block casingBlock, int casingMeta) {
         return HatchElementBuilder.<T>builder()

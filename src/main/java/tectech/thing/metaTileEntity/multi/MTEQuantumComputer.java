@@ -213,6 +213,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (!checkPiece("cap", 1, 2, ++offset, errors)) return;
         if (!checkPiece("back", 1, 2, --offset, errors)) return;
         checkOneUncertaintyHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasDataOutput(errors);
         if (!errors.isEmpty()) return;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (MTEHatchRack rack : validMTEList(eRacks)) {

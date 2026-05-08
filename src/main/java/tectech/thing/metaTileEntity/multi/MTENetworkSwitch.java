@@ -124,6 +124,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
         structure.checkStructure(this, errors);
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasDataInput(errors);
+        checkHasDataOutput(errors);
     }
 
     @Override

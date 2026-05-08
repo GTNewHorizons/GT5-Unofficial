@@ -207,6 +207,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         if (eHolders.size() != 1) {
             errors.add(StructureErrors.missingHatch(holder_Hatch.get(1)));
         }
+        checkHasDataInput(errors);
     }
 
     @Override

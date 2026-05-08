@@ -261,6 +261,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         GTDataUtils.dedupList(eOutputData);
 
         structureInstanceInfo.validate(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasDataInput(errors);
+        checkHasDataOutput(errors);
     }
 
     @Override

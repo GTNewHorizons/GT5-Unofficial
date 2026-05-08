@@ -41,6 +41,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -170,6 +171,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
+        if (eDataAccessHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.databank_missing_data_access"));
+        }
+        if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.databank_missing_data_output"));
+        }
     }
 
     @Override
