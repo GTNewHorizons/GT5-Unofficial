@@ -20,11 +20,6 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 200;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(positionRow(createFrequencyRow()))
             .child(positionRow(createRedstoneModeRow()));

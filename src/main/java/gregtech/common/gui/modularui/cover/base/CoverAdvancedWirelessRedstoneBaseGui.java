@@ -40,16 +40,6 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
 
     }
 
-    @Override
-    protected int getGUIWidth() {
-        return 250;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 120;
-    }
-
     protected Flow makeFrequencyRow() {
         return Flow.row()
             .height(16)
