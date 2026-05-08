@@ -96,13 +96,12 @@ public class MTEHatchMagnet extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 1);
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(
-                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
+                        new ModularSlot(inventoryHandler, index).singletonSlotGroup()
                             .filter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet))));
     }
 }
