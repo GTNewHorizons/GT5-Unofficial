@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,19 +125,16 @@ public final class GTInflectionManager {
      */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
-        if (!input.contains("s{")) {
-            return String.format(
-                unescape(input),
-                Arrays.stream(formatterKey)
-                    .map(StatCollector::translateToLocal)
-                    .toArray(Object[]::new));
-        }
-        if (IS_SERVER) {
-            return String.format(
-                unescape(input),
-                Arrays.stream(formatterKey)
-                    .map(StatCollector::translateToLocal)
-                    .toArray(Object[]::new));
+        if (!input.contains("s{") || IS_SERVER) {
+            try {
+                return String.format(
+                    unescape(input),
+                    Arrays.stream(formatterKey)
+                        .map(StatCollector::translateToLocal)
+                        .toArray(Object[]::new));
+            } catch (IllegalFormatException e) {
+                return "Format Error: " + input;
+            }
         }
 
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
