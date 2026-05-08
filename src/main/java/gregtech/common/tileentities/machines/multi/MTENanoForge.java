@@ -62,6 +62,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -612,7 +613,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         }
 
         if (aStack == null) {
-            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            errors.add(StructureErrors.of("GT5U.gui.text.missing_nanite"));
             return;
         }
 

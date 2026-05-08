@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -59,7 +58,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         .addElement(
             'D',
             buildHatchAdder(MTEIndustrialBendingMachine.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(Casings.MaterialPressCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
@@ -90,7 +89,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
             .addCasingInfoExactly("Titanium Gear Box Casing", 3, false)
             .addCasingInfoExactly("Forming Core", 9, false)
             .addCasingInfoExactly("Titanium Frame Box", 6, false)
-            .addInputHatch("Any Metalworking Machine Casing", 1)
             .addInputBus("Any Metalworking Machine Casing", 1)
             .addOutputBus("Any Metalworking Machine Casing", 1)
             .addEnergyHatch("Any Metalworking Machine Casing", 1)

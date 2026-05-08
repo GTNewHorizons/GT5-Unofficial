@@ -158,7 +158,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
-        checkHasInputBus(errors);
         checkHasOutputBus(errors);
         if (errors.isEmpty()) needsFluidRefill = true;
     }

@@ -313,6 +313,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     4));
         }
         checkHasInputHatch(errors);
+        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override

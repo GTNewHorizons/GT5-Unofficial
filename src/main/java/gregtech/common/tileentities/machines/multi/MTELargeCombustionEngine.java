@@ -303,6 +303,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override
