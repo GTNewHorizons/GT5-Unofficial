@@ -241,15 +241,13 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            IGregTechDeviceInformation.encode(
-                "GT5U.infodata.boiler_solar.heat",
-                String.format(
-                    EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
-                    formatNumber(getHeatCapacityPercent())),
-                String.format(
-                    EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
-                    formatNumber(getHotTimeSeconds()))),
+        return new String[] { IGregTechDeviceInformation.encode(
+            "GT5U.infodata.boiler_solar.heat",
+            String.format(
+                EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
+                formatNumber(getHeatCapacityPercent())),
+            String
+                .format(EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET, formatNumber(getHotTimeSeconds()))),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(

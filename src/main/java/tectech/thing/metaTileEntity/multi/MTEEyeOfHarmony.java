@@ -16,12 +16,10 @@ import static java.lang.Math.exp;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.STRIKETHROUGH;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
@@ -43,7 +41,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,6 +63,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -1581,29 +1579,30 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         str.add("tt.infodata.eoh.internal_storage.header");
         validFluidMap.forEach(
             (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumber(value)));
-        str.add(IGregTechDeviceInformation.encode("tt.infodata.eoh.astral_array_fabricators.count", formatNumber(astralArrayAmount)));
+        str.add(
+            IGregTechDeviceInformation
+                .encode("tt.infodata.eoh.astral_array_fabricators.count", formatNumber(astralArrayAmount)));
         if (recipeRunning) {
             str.add("tt.infodata.eoh.other_stats.header");
             str.add(
-                IGregTechDeviceInformation.encode(
-                    "tt.infodata.eoh.success_chance",
-                    RED + formatNumber(100 * successChance) + RESET + "%"));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.success_chance", RED + formatNumber(100 * successChance) + RESET + "%"));
             str.add(
-                IGregTechDeviceInformation.encode(
-                    "tt.infodata.eoh.recipe_yield",
-                    RED + formatNumber(100 * yield) + RESET + "%"));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.recipe_yield", RED + formatNumber(100 * yield) + RESET + "%"));
             str.add(
                 IGregTechDeviceInformation.encode(
                     "tt.infodata.eoh.effective_astral_array_fabricators",
                     RED + formatNumber(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
             str.add(
-                IGregTechDeviceInformation.encode("tt.infodata.eoh.total_parallel", RED + formatNumber(parallelAmount)));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.total_parallel", RED + formatNumber(parallelAmount)));
             str.add(
-                IGregTechDeviceInformation.encode(
-                    "tt.infodata.eoh.eu_output",
-                    RED + toStandardForm(outputEU_BigInt) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.eu_output", RED + toStandardForm(outputEU_BigInt) + RESET));
             str.add(
-                IGregTechDeviceInformation.encode("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
             if (starMatter != null && starMatter.fluidStack != null) {
                 FluidStackLong starMatterOutput = new FluidStackLong(
@@ -1630,9 +1629,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                 .divide(BigInteger.valueOf(currentMaxProgresstime));
 
             str.add(
-                IGregTechDeviceInformation.encode(
-                    "tt.infodata.eoh.estimated_eu",
-                    RED + toStandardForm(euPerTick) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.estimated_eu", RED + toStandardForm(euPerTick) + RESET));
         }
         str.add("tt.infodata.eoh.divider");
         return str.toArray(new String[0]);

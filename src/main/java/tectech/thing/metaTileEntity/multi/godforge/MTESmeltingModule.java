@@ -15,11 +15,11 @@ import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -178,29 +178,24 @@ public class MTESmeltingModule extends MTEBaseModule {
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt) : "0") + RESET));
         str.add(
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.multi.max_parallel",
-                YELLOW + formatNumber(getActualParallel()) + RESET));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.max_parallel", YELLOW + formatNumber(getActualParallel()) + RESET));
         str.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.parallel.current",
                 YELLOW + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0") + RESET));
         str.add(
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.multi.capacity.heat",
-                YELLOW + formatNumber(getHeat()) + RESET));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.capacity.heat", YELLOW + formatNumber(getHeat()) + RESET));
         str.add(
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.multi.capacity.heat.effective",
-                YELLOW + formatNumber(getHeatForOC()) + RESET));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.capacity.heat.effective", YELLOW + formatNumber(getHeatForOC()) + RESET));
         str.add(
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.multi.multiplier.recipe_time",
-                YELLOW + formatNumber(getSpeedBonus()) + RESET));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.recipe_time", YELLOW + formatNumber(getSpeedBonus()) + RESET));
         str.add(
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.multi.multiplier.energy",
-                YELLOW + formatNumber(getEnergyDiscount()) + RESET));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.energy", YELLOW + formatNumber(getEnergyDiscount()) + RESET));
         str.add(
             IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",

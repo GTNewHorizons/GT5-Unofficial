@@ -222,11 +222,9 @@ public class MTETeleporter extends MTEBasicTank {
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.dimension",
                 EnumChatFormatting.GREEN + "" + this.mTargetD + EnumChatFormatting.RESET),
-            GTUtility.isRealDimension(this.mTargetD)
-                ? "GT5U.infodata.dimension.valid.yes"
+            GTUtility.isRealDimension(this.mTargetD) ? "GT5U.infodata.dimension.valid.yes"
                 : "GT5U.infodata.dimension.valid.no",
-            DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? "GT5U.infodata.dimension.registered.yes"
+            DimensionManager.isDimensionRegistered(this.mTargetD) ? "GT5U.infodata.dimension.registered.yes"
                 : "GT5U.infodata.dimension.registered.no" };
     }
 

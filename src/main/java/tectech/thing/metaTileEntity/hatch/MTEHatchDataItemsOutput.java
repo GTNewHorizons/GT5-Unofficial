@@ -136,7 +136,8 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
 
         if (previousPacket != null) {
             for (RecipeAssemblyLine recipe : previousPacket.getContent()) {
-                lines.add(IGregTechDeviceInformation.encode("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
+                lines.add(
+                    IGregTechDeviceInformation.encode("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
             }
         } else {
             lines.add("tt.keyphrase.AL_Recipe_None");

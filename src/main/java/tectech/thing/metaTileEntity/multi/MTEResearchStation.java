@@ -107,7 +107,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
         // Computer casing
         GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
-        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or Advanced
+        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or
+                                                                                 // Advanced
         // Computer Casing
     };
     // endregion
@@ -739,17 +740,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.RESET;
         }
 
-        return new String[] {
-            "tt.infodata.research.energy_hatches.header",
+        return new String[] { "tt.infodata.research.energy_hatches.header",
             IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.energy_hatches",
                 EnumChatFormatting.GREEN + formatNumber(storedEnergy) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(maxEnergy) + EnumChatFormatting.RESET),
-            mEUt <= 0
-                ? IGregTechDeviceInformation.encode(
-                    "tt.infodata.research.currently_uses",
-                    formatNumber(Math.abs(mEUt)),
-                    formatNumber(eAmpereFlow))
+            mEUt <= 0 ? IGregTechDeviceInformation
+                .encode("tt.infodata.research.currently_uses", formatNumber(Math.abs(mEUt)), formatNumber(eAmpereFlow))
                 : IGregTechDeviceInformation.encode(
                     "tt.infodata.multi.currently_generates",
                     EnumChatFormatting.RED + formatNumber(Math.abs(mEUt)) + EnumChatFormatting.RESET,
@@ -763,10 +760,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 "tt.infodata.research.problems_efficiency",
                 getIdealStatus() - getRepairStatus(),
                 mEfficiency / 100.0F),
-            IGregTechDeviceInformation.encode(
-                "tt.infodata.research.power_pass_safe_void",
-                ePowerPass,
-                eSafeVoid),
+            IGregTechDeviceInformation.encode("tt.infodata.research.power_pass_safe_void", ePowerPass, eSafeVoid),
             IGregTechDeviceInformation.encode(
                 "tt.infodata.research.computation_available",
                 formatNumber(this.eAvailableData),

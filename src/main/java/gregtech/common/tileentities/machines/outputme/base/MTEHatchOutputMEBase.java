@@ -22,7 +22,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -63,6 +62,7 @@ import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterBase;
@@ -728,9 +728,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public String[] getInfoData(String AEDiagnostics, String langBaseKey, Function<T, String> nameGetter) {
         List<String> ss = new ArrayList<>();
         ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
-                : IGregTechDeviceInformation.encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
+            (getProxy() != null && getProxy().isActive()) ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+                : IGregTechDeviceInformation
+                    .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
         ss.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
