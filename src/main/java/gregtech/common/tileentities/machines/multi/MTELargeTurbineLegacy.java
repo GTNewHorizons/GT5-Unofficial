@@ -399,7 +399,7 @@ public abstract class MTELargeTurbineLegacy extends MTEEnhancedMultiBlockBase<MT
             tMaintainance, /* 2 */
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.turbine.efficiency",
-                EnumChatFormatting.YELLOW + (mEfficiency / 100F) + EnumChatFormatting.RESET), /* 2 */
+                EnumChatFormatting.YELLOW + "" + (mEfficiency / 100F) + EnumChatFormatting.RESET), /* 2 */
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + formatNumber(storedEnergy) + EnumChatFormatting.RESET,
@@ -415,11 +415,12 @@ public abstract class MTELargeTurbineLegacy extends MTEEnhancedMultiBlockBase<MT
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.turbine.fuel",
                 EnumChatFormatting.GOLD + formatNumber(storedFluid) + EnumChatFormatting.RESET), /* 6 */
-            IGregTechDeviceInformation
-                .encode("GT5U.infodata.turbine.dmg", EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET), /* 7 */
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.turbine.dmg",
+                EnumChatFormatting.RED + "" + tDura + EnumChatFormatting.RESET), /* 7 */
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.turbine.pollution",
-                EnumChatFormatting.GREEN + getAveragePollutionPercentage() + EnumChatFormatting.RESET), /* 8 */
+                EnumChatFormatting.GREEN + "" + getAveragePollutionPercentage() + EnumChatFormatting.RESET), /* 8 */
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.multiblock.recipes_done",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) /* 9 */

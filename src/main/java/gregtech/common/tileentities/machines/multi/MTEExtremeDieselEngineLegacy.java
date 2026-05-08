@@ -175,10 +175,10 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
                 EnumChatFormatting.GOLD + formatNumber(fuelRemaining) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.engine.efficiency",
-                EnumChatFormatting.YELLOW + (mEfficiency / 100F) + EnumChatFormatting.RESET),
+                EnumChatFormatting.YELLOW + "" + (mEfficiency / 100F) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.turbine.pollution",
-                EnumChatFormatting.GREEN + getAveragePollutionPercentage() + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + "" + getAveragePollutionPercentage() + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.multiblock.recipes_done",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
