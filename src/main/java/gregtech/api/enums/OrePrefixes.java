@@ -2835,6 +2835,9 @@ public class OrePrefixes {
 
     public static OrePrefixes getOrePrefix(String aOre) {
         for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
+            if (tPrefix == orePluto && aOre.equals("orePlutonium")) return ore;
+            if (tPrefix == orePluto && aOre.equals("orePlutonium241")) return ore;
+            if (tPrefix == oreTitan && aOre.equals("oreTitanium")) return ore;
             if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
             if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
             if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
