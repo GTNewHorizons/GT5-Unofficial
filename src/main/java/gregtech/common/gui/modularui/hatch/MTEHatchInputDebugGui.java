@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -51,10 +50,11 @@ public class MTEHatchInputDebugGui extends MTEHatchBaseGui<MTEHatchInputDebug> {
         return super.createContentSection(panel, syncManager).child(
             SlotGroupWidget.builder()
                 .matrix("IIII", "IIII", "IIII", "IIII")
-                .key('I', index -> { return new FluidSlot().syncHandler("fluidTanks", index); })
+                .key('I', index -> new FluidSlot().syncHandler("fluidTanks", index))
                 .build()
                 .marginTop(4)
-                .align(Alignment.TopCenter));
+                .topRel(0)
+                .horizontalCenter());
     }
 
     private IDrawable.DrawableWidget createInfoButton() {
