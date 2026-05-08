@@ -21,9 +21,7 @@ import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -90,10 +88,12 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new Column().size(100, 120)
+                        Flow.column()
+                            .size(100, 120)
                             .paddingRight(40)
                             .child(
                                 new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20)
@@ -151,18 +151,20 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .padding(3)
                     .widgetTheme("backgroundPopup")
 
                     .child( // column that holds the turbines
-                        new Column().size(80, 120)
+                        Flow.column()
+                            .size(80, 120)
                             .padding(1)
                             .widgetTheme("backgroundPopup")
                             .marginRight(20)
                             .child(
                                 new TextWidget<>("Turbines").size(60, 18)
-                                    .alignment(Alignment.Center)
+                                    .textAlign(Alignment.Center)
                                     .marginBottom(5))
                             .child(
                                 SlotGroupWidget.builder()
@@ -179,12 +181,13 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
 
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child( // column that holds a button to toggle Tier1Fluid
-                        new Column().size(50, 60)
+                        Flow.column()
+                            .size(50, 60)
                             .padding(0, 3)
                             .widgetTheme("backgroundPopup")
                             .child(
                                 new TextWidget<>("T2\nFluid").size(40, 18)
-                                    .alignment(Alignment.Center))
+                                    .textAlign(Alignment.Center))
                             .marginBottom(5)
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
                             .child(
