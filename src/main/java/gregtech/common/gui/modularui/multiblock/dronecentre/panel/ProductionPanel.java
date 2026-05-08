@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -82,7 +80,8 @@ public class ProductionPanel extends ModularPanel {
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .child(ButtonWidget.panelCloseButton())
             .child(
-                new Column().margin(10)
+                Flow.column()
+                    .margin(10)
                     .child(
                         Flow.row()
                             .widthRel(0.95f)
@@ -102,7 +101,7 @@ public class ProductionPanel extends ModularPanel {
                                     .tooltipBuilder(
                                         t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_active_production")))))
                     .child(
-                        new DynamicSyncedWidget<>().widthRel(1)
+                        new DynamicSyncedWidget<>().fullWidth()
                             .heightRel(0.9f)
                             .syncHandler(productionHandler)));
     }
@@ -148,7 +147,7 @@ public class ProductionPanel extends ModularPanel {
             .child(createTimeButton(syncManager, pSyncManager))
             .child(
                 Flow.row()
-                    .widthRel(1)
+                    .fullWidth()
                     .height(18)
                     .marginBottom(4)
                     .setEnabledIf(w -> centre.productionDataRecorder.isActive())
@@ -232,7 +231,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(4)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_power_total", time)
                             .asWidget())
@@ -254,7 +253,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(2)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_item_total", time)
                             .asWidget()
@@ -263,7 +262,7 @@ public class ProductionPanel extends ModularPanel {
             .addPage(
                 Flow.column()
                     .childPadding(2)
-                    .sizeRel(1)
+                    .full()
                     .child(
                         IKey.lang("GT5U.gui.text.drone_fluid_total", time)
                             .asWidget())
@@ -274,7 +273,7 @@ public class ProductionPanel extends ModularPanel {
         IntSyncValue selectTime = syncManager.findSyncHandler("selectTime", IntSyncValue.class);
         int TIME_HEIGHT = 35;
         Flow row = Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .height(18)
             .childPadding(4)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
@@ -339,6 +338,21 @@ public class ProductionPanel extends ModularPanel {
             .expanded();
     }
 
+    private Flow createMachineCell(ItemStack itemStack) {
+        return Flow.row()
+            .childPadding(4)
+            .verticalCenter()
+            .leftRel(0)
+            .coverChildren()
+            .paddingRight(2)
+            .child(
+                new ItemDisplayWidget().item(itemStack)
+                    .displayAmount(false)
+                    .size(16)
+                    .tooltipBuilder(builder -> DroneCentreGuiUtil.getTooltipFromItemSafely(builder, itemStack)))
+            .child(new TextWidget<>(": " + itemStack.stackSize));
+    }
+
     private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
         return createStatsGrid(
             itemList,
@@ -372,7 +386,8 @@ public class ProductionPanel extends ModularPanel {
                 Long stackSize = entry.getValue();
                 return (IWidget) Flow.row()
                     .childPadding(childPadding)
-                    .align(Alignment.CenterLeft)
+                    .verticalCenter()
+                    .leftRel(0)
                     .coverChildren()
                     .paddingRight(2)
                     .child(displayWidgetFactory.apply(item))

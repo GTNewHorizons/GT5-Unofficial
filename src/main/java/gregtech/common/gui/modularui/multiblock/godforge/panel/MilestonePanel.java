@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -76,12 +77,23 @@ public class MilestonePanel {
             .lookupFrom(Panels.MILESTONE, hypervisor);
 
         ParentWidget<?> parent = new ParentWidget<>().size(MILESTONE_BUTTON_SIZE_W, MILESTONE_BUTTON_SIZE_H)
-            .align(milestone.getPosition())
             .margin(MILESTONE_BUTTON_MARGIN_X, MILESTONE_BUTTON_MARGIN_Y);
+
+        if (milestone.getPosition() == Alignment.TopLeft) parent.topRel(0)
+            .leftRel(0);
+
+        if (milestone.getPosition() == Alignment.TopRight) parent.topRel(0)
+            .rightRel(0);
+
+        if (milestone.getPosition() == Alignment.BottomLeft) parent.bottomRel(0)
+            .leftRel(0);
+
+        if (milestone.getPosition() == Alignment.BottomRight) parent.bottomRel(0)
+            .rightRel(0);
 
         // Background image and individual milestone button
         parent.child(
-            new ButtonWidget<>().alignX(Alignment.CENTER)
+            new ButtonWidget<>().horizontalCenter()
                 .size(milestone.getMainWidth(), milestone.getMainHeight())
                 .background(milestone.getMainBackground())
                 .disableHoverBackground()
@@ -97,20 +109,20 @@ public class MilestonePanel {
 
         // Milestone progress bar
         parent.child(
-            new ProgressWidget().progress(progressSyncer::getDoubleValue)
+            new ProgressWidget().value(new DoubleSyncValue(progressSyncer::getDoubleValue))
                 .texture(
                     GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND,
                     milestone.getProgressBarMainOverlay(),
                     -1)
                 .direction(Direction.RIGHT)
-                .alignY(Alignment.CENTER)
+                .verticalCenter()
                 .widthRel(1.0f)
                 .height(MILESTONE_PROGRESS_BAR_H));
         parent.child(
-            new ProgressWidget().progress(invertedProgressSyncer::getDoubleValue)
+            new ProgressWidget().value(new DoubleSyncValue(invertedProgressSyncer::getDoubleValue))
                 .texture(GTGuiTextures.TRANSPARENT, milestone.getProgressBarInvertedOverlay(), -1)
                 .direction(Direction.LEFT)
-                .alignY(Alignment.CENTER)
+                .verticalCenter()
                 .widthRel(1.0f)
                 .height(MILESTONE_PROGRESS_BAR_H));
 
@@ -119,8 +131,8 @@ public class MilestonePanel {
             IKey.lang(milestone.getTitleLangKey())
                 .style(EnumChatFormatting.GOLD)
                 .asWidget()
-                .alignY(0.35f)
-                .alignX(Alignment.CENTER));
+                .topRel(0.35f)
+                .horizontalCenter());
 
         return parent;
     }
