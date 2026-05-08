@@ -1,7 +1,6 @@
 package gregtech.common.modularui2.widget;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -29,21 +28,16 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
 
     private final ICoverable coverable;
     private final ForgeDirection side;
+    private IPanelHandler panel;
 
-    public CoverTabButton(ICoverable coverable, ForgeDirection side,
-        Function<CoverTabButton, IPanelHandler> panelFunc) {
+    public CoverTabButton(ICoverable coverable, ForgeDirection side) {
         this.coverable = coverable;
         this.side = side;
-        IPanelHandler panel = panelFunc.apply(this);
         this.setEnabledIf($ -> coverable.hasCoverAtSide(side))
             .onMousePressed(mouseButton -> {
                 if (coverable.getCoverAtSide(side)
                     .hasCoverGUI()) {
-                    if (panel.isPanelOpen()) {
-                        panel.closePanel();
-                    } else {
-                        panel.openPanel();
-                    }
+                    togglePanel();
                 }
                 return true;
             })
@@ -55,6 +49,19 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
             .tooltipBuilder(this::buildTooltip)
             .tooltipAutoUpdate(true)
             .size(20, 20);
+    }
+
+    public void setPanel(IPanelHandler panel) {
+        this.panel = panel;
+    }
+
+    private void togglePanel() {
+        if (panel == null) return;
+        if (panel.isPanelOpen()) {
+            panel.closePanel();
+        } else {
+            panel.openPanel();
+        }
     }
 
     private void buildTooltip(RichTooltip builder) {

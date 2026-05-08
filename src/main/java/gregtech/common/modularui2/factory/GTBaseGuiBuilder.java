@@ -177,7 +177,9 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        return new CoverTabButton(coverable, side, btn -> getCoverPanel(btn, coverable, side));
+        CoverTabButton button = new CoverTabButton(coverable, side);
+        button.setPanel(getCoverPanel(button, coverable, side));
+        return button;
     }
 
     private IPanelHandler getCoverPanel(CoverTabButton button, ICoverable coverable, ForgeDirection side) {
