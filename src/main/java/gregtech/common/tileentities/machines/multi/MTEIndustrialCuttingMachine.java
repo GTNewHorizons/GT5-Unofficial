@@ -59,11 +59,12 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final double RENDER_OFFSET_RIGHT = 2.5D;
-    private static final double RENDER_OFFSET_UP = 0.0D;
+    private static final double RENDER_OFFSET_UP = 0.25D;
     private static final double RENDER_OFFSET_BACK = 1.0D;
-    private static final double BLADE_WIDTH = 2.0D;
-    private static final double BLADE_HEIGHT = 1.0D;
+    private static final double BLADE_WIDTH = 3.0D;
+    private static final double BLADE_HEIGHT = 1.5D;
     private static final double BLADE_PADDING = 0.25D;
+    private static final int BLADE_FRAMES = 3;
     private static final long BLADE_FRAME_TICKS = 3L;
     private static final ResourceLocation BLADE_TEXTURE = new ResourceLocation(
         GregTech.resourceDomain,
@@ -93,13 +94,17 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addInfo("Energy Hatch Tier is limited by Glass Tier")
             .addInfo(
+                GTUtility.getColoredTierNameFromTier((byte) 11) + "+"
+                    + EnumChatFormatting.GRAY
+                    + " glass allows for single multi-amp energy hatch")
+            .addInfo(
                 GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
                     + "-glass unlocks all above energy tiers")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
             .addCasingInfoMin("Cutting Factory Frame", 10, false)
-            .addCasingInfoExactly("Maraging Steel 300 Frame Box", 20, false)
+            .addCasingInfoExactly("Maraging Steel 300 Frame Box", 18, false)
             .addCasingInfoExactly("Any Tiered Glass", 16, true)
             .addCasingInfoExactly("Blue Steel Sheetmetal", 13, false)
             .addInputBus("Any Cutting Factory Frame", 1)
@@ -120,7 +125,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     new String[][] { { "  DBBBBB ", " DDAAAADB", " D~AAAADB", " DDDDDDDB" },
-                        { "BCCDDDDD ", "CD     C ", "CDB BB C ", "CDCCCCCC " },
+                        { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('B', ofFrame(MaterialsAlloy.MARAGING300))
@@ -263,8 +268,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             return;
         }
 
-        double[] renderCenter = getRenderCenter();
-        int frame = (int) ((base.getTimer() / BLADE_FRAME_TICKS) % 3L);
+        BladeRenderContext context = getBladeRenderContext();
+        int frame = (int) ((base.getTimer() / BLADE_FRAME_TICKS) % BLADE_FRAMES);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -277,12 +282,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURE);
 
-        GL11.glTranslated(x + renderCenter[0], y + renderCenter[1], z + renderCenter[2]);
-        if (base.getFrontFacing().offsetX != 0) {
-            GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        }
+        GL11.glTranslated(x + context.center[0], y + context.center[1], z + context.center[2]);
 
-        renderBladeFrame(frame);
+        renderBladeFrame(frame, context);
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();
@@ -290,40 +292,70 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        double[] renderCenter = getRenderCenter();
+        BladeRenderContext context = getBladeRenderContext();
         double halfWidth = BLADE_WIDTH / 2.0D + BLADE_PADDING;
         double halfHeight = BLADE_HEIGHT / 2.0D + BLADE_PADDING;
+        double halfDepth = BLADE_PADDING;
+
+        double halfX = getHalfExtent(context, 0, halfWidth, halfHeight, halfDepth);
+        double halfY = getHalfExtent(context, 1, halfWidth, halfHeight, halfDepth);
+        double halfZ = getHalfExtent(context, 2, halfWidth, halfHeight, halfDepth);
+
         return AxisAlignedBB.getBoundingBox(
-            x + renderCenter[0] - halfWidth,
-            y + renderCenter[1] - halfHeight,
-            z + renderCenter[2] - halfWidth,
-            x + renderCenter[0] + halfWidth,
-            y + renderCenter[1] + halfHeight,
-            z + renderCenter[2] + halfWidth);
+            x + context.center[0] - halfX,
+            y + context.center[1] - halfY,
+            z + context.center[2] - halfZ,
+            x + context.center[0] + halfX,
+            y + context.center[1] + halfY,
+            z + context.center[2] + halfZ);
     }
 
-    private void renderBladeFrame(int frame) {
+    private void renderBladeFrame(int frame, BladeRenderContext context) {
         double halfWidth = BLADE_WIDTH / 2.0D;
         double halfHeight = BLADE_HEIGHT / 2.0D;
-        double minU = 0.5D / 32.0D;
-        double maxU = 1.0D - minU;
-        double frameHeight = 48.0D / 3.0D;
-        double minV = (frame * frameHeight + 0.5D) / 48.0D;
-        double maxV = ((frame + 1) * frameHeight - 0.5D) / 48.0D;
+        double minU = 0.0D;
+        double maxU = 1.0D;
+        double minV = frame / (double) BLADE_FRAMES;
+        double maxV = (frame + 1) / (double) BLADE_FRAMES;
 
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-        tessellator.addVertexWithUV(-halfWidth, -halfHeight, 0.0D, minU, maxV);
-        tessellator.addVertexWithUV(-halfWidth, halfHeight, 0.0D, minU, minV);
-        tessellator.addVertexWithUV(halfWidth, halfHeight, 0.0D, maxU, minV);
-        tessellator.addVertexWithUV(halfWidth, -halfHeight, 0.0D, maxU, maxV);
+        addBladeVertex(tessellator, context, -halfWidth, -halfHeight, minU, maxV);
+        addBladeVertex(tessellator, context, -halfWidth, halfHeight, minU, minV);
+        addBladeVertex(tessellator, context, halfWidth, halfHeight, maxU, minV);
+        addBladeVertex(tessellator, context, halfWidth, -halfHeight, maxU, maxV);
         tessellator.draw();
+    }
+
+    private void addBladeVertex(Tessellator tessellator, BladeRenderContext context, double localX, double localY,
+        double u, double v) {
+        tessellator.addVertexWithUV(
+            localX * context.horizontal[0] + localY * context.vertical[0],
+            localX * context.horizontal[1] + localY * context.vertical[1],
+            localX * context.horizontal[2] + localY * context.vertical[2],
+            u,
+            v);
+    }
+
+    private BladeRenderContext getBladeRenderContext() {
+        return new BladeRenderContext(
+            getRenderCenter(),
+            getWorldOffset(-1, 0, 0),
+            getWorldOffset(0, -1, 0),
+            getWorldOffset(0, 0, 1));
+    }
+
+    private static double getHalfExtent(BladeRenderContext context, int axis, double halfWidth, double halfHeight,
+        double halfDepth) {
+        return Math.abs(context.horizontal[axis]) * halfWidth
+            + Math.abs(context.vertical[axis]) * halfHeight
+            + Math.abs(context.depth[axis]) * halfDepth;
     }
 
     private double[] getRenderCenter() {
         int[] horizontal = getWorldOffset(1, 0, 0);
-        int[] vertical = getWorldOffset(0, 1, 0);
+        int[] vertical = getWorldOffset(0, -1, 0);
         int[] depth = getWorldOffset(0, 0, 1);
         return new double[] {
             0.5D + RENDER_OFFSET_RIGHT * horizontal[0] + RENDER_OFFSET_UP * vertical[0] + RENDER_OFFSET_BACK * depth[0],
@@ -337,5 +369,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         int[] xyz = new int[3];
         getExtendedFacing().getWorldOffset(new int[] { localX, localY, localZ }, xyz);
         return xyz;
+    }
+
+    private static final class BladeRenderContext {
+
+        private final double[] center;
+        private final int[] horizontal;
+        private final int[] vertical;
+        private final int[] depth;
+
+        private BladeRenderContext(double[] center, int[] horizontal, int[] vertical, int[] depth) {
+            this.center = center;
+            this.horizontal = horizontal;
+            this.vertical = vertical;
+            this.depth = depth;
+        }
     }
 }
