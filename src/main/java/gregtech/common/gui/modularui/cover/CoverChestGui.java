@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
