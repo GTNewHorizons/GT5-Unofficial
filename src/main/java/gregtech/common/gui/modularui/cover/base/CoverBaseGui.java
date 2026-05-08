@@ -86,29 +86,22 @@ public class CoverBaseGui<T extends Cover> {
         final Flow mainColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginLeft(WIDGET_MARGIN)
-            .marginTop(WIDGET_MARGIN);
+            .margin(WIDGET_MARGIN);
 
         addTitleToUI(mainColumn, data);
+        addUIWidgets(syncManager, mainColumn, data);
 
-        final Flow widgetsColumn = Flow.column()
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-
-        addUIWidgets(syncManager, widgetsColumn, data);
-        mainColumn.child(widgetsColumn);
-
-        if (!data.isPopUp() && doesBindPlayerInventory()) {
-            mainColumn.child(
-                SlotGroupWidget.playerInventory(false)
-                    .marginTop(4));
-        }
         panel.child(mainColumn);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
                 new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
+        }
+        if (!data.isPopUp() && doesBindPlayerInventory()) {
+            mainColumn.child(
+                SlotGroupWidget.playerInventory(false)
+                    .marginTop(4));
         }
         return panel;
     }
