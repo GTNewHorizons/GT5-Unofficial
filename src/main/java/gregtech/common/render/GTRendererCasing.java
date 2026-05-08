@@ -62,7 +62,6 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        aRenderer.useInventoryTint = false;
         ctx.doCleanup();
     }
 
@@ -118,7 +117,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
         ctx.doCleanup();
         // spotless:on
-
+        aRenderer.useInventoryTint = true;
         return tessAccess.gt5u$hasVertices();
     }
 
