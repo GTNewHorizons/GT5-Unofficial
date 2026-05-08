@@ -64,6 +64,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
 
     protected Flow makeButtonRow(UUID uuid) {
         return Flow.row()
+            .coverChildren()
             .height(20)
             .child(
                 new ToggleButton().size(16, 16)

@@ -33,7 +33,7 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
                         || multiblock.getBaseMetaTileEntity()
                             .isActive())
                 .color(Color.WHITE.main)
-                .widthRel(1)
+                .fullWidth()
                 .marginBottom(2));
     }
 

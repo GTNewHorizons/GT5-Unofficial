@@ -3,12 +3,11 @@ package gregtech.common.gui.modularui.multiblock;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -43,7 +42,7 @@ public class MTECokeOvenGui extends MTEMultiBlockBaseGui<MTECokeOven> {
 
         final ItemSlot outputSlot = new ItemSlot()
             .slot(new ModularSlot(multiblock.inventoryHandler, 1).accessibility(false, true))
-            .background(GTGuiTextures.SLOT_ITEM_PRIMITIVE, GTGuiTextures.BACKGROUND_COKE_OVEN_COAL);
+            .backgroundOverlay(GTGuiTextures.BACKGROUND_COKE_OVEN_COAL);
 
         final FluidSlot fluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false))
             .alwaysShowFull(false)
@@ -61,8 +60,9 @@ public class MTECokeOvenGui extends MTEMultiBlockBaseGui<MTECokeOven> {
             .build()
             .child(createMuffleButton())
             .child(
-                new Row().alignX(Alignment.CENTER)
-                    .alignY(0.25f)
+                Flow.row()
+                    .horizontalCenter()
+                    .topRel(0.25f)
                     .size(72, 18)
                     .child(inputSlot.marginRight(8))
                     .child(progressArrow.marginRight(8))

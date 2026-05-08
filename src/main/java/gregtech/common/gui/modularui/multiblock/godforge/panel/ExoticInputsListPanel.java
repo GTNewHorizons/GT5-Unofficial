@@ -15,9 +15,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -43,9 +41,10 @@ public class ExoticInputsListPanel {
             .leftRelOffset(0, -SIZE_W)
             .topRelOffset(0, 47);
 
-        Flow column = new Column().coverChildren()
+        Flow column = Flow.column()
+            .coverChildren()
             .marginTop(6)
-            .alignX(0.5f);
+            .horizontalCenter();
 
         // Title
         column.child(
@@ -53,7 +52,7 @@ public class ExoticInputsListPanel {
                 .style(EnumChatFormatting.BLACK)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widthRel(1));
+                .fullWidth());
 
         // Create fluid slots
 
@@ -83,8 +82,8 @@ public class ExoticInputsListPanel {
     }
 
     private static Flow createFirstRow() {
-        Flow row = new Row().size(72, 18)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(72, 18);
 
         // Slots 0-3
         row.child(
@@ -102,8 +101,8 @@ public class ExoticInputsListPanel {
         LongSyncValue tickerSyncer = SyncValues.EXOTIC_INPUTS_TICKER
             .lookupFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
 
-        Flow row = new Row().size(92, 18)
-            .alignX(0.5f);
+        Flow row = Flow.row()
+            .size(92, 18);
 
         // Refresh button
         row.child(
