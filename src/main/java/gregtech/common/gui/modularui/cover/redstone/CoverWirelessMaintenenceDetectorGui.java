@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -90,17 +89,13 @@ public class CoverWirelessMaintenenceDetectorGui
 
     private Flow makeMaintanenceIssueRow(EnumSyncValue syncValue,
         CoverWirelessMaintenanceDetector.MaintenanceMode value) {
-        return new Row().size(90, 18)
+        return Flow.row()
+            .size(90, 18)
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncValue, value))
                     .size(16)
                     .marginRight(2)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
             .child(new TextWidget(StatCollector.translateToLocal(value.getDescriptorKey())));
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 180;
     }
 }

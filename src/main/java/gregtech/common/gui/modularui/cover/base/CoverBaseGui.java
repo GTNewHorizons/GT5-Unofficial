@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
@@ -29,7 +30,6 @@ public class CoverBaseGui<T extends Cover> {
     protected static final int WIDGET_MARGIN = 5;
     protected static final int ROW_PADDING = 3;
     protected static final int ROW_ELEMENT_PADDING = 2;
-    protected static final int MIN_WIDTH_WITH_INV = 176;
 
     /**
      * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.
@@ -59,30 +59,12 @@ public class CoverBaseGui<T extends Cover> {
      */
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
-        int height = getGUIHeight();
-        int width = getGUIWidth();
-        if (doesBindPlayerInventory()) {
-            int slotHeight = 18;
-            int inventoryRows = 4;
-            int hotbarToInventoryGap = 4;
-            int inventoryMargin = 4;
-            height = getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin;
-            width = Math.max(width, MIN_WIDTH_WITH_INV);
-        }
-        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).width(width)
-            .height(height);
-        if (doesBindPlayerInventory()) {
-            basePanel.bindPlayerInventory();
-        }
-        return basePanel;
+        return createBasePanel(syncManager, uiSettings, data).coverChildren();
     }
 
     public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
         IWidget parent) {
-        int height = getGUIHeight();
-        int width = getGUIWidth();
-        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).width(width)
-            .height(height);
+        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).coverChildren();
         layoutPopUp(basePanel, parent);
         return basePanel;
     }
@@ -102,11 +84,17 @@ public class CoverBaseGui<T extends Cover> {
             }
         });
         final Flow widgetsColumn = Flow.column()
+            .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .margin(WIDGET_MARGIN);
         panel.child(widgetsColumn);
         addTitleToUI(widgetsColumn, data);
         addUIWidgets(syncManager, widgetsColumn, data);
+        if (!data.isPopUp() && doesBindPlayerInventory()) {
+            widgetsColumn.child(
+                SlotGroupWidget.playerInventory(false)
+                    .marginTop(4));
+        }
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
@@ -135,7 +123,7 @@ public class CoverBaseGui<T extends Cover> {
     private void layoutPopUp(ModularPanel panel, IWidget button) {
         if (positionRelativeToCoverButton()) {
             panel.relative(button)
-                .left(-getGUIWidth() - 5);
+                .right(24);
         }
     }
 
@@ -173,14 +161,6 @@ public class CoverBaseGui<T extends Cover> {
 
     protected TextFieldWidget makeNumberField() {
         return makeNumberField(80);
-    }
-
-    protected int getGUIWidth() {
-        return MIN_WIDTH_WITH_INV;
-    }
-
-    protected int getGUIHeight() {
-        return 107;
     }
 
     protected boolean doesBindPlayerInventory() {
