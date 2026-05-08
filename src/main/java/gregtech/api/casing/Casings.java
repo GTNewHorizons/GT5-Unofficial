@@ -512,6 +512,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+    NaquadahReactorCasing
+        (() -> GregTechAPI.sBlockCasings13,15,gt(16,6,15)),
 
 
     // Block Casings 14
@@ -598,6 +600,14 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
+    // BEC
+    SuperconductivePlasmaEnergyConduit
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(16, 6, 0)),
+    ElectromagneticallyIsolatedCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(16, 6, 1)),
+    FineStructureConstantManipulator
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(16, 6, 2)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
@@ -617,6 +627,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
     NanochipComplexGlass
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    ElectromagneticWaveguide
+        (() -> GregTechAPI.sBlockGlass1, 9, -1),
 
     // ------------------ Bartworks Casings -----------------
 
@@ -1049,6 +1061,8 @@ public enum Casings implements ICasing {
         (() -> Loaders.MAR_Casing, 0, -1),
     FieldRestrictionGlass
         (() -> Loaders.fieldRestrictingGlass, 0, -1),
+    SCTurbineCasing
+        (() -> Loaders.supercriticalFluidTurbineCasing, 0, 1538),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

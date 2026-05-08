@@ -71,8 +71,7 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
         return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
             .align(Alignment.BottomRight)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true);
+            .background(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {

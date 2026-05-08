@@ -120,5 +120,6 @@ public class ShutDownReasonRegistry {
         register(new ReasonOutOfFluid(Materials.Water.getFluid(0)));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));
+        register(new ReasonMissingCondensate(null));
     }
 }
