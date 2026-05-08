@@ -202,6 +202,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
 
     @Override
     public void doCleanup() {
+        this.renderBlocks.useInventoryTint = true;
         super.doCleanup();
         this.blockAccess = null;
     }
