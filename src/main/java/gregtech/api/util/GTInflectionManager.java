@@ -24,6 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.Splitter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
@@ -176,11 +177,9 @@ public final class GTInflectionManager {
             return word;
         }
         String specialCaseKey = formatterKey;
-        final String[] targetRules = key.split("/");
-        for (String targetRule : targetRules) {
-            if (targetRule.isEmpty()) {
-                GT_FML_LOGGER.warn("A rule key is empty, full rule key: {}", key);
-            }
+        for (String targetRule : Splitter.on("/")
+            .omitEmptyStrings()
+            .split(key)) {
             specialCaseKey += "." + targetRule;
             if (StatCollector.canTranslate(specialCaseKey)) {
                 word = StatCollector.translateToLocal(specialCaseKey);
