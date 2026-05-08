@@ -83,18 +83,27 @@ public class CoverBaseGui<T extends Cover> {
                     .markDirty();
             }
         });
-        final Flow widgetsColumn = Flow.column()
+        final Flow mainColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .margin(WIDGET_MARGIN);
-        panel.child(widgetsColumn);
-        addTitleToUI(widgetsColumn, data);
+            .marginLeft(WIDGET_MARGIN)
+            .marginTop(WIDGET_MARGIN);
+
+        addTitleToUI(mainColumn, data);
+
+        final Flow widgetsColumn = Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+
         addUIWidgets(syncManager, widgetsColumn, data);
+        mainColumn.child(widgetsColumn);
+
         if (!data.isPopUp() && doesBindPlayerInventory()) {
-            widgetsColumn.child(
+            mainColumn.child(
                 SlotGroupWidget.playerInventory(false)
                     .marginTop(4));
         }
+        panel.child(mainColumn);
 
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(

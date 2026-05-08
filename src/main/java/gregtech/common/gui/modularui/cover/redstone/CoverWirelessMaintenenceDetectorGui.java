@@ -41,8 +41,9 @@ public class CoverWirelessMaintenenceDetectorGui
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         // column contains 4 other rows, each has 2 enum values
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
-        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = (EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode>) syncManager
-            .getSyncHandlerFromMapKey("maintenanceMode:0");
+        @SuppressWarnings("unchecked")
+        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = syncManager
+            .findSyncHandler("maintenanceMode", EnumSyncValue.class);
         final ICoverable tile = data.getCoverable();
         boolean usesTurbines = false;
 
