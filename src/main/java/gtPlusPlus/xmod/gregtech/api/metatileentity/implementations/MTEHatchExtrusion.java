@@ -160,7 +160,9 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
+            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)
+            && (!oneStackLimit || Arrays.stream(mInventory)
+                .noneMatch(itemStack -> itemStack.isItemEqual(aStack)));
     }
 
     @Override
