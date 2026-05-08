@@ -11,7 +11,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +139,6 @@ public final class GTInflectionManager {
                     .toArray(Object[]::new));
         }
 
-        List<String> params = new ArrayList<>();
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
         boolean hasImplicit = false;
         boolean hasExplicit = false;
@@ -168,18 +166,10 @@ public final class GTInflectionManager {
                 return "Inflection Format Error: " + input;
             }
 
-            params.add(getInflection(formatterKey[targetPos], inflectionKey));
-            matcher.appendReplacement(sb, "%s");
+            matcher.appendReplacement(sb, getInflection(formatterKey[targetPos], inflectionKey));
         }
         matcher.appendTail(sb);
-        Object[] formattedArgs = params.toArray();
-
-        String cleanedPattern = unescape(sb.toString());
-        try {
-            return String.format(cleanedPattern, formattedArgs);
-        } catch (IllegalFormatException e) {
-            return "Illegal Format in Inflection: " + input;
-        }
+        return sb.toString();
     }
 
     private static String getInflection(String formatterKey, String key) {
@@ -239,6 +229,7 @@ public final class GTInflectionManager {
                     .matcher(word);
                 if (m.matches()) {
                     word = m.replaceFirst(rule.replacement());
+                    break;
                 }
             }
         }
