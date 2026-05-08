@@ -93,7 +93,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
                     + EnumChatFormatting.BOLD
                     + GTUtility.translate("GT5U.machines.nano_forge.t4_info_header"))
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 
