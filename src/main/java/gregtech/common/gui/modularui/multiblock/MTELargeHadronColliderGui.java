@@ -26,9 +26,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -258,10 +256,12 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .size(180, 110)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new Column().size(160, 60)
+                        Flow.column()
+                            .size(160, 60)
                             .paddingLeft(40)
                             .child(
                                 new TextWidget<>(
@@ -269,7 +269,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                         () -> StatCollector
                                             .translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
                                                 .size(160, 20)
-                                                .alignment(Alignment.CENTER))
+                                                .textAlign(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                                     .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
@@ -284,7 +284,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                         () -> StatCollector
                                             .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
                                                 .size(160, 20)
-                                                .alignment(Alignment.CENTER))
+                                                .textAlign(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                                     .setFormatAsInteger(true)
