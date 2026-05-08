@@ -42,6 +42,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
@@ -417,17 +418,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (this.lensCycle != null) {
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
                     "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
                     EnumChatFormatting.GREEN + lensCycle.current()
                         .getDisplayName()));
             if (removedTooEarly) {
-                infoData.add(
-                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
+                infoData.add("GT5U.infodata.purification_unit_uv_treatment.removed_too_early");
             }
         }
         return infoData.toArray(new String[] {});

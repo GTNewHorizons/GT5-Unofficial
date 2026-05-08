@@ -64,6 +64,7 @@ import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -390,20 +391,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     public String[] getInfoData() {
         List<String> l = new ArrayList<>(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + formatNumber(chunkRangeConfig)
-                    + " x "
-                    + formatNumber(chunkRangeConfig)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.oil_drill.title",
+                IGregTechDeviceInformation.encode(
+                    "GT5U.infodata.oil_drill.work_area",
+                    formatNumber(chunkRangeConfig),
+                    formatNumber(chunkRangeConfig)),
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.oil_drill.drilling_fluid",
                     EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.oil_drill.drilling_flow",
                     EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));

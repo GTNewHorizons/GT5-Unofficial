@@ -55,6 +55,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
@@ -271,17 +272,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     public String[] getInfoData() {
         final String diameter = formatNumber(chunkRadiusConfig * 2L);
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                + EnumChatFormatting.GREEN
-                + diameter
-                + "x"
-                + diameter
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.machines.chunks") };
+        return new String[] { "GT5U.infodata.ore_drill.title",
+            IGregTechDeviceInformation.encode("GT5U.infodata.ore_drill.work_area", diameter, diameter) };
     }
 
     @Override

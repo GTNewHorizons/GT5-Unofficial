@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +21,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
@@ -133,8 +133,7 @@ public class MTEHatchUncertainty extends MTEHatch {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status };
+        return new String[] { IGregTechDeviceInformation.encode("tt.infodata.uncertainty.status", status) };
     }
 
     @Override

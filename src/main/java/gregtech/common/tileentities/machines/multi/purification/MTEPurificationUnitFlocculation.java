@@ -25,7 +25,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,6 +43,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -451,7 +451,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
                 INPUT_CHEMICAL.getLocalizedName(),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));

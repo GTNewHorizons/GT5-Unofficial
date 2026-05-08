@@ -56,6 +56,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
@@ -463,34 +464,12 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             }
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
-                + " "
-                + EnumChatFormatting.RESET
-                + tier,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(powerRequired)
-                + EnumChatFormatting.RESET
-                + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mEUStore)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEUStore())
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(plasmaOut)
-                + EnumChatFormatting.RESET
-                + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET };
+        return new String[] { IGregTechDeviceInformation.encode("GT5U.infodata.fusion.mk_tier", tier),
+            IGregTechDeviceInformation.encode("GT5U.infodata.fusion.req", formatNumber(powerRequired)),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(mEUStore), formatNumber(maxEUStore())),
+            IGregTechDeviceInformation.encode("GT5U.infodata.fusion.plasma", formatNumber(plasmaOut)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", recipesDone) };
     }
 
     @Override

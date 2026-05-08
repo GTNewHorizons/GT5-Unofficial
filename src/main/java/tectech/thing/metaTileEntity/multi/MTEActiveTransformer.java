@@ -7,8 +7,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -97,8 +97,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     // region structure
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
+        EnumChatFormatting.AQUA + GTUtility.translate("tt.keyphrase.Hint_Details") + ":",
+        GTUtility.translate("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
                                                                                // Power Casing
     };
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
@@ -175,24 +175,24 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
             // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
                                                                                               // and from any
                                                                                               // voltage
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
                                                                                               // loss, HAYO!
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
+            .addController(GTUtility.translate("tt.keyword.Structure.FrontCenter")) // Controller: Front center
+            .addCasingInfoMin(GTUtility.translate("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
                                                                                       // (minimum)
             .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
-                translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
+                GTUtility.translate("tt.keyword.Structure.SuperconductingCoilBlock"),
+                GTUtility.translate("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
+            .addEnergyHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
                                                                                             // High Power Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
+            .addDynamoHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
                                                                                             // High Power Casing
             .toolTipFinisher();
         return tt;
@@ -355,10 +355,10 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(translateToLocalFormatted("tt.infodata.multi.min_hatch_tier.s", calculateHatchTier()));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.0.s", formatUIEUt(transferredLast5Secs)));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.1.s", formatUIEUt(transferredLast30Secs)));
-        info.add(translateToLocalFormatted("tt.infodata.multi.last_seconds.2.s", formatUIEUt(transferredLast1Min)));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.min_hatch_tier", calculateHatchTier()));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_5s", transferredLast5Secs));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_30s", transferredLast30Secs));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_1min", transferredLast1Min));
     }
 
     @Override

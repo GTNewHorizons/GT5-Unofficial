@@ -2824,14 +2824,50 @@ GT5U.infodata.air_filter.remaining_cycles=remaining cycles for the filter (if pr
 GT5U.infodata.diesel_engine=Дизельный двигатель
 GT5U.infodata.extreme_diesel_engine=Экстремальный дизельный двигатель
 GT5U.infodata.fusion_reactor_mk=Термоядерный реактор MK
+GT5U.infodata.engine.diesel_title=§9Дизельный двигатель§r
+GT5U.infodata.engine.extreme_diesel_title=§9Экстремальный дизельный двигатель§r
+GT5U.infodata.engine.maintenance.ok=§aМеханизм исправен§r
+GT5U.infodata.engine.maintenance.needed=§cНуждается в техобслуживании§r
+GT5U.infodata.engine.output=Текущий выход: §c%s§r EU/t
+GT5U.infodata.engine.consumption=Расход топлива: §e%s§r L/t
+GT5U.infodata.engine.value=Стоимость топлива: §e%s§r EU/L
+GT5U.infodata.engine.fuel_remaining=Остаток топлива: §6%s§r L
+GT5U.infodata.engine.efficiency=Текущая эффективность: §e%s§r %%
+GT5U.infodata.ebf.heat=Температура в печи: §a%s§r K
+GT5U.infodata.ms.multismelting=Мультиплавка: §a%s§r
+GT5U.infodata.lhe.steam=Сейчас используется (в паре): %s EU/t
+GT5U.infodata.lhe.superheated=Перегретый: %s
+GT5U.infodata.lhe.threshold=Порог перегрева: §a%s§r
+GT5U.infodata.fusion.mk_tier=§9Термоядерный реактор MK§r %s
+GT5U.infodata.fusion.req=EU требуется: §c%s§rEU/t
+GT5U.infodata.fusion.plasma=Выход плазмы: §e%s§rL/t
+GT5U.infodata.naquadah_refinery.coil_tier=Тир катушки: %s
+
+GT5U.infodata.large_neutralization_engine=Большой нейтрализационный двигатель
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
 
+GT5U.infodata.oil_drill.title=§9Oil/Fluid Pump§r
+GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
 GT5U.infodata.oil_drill.drilling_fluid=Буровой раствор: %s
 GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
+
+GT5U.infodata.ore_drill.title=§9Мультиблочный шахтёр§r
+GT5U.infodata.ore_drill.work_area=Рабочая область: §a%sx%s§r чанков
+
+GT5U.infodata.engine.large_neutralization_title=§9Большой нейтрализационный двигатель§r
+
+GT5U.infodata.integrated_ore_factory.parallelism=Макс параллель: §9%s§r
+
+GT5U.infodata.pcb_factory.mei=Макс. доход энергии: §e%s§r EU/т(*%s А) Уровень: §e%s§r
+GT5U.infodata.pcb_factory.parallel=Макс параллель: §a%s§r, Текущая параллель: §a%s§r
+GT5U.infodata.pcb_factory.upgrades=Улучшения: %s
+
+GT5U.infodata.pcb_upgrade_base.linked_at=Привязан к: %s, %s, %s
+GT5U.infodata.pcb_upgrade_base.not_linked=Не привязан
 
 GT5U.infodata.critical_info=Важнейшая информация
 GT5U.infodata.critical_info.hdr=§m------------§r §lВажнейшая информация§r §m------------

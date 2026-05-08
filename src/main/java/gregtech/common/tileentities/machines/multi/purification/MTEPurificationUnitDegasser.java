@@ -45,6 +45,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -761,28 +762,27 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
         String statusText = status.satisfied
             ? EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok")
+                + IGregTechDeviceInformation.decode("GT5U.infodata.purification_unit_degasser.bit.ok")
             : EnumChatFormatting.RED
-                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
+                + IGregTechDeviceInformation.decode("GT5U.infodata.purification_unit_degasser.bit.not_ok");
 
-        return StatCollector
-            .translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1), statusText);
+        return IGregTechDeviceInformation.encode("GT5U.infodata.purification_unit_degasser.bit", (i + 1), statusText);
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.control_signal",
                 EnumChatFormatting.YELLOW + controlSignal.toString()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.output_multiplier",
                 "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_degasser.fluid_inserted",
                     "" + EnumChatFormatting.YELLOW + stack.amount,
                     stack.getLocalizedName()));

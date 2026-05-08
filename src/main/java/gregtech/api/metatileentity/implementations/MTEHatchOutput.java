@@ -34,6 +34,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -361,10 +362,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.hatch.output")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+        return new String[] { "GT5U.infodata.hatch.output",
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output.fluid",
                 EnumChatFormatting.GOLD
                     + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
@@ -378,13 +377,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET,
-            (!isFluidLocked() || lockedFluid == null)
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.locked_to.none")
-                : (StatCollector.translateToLocalFormatted(
+            (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
+                : IGregTechDeviceInformation.encode(
                     "GT5U.infodata.hatch.output.fluid.locked_to",
                     StatCollector.translateToLocal(
                         FluidRegistry.getFluidStack(lockedFluid.getName(), 1)
-                            .getUnlocalizedName()))) };
+                            .getUnlocalizedName())) };
     }
 
     @Override

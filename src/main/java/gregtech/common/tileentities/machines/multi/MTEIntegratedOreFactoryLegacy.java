@@ -50,6 +50,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
@@ -763,12 +764,10 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
     @Override
     public String[] getInfoData() {
         List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.BLUE
-            + getCurrentParallelism()
-            + EnumChatFormatting.RESET;
-        informationData.add(parallelism);
-        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+        informationData.add(
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.integrated_ore_factory.parallelism", getCurrentParallelism()));
+        informationData.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", sVoidStone));
         informationData.addAll(getDisplayMode(sMode));
         return informationData.toArray(new String[0]);
     }

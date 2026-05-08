@@ -23,8 +23,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +38,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -366,51 +365,21 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.steam")
-                + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + formatNumber(superheated ? -2L * mEUt : -mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-                + superheated
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.threshold")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(superheated_threshold)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.lhe.steam",
+                (superheated ? "§c" : "§e") + formatNumber(superheated ? -2L * mEUt : -mEUt) + "§r"),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.lhe.superheated", (superheated ? "§c" : "§9") + superheated + "§r"),
+            IGregTechDeviceInformation.encode("GT5U.infodata.lhe.threshold", formatNumber(superheated_threshold)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
