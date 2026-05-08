@@ -108,7 +108,7 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
         IntSyncValue amperageSyncer = new IntSyncValue(hatch::getAmperage, hatch::setAmperage);
         IntSyncValue intervalSyncer = new IntSyncValue(hatch::getRefillInterval, hatch::setRefillInterval);
         Flow numberInputColumn = Flow.column();
-        numberInputColumn.sizeRel(1)
+        numberInputColumn.full()
             .paddingTop(4)
             .paddingLeft(4)
             .crossAxisAlignment(Alignment.CrossAxis.START);
@@ -174,7 +174,6 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
         // row to allow setting of 'refill interval'
         Flow intervalRow = Flow.row()
             .height(18)
-            .alignX(0)
             .coverChildrenWidth();
 
         intervalRow.child(

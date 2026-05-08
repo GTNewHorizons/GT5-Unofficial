@@ -5,7 +5,6 @@ import java.util.Arrays;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -55,8 +54,8 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow slotRow = Flow.row()
             .coverChildren()
-            .alignY(0.4f)
-            .alignX(Alignment.Center);
+            .topRel(0.4f)
+            .horizontalCenter();
         final int amountPerSlotGroup = hatch.getInputSlotCount();
 
         // < 4x4 slot groups have logo in the corner, otherwise its in the center
