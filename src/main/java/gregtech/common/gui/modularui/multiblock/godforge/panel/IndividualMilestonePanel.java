@@ -19,7 +19,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.math.LongMath;
 
@@ -70,12 +69,14 @@ public class IndividualMilestonePanel {
                 .size(10)
                 .marginLeft(5)
                 .marginBottom(5)
-                .align(Alignment.BottomLeft)
+                .bottomRel(0)
+                .leftRel(0)
                 .tooltip(t -> t.addLine(translateToLocal("fog.button.formatting.tooltip")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
-        Flow column = new Column().coverChildren()
-            .alignX(0.5f)
+        Flow column = Flow.column()
+            .coverChildren()
+            .childPadding(10)
             .marginTop(12);
 
         // Header
@@ -87,8 +88,7 @@ public class IndividualMilestonePanel {
             .alignment(Alignment.CENTER)
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-            .alignX(0.5f)
-            .marginBottom(16));
+            .marginBottom(6));
 
         // Info texts
         BooleanSyncValue inversionSyncer = SyncValues.INVERSION
@@ -97,22 +97,21 @@ public class IndividualMilestonePanel {
         column.child(
             createInfoWidget(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor)));
         column.child(
-            createInfoWidget(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor))
-                .marginTop(10));
+            createInfoWidget(() -> getLevel(milestoneSyncer.getValue(), inversionSyncer.getBoolValue(), hypervisor)));
         column.child(
             createInfoWidget(
                 () -> getLevelProgress(
                     milestoneSyncer.getValue(),
                     formatSyncer.getValue(),
                     inversionSyncer.getBoolValue(),
-                    hypervisor)).marginTop(10));
+                    hypervisor)));
         column.child(
             createInfoWidget(
                 () -> getShardsGained(
                     milestoneSyncer.getValue(),
                     formatSyncer.getValue(),
                     inversionSyncer.getBoolValue(),
-                    hypervisor)).marginTop(10));
+                    hypervisor)));
 
         // Inversion status
         column.child(
@@ -122,8 +121,6 @@ public class IndividualMilestonePanel {
                 .scale(0.8f)
                 .asWidget()
                 .width(150)
-                .alignX(0.5f)
-                .marginTop(10)
                 .setEnabledIf($ -> inversionSyncer.getBoolValue()));
 
         panel.child(column);
@@ -148,7 +145,7 @@ public class IndividualMilestonePanel {
         return milestone.getSymbolBackground()
             .asWidget()
             .size(milestone.getSymbolWidth(), milestone.getSymbolHeight())
-            .align(Alignment.CENTER)
+            .center()
             .setEnabledIf($ -> syncer.getValue() == milestone);
     }
 
@@ -158,8 +155,7 @@ public class IndividualMilestonePanel {
             .scale(0.7f)
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-            .width(140)
-            .alignX(0.5f);
+            .width(140);
     }
 
     private static String getTotalProgress(Milestones milestone, Formatters formatter, SyncHypervisor hypervisor) {
