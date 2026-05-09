@@ -134,7 +134,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             && casingAmount >= 90;
     }
 
-    @Override
     protected boolean checkHatches() {
         return !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
