@@ -73,7 +73,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
             .gridOfWidthHeight(
                 COLS,
                 rows,
-                ($x, $y, index) -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index) {
+                ($x, $y, index) -> new ItemSlot().slot(new ModularSlot(hatch.getLimitedInventoryHandler(), index) {
 
                     @Override
                     public int getItemStackLimit(@NotNull ItemStack stack) {
