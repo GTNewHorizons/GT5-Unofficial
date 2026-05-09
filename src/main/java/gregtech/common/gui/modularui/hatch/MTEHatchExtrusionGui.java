@@ -110,7 +110,9 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !hatch.disableSort, v -> hatch.disableSort = !v);
 
-        BooleanSyncValue oneStackSync = new BooleanSyncValue(() -> hatch.oneStackLimit, v -> hatch.oneStackLimit = v);
+        BooleanSyncValue insertionSync = new BooleanSyncValue(
+            () -> !hatch.disableLimited,
+            v -> hatch.disableLimited = !v);
 
         return super.createLeftCornerFlow(panel, syncManager).child(shapeSlot)
             .child(
@@ -120,7 +122,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
                     "GT5U.machines.sorting_mode.tooltip"))
             .child(
                 createToggleButton(
-                    oneStackSync,
+                    insertionSync,
                     GTGuiTextures.OVERLAY_BUTTON_ONE_STACK_LIMIT,
                     "GT5U.machines.one_stack_limit.tooltip"));
     }
