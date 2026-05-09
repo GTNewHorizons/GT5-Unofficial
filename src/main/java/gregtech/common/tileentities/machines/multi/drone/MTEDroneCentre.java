@@ -125,26 +125,26 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (getBaseMetaTileEntity().isActive()) {
-                return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+                return new ITexture[]{Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(ACTIVE)
                     .extFacing()
-                    .build() };
+                    .build()};
             } else {
-                return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+                return new ITexture[]{Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(INACTIVE)
                     .extFacing()
-                    .build() };
+                    .build()};
             }
         } else if (side == aFacing.getOpposite()) {
-            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[]{Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(FACE)
                 .extFacing()
-                .build() };
+                .build()};
         }
-        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
+        return new ITexture[]{Casings.SolidSteelMachineCasing.getCasingTexture()};
     }
 
     @Override
@@ -154,24 +154,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 .addShape(
                     STRUCTURE_PIECE_MAIN_LEGACY,
                     transpose(
-                        new String[][] {
-                            { "     ", "     ", "     ", "     ", "HHHHH", "HHHHH", "HHHHH", "HHHHH", "HHHHH" },
-                            { "HH~HH", "H   H", "H   H", "H   H", "HFFFH", "HHHHH", "HFFFH", "H   H", "HHHHH" },
-                            { "HHHHH", "HGGGH", "HGIGH", "HGGGH", "HHHHH", "HHHHH", "HHHHH", "HHHHH", "HHHHH" },
-                            { "H   H", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "H   H" } }))
+                        new String[][]{
+                            {"     ", "     ", "     ", "     ", "HHHHH", "HHHHH", "HHHHH", "HHHHH", "HHHHH"},
+                            {"HH~HH", "H   H", "H   H", "H   H", "HFFFH", "HHHHH", "HFFFH", "H   H", "HHHHH"},
+                            {"HHHHH", "HGGGH", "HGIGH", "HGGGH", "HHHHH", "HHHHH", "HHHHH", "HHHHH", "HHHHH"},
+                            {"H   H", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "H   H"}}))
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "    CCC    ", "           ", "           ", "    A~A    " },
-                        { "  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  " },
-                        { " C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA " },
-                        { " C       C ", "  DEEEEED  ", "   D   D   ", " ABBBBBBBA " },
-                        { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
-                        { "C         C", " DEEEEEEED ", "  D     D  ", "ABBBBBBBBBA" },
-                        { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
-                        { " C       C ", "  DEEEEED  ", "       D   ", " ABBBBBBBA " },
-                        { " C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA " },
-                        { "  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  " },
-                        { "    CCC    ", "           ", "           ", "    AAA    " } })
+                    new String[][]{{"    CCC    ", "           ", "           ", "    A~A    "},
+                        {"  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  "},
+                        {" C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA "},
+                        {" C       C ", "  DEEEEED  ", "   D   D   ", " ABBBBBBBA "},
+                        {"C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA"},
+                        {"C         C", " DEEEEEEED ", "  D     D  ", "ABBBBBBBBBA"},
+                        {"C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA"},
+                        {" C       C ", "  DEEEEED  ", "       D   ", " ABBBBBBBA "},
+                        {" C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA "},
+                        {"  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  "},
+                        {"    CCC    ", "           ", "           ", "    AAA    "}})
                 .addElement(
                     'A',
                     buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
@@ -267,17 +267,16 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+    public boolean  checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
-        if (!checkPiece("main", 2, 1, 0, errors)) return;
+        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, errors)) {
+            return;
+        }
+        clearMatches();
+        mCasingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, mCasingAmount, CASINGS_MIN);
         checkHasInputBus(errors);
-        }
-
-        clearHatches();
-        casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= CASINGS_MIN
-            && !mInputBusses.isEmpty();
     }
 
     @Override
