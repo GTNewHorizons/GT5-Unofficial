@@ -4,15 +4,17 @@ import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -47,9 +49,6 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
 
-        syncManager
-            .syncValue("oneStackLimit", new BooleanSyncValue(() -> hatch.oneStackLimit, v -> hatch.oneStackLimit = v));
-
         syncManager.syncValue("shape", new IntSyncValue(() -> {
             ItemStack current = hatch.inventoryHandler.getStackInSlot(hatch.shapeSlot);
             return current != null ? hatch.findMatchingShapeIndex(current) : -1;
@@ -64,28 +63,30 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
         return super.createContentSection(panel, syncManager).child(createItemSlots(syncManager));
     }
 
-    protected SlotGroupWidget createItemSlots(PanelSyncManager syncManager) {
-
+    protected Grid createItemSlots(PanelSyncManager syncManager) {
         int itemSlots = hatch.getSizeInventory() - 2;
         int rows = (itemSlots + COLS - 1) / COLS;
 
         syncManager.registerSlotGroup("item_inv", rows);
 
-        String[] matrix = new String[rows];
-        Arrays.fill(matrix, "sssssssss");
+        return new Grid().coverChildren()
+            .gridOfWidthHeight(
+                COLS,
+                rows,
+                ($x, $y, index) -> new ItemSlot().slot(new ModularSlot(hatch.getLimitedInventoryHandler(), index) {
 
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key('s', index -> {
-                if (index >= itemSlots) return new ItemSlot();
-
-                int actual = index + (index >= hatch.shapeSlot ? 1 : 0) + (index >= hatch.circuitSlot ? 1 : 0);
-
-                return new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, actual).slotGroup("item_inv"));
-            })
-            .build()
-            .coverChildren()
+                    @Override
+                    public int getItemStackLimit(@NotNull ItemStack stack) {
+                        return 1;
+                    }
+                }.slotGroup("item_inv")
+                    .filter(this::isShape)))
             .margin(3, 2);
+    }
+
+    private boolean isShape(ItemStack itemStack) {
+        return Arrays.stream(MTEHatchExtrusion.extruderShapes)
+            .anyMatch(shape -> GTUtility.areStacksEqual(shape, itemStack, true));
     }
 
     private ToggleButton createToggleButton(BooleanSyncValue sync, UITexture texture, String tooltipKey) {
@@ -98,11 +99,20 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
 
         GhostShapeSlotWidget shapeSlot = new GhostShapeSlotWidget(hatch, syncManager);
-        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, hatch.shapeSlot).singletonSlotGroup());
+        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, hatch.shapeSlot) {
+
+            @Override
+            public int getItemStackLimit(@NotNull ItemStack stack) {
+                return 1;
+            }
+        }.singletonSlotGroup()
+            .filter(this::isShape));
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !hatch.disableSort, v -> hatch.disableSort = !v);
 
-        BooleanSyncValue oneStackSync = new BooleanSyncValue(() -> hatch.oneStackLimit, v -> hatch.oneStackLimit = v);
+        BooleanSyncValue insertionSync = new BooleanSyncValue(
+            () -> !hatch.disableLimited,
+            v -> hatch.disableLimited = !v);
 
         return super.createLeftCornerFlow(panel, syncManager).child(shapeSlot)
             .child(
@@ -112,7 +122,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
                     "GT5U.machines.sorting_mode.tooltip"))
             .child(
                 createToggleButton(
-                    oneStackSync,
+                    insertionSync,
                     GTGuiTextures.OVERLAY_BUTTON_ONE_STACK_LIMIT,
                     "GT5U.machines.one_stack_limit.tooltip"));
     }
