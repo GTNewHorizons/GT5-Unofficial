@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -39,6 +40,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
@@ -225,7 +230,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // beamline input hatch
         .addElement('D', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -323,6 +328,14 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
                 26,
                 false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
+                16,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                2,
+                false)
             .addInputBus(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
                 1)
@@ -356,8 +369,20 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        mInputBeamline.clear();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
+        if (mInputBeamline.size() != 2) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                    mInputBeamline.size(),
+                    2));
+        }
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

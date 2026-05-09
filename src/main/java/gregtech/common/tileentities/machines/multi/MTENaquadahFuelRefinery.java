@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -43,6 +44,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -59,6 +61,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     private static final int OFFSET_X = 13;
     private static final int OFFSET_Y = 13;
     private static final int OFFSET_Z = 0;
+    private static int casingAmount;
 
     public MTENaquadahFuelRefinery(String name) {
         super(name);
@@ -77,7 +80,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
@@ -149,7 +152,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
                             DynamoMulti.or(Dynamo))
                         .casingIndex(Casings.NaquadahFuelRefineryCasing.textureId)
                         .hint(1)
-                        .buildAndChain(Casings.NaquadahFuelRefineryCasing.asElement()))
+                        .buildAndChain(
+                            onElementPass(x -> casingAmount++, Casings.NaquadahFuelRefineryCasing.asElement())))
                 .addElement('C', Casings.FieldRestrictionGlass.asElement())
                 .addElement(
                     'B',
@@ -207,12 +211,11 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 27, 27, false)
             .addController("Front center")
-            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 483, false)
+            .addCasingInfoMin("Naquadah Fuel Refinery Casing", 470, false)
             .addCasingInfoExactly("Field Restriction Coil", 72, true)
             .addCasingInfoExactly("Field Restriction Glass", 192, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
-            .addMaintenanceHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
             .addInputBus("Any Naquadah Fuel Refinery Casing", 1)
             .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)
@@ -241,9 +244,16 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
-        return structureCheck_EM(mName, OFFSET_X, OFFSET_Y, OFFSET_Z);
+        casingAmount = 0;
+        checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors);
+        checkCasingMin(errors, casingAmount, 470);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasInputHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

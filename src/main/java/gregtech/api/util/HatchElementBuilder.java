@@ -527,7 +527,10 @@ public class HatchElementBuilder<T> {
                 if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
                     String type = getHint();
                     env.getChatter()
-                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
+                        .accept(
+                            new ChatComponentTranslation(
+                                "GT5U.autoplace.error.no_placeable",
+                                new ChatComponentTranslation(type)));
                     return PlaceResult.REJECT;
                 }
                 ItemStack taken = env.getSource()
@@ -535,7 +538,10 @@ public class HatchElementBuilder<T> {
                 if (GTUtility.isStackInvalid(taken)) {
                     String type = getHint();
                     env.getChatter()
-                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                        .accept(
+                            new ChatComponentTranslation(
+                                "GT5U.autoplace.error.no_hatch",
+                                new ChatComponentTranslation(type)));
                     return PlaceResult.REJECT;
                 }
                 if (com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(

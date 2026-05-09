@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,6 +30,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -138,20 +140,21 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
+        if (!errors.isEmpty()) return;
         // Add coolant hatch
-        if (!findCoolantHatch()) return false;
-        return true;
+        findCoolantHatch(errors);
     }
 
-    private boolean findCoolantHatch() {
+    private void findCoolantHatch(List<StructureError> errors) {
+        // IMPORTANT: we need to emit error if it's not found, the following line is responsible for failing the
+        // structure check.
+        checkHasInputHatch(errors);
         if (!mInputHatches.isEmpty()) {
             coolantInputHatch = mInputHatches.get(0);
-            return true;
         }
-        return false;
 
     }
 

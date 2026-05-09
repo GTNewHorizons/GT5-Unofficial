@@ -44,6 +44,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -103,7 +105,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     protected long getAvailableData_EM() {
-        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        if (eInputData.isEmpty()) {
+            if (this.parent == null) return 0;
+            return this.parent.getAvailableDataForModules();
+        }
         return super.getAvailableData_EM();
     }
 
@@ -916,9 +921,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
-            return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty() && this.parent != null && !this.parent.hasDataHatches()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
         if (wasFilterModified) {
             wasFilterModified = false;
@@ -931,7 +941,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
-        return true;
     }
 
     @Override
