@@ -131,14 +131,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
-                    .build())
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)
-                    .build())
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
             .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))

@@ -27,7 +27,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -93,7 +96,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamSplitter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
@@ -102,7 +105,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 .adder(
                     (splitter, te, casingIndex) -> splitter
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
-                .build()) // adv beamline output hatch
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // adv beamline output hatch
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -211,6 +214,22 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
+        if (mInputBeamline.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                    mInputBeamline.size(),
+                    1));
+        }
+        if (mAdvancedOutputBeamline.size() != 4) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
+                    mAdvancedOutputBeamline.size(),
+                    4));
+        }
     }
 
     @Override

@@ -95,7 +95,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
     			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())

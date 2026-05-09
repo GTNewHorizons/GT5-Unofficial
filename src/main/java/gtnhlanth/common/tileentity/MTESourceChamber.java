@@ -90,7 +90,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
-                    .build())
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)

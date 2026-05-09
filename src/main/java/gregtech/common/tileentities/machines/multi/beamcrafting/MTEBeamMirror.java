@@ -25,7 +25,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -84,14 +87,14 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(1)
                 .adder(MTEBeamMirror::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamMirror::addBeamLineOutputHatch)
-                .build()) // beamline output hatch
+                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // beamline output hatch
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -205,5 +208,21 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         mInputBeamline.clear();
         mOutputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) return;
+        if (mInputBeamline.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                    mInputBeamline.size(),
+                    1));
+        }
+        if (mOutputBeamline.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
+                    mOutputBeamline.size(),
+                    1));
+        }
     }
 }
