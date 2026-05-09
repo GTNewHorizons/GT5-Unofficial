@@ -134,13 +134,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         casingAmountStainless = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmountStainless >= 3
             && casingAmount >= 8
-            && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return mMufflerHatches.size() >= 1 && mInputBusses.size() >= 1
-            && mOutputBusses.size() >= 1
-            && mEnergyHatches.size() >= 1;
+            && !mMufflerHatches.isEmpty();
     }
 
     @Override
