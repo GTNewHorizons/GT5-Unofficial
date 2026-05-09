@@ -1677,16 +1677,10 @@ public final class RecipeMaps {
             BeamCrafterMetadata metadata = recipeInfo.recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return Collections.emptyList();
 
-            float minEnergy_A = metadata.minEnergy_A;
-            float minEnergy_B = metadata.minEnergy_B;
-
             float amount_A = metadata.amount_A;
             float amount_B = metadata.amount_B;
 
             return Arrays.asList(
-                StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
-                StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
-
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
                 StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B));
         }))

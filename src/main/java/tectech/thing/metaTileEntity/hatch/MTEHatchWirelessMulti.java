@@ -16,22 +16,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.math.LongMath;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.common.gui.modularui.hatch.MTEHatchWirelessMultiGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
@@ -202,28 +200,6 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        final int x = getGUIWidth() / 2 - 37;
-        final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val)
-                    .setGetter(() -> Amperes)
-                    .setBounds(1, maxAmperes)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-    }
-
-    @Override
     public String[] getDescription() {
         return MTEHatch.formatEnergyInfoDesc(
             new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get() },
@@ -232,5 +208,15 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
             mTier,
             maxAmperes,
             "gt.blockmachines.energy_hatch.wireless");
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchWirelessMultiGui(this).build(guiData, syncManager, uiSettings);
     }
 }

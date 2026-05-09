@@ -112,6 +112,7 @@ public interface IRenderedBlock {
             ctx.renderPositiveZFacing(mErrorTexture);
             ctx.renderNegativeXFacing(mErrorTexture);
             ctx.renderPositiveXFacing(mErrorTexture);
+            ctx.doCleanup();
             return true;
         }
     }

@@ -95,7 +95,7 @@ public class MTEBoilerGui {
             .build()
             .child(
                 Flow.row()
-                    .alignX(0.5f)
+                    .horizontalCenter()
                     .top(25)
                     .coverChildren()
                     .childPadding(9)

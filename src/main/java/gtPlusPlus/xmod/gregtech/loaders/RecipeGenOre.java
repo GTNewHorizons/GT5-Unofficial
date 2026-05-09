@@ -72,19 +72,6 @@ public class RecipeGenOre extends RecipeGenBase {
         Material bonusA = null; // Ni
         Material bonusB = null; // Tin
 
-        if (!material.getComposites()
-            .isEmpty()
-            && material.getComposites()
-                .get(0) != null) {
-            bonusA = material.getComposites()
-                .get(0)
-                .getStackMaterial();
-        } else {
-            bonusA = material;
-        }
-
-        boolean allFailed = false;
-
         // Setup Bonuses
         ArrayList<Material> aMatComp = new ArrayList<>(MaterialUtils.getCompoundMaterialsRecursively(material));
 
@@ -94,58 +81,36 @@ public class RecipeGenOre extends RecipeGenBase {
             }
         }
 
-        ArrayList<Material> amJ = new ArrayList<>();
+        final ArrayList<Material> amJ = new ArrayList<>();
         for (Material g : aMatComp) {
             if (g.hasSolidForm()) {
-                if (getDust(g) != null && getTinyDust(g) != null) {
-                    amJ.add(g);
-                }
+                amJ.add(g);
+                if (amJ.size() >= 2) break;
             }
         }
 
+        boolean allFailed = false;
+        final ArrayList<MaterialStack> composites = material.getComposites();
         if (amJ.size() < 2) {
-            if (material.getComposites()
-                .size() >= 2
-                && material.getComposites()
-                    .get(1) != null) {
-                bonusB = material.getComposites()
-                    .get(1)
+            allFailed = true;
+            if (!composites.isEmpty() && composites.get(0) != null) {
+                bonusA = composites.get(0)
                     .getStackMaterial();
-                // If Secondary Output has no solid output, try the third (If it exists)
-                if (!bonusB.hasSolidForm() && material.getComposites()
-                    .size() >= 3
-                    && material.getComposites()
-                        .get(2) != null) {
-                    bonusB = material.getComposites()
-                        .get(2)
-                        .getStackMaterial();
-                    // If Third Output has no solid output, try the Fourth (If it exists)
-                    if (!bonusB.hasSolidForm() && material.getComposites()
-                        .size() >= 4
-                        && material.getComposites()
-                            .get(3) != null) {
-                        bonusB = material.getComposites()
-                            .get(3)
-                            .getStackMaterial();
-                        // If Fourth Output has no solid output, try the Fifth (If it exists)
-                        if (!bonusB.hasSolidForm() && material.getComposites()
-                            .size() >= 5
-                            && material.getComposites()
-                                .get(4) != null) {
-                            bonusB = material.getComposites()
-                                .get(4)
-                                .getStackMaterial();
-                            // If Fifth Output has no solid output, default out to Stone dust.
-                            if (!bonusB.hasSolidForm()) {
-                                allFailed = true;
-                                bonusB = mStone;
-                            }
-                        }
-                    }
-                }
             } else {
-                allFailed = true;
+                bonusA = material;
             }
+
+            // If Secondary Output has no solid output, try the third (If it exists), then the fourth/fifth
+            for (byte i = 1; i < Math.min(composites.size(), 5); i++) {
+                if (composites.get(i) == null) break;
+                bonusB = composites.get(i)
+                    .getStackMaterial();
+                if (bonusB != null && bonusB.hasSolidForm()) {
+                    allFailed = false;
+                    break;
+                }
+            }
+            // If Fifth Output has no solid output, default {see if(allFailed...)}
         } else {
             bonusA = amJ.get(0);
             bonusB = amJ.get(1);
@@ -161,26 +126,18 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
-        for (MaterialStack r : material.getComposites()) {
+        for (MaterialStack r : composites) {
             if (r != null) {
                 componentMap.add(Pair.of(r.getPartsPerOneHundred(), r.getStackMaterial()));
             }
         }
 
         // Need two valid outputs
-        if (bonusA == null || bonusB == null || !bonusA.hasSolidForm() || !bonusB.hasSolidForm()) {
-            if (bonusA == null) {
-                bonusA = mStone;
-            }
-            if (bonusB == null) {
-                bonusB = mStone;
-            }
-            if (!bonusA.hasSolidForm()) {
-                bonusA = mStone;
-            }
-            if (!bonusB.hasSolidForm()) {
-                bonusB = mStone;
-            }
+        if (bonusA == null || !bonusA.hasSolidForm()) {
+            bonusA = mStone;
+        }
+        if (bonusB == null || !bonusB.hasSolidForm()) {
+            bonusB = mStone;
         }
 
         ItemStack matDust = getDust(material);
@@ -469,27 +426,42 @@ public class RecipeGenOre extends RecipeGenBase {
 
         GTModHandler.addCraftingRecipe(
             material.getDustPurified(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
         GTModHandler.addCraftingRecipe(
             material.getDustImpure(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
-        GTModHandler
-            .addCraftingRecipe(matDust, new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
+        GTModHandler.addCraftingRecipe(
+            matDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
         if (tinyDust != null) {
-            GTModHandler.addCraftingRecipe(matDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-            GTModHandler.addCraftingRecipe(material.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', matDust });
+            GTModHandler.addCraftingRecipe(
+                matDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(
+                material.getTinyDust(9),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "D  ", "   ", "   ", 'D', matDust });
         }
 
         if (smallDust != null) {
-            GTModHandler.addCraftingRecipe(matDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-            GTModHandler
-                .addCraftingRecipe(material.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', matDust });
+            GTModHandler.addCraftingRecipe(
+                matDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(
+                material.getSmallDust(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { " D ", "   ", "   ", 'D', matDust });
         }
     }
 

@@ -67,7 +67,11 @@ public class RecipeMapFrontend {
             .fluidInputPositionsGetter(this::getFluidInputPositions)
             .fluidOutputPositionsGetter(this::getFluidOutputPositions)
             .build();
-        this.neiProperties = neiPropertiesBuilder.build();
+        this.neiProperties = modifyNEIProperties(neiPropertiesBuilder).build();
+    }
+
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        return neiPropertiesBuilder;
     }
 
     /**

@@ -509,6 +509,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
+        if (aPlayer != null && aPlayer.isSneaking()) {
+            final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            if (tTileEntity instanceof CoverableTileEntity coverableTE) {
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if (coverableTE.hasCoverAtSide(side)) {
+                        coverableTE.dropCover(side, side);
+                    }
+                }
+            }
+
+            if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
+                baseTE.setColorization((byte) -1);
+            }
+        }
         // This delays deletion of the block until after getDrops
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, aX, aY, aZ, false);
     }

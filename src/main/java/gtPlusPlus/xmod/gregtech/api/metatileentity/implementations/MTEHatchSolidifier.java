@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,7 +179,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             .setHandlePhantomActionClient(true)
             .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
             .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_mold.tooltip"))
-            .setTooltipShowUpDelay(10)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(124, 34));
     }
 

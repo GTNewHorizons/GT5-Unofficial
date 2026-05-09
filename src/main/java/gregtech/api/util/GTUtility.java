@@ -86,7 +86,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -179,12 +178,11 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
+import gregtech.nei.FluidDisplayStackMode;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -525,20 +523,14 @@ public class GTUtility {
         player.addChatComponentMessage(component);
     }
 
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(String message) {
-        sendServerMessage(new ChatComponentText(message));
-    }
-
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
+    public static void sendMessageInRadius(World world, double x, double y, double z, double range,
+        IChatComponent component) {
+        double distSq = range * range;
+        for (var player : world.playerEntities) {
+            if (player.getDistanceSq(x, y, z) <= distSq) {
+                player.addChatMessage(component);
+            }
+        }
     }
 
     /** Uses thread analysis, works on dedicated servers. */
@@ -828,6 +820,15 @@ public class GTUtility {
         }
     }
 
+    public static boolean cleanInventory(IMetaTileEntity imte, int start, int end) {
+        if (cleanInventory(wrapInventory(imte).subList(start, end))) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean cleanInventory(List<ItemStack> inv) {
         boolean didSomething = false;
 
@@ -1088,8 +1089,6 @@ public class GTUtility {
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
-        if (aFluid instanceof GTFluid gtFluid) return gtFluid.getLocalizedName();
-        if (aFluid instanceof FluidGT6 fluidGT6) return fluidGT6.getLocalizedName();
         return aFluid.getLocalizedName();
     }
 
@@ -1146,6 +1145,13 @@ public class GTUtility {
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
         return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
             : aMaterial.getProcessingMaterialTierEU();
+    }
+
+    public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {
+        return getFluidDisplayStack(
+            fluid,
+            stackMode == FluidDisplayStackMode.SHOWN,
+            stackMode == FluidDisplayStackMode.HIDDEN);
     }
 
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {
@@ -2431,17 +2437,20 @@ public class GTUtility {
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin,
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
-    // TODO: use clamp()
     public static float[] getClickedFacingCoords(ForgeDirection side, float aX, float aY, float aZ) {
         return switch (side) {
-            case DOWN -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case UP -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case NORTH -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case SOUTH -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case WEST -> new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case EAST -> new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case DOWN -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(aZ) };
+            case UP -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(aZ) };
+            case NORTH -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(1 - aY) };
+            case SOUTH -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(1 - aY) };
+            case WEST -> new float[] { clampClickedFacingCoord(aZ), clampClickedFacingCoord(1 - aY) };
+            case EAST -> new float[] { clampClickedFacingCoord(1 - aZ), clampClickedFacingCoord(1 - aY) };
             default -> new float[] { 0.5F, 0.5F };
         };
+    }
+
+    private static float clampClickedFacingCoord(float coord) {
+        return MathHelper.clamp_float(coord, 0.0F, 0.99F);
     }
 
     /**
@@ -3378,6 +3387,11 @@ public class GTUtility {
             if (l > first) first = l;
         }
         return first;
+    }
+
+    public static long ceil(double k) {
+        long l = (long) k;
+        return k > (double) l ? l + 1 : l;
     }
 
     public static int ceilDiv(int lhs, int rhs) {

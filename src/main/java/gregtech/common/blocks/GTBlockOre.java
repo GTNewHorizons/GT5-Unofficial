@@ -64,7 +64,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         if (stoneTypes.length > 8) throw new IllegalArgumentException("stoneTypes.length must be <= 8");
 
         for (int i = 0; i < stoneTypes.length; i++) {
-            if (!stoneTypes[i].isEnabled()) {
+            if (stoneTypes[i] != null && !stoneTypes[i].isEnabled()) {
                 stoneTypes[i] = null;
             }
         }

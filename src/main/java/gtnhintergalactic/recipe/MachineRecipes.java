@@ -749,7 +749,7 @@ public class MachineRecipes implements Runnable {
             4,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Eternity, 8),
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8 }, GTUtility.copyAmount(64, t9Plate),
+                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 64),
                 ItemList.Sensor_UXV.get(8) },

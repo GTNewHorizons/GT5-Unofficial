@@ -72,7 +72,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+    public final GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
@@ -811,4 +811,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+
+    // For MUI2 guis (which are usually built in a different class).
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    public int getColorTitleWhite() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    public int getColorTextWhite() {
+        return COLOR_TEXT_WHITE.get();
+    }
+
+    public int getColorTextGray() {
+        return COLOR_TEXT_GRAY.get();
+    }
+
+    public int getColorTextRed() {
+        return COLOR_TEXT_RED.get();
+    }
 }

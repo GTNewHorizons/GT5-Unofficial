@@ -278,7 +278,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
-                this.mEUt = 0;
+                this.lEUt = 0;
                 return false;
             }
         }
@@ -321,7 +321,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
-                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.lEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
                             this.superEfficencyIncrease = 20;
@@ -338,7 +338,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.mMaxProgresstime = adjustBurnTimeForConfig(
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.lEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
                             this.superEfficencyIncrease = 20;
@@ -361,7 +361,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.excessFuel %= 80;
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
+                            this.lEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -387,7 +387,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             int burnTime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(burnTime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
+                            this.lEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -402,7 +402,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             }
         }
         this.mMaxProgresstime = 0;
-        this.mEUt = 0;
+        this.lEUt = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -415,12 +415,12 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        if (this.lEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             if (this.superEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + superEfficencyIncrease, maxEff));
             }
-            int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
+            int tGeneratedEU = (int) (this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
                 excessWater += amount * STEAM_PER_WATER - tGeneratedEU;

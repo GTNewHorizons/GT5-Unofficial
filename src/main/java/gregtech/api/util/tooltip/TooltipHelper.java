@@ -170,6 +170,13 @@ public class TooltipHelper {
     }
 
     /**
+     * @return The given EU/t, formatted in the form "[Number] EU/t".
+     */
+    public static String euRateText(long eu) {
+        return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + TIER_COLOR + " EU/t" + EnumChatFormatting.GRAY;
+    }
+
+    /**
      * @return The given number of EU, formatted.
      */
     public static String euCapacityText(long capacity) {

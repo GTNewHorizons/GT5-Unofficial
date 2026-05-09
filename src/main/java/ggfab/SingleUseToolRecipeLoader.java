@@ -43,6 +43,7 @@ class SingleUseToolRecipeLoader implements Runnable {
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {
             GTModHandler.addCraftingRecipe(
                 singleUseTool.mold.get(1L),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
         }
     }
