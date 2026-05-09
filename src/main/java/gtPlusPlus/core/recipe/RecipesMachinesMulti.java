@@ -727,7 +727,7 @@ public class RecipesMachinesMulti {
 
         // Industrial Cutting Factory
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_CuttingFactoryController.get(1),
+            ItemList.IndustrialCuttingMachine.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitData", 'W',
                 OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
