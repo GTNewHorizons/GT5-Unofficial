@@ -155,7 +155,6 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         checkCasingMin(errors, casingAmount, 10);
         checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasAnyOutput(errors);
         checkHasOutputBus(errors);
         checkHasEnergyHatch(errors);
     }
