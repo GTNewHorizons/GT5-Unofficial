@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -228,6 +227,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_ITEM_STANDARD)
         .build();
+    public static final UITexture SLOT_ITEM_TANK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_tank")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_ITEM_BRONZE = UITexture.builder()
         .location(GregTech.ID, "gui/slot/item_bronze")
         .imageSize(18, 18)
@@ -285,6 +290,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_STANDARD)
         .build();
+    public static final UITexture SLOT_FLUID_TANK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_tank")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_FLUID_BRONZE = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_bronze")
         .imageSize(18, 18)
@@ -321,11 +332,16 @@ public final class GTGuiTextures {
 
     // region slot overlay
 
-    public static final UITexture OVERLAY_SLOT_CANISTER_STANDARD = UITexture.builder()
+    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/canister")
         .fullImage()
         .canApplyTheme()
-        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_CANISTER_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/canister_dark")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_DARK)
         .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_CANISTER_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/canister_%s")
@@ -333,7 +349,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
-    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImage(GregTech.ID, "gui/overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/data_orb")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .fullImage()
@@ -647,12 +667,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/boxed")
-        .build();
-
-    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/canister")
         .build();
 
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.builder()
@@ -1587,6 +1601,7 @@ public final class GTGuiTextures {
         .location(MODID, "gui/picture/tectech_logo")
         .fullImage()
         .canApplyTheme()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO)
         .build();
     public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
         .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")
@@ -1961,47 +1976,42 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width, fromRight) -> UITexture
-        .builder()
+
+    public static final UITexture PICTURE_ARROW_22_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_red")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_blue")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_22_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_22_white")
         .canApplyTheme()
         .imageSize(87, 22)
-        .subAreaXYWH(fromRight ? 87 - width : 0, 0, width, 22)
+        .adaptable(0, 0, 11, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_RED = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_RED = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_red")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_BLUE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_BLUE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_blue")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
-    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_WHITE = (width, fromRight) -> UITexture
-        .builder()
+    public static final UITexture PICTURE_ARROW_24_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_white")
         .canApplyTheme()
         .imageSize(69, 24)
-        .subAreaXYWH(fromRight ? 69 - width : 0, 0, width, 24)
+        .adaptable(0, 0, 12, 0)
         .build();
     // endregion picture
 

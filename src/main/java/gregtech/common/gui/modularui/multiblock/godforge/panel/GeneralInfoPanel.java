@@ -114,7 +114,7 @@ public class GeneralInfoPanel {
         return IKey.lang(langKey)
             .style(EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 
@@ -177,7 +177,7 @@ public class GeneralInfoPanel {
     private static TextWidget<?> createHeaderInversion() {
         return IKey.str(getInversionHeaderText())
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 

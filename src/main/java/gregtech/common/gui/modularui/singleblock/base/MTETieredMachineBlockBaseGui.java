@@ -2,8 +2,15 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.util.Arrays;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -17,7 +24,6 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -26,6 +32,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
@@ -51,7 +58,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return panel.child(
             Flow.column()
                 .child(createTopRightCornerColumn())
-                .sizeRel(1)
+                .full()
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
                 .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
@@ -100,7 +107,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ParentWidget<>().sizeRel(1)
+        return new ParentWidget<>().full()
             .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
             .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
     }
@@ -119,11 +126,11 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
     // Row by default, going left to right
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.row()
+        return Flow.row()
             .coverChildren()
-            .align(Alignment.BottomLeft)
+            .bottomRel(0)
+            .leftRel(0)
             .paddingLeft(4);
-        return cornerFlow;
     }
 
     protected boolean supportsRightCornerFlow() {
@@ -136,7 +143,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .coverChildren()
-            .align(Alignment.BottomRight)
+            .bottomRel(0)
+            .rightRel(0)
             .paddingBottom(2)
             .paddingRight(4);
 
@@ -155,9 +163,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .height(76)
-            .alignX(0)
             .childIf(
                 machine.doesBindPlayerInventory(),
                 () -> SlotGroupWidget.playerInventory(false)
@@ -202,7 +210,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected Flow createTopRightCornerColumn() {
         return Flow.column()
             .coverChildren()
-            .align(Alignment.TopRight)
+            .topRel(0)
+            .rightRel(0)
             .childIf(supportsMuffler(), this::createMufflerButton)
             .childIf(supportsPowerSwitch(), this::createPowerSwitchButton);
     }
@@ -240,5 +249,33 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
             .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
             .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+    }
+
+    /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
+    /// is open.
+    ///
+    /// Accounts for extended tooltips shown when shift is held down.
+    protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
+        GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
+        return addToRichTooltip(() -> data);
+    }
+
+    /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
+    /// while the Gui is open.
+    ///
+    /// Accounts for extended tooltips shown when shift is held down.
+    @SafeVarargs
+    protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
+        return addToRichTooltip(
+            () -> machine.mTooltipCache.getUncachedTooltipData(
+                key,
+                Arrays.stream(args)
+                    .map(Supplier::get)
+                    .toArray()));
+    }
+
+    private static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
+        return t -> t.addStringLines(Interactable.hasShiftDown() ? data.get().shiftText : data.get().text)
+            .titleMargin(2);
     }
 }
