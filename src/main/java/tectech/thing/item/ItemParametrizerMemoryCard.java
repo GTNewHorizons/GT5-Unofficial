@@ -3,6 +3,7 @@ package tectech.thing.item;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -28,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import joptsimple.internal.Strings;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
@@ -115,7 +117,7 @@ public final class ItemParametrizerMemoryCard extends Item {
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
                 Parameter<?> parameter = controllerParameters.get(i);
-                if (!tag.getString("key")
+                if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
             }
 
@@ -174,30 +176,45 @@ public final class ItemParametrizerMemoryCard extends Item {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
-                Object[] args = null;
 
-                NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
-                if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
-                    .mapToObj(argsList::getStringTagAt)
-                    .toArray(Object[]::new);
-
-                aList.add(
-                    EnumChatFormatting.AQUA + GTUtility.translate(tag.getString("langKey"), args)
-                        + ": "
-                        + EnumChatFormatting.GRAY
-                        + getValueFromTag(tag));
+                aList.addAll(getInfoLines(tag, 0));
             }
         }
     }
 
-    private String getValueFromTag(NBTTagCompound tag) {
-        return switch (tag.getString("type")) {
-            case "integer" -> String.valueOf(tag.getInteger("value"));
-            case "double" -> String.valueOf(tag.getDouble("value"));
-            case "string" -> tag.getString("value");
-            case "boolean" -> String.valueOf(tag.getBoolean("value"));
-            default -> "";
-        };
+    private List<String> getInfoLines(NBTTagCompound tag, int offset) {
+        List<String> infoLines = new ArrayList<>();
+
+        switch (tag.getString("type")) {
+            case "integer" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getInteger("value"))));
+            case "double" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getDouble("value"))));
+            case "string" -> infoLines.add(getInfoLine(tag, offset, tag.getString("value")));
+            case "boolean" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getBoolean("value"))));
+            case "composite" -> {
+                infoLines.add(getInfoLine(tag, offset, ""));
+                NBTTagList parameters = tag.getTagList("value", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < parameters.tagCount(); i++)
+                    infoLines.addAll(getInfoLines(parameters.getCompoundTagAt(i), offset + 2));
+            }
+            default -> {}
+        }
+
+        return infoLines;
+    }
+
+    private String getInfoLine(NBTTagCompound tag, int offset, String value) {
+        Object[] args = null;
+
+        NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
+        if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
+            .mapToObj(argsList::getStringTagAt)
+            .toArray(Object[]::new);
+
+        return Strings.repeat(' ', offset) + EnumChatFormatting.AQUA
+            + GTUtility.translate(tag.getString("langKey"), args)
+            + ": "
+            + EnumChatFormatting.GRAY
+            + value;
     }
 
     public static void run() {
