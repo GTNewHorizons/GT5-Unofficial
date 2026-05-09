@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -10,6 +12,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
+import com.cleanroommc.modularui.widget.sizer.Unit;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -23,6 +26,8 @@ import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityModulePump> {
 
     private static final int PARAMS_PER_RECIPE = 3;
+
+    private ListWidget<IWidget, ?> scrollWidget;
 
     public TileEntityModulePumpGui(TileEntityModulePump multiblock) {
         super(multiblock);
@@ -59,9 +64,11 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             ListWidget<IWidget, ?> scrollable = (ListWidget<IWidget, ?>) new ListWidget<>().size(110, maxHeight)
                 .scrollDirection(new VerticalScrollData());
             scrollable.child(column);
+            this.scrollWidget = scrollable;
             return scrollable;
         }
 
+        this.scrollWidget = null;
         return column;
     }
 
@@ -86,6 +93,22 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             }
             return true;
         }));
+    }
+
+    @Override
+    protected @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
+        PanelSyncManager syncManager) {
+        ModularPanel editPanel = super.openParameterEditPanel(parameterEditButton, parameter, syncManager);
+        if (scrollWidget != null) {
+            editPanel.resizer()
+                .top(
+                    () -> (double) (parameterEditButton.getArea().height - scrollWidget.getScrollY()),
+                    0,
+                    0,
+                    Unit.Measure.PIXEL,
+                    true);
+        }
+        return editPanel;
     }
 
     @Override
