@@ -24,7 +24,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 
-public class MTELargeTurbineGas extends MTELargerTurbineBase {
+public class MTELargerTurbineGasLegacy extends MTELargerTurbineBaseLegacy {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
@@ -34,17 +34,17 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 .getFluid());
     }
 
-    public MTELargeTurbineGas(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbineGasLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbineGas(String aName) {
+    public MTELargerTurbineGasLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbineGas(mName);
+        return new MTELargerTurbineGasLegacy(mName);
     }
 
     @Override
