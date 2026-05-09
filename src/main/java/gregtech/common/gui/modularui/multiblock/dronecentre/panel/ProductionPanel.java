@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
