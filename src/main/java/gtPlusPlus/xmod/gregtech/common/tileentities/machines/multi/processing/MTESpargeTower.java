@@ -137,7 +137,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .addEnergyHatch("Any casing", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
             .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
-            .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .addOutputHatch("Output Hatches on any layer except bottom (each hatch enables that layer's output)", 2, 3)
             .toolTipFinisher();
         return tt;
     }
@@ -266,23 +266,14 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         // check each layer
-        List<Integer> missingLayers = new ArrayList<>();
-
         while (mHeight < 8) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty()) {
-                missingLayers.add(mHeight + 1);
-            }
             if (mTopLayerFound) {
                 break;
             }
             mHeight++;
         }
 
-        if (!missingLayers.isEmpty()) {
-            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
-        }
         checkCasingMin(errors, mCasing, 45);
         if (!mTopLayerFound) {
             errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
@@ -290,6 +281,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
