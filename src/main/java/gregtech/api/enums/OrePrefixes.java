@@ -3251,6 +3251,12 @@ public class OrePrefixes {
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
         }
+        final String phraseKey = prefixKey + ".phrase";
+        if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
+            .trim()
+            .split(" ").length > 1) {
+            return GTInflectionManager.formatInflection(phraseKey, material.getLocalizedNameKey());
+        }
         return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
     }
 
@@ -3262,6 +3268,12 @@ public class OrePrefixes {
         final String key = prefixKey + "." + materialKey.toLowerCase();
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
+        }
+        final String phraseKey = prefixKey + ".phrase";
+        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialKey)
+            .trim()
+            .split(" ").length > 1) {
+            return GTInflectionManager.formatInflection(phraseKey, materialKey);
         }
         return GTInflectionManager.formatInflection(prefixKey, materialKey);
     }
