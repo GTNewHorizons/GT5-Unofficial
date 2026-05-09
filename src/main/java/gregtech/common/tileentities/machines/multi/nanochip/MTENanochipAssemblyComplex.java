@@ -214,6 +214,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 StructureErrors
                     .hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size() + mExoticEnergyHatches.size(), 1));
         }
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
 
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
 

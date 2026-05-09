@@ -84,7 +84,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
                 .hatchClass(MTEHatchDynamoTunnel.class)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .hint(1)
-                .build())
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
         .build();
 
     private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -173,6 +173,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             if (laserSource == null) {
                 errors.add(StructureErrors.of("GT5U.tooltip.nac.module.etching_array.no_laser"));
             }
+            checkHasInputHatch(errors);
         }
     }
 
@@ -217,6 +218,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addCasingInfoExactly(translateToLocal("gt.blockglass1.3.name"), 4, false)
             // Laser Source Hatch
             .addCasingInfoExactly(translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), 1, true)
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .addStructureInfoSeparator()

@@ -126,15 +126,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
     };
 
-    private static final int min_input_hatch = 0;
-    private static final int max_input_hatch = 7;
-    private static final int min_output_hatch = 0;
-    private static final int max_output_hatch = 2;
-    private static final int min_input_bus = 0;
-    private static final int max_input_bus = 6;
-    private static final int min_output_bus = 0;
-    private static final int max_output_bus = 1;
-
     // Current discount rate. 1 = 0%, 0 = 100%.
     private double discount = 1;
     private int mHeatingCapacity = 0;
@@ -649,42 +640,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_hatch
-                    + EnumChatFormatting.GRAY
-                    + " input hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_output_hatch
-                    + EnumChatFormatting.GRAY
-                    + " output hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_input_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_input_bus
-                    + EnumChatFormatting.GRAY
-                    + " input buses")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + min_output_bus
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + max_output_bus
-                    + EnumChatFormatting.GRAY
-                    + " output buses")
+            .addInputHatch("Any casing")
+            .addOutputHatch("Any casing")
+            .addInputBus("Any casing")
+            .addOutputBus("Any casing")
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addTecTechHatchInfo()
@@ -861,20 +820,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16, errors)) return;
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
-        }
-        if (mInputBusses.size() > max_input_bus) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, InputBus, mInputBusses.size(), max_input_bus));
-        }
-        if (mOutputBusses.size() > max_output_bus) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, OutputBus, mOutputBusses.size(), max_output_bus));
-        }
-        if (mInputHatches.size() > max_input_hatch) {
-            errors
-                .add(StructureErrors.hatchCount(ErrorType.TOO_MANY, InputHatch, mInputHatches.size(), max_input_hatch));
-        }
-        if (mOutputHatches.size() > max_output_hatch) {
-            errors.add(
-                StructureErrors.hatchCount(ErrorType.TOO_MANY, OutputHatch, mOutputHatches.size(), max_output_hatch));
         }
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
