@@ -275,8 +275,6 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         glassTier = -1;
         maxCell = 0;
         if (!checkPiece(YOTTANK_BOTTOM, 2, 0, 0, errors)) return;
-        checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         int cnt = 0;
         while (checkPiece(YOTTANK_MID, 2, cnt + 1, 0, errors)) {
             cnt++;
@@ -291,6 +289,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return;
         }
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
