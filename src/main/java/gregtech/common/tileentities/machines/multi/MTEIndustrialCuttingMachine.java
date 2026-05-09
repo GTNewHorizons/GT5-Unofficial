@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -71,6 +72,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         "textures/model/cutter.png");
     private int casingAmount;
     private int glassTier = -1;
+    private ExtendedFacing cachedBladeRenderFacing;
+    private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -282,7 +285,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURE);
 
-        GL11.glTranslated(x + context.center[0], y + context.center[1], z + context.center[2]);
+        GL11.glTranslated(x + context.centerX, y + context.centerY, z + context.centerZ);
 
         renderBladeFrame(frame, context);
 
@@ -293,21 +296,14 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
         BladeRenderContext context = getBladeRenderContext();
-        double halfWidth = BLADE_WIDTH / 2.0D + BLADE_PADDING;
-        double halfHeight = BLADE_HEIGHT / 2.0D + BLADE_PADDING;
-        double halfDepth = BLADE_PADDING;
-
-        double halfX = getHalfExtent(context, 0, halfWidth, halfHeight, halfDepth);
-        double halfY = getHalfExtent(context, 1, halfWidth, halfHeight, halfDepth);
-        double halfZ = getHalfExtent(context, 2, halfWidth, halfHeight, halfDepth);
 
         return AxisAlignedBB.getBoundingBox(
-            x + context.center[0] - halfX,
-            y + context.center[1] - halfY,
-            z + context.center[2] - halfZ,
-            x + context.center[0] + halfX,
-            y + context.center[1] + halfY,
-            z + context.center[2] + halfZ);
+            x + context.centerX - context.halfX,
+            y + context.centerY - context.halfY,
+            z + context.centerZ - context.halfZ,
+            x + context.centerX + context.halfX,
+            y + context.centerY + context.halfY,
+            z + context.centerZ + context.halfZ);
     }
 
     private void renderBladeFrame(int frame, BladeRenderContext context) {
@@ -331,58 +327,88 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private void addBladeVertex(Tessellator tessellator, BladeRenderContext context, double localX, double localY,
         double u, double v) {
         tessellator.addVertexWithUV(
-            localX * context.horizontal[0] + localY * context.vertical[0],
-            localX * context.horizontal[1] + localY * context.vertical[1],
-            localX * context.horizontal[2] + localY * context.vertical[2],
+            localX * context.horizontalX + localY * context.verticalX,
+            localX * context.horizontalY + localY * context.verticalY,
+            localX * context.horizontalZ + localY * context.verticalZ,
             u,
             v);
     }
 
     private BladeRenderContext getBladeRenderContext() {
-        return new BladeRenderContext(
-            getRenderCenter(),
-            getWorldOffset(-1, 0, 0),
-            getWorldOffset(0, -1, 0),
-            getWorldOffset(0, 0, 1));
+        ExtendedFacing facing = getExtendedFacing();
+        if (cachedBladeRenderFacing != facing) {
+            cachedBladeRenderFacing = facing;
+            bladeRenderContext.update(facing);
+        }
+        return bladeRenderContext;
     }
 
-    private static double getHalfExtent(BladeRenderContext context, int axis, double halfWidth, double halfHeight,
-        double halfDepth) {
-        return Math.abs(context.horizontal[axis]) * halfWidth
-            + Math.abs(context.vertical[axis]) * halfHeight
-            + Math.abs(context.depth[axis]) * halfDepth;
+    private static double getRenderCenterCoordinate(int horizontalOffset, int verticalOffset, int depthOffset) {
+        return 0.5D + RENDER_OFFSET_RIGHT * horizontalOffset
+            + RENDER_OFFSET_UP * verticalOffset
+            + RENDER_OFFSET_BACK * depthOffset;
     }
 
-    private double[] getRenderCenter() {
-        int[] horizontal = getWorldOffset(1, 0, 0);
-        int[] vertical = getWorldOffset(0, -1, 0);
-        int[] depth = getWorldOffset(0, 0, 1);
-        return new double[] {
-            0.5D + RENDER_OFFSET_RIGHT * horizontal[0] + RENDER_OFFSET_UP * vertical[0] + RENDER_OFFSET_BACK * depth[0],
-            0.5D + RENDER_OFFSET_RIGHT * horizontal[1] + RENDER_OFFSET_UP * vertical[1] + RENDER_OFFSET_BACK * depth[1],
-            0.5D + RENDER_OFFSET_RIGHT * horizontal[2]
-                + RENDER_OFFSET_UP * vertical[2]
-                + RENDER_OFFSET_BACK * depth[2] };
-    }
-
-    private int[] getWorldOffset(int localX, int localY, int localZ) {
-        int[] xyz = new int[3];
-        getExtendedFacing().getWorldOffset(new int[] { localX, localY, localZ }, xyz);
-        return xyz;
+    private static double getHalfExtent(int horizontalOffset, int verticalOffset, int depthOffset, double halfWidth,
+        double halfHeight, double halfDepth) {
+        return Math.abs(horizontalOffset) * halfWidth + Math.abs(verticalOffset) * halfHeight
+            + Math.abs(depthOffset) * halfDepth;
     }
 
     private static final class BladeRenderContext {
 
-        private final double[] center;
-        private final int[] horizontal;
-        private final int[] vertical;
-        private final int[] depth;
+        private double centerX;
+        private double centerY;
+        private double centerZ;
+        private double halfX;
+        private double halfY;
+        private double halfZ;
+        private int horizontalX;
+        private int horizontalY;
+        private int horizontalZ;
+        private int verticalX;
+        private int verticalY;
+        private int verticalZ;
 
-        private BladeRenderContext(double[] center, int[] horizontal, int[] vertical, int[] depth) {
-            this.center = center;
-            this.horizontal = horizontal;
-            this.vertical = vertical;
-            this.depth = depth;
+        private void update(ExtendedFacing facing) {
+            ForgeDirection horizontal = facing.getRelativeRightInWorld();
+            ForgeDirection vertical = facing.getRelativeUpInWorld();
+            ForgeDirection depth = facing.getRelativeBackInWorld();
+            ForgeDirection centerHorizontal = facing.getRelativeLeftInWorld();
+            double halfWidth = BLADE_WIDTH / 2.0D + BLADE_PADDING;
+            double halfHeight = BLADE_HEIGHT / 2.0D + BLADE_PADDING;
+            double halfDepth = BLADE_PADDING;
+
+            horizontalX = horizontal.offsetX;
+            horizontalY = horizontal.offsetY;
+            horizontalZ = horizontal.offsetZ;
+            verticalX = vertical.offsetX;
+            verticalY = vertical.offsetY;
+            verticalZ = vertical.offsetZ;
+            centerX = getRenderCenterCoordinate(centerHorizontal.offsetX, vertical.offsetX, depth.offsetX);
+            centerY = getRenderCenterCoordinate(centerHorizontal.offsetY, vertical.offsetY, depth.offsetY);
+            centerZ = getRenderCenterCoordinate(centerHorizontal.offsetZ, vertical.offsetZ, depth.offsetZ);
+            halfX = getHalfExtent(
+                horizontal.offsetX,
+                vertical.offsetX,
+                depth.offsetX,
+                halfWidth,
+                halfHeight,
+                halfDepth);
+            halfY = getHalfExtent(
+                horizontal.offsetY,
+                vertical.offsetY,
+                depth.offsetY,
+                halfWidth,
+                halfHeight,
+                halfDepth);
+            halfZ = getHalfExtent(
+                horizontal.offsetZ,
+                vertical.offsetZ,
+                depth.offsetZ,
+                halfWidth,
+                halfHeight,
+                halfDepth);
         }
     }
 }
