@@ -40,12 +40,12 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
         IItemHandlerModifiable handler = cover.getItems();
 
-        column.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
-                .build()
-                .horizontalCenter());
+        column.horizontalCenter()
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix(matrix)
+                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
+                    .build());
     }
 
     @Override

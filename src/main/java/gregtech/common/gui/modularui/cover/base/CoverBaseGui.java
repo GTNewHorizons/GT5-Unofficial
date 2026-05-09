@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -87,12 +88,25 @@ public class CoverBaseGui<T extends Cover> {
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .margin(WIDGET_MARGIN);
-
-        addTitleToUI(mainColumn, data);
-        addUIWidgets(syncManager, mainColumn, data);
-
         panel.child(mainColumn);
 
+        // Header
+        final Flow headerRow = Flow.row()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginBottom(4)
+            .marginRight(data.isPopUp() ? 12 : 0) // Filler for close button
+            .coverChildren();
+        addTitleToUI(headerRow, data);
+        mainColumn.child(headerRow);
+
+        // Widgets
+        final Flow widgetsColumn = Flow.column()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .coverChildren();
+        addUIWidgets(syncManager, widgetsColumn, data);
+        mainColumn.child(widgetsColumn);
+
+        // Footer
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
                 new CoverTickRateButton(cover, syncManager).right(4)
@@ -107,20 +121,17 @@ public class CoverBaseGui<T extends Cover> {
         return panel;
     }
 
-    protected void addTitleToUI(Flow column, CoverGuiData data) {
+    protected void addTitleToUI(Flow titleRow, CoverGuiData data) {
         ItemStack coverItem = GTUtility.intToStack(cover.getCoverID());
         if (coverItem == null) return;
-        column.child(
-            Flow.row()
-                .coverChildren()
-                .marginBottom(4)
-                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
-                .childIf(
-                    !data.isPopUp() || shouldIncludeTitleInPopUp(),
-                    () -> IKey.str(coverItem.getDisplayName())
-                        .asWidget()
-                        .marginLeft(4)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+        titleRow.child(new ItemDrawable(coverItem).asWidget())
+            .childIf(
+                !data.isPopUp() || shouldIncludeTitleInPopUp(),
+                () -> IKey.str(coverItem.getDisplayName())
+                    .asWidget()
+                    .marginLeft(4)
+                    .verticalCenter()
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE));
     }
 
     private void layoutPopUp(ModularPanel panel, IWidget button) {
