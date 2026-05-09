@@ -191,7 +191,6 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
         checkCasingMin(errors, casing, 1);
         checkHasOutputHatch(errors);
         checkHasInputHatch(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override

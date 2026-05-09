@@ -48,7 +48,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -352,6 +354,9 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
     }
 
     @Override

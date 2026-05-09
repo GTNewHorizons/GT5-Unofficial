@@ -157,7 +157,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 46);
-        checkOneMufflerHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);

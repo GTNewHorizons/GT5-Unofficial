@@ -257,17 +257,17 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         mCasing = 0;
         if (!checkPiece(mName, 3, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 27);
-        if (mOutputHatches.size() < 3 && !canDumpFluidToME()) {
+        if (mOutputHatches.size() < 4 && !canDumpFluidToME()) {
             errors
-                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 3));
+                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
         }
         checkHasInputHatch(errors);
         checkHatchExact(errors, Dynamo, 4);
         checkHatchExact(errors, Muffler, 4);
+        checkHasMaintenanceHatch(errors);
         if (errors.isEmpty()) {
             this.turnCasingActive(false);
         }
-        checkHasMaintenanceHatch(errors);
     }
 
     // Alk's Life Lessons from Greg.
