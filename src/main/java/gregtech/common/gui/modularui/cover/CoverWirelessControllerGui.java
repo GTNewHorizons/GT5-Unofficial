@@ -34,16 +34,6 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 204;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 148;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
