@@ -286,6 +286,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound data = super.getDescriptionData();
         data.setBoolean("stopAllRendering", stopAllRendering);
+        data.setBoolean("machineFormed", mMachine);
         return data;
     }
 
@@ -293,6 +294,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
         stopAllRendering = data.getBoolean("stopAllRendering");
+        mMachine = data.getBoolean("machineFormed");
     }
 
     @SideOnly(Side.CLIENT)
@@ -304,12 +306,12 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (stopAllRendering || !base.isActive()) {
+        if (stopAllRendering || !mMachine) {
             return;
         }
 
         BladeRenderContext context = getBladeRenderContext();
-        int frame = (int) ((base.getTimer() / BLADE_FRAME_TICKS) % BLADE_FRAMES);
+        int frame = base.isActive() ? (int) ((base.getTimer() / BLADE_FRAME_TICKS) % BLADE_FRAMES) : 0;
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
