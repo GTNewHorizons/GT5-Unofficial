@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry;
 
+import java.util.EnumMap;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,6 +16,18 @@ import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class ForestryTreeHandler {
+
+    private static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
+        ItemStack fruit) {
+        // Legacy farm populates NEI, new farm only has recipes added (Remove with 2.10)
+        MTETreeFarmLegacy.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+        EnumMap<MTETreeFarm.Mode, ItemStack> map = new EnumMap<>(MTETreeFarm.Mode.class);
+        map.put(MTETreeFarm.Mode.LOG, log);
+        map.put(MTETreeFarm.Mode.SAPLING, sapling);
+        map.put(MTETreeFarm.Mode.LEAVES, leaves);
+        map.put(MTETreeFarm.Mode.FRUIT, fruit);
+        MTETreeFarm.treeProductsMap.put("Forestry:sapling:" + speciesUID, map);
+    }
 
     public static void generateForestryTrees() {
         for (TreeDefinition tree : TreeDefinition.values()) {
@@ -45,14 +59,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarmLegacy.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves.copy(),
-                fruit == null ? null : fruit.copy());
-
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
@@ -89,14 +96,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarmLegacy.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves.copy(),
-                fruit == null ? null : fruit.copy());
-
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
