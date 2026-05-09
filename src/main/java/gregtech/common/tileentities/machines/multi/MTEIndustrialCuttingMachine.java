@@ -17,7 +17,9 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -72,6 +74,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         "textures/model/cutter.png");
     private int casingAmount;
     private int glassTier = -1;
+    private boolean stopAllRendering;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -258,6 +261,40 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         return true;
     }
 
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        stopAllRendering = !stopAllRendering;
+        GTUtility.sendChatTrans(aPlayer, stopAllRendering ? "GT5U.chat.rendering.off" : "GT5U.chat.rendering.on");
+        getBaseMetaTileEntity().issueTileUpdate();
+        getBaseMetaTileEntity().markDirty();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("stopAllRendering", stopAllRendering);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        stopAllRendering = aNBT.getBoolean("stopAllRendering");
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = super.getDescriptionData();
+        data.setBoolean("stopAllRendering", stopAllRendering);
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        stopAllRendering = data.getBoolean("stopAllRendering");
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
@@ -267,7 +304,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (!base.isActive()) {
+        if (stopAllRendering || !base.isActive()) {
             return;
         }
 
