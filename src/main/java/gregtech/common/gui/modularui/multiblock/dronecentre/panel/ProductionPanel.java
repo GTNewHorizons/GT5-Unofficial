@@ -27,16 +27,15 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.EmptyWidget;
-import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -304,6 +303,9 @@ public class ProductionPanel extends ModularPanel {
         HashMap<String, ItemStack> machineStack = new HashMap<>();
         connections.forEach(connection -> {
             ItemStack machine = connection.getMachineItem();
+            if (machine == null || machine.getItem() == null) {
+                return;
+            }
             String key = Item.itemRegistry.getNameForObject(machine.getItem()) + ":" + machine.getItemDamage();
             ItemStack result = machineStack.get(key);
             if (result == null)
@@ -311,12 +313,29 @@ public class ProductionPanel extends ModularPanel {
             else result.stackSize += machine.stackSize;
         });
 
-        return new Grid()
-            .gridOfWidthElements(6, machineStack.values(), ($x, $y, $index, itemStack) -> createMachineCell(itemStack))
-            .minElementMarginBottom(2)
-            .fullWidth()
-            .expanded()
-            .scrollable(new VerticalScrollData());
+        List<Flow> cells = new ArrayList<>();
+        machineStack.forEach((key, itemStack) -> {
+            Flow cell = Flow.row()
+                .childPadding(4)
+                .align(Alignment.CenterLeft)
+                .coverChildren()
+                .paddingRight(2)
+                .child(
+                    new ItemDisplayWidget().item(itemStack)
+                        .displayAmount(false)
+                        .size(16)
+                        .tooltipBuilder(builder -> DroneCentreGuiUtil.getTooltipFromItemSafely(builder, itemStack)));
+            cell.child(new TextWidget<>(": " + itemStack.stackSize));
+            cells.add(cell);
+        });
+        if (cells.isEmpty()) {
+            return IKey.lang("GT5U.gui.text.drone_no_data")
+                .asWidget();
+        }
+        ListWidget<IWidget, ?> listWidget = new ListWidget<>().widthRel(1);
+        cells.forEach(listWidget::child);
+        return listWidget.widthRel(1)
+            .expanded();
     }
 
     private Flow createMachineCell(ItemStack itemStack) {
@@ -378,9 +397,8 @@ public class ProductionPanel extends ModularPanel {
             })
             .collect(Collectors.toList());
 
-        return new Grid().gridOfWidthElements(5, cells, ($x, $y, $index, cell) -> cell)
-            .minElementMarginBottom(2)
-            .full()
-            .scrollable(new VerticalScrollData());
+        ListWidget<IWidget, ?> listWidget = new ListWidget<>().sizeRel(1);
+        cells.forEach(listWidget::child);
+        return listWidget.sizeRel(1);
     }
 }
