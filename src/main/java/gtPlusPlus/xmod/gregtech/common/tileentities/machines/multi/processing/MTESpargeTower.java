@@ -39,7 +39,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -267,14 +266,22 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         // check each layer
-        while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(mHeight - 1)
+        List<Integer> missingLayers = new ArrayList<>();
+
+        while (mHeight < 8) {
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
+            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-                errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, OutputHatch, 0, 1));
-                return;
+                missingLayers.add(mHeight + 1);
             }
-            // not top
+            if (mTopLayerFound) {
+                break;
+            }
             mHeight++;
+        }
+
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
         checkCasingMin(errors, mCasing, 45);
         if (!mTopLayerFound) {
@@ -282,6 +289,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         }
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
