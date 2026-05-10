@@ -1,5 +1,8 @@
 package gregtech.common.render;
 
+import gregtech.api.interfaces.IOreMaterial;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -8,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 import appeng.util.ReadableNumberConverter;
@@ -39,11 +43,15 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
+        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(FluidRegistry.getFluid(item.getItemDamage()));
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
+            int tint = 0xFFFFFF;
+            if (baseMaterial instanceof Material gtppMaterial) tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+            GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             // draw a simple rectangle for the inventory icon
