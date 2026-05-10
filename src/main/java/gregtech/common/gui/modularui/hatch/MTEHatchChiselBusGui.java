@@ -29,13 +29,13 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
         // Register slot groups
         syncManager.registerSlotGroup("inputs", normalSlots);
-        syncManager.registerSlotGroup("target", 1);
 
         Flow content = Flow.row()
             .coverChildrenHeight()
             .paddingLeft(3)
             .width(168 - 20)
-            .align(Alignment.CenterLeft)
+            .verticalCenter()
+            .leftRel(0)
             .mainAxisAlignment(Alignment.MainAxis.CENTER);
 
         // has to be list widget so it can scroll
@@ -46,7 +46,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
         Arrays.fill(matrix, "xxxx");
 
         // Target slot
-        content.child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, normalSlots).slotGroup("target")));
+        content.child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, normalSlots).singletonSlotGroup()));
         inputList.child(
             SlotGroupWidget.builder()
                 .matrix(matrix)

@@ -115,7 +115,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .syncHandler(groupHandler))
             .child(
                 Flow.column()
-                    .widthRel(1)
+                    .fullWidth()
                     .center()
                     .padding(8, 4)
                     .heightRel(0.95f)
@@ -246,11 +246,11 @@ public class DroneConnectionListPanel extends ModularPanel {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
                 .asWidget()
                 .textAlign(Alignment.CENTER)
-                .align(Alignment.CENTER)
+                .center()
                 .widthRel(0.95f)
                 .scale(2);
         } else {
-            ListWidget<IWidget, ?> droneListWidget = new DroneListWidget<>(lastScroll).sizeRel(1);
+            ListWidget<IWidget, ?> droneListWidget = new DroneListWidget<>(lastScroll).full();
 
             final Comparator<DroneConnection> sorter = switch (centre.getSortMode()) {
                 case NAME -> (o1, o2) -> Collator.getInstance(Locale.UK)
@@ -265,7 +265,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                 .sorted(sorter)
                 .map(connection -> {
                     Flow row = Flow.row()
-                        .widthRel(1)
+                        .fullWidth()
                         .coverChildrenHeight()
                         .childPadding(4)
                         .paddingRight(4)

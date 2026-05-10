@@ -132,7 +132,8 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.canStore(fluidStack);
+        return provider.getFilter()
+            .isAllowed(fluidStack);
     }
 
     @Override
