@@ -147,7 +147,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            updateSlots();
+            if (aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                updateSlots();
+            }
         }
     }
 
