@@ -3272,14 +3272,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.t3sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)));
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
+            .setRender(new InfinityMetaItemRenderer());
         ItemList.T4Sawblade.set(
             addItemWithLocalizationKeys(
                 T4Sawblade.ID,
                 "gt.item.t4sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)));
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Component_Grinder_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Diamond.ID,
