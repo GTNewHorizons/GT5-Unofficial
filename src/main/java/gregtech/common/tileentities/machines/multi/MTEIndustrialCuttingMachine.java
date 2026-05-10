@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
@@ -46,6 +47,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -78,6 +81,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
+    private static final int[] PARALLEL_PER_VOLTAGE_TIER = { 0, 2, 3, 4, 6 };
+    private static final double[] SPEED_MULTIPLIER = { 1.0D, 2.0D, 2.5D, 3.0D, 4.0D };
+    private static final double[] EU_MODIFIER = { 1.0D, 0.95D, 0.9D, 0.85D, 0.8D };
+
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
     public MTEIndustrialCuttingMachine(final int aID, final String aName, final String aNameRegional) {
@@ -97,8 +104,12 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cutting Machine, ICF")
-            .addBulkMachineInfo(4, 3f, 0.75f)
-            .addInfo("Energy Hatch Tier is limited by Glass Tier")
+            .addInfo("Requires a sawblade in the controller slot")
+            .addInfo("Sawblade upgrades:")
+            .addInfo("Tier 1 (IV/LuV): 2 parallels/Voltage Tier, 200% speed, 95% EU/t")
+            .addInfo("Tier 2 (ZPM/UV): 3 parallels/Voltage Tier, 250% speed, 90% EU/t")
+            .addInfo("Tier 3 (UHV/UEV): 4 parallels/Voltage Tier, 300% speed, 85% EU/t")
+            .addInfo("Tier 4 (UIV+): 6 parallels/Voltage Tier, 400% speed, 80% EU/t")
             .addInfo(
                 GTUtility.getColoredTierNameFromTier((byte) 11) + "+"
                     + EnumChatFormatting.GRAY
@@ -226,14 +237,60 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
+        return new ProcessingLogic().setSpeedBonusSupplier(this::getSpeedBonus)
+            .setEuModifierSupplier(this::getEuModifier)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
+    public CheckRecipeResult checkProcessing() {
+        if (!isCorrectMachinePart(getControllerSlot())) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        return super.checkProcessing();
+    }
+
+    @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return getParallelPerVoltageTier(getControllerSlot()) * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return getSawbladeTier(aStack) > 0;
+    }
+
+    @Override
+    protected boolean canUseControllerSlotForRecipe() {
+        return false;
+    }
+
+    private double getSpeedBonus() {
+        return getSpeedBonus(getControllerSlot());
+    }
+
+    private double getEuModifier() {
+        return getEuModifier(getControllerSlot());
+    }
+
+    private static int getSawbladeTier(ItemStack stack) {
+        if (ItemList.Sawblade_PlaceholderMaterial1.isStackEqual(stack, false, true)) return 1;
+        if (ItemList.Sawblade_PlaceholderMaterial2.isStackEqual(stack, false, true)) return 2;
+        if (ItemList.Sawblade_PlaceholderMaterial3.isStackEqual(stack, false, true)) return 3;
+        if (ItemList.Sawblade_PlaceholderMaterial4.isStackEqual(stack, false, true)) return 4;
+        return 0;
+    }
+
+    private static int getParallelPerVoltageTier(ItemStack stack) {
+        return PARALLEL_PER_VOLTAGE_TIER[getSawbladeTier(stack)];
+    }
+
+    private static double getSpeedBonus(ItemStack stack) {
+        return 1D / SPEED_MULTIPLIER[getSawbladeTier(stack)];
+    }
+
+    private static double getEuModifier(ItemStack stack) {
+        return EU_MODIFIER[getSawbladeTier(stack)];
     }
 
     @Override

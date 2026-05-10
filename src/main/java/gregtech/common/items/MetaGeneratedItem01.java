@@ -308,6 +308,10 @@ import static gregtech.common.items.IDMetaItem01.Robot_Arm_UMV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_UV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_UXV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_ZPM;
+import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial1;
+import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial2;
+import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial3;
+import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial4;
 import static gregtech.common.items.IDMetaItem01.Schematic;
 import static gregtech.common.items.IDMetaItem01.Schematic_1by1;
 import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
@@ -3248,6 +3252,34 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L),
                 OreDictNames.craftingDiamondBlade));
+        ItemList.Sawblade_PlaceholderMaterial1.set(
+            addItemWithLocalizationKeys(
+                Sawblade_PlaceholderMaterial1.ID,
+                "gt.item.sawblade.placeholder_material_1.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
+        ItemList.Sawblade_PlaceholderMaterial2.set(
+            addItemWithLocalizationKeys(
+                Sawblade_PlaceholderMaterial2.ID,
+                "gt.item.sawblade.placeholder_material_2.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
+        ItemList.Sawblade_PlaceholderMaterial3.set(
+            addItemWithLocalizationKeys(
+                Sawblade_PlaceholderMaterial3.ID,
+                "gt.item.sawblade.placeholder_material_3.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)));
+        ItemList.Sawblade_PlaceholderMaterial4.set(
+            addItemWithLocalizationKeys(
+                Sawblade_PlaceholderMaterial4.ID,
+                "gt.item.sawblade.placeholder_material_4.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)));
         ItemList.Component_Grinder_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Diamond.ID,
