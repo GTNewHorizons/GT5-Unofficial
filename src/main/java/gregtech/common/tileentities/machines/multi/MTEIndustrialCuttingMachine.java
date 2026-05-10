@@ -274,10 +274,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private static int getSawbladeTier(ItemStack stack) {
-        if (ItemList.Sawblade_PlaceholderMaterial1.isStackEqual(stack, false, true)) return 1;
-        if (ItemList.Sawblade_PlaceholderMaterial2.isStackEqual(stack, false, true)) return 2;
-        if (ItemList.Sawblade_PlaceholderMaterial3.isStackEqual(stack, false, true)) return 3;
-        if (ItemList.Sawblade_PlaceholderMaterial4.isStackEqual(stack, false, true)) return 4;
+        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return 1;
+        if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return 2;
+        if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return 3;
+        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return 4;
         return 0;
     }
 

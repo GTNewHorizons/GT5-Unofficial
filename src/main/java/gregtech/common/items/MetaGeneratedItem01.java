@@ -308,10 +308,6 @@ import static gregtech.common.items.IDMetaItem01.Robot_Arm_UMV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_UV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_UXV;
 import static gregtech.common.items.IDMetaItem01.Robot_Arm_ZPM;
-import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial1;
-import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial2;
-import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial3;
-import static gregtech.common.items.IDMetaItem01.Sawblade_PlaceholderMaterial4;
 import static gregtech.common.items.IDMetaItem01.Schematic;
 import static gregtech.common.items.IDMetaItem01.Schematic_1by1;
 import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
@@ -444,6 +440,10 @@ import static gregtech.common.items.IDMetaItem01.Steam_Valve_IV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_LV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_MV;
 import static gregtech.common.items.IDMetaItem01.SuperconductorComposite;
+import static gregtech.common.items.IDMetaItem01.T1Sawblade;
+import static gregtech.common.items.IDMetaItem01.T2Sawblade;
+import static gregtech.common.items.IDMetaItem01.T3Sawblade;
+import static gregtech.common.items.IDMetaItem01.T4Sawblade;
 import static gregtech.common.items.IDMetaItem01.Tesseract;
 import static gregtech.common.items.IDMetaItem01.Thermos_Can_Empty;
 import static gregtech.common.items.IDMetaItem01.Tool_Cheat;
@@ -3252,31 +3252,31 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L),
                 OreDictNames.craftingDiamondBlade));
-        ItemList.Sawblade_PlaceholderMaterial1.set(
+        ItemList.T1Sawblade.set(
             addItemWithLocalizationKeys(
-                Sawblade_PlaceholderMaterial1.ID,
-                "gt.item.sawblade.placeholder_material_1.name",
+                T1Sawblade.ID,
+                "gt.item.t1sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
-        ItemList.Sawblade_PlaceholderMaterial2.set(
+        ItemList.T2Sawblade.set(
             addItemWithLocalizationKeys(
-                Sawblade_PlaceholderMaterial2.ID,
-                "gt.item.sawblade.placeholder_material_2.name",
+                T2Sawblade.ID,
+                "gt.item.t2sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
-        ItemList.Sawblade_PlaceholderMaterial3.set(
+        ItemList.T3Sawblade.set(
             addItemWithLocalizationKeys(
-                Sawblade_PlaceholderMaterial3.ID,
-                "gt.item.sawblade.placeholder_material_3.name",
+                T3Sawblade.ID,
+                "gt.item.t3sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)));
-        ItemList.Sawblade_PlaceholderMaterial4.set(
+        ItemList.T4Sawblade.set(
             addItemWithLocalizationKeys(
-                Sawblade_PlaceholderMaterial4.ID,
-                "gt.item.sawblade.placeholder_material_4.name",
+                T4Sawblade.ID,
+                "gt.item.t4sawblade.name",
                 "",
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)));
