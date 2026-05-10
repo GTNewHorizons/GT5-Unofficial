@@ -2562,6 +2562,7 @@ public class Textures {
             GTUtility.addTexturePage((byte) 2);
             GTUtility.addTexturePage((byte) 8);
             GTUtility.addTexturePage((byte) 16);
+            GTUtility.addTexturePage((byte) 17);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 

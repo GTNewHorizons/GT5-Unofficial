@@ -90,7 +90,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
                 'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1L), 'C', "circuitGood", 'B',
-                ItemList.IC2_AdvBattery.get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.battery, Materials.MV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_LV),
@@ -106,7 +106,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
                 'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), 'C', "circuitAdvanced", 'B',
-                ItemList.IC2_EnergyCrystal.get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.battery, Materials.HV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.TESLASTAFF),
