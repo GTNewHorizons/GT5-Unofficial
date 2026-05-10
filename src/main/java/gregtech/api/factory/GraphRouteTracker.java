@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.Pair;
 
 public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>, TNotable extends INotableFactoryElement<TNotable, TRouteInfo>, TRouteInfo extends IRouteInfo<TRouteInfo>> {
 
+    @SuppressWarnings("rawtypes")
     private static final RoutedNode[] EMPTY_NODE_ARRAY = new RoutedNode[0];
 
     public final HashMap<TNotable, RoutedNode<TNotable, TRouteInfo>[]> edges = new HashMap<>();
@@ -67,6 +68,11 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         }
     }
 
+    private static <TNotable, TRouteInfo> RoutedNode<TNotable, TRouteInfo>[] emptyNodeArray() {
+        // noinspection unchecked
+        return EMPTY_NODE_ARRAY;
+    }
+
     public void iterateNetworkBFS(TNotable start, NetworkVisitor<TNotable, TRouteInfo> visitor) {
         StepQueue<TNotable, TRouteInfo> queue = new StepQueue<>();
 
@@ -80,7 +86,7 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
             if (result == VisitorResult.Break) break;
             if (result == VisitorResult.SkipNode) continue;
 
-            for (var edge : edges.get(step.node())) {
+            for (var edge : edges.getOrDefault(step.node(), emptyNodeArray())) {
                 if (!step.contains(edge.element())) {
                     queue.add(
                         new NetworkStep<>(
@@ -114,7 +120,7 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
 
             if (!visited.add(current)) continue;
 
-            for (var edge : edges.get(current)) {
+            for (var edge : edges.getOrDefault(current, emptyNodeArray())) {
                 if (filter != null && !filter.test(edge)) continue;
 
                 var totalRoute = route == null ? edge.routeInfo() : route.merge(edge.routeInfo());

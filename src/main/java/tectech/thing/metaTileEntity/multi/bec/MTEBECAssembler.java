@@ -79,6 +79,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
+    private boolean nanitesDirty = false;
     private NaniteTier currentNaniteTier;
     private int availableNanites;
 
@@ -119,7 +120,14 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     protected void clearHatches_EM() {
         super.clearHatches_EM();
 
-        naniteHatches.clear();
+        this.naniteHatches.clear();
+    }
+
+    @Override
+    protected void onStructureCheckFinished() {
+        super.onStructureCheckFinished();
+
+        this.nanitesDirty = true;
     }
 
     @Override
@@ -181,32 +189,31 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         super.onPostTick(igte, aTick);
 
         if (GTUtility.isServer()) {
-            boolean nanitesChanged = false;
-
             for (MTEHatchNanite hatch : naniteHatches) {
                 if (hatch.hasChanged()) {
-                    nanitesChanged = true;
+                    this.nanitesDirty = true;
                     hatch.unmarkChanged();
                 }
             }
 
-            if (nanitesChanged) {
-                currentNaniteTier = null;
-                availableNanites = 0;
+            if (this.nanitesDirty) {
+                this.nanitesDirty = false;
+                this.currentNaniteTier = null;
+                this.availableNanites = 0;
 
-                for (MTEHatchNanite hatch : naniteHatches) {
+                for (MTEHatchNanite hatch : this.naniteHatches) {
                     NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
 
                     if (tier == null) continue;
 
-                    if (currentNaniteTier == null || tier.ordinal() < currentNaniteTier.ordinal()) {
-                        currentNaniteTier = tier;
+                    if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
+                        this.currentNaniteTier = tier;
                     }
 
-                    availableNanites += hatch.getItemCount();
+                    this.availableNanites += hatch.getItemCount();
                 }
 
-                Iterator<MTEBECIONode> iter = ioNodes.iterator();
+                Iterator<MTEBECIONode> iter = this.ioNodes.iterator();
 
                 while (iter.hasNext()) {
                     MTEBECIONode node = iter.next();
@@ -224,7 +231,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
                     // Intentionally share the same nanite count between every io node even though it doesn't make
                     // physical sense, so that proper automation is incentivized even more.
-                    node.setNaniteShare(currentNaniteTier, availableNanites);
+                    node.setNaniteShare(this.currentNaniteTier, this.availableNanites);
                 }
 
                 igte.setActive(!ioNodes.isEmpty());
@@ -287,6 +294,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         ioNodes.remove(node);
         node.setNaniteShare(null, 0);
         BECFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+
+        for (var node : new ArrayList<>(ioNodes)) {
+            node.disconnect();
+        }
+
+        ioNodes.clear();
     }
 
     @Override

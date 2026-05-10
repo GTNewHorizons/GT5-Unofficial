@@ -79,7 +79,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     private boolean contentsChanged = false;
 
-    private long fieldStrength;
+    private long fieldStrength = 1;
     private GTSoundLoop pillar, torus, torusFar;
 
     public MTEBECStorage(int aID, String aName) {
@@ -237,6 +237,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public void addCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared elsewhere, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return;
+        }
+
         storedCondensate.addTo(stack.getFluid(), stack.getStackSize());
         stack.setStackSize(0);
 
@@ -245,6 +251,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public boolean removeCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared elsewhere, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return false;
+        }
+
         long stored = storedCondensate.getLong(stack.getFluid());
 
         if (stored <= 0) {
@@ -340,7 +352,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @OCMethod
     public void setFieldStrength(long strength) {
-        fieldStrength = strength;
+        fieldStrength = Math.max(1, strength);
     }
 
     @OCMethod
@@ -459,7 +471,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 .addLongEditor(
                     IKey.lang("GT5U.gui.text.bec-field-strength"),
                     () -> fieldStrength,
-                    l -> fieldStrength = (long) l,
+                    l -> fieldStrength = l,
                     (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
                     IKey.lang("GT5U.gui.text.bec-stored"),

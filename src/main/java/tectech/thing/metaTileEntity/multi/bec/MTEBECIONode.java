@@ -131,7 +131,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         NaniteTierTooLow,
         PausedStep,
         PausedImmediate,
-        Crafting
+        Crafting,
+        InternalError,
     }
 
     @Desugar
@@ -436,35 +437,47 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     protected void incrementProgressTime() {
+        RecipeStep step = getCurrentStep();
+
+        // sanity check, these first four should never happen
+        if (step == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        this.requiredTier = step.nanite;
+        setRequiredTier(this.requiredTier);
+
+        if (this.requiredTier == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.requiredCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.consumedCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        // Assembler is missing or not running
+        if (this.assembler == null || this.assembler.mMaxProgresstime <= 0) {
+            state = NodeState.AssemblerOffline;
+            return;
+        }
+
         // Assembler can't deliver enough power; stall crafting
         if (!this.powered) {
             state = NodeState.Unpowered;
             return;
         }
 
-        RecipeStep step = getCurrentStep();
-
-        if (step == null) {
-            throw new IllegalStateException("current step was null");
-        }
-
-        this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
-
-        // sanity check, this should never happen
-        if (this.requiredTier == null) return;
-        if (this.assembler == null) return;
-        if (this.requiredCondensate == null) return;
-        if (this.consumedCondensate == null) return;
-
-        // if the provided tier is insufficient, do nothing
+        // if the provided tier is insufficient; do nothing
         if (this.providedTier == null || this.providedTier.tier < this.requiredTier.tier) {
             state = NodeState.NaniteTierTooLow;
-            return;
-        }
-
-        if (this.assembler.mMaxProgresstime <= 0) {
-            state = NodeState.AssemblerOffline;
             return;
         }
 
@@ -780,6 +793,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             case PausedStep -> "paused-step";
             case PausedImmediate -> "paused-immediate";
             case Crafting -> "crafting";
+            case InternalError -> "internal-error";
         };
     }
 
@@ -1018,6 +1032,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         aNBT.setInteger("minParallels", minParallel);
         aNBT.setInteger("maxParallels", maxParallel);
+        aNBT.setInteger("manualSlowdown", manualSlowdown);
 
         if (requiredNanites != null) {
             aNBT.setInteger("naniteCount", requiredNanites.length);
@@ -1060,6 +1075,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         minParallel = aNBT.getInteger("minParallels");
         maxParallel = aNBT.getInteger("maxParallels");
+        manualSlowdown = aNBT.getInteger("manualSlowdown");
 
         int count = aNBT.getInteger("naniteCount");
 

@@ -8185,6 +8185,7 @@ GT5U.gui.text.ionode_status.NaniteTierTooLow=§eInsufficient Nanite Tier
 GT5U.gui.text.ionode_status.PausedImmediate=Paused (Immediate)
 GT5U.gui.text.ionode_status.PausedStep=Paused (Step)
 GT5U.gui.text.ionode_status.Crafting=Crafting
+GT5U.gui.text.ionode_status.InternalError=§cInternal Error: Break + Replace I/O Node
 GT5U.gui.text.condensate_threshold=Condensate Amount
 GT5U.gui.text.entanglement-duration=Entanglement Duration: %s ticks
 GT5U.gui.text.bec-quota-required=Quota Required: %s
