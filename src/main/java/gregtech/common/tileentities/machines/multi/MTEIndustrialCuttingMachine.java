@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -45,6 +46,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -76,7 +78,6 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         GregTech.resourceDomain,
         "textures/model/cutter.png");
     private int casingAmount;
-    private int glassTier = -1;
     private boolean stopAllRendering;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
@@ -144,7 +145,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     new String[][] { { "  DBBBBB ", " DDAAAADB", " D~AAAADB", " DDDDDDDB" },
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement('A', chainAllGlasses())
                 .addElement('B', ofFrame(MaterialsAlloy.MARAGING300))
                 .addElement('C', ofSheetMetal(Materials.BlueSteel))
                 .addElement(
@@ -182,16 +183,18 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        glassTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 10
             && !mMufflerHatches.isEmpty()) {
-            int inputTier = (int) getInputVoltageTier();
-            if (glassTier < VoltageIndex.UMV && inputTier > glassTier) {
-                return false;
-            }
+            int sawbladeTier = getSawbladeTier(aStack);
+            if (sawbladeTier == 0) return false;
             if (!mExoticEnergyHatches.isEmpty()) {
                 if (!mEnergyHatches.isEmpty()) return false;
-                return (mExoticEnergyHatches.size() == 1) && glassTier >= VoltageIndex.UIV;
+                return sawbladeTier == 4 && mExoticEnergyHatches.size() == 1;
+            }
+
+            int maxAllowedEnergyHatchTier = getMaxAllowedEnergyHatchTier(sawbladeTier);
+            for (MTEHatchEnergy hatch : mEnergyHatches) {
+                if (hatch.mTier > maxAllowedEnergyHatchTier) return false;
             }
             return true;
         }
@@ -243,7 +246,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         if (!isCorrectMachinePart(getControllerSlot())) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -283,6 +286,16 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private static int getParallelPerVoltageTier(ItemStack stack) {
         return PARALLEL_PER_VOLTAGE_TIER[getSawbladeTier(stack)];
+    }
+
+    private static int getMaxAllowedEnergyHatchTier(int sawbladeTier) {
+        return switch (sawbladeTier) {
+            case 1 -> VoltageIndex.LuV;
+            case 2 -> VoltageIndex.UV;
+            case 3 -> VoltageIndex.UEV;
+            case 4 -> Integer.MAX_VALUE;
+            default -> 0;
+        };
     }
 
     private static double getSpeedBonus(ItemStack stack) {
