@@ -131,7 +131,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             .addEnergyHatch("Any Cutting Factory Frame", 1)
             .addMaintenanceHatch("Any Cutting Factory Frame", 1)
             .addMufflerHatch("Any Cutting Factory Frame", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Auynonymous")
+            .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         return tt;
     }
@@ -146,8 +146,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', ofFrame(MaterialsAlloy.MARAGING300))
-                .addElement('C', ofSheetMetal(Materials.BlueSteel))
+                .addElement('B', ofFrame(MaterialsAlloy.TANTALUM_CARBIDE))
+                .addElement('C', ofSheetMetal(Materials.BlackSteel))
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialCuttingMachine.class)
