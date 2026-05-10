@@ -50,7 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -185,16 +185,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         casingAmount = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 10
             && !mMufflerHatches.isEmpty()) {
-            int sawbladeTier = getSawbladeTier(aStack);
-            if (sawbladeTier == 0) return false;
             if (!mExoticEnergyHatches.isEmpty()) {
                 if (!mEnergyHatches.isEmpty()) return false;
-                return sawbladeTier == 4 && mExoticEnergyHatches.size() == 1;
-            }
-
-            int maxAllowedEnergyHatchTier = getMaxAllowedEnergyHatchTier(sawbladeTier);
-            for (MTEHatchEnergy hatch : mEnergyHatches) {
-                if (hatch.mTier > maxAllowedEnergyHatchTier) return false;
+                return mExoticEnergyHatches.size() == 1;
             }
             return true;
         }
@@ -247,8 +240,12 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        if (!isCorrectMachinePart(getControllerSlot())) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        int sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == 0) {
+            return SimpleCheckRecipeResult.ofFailure("sawblade_missing");
+        }
+        if (!canSawbladeAcceptEnergyHatches(sawbladeTier)) {
+            return SimpleCheckRecipeResult.ofFailure("sawblade_tier_not_high_enough");
         }
         return super.checkProcessing();
     }
@@ -286,6 +283,16 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private static int getParallelPerVoltageTier(ItemStack stack) {
         return PARALLEL_PER_VOLTAGE_TIER[getSawbladeTier(stack)];
+    }
+
+    private boolean canSawbladeAcceptEnergyHatches(int sawbladeTier) {
+        if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier == 4;
+
+        int maxAllowedEnergyHatchTier = getMaxAllowedEnergyHatchTier(sawbladeTier);
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            if (hatch.mTier > maxAllowedEnergyHatchTier) return false;
+        }
+        return true;
     }
 
     private static int getMaxAllowedEnergyHatchTier(int sawbladeTier) {
