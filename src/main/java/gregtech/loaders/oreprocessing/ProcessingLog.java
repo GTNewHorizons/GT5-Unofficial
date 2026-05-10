@@ -23,9 +23,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
-            new Object[] { "sLf", 'L', OrePrefixes.log.get(Materials.Wood) });
 
         short aMeta = (short) aStack.getItemDamage();
 
