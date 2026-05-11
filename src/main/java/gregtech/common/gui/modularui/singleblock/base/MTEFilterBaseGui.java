@@ -29,7 +29,7 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
 
         // change emit redstone button
         buttons.set(
-            2,
+            EMIT_REDSTONE_BUTTON_INDEX,
             new Pair<>(
                 supportsEmitRedstone(),
                 () -> createButton(
