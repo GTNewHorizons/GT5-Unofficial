@@ -1,8 +1,5 @@
 package gregtech.common.render;
 
-import gregtech.api.interfaces.IOreMaterial;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -10,15 +7,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-
 import net.minecraftforge.fluids.FluidRegistry;
+
 import org.lwjgl.opengl.GL11;
 
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.items.ItemFluidDisplay;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.material.Material;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
@@ -50,7 +50,8 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
             int tint = 0xFFFFFF;
-            if (baseMaterial instanceof Material gtppMaterial) tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+            if (baseMaterial instanceof Material gtppMaterial)
+                tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
             GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();

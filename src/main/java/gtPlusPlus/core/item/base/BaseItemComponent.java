@@ -228,7 +228,7 @@ public class BaseItemComponent extends Item {
     }
 
     public static int getMaterialCustomColor(Material material) {
-        switch(material.getRGBA()[3]) {
+        switch (material.getRGBA()[3]) {
             case 2:
                 // Mild Glow Effect
                 // 4 sec cycle, 200 control point. 20ms interval.
