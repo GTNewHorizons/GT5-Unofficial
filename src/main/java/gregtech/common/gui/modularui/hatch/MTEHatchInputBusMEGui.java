@@ -165,7 +165,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
                 's',
                 index -> new ItemSlot()
                     .slot(new ModularSlot(configItemHandler, index + SLOT_COUNT).accessibility(false, false))
-                    .background(GTGuiTextures.SLOT_ITEM_DARK))
+                    .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
             .build()
             .coverChildren();
     }
