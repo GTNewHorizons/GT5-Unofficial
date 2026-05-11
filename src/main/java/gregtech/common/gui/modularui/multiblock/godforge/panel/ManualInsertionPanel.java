@@ -12,12 +12,9 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -76,29 +73,34 @@ public class ManualInsertionPanel {
                 .style(EnumChatFormatting.DARK_GRAY)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .alignX(0.5f)
+                .horizontalCenter()
                 .marginTop(5));
 
-        Flow mainRow = new Row().size(SIZE_W - 10, 72)
-            .align(Alignment.TopLeft)
+        Flow mainRow = Flow.row()
+            .size(SIZE_W - 10, 72)
+            .topRel(0)
+            .leftRel(0)
             .marginLeft(5)
             .marginTop(16);
 
         // Required inputs and input progress columns
         mainRow.child(
-            new Column().size(36, 72)
+            Flow.column()
+                .size(36, 72)
                 .child(createCostRow(hypervisor, 0))
                 .child(createCostRow(hypervisor, 1))
                 .child(createCostRow(hypervisor, 2))
                 .child(createCostRow(hypervisor, 3)));
         mainRow.child(
-            new Column().size(36, 72)
+            Flow.column()
+                .size(36, 72)
                 .child(createCostRow(hypervisor, 4))
                 .child(createCostRow(hypervisor, 5))
                 .child(createCostRow(hypervisor, 6))
                 .child(createCostRow(hypervisor, 7)));
         mainRow.child(
-            new Column().size(36, 72)
+            Flow.column()
+                .size(36, 72)
                 .child(createCostRow(hypervisor, 8))
                 .child(createCostRow(hypervisor, 9))
                 .child(createCostRow(hypervisor, 10))
@@ -127,7 +129,8 @@ public class ManualInsertionPanel {
                     return true;
                 })
                 .size(BUTTON_W, BUTTON_H)
-                .align(Alignment.BottomLeft)
+                .bottomRel(0)
+                .leftRel(0)
                 .marginBottom(5)
                 .marginLeft(5)
                 .clickSound(ForgeOfGodsGuiUtil.getButtonSound()));
@@ -142,11 +145,19 @@ public class ManualInsertionPanel {
         syncManager.registerSlotGroup(SLOT_GROUP_SYNC_NAME, 4);
     }
 
-    private static ParentWidget<?> createCostRow(SyncHypervisor hypervisor, int index) {
+    private static Flow createCostRow(SyncHypervisor hypervisor, int index) {
         EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
-        return new ParentWidget<>().size(36, 18)
+        return Flow.row()
+            .size(36, 18)
+            .collapseDisabledChild()
+
+            // Widgets when there is no extra cost to display
+            .child(
+                GTGuiTextures.BUTTON_STANDARD_DISABLED.asWidget()
+                    .size(18)
+                    .setEnabledIf($ -> !hasExtraCost(upgradeSyncer, index)))
 
             // Widgets when there is an extra cost to display
             .child(
@@ -170,8 +181,7 @@ public class ManualInsertionPanel {
                             })
                             .tooltipAutoUpdate(true)
                             .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index))
-                            .size(18)
-                            .alignX(0))
+                            .size(18))
             .child(IKey.dynamic(() -> {
                 ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
                 ItemStack costStack = upgrade.getExtraCost()[index];
@@ -191,24 +201,15 @@ public class ManualInsertionPanel {
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(18)
-                .alignX(1)
                 .setEnabledIf(
                     $ -> hasExtraCost(upgradeSyncer, index)
                         && !isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)))
             .child(
                 GTGuiTextures.GREEN_CHECKMARK_11x9.asWidget()
                     .size(11, 9)
-                    .alignX(1)
                     .marginRight(4)
                     .marginTop(5)
-                    .setEnabledIf($ -> isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)))
-
-            // Widgets when there is no extra cost to display
-            .child(
-                GTGuiTextures.BUTTON_STANDARD_DISABLED.asWidget()
-                    .size(18)
-                    .alignX(0)
-                    .setEnabledIf($ -> !hasExtraCost(upgradeSyncer, index)));
+                    .setEnabledIf($ -> isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)));
     }
 
     private static boolean hasExtraCost(EnumSyncValue<ForgeOfGodsUpgrade> syncer, int index) {
@@ -236,7 +237,6 @@ public class ManualInsertionPanel {
             .matrix(matrix)
             .key('s', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup(SLOT_GROUP_SYNC_NAME)))
             .build()
-            .coverChildren()
-            .align(Alignment.CenterRight);
+            .rightRel(0);
     }
 }
