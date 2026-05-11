@@ -94,6 +94,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(111, Materials.TengamPurified);
         r(112, Materials.TengamAttuned);
         r(113, Materials.ExcitedDTPC);
+        r(114, Materials.InactiveCosmicSolder);
+        r(115, Materials.BoundlessCosmicSolder);
         r(118, Materials.NetherAir);
         r(119, Materials.NetherSemiFluid);
         r(120, Materials.NefariousGas);
