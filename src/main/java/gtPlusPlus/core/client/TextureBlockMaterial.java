@@ -42,6 +42,7 @@ public class TextureBlockMaterial extends TextureAtlasSprite {
         final int tB = tintInt & 0xFF;
 
         int[][] dest = this.framesTextureData.get(0);
+        boolean changed = false;
         for (int row = 0; row < dest.length; row++) {
             int[] src = this.basePixels[row];
             if (src == null) continue;
@@ -51,9 +52,11 @@ public class TextureBlockMaterial extends TextureAtlasSprite {
                 final int r = ((s >> 16) & 0xFF) * tR / 255;
                 final int g = ((s >> 8) & 0xFF) * tG / 255;
                 final int b = (s & 0xFF) * tB / 255;
-                out[i] = (s & 0xFF000000) | (r << 16) | (g << 8) | b;
+                final int toOut = (s & 0xFF000000) | (r << 16) | (g << 8) | b;
+                if (toOut != out[i]) changed = true;
+                out[i] = toOut;
             }
         }
-        TextureUtil.uploadTextureMipmap(dest, width, height, originX, originY, false, false);
+        if (changed) TextureUtil.uploadTextureMipmap(dest, width, height, originX, originY, false, false);
     }
 }
