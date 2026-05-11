@@ -1309,7 +1309,7 @@ public class WerkstoffLoader {
             .onlyDust(),
         87,
         TextureSet.SET_QUARTZ);
-    public static final Werkstoff LuVTierMaterial = new Werkstoff(
+    public static final Werkstoff RhodiumPlatedPalladium = new Werkstoff(
         Materials.Chrome.getRGBA(),
         "Rhodium-Plated Palladium",
         new Werkstoff.Stats().setCentrifuge(true)
@@ -1793,7 +1793,7 @@ public class WerkstoffLoader {
 
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
 
-        WerkstoffLoader.LuVTierMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
+        WerkstoffLoader.RhodiumPlatedPalladium.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.Ruridit.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.AdemicSteel.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
 
@@ -1844,7 +1844,7 @@ public class WerkstoffLoader {
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
 
-        SubTag.METAL.addTo(LuVTierMaterial.getBridgeMaterial());
+        SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
     }
 
     public static long toGenerateGlobal;
