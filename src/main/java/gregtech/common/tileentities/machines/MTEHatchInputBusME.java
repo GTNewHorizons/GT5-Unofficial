@@ -260,7 +260,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                        .func_152378_a(getBaseMetaTileEntity().getOwnerUuid()));
             }
         }
         return this.gridProxy;
