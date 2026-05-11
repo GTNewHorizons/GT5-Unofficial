@@ -2111,7 +2111,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_LuV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(WerkstoffLoader.LuVTierMaterial.getGTMaterial()) });
+                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_ZPM.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2411,7 +2411,7 @@ public class MTERecipeLoader implements Runnable {
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
                 OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-                OrePrefixes.plate.get(WerkstoffLoader.LuVTierMaterial.getGTMaterial()), 'P',
+                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()), 'P',
                 OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_ZPM.get(1L),
