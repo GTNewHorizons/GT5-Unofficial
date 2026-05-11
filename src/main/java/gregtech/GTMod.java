@@ -566,9 +566,7 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
-        if (Mods.GoodGenerator.isModLoaded()) {
-            NaquadahReworkRecipeLoader.Remover();
-        }
+        NaquadahReworkRecipeLoader.Remover();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
