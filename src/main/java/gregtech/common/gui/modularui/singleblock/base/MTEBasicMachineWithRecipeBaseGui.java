@@ -155,8 +155,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
                                 .markInventoryBeenModified();
                         })
                     .slotGroup("item_inv"))
-            .background(
-                GTGuiTextures.SLOT_ITEM_STANDARD,
+            .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
                 t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
@@ -191,7 +190,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
             .key(
                 'c',
                 i -> new ItemSlot()
-                    .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, false, false))
+                    .backgroundOverlay(
+                        GTGuiTextures.SLOT_ITEM_STANDARD,
+                        slotOverlayFunction.apply(i, false, false, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
                             .changeListener(
@@ -230,7 +231,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
             .key(
                 'c',
                 i -> new ItemSlot()
-                    .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, true, false))
+                    .backgroundOverlay(
+                        GTGuiTextures.SLOT_ITEM_STANDARD,
+                        slotOverlayFunction.apply(i, false, true, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
                             .changeListener(
