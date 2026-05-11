@@ -1816,7 +1816,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (aVoltage > mMetaTileEntity.maxEUInput()) {
             GTLog.writeExplosionLog(
                 this.mMetaTileEntity,
-                "Energy Explosion, injected " + aVoltage + "EU/t in a " + mMetaTileEntity.maxEUInput()
+                "Energy Explosion, injected " + aVoltage
+                    + "EU/t in a "
+                    + mMetaTileEntity.maxEUInput()
                     + "EU/t Machine!");
             doExplosion(aVoltage);
             return 0;
@@ -1824,9 +1826,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (increaseStoredEnergyUnits(
             aVoltage * (aAmperage = Math.min(
                 aAmperage,
-                Math.min(
-                    mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
-                    1 + ((euCapacity - storedEU) / aVoltage)))),
+                Math.min(mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes, 1 + ((euCapacity - storedEU) / aVoltage)))),
             true)) {
             mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;
