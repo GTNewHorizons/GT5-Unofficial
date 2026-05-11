@@ -242,7 +242,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                 }
             }.singletonSlotGroup(50))
                 .size(18)
-                .background(GTGuiTextures.SLOT_ITEM_NANOCHIP, GTGuiTextures.OVERLAY_SLOT_PATTERN_ME));
+                .backgroundOverlay(GTGuiTextures.SLOT_ITEM_NANOCHIP, GTGuiTextures.OVERLAY_SLOT_PATTERN_ME));
     }
 
     @SuppressWarnings("unchecked")
