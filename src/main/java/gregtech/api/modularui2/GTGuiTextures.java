@@ -316,7 +316,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_PRIMITIVE)
         .build();
-
+    public static final UITexture SLOT_FLUID_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_dark_gray")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_EMPTY = UITexture.builder()
         .location(GregTech.ID, "gui/slot/empty")
         .imageSize(18, 18)
