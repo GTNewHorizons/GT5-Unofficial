@@ -107,7 +107,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
             String tooltip = GTUtility.translate(
                 "gt.sawblade.tooltip.base",
-                EnumChatFormatting.WHITE,
+                EnumChatFormatting.LIGHT_PURPLE,
                 EnumChatFormatting.GRAY,
                 GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
                 EnumChatFormatting.GRAY,
@@ -155,22 +155,23 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cutting Machine, ICF")
-            .addInfo("Insert a sawblade into the controller slot to use")
-            .addInfo("Better sawblades give further bonuses")
-            .addInfo("With Transcendent Metal sawblade, multi-amp (NOT laser) hatches are allowed")
+            .addInfo("Requires a " + EnumChatFormatting.AQUA + "Sawblade" + EnumChatFormatting.GRAY + " in the controller slot to use")
+            .addInfo("Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give further bonuses")
+            .addInfo("With a " + EnumChatFormatting.DARK_GREEN + "Transcendent Metal Sawblade" + EnumChatFormatting.GRAY + ", one multi-amp hatch is allowed")
+            .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
             .addCasingInfoMin("Cutting Factory Frame", 10, false)
-            .addCasingInfoExactly("Maraging Steel 300 Frame Box", 18, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, true)
-            .addCasingInfoExactly("Blue Steel Sheetmetal", 13, false)
-            .addInputBus("Any Cutting Factory Frame", 1)
-            .addOutputBus("Any Cutting Factory Frame", 1)
-            .addInputHatch("Any Cutting Factory Frame", 1)
-            .addEnergyHatch("Any Cutting Factory Frame", 1)
-            .addMaintenanceHatch("Any Cutting Factory Frame", 1)
-            .addMufflerHatch("Any Cutting Factory Frame", 1)
+            .addCasingInfoExactly("Tantalum Carbide Frame Box", 18, false)
+            .addCasingInfoExactly("Any Tiered Glass", 16, false)
+            .addCasingInfoExactly("Black Steel Sheetmetal", 13, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         return tt;
