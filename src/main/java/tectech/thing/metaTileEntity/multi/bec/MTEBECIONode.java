@@ -49,6 +49,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.github.bsideup.jabel.Desugar;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
@@ -119,7 +120,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private boolean powered;
     private NodeState state = NodeState.Idle;
 
-    private int minParallel = 1, manualSlowdown = 0;
+    private int minParallel = 1, speedDivisor = 1;
 
     private final List<MTEHatchNaniteDetector> naniteDetectors = new ArrayList<>();
     private final List<MTEHatchIONodeController> controllerHatches = new ArrayList<>();
@@ -498,7 +499,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
-        int divisor = this.parallelRecipesInProgress * (1 + Math.max(this.slowdowns, this.manualSlowdown));
+        int divisor = this.parallelRecipesInProgress * Math.max(this.slowdowns + 1, this.speedDivisor);
 
         this.subtickCounter += availableNanites;
 
@@ -774,8 +775,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @OCMethod
-    public int getManualSlowdown() {
-        return manualSlowdown;
+    public int getSpeedDivisor() {
+        return speedDivisor;
     }
 
     @OCMethod
@@ -808,8 +809,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @OCMethod
-    public void setManualSlowdown(int manualSlowdown) {
-        this.manualSlowdown = manualSlowdown;
+    public void setSpeedDivisor(int speedDivisor) {
+        this.speedDivisor = Math.max(1, speedDivisor);
     }
 
     @Override
@@ -888,8 +889,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                             translate(
                                 "GT5U.gui.text.remaining_condensate",
                                 CondensateType.getCondensateName(e.getKey()),
-                                consumed,
-                                e.getLongValue()));
+                                NumberFormatUtil.formatFluid(consumed),
+                                NumberFormatUtil.formatFluid(e.getLongValue())));
                     }
                 }
 
@@ -953,10 +954,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     })
                 .addIntEditor(
                     IKey.lang("GT5U.gui.text.bec-speed-divisor"),
-                    () -> manualSlowdown,
-                    i -> manualSlowdown = i,
+                    () -> speedDivisor,
+                    i -> speedDivisor = i,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(0, Integer.MAX_VALUE);
+                        widget.setNumbers(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -1032,7 +1033,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         aNBT.setInteger("minParallels", minParallel);
         aNBT.setInteger("maxParallels", maxParallel);
-        aNBT.setInteger("manualSlowdown", manualSlowdown);
+        aNBT.setInteger("speedDivisor", speedDivisor);
 
         if (requiredNanites != null) {
             aNBT.setInteger("naniteCount", requiredNanites.length);
@@ -1075,7 +1076,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         minParallel = aNBT.getInteger("minParallels");
         maxParallel = aNBT.getInteger("maxParallels");
-        manualSlowdown = aNBT.getInteger("manualSlowdown");
+        speedDivisor = aNBT.getInteger("speedDivisor");
 
         int count = aNBT.getInteger("naniteCount");
 
