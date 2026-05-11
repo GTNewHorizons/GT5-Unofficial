@@ -111,7 +111,6 @@ public class CoverBaseGui<T extends Cover> {
             panel.child(
                 new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
-            mainColumn.paddingRight(getTickRateButtonPadding());
         }
         if (!data.isPopUp() && doesBindPlayerInventory()) {
             mainColumn.child(
@@ -187,10 +186,6 @@ public class CoverBaseGui<T extends Cover> {
 
     protected boolean shouldIncludeTitleInPopUp() {
         return true;
-    }
-
-    protected int getTickRateButtonPadding() {
-        return 20;
     }
 
 }
