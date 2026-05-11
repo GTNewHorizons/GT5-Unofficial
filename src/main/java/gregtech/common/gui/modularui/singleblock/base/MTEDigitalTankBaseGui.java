@@ -100,7 +100,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         return new FluidSlot().syncHandler(fluidSlotSH)
             .bottomRel(0)
             .rightRel(0)
-            .background(GTGuiTextures.SLOT_FLUID_TANK);
+            .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
@@ -173,7 +173,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
                 .bottomRel(0)
                 .rightRel(0)
-                .background(GTGuiTextures.SLOT_FLUID_TANK));
+                .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
     }
