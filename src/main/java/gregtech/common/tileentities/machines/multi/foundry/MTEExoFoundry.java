@@ -526,7 +526,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addCasingInfoExactlyColored(
                 "Inner Foundry Siphon Casing",
                 EnumChatFormatting.GRAY,
-                281,
+                282,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
