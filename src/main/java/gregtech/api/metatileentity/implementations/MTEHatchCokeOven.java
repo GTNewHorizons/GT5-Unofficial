@@ -156,6 +156,10 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public void onDescriptionPacket(NBTTagCompound data) {
         mode = Mode.loadNBTData(data);
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) {
+            base.issueTextureUpdate();
+        }
     }
 
     @Override
