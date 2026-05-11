@@ -16164,7 +16164,7 @@ public class MaterialsInit {
             .setChemicalFormula("\u03A8")
             .setIconSet(TextureSet.SET_SPACETIME)
             .setColor(Dyes.dyeBlack)
-            .setARGB(0x000F0F0F)
+            .setARGB(0x00202020)
             .addFluid()
             .addCell()
             .addDustItems()
