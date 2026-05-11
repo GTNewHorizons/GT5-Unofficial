@@ -174,7 +174,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
-                    {" II~II ", "IIJJJII", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IIJJJII", " IIIII "}
+                    {" II~II ", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", " IIIII "}
                     //spotless:on
                 }))
         .addShape(
@@ -193,9 +193,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('H', ofFrame(Materials.Duranium))
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
         .addElement(
-            'J',
+            'I',
             buildHatchAdder(MTEPCBFactory.class)
                 .atLeast(
                     InputHatch,
@@ -345,6 +344,17 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
         if (compatMode.isSet && compatMode.OCTier != 0) {
             if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ)) return false;
+        }
+
+        if (mTier == 3) {
+            int totalHatches = mInputHatches.size()
+                + mOutputBusses.size()
+                + mInputBusses.size()
+                + mMaintenanceHatches.size()
+                + getExoticAndNormalEnergyHatchList().size()
+                + naniteBuses.size();
+
+            if (totalHatches > 36) return false;
         }
 
         return true;
