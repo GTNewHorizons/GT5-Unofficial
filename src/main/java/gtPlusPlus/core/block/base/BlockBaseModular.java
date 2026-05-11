@@ -40,9 +40,13 @@ public class BlockBaseModular extends BasicBlock {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
+    private static boolean isCustomBlockOnly(Material material) {
+        return material.equals(ASTRAL_TITANIUM) || material.equals(CELESTIAL_TUNGSTEN)
+            || material.equals(CHRONOMATIC_GLASS);
+    }
+
     private static int getMaterialColour(Material material) {
-        if (material.equals(ASTRAL_TITANIUM) || material.equals(CELESTIAL_TUNGSTEN)
-            || material.equals(CHRONOMATIC_GLASS)) {
+        if (isCustomBlockOnly(material)) {
             return 0xFFFFFF;
         }
         return material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex();
@@ -175,15 +179,13 @@ public class BlockBaseModular extends BasicBlock {
         int tier = this.material.vTier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
 
-        boolean isCustom = this.material.equals(ASTRAL_TITANIUM) || this.material.equals(CELESTIAL_TUNGSTEN)
-            || this.material.equals(CHRONOMATIC_GLASS);
-        if (isCustom) {
+        if (isCustomBlockOnly(this.material)) {
             metType = "CUSTOM/" + this.material.getUnlocalizedName();
         }
 
         String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
 
-        if (isCustom && iIcon instanceof TextureMap) {
+        if (isCustomBlockOnly(this.material) && iIcon instanceof TextureMap) {
             ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
         }
 
