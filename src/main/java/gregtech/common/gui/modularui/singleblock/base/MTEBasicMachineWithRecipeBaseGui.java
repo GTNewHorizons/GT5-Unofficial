@@ -189,10 +189,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
                     .size(18))
             .key(
                 'c',
-                i -> new ItemSlot()
-                    .backgroundOverlay(
-                        GTGuiTextures.SLOT_ITEM_STANDARD,
-                        slotOverlayFunction.apply(i, false, false, false))
+                i -> new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, false, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
                             .changeListener(
@@ -231,9 +228,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
             .key(
                 'c',
                 i -> new ItemSlot()
-                    .backgroundOverlay(
-                        GTGuiTextures.SLOT_ITEM_STANDARD,
-                        slotOverlayFunction.apply(i, false, true, false))
+                    .backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
                             .changeListener(
