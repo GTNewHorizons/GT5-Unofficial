@@ -36,12 +36,11 @@ public class IntegratedCircuitGui {
             GTGuis.createPopUpPanel("programmed_circuit"),
             ItemIntegratedCircuit.ALL_VARIANTS).setHeaderItem(configurator)
                 .setTitle(IKey.lang("GT5U.item.programmed_circuit.select.header"))
-                // selected index 0 == config 1
                 .setSelected(
                     data.getUsedItemStack()
-                        .getItemDamage() - 1)
+                        .getItemDamage())
                 .setOnSelectedClientAction((selected, $) -> {
-                    onConfigured(selected + 1);
+                    onConfigured(selected);
                     MCHelper.closeScreen();
                 })
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
