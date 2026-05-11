@@ -312,6 +312,15 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.NuclearStar.get(16L))
+            .fluidInputs(Materials.Bedrockium.getPlasma(2*INGOTS))
+            .itemOutputs(ItemList.QuasiStar.get(1L))
+            .metadata(CompressionTierKey.INSTANCE, 2)
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 64))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1))
             // Require stabilized black hole
