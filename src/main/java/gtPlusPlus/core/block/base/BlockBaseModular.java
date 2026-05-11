@@ -2,12 +2,14 @@ package gtPlusPlus.core.block.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
@@ -18,9 +20,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gtPlusPlus.core.client.TextureBlockMaterial;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -158,17 +160,26 @@ public class BlockBaseModular extends BasicBlock {
     public void registerBlockIcons(final IIconRegister iIcon) {
         if (this.material == null || this.blockType == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.blockType.getTexture());
-        }
-        String metType = null;
-        TextureSet u = this.material.getTextureSet();
-        if (u != null) {
-            metType = u.mSetName;
+            return;
         }
 
-        metType = (metType == null ? "METALLIC" : metType);
+        String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
         int tier = this.material.vTier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-        this.blockIcon = iIcon.registerIcon(GregTech.ID + ":" + "materialicons/" + metType + "/" + aType);
+
+        boolean isCustom = this.material.equals(ASTRAL_TITANIUM) || this.material.equals(CELESTIAL_TUNGSTEN)
+            || this.material.equals(CHRONOMATIC_GLASS);
+        if (isCustom) {
+            metType = "CUSTOM/" + this.material.getUnlocalizedName();
+        }
+
+        String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
+
+        if (isCustom && iIcon instanceof TextureMap) {
+            ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
+        }
+
+        this.blockIcon = iIcon.registerIcon(iconName);
     }
 
     @Override
