@@ -79,6 +79,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         "textures/model/cutter.png");
     private int casingAmount;
     private boolean stopAllRendering;
+    private boolean renderSawblade;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -365,6 +366,18 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            boolean hasSawblade = isValidSawblade(getControllerSlot());
+            if (renderSawblade != hasSawblade) {
+                renderSawblade = hasSawblade;
+                aBaseMetaTileEntity.issueTileUpdate();
+            }
+        }
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
@@ -390,6 +403,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         NBTTagCompound data = super.getDescriptionData();
         data.setBoolean("stopAllRendering", stopAllRendering);
         data.setBoolean("machineFormed", mMachine);
+        data.setBoolean("renderSawblade", isValidSawblade(getControllerSlot()));
         return data;
     }
 
@@ -398,6 +412,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         super.onDescriptionPacket(data);
         stopAllRendering = data.getBoolean("stopAllRendering");
         mMachine = data.getBoolean("machineFormed");
+        renderSawblade = data.getBoolean("renderSawblade");
     }
 
     @SideOnly(Side.CLIENT)
@@ -409,7 +424,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (stopAllRendering || !mMachine) {
+        if (stopAllRendering || !mMachine || !renderSawblade) {
             return;
         }
 
