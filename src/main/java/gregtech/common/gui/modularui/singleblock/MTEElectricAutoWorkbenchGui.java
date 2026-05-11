@@ -46,7 +46,7 @@ public class MTEElectricAutoWorkbenchGui {
                     'S',
                     index -> new ItemSlot()
                         .slot(new ModularSlot(machine.inventoryHandler, index + 9).accessibility(false, true))
-                        .background(GTGuiTextures.SLOT_ITEM_DARK))
+                        .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
                 .build());
 
         panel.child(column);
