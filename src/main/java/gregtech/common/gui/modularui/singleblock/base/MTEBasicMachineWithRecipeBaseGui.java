@@ -227,8 +227,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
                     .size(18))
             .key(
                 'c',
-                i -> new ItemSlot()
-                    .backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
+                i -> new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
                     .slot(
                         new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
                             .changeListener(
