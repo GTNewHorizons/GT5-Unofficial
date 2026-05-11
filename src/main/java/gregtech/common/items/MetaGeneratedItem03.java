@@ -1366,7 +1366,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 QuasiStar.ID,
                 "gt.item.quasi_star.name",
                 "gt.item.quasi_star.tooltip",
-                SubTag.NO_UNIFICATION));
+                SubTag.NO_UNIFICATION))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
 
         ItemList.Cover_Metrics_Transmitter.set(
             addItemWithLocalizationKeys(

@@ -5242,7 +5242,7 @@ gt.item.apiary_upgrade.unlight.tooltip=Night upgrade for Industrial Apiary\nMaxi
 gt.item.nuclear_star.name=Nuclear Star
 gt.item.nuclear_star.tooltip=By the powers of Greg, I command this star to be really hot.
 gt.item.quasi_star.name=Quasi Star
-gt.item.quasi_star.tooltip=Can it truly be said to be stellar?
+gt.item.quasi_star.tooltip=Dark, darker, yet darker...
 gt.item.cover.metrics_transmitter.name=Metrics Transmitter Cover
 gt.item.cover.metrics_transmitter.tooltip=Taking Information Panels to the next level!\nCreates a GregTech Advanced Sensor Card when attached\nWorks across dimensions or if machine is dismantled\nRemoving this cover will destroy the linked card\n- Querns
 
