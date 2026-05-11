@@ -380,12 +380,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         oldOutput = getOutputVoltage();
                     }
 
-                    if (mEnergyConnectionsDirty && (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput())) {
+                    if (mEnergyConnectionsDirty) {
                         mEnergyConnectionsDirty = false;
-                        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                            final int ordinalSide = side.ordinal();
-                            mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
-                            mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+                        if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
+                            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                                final int ordinalSide = side.ordinal();
+                                mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
+                                mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+                            }
                         }
                     }
 
@@ -1811,7 +1813,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             || aVoltage <= 0
             || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
         final long euCapacity = mMetaTileEntity.maxEUStore();
-        final long storedEU = Math.min(mMetaTileEntity.getEUVar(), euCapacity);
+        final long storedEU = mMetaTileEntity.getEUVar();
         if (storedEU >= euCapacity) return 0;
         if (aVoltage > mMetaTileEntity.maxEUInput()) {
             GTLog.writeExplosionLog(
