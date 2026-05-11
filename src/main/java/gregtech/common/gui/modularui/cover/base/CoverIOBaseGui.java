@@ -88,7 +88,8 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                 () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
                     ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
                     : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
-            .asWidget();
+            .asWidget()
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

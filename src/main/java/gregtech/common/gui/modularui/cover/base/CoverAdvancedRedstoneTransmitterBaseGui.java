@@ -25,10 +25,9 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
         BooleanSyncValue invertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
         return super.makeButtonRow(uuid).child(
             Flow.row()
-                .width(60)
+                .coverChildren()
                 .fullHeight()
                 .child(
-
                     new ToggleButton().value(invertedSyncer)
                         .size(16)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
@@ -38,7 +37,8 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                     new TextWidget<>(
                         IKey.dynamic(
                             () -> invertedSyncer.getBoolValue() ? translateToLocal("gt.interact.desc.inverted")
-                                : translateToLocal("gt.interact.desc.normal"))).height(16)));
+                                : translateToLocal("gt.interact.desc.normal"))).height(16))
+                .paddingRight(TICK_RATE_BUTTON_SIZE));
     }
 
     // method for subclasses that have in-world functionality

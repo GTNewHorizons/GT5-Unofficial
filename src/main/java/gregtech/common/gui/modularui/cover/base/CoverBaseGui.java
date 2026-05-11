@@ -31,6 +31,7 @@ public class CoverBaseGui<T extends Cover> {
     protected static final int WIDGET_MARGIN = 5;
     protected static final int ROW_PADDING = 3;
     protected static final int ROW_ELEMENT_PADDING = 2;
+    protected static final int TICK_RATE_BUTTON_SIZE = 20;
 
     /**
      * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.

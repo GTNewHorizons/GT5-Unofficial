@@ -49,6 +49,7 @@ public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance>
                 .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
                 .child(
                     new Grid().coverChildren()
+                        .marginRight(4)
                         .minElementMargin(1, 1)
                         .alignment(Alignment.CenterLeft)
                         .row(

@@ -49,7 +49,8 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
             .child(createPrivacyModeButton(privateChannelSyncer))
             .child(
                 IKey.lang("gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq")
-                    .asWidget());
+                    .asWidget())
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 
     private IWidget createPrivacyModeButton(BooleanSyncValue privateChannelSyncer) {

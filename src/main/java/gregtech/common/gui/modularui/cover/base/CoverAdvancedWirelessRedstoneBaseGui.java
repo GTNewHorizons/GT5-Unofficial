@@ -31,39 +31,38 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
-        syncManager.syncValue("frequency", frequencySyncer);
         UUID uuid = data.getPlayer()
             .getUniqueID();
-        column.child(makeFrequencyRow().paddingTop(10))
+        column.child(makeFrequencyRow(frequencySyncer))
             .child(makeButtonRow(uuid))
             .child(makeThirdFlow(syncManager, data));
 
     }
 
-    protected Flow makeFrequencyRow() {
+    protected Flow makeFrequencyRow(StringSyncValue frequencySyncer) {
         return Flow.row()
-            .height(16)
+            .coverChildren(0, 16)
             .child(
-                new TextFieldWidget().syncHandler("frequency")
+                new TextFieldWidget().value(frequencySyncer)
                     .height(12)
                     .width(88)
                     .marginRight(2))
-            .child(new TextWidget(IKey.lang("gt.interact.desc.freq")))
+            .child(new TextWidget<>(IKey.lang("gt.interact.desc.freq")))
             .marginBottom(4);
     }
 
     protected Flow makeButtonRow(UUID uuid) {
         return Flow.row()
-            .coverChildren()
-            .height(20)
+            .coverChildren(0, 20)
             .child(
                 new ToggleButton().size(16, 16)
                     .value(new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)))
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .marginRight(buttonRowSpacing ? 74 : 2))
-            .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")).marginRight(20))
-            .marginBottom(4);
+            .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")))
+            .marginBottom(4)
+            .marginRight(TICK_RATE_BUTTON_SIZE);
     }
 
     // allows for overriding in subclasses for better ui positioning
