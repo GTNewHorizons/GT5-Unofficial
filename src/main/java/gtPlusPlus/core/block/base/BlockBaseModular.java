@@ -40,8 +40,16 @@ public class BlockBaseModular extends BasicBlock {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
+    private static int getMaterialColour(Material material) {
+        if (material.equals(ASTRAL_TITANIUM) || material.equals(CELESTIAL_TUNGSTEN)
+            || material.equals(CHRONOMATIC_GLASS)) {
+            return 0xFFFFFF;
+        }
+        return material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex();
+    }
+
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
-        this(material, blockType, material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex());
+        this(material, blockType, getMaterialColour(material));
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
