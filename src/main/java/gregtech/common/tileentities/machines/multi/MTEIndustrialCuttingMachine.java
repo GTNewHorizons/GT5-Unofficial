@@ -82,9 +82,58 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
-    private static final int[] PARALLEL_PER_VOLTAGE_TIER = { 0, 2, 3, 4, 6 };
-    private static final double[] SPEED_MULTIPLIER = { 1.0D, 2.0D, 2.5D, 3.0D, 4.0D };
-    private static final double[] EU_MODIFIER = { 1.0D, 0.95D, 0.9D, 0.85D, 0.8D };
+    public enum SawbladeTiers {
+
+        TungstenCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
+        MysteriousCrystal(3, 2.5F, 0.9F, VoltageIndex.UV, false),
+        Neutronium(4, 3.0F, 0.85F, VoltageIndex.UEV, false),
+        Transcendent(6, 4.0F, 0.8F, VoltageIndex.UXV, true);
+
+        final int parallelPerVoltageTier;
+        final float speedBoost, euModifier;
+        final int maxAllowedEnergyHatchTier;
+        final boolean supportsExotic;
+
+        SawbladeTiers(int parallelPerVoltageTier, float speedBoost, float euModifier, int maxAllowedEnergyHatchTier,
+            boolean supportsExotic) {
+            this.parallelPerVoltageTier = parallelPerVoltageTier;
+            this.speedBoost = 1F / speedBoost;
+            this.euModifier = euModifier;
+            this.maxAllowedEnergyHatchTier = maxAllowedEnergyHatchTier;
+            this.supportsExotic = supportsExotic;
+        }
+
+        public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
+            String tooltip = GTUtility.translate(
+                "gt.sawblade.tooltip.base",
+                EnumChatFormatting.WHITE,
+                EnumChatFormatting.GRAY,
+                GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.GOLD,
+                sawblade.parallelPerVoltageTier,
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.WHITE,
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.GREEN,
+                Math.round((1F / sawblade.speedBoost * 100) - 100),
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA,
+                Math.round(sawblade.euModifier * 100),
+                EnumChatFormatting.GRAY);
+
+            if (sawblade.supportsExotic) {
+                tooltip = tooltip + "\\n"
+                    + GTUtility.translate(
+                        "gt.sawblade.tooltip.exotic",
+                        EnumChatFormatting.BOLD,
+                        EnumChatFormatting.GREEN,
+                        EnumChatFormatting.RED);
+            }
+
+            return tooltip;
+        }
+    }
 
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -105,19 +154,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cutting Machine, ICF")
-            .addInfo("Requires a sawblade in the controller slot")
-            .addInfo("Sawblade upgrades:")
-            .addInfo("Tier 1 (IV/LuV): 2 parallels/Voltage Tier, 200% speed, 95% EU/t")
-            .addInfo("Tier 2 (ZPM/UV): 3 parallels/Voltage Tier, 250% speed, 90% EU/t")
-            .addInfo("Tier 3 (UHV/UEV): 4 parallels/Voltage Tier, 300% speed, 85% EU/t")
-            .addInfo("Tier 4 (UIV+): 6 parallels/Voltage Tier, 400% speed, 80% EU/t")
-            .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 11) + "+"
-                    + EnumChatFormatting.GRAY
-                    + " glass allows for single multi-amp energy hatch")
-            .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
-                    + "-glass unlocks all above energy tiers")
+            .addInfo("Insert a sawblade into the controller slot to use")
+            .addInfo("Better sawblades give further bonuses")
+            .addInfo("With Transcendent Metal sawblade, multi-amp (NOT laser) hatches are allowed")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
@@ -240,8 +279,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        int sawbladeTier = getSawbladeTier(getControllerSlot());
-        if (sawbladeTier == 0) {
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) {
             return SimpleCheckRecipeResult.ofFailure("sawblade_missing");
         }
         if (!canSawbladeAcceptEnergyHatches(sawbladeTier)) {
@@ -252,12 +291,14 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public int getMaxParallelRecipes() {
-        return getParallelPerVoltageTier(getControllerSlot()) * GTUtility.getTier(this.getMaxInputVoltage());
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 0;
+        return sawbladeTier.parallelPerVoltageTier * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return getSawbladeTier(aStack) > 0;
+        return isValidSawblade(aStack);
     }
 
     @Override
@@ -266,51 +307,36 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private double getSpeedBonus() {
-        return getSpeedBonus(getControllerSlot());
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 1D;
+        return sawbladeTier.speedBoost;
     }
 
     private double getEuModifier() {
-        return getEuModifier(getControllerSlot());
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 1D;
+        return sawbladeTier.euModifier;
     }
 
-    private static int getSawbladeTier(ItemStack stack) {
-        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return 1;
-        if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return 2;
-        if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return 3;
-        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return 4;
-        return 0;
+    private static SawbladeTiers getSawbladeTier(ItemStack stack) {
+        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TungstenCarbide;
+        if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.MysteriousCrystal;
+        if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Neutronium;
+        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Transcendent;
+        return null;
     }
 
-    private static int getParallelPerVoltageTier(ItemStack stack) {
-        return PARALLEL_PER_VOLTAGE_TIER[getSawbladeTier(stack)];
+    public static boolean isValidSawblade(ItemStack stack) {
+        return getSawbladeTier(stack) != null;
     }
 
-    private boolean canSawbladeAcceptEnergyHatches(int sawbladeTier) {
-        if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier == 4;
+    private boolean canSawbladeAcceptEnergyHatches(SawbladeTiers sawbladeTier) {
+        if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier.supportsExotic;
 
-        int maxAllowedEnergyHatchTier = getMaxAllowedEnergyHatchTier(sawbladeTier);
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > maxAllowedEnergyHatchTier) return false;
+            if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
         }
         return true;
-    }
-
-    private static int getMaxAllowedEnergyHatchTier(int sawbladeTier) {
-        return switch (sawbladeTier) {
-            case 1 -> VoltageIndex.LuV;
-            case 2 -> VoltageIndex.UV;
-            case 3 -> VoltageIndex.UEV;
-            case 4 -> Integer.MAX_VALUE;
-            default -> 0;
-        };
-    }
-
-    private static double getSpeedBonus(ItemStack stack) {
-        return 1D / SPEED_MULTIPLIER[getSawbladeTier(stack)];
-    }
-
-    private static double getEuModifier(ItemStack stack) {
-        return EU_MODIFIER[getSawbladeTier(stack)];
     }
 
     @Override
