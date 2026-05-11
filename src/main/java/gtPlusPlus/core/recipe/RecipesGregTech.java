@@ -565,8 +565,8 @@ public class RecipesGregTech {
                 ItemList.Electric_Motor_LuV.get(4),
                 GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
                 MaterialsAlloy.LAFIUM.getScrew(16),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.ring, 8),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.ring, 8),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.stick, 16),
                 Materials.Osmiridium.getPlates(32))
             .fluidInputs(
                 MaterialsAlloy.HELICOPTER.getFluidStack(32 * INGOTS),

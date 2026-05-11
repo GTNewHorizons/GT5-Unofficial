@@ -527,7 +527,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                        .func_152378_a(getBaseMetaTileEntity().getOwnerUuid()));
             }
         }
         return this.gridProxy;
