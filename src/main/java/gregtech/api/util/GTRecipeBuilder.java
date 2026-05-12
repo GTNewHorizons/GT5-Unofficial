@@ -490,16 +490,17 @@ public class GTRecipeBuilder {
      *             .itemInputs(new OreDictItemStack("gemAnyCarbon", 1))
      *             .itemOutputs(ItemList.DebugEnergyHatch.get(1))
      *             .fluidInputs(
+     *                      // Works with normal FluidStack inputs as well
+     *                      Materials.SulfuricAcid.get(1_000),
      *                      new SubstituteFluidStack(
-     *                          Materials.Lava.get(1_000),
      *                          // Each fluid has its own amount
+     *                          Materials.Lava.get(1_000),
      *                          Materials.Water.get(500))
      *              )
      *             .duration(5 * SECONDS)
      *             .eut(TierEU.RECIPE_LV)
      *             .addTo(assemblerRecipes);
      * }
-     * 
      * <pre/>
      */
     public GTRecipeBuilder fluidInputs(Object... fluids) {
