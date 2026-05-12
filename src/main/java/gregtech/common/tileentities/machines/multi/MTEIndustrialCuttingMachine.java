@@ -74,12 +74,14 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_PADDING = 0.25D;
     private static final int BLADE_FRAMES = 3;
     private static final long BLADE_FRAME_TICKS = 3L;
-    private static final ResourceLocation BLADE_TEXTURE = new ResourceLocation(
-        GregTech.resourceDomain,
-        "textures/model/cutter.png");
+    private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t3.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t4.png") };
     private int casingAmount;
     private boolean stopAllRendering;
-    private boolean renderSawblade;
+    private int renderSawbladeTier = -1;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -88,7 +90,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         TungstenCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
         MysteriousCrystal(3, 2.5F, 0.9F, VoltageIndex.UV, false),
         Neutronium(4, 3.0F, 0.85F, VoltageIndex.UEV, false),
-        Transcendent(6, 4.0F, 0.8F, VoltageIndex.UXV, true);
+        Transcendent(6, 4.0F, 0.8F, Integer.MAX_VALUE, true);
 
         final int parallelPerVoltageTier;
         final float speedBoost, euModifier;
@@ -105,12 +107,18 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         }
 
         public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
+            String hatchTierLimit = sawblade.maxAllowedEnergyHatchTier == Integer.MAX_VALUE
+                ? GTUtility.translate(
+                    "gt.sawblade.tooltip.hatch_tier_unlimited")
+                : GTUtility.translate(
+                    "gt.sawblade.tooltip.hatch_tier_limit",
+                    GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
+                    EnumChatFormatting.GRAY);
             String tooltip = GTUtility.translate(
                 "gt.sawblade.tooltip.base",
                 EnumChatFormatting.LIGHT_PURPLE,
                 EnumChatFormatting.GRAY,
-                GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
-                EnumChatFormatting.GRAY,
+                hatchTierLimit,
                 EnumChatFormatting.GOLD,
                 sawblade.parallelPerVoltageTier,
                 EnumChatFormatting.GRAY,
@@ -155,9 +163,18 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cutting Machine, ICF")
-            .addInfo("Requires a " + EnumChatFormatting.AQUA + "Sawblade" + EnumChatFormatting.GRAY + " in the controller slot to use")
-            .addInfo("Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give further bonuses")
-            .addInfo("With a " + EnumChatFormatting.DARK_GREEN + "Transcendent Metal Sawblade" + EnumChatFormatting.GRAY + ", one multi-amp hatch is allowed")
+            .addInfo(
+                "Requires a " + EnumChatFormatting.AQUA
+                    + "Sawblade"
+                    + EnumChatFormatting.GRAY
+                    + " in the controller slot to use")
+            .addInfo(
+                "Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give further bonuses")
+            .addInfo(
+                "With a " + EnumChatFormatting.DARK_GREEN
+                    + "Transcendent Metal Sawblade"
+                    + EnumChatFormatting.GRAY
+                    + ", one multi-amp hatch is allowed")
             .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
@@ -334,6 +351,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private boolean canSawbladeAcceptEnergyHatches(SawbladeTiers sawbladeTier) {
         if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier.supportsExotic;
+        if (sawbladeTier.maxAllowedEnergyHatchTier == Integer.MAX_VALUE) return true;
 
         for (MTEHatchEnergy hatch : mEnergyHatches) {
             if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
@@ -369,12 +387,12 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            boolean hasSawblade = isValidSawblade(getControllerSlot());
-            if (renderSawblade != hasSawblade) {
-                renderSawblade = hasSawblade;
-                aBaseMetaTileEntity.issueTileUpdate();
-            }
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        int sawbladeTierIndex = sawbladeTier == null ? -1 : sawbladeTier.ordinal();
+        if (renderSawbladeTier != sawbladeTierIndex) {
+            renderSawbladeTier = sawbladeTierIndex;
+            aBaseMetaTileEntity.issueTileUpdate();
         }
     }
 
@@ -402,9 +420,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound data = super.getDescriptionData();
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
         data.setBoolean("stopAllRendering", stopAllRendering);
         data.setBoolean("machineFormed", mMachine);
-        data.setBoolean("renderSawblade", isValidSawblade(getControllerSlot()));
+        data.setInteger("renderSawbladeTier", sawbladeTier == null ? -1 : sawbladeTier.ordinal());
         return data;
     }
 
@@ -413,7 +432,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         super.onDescriptionPacket(data);
         stopAllRendering = data.getBoolean("stopAllRendering");
         mMachine = data.getBoolean("machineFormed");
-        renderSawblade = data.getBoolean("renderSawblade");
+        renderSawbladeTier = data.getInteger("renderSawbladeTier");
     }
 
     @SideOnly(Side.CLIENT)
@@ -425,7 +444,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (stopAllRendering || !mMachine || !renderSawblade) {
+        if (base == null || stopAllRendering
+            || !mMachine
+            || renderSawbladeTier < 0
+            || renderSawbladeTier >= BLADE_TEXTURES.length) {
             return;
         }
 
@@ -441,7 +463,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURE);
+        Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURES[renderSawbladeTier]);
 
         GL11.glTranslated(x + context.centerX, y + context.centerY, z + context.centerZ);
 
