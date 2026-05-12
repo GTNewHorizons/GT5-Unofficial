@@ -3257,7 +3257,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 T1Sawblade.ID,
                 () -> GTUtility.translate("gt.item.t1sawblade.name"),
-                () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenCarbide),
+                () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
         ItemList.T2Sawblade.set(

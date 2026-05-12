@@ -87,7 +87,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     public enum SawbladeTiers {
 
-        TungstenCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
+        TungstenTitaniumCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
         MysteriousCrystal(3, 2.5F, 0.9F, VoltageIndex.UV, false),
         Neutronium(4, 3.0F, 0.85F, VoltageIndex.UEV, false),
         Transcendent(6, 4.0F, 0.8F, Integer.MAX_VALUE, true);
@@ -338,7 +338,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private static SawbladeTiers getSawbladeTier(ItemStack stack) {
-        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TungstenCarbide;
+        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TungstenTitaniumCarbide;
         if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.MysteriousCrystal;
         if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Neutronium;
         if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Transcendent;
