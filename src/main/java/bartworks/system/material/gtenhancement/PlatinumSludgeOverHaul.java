@@ -106,6 +106,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -834,7 +835,7 @@ public class PlatinumSludgeOverHaul {
         }
 
         // furnace
-        for (var entry : FurnaceRecipes.smelting()
+        for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.smelting()
             .getSmeltingList()
             .entrySet()) {
             if (!GTUtility.isStackValid(entry.getKey())) continue;
@@ -857,7 +858,7 @@ public class PlatinumSludgeOverHaul {
 
             Werkstoff mat = (ass.mMaterial.mMaterial.equals(Materials.Platinum)) ? PTMetallicPowder : PDMetallicPowder;
 
-            if (PlatinumSludgeOverHaul.isInBlackList((ItemStack) entry.getKey(), availableItemList)) continue;
+            if (PlatinumSludgeOverHaul.isInBlackList(entry.getKey(), availableItemList)) continue;
             entry.setValue(mat.get(prefix, stack.stackSize * 2));
         }
         // vanilla crafting
