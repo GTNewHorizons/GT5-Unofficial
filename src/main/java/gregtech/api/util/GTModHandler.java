@@ -1475,7 +1475,7 @@ public class GTModHandler {
             delayedRemovalByOutput.size());
 
         allRecipes.removeIf(recipe -> {
-            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                 return false;
             }
 
