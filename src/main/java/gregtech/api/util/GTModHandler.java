@@ -1435,7 +1435,7 @@ public class GTModHandler {
         for (int i = 0; i < size; i++) {
             final IRecipe recipe = allRecipes.get(i);
 
-            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                 continue;
             }
 
