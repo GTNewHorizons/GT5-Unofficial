@@ -2042,6 +2042,7 @@ public class GTUtility {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
+
     @Contract("null -> null")
     public static FluidStack copyOrNull(FluidStack stack) {
         if (isStackValid(stack)) return stack.copy();

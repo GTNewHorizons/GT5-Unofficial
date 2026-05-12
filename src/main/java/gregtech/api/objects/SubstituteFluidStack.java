@@ -1,14 +1,15 @@
 package gregtech.api.objects;
 
+import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SubTag;
 
 public class SubstituteFluidStack {
 
@@ -36,8 +37,7 @@ public class SubstituteFluidStack {
 
         for (Materials material : solderingMats) {
             int multiplier = material.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
-                : material.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4
-                : 2;
+                : material.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
 
             fluids.add(material.getMolten(baseAmount * multiplier));
         }

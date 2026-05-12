@@ -538,11 +538,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (fluidInputs != null) {
             for (int i = 0; i < mFluidInputs.length; i++) {
                 // Alternative FluidStacks for SubstituteFluidStack recipes
-                FluidStack[] alternatives = (mAltFluidInputs != null
-                    && i < mAltFluidInputs.length
-                    && mAltFluidInputs[i] != null)
-                    ? mAltFluidInputs[i]
-                    : (mFluidInputs[i] != null ? new FluidStack[]{mFluidInputs[i]} : null);
+                FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
+                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
 
                 if (alternatives == null || alternatives.length == 0) continue;
                 FluidStack selectedAlt = null;
@@ -661,11 +659,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             for (int i = 0; i < mFluidInputs.length; i++) {
-                FluidStack[] alternatives = (mAltFluidInputs != null
-                    && i < mAltFluidInputs.length
-                    && mAltFluidInputs[i] != null)
-                    ? mAltFluidInputs[i]
-                    : (mFluidInputs[i] != null ? new FluidStack[]{ mFluidInputs[i] } : null);
+                FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
+                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
 
                 if (alternatives == null || alternatives.length == 0) continue;
 
@@ -688,7 +684,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 // Consume from the chosen alternatives fluid pool
                 if (bestAlternative != null) {
-                    long consumed = (long)(bestAlternative.amount * Math.min(currentParallel, bestParallelForSlot));
+                    long consumed = (long) (bestAlternative.amount * Math.min(currentParallel, bestParallelForSlot));
                     fluidMap.mergeLong(bestAlternative.getFluid(), -consumed, Long::sum);
                 }
 
@@ -1383,7 +1379,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             int[] mFluidOutputChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue,
             boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
             boolean nbtSensitive, String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage,
-            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt, int[] mOreDictIds, FluidStack[][] mAltFluidInputs) {
+            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt, int[] mOreDictIds,
+            FluidStack[][] mAltFluidInputs) {
             super(
                 mInputs,
                 mOutputs,
@@ -1414,7 +1411,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
             int[] aInputChances, int[] aOutputChances, int[] aFluidInputChances, int[] aFluidOutputChances,
             FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-            ItemStack[][] aAlt,FluidStack[][] aFluidAlt) {
+            ItemStack[][] aAlt, FluidStack[][] aFluidAlt) {
             super(
                 aInputs,
                 aOutputs,

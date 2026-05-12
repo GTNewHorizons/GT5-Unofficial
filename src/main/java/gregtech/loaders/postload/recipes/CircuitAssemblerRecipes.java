@@ -9,7 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -17,6 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class CircuitAssemblerRecipes implements Runnable {
@@ -197,7 +197,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
         }
-
 
         GTValues.RA.stdBuilder()
             .itemInputs(

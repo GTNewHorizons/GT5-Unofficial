@@ -23,8 +23,8 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IRecipeMap;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.objects.OreDictItemStack;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
@@ -123,12 +123,12 @@ public class GTRecipeBuilder {
     GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-                            FluidStack[][] altFluidInputs, int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs,
-                            int[] inputChances, int[] outputChances, int[] fluidInputChances, int[] fluidOutputChances, Object special,
-                            int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
-                            boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
-                            RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision,
-                            boolean skip, boolean valid) {
+        FluidStack[][] altFluidInputs, int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs,
+        int[] inputChances, int[] outputChances, int[] fluidInputChances, int[] fluidOutputChances, Object special,
+        int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
+        boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
+        RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision,
+        boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -499,6 +499,7 @@ public class GTRecipeBuilder {
      *             .eut(TierEU.RECIPE_LV)
      *             .addTo(assemblerRecipes);
      * }
+     * 
      * <pre/>
      */
     public GTRecipeBuilder fluidInputs(Object... fluids) {
@@ -524,7 +525,7 @@ public class GTRecipeBuilder {
 
             } else if (obj instanceof FluidStack fluid) {
                 mainFluidList.add(fluid);
-                altFluidList.add(new FluidStack[]{fluid});
+                altFluidList.add(new FluidStack[] { fluid });
 
             } else {
                 throw new IllegalArgumentException("Unexpected type: " + obj.getClass());
@@ -862,6 +863,7 @@ public class GTRecipeBuilder {
     public Object[] getItemInputsOreDict() {
         return inputsOreDict;
     }
+
     public Object[] getFluidInputsInterchangeable() {
         return altFluidInputs;
     }

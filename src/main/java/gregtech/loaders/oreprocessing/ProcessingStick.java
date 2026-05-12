@@ -8,7 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -16,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -65,14 +65,14 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         new SubstituteFluidStack(
-                        Materials.Water.getFluid(
-                            Math.max(
-                                4,
-                                Math.min(
-                                    1000,
-                                    2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
-                                        * calculateRecipeEU(aMaterial, 4)
-                                        / 320))),
+                            Materials.Water.getFluid(
+                                Math.max(
+                                    4,
+                                    Math.min(
+                                        1000,
+                                        2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
+                                            * calculateRecipeEU(aMaterial, 4)
+                                            / 320))),
                             GTModHandler.getDistilledWater(
                                 Math.max(
                                     3,
@@ -80,9 +80,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                         750,
                                         2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
                                             * calculateRecipeEU(aMaterial, 4)
-                                            / 426)))
-                        )
-                    )
+                                            / 426)))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);

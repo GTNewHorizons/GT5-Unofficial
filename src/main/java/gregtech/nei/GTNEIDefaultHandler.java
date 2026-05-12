@@ -637,7 +637,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     if (widget.getMcSlot()
                         .getItemHandler() == templateContext.itemInputsInventory) {
 
-                        int i = widget.getMcSlot().getSlotIndex();
+                        int i = widget.getMcSlot()
+                            .getSlotIndex();
                         final Object input;
 
                         if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
@@ -695,18 +696,20 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
                             } else if (widget.getMcSlot()
                                 .getItemHandler() == templateContext.fluidInputsInventory) {
-                                    int i = widget.getMcSlot().getSlotIndex();
+
+                                    int i = widget.getMcSlot()
+                                        .getSlotIndex();
                                     final Object input;
 
                                     if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
                                         input = withAltRecipe.getAltRepresentativeFluidInput(i);
-                                    }
-                                    else {
-                                        FluidStack[] fluids = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter.apply(aRecipe);
+                                    } else {
+                                        FluidStack[] fluids = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter
+                                            .apply(aRecipe);
                                         if (i < fluids.length && fluids[i] != null && fluids[i].getFluid() != null)
-                                            input = GTUtility.getFluidDisplayStack(fluids[i], FluidDisplayStackMode.SHOWN);
-                                        else
-                                            input = null;
+                                            input = GTUtility
+                                                .getFluidDisplayStack(fluids[i], FluidDisplayStackMode.SHOWN);
+                                        else input = null;
                                     }
 
                                     if (input != null) {

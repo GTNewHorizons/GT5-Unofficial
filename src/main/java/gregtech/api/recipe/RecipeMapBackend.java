@@ -142,7 +142,10 @@ public class RecipeMapBackend {
         if (recipe.mFluidInputs != null) {
             for (FluidStack fluid : recipe.mFluidInputs) {
                 if (fluid == null || fluid.getFluid() == null) continue;
-                fluidIndex.put(fluid.getFluid().getName(), recipe);
+                fluidIndex.put(
+                    fluid.getFluid()
+                        .getName(),
+                    recipe);
             }
         }
         return addToItemMap(recipe);
@@ -176,7 +179,10 @@ public class RecipeMapBackend {
                     if (fluidStacks == null) continue;
                     for (FluidStack fluid : fluidStacks) {
                         if (fluid == null) continue;
-                        fluidIndex.put(fluid.getFluid().getName(), recipe);
+                        fluidIndex.put(
+                            fluid.getFluid()
+                                .getName(),
+                            recipe);
                     }
                 }
             }
