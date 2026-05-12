@@ -838,35 +838,47 @@ public class PlatinumSludgeOverHaul {
         for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.smelting()
             .getSmeltingList()
             .entrySet()) {
-            if (!GTUtility.isStackValid(entry.getKey())) continue;
-            if (!BWUtil.checkStackAndPrefix(entry.getKey())) continue;
+            ItemStack input = entry.getKey();
+            ItemStack output = entry.getValue();
 
-            ItemData association = GTOreDictUnificator.getAssociation(entry.getKey());
-            boolean isDust = dust.equals(association.mPrefix) || dustTiny.equals(association.mPrefix);
-            ItemStack stack = entry.getValue();
-            if (isDust && association.mMaterial.mMaterial.equals(Materials.Platinum)) continue;
+            if (!GTUtility.isStackValid(input)) continue;
+            if (!GTUtility.isStackValid(output)) continue;
 
-            if (!GTUtility.isStackValid(stack)) continue;
-            if (!BWUtil.checkStackAndPrefix(stack)) continue;
+            ItemData inputAssociation = GTOreDictUnificator.getAssociation(input);
+            if (!BWUtil.checkStackAndPrefix(inputAssociation)) continue;
 
-            ItemData ass = GTOreDictUnificator.getAssociation(stack);
-            OrePrefixes prefix = ass.mPrefix == nugget ? dustTiny : dust;
-            boolean isPlatinumOrPalladium = ass.mMaterial.mMaterial.equals(Materials.Platinum)
-                || ass.mMaterial.mMaterial.equals(Materials.Palladium);
+            if (inputAssociation.mMaterial.mMaterial == Materials.Platinum) {
+                if (inputAssociation.mPrefix.equals(dust) || inputAssociation.mPrefix.equals(dustTiny)) {
+                    continue;
+                }
+            }
 
-            if (!isPlatinumOrPalladium) continue;
+            ItemData outputAssociation = GTOreDictUnificator.getAssociation(output);
+            if (!BWUtil.checkStackAndPrefix(outputAssociation)) continue;
 
-            Werkstoff mat = (ass.mMaterial.mMaterial.equals(Materials.Platinum)) ? PTMetallicPowder : PDMetallicPowder;
+            final Werkstoff newOutput;
+            if (outputAssociation.mMaterial.mMaterial == Materials.Platinum) {
+                newOutput = PTMetallicPowder;
+            } else if (outputAssociation.mMaterial.mMaterial == Materials.Palladium) {
+                newOutput = PDMetallicPowder;
+            } else {
+                continue;
+            }
 
-            if (PlatinumSludgeOverHaul.isInBlackList(entry.getKey(), availableItemList)) continue;
-            entry.setValue(mat.get(prefix, stack.stackSize * 2));
+            if (PlatinumSludgeOverHaul.isInBlackList(input, availableItemList)) continue;
+
+            OrePrefixes prefix = outputAssociation.mPrefix == nugget ? dustTiny : dust;
+            entry.setValue(newOutput.get(prefix, output.stackSize * 2));
         }
+
         // vanilla crafting
         CraftingManager.getInstance()
             .getRecipeList()
             .forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
+
         // gt crafting
         GTModHandler.sBufferRecipeList.forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
+
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             GTLog.err.println("Processing recipmap: " + map.unlocalizedName);
