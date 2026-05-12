@@ -1160,19 +1160,21 @@ public class PlatinumSludgeOverHaul {
         Block block = Block.getBlockFromItem(item);
         if (block instanceof GTGenericBlock && !(block instanceof GTBlockOre)) return true;
 
+        ItemData association = GTOreDictUnificator.getAssociation(stack);
+        boolean isAssociationValid = BWUtil.checkStackAndPrefix(association);
+
         for (ItemStack itemStack : availableItemList) {
-            if (!BWUtil.checkStackAndPrefix(stack) && GTUtility.areStacksEqual(itemStack, stack, true)) {
+            if (!isAssociationValid && GTUtility.areStacksEqual(itemStack, stack, true)) {
                 return true;
             }
         }
 
         if (item instanceof GTGenericItem) {
-            if (!BWUtil.checkStackAndPrefix(stack)) return false;
-            if (GTOreDictUnificator.getAssociation(stack).mPrefix != rawOre) {
+            if (!isAssociationValid) return false;
+            if (association.mPrefix != rawOre) {
                 return !Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST)
-                    .contains(GTOreDictUnificator.getAssociation(stack).mPrefix)
-                    || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
-                        .contains(GTOreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
+                    .contains(association.mPrefix) || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
+                        .contains(association.mMaterial.mMaterial);
             }
         }
 
@@ -1217,10 +1219,10 @@ public class PlatinumSludgeOverHaul {
                 return true;
             }
         }
-        if (!BWUtil.checkStackAndPrefix(stack)) {
+        if (!isAssociationValid) {
             return false;
         }
         return Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
-            .contains(GTOreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
+            .contains(association.mMaterial.mMaterial);
     }
 }
