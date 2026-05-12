@@ -115,7 +115,7 @@ public final class ItemParametrizerMemoryCard extends Item {
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
                 Parameter<?> parameter = controllerParameters.get(i);
-                if (!tag.getString("key")
+                if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
             }
 
