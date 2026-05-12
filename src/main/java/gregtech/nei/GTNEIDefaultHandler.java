@@ -28,6 +28,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.Range;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
@@ -532,14 +533,35 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         return drawTicks;
     }
 
+    /**
+     * Interface for NEI PositionedStack subclasses that contain fluid alternatives.
+     * <p>Example in {@link FixedPositionedStack}</p>
+     */
     public interface IFluidAlternativeStack {
 
+        /**
+         * Get all fluid alternatives represented by this PositionedStack
+         * @return Unmodifiable list of fluid alternatives.
+         */
+        @Nonnull
         List<FluidStack> getFluidAlternatives();
 
+        /**
+         * Get the currently selected fluid index for display purposes.
+         * @return Index for {@link #getFluidAlternatives()}, or -1 for primary fluid.
+         */
         int getSelectedFluidIndex();
 
+        /**
+         * Sets fluid alternative to be used
+         * @param index Valid index of {@link #getFluidAlternatives()}
+         */
         void setSelectedFluidIndex(int index);
 
+        /**
+         * Get default fluid for this slot.
+         * @return First fluid from list or null
+         */
         default FluidStack getDefaultFluidAlternative() {
             return getFluidAlternatives().isEmpty() ? null : getFluidAlternatives().get(0);
         }
@@ -636,7 +658,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
 
         @Override
-        public List<FluidStack> getFluidAlternatives() {
+        public @NotNull List<FluidStack> getFluidAlternatives() {
             if (fluidAlternatives == null) return Collections.emptyList();
             return Collections.unmodifiableList(fluidAlternatives);
         }
