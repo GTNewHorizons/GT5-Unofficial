@@ -240,8 +240,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         try {
-            if (!areAllTurbinesTheSame()) {
-                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+            if (!validateTurbinesForProcessing()) {
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 

@@ -165,6 +165,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
+    private int turbineRefillGraceTicks = 0;
     protected boolean looseFit = false;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
@@ -366,6 +367,18 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         }
     }
 
+    protected boolean validateTurbinesForProcessing() {
+        tryRefillTurbineHolder();
+        if (areAllTurbinesTheSame()) {
+            turbineRefillGraceTicks = 0;
+            return true;
+        }
+        if (turbineRefillGraceTicks <= 0) {
+            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+        }
+        return false;
+    }
+
     public boolean areAllTurbinesTheSame() {
         ItemStack aBaseTurbine = null;
         Materials aBaseMat = null;
@@ -428,10 +441,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         try {
-            tryRefillTurbineHolder();
-
-            if (!areAllTurbinesTheSame()) {
-                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+            if (!validateTurbinesForProcessing()) {
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
@@ -507,9 +517,20 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public boolean doRandomMaintenanceDamage() {
-        if (getMaxParallelRecipes() == 0) {
-            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+        if (turbineRefillGraceTicks > 0) {
+            startRecipeProcessing();
+            boolean hasTurbines = validateTurbinesForProcessing();
+            endRecipeProcessing();
+            if (hasTurbines) {
+                return true;
+            }
+            if (--turbineRefillGraceTicks <= 0) {
+                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+            }
             return false;
+        }
+        if (getMaxParallelRecipes() == 0) {
+            return validateTurbinesForProcessing();
         }
 
         if (mRuntime++ > 1000) {
@@ -525,10 +546,13 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
                         break;
                     }
                     damageTurbine(aTurbine, slot, lEUt / 5);
+                    if (aTurbine.stackSize <= 0) {
+                        break;
+                    }
                 }
             }
         }
-        return true;
+        return turbineRefillGraceTicks <= 0;
     }
 
     private void damageTurbine(ItemStack aTurbine, int slot, long aEUt) {
@@ -539,7 +563,9 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
             if (aTurbine.stackSize <= 0) {
                 turbineHolder.setStackInSlot(slot, null);
-                stopMachine(ShutDownReasonRegistry.NO_TURBINE);
+                turbineRefillGraceTicks = 20;
+                markDirty();
+                return;
             }
             markDirty();
         }
@@ -620,10 +646,12 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 20 == 0) {
+            if (turbineRefillGraceTicks <= 0 && aTick % 20 == 0) {
+                startRecipeProcessing();
                 tryRefillTurbineHolder();
+                endRecipeProcessing();
             }
-            if (this.maxProgresstime() <= 0) {
+            if (this.maxProgresstime() <= 0 && aBaseMetaTileEntity.isAllowedToWork()) {
                 stopMachine(ShutDownReasonRegistry.NONE);
             }
         }
@@ -633,6 +661,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     public void stopMachine(@NotNull ShutDownReason reason) {
         baseEff = 0;
         optFlow = 0;
+        turbineRefillGraceTicks = 0;
         super.stopMachine(reason);
     }
 
