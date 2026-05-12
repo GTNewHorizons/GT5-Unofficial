@@ -85,7 +85,8 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .addElement(
             'c',
-            StructureUtility.ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
+            StructureUtility
+                .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.RhodiumPlatedPalladium.getmID()))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)
