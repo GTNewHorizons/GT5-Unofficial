@@ -1674,6 +1674,10 @@ public class GTUtility {
         return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
     }
 
+    public static boolean isStackValid(FluidStack aStack) {
+        return (aStack != null) && aStack.getFluid() != null && aStack.amount >= 0;
+    }
+
     @Deprecated
     public static boolean isStackInvalid(Object aStack) {
         return !(aStack instanceof ItemStack stack) || isStackInvalid(stack);
@@ -2035,6 +2039,11 @@ public class GTUtility {
 
     @Contract("null -> null")
     public static ItemStack copyOrNull(ItemStack stack) {
+        if (isStackValid(stack)) return stack.copy();
+        return null;
+    }
+    @Contract("null -> null")
+    public static FluidStack copyOrNull(FluidStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }

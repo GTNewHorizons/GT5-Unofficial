@@ -636,13 +636,15 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 if (child instanceof SlotWidget widget) {
                     if (widget.getMcSlot()
                         .getItemHandler() == templateContext.itemInputsInventory) {
-                        int i = widget.getMcSlot()
-                            .getSlotIndex();
+
+                        int i = widget.getMcSlot().getSlotIndex();
                         final Object input;
+
                         if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
                             input = withAltRecipe.getAltRepresentativeInput(i);
                         } else {
                             ItemStack[] inputs = GTNEIDefaultHandler.this.neiProperties.itemInputsGetter.apply(aRecipe);
+
                             if (i < inputs.length && inputs[i] != null) {
                                 input = inputs[i];
                             } else {
@@ -693,15 +695,25 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
                             } else if (widget.getMcSlot()
                                 .getItemHandler() == templateContext.fluidInputsInventory) {
-                                    int i = widget.getMcSlot()
-                                        .getSlotIndex();
-                                    FluidStack[] inputs = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter
-                                        .apply(aRecipe);
-                                    if (inputs.length > i && inputs[i] != null && inputs[i].getFluid() != null) {
+                                    int i = widget.getMcSlot().getSlotIndex();
+                                    final Object input;
+
+                                    if (aRecipe instanceof GTRecipe.GTRecipe_WithAlt withAltRecipe) {
+                                        input = withAltRecipe.getAltRepresentativeFluidInput(i);
+                                    }
+                                    else {
+                                        FluidStack[] fluids = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter.apply(aRecipe);
+                                        if (i < fluids.length && fluids[i] != null && fluids[i].getFluid() != null)
+                                            input = GTUtility.getFluidDisplayStack(fluids[i], FluidDisplayStackMode.SHOWN);
+                                        else
+                                            input = null;
+                                    }
+
+                                    if (input != null) {
                                         mInputs.add(
                                             new FixedPositionedStack(
                                                 this,
-                                                GTUtility.getFluidDisplayStack(inputs[i], FluidDisplayStackMode.SHOWN),
+                                                input,
                                                 GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                 widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
