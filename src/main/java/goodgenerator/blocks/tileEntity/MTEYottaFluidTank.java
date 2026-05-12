@@ -289,8 +289,6 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return;
         }
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
-        checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
@@ -470,7 +468,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 3")
+            .addOutputHatch("Hint Block Number 3 (optional)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

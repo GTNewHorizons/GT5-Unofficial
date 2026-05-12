@@ -288,7 +288,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingCount, MIN_CASING);
-        checkHasOutputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }

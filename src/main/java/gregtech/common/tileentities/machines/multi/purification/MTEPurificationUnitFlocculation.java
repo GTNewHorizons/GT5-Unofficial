@@ -248,7 +248,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         checkHasOutputHatch(errors);
         // At most three output hatches allowed
         checkHatchMax(errors, OutputHatch, 3);
-        checkHasOutputBus(errors);
         checkCasingMin(errors, casingCount, MIN_CASING);
     }
 
