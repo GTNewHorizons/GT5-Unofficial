@@ -132,8 +132,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             // work
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "Base cycle time: "
+                    + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
+                        : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -183,7 +184,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
-        batchMultiplier = (batchMode && reachingVoidOrBedrock()) ? 128 : 1;
+        batchMultiplier = (batchMode && (!requiresMiningPipes() || reachingVoidOrBedrock())) ? 128 : 1;
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
@@ -208,19 +209,21 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        switch (tryLowerPipeState(true)) {
-            case SUCCESS -> {
-                workState = WorkState.DOWNWARD;
-                setElectricityStats();
-                return true;
-            }
-            case CANCELED -> {
-                workState = WorkState.UPWARD;
-                return true;
+        if (requiresMiningPipes()) {
+            switch (tryLowerPipeState(true)) {
+                case SUCCESS -> {
+                    workState = WorkState.DOWNWARD;
+                    setElectricityStats();
+                    return true;
+                }
+                case CANCELED -> {
+                    workState = WorkState.UPWARD;
+                    return true;
+                }
             }
         }
 
-        if (reachingVoidOrBedrock() && tryFillChunkList()) {
+        if ((!requiresMiningPipes() || reachingVoidOrBedrock()) && tryFillChunkList()) {
             if (mWorkChunkNeedsReload) {
                 mCurrentChunk = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
                 GTChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), null);
@@ -254,7 +257,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             mOil = tFluid.getFluid();
         }
         if (debugDriller) {
-            GTLog.out.println(" Driller on  fluid = " + mOil == null ? null : mOil.getName());
+            GTLog.out.println(" Driller on fluid = " + mOil == null ? null : mOil.getName());
         }
 
         tOil = new FluidStack(mOil, 0);
@@ -321,16 +324,22 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         // it can save tiny amount of CPU time when void protection is disabled
         if (protectsExcessFluid()) {
             FluidStack simulatedOil = pumpOil(speed, true);
+            simulatedOil = adjustPumpedOil(simulatedOil);
             if (!canOutputAll(new FluidStack[] { simulatedOil })) {
                 return ValidationResult.of(ValidationType.INVALID, null);
             }
         }
 
         FluidStack pumpedOil = pumpOil(speed, false);
+        pumpedOil = adjustPumpedOil(pumpedOil);
         mOilFlow = pumpedOil.amount;
         // Multiblock base already includes 1 parallel
         recipesDone += batchMultiplier - 1;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
+    }
+
+    protected FluidStack adjustPumpedOil(FluidStack pumpedOil) {
+        return pumpedOil;
     }
 
     /**
