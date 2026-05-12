@@ -62,6 +62,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.MissingOutputHatchDT;
 import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -84,6 +85,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     private static final int MACHINEMODE_DISTILLERY = 1;
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
+    protected int mCasing;
     protected int mHeight;
     protected boolean mTopLayerFound;
 
@@ -122,7 +124,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             .casingIndex(getCasingTextureId())
                             .hint(1)
                             .build(),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement(
                     'l',
                     ofChain(
@@ -132,31 +134,33 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             .hint(2)
                             .build(),
                         ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement(
                     'c',
                     ofChain(
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3)),
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(MTEAdvDistillationTower::addOutputToMachineList, getCasingTextureId(), 3)),
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(
                                 MTEAdvDistillationTower::addMaintenanceToMachineList,
                                 getCasingTextureId(),
                                 3)),
-                        onElementPass(MTEAdvDistillationTower::onTopLayerFound, ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                        onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
                         isAir()))
                 .addElement(
                     't',
-                    buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
-                        .disallowOnly(ForgeDirection.DOWN)
-                        .casingIndex(getCasingTextureId())
-                        .hint(2)
-                        .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                    ofChain(
+                        buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
+                            .disallowOnly(ForgeDirection.DOWN)
+                            .casingIndex(getCasingTextureId())
+                            .hint(2)
+                            .build(),
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -177,8 +181,13 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .add(tHatch) && mOutputHatches.add(tHatch);
     }
 
-    protected void onTopLayerFound() {
+    protected void onCasingFound() {
+        mCasing++;
+    }
+
+    protected void onTopLayerFound(boolean aIsCasing) {
         mTopLayerFound = true;
+        if (aIsCasing) onCasingFound();
     }
 
     @Override
@@ -254,6 +263,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         // reset
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
+        mCasing = 0;
         mTopLayerFound = false;
 
         // check base
@@ -277,6 +287,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         }
         if (mHeight == 1) {
             errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
+        }
+        if (mCasing < 7) {
+            errors.add(new TooFewCasings(mCasing, 7));
         }
         checkHatch(errors);
         if (!errors.isEmpty()) return;
