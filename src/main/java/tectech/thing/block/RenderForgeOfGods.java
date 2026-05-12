@@ -355,6 +355,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableCameraPosition.y,
             reusableCameraPosition.z);
 
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, beam_vboID);
+        GL20.glVertexAttribPointer(a_VertexID, 1, GL11.GL_FLOAT, false, 3 * Float.BYTES, 0);
+        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+
         GL20.glEnableVertexAttribArray(a_VertexID);
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
@@ -373,6 +377,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL20.glUniform3(u_SegmentArray, intenseBeamSegmentMatrixBuffer);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
 
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL20.glDisableVertexAttribArray(a_VertexID);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
 
