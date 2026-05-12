@@ -62,7 +62,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.structure.error.TooFewCasings;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -295,9 +294,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         if (mHeight == 1) {
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
-        if (mCasing < 7) {
-            errors.add(new TooFewCasings(mCasing, 7));
-        }
+        checkCasingMin(errors, mCasing, 7);
         checkHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasInputHatch(errors);
