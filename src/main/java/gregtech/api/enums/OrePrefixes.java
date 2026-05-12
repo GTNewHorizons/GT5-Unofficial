@@ -3254,7 +3254,7 @@ public class OrePrefixes {
         final String phraseKey = prefixKey + ".phrase";
         if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
             .trim()
-            .split(" ").length > 1) {
+            .indexOf(' ') != -1) {
             return GTInflectionManager.formatInflection(phraseKey, material.getLocalizedNameKey());
         }
         return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
@@ -3272,7 +3272,7 @@ public class OrePrefixes {
         final String phraseKey = prefixKey + ".phrase";
         if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialKey)
             .trim()
-            .split(" ").length > 1) {
+            .indexOf(' ') != -1) {
             return GTInflectionManager.formatInflection(phraseKey, materialKey);
         }
         return GTInflectionManager.formatInflection(prefixKey, materialKey);

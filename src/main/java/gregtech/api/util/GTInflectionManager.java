@@ -24,6 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.Splitter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +42,8 @@ public final class GTInflectionManager {
         .getEffectiveSide()
         .isServer();
     private static final Pattern CAPITALIZE_WORDS_PATTERN = Pattern.compile("\\p{L}+");
+    private static final Splitter SPLITTER = Splitter.on('/')
+        .omitEmptyStrings();
 
     private GTInflectionManager() {}
 
@@ -125,22 +128,18 @@ public final class GTInflectionManager {
      */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
-        if (!input.contains("s{")) {
-            return String.format(
-                unescape(input),
-                Arrays.stream(formatterKey)
-                    .map(StatCollector::translateToLocal)
-                    .toArray(Object[]::new));
-        }
-        if (IS_SERVER) {
-            return String.format(
-                unescape(input),
-                Arrays.stream(formatterKey)
-                    .map(StatCollector::translateToLocal)
-                    .toArray(Object[]::new));
+        if (!input.contains("s{") || IS_SERVER) {
+            try {
+                return String.format(
+                    unescape(input),
+                    Arrays.stream(formatterKey)
+                        .map(StatCollector::translateToLocal)
+                        .toArray(Object[]::new));
+            } catch (IllegalFormatException e) {
+                return "Format Error: " + input;
+            }
         }
 
-        List<String> params = new ArrayList<>();
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(input);
         boolean hasImplicit = false;
         boolean hasExplicit = false;
@@ -168,18 +167,10 @@ public final class GTInflectionManager {
                 return "Inflection Format Error: " + input;
             }
 
-            params.add(getInflection(formatterKey[targetPos], inflectionKey));
-            matcher.appendReplacement(sb, "%s");
+            matcher.appendReplacement(sb, getInflection(formatterKey[targetPos], inflectionKey));
         }
         matcher.appendTail(sb);
-        Object[] formattedArgs = params.toArray();
-
-        String cleanedPattern = unescape(sb.toString());
-        try {
-            return String.format(cleanedPattern, formattedArgs);
-        } catch (IllegalFormatException e) {
-            return "Illegal Format in Inflection: " + input;
-        }
+        return sb.toString();
     }
 
     private static String getInflection(String formatterKey, String key) {
@@ -188,11 +179,7 @@ public final class GTInflectionManager {
             return word;
         }
         String specialCaseKey = formatterKey;
-        final String[] targetRules = key.split("/");
-        for (String targetRule : targetRules) {
-            if (targetRule.isEmpty()) {
-                GT_FML_LOGGER.warn("A rule key is empty, full rule key: {}", key);
-            }
+        for (String targetRule : SPLITTER.split(key)) {
             specialCaseKey += "." + targetRule;
             if (StatCollector.canTranslate(specialCaseKey)) {
                 word = StatCollector.translateToLocal(specialCaseKey);
@@ -239,6 +226,7 @@ public final class GTInflectionManager {
                     .matcher(word);
                 if (m.matches()) {
                     word = m.replaceFirst(rule.replacement());
+                    break;
                 }
             }
         }
