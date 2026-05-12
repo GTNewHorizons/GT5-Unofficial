@@ -976,10 +976,6 @@ public enum GregtechItemList implements IItemContainer {
     LavaFilter,
 
     BitCoin,
-    HandPumpToken_I,
-    HandPumpToken_II,
-    HandPumpToken_III,
-    HandPumpToken_IV,
 
     RawHumanMeat,
     CookedHumanMeat,
