@@ -42,6 +42,8 @@ public final class GTInflectionManager {
         .getEffectiveSide()
         .isServer();
     private static final Pattern CAPITALIZE_WORDS_PATTERN = Pattern.compile("\\p{L}+");
+    private static final Splitter SPLITTER = Splitter.on('/')
+        .omitEmptyStrings();
 
     private GTInflectionManager() {}
 
@@ -177,9 +179,7 @@ public final class GTInflectionManager {
             return word;
         }
         String specialCaseKey = formatterKey;
-        for (String targetRule : Splitter.on("/")
-            .omitEmptyStrings()
-            .split(key)) {
+        for (String targetRule : SPLITTER.split(key)) {
             specialCaseKey += "." + targetRule;
             if (StatCollector.canTranslate(specialCaseKey)) {
                 word = StatCollector.translateToLocal(specialCaseKey);
