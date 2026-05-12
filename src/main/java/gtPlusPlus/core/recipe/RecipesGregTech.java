@@ -1578,6 +1578,22 @@ public class RecipesGregTech {
             .duration(0)
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1))
+            .metadata(FUEL_VALUE, 62)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
+            .metadata(FUEL_VALUE, 62)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
     }
 
     private static void extractorRecipes() {
