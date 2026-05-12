@@ -104,6 +104,7 @@ import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1120,39 +1121,62 @@ public class PlatinumSludgeOverHaul {
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static boolean checkRecipe(Object input, Materials mat) {
-        if (input instanceof List || input instanceof Object[]) {
-            Set lists = new HashSet(), stacks = new HashSet();
-            List ip = input instanceof List ? (List) input : new ArrayList();
-            Object[] ip2 = input instanceof Object[] ? (Object[]) input : GTValues.emptyObjectArray;
-
-            for (Object o : ip) {
-                if (o instanceof List) lists.add(o);
-                else if (o instanceof ItemStack) stacks.add(o);
-            }
-            for (Object o : ip2) {
-                if (o instanceof List) lists.add(o);
-                else if (o instanceof ItemStack) stacks.add(o);
-            }
-
-            for (Object o : lists) {
-                if (!((List) o).isEmpty()) stacks.add(((List) o).get(0));
-            }
-
-            boolean allSame = false;
-            for (Object stack : stacks) {
-                if (!(stack instanceof ItemStack)) {
-                    allSame = false;
-                    break;
-                }
-                allSame = BWUtil.checkStackAndPrefix((ItemStack) stack)
-                    && GTOreDictUnificator.getAssociation((ItemStack) stack).mMaterial.mMaterial.equals(mat);
-                if (!allSame) break;
-            }
-            return allSame;
+    public static boolean checkRecipe(Object input, Materials material) {
+        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
+            return false;
         }
-        return false;
+
+        Set<List<?>> lists = new HashSet<>();
+        Set<ItemStack> stacks = new HashSet<>();
+
+        List<?> listInput = input instanceof List<?> ? (List<?>) input : Collections.emptyList();
+        Object[] arrayInput = input instanceof Object[] ? (Object[]) input : GTValues.emptyObjectArray;
+
+        for (Object entry : listInput) {
+            if (entry instanceof List<?>list) {
+                lists.add(list);
+            } else if (entry instanceof ItemStack stack) {
+                stacks.add(stack);
+            }
+        }
+
+        for (Object entry : arrayInput) {
+            if (entry instanceof List<?>list) {
+                lists.add(list);
+            } else if (entry instanceof ItemStack stack) {
+                stacks.add(stack);
+            }
+        }
+
+        for (List<?> list : lists) {
+            if (list.isEmpty()) {
+                continue;
+            }
+
+            Object first = list.get(0);
+            if (!(first instanceof ItemStack stack)) {
+                return false;
+            }
+
+            stacks.add(stack);
+        }
+
+        if (stacks.isEmpty()) {
+            return false;
+        }
+
+        for (ItemStack stack : stacks) {
+            ItemData association = GTOreDictUnificator.getAssociation(stack);
+            if (!BWUtil.checkStackAndPrefix(association)) {
+                return false;
+            }
+
+            if (association.mMaterial.mMaterial != material) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static boolean isInBlackList(ItemStack stack, List<ItemStack> availableItemList) {
