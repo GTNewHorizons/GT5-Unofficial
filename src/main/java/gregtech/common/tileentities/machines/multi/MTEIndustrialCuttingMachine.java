@@ -108,8 +108,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
             String hatchTierLimit = sawblade.maxAllowedEnergyHatchTier == Integer.MAX_VALUE
-                ? GTUtility.translate(
-                    "gt.sawblade.tooltip.hatch_tier_unlimited")
+                ? GTUtility.translate("gt.sawblade.tooltip.hatch_tier_unlimited")
                 : GTUtility.translate(
                     "gt.sawblade.tooltip.hatch_tier_limit",
                     GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
