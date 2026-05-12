@@ -61,7 +61,7 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, XLST")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
+            .addInfo("Runs as fast as 16 Large Turbines of the same type")
             .addInfo("Right-click with screwdriver to enable loose fit")
             .addInfo("Optimal flow will increase or decrease depending on fitting")
             .addInfo("Loose fit increases flow in exchange for efficiency")
