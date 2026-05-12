@@ -109,6 +109,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -955,7 +956,8 @@ public class PlatinumSludgeOverHaul {
                     } else if (GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial
                         .equals(Materials.Palladium)) {
                             for (ItemStack mInput : recipe.mInputs) {
-                                if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                                if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList))
+                                    continue recipeloop;
                             }
                             if (dust.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
                                 || dustImpure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
@@ -1142,20 +1144,21 @@ public class PlatinumSludgeOverHaul {
     }
 
     private static boolean isInBlackList(ItemStack stack, List<ItemStack> availableItemList) {
-        if (stack == null || stack.getItem() instanceof BWMetaGeneratedItems
-            || MainMod.MOD_ID.equals(GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId)
-            || BartWorksCrossmod.MOD_ID.equals(GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId))
-            return true;
+        if (stack == null) return true;
 
-        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(NewHorizonsCoreMod.ID)
-            && !stack.getUnlocalizedName()
-                .contains("dust")
-            && !stack.getUnlocalizedName()
-                .contains("Dust"))
-            return true;
+        final Item item = stack.getItem();
+        if (item == null) return true;
+        if (item instanceof BWMetaGeneratedItems) return true;
 
-        if (Block.getBlockFromItem(stack.getItem()) instanceof GTGenericBlock
-            && !(Block.getBlockFromItem(stack.getItem()) instanceof GTBlockOre)) return true;
+        final String itemModId = GameRegistry.findUniqueIdentifierFor(item).modId;
+        if (MainMod.MOD_ID.equals(itemModId) || BartWorksCrossmod.MOD_ID.equals(itemModId)) return true;
+
+        final String stackUnlocalizedName = stack.getUnlocalizedName();
+        if (NewHorizonsCoreMod.ID.equals(itemModId) && !stackUnlocalizedName.contains("dust")
+            && !stackUnlocalizedName.contains("Dust")) return true;
+
+        Block block = Block.getBlockFromItem(item);
+        if (block instanceof GTGenericBlock && !(block instanceof GTBlockOre)) return true;
 
         for (ItemStack itemStack : availableItemList) {
             if (!BWUtil.checkStackAndPrefix(stack) && GTUtility.areStacksEqual(itemStack, stack, true)) {
@@ -1163,7 +1166,7 @@ public class PlatinumSludgeOverHaul {
             }
         }
 
-        if (stack.getItem() instanceof GTGenericItem) {
+        if (item instanceof GTGenericItem) {
             if (!BWUtil.checkStackAndPrefix(stack)) return false;
             if (GTOreDictUnificator.getAssociation(stack).mPrefix != rawOre) {
                 return !Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST)
@@ -1173,47 +1176,43 @@ public class PlatinumSludgeOverHaul {
             }
         }
 
-        if (stack.getItem() instanceof BaseItemComponent && !stack.getUnlocalizedName()
-            .contains("dust")
-            && !stack.getUnlocalizedName()
-                .contains("Dust")) {
+        if (item instanceof BaseItemComponent && !stackUnlocalizedName.contains("dust")
+            && !stackUnlocalizedName.contains("Dust")) {
             return true;
         }
-        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockBaseModular) {
+        if (block instanceof BlockBaseModular) {
             return true;
         }
-        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockFrameBox) {
+        if (block instanceof BlockFrameBox) {
             return true;
         }
-        if (stack.getItem() == HELICOPTER.getDust(1)
+        if (item == HELICOPTER.getDust(1)
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == HTGRItem.BURNED_TRISO) {
+        if (item == HTGRItem.BURNED_TRISO) {
             return true;
         }
-        if (stack.getItem() == WHITE_METAL.getDust(1)
+        if (item == WHITE_METAL.getDust(1)
             .getItem()) {
             return true;
         }
         if (Railcraft.isModLoaded()) {
-            if (Block.getBlockFromItem(stack.getItem())
-                .getUnlocalizedName()
+            if (block.getUnlocalizedName()
                 .equals("tile.railcraft.machine.zeta")
-                || Block.getBlockFromItem(stack.getItem())
-                    .getUnlocalizedName()
+                || block.getUnlocalizedName()
                     .equals("tile.railcraft.machine.eta")) {
                 return true;
             }
         }
         if (GalaxySpace.isModLoaded()) {
-            if (stack.getItem() == GTModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7)
+            if (item == GTModHandler.getModItem(GalaxySpace.ID, "metalsblock", 1L, 7)
                 .getItem()) {
                 return true;
             }
         }
         if (NewHorizonsCoreMod.isModLoaded()) {
-            if (stack.getItem() == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IndustryFrame", 1L)
+            if (item == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IndustryFrame", 1L)
                 .getItem()) {
                 return true;
             }
