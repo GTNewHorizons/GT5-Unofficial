@@ -565,8 +565,8 @@ public class RecipesGregTech {
                 ItemList.Electric_Motor_LuV.get(4),
                 GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
                 MaterialsAlloy.LAFIUM.getScrew(16),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.ring, 8),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.ring, 8),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.stick, 16),
                 Materials.Osmiridium.getPlates(32))
             .fluidInputs(
                 MaterialsAlloy.HELICOPTER.getFluidStack(32 * INGOTS),
@@ -1574,6 +1574,22 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(Ic2Items.pahoehoelavaCell.copy())
             .metadata(FUEL_VALUE, 24)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1))
+            .metadata(FUEL_VALUE, 62)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
+            .metadata(FUEL_VALUE, 62)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
