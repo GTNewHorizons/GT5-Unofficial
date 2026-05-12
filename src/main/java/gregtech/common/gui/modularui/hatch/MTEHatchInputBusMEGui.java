@@ -183,7 +183,13 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
 
         // manual slot
         mainColumn.child(
-            new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, hatch.getManualSlot()).slotGroup("item_inv")));
+            new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, hatch.getManualSlot()).slotGroup("item_inv"))
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
+                    t.addLine(
+                        EnumChatFormatting.GRAY + translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
+                            + EnumChatFormatting.RESET);
+                }));
 
         // arrow
         mainColumn.child(
