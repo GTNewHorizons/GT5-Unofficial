@@ -38,6 +38,9 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -137,6 +140,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.tryDisableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -254,10 +260,24 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                        .func_152378_a(getBaseMetaTileEntity().getOwnerUuid()));
             }
         }
         return this.gridProxy;
+    }
+
+    @MENetworkEventSubscribe
+    public void powerChangeME(MENetworkPowerStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void bootChangeME(MENetworkBootingStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
     }
 
     @Override

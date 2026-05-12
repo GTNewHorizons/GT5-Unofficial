@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
@@ -99,8 +100,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         return new FluidSlot().syncHandler(fluidSlotSH)
             .bottomRel(0)
             .rightRel(0)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true);
+            .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
@@ -164,7 +164,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
-            .color(Color.WHITE.main));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         screen.child(textColumn);
 
@@ -173,8 +173,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
                 .bottomRel(0)
                 .rightRel(0)
-                .disableThemeBackground(true)
-                .disableHoverThemeBackground(true));
+                .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
     }

@@ -2,12 +2,17 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTTooltipDataCache;
+import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
 
 public abstract class MTEFilterBase extends MTEBuffer {
 
@@ -26,9 +31,22 @@ public abstract class MTEFilterBase extends MTEBuffer {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public boolean isInvertFilter() {
+        return invertFilter;
+    }
+
+    public void setInvertFilter(boolean invertFilter) {
+        this.invertFilter = invertFilter;
+    }
+
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < NUM_INVENTORY_SLOTS;
+    }
+
+    @Override
+    protected int getMovableInventoryEnd() {
+        return NUM_INVENTORY_SLOTS;
     }
 
     @Override
@@ -53,7 +71,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
         return redstoneOutput;
     }
 
-    private int getEmptySlots() {
+    public int getEmptySlots() {
         int emptySlots = 0;
         for (int i = 0; i < NUM_INVENTORY_SLOTS; i++) {
             if (mInventory[i] == null) ++emptySlots;
@@ -94,7 +112,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEFilterBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

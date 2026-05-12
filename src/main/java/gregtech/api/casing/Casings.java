@@ -363,6 +363,12 @@ public enum Casings implements ICasing {
         () -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
     NanochipFirewallProjectionCasing(
         () -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
+    StrengthenedInanimateCasing
+        (()->GregTechAPI.sBlockCasings12,5,gt(16,5,5)),
+    PreciseStationaryCasing
+        (()->GregTechAPI.sBlockCasings12,6,gt(16,5,6)),
+    UltimateStaticCasing
+        (()->GregTechAPI.sBlockCasings12,7,gt(16,5,7)),
     VibrationSafeCasing
         (() -> GregTechAPI.sBlockCasings12, 9, gt(16, 5, 9)),
     AlchemicallyResistantThaumiumCasing
@@ -506,6 +512,11 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+    NaquadahReactorCasing
+        (() -> GregTechAPI.sBlockCasings13,15,gt(16,6,15)),
+
+
+    // Block Casings 14
 
     // Block Reinforced
     NaquadahReinforcedBlock
@@ -589,6 +600,14 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
+    // BEC
+    SuperconductivePlasmaEnergyConduit
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
+    ElectromagneticallyIsolatedCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
+    FineStructureConstantManipulator
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
@@ -608,6 +627,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
     NanochipComplexGlass
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    ElectromagneticWaveguide
+        (() -> GregTechAPI.sBlockGlass1, 9, -1),
 
     // ------------------ Bartworks Casings -----------------
 
@@ -1040,6 +1061,8 @@ public enum Casings implements ICasing {
         (() -> Loaders.MAR_Casing, 0, -1),
     FieldRestrictionGlass
         (() -> Loaders.fieldRestrictingGlass, 0, -1),
+    SCTurbineCasing
+        (() -> Loaders.supercriticalFluidTurbineCasing, 0, 1538),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

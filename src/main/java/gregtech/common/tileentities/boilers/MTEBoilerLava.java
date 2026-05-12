@@ -417,7 +417,7 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
         lavaTank.drain(amountToDrain, true);
-        this.mProcessingEnergy += drainedLava.amount * ENERGY_PER_LAVA;
+        addProcessingEnergy(drainedLava.amount * ENERGY_PER_LAVA);
     }
 
     @Override

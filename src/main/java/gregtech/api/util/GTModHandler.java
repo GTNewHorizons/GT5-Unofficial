@@ -51,6 +51,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.jetbrains.annotations.Nullable;
 
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
 import ganymedes01.etfuturum.recipes.SmokerRecipes;
@@ -565,7 +566,6 @@ public class GTModHandler {
             false,
             false,
             false,
-            false,
             true,
             aRecipe);
     }
@@ -618,7 +618,6 @@ public class GTModHandler {
             (aBitMask & RecipeBits.MIRRORED) != 0,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
-            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.REVERSIBLE) != 0,
             (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
@@ -632,7 +631,7 @@ public class GTModHandler {
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
-        addMachineCraftingRecipe(aResult, RecipeBits.BITSD, aRecipe, machineTier);
+        addMachineCraftingRecipe(aResult, RecipeBits.BITS, aRecipe, machineTier);
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
@@ -934,7 +933,7 @@ public class GTModHandler {
                     case 3    -> OrePrefixes.rotor.get(Materials.Steel);
                     case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
                     case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.rotor.get(ExternalMaterials.getRhodiumPlatedPalladium());
+                    case 6    -> OrePrefixes.rotor.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial());
                     case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
                     default   -> OrePrefixes.rotor.get(Materials.Osmium);
                 };
@@ -953,8 +952,8 @@ public class GTModHandler {
      * Internal realisation of the Crafting Recipe adding Process.
      */
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
+        boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
@@ -1213,7 +1212,6 @@ public class GTModHandler {
             null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
-            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
             aRecipe);
@@ -1223,8 +1221,8 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
-        boolean overwriteNBT, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
+        Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -2166,7 +2164,10 @@ public class GTModHandler {
         public static final long KEEPNBT = B[2];
         /**
          * Makes the Recipe Reverse Craftable in the Disassembler.
+         *
+         * @deprecated Disassembler was removed from the mod, this flag is no-op.
          */
+        @Deprecated
         public static final long DISMANTLEABLE = B[3];
         /**
          * Prevents the Recipe from accidentally getting removed by my own Handlers.
@@ -2219,9 +2220,12 @@ public class GTModHandler {
          */
         public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
-         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
+         * Used to be BITS | DISMANTLEABLE.
+         *
+         * @deprecated Use BITS instead.
          */
-        public static final long BITSD = BITS | DISMANTLEABLE;
+        @Deprecated
+        public static final long BITSD = BITS;
         /**
          * Combination of common bits. DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL,
          * NOT_REMOVABLE

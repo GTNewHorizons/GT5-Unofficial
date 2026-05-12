@@ -93,7 +93,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     }
 
     public static String getLocalizedName(Materials materials) {
-        return OrePrefixes.getLocalizedNameForItem(getLocalizedNameFormat(materials), materials.getLocalizedName());
+        return OrePrefixes.getLocalizedNameForItem(getLocalizedNameFormat(materials), materials);
     }
 
     public static String getLocalizedName(int meta) {

@@ -31,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -424,7 +423,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         ArrayList<FluidStack> tFluids = this.getStoredFluids();
         FluidStack[] inputFluids = tFluids.toArray(new FluidStack[0]);
 
-        long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
+        long voltage = this.getAverageInputVoltage();
+        long amps = this.getMaxInputAmps();
+        long tVoltageActual = voltage * amps;
 
         GTRecipe tRecipe = RecipeMaps.beamcrafterRecipes.findRecipeQuery()
             .items(inputItems)
@@ -498,7 +499,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        mEUt = (int) -tVoltageActual;
+        lEUt = -tRecipe.mEUt;
 
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
