@@ -1368,7 +1368,7 @@ public class GTModHandler {
 
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
             .filter(recipe -> {
-                if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
                 }
                 for (InventoryCrafting crafting : delayedRemovalByRecipe) {
