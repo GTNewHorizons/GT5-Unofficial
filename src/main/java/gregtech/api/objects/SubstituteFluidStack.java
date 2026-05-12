@@ -17,16 +17,18 @@ public class SubstituteFluidStack {
 
     /**
      * Helper class for recipes that can accept multiple fluids as substitutes that retain individual fluid amounts!
-     * This is useful for recipes that can use different fluids with similar properties, such as soldering alloys of different qualities.
+     * This is useful for recipes that can use different fluids with similar properties, such as soldering alloys of
+     * different qualities.
      *
      *
      * <pre>
-     *   {@code new SubstituteFluidStack(
+     * {@code new SubstituteFluidStack(
      *          // Each fluid has its own amount
      *          Materials.Lava.get(1_000),
      *          Materials.Water.get(500)
      *   )
      *   }
+     * 
      * <pre/>
      *
      * @param fluidStacks list of fluids to use as substitutes. Fluids with null fluid or null stacks will be ignored.
@@ -48,7 +50,8 @@ public class SubstituteFluidStack {
 
     /**
      * Soldering helper method that generates a list of fluids that can be used in soldering recipes.
-     * The amount of each fluid is controlled by baseAmount, and the multiplier is determined by soldering material quality.
+     * The amount of each fluid is controlled by baseAmount, and the multiplier is determined by soldering material
+     * quality.
      *
      * @param baseAmount Lowest fluid amount. Empty defaults to 144 (1 ingot)
      */

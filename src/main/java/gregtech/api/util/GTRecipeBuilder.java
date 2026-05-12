@@ -501,6 +501,7 @@ public class GTRecipeBuilder {
      *             .eut(TierEU.RECIPE_LV)
      *             .addTo(assemblerRecipes);
      * }
+     * 
      * <pre/>
      */
     public GTRecipeBuilder fluidInputs(Object... fluids) {
