@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -39,28 +40,22 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                     .fluidInputs(
+                        new SubstituteFluidStack(
                         Materials.Water.getFluid(
                             Math.max(
                                 4,
                                 Math.min(
                                     1000,
                                     ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                        / 320))))
-                    .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(cutterRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
-                    .fluidInputs(
+                                        / 320)))),
                         GTModHandler.getDistilledWater(
                             Math.max(
                                 3,
                                 Math.min(
                                     750,
                                     ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                        / 426))))
+                                        / 426)))
+                    )
                     .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);
