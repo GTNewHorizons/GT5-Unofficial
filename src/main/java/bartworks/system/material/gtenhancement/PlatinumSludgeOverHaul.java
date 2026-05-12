@@ -874,10 +874,10 @@ public class PlatinumSludgeOverHaul {
         // vanilla crafting
         CraftingManager.getInstance()
             .getRecipeList()
-            .forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
+            .forEach(PlatinumSludgeOverHaul::setNewMaterialInRecipe);
 
         // gt crafting
-        GTModHandler.sBufferRecipeList.forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
+        GTModHandler.sBufferRecipeList.forEach(PlatinumSludgeOverHaul::setNewMaterialInRecipe);
 
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
@@ -1093,31 +1093,30 @@ public class PlatinumSludgeOverHaul {
         }
     }
 
-    private static void setnewMaterialInRecipe(IRecipe recipe) {
-        ItemStack otpt = recipe.getRecipeOutput();
-
+    private static void setNewMaterialInRecipe(IRecipe recipe) {
         if (!(recipe instanceof IRecipeMutableAccess mutableRecipe)) {
             return;
         }
 
         Object input = mutableRecipe.gt5u$getRecipeInputs();
-
         if (input == null) {
             return;
         }
 
-        if (GTUtility.areStacksEqual(otpt, Materials.Platinum.getDust(1), true)) {
+        ItemStack output = recipe.getRecipeOutput();
+
+        if (GTUtility.areStacksEqual(output, Materials.Platinum.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Platinum)) return;
-            mutableRecipe.gt5u$setRecipeOutputItem(PTMetallicPowder.get(dust, otpt.stackSize * 2));
-        } else if (GTUtility.areStacksEqual(otpt, Materials.Palladium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(PTMetallicPowder.get(dust, output.stackSize * 2));
+        } else if (GTUtility.areStacksEqual(output, Materials.Palladium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Palladium)) return;
-            mutableRecipe.gt5u$setRecipeOutputItem(PDMetallicPowder.get(dust, otpt.stackSize * 2));
-        } else if (GTUtility.areStacksEqual(otpt, Materials.Iridium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(PDMetallicPowder.get(dust, output.stackSize * 2));
+        } else if (GTUtility.areStacksEqual(output, Materials.Iridium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Iridium)) return;
-            mutableRecipe.gt5u$setRecipeOutputItem(IrLeachResidue.get(dust, otpt.stackSize));
-        } else if (GTUtility.areStacksEqual(otpt, Materials.Osmium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(IrLeachResidue.get(dust, output.stackSize));
+        } else if (GTUtility.areStacksEqual(output, Materials.Osmium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Osmium)) return;
-            mutableRecipe.gt5u$setRecipeOutputItem(IrOsLeachResidue.get(dust, otpt.stackSize));
+            mutableRecipe.gt5u$setRecipeOutputItem(IrOsLeachResidue.get(dust, output.stackSize));
         }
     }
 
