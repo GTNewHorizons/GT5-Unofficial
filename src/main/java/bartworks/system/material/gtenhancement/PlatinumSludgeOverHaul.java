@@ -104,11 +104,9 @@ import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -1126,25 +1124,24 @@ public class PlatinumSludgeOverHaul {
             return false;
         }
 
-        Set<List<?>> lists = new HashSet<>();
-        Set<ItemStack> stacks = new HashSet<>();
+        ArrayList<List<?>> lists = new ArrayList<>();
+        ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        List<?> listInput = input instanceof List<?> ? (List<?>) input : Collections.emptyList();
-        Object[] arrayInput = input instanceof Object[] ? (Object[]) input : GTValues.emptyObjectArray;
-
-        for (Object entry : listInput) {
-            if (entry instanceof List<?>list) {
-                lists.add(list);
-            } else if (entry instanceof ItemStack stack) {
-                stacks.add(stack);
+        if (input instanceof List<?>listInput) {
+            for (Object entry : listInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
             }
-        }
-
-        for (Object entry : arrayInput) {
-            if (entry instanceof List<?>list) {
-                lists.add(list);
-            } else if (entry instanceof ItemStack stack) {
-                stacks.add(stack);
+        } else if (input instanceof Object[]arrayInput) {
+            for (Object entry : arrayInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
             }
         }
 
