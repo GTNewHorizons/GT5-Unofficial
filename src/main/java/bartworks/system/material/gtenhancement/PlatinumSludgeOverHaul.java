@@ -844,15 +844,6 @@ public class PlatinumSludgeOverHaul {
             if (!GTUtility.isStackValid(input)) continue;
             if (!GTUtility.isStackValid(output)) continue;
 
-            ItemData inputAssociation = GTOreDictUnificator.getAssociation(input);
-            if (!BWUtil.checkStackAndPrefix(inputAssociation)) continue;
-
-            if (inputAssociation.mMaterial.mMaterial == Materials.Platinum) {
-                if (inputAssociation.mPrefix.equals(dust) || inputAssociation.mPrefix.equals(dustTiny)) {
-                    continue;
-                }
-            }
-
             ItemData outputAssociation = GTOreDictUnificator.getAssociation(output);
             if (!BWUtil.checkStackAndPrefix(outputAssociation)) continue;
 
@@ -863,6 +854,15 @@ public class PlatinumSludgeOverHaul {
                 newOutput = PDMetallicPowder;
             } else {
                 continue;
+            }
+
+            ItemData inputAssociation = GTOreDictUnificator.getAssociation(input);
+            if (!BWUtil.checkStackAndPrefix(inputAssociation)) continue;
+
+            if (inputAssociation.mMaterial.mMaterial == Materials.Platinum) {
+                if (inputAssociation.mPrefix.equals(dust) || inputAssociation.mPrefix.equals(dustTiny)) {
+                    continue;
+                }
             }
 
             if (PlatinumSludgeOverHaul.isInBlackList(input, availableItemList)) continue;
