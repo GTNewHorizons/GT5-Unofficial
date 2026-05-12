@@ -73,7 +73,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_HEIGHT = 1.5D;
     private static final double BLADE_PADDING = 0.25D;
     private static final int BLADE_FRAMES = 3;
-    private static final long BLADE_FRAME_TICKS = 3L;
+    private static final long BLADE_FRAME_TICKS = 10L;
     private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
