@@ -535,12 +535,15 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     /**
      * Interface for NEI PositionedStack subclasses that contain fluid alternatives.
-     * <p>Example in {@link FixedPositionedStack}</p>
+     * <p>
+     * Example in {@link FixedPositionedStack}
+     * </p>
      */
     public interface IFluidAlternativeStack {
 
         /**
          * Get all fluid alternatives represented by this PositionedStack
+         * 
          * @return Unmodifiable list of fluid alternatives.
          */
         @Nonnull
@@ -548,18 +551,21 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         /**
          * Get the currently selected fluid index for display purposes.
+         * 
          * @return Index for {@link #getFluidAlternatives()}, or -1 for primary fluid.
          */
         int getSelectedFluidIndex();
 
         /**
          * Sets fluid alternative to be used
+         * 
          * @param index Valid index of {@link #getFluidAlternatives()}
          */
         void setSelectedFluidIndex(int index);
 
         /**
          * Get default fluid for this slot.
+         * 
          * @return First fluid from list or null
          */
         default FluidStack getDefaultFluidAlternative() {
@@ -617,8 +623,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 if (ItemList.Display_Fluid.isStackEqual(stack, true, true)) {
 
                     FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(stack);
-                    if (fluidStack != null && fluidStack.getFluid() != null)
-                        fluids.add(fluidStack);
+                    if (fluidStack != null && fluidStack.getFluid() != null) fluids.add(fluidStack);
 
                 }
             }
@@ -670,8 +675,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public void setSelectedFluidIndex(int index) {
-            if (fluidAlternatives == null || fluidAlternatives.isEmpty() || index < 0 || index >= fluidAlternatives.size())
-                throw new IndexOutOfBoundsException("No such fluid alternative");
+            if (fluidAlternatives == null || fluidAlternatives.isEmpty()
+                || index < 0
+                || index >= fluidAlternatives.size()) throw new IndexOutOfBoundsException("No such fluid alternative");
 
             selectedFluidIndex = index;
             item = GTUtility.getFluidDisplayStack(fluidAlternatives.get(index), FluidDisplayStackMode.SHOWN);
