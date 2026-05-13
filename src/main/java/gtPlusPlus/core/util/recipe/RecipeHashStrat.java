@@ -43,35 +43,31 @@ public class RecipeHashStrat {
             return false;
         }
 
-        Arrays.sort(recipe1.mInputs, itemStackComparator);
-        Arrays.sort(recipe2.mInputs, itemStackComparator);
         if (!areItemsStackArraysEqual(recipe1.mInputs, recipe2.mInputs)) {
             return false;
         }
 
         ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
         ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
-        Arrays.sort(recipe1OutputCopy, itemStackComparator);
-        Arrays.sort(recipe2OutputCopy, itemStackComparator);
         if (!areItemsStackArraysEqual(recipe1OutputCopy, recipe2OutputCopy)) {
             return false;
         }
 
-        Arrays.sort(recipe1.mFluidInputs, fluidStackComparator);
-        Arrays.sort(recipe2.mFluidInputs, fluidStackComparator);
         if (!areFluidStackArraysEqual(recipe1.mFluidInputs, recipe2.mFluidInputs)) {
             return false;
         }
 
-        Arrays.sort(recipe1.mFluidOutputs, fluidStackComparator);
-        Arrays.sort(recipe2.mFluidOutputs, fluidStackComparator);
         return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
     }
 
-    public static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {
+    private static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {
         if (array1.length != array2.length) {
             return false;
         }
+
+        Arrays.sort(array1, itemStackComparator);
+        Arrays.sort(array2, itemStackComparator);
+
         for (int i = 0; i < array1.length; i++) {
             if (array1[i].stackSize != array2[i].stackSize) {
                 return false;
@@ -86,10 +82,14 @@ public class RecipeHashStrat {
         return true;
     }
 
-    public static boolean areFluidStackArraysEqual(FluidStack[] array1, FluidStack[] array2) {
+    private static boolean areFluidStackArraysEqual(FluidStack[] array1, FluidStack[] array2) {
         if (array1.length != array2.length) {
             return false;
         }
+
+        Arrays.sort(array1, fluidStackComparator);
+        Arrays.sort(array2, fluidStackComparator);
+
         for (int i = 0; i < array1.length; i++) {
             if (array1[i].amount != array2[i].amount) {
                 return false;
