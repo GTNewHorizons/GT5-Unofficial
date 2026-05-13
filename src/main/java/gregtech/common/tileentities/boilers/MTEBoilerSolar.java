@@ -211,12 +211,12 @@ public class MTEBoilerSolar extends MTEBoiler {
         }
         if (weatherClear) {
             if (world.isDaytime()) {
-                mProcessingEnergy += 8 * basicTemperatureMod;
+                addProcessingEnergy(8 * basicTemperatureMod);
             } else {
-                mProcessingEnergy += basicTemperatureMod;
+                addProcessingEnergy(basicTemperatureMod);
             }
         } else {
-            mProcessingEnergy += basicTemperatureMod;
+            addProcessingEnergy(basicTemperatureMod);
         }
     }
 
