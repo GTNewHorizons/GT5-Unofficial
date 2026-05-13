@@ -257,19 +257,18 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .child(
                 Flow.column()
                     .coverChildren()
+                    .childPadding(6)
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
                                 () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
-                                    .textAlign(Alignment.CENTER)
-                                    .marginBottom(6))
+                                    .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                             .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
                             .width(120)
                             .height(14)
                             .marginRight(2)
-                            .marginBottom(6)
                             .value(playerTargetBeamEnergyeVSync)
                             .setDefaultNumber(1_000_000_000))
                     .child(
@@ -277,8 +276,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             IKey.dynamic(
                                 () -> StatCollector
                                     .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
-                                        .textAlign(Alignment.CENTER)
-                                        .marginBottom(6))
+                                        .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                             .setFormatAsInteger(true)
