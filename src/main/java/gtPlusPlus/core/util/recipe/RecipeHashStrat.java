@@ -2,22 +2,33 @@ package gtPlusPlus.core.util.recipe;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Objects;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gnu.trove.strategy.HashingStrategy;
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
+
 import gregtech.api.util.GTRecipe;
+import it.unimi.dsi.fastutil.Hash;
 
 public class RecipeHashStrat {
 
-    public static final HashingStrategy<GTRecipe> RecipeHashingStrategy = new HashingStrategy<>() {
+    public static final Hash.Strategy<GTRecipe> RecipeHashingStrategy = new Hash.Strategy<>() {
 
         @Override
-        public int computeHashCode(GTRecipe recipe) {
-            return Objects.hash(recipe.mDuration, recipe.mEUt, recipe.mInputs.length, recipe.mOutputs.length);
+        public int hashCode(GTRecipe recipe) {
+            int hash = Fnv1a32.initialState();
+
+            // let's call it fastest effort to distinguish obviously different recipes
+            hash = Fnv1a32.hashStep(hash, recipe.mDuration);
+            hash = Fnv1a32.hashStep(hash, recipe.mEUt);
+            hash = Fnv1a32.hashStep(hash, recipe.mInputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mOutputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mFluidInputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mFluidOutputs.length);
+
+            return hash;
         }
 
         @Override

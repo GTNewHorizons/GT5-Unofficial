@@ -9,16 +9,18 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gnu.trove.map.hash.TCustomHashMap;
-import gnu.trove.set.hash.TCustomHashSet;
 import gregtech.api.util.GTRecipe;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 public class GTRecipeUtils {
 
     public static List<GTRecipe> removeDuplicates(List<GTRecipe> inputRecipes) {
         ArrayList<GTRecipe> recipeOutput = new ArrayList<>();
-        TCustomHashSet<GTRecipe> recipesHashSet = new TCustomHashSet<>(RecipeHashStrat.RecipeHashingStrategy);
-        TCustomHashMap<GTRecipe, ItemStack> circuitMap = new TCustomHashMap<>(RecipeHashStrat.RecipeHashingStrategy);
+        ObjectOpenCustomHashSet<GTRecipe> recipesHashSet = new ObjectOpenCustomHashSet<>(
+            RecipeHashStrat.RecipeHashingStrategy);
+        Object2ObjectOpenCustomHashMap<GTRecipe, ItemStack> circuitMap = new Object2ObjectOpenCustomHashMap<>(
+            RecipeHashStrat.RecipeHashingStrategy);
 
         for (GTRecipe recipeInput : inputRecipes) {
             ItemStack savedCircuit = null;
