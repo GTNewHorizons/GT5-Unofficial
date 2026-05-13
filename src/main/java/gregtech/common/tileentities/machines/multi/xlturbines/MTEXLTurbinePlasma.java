@@ -63,67 +63,66 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     new String[][] {
-                        { "         ", "         ", "   HHH   ", "  H   H  ", "  H   H  ", "  H   H  ", "   HHH   ",
+                        { "         ", "         ", "   GGG   ", "  G   G  ", "  G   G  ", "  G   G  ", "   GGG   ",
                             "         ", "         " },
-                        { "         ", "         ", "   HFH   ", "  HFFFH  ", "  FF~FF  ", "  HFFFH  ", "   HFH   ",
+                        { "         ", "         ", "   GEG   ", "  GEEEG  ", "  EE~EE  ", "  GEEEG  ", "   GEG   ",
                             "         ", "         " },
-                        { "         ", "         ", "   HFH   ", "  H D H  ", "  FDGDF  ", "  H D H  ", "   HFH   ",
+                        { "         ", "         ", "   GEG   ", "  G C G  ", "  ECFCE  ", "  G C G  ", "   GEG   ",
                             "         ", "         " },
-                        { "         ", "         ", "   HFH   ", "  H   H  ", "  F G F  ", "  H   H  ", "   HFH   ",
+                        { "         ", "         ", "   GEG   ", "  G   G  ", "  E F E  ", "  G   G  ", "   GEG   ",
                             "         ", "         " },
-                        { "         ", "         ", "   HHH   ", "  H   H  ", "  H G H  ", "  H   H  ", "   HHH   ",
+                        { "         ", "         ", "   GGG   ", "  G   G  ", "  G F G  ", "  G   G  ", "   GGG   ",
                             "         ", "         " },
-                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A G A  ", "  A   A  ", "   AAA   ",
+                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A F A  ", "  A   A  ", "   AAA   ",
                             "         ", "         " },
-                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A G A  ", "  A   A  ", "   AAA   ",
+                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A F A  ", "  A   A  ", "   AAA   ",
                             "         ", "         " },
-                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A G A  ", "  A   A  ", "   AAA   ",
+                        { "         ", "         ", "   AAA   ", "  A   A  ", "  A F A  ", "  A   A  ", "   AAA   ",
                             "         ", "         " },
-                        { "         ", "         ", "   HHH   ", "  H   H  ", "  H G H  ", "  H   H  ", "   HHH   ",
+                        { "         ", "         ", "   GGG   ", "  G   G  ", "  G F G  ", "  G   G  ", "   GGG   ",
                             "         ", "         " },
-                        { "         ", "    H    ", "  HH HH  ", "  H   H  ", " H  G  H ", "  H   H  ", "  HH HH  ",
-                            "    H    ", "         " },
-                        { "         ", "    H    ", "  HH HH  ", "  H   H  ", " H  G  H ", "  H   H  ", "  HH HH  ",
-                            "    H    ", "         " },
-                        { "         ", "   H H   ", "  E E E  ", " H  D  H ", "  EDCDE  ", " H  D  H ", "  E E E  ",
-                            "   H H   ", "         " },
-                        { "         ", "   H H   ", "  E E E  ", " H     H ", "  E G E  ", " H     H ", "  E E E  ",
-                            "   H H   ", "         " },
-                        { "    H    ", "  HHHHH  ", " HH   HH ", " H  D  H ", "HH DCD HH", " H  D  H ", " HH   HH ",
-                            "  HHHHH  ", "    H    " },
-                        { "    H    ", " HHHHHHH ", " HH   HH ", " H     H ", "HH  G  HH", " H     H ", " HH   HH ",
-                            " HHHHHHH ", "    H    " },
-                        { "    H    ", " FBBBBBF ", " B     B ", " B  D  B ", "HB DCD BH", " B  D  B ", " B     B ",
-                            " FBBBBBF ", "    H    " },
-                        { "    H    ", " FBBBBBF ", " B     B ", " B     B ", "HB  G  BH", " B     B ", " B     B ",
-                            " FBBBBBF ", "    H    " },
-                        { "    H    ", " FBBBBBF ", " B D   B ", " B  D DB ", "HB DCD BH", " BD D  B ", " B   D B ",
-                            " FBBBBBF ", "    H    " },
-                        { "  HHHHH  ", " H     H ", "H       H", "H       H", "H   G   H", "H       H", "H       H",
-                            " H     H ", "  HHHHH  " },
-                        { "  HHHHH  ", " H     H ", "H    D  H", "H D D   H", "H  DCD  H", "H   D D H", "H  D    H",
-                            " H     H ", "  HHHHH  " },
-                        { "  BBBBB  ", " B     B ", "B       B", "B       B", "B   G   B", "B       B", "B       B",
-                            " B     B ", "  BBBBB  " },
-                        { "  BBBBB  ", " BD   DB ", "BDDD  DDB", "B  D DD B", "B   C   B", "B DD D  B", "BDD  DDDB",
-                            " BD   DB ", "  BBBBB  " },
-                        { "  BBBBB  ", " B     B ", "B       B", "B       B", "B   G   B", "B       B", "B       B",
-                            " B     B ", "  BBBBB  " },
-                        { "  HHHHH  ", " HD   DH ", "HDD  DDDH", "H DD D  H", "H   C   H", "H  D DD H", "HDDD  DDH",
-                            " HD   DH ", "  HHHHH  " },
-                        { "  HHHHH  ", " H     H ", "H       H", "H       H", "H   G   H", "H       H", "H       H",
-                            " H     H ", "  HHHHH  " },
-                        { "    H    ", "  HH HH  ", " H     H ", " H     H ", "H       H", " H     H ", " H     H ",
-                            "  HH HH  ", "    H    " } })
+                        { "         ", "    G    ", "  GG GG  ", "  G   G  ", " G  F  G ", "  G   G  ", "  GG GG  ",
+                            "    G    ", "         " },
+                        { "         ", "    G    ", "  GG GG  ", "  G   G  ", " G  F  G ", "  G   G  ", "  GG GG  ",
+                            "    G    ", "         " },
+                        { "         ", "   G G   ", "  D D D  ", " G  C  G ", "  DCBCD  ", " G  C  G ", "  D D D  ",
+                            "   G G   ", "         " },
+                        { "         ", "   G G   ", "  D D D  ", " G     G ", "  D F D  ", " G     G ", "  D D D  ",
+                            "   G G   ", "         " },
+                        { "    G    ", "  GGGGG  ", " GG   GG ", " G  C  G ", "GG CBC GG", " G  C  G ", " GG   GG ",
+                            "  GGGGG  ", "    G    " },
+                        { "    G    ", " GGGGGGG ", " GG   GG ", " G     G ", "GG  F  GG", " G     G ", " GG   GG ",
+                            " GGGGGGG ", "    G    " },
+                        { "   G G   ", " EDGDGDE ", " D     D ", "GG  C  GG", " D CBC D ", "GG  C  GG", " D     D ",
+                            " EDGDGDE ", "   G G   " },
+                        { "   G G   ", " EDGDGDE ", " D     D ", "GG     GG", " D  F  D ", "GG     GG", " D     D ",
+                            " EDGDGDE ", "   G G   " },
+                        { "   G G   ", " EDGDGDE ", " D C   D ", "GG  C CGG", " D CBC D ", "GGC C  GG", " D   C D ",
+                            " EDGDGDE ", "   G G   " },
+                        { "  GGGGG  ", " G     G ", "G       G", "G       G", "G   F   G", "G       G", "G       G",
+                            " G     G ", "  GGGGG  " },
+                        { "  GGGGG  ", " G     G ", "G    C  G", "G C C   G", "G  CBC  G", "G   C C G", "G  C    G",
+                            " G     G ", "  GGGGG  " },
+                        { "  DGDGD  ", " D     D ", "D       D", "G       G", "D   F   D", "G       G", "D       D",
+                            " D     D ", "  DGDGD  " },
+                        { "  DGDGD  ", " DC   CD ", "DCCC  CCD", "G  C CC G", "D   B   D", "G CC C  G", "DCC  CCCD",
+                            " DC   CD ", "  DGDGD  " },
+                        { "  DGDGD  ", " D     D ", "D       D", "G       G", "D   F   D", "G       G", "D       D",
+                            " D     D ", "  DGDGD  " },
+                        { "  GGGGG  ", " GC   CG ", "GCC  CCCG", "G CC C  G", "G   B   G", "G  C CC G", "GCCC  CCG",
+                            " GC   CG ", "  GGGGG  " },
+                        { "  GGGGG  ", " G     G ", "G       G", "G       G", "G   F   G", "G       G", "G       G",
+                            " G     G ", "  GGGGG  " },
+                        { "    G    ", "  GG GG  ", " G     G ", " G     G ", "G       G", " G     G ", " G     G ",
+                            "  GG GG  ", "    G    " } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', Casings.ZPMSolenoidSuperconductorCoil.asElement())
-                .addElement('C', Casings.SteelGearBoxCasing.asElement())
-                .addElement('D', getRotorCasing().asElement())
-                .addElement('E', Casings.NaquadahCoilBlock.asElement())
-                .addElement('F', ofFrame(getFrameMaterial()))
-                .addElement('G', Casings.TurbineShaft.asElement())
+                .addElement('B', Casings.SteelGearBoxCasing.asElement())
+                .addElement('C', getRotorCasing().asElement())
+                .addElement('D', Casings.NaquadahCoilBlock.asElement())
+                .addElement('E', ofFrame(getFrameMaterial()))
+                .addElement('F', Casings.TurbineShaft.asElement())
                 .addElement(
-                    'H',
+                    'G',
                     lazy(
                         t -> buildHatchAdder(MTEXLTurbineBase.class).atLeastList(t.getAllowedHatches())
                             .casingIndex(t.getCasing().textureId)
@@ -187,12 +186,11 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 9, 26, false)
             .addController("Front center")
-            .addCasingInfoMin("Reinforced Plasma Turbine Casing", 291, false)
-            .addCasingInfoExactly("ZPM Solenoid Superconductor Coil", 132, false)
+            .addCasingInfoMin("Reinforced Plasma Turbine Casing", 330, false)
+            .addCasingInfoExactly("Naquadah Coil Block", 100, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 72, false)
             .addCasingInfoExactly("Any Tiered Glass", 36, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 34, false)
-            .addCasingInfoExactly("Naquadah Coil Block", 16, false)
+            .addCasingInfoExactly("Tungstensteel Frame Box", 32, false)
             .addCasingInfoExactly("Turbine Shaft", 16, false)
             .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
             .addInputBus("Any Turbine Casing (Min 1)", 1)
@@ -234,7 +232,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
 
     @Override
     public int minCasingAmount() {
-        return 285;
+        return 330;
     }
 
     @Override
