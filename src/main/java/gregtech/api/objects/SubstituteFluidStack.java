@@ -28,7 +28,7 @@ public class SubstituteFluidStack {
      *          Materials.Water.get(500)
      *   )
      *   }
-     * 
+     *
      * <pre/>
      *
      * @param fluidStacks list of fluids to use as substitutes. Fluids with null fluid or null stacks will be ignored.
@@ -68,5 +68,9 @@ public class SubstituteFluidStack {
         }
 
         return new SubstituteFluidStack(fluids.toArray(new FluidStack[0]));
+    }
+
+    public static SubstituteFluidStack soldering() {
+        return soldering(144);
     }
 }
