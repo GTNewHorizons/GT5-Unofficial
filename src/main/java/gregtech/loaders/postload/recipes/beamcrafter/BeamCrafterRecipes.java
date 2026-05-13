@@ -7,6 +7,7 @@ import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NITINOL;
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
+import static gtnhlanth.common.beamline.Particle.ELECTRONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.ETA;
 import static gtnhlanth.common.beamline.Particle.GRAVITON;
 import static gtnhlanth.common.beamline.Particle.HIGGS;
@@ -16,8 +17,10 @@ import static gtnhlanth.common.beamline.Particle.MUON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
+import static gtnhlanth.common.beamline.Particle.PHOTON;
 import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
+import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
 import net.minecraft.item.ItemStack;
@@ -348,6 +351,21 @@ public class BeamCrafterRecipes implements Runnable {
                     .amount_B(20)
                     .build())
             .eut(TierEU.RECIPE_UHV)
+            .duration(2 * SECONDS)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1))
+            .itemOutputs(ItemList.EnergisedTesseract.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(ELECTRONNEUTRINO.getId())
+                    .particleID_B(TAUNEUTRINO.getId())
+                    .amount_A(50)
+                    .amount_B(30)
+                    .build())
+            .eut(TierEU.RECIPE_UIV)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
