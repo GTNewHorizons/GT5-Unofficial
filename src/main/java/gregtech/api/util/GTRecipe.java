@@ -543,17 +543,25 @@ public class GTRecipe implements Comparable<GTRecipe> {
                         : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
 
                 if (alternatives == null || alternatives.length == 0) continue;
+
                 FluidStack selectedAlt = null;
+                double bestParallelForSlot = 0;
 
                 for (FluidStack alt : alternatives) {
                     if (alt == null) continue;
+                    long totalAvailable = 0;
                     for (FluidStack provided : fluidInputs) {
-                        if (provided != null && provided.amount > 0 && provided.isFluidEqual(alt)) {
-                            selectedAlt = alt;
-                            break;
+                        if (provided != null && provided.isFluidEqual(alt)) {
+                            totalAvailable += provided.amount;
                         }
                     }
-                    if (selectedAlt != null) break;
+                    if (totalAvailable > 0 && alt.amount > 0) {
+                        double parallelForThisAlt = (double) totalAvailable / alt.amount;
+                        if (parallelForThisAlt > bestParallelForSlot) {
+                            bestParallelForSlot = parallelForThisAlt;
+                            selectedAlt = alt;
+                        }
+                    }
                 }
 
                 if (selectedAlt == null) continue;
@@ -666,7 +674,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (alternatives == null || alternatives.length == 0) continue;
 
                 double bestParallelForSlot = 0;
-                FluidStack bestAlternative = null;
+                FluidStack selectedAlt = null;
 
                 for (FluidStack alt : alternatives) {
                     if (alt == null) continue;
@@ -675,7 +683,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                         double parallelForThisAlt = (double) available / alt.amount;
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;
-                            bestAlternative = alt;
+                            selectedAlt = alt;
                         }
                     }
                 }
@@ -683,9 +691,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (bestParallelForSlot <= 0) return 0;
 
                 // Consume from the chosen alternatives fluid pool
-                if (bestAlternative != null) {
-                    long consumed = (long) (bestAlternative.amount * Math.min(currentParallel, bestParallelForSlot));
-                    fluidMap.mergeLong(bestAlternative.getFluid(), -consumed, Long::sum);
+                if (selectedAlt != null) {
+                    long consumed = (long) (selectedAlt.amount * Math.min(currentParallel, bestParallelForSlot));
+                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
                 }
 
                 currentParallel = Math.min(currentParallel, bestParallelForSlot);
