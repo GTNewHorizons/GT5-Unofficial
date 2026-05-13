@@ -124,7 +124,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 EnumChatFormatting.WHITE,
                 EnumChatFormatting.GRAY,
                 EnumChatFormatting.GREEN,
-                Math.round((1F / sawblade.speedBoost * 100) - 100),
+                Math.round((1F / sawblade.speedBoost * 100)),
                 EnumChatFormatting.GRAY,
                 EnumChatFormatting.AQUA,
                 Math.round(sawblade.euModifier * 100),
