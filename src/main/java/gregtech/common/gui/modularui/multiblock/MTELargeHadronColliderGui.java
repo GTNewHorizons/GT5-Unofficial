@@ -266,8 +266,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                             .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
-                            .width(120)
-                            .height(14)
+                            .size(120, 14)
                             .marginRight(2)
                             .value(playerTargetBeamEnergyeVSync)
                             .setDefaultNumber(1_000_000_000))
@@ -280,8 +279,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
                             .setFormatAsInteger(true)
-                            .width(40)
-                            .height(14)
+                            .size(40, 14)
                             .marginRight(2)
                             .value(playerTargetAccelerationCyclesSync)
                             .setDefaultNumber(10)));
