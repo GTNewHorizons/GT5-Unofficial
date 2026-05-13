@@ -63,6 +63,8 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> implements ISurvivalConstructable {
 
@@ -70,6 +72,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
     private int tier = -1;
     private int glassTier = -1;
     private int casingAmount;
@@ -111,7 +114,8 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                 GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
                     + "-glass unlocks all above energy tiers")
             .addInfo("Accepts exactly 1 Energy Hatch")
-            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
+            .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock with water")
+            .addInfo("The inside may also be hand filled with Distilled Water")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
             .addController("Front center, 3rd layer")
@@ -245,7 +249,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                         .getBlock(worldX, worldY, worldZ);
                     boolean isCOFHWater = Mods.COFHCore.isModLoaded()
                         && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                    if (block == Blocks.water || isCOFHWater) {
+                    if (block == Blocks.water || block == DISTILLED_WATER_BLOCK || isCOFHWater) {
                         continue;
                     }
 
