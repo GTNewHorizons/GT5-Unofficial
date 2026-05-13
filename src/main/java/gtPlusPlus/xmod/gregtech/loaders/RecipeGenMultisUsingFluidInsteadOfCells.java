@@ -25,27 +25,14 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (!mInit) {
             mInit = true;
 
-            mEmptyItems.add(ItemList.Cell_Empty.get(1));
+            ItemStack emptyCell = ItemList.Cell_Empty.get(1);
+            mEmptyItems.add(emptyCell);
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
-            mItemsToIgnore.add(
-                new ItemStack(
-                    ItemList.Cell_Empty.get(1)
-                        .getItem(),
-                    1,
-                    8));
+            // Electrolyzed Water Cell
+            mItemsToIgnore.add(new ItemStack(emptyCell.getItem(), 1, 8));
         }
-    }
-
-    private static boolean doesItemMatchIgnoringStackSize(ItemStack a, ItemStack b) {
-        if (a == null || b == null) {
-            return false;
-        }
-        if (a.getItem() == b.getItem()) {
-            return a.getItemDamage() == b.getItemDamage();
-        }
-        return false;
     }
 
     private static boolean isEmptyCell(ItemStack aCell) {
@@ -53,20 +40,11 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             return false;
         }
         for (ItemStack emptyItem : mEmptyItems) {
-            emptyItem.stackSize = aCell.stackSize;
-            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
+            if (GTUtility.areStacksEqual(emptyItem, aCell, true)) {
                 return true;
             }
-
         }
         return false;
-    }
-
-    private static synchronized FluidStack getFluidFromItemStack(final ItemStack ingot) {
-        if (ingot == null) {
-            return null;
-        }
-        return GTUtility.getFluidForFilledItem(ingot, true);
     }
 
     public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
@@ -84,10 +62,10 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
             // Iterate Inputs, Convert valid items into fluids
             for (ItemStack aInputStack : recipe.mInputs) {
-                FluidStack aFoundFluid = getFluidFromItemStack(aInputStack);
+                FluidStack aFoundFluid = GTUtility.getFluidForFilledItem(aInputStack, true);
                 if (aFoundFluid == null) {
                     for (ItemStack aBadStack : mItemsToIgnore) {
-                        if (doesItemMatchIgnoringStackSize(aInputStack, aBadStack)) {
+                        if (GTUtility.areStacksEqual(aInputStack, aBadStack, true)) {
                             continue recipeLoop; // Skip this recipe entirely if we find an item we don't like
                         }
                     }
@@ -102,10 +80,10 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
             // Iterate Outputs, Convert valid items into fluids
             for (ItemStack aOutputStack : recipe.mOutputs) {
-                FluidStack aFoundFluid = getFluidFromItemStack(aOutputStack);
+                FluidStack aFoundFluid = GTUtility.getFluidForFilledItem(aOutputStack, true);
                 if (aFoundFluid == null) {
                     for (ItemStack aBadStack : mItemsToIgnore) {
-                        if (doesItemMatchIgnoringStackSize(aOutputStack, aBadStack)) {
+                        if (GTUtility.areStacksEqual(aOutputStack, aBadStack, true)) {
                             continue recipeLoop; // Skip this recipe entirely if we find an item we don't like
                         }
                     }
