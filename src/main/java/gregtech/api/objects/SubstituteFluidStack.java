@@ -1,7 +1,5 @@
 package gregtech.api.objects;
 
-import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +11,8 @@ import gregtech.api.enums.SubTag;
 
 public class SubstituteFluidStack {
 
+    public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
+        Materials.Tin };
     public final List<FluidStack> fluidStacks;
 
     /**
