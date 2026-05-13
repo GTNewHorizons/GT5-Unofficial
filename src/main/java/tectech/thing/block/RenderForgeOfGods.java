@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
@@ -52,6 +53,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int u_CameraPosition = -1, u_SegmentArray = -1, u_SegmentQuads = -1;
     private static int u_BeamIntensity = -1, u_BeamColor = -1, u_BeamTime = -1;
     private static int beam_vboID = -1;
+    private static int beam_vaoID = -1;
     private static final int maxSegments = 10;
     private static final int beamSegmentQuads = 16;
     private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
@@ -124,12 +126,18 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         }
 
         buffer.flip();
+        beam_vaoID = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(beam_vaoID);
+
         beam_vboID = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, beam_vboID);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(a_VertexID, 1, GL11.GL_FLOAT, false, 3 * Float.BYTES, 0);
+        GL20.glEnableVertexAttribArray(a_VertexID);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
+        GL30.glBindVertexArray(0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         ShaderProgram.clear();
         initialized = true;
@@ -355,8 +363,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableCameraPosition.y,
             reusableCameraPosition.z);
 
-        GL20.glEnableVertexAttribArray(a_VertexID);
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL30.glBindVertexArray(beam_vaoID);
 
         // Render Soft Beam
         GL20.glUniform3f(u_BeamColor, tile.getColorR(), tile.getColorG(), tile.getColorB());
@@ -373,8 +380,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL20.glUniform3(u_SegmentArray, intenseBeamSegmentMatrixBuffer);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
 
-        GL20.glDisableVertexAttribArray(a_VertexID);
-        GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+        GL30.glBindVertexArray(0);
 
         ShaderProgram.clear();
 
