@@ -125,6 +125,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     @Override
     protected void checkHatches(List<StructureError> errors) {
         checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkOneEnergyHatch(errors);
     }
 

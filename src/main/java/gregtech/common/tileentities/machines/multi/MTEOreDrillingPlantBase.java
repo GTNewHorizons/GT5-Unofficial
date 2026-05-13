@@ -488,6 +488,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     protected void checkHatches(List<StructureError> errors) {
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
