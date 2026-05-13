@@ -146,11 +146,25 @@ import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class PlatinumSludgeOverHaul {
 
-    private static final Materials[] BLACKLIST = { Materials.HSSS, Materials.EnderiumBase, Materials.Osmiridium,
-        Materials.TPV, Materials.get("Uraniumtriplatinid"), Materials.get("Tetranaquadahdiindiumhexaplatiumosminid"),
-        Materials.get("Longasssuperconductornameforuvwire"), };
-    private static final OrePrefixes[] OPBLACKLIST = { crushedCentrifuged, crushed, crushedPurified, dustPure,
-        dustImpure, dustRefined, dust, dustTiny, dustSmall };
+    private static final List<Materials> MATERIALS_BLACKLIST = Arrays.asList(
+        Materials.HSSS,
+        Materials.EnderiumBase,
+        Materials.Osmiridium,
+        Materials.TPV,
+        Materials.SuperconductorEVBase,
+        Materials.SuperconductorZPMBase,
+        Materials.SuperconductorUVBase);
+
+    private static final List<OrePrefixes> ORE_PREFIXES_BLACKLIST = Arrays.asList(
+        crushedCentrifuged,
+        crushed,
+        crushedPurified,
+        dustPure,
+        dustImpure,
+        dustRefined,
+        dust,
+        dustTiny,
+        dustSmall);
 
     private PlatinumSludgeOverHaul() {}
 
@@ -184,6 +198,7 @@ public class PlatinumSludgeOverHaul {
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
+
         // FormicAcid
         // CO + NaOH = CHO2Na
         GTValues.RA.stdBuilder()
@@ -192,8 +207,8 @@ public class PlatinumSludgeOverHaul {
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
-        // H2SO4 + 2CHO2Na = 2CH2O2 + Na2SO4
 
+        // H2SO4 + 2CHO2Na = 2CH2O2 + Na2SO4
         GTValues.RA.stdBuilder()
             .itemInputs(Sodiumformate.get(cell, 2))
             .circuit(1)
@@ -253,7 +268,6 @@ public class PlatinumSludgeOverHaul {
 
         // AmmoniumChloride
         // NH3 + HCl = NH4Cl
-
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ammonia.getCells(1))
             .circuit(1)
@@ -282,11 +296,12 @@ public class PlatinumSludgeOverHaul {
             .addTo(multiblockChemicalReactorRecipes);
 
         // base solution
-        for (Werkstoff w : Werkstoff.werkstoffHashSet) if (w.containsStuff(Materials.Sulfur)
-            && (w.containsStuff(Materials.Copper) || w.containsStuff(Materials.Nickel))) {
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            if (werkstoff.containsStuff(Materials.Sulfur)
+                && (werkstoff.containsStuff(Materials.Copper) || werkstoff.containsStuff(Materials.Nickel))) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(w.get(crushedPurified))
+                    .itemInputs(werkstoff.get(crushedPurified))
                     .circuit(1)
                     .fluidInputs(AquaRegia.getFluidOrGas(300))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(300))
@@ -295,7 +310,7 @@ public class PlatinumSludgeOverHaul {
                     .addTo(UniversalChemical);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(w.get(crushedPurified, 9))
+                    .itemInputs(werkstoff.get(crushedPurified, 9))
                     .circuit(9)
                     .fluidInputs(AquaRegia.getFluidOrGas(2_700))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
@@ -304,7 +319,40 @@ public class PlatinumSludgeOverHaul {
                     .addTo(UniversalChemical);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(w.get(crushedPurified, 9), PTMetallicPowder.get(dust, 9))
+                    .itemInputs(werkstoff.get(crushedPurified, 9), PTMetallicPowder.get(dust, 9))
+                    .itemOutputs(PTResidue.get(dust))
+                    .fluidInputs(AquaRegia.getFluidOrGas(20_700))
+                    .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))
+                    .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(UniversalChemical);
+            }
+        }
+
+        for (Materials material : Materials.values()) {
+            if (materialsContains(material, Materials.Sulfur)
+                && (materialsContains(material, Materials.Copper) || materialsContains(material, Materials.Nickel))) {
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 1))
+                    .circuit(1)
+                    .fluidInputs(AquaRegia.getFluidOrGas(300))
+                    .fluidOutputs(PTConcentrate.getFluidOrGas(300))
+                    .duration(12 * SECONDS + 10 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(UniversalChemical);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9))
+                    .circuit(9)
+                    .fluidInputs(AquaRegia.getFluidOrGas(2_700))
+                    .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
+                    .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(UniversalChemical);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9), PTMetallicPowder.get(dust, 9))
                     .itemOutputs(PTResidue.get(dust))
                     .fluidInputs(AquaRegia.getFluidOrGas(20_700))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))
@@ -313,38 +361,8 @@ public class PlatinumSludgeOverHaul {
                     .addTo(UniversalChemical);
 
             }
-        for (Materials m : Materials.values()) if (PlatinumSludgeOverHaul.materialsContains(m, Materials.Sulfur)
-            && (PlatinumSludgeOverHaul.materialsContains(m, Materials.Copper)
-                || PlatinumSludgeOverHaul.materialsContains(m, Materials.Nickel))) {
+        }
 
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(crushedPurified, m, 1))
-                        .circuit(1)
-                        .fluidInputs(AquaRegia.getFluidOrGas(300))
-                        .fluidOutputs(PTConcentrate.getFluidOrGas(300))
-                        .duration(12 * SECONDS + 10 * TICKS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(UniversalChemical);
-
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(crushedPurified, m, 9))
-                        .circuit(9)
-                        .fluidInputs(AquaRegia.getFluidOrGas(2_700))
-                        .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
-                        .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(UniversalChemical);
-
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(crushedPurified, m, 9), PTMetallicPowder.get(dust, 9))
-                        .itemOutputs(PTResidue.get(dust))
-                        .fluidInputs(AquaRegia.getFluidOrGas(20_700))
-                        .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))
-                        .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(UniversalChemical);
-
-                }
         // Pt
         GTValues.RA.stdBuilder()
             .itemInputs(PTMetallicPowder.get(dust, 3))
@@ -440,7 +458,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(blastFurnaceRecipes);
 
         // 2PtCl + Ca = 2Pt + CaCl2
-
         GTValues.RA.stdBuilder()
             .itemInputs(PTRawPowder.get(dust, 4), Materials.Calcium.getDust(1))
             .itemOutputs(Materials.Platinum.getDust(2), CalciumChloride.get(dust, 3))
@@ -449,7 +466,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         // Pd
-
         GTValues.RA.stdBuilder()
             .itemInputs(PDMetallicPowder.get(dust))
             .circuit(1)
@@ -524,7 +540,6 @@ public class PlatinumSludgeOverHaul {
             .addTo(multiblockChemicalReactorRecipes);
 
         // Na2SO4 + 2H = 2Na + H2SO4
-
         GTValues.RA.stdBuilder()
             .itemInputs(Sodiumsulfate.get(dust, 7), Materials.Hydrogen.getCells(2))
             .itemOutputs(Materials.Sodium.getDust(2), Materials.Empty.getCells(2))
@@ -647,8 +662,8 @@ public class PlatinumSludgeOverHaul {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
-        // Rh
 
+        // Rh
         GTValues.RA.stdBuilder()
             .itemInputs(RHSulfate.get(cell, 11))
             .circuit(1)
@@ -701,8 +716,8 @@ public class PlatinumSludgeOverHaul {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
-        // Na + HNO3 = NaNO3 + H
 
+        // Na + HNO3 = NaNO3 + H
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sodium.getDust(1))
             .itemOutputs(SodiumNitrate.get(dust, 5))
@@ -758,7 +773,7 @@ public class PlatinumSludgeOverHaul {
 
     private static boolean materialsContains(Materials one, ISubTagContainer other) {
         if (one == null || one.mMaterialList == null || one.mMaterialList.isEmpty()) return false;
-        for (MaterialStack stack : one.mMaterialList) if (stack.mMaterial.equals(other)) return true;
+        for (MaterialStack stack : one.mMaterialList) if (stack.mMaterial == other) return true;
         return false;
     }
 
@@ -1012,11 +1027,14 @@ public class PlatinumSludgeOverHaul {
             if (BWUtil.checkStackAndPrefix(recipe.mOutputs[0])) {
                 for (int i = 0; i < recipe.mInputs.length; i++) {
                     ItemStack stack = recipe.mInputs[i];
-                    ItemData ass = GTOreDictUnificator.getAssociation(stack);
-                    if (BWUtil.checkStackAndPrefix(stack) && ass.mMaterial.mMaterial.equals(Materials.Platinum)) {
-                        recipe.mInputs[i] = GTOreDictUnificator.get(ass.mPrefix, Materials.BlueAlloy, stack.stackSize);
-                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                    ItemData association = GTOreDictUnificator.getAssociation(stack);
+                    if (!BWUtil.checkStackAndPrefix(association)) continue;
+
+                    if (association.mMaterial.mMaterial.equals(Materials.Platinum)) {
+                        recipe.mInputs[i] = GTOreDictUnificator
+                            .get(association.mPrefix, Materials.BlueAlloy, stack.stackSize);
                         recipe.reloadOwner();
+                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                     }
                 }
             }
@@ -1136,9 +1154,8 @@ public class PlatinumSludgeOverHaul {
         if (item instanceof GTGenericItem) {
             if (!isAssociationValid) return false;
             if (association.mPrefix != rawOre) {
-                return !Arrays.asList(PlatinumSludgeOverHaul.OPBLACKLIST)
-                    .contains(association.mPrefix) || Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
-                        .contains(association.mMaterial.mMaterial);
+                return !ORE_PREFIXES_BLACKLIST.contains(association.mPrefix)
+                    || MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
             }
         }
 
@@ -1186,7 +1203,6 @@ public class PlatinumSludgeOverHaul {
         if (!isAssociationValid) {
             return false;
         }
-        return Arrays.asList(PlatinumSludgeOverHaul.BLACKLIST)
-            .contains(association.mMaterial.mMaterial);
+        return MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
     }
 }
