@@ -1470,7 +1470,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
             }
 
-            return display.isEmpty() ? null : display;
+            if (display.isEmpty())
+                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+
+            return display;
         }
 
         @Override

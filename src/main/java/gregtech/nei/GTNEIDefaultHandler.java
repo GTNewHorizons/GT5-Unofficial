@@ -543,7 +543,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         /**
          * Get all fluid alternatives represented by this PositionedStack
-         * 
+         *
          * @return Unmodifiable list of fluid alternatives.
          */
         @Nonnull
@@ -551,21 +551,21 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         /**
          * Get the currently selected fluid index for display purposes.
-         * 
+         *
          * @return Index for {@link #getFluidAlternatives()}, or -1 for primary fluid.
          */
         int getSelectedFluidIndex();
 
         /**
          * Sets fluid alternative to be used
-         * 
+         *
          * @param index Valid index of {@link #getFluidAlternatives()}
          */
         void setSelectedFluidIndex(int index);
 
         /**
          * Get default fluid for this slot.
-         * 
+         *
          * @return First fluid from list or null
          */
         default FluidStack getDefaultFluidAlternative() {
@@ -665,7 +665,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         @Override
         public @NotNull List<FluidStack> getFluidAlternatives() {
             if (fluidAlternatives == null) return Collections.emptyList();
-            return Collections.unmodifiableList(fluidAlternatives);
+            return fluidAlternatives;
         }
 
         @Override
