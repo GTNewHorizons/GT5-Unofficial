@@ -26,6 +26,14 @@ public class RecipeHashStrat {
         }
     };
 
+    private static final Comparator<ItemStack> itemStackComparator = Comparator
+        .comparing((ItemStack itemStack) -> Item.getIdFromItem(itemStack.getItem()))
+        .thenComparing(ItemStack::getItemDamage)
+        .thenComparing(itemStack -> itemStack.stackSize);
+
+    private static final Comparator<FluidStack> fluidStackComparator = Comparator.comparing(FluidStack::getFluidID)
+        .thenComparing(fluidStack -> fluidStack.amount);
+
     public static boolean areRecipesEqual(GTRecipe recipe1, GTRecipe recipe2) {
         if (recipe1.mEUt != recipe2.mEUt) {
             return false;
@@ -35,44 +43,29 @@ public class RecipeHashStrat {
             return false;
         }
 
-        RecipeHashStrat.sortItemStackArray(recipe1.mInputs);
-        RecipeHashStrat.sortItemStackArray(recipe2.mInputs);
+        Arrays.sort(recipe1.mInputs, itemStackComparator);
+        Arrays.sort(recipe2.mInputs, itemStackComparator);
         if (!areItemsStackArraysEqual(recipe1.mInputs, recipe2.mInputs)) {
             return false;
         }
 
         ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
         ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
-        RecipeHashStrat.sortItemStackArray(recipe1OutputCopy);
-        RecipeHashStrat.sortItemStackArray(recipe2OutputCopy);
+        Arrays.sort(recipe1OutputCopy, itemStackComparator);
+        Arrays.sort(recipe2OutputCopy, itemStackComparator);
         if (!areItemsStackArraysEqual(recipe1OutputCopy, recipe2OutputCopy)) {
             return false;
         }
 
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidInputs);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidInputs);
+        Arrays.sort(recipe1.mFluidInputs, fluidStackComparator);
+        Arrays.sort(recipe2.mFluidInputs, fluidStackComparator);
         if (!areFluidStackArraysEqual(recipe1.mFluidInputs, recipe2.mFluidInputs)) {
             return false;
         }
 
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidOutputs);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidOutputs);
+        Arrays.sort(recipe1.mFluidOutputs, fluidStackComparator);
+        Arrays.sort(recipe2.mFluidOutputs, fluidStackComparator);
         return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
-    }
-
-    public static void sortItemStackArray(ItemStack[] itemStackArray) {
-        Arrays.sort(
-            itemStackArray,
-            Comparator.<ItemStack, Integer>comparing(itemStack -> Item.getIdFromItem(itemStack.getItem()))
-                .thenComparing(ItemStack::getItemDamage)
-                .thenComparing(itemStack -> itemStack.stackSize));
-    }
-
-    public static void sortFluidStackArray(FluidStack[] fluidStackArray) {
-        Arrays.sort(
-            fluidStackArray,
-            Comparator.comparing(FluidStack::getFluidID)
-                .thenComparing(fluidStack -> fluidStack.amount));
     }
 
     public static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {
