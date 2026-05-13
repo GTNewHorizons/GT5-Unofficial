@@ -344,11 +344,6 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
         return GTPPRecipeMaps.algaePondRecipes;
     }
 
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
