@@ -501,8 +501,8 @@ public class GTRecipeBuilder {
      *             .eut(TierEU.RECIPE_LV)
      *             .addTo(assemblerRecipes);
      * }
-     * 
-     * <pre/>
+     *
+     * </pre>
      */
     public GTRecipeBuilder fluidInputs(Object... fluids) {
         if (skip) return this;

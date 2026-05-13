@@ -29,7 +29,7 @@ public class SubstituteFluidStack {
      *   )
      *   }
      *
-     * <pre/>
+     * </pre>
      *
      * @param fluidStacks list of fluids to use as substitutes. Fluids with null fluid or null stacks will be ignored.
      */
