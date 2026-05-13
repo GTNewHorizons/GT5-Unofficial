@@ -17,7 +17,7 @@ public class RecipeHashStrat {
 
         @Override
         public int computeHashCode(GTRecipe recipe) {
-            return com.google.common.base.Objects.hashCode(recipe.mDuration, recipe.mEUt);
+            return Objects.hash(recipe.mDuration, recipe.mEUt, recipe.mInputs.length, recipe.mOutputs.length);
         }
 
         @Override
@@ -27,39 +27,37 @@ public class RecipeHashStrat {
     };
 
     public static boolean areRecipesEqual(GTRecipe recipe1, GTRecipe recipe2) {
-        // both item outputs use a copy to prevent interfering with chance based output orders
-        // sort all the arrays for recipe1
-        RecipeHashStrat.sortItemStackArray(recipe1.mInputs);
-        ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
-        RecipeHashStrat.sortItemStackArray(recipe1OutputCopy);
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidInputs);
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidOutputs);
-        // sort all the arrays for recipe2
-
-        RecipeHashStrat.sortItemStackArray(recipe2.mInputs);
-        ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
-        RecipeHashStrat.sortItemStackArray(recipe2OutputCopy);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidInputs);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidOutputs);
-
-        // checks if the recipe EUt, Duration, inputs and outputs for both items and fluids are equal
         if (recipe1.mEUt != recipe2.mEUt) {
             return false;
         }
+
         if (recipe1.mDuration != recipe2.mDuration) {
             return false;
         }
+
+        RecipeHashStrat.sortItemStackArray(recipe1.mInputs);
+        RecipeHashStrat.sortItemStackArray(recipe2.mInputs);
         if (!areItemsStackArraysEqual(recipe1.mInputs, recipe2.mInputs)) {
             return false;
         }
+
+        ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
+        ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
+        RecipeHashStrat.sortItemStackArray(recipe1OutputCopy);
+        RecipeHashStrat.sortItemStackArray(recipe2OutputCopy);
         if (!areItemsStackArraysEqual(recipe1OutputCopy, recipe2OutputCopy)) {
             return false;
         }
+
+        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidInputs);
+        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidInputs);
         if (!areFluidStackArraysEqual(recipe1.mFluidInputs, recipe2.mFluidInputs)) {
             return false;
         }
-        return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
 
+        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidOutputs);
+        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidOutputs);
+        return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
     }
 
     public static void sortItemStackArray(ItemStack[] itemStackArray) {
@@ -82,13 +80,13 @@ public class RecipeHashStrat {
             return false;
         }
         for (int i = 0; i < array1.length; i++) {
-            if (!Objects.equals(array1[i].getItem(), array2[i].getItem())) {
+            if (array1[i].stackSize != array2[i].stackSize) {
                 return false;
             }
-            if (!Objects.equals(array1[i].getItemDamage(), array2[i].getItemDamage())) {
+            if (array1[i].getItem() != array2[i].getItem()) {
                 return false;
             }
-            if (!Objects.equals(array1[i].stackSize, array2[i].stackSize)) {
+            if (array1[i].getItemDamage() != array2[i].getItemDamage()) {
                 return false;
             }
         }
@@ -100,11 +98,10 @@ public class RecipeHashStrat {
             return false;
         }
         for (int i = 0; i < array1.length; i++) {
-            // check if the string representation of both FluidStacks are not equal
-            if (!Objects.equals(array1[i].getFluid(), array2[i].getFluid())) {
+            if (array1[i].amount != array2[i].amount) {
                 return false;
             }
-            if (!Objects.equals(array1[i].amount, array2[i].amount)) {
+            if (array1[i].getFluid() != array2[i].getFluid()) {
                 return false;
             }
         }
