@@ -58,10 +58,8 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
                 new ToggleButton().size(16, 16)
                     .value(new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)))
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                    .marginRight(buttonRowSpacing ? 74 : 2))
-            .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")))
-            .marginBottom(4)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS))
+            .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")).marginLeft(4))
             .marginRight(TICK_RATE_BUTTON_SIZE);
     }
 

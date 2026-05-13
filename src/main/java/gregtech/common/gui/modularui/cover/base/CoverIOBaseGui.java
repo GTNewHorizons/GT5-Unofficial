@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.cover.base;
 
+import java.util.Arrays;
+
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -83,13 +85,16 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
             .build();
+
+        String inputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock");
+        String outputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock");
+        IKey.renderer.setAlignment(Alignment.TopLeft, -1, -1);
         IWidget blockingLabel = IKey
-            .dynamic(
-                () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
-                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
-                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
+            .dynamic(() -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? inputBlockText : outputBlockText)
             .asWidget()
-            .paddingRight(TICK_RATE_BUTTON_SIZE);
+            .coverChildrenHeight()
+            .width(IKey.renderer.getMaxWidth(Arrays.asList(inputBlockText, outputBlockText)))
+            .marginRight(TICK_RATE_BUTTON_SIZE);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
