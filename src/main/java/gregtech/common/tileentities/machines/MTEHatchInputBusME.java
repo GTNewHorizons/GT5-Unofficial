@@ -249,7 +249,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+            var base = getBaseMetaTileEntity();
+            if (base instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
                     this,
                     "proxy",
@@ -258,9 +259,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (base.getWorld() != null && base.getOwnerUuid() != null) {
+                    gridProxy.setOwner(
+                        base.getWorld()
+                            .func_152378_a(base.getOwnerUuid()));
+                }
             }
         }
         return this.gridProxy;

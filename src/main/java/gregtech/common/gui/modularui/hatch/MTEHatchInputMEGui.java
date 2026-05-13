@@ -137,9 +137,10 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                 }
             }.phantom(true)
                 .controlsAmount(false))
-                .background(
+                .backgroundOverlay(
                     new DynamicDrawable(
-                        () -> !isAutoPullSyncer.getBoolValue() ? GTGuiTextures.SLOT_ITEM_DARK : GuiTextures.SLOT_FLUID),
+                        () -> !isAutoPullSyncer.getBoolValue() ? GTGuiTextures.SLOT_FLUID_DARK
+                            : GuiTextures.SLOT_FLUID),
                     GTGuiTextures.OVERLAY_SLOT_ARROW_ME))
             .build()
             .coverChildren();
@@ -304,7 +305,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                 @Override
                 public void tryScrollPhantom(MouseData mouseData) {}
             }.phantom(true))
-                .background(GTGuiTextures.SLOT_ITEM_DARK))
+                .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
             .build()
             .coverChildren();
     }
