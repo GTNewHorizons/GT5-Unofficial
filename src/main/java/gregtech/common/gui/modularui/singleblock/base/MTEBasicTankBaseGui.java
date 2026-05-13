@@ -76,7 +76,7 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
             .bottomRel(0)
             .rightRel(0)
             .align(Alignment.BottomRight)
-            .background(GTGuiTextures.SLOT_FLUID_TANK);
+            .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager) {
