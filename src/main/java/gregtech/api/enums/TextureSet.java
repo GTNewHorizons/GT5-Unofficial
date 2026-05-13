@@ -1,6 +1,8 @@
 package gregtech.api.enums;
 
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class TextureSet {
 
@@ -154,17 +156,10 @@ public class TextureSet {
                 switch (SUFFIXES[i]) {
                     case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
                         .customAlpha(aTextMatIconDir + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = Textures.BlockIcons.custom(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    default -> mTextures[i] = GTTextureSetBlockIconContainer.create(aSetName, SUFFIXES[i]);
                 }
             } else {
-                // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.
-                // Exemption for CUSTOM textures so they can be overriden as normal by placing nanite image in
-                // their respective folder.
-                if (SUFFIXES[i].equals("/nanites") && (!aSetName.contains("CUSTOM"))) {
-                    mTextures[i] = Textures.ItemIcons.custom(aTextMatIconDir + "NANITES" + SUFFIXES[i]);
-                } else {
-                    mTextures[i] = Textures.ItemIcons.custom(aTextMatIconDir + aSetName + SUFFIXES[i]);
-                }
+                mTextures[i] = GTTextureSetItemIconContainer.create(aSetName, SUFFIXES[i]);
             }
         }
     }

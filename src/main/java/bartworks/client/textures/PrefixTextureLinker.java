@@ -23,8 +23,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
@@ -46,9 +47,10 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.BlockIcons.custom(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                GTTextureSetBlockIconContainer.create(
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
@@ -72,9 +74,10 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.ItemIcons.custom(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                GTTextureSetItemIconContainer.create(
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
