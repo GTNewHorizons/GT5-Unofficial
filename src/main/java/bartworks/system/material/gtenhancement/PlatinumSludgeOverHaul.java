@@ -1145,9 +1145,11 @@ public class PlatinumSludgeOverHaul {
         ItemData association = GTOreDictUnificator.getAssociation(stack);
         boolean isAssociationValid = BWUtil.checkStackAndPrefix(association);
 
-        for (ItemStack itemStack : availableItemList) {
-            if (!isAssociationValid && GTUtility.areStacksEqual(itemStack, stack, true)) {
-                return true;
+        if (!isAssociationValid) {
+            for (ItemStack itemStack : availableItemList) {
+                if (GTUtility.areStacksEqual(itemStack, stack, true)) {
+                    return true;
+                }
             }
         }
 
