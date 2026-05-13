@@ -47,9 +47,8 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         return false;
     }
 
-    public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
+    public static void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
         init();
-        int aRecipesHandled = 0;
         ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
         recipeLoop: for (GTRecipe recipe : aInputs.getAllRecipes()) {
@@ -128,8 +127,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
             // add all recipes to an intermediate array
             deDuplicationInputArray.add(aNewRecipe);
-
-            aRecipesHandled++;
         }
 
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
@@ -138,7 +135,5 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
-
-        return aRecipesHandled;
     }
 }
