@@ -1,6 +1,7 @@
 package gregtech.client.iconContainers.blocks;
 
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.createIconName;
+import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.registerResourceOrFallback;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,11 +13,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.TextureSetIconType;
 import gregtech.common.config.Gregtech;
 
 public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer implements Runnable {
@@ -37,22 +37,17 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
 
     private GTTextureSetBlockIconContainer(@NotNull String setName, @NotNull String prefix) {
         this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName("DEFAULT", prefix);
+        this.fallbackIconName = createIconName("NONE", prefix);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconName);
         iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconName);
 
         this.iconOverlayName = createIconName(setName, prefix + "_OVERLAY");
-        this.fallbackIconOverlayName = createIconName("DEFAULT", prefix + "_OVERLAY");
+        this.fallbackIconOverlayName = createIconName("NONE", prefix + "_OVERLAY");
         iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconOverlayName);
         iconOverlayFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconOverlayName);
 
         GregTechAPI.sGTBlockIconload.add(this);
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
-    }
-
-    private static String createIconName(String setName, String prefix) {
-        String iconName = aTextMatIconDir + setName + prefix;
-        return iconName.contains(":") ? iconName : GregTech.resourceDomain + ":" + iconName;
     }
 
     static final Map<Pair<String, String>, IIconContainer> INSTANCES = new ConcurrentHashMap<>(2560);
@@ -78,27 +73,23 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
 
     @Override
     public void run() {
-        mIcon = registerResourceOrFallback(iconResource, iconName, iconFallbackResource, fallbackIconName);
-        mOverlay = registerResourceOrFallback(
+        Pair<IIcon, TextureSetIconType> iconPair = registerResourceOrFallback(
+            iconResource,
+            iconName,
+            iconFallbackResource,
+            fallbackIconName,
+            GregTechAPI.sBlockIcons);
+        Pair<IIcon, TextureSetIconType> overlayPair = registerResourceOrFallback(
             iconOverlayResource,
             iconOverlayName,
             iconOverlayFallbackResource,
-            fallbackIconOverlayName);
-
-        if (mIcon == InvisibleIcon.INVISIBLE_ICON && mOverlay == InvisibleIcon.INVISIBLE_ICON) {
-            mOverlay = Textures.GlobalIcons.RENDERING_ERROR.getOverlayIcon();
+            fallbackIconOverlayName,
+            GregTechAPI.sBlockIcons);
+        mIcon = iconPair.getRight() == TextureSetIconType.INVISIBLE ? GregTechAPI.sBlockIcons.registerIcon(iconName)
+            : iconPair.getLeft();
+        if (iconPair.getRight() == overlayPair.getRight() && overlayPair.getRight() != TextureSetIconType.INVISIBLE) {
+            mOverlay = overlayPair.getLeft();
         }
-    }
-
-    private static IIcon registerResourceOrFallback(ResourceLocation rl, String name, ResourceLocation fallback,
-        String fallbackName) {
-        if (ResourceUtils.resourceExists(rl)) {
-            return GregTechAPI.sBlockIcons.registerIcon(name);
-        }
-        if (ResourceUtils.resourceExists(fallback)) {
-            return GregTechAPI.sBlockIcons.registerIcon(fallbackName);
-        }
-        return Textures.InvisibleIcon.INVISIBLE_ICON;
     }
 
 }
