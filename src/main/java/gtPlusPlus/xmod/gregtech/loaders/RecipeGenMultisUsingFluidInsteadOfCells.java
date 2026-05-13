@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.init.Items;
@@ -76,19 +76,13 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
         recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
             if (x != null) {
-
-                ItemStack[] aInputItems = x.mInputs.clone();
-                ItemStack[] aOutputItems = x.mOutputs.clone();
-                FluidStack[] aInputFluids = x.mFluidInputs.clone();
-                FluidStack[] aOutputFluids = x.mFluidOutputs.clone();
-
                 ArrayList<ItemStack> aInputItemsMap = new ArrayList<>();
                 ArrayList<ItemStack> aOutputItemsMap = new ArrayList<>();
                 ArrayList<FluidStack> aInputFluidsMap = new ArrayList<>();
                 ArrayList<FluidStack> aOutputFluidsMap = new ArrayList<>();
 
                 // Iterate Inputs, Convert valid items into fluids
-                for (ItemStack aInputStack : aInputItems) {
+                for (ItemStack aInputStack : x.mInputs) {
                     FluidStack aFoundFluid = getFluidFromItemStack(aInputStack);
                     if (aFoundFluid == null) {
                         for (ItemStack aBadStack : mItemsToIgnore) {
@@ -104,8 +98,9 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                         aInputFluidsMap.add(aFoundFluid);
                     }
                 }
+
                 // Iterate Outputs, Convert valid items into fluids
-                for (ItemStack aOutputStack : aOutputItems) {
+                for (ItemStack aOutputStack : x.mOutputs) {
                     FluidStack aFoundFluid = getFluidFromItemStack(aOutputStack);
                     if (aFoundFluid == null) {
                         for (ItemStack aBadStack : mItemsToIgnore) {
@@ -121,35 +116,23 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                         aOutputFluidsMap.add(aFoundFluid);
                     }
                 }
+
                 // Add Input fluids second
-                aInputFluidsMap.addAll(Arrays.asList(aInputFluids));
+                Collections.addAll(aInputFluidsMap, x.mFluidInputs);
                 // Add Output fluids second
-                aOutputFluidsMap.addAll(Arrays.asList(aOutputFluids));
+                Collections.addAll(aOutputFluidsMap, x.mFluidOutputs);
 
                 // Make some new Arrays
-                ItemStack[] aNewItemInputs = new ItemStack[aInputItemsMap.size()];
-                ItemStack[] aNewItemOutputs = new ItemStack[aOutputItemsMap.size()];
-                FluidStack[] aNewFluidInputs = new FluidStack[aInputFluidsMap.size()];
-                FluidStack[] aNewFluidOutputs = new FluidStack[aOutputFluidsMap.size()];
-
-                // Add AutoMap contents to Arrays
-                for (int i = 0; i < aInputItemsMap.size(); i++) {
-                    aNewItemInputs[i] = aInputItemsMap.get(i);
-                }
-                for (int i = 0; i < aOutputItemsMap.size(); i++) {
-                    aNewItemOutputs[i] = aOutputItemsMap.get(i);
-                }
-                for (int i = 0; i < aInputFluidsMap.size(); i++) {
-                    aNewFluidInputs[i] = aInputFluidsMap.get(i);
-                }
-                for (int i = 0; i < aOutputFluidsMap.size(); i++) {
-                    aNewFluidOutputs[i] = aOutputFluidsMap.get(i);
-                }
+                ItemStack[] aNewItemInputs = aInputItemsMap.toArray(new ItemStack[0]);
+                ItemStack[] aNewItemOutputs = aOutputItemsMap.toArray(new ItemStack[0]);
+                FluidStack[] aNewFluidInputs = aInputFluidsMap.toArray(new FluidStack[0]);
+                FluidStack[] aNewFluidOutputs = aOutputFluidsMap.toArray(new FluidStack[0]);
 
                 if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
                     && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
+
                 GTRecipe aNewRecipe = new GTRecipe(
                     aNewItemInputs,
                     aNewItemOutputs,
@@ -171,12 +154,14 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 aRecipesHandled++;
             }
         }
+
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
         List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils.removeDuplicates(deDuplicationInputArray);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
+
         return aRecipesHandled;
     }
 }
