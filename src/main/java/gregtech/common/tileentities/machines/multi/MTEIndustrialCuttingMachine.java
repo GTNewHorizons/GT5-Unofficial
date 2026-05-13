@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -36,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
@@ -44,8 +46,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -68,15 +73,75 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_HEIGHT = 1.5D;
     private static final double BLADE_PADDING = 0.25D;
     private static final int BLADE_FRAMES = 3;
-    private static final long BLADE_FRAME_TICKS = 3L;
-    private static final ResourceLocation BLADE_TEXTURE = new ResourceLocation(
-        GregTech.resourceDomain,
-        "textures/model/cutter.png");
+    private static final long BLADE_FRAME_TICKS = 10L;
+    private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t3.png"),
+        new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t4.png") };
     private int casingAmount;
-    private int glassTier = -1;
     private boolean stopAllRendering;
+    private int renderSawbladeTier = -1;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
+
+    public enum SawbladeTiers {
+
+        TungstenTitaniumCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
+        MysteriousCrystal(3, 2.5F, 0.9F, VoltageIndex.UV, false),
+        Neutronium(4, 3.0F, 0.85F, VoltageIndex.UEV, false),
+        Transcendent(6, 4.0F, 0.8F, Integer.MAX_VALUE, true);
+
+        final int parallelPerVoltageTier;
+        final float speedBoost, euModifier;
+        final int maxAllowedEnergyHatchTier;
+        final boolean supportsExotic;
+
+        SawbladeTiers(int parallelPerVoltageTier, float speedBoost, float euModifier, int maxAllowedEnergyHatchTier,
+            boolean supportsExotic) {
+            this.parallelPerVoltageTier = parallelPerVoltageTier;
+            this.speedBoost = 1F / speedBoost;
+            this.euModifier = euModifier;
+            this.maxAllowedEnergyHatchTier = maxAllowedEnergyHatchTier;
+            this.supportsExotic = supportsExotic;
+        }
+
+        public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
+            String hatchTierLimit = sawblade.maxAllowedEnergyHatchTier == Integer.MAX_VALUE
+                ? GTUtility.translate("gt.sawblade.tooltip.hatch_tier_unlimited")
+                : GTUtility.translate(
+                    "gt.sawblade.tooltip.hatch_tier_limit",
+                    GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier),
+                    EnumChatFormatting.GRAY);
+            String tooltip = GTUtility.translate(
+                "gt.sawblade.tooltip.base",
+                EnumChatFormatting.LIGHT_PURPLE,
+                EnumChatFormatting.GRAY,
+                hatchTierLimit,
+                EnumChatFormatting.GOLD,
+                sawblade.parallelPerVoltageTier,
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.WHITE,
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.GREEN,
+                Math.round((1F / sawblade.speedBoost * 100) - 100),
+                EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA,
+                Math.round(sawblade.euModifier * 100),
+                EnumChatFormatting.GRAY);
+
+            if (sawblade.supportsExotic) {
+                tooltip = tooltip + "\\n"
+                    + GTUtility.translate(
+                        "gt.sawblade.tooltip.exotic",
+                        EnumChatFormatting.BOLD,
+                        EnumChatFormatting.GREEN,
+                        EnumChatFormatting.RED);
+            }
+
+            return tooltip;
+        }
+    }
 
     private static IStructureDefinition<MTEIndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -97,29 +162,33 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cutting Machine, ICF")
-            .addBulkMachineInfo(4, 3f, 0.75f)
-            .addInfo("Energy Hatch Tier is limited by Glass Tier")
             .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 11) + "+"
+                "Requires a " + EnumChatFormatting.AQUA
+                    + "Sawblade"
                     + EnumChatFormatting.GRAY
-                    + " glass allows for single multi-amp energy hatch")
+                    + " in the controller slot to use")
             .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
-                    + "-glass unlocks all above energy tiers")
+                "Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give further bonuses")
+            .addInfo(
+                "With a " + EnumChatFormatting.DARK_GREEN
+                    + "Transcendent Metal Sawblade"
+                    + EnumChatFormatting.GRAY
+                    + ", one multi-amp hatch is allowed")
+            .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
             .addCasingInfoMin("Cutting Factory Frame", 10, false)
-            .addCasingInfoExactly("Maraging Steel 300 Frame Box", 18, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, true)
-            .addCasingInfoExactly("Blue Steel Sheetmetal", 13, false)
-            .addInputBus("Any Cutting Factory Frame", 1)
-            .addOutputBus("Any Cutting Factory Frame", 1)
-            .addInputHatch("Any Cutting Factory Frame", 1)
-            .addEnergyHatch("Any Cutting Factory Frame", 1)
-            .addMaintenanceHatch("Any Cutting Factory Frame", 1)
-            .addMufflerHatch("Any Cutting Factory Frame", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Auynonymous")
+            .addCasingInfoExactly("Tantalum Carbide Frame Box", 18, false)
+            .addCasingInfoExactly("Any Tiered Glass", 16, false)
+            .addCasingInfoExactly("Black Steel Sheetmetal", 13, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         return tt;
     }
@@ -133,9 +202,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     new String[][] { { "  DBBBBB ", " DDAAAADB", " D~AAAADB", " DDDDDDDB" },
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-                .addElement('B', ofFrame(MaterialsAlloy.MARAGING300))
-                .addElement('C', ofSheetMetal(Materials.BlueSteel))
+                .addElement('A', chainAllGlasses())
+                .addElement('B', ofFrame(MaterialsAlloy.TANTALUM_CARBIDE))
+                .addElement('C', ofSheetMetal(Materials.BlackSteel))
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialCuttingMachine.class)
@@ -171,16 +240,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        glassTier = -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 10
             && !mMufflerHatches.isEmpty()) {
-            int inputTier = (int) getInputVoltageTier();
-            if (glassTier < VoltageIndex.UMV && inputTier > glassTier) {
-                return false;
-            }
             if (!mExoticEnergyHatches.isEmpty()) {
                 if (!mEnergyHatches.isEmpty()) return false;
-                return (mExoticEnergyHatches.size() == 1) && glassTier >= VoltageIndex.UIV;
+                return mExoticEnergyHatches.size() == 1;
             }
             return true;
         }
@@ -226,14 +290,72 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
+        return new ProcessingLogic().setSpeedBonusSupplier(this::getSpeedBonus)
+            .setEuModifierSupplier(this::getEuModifier)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) {
+            return SimpleCheckRecipeResult.ofFailure("sawblade_missing");
+        }
+        if (!canSawbladeAcceptEnergyHatches(sawbladeTier)) {
+            return SimpleCheckRecipeResult.ofFailure("sawblade_tier_not_high_enough");
+        }
+        return super.checkProcessing();
+    }
+
+    @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 0;
+        return sawbladeTier.parallelPerVoltageTier * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return isValidSawblade(aStack);
+    }
+
+    @Override
+    protected boolean canUseControllerSlotForRecipe() {
+        return false;
+    }
+
+    private double getSpeedBonus() {
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 1D;
+        return sawbladeTier.speedBoost;
+    }
+
+    private double getEuModifier() {
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        if (sawbladeTier == null) return 1D;
+        return sawbladeTier.euModifier;
+    }
+
+    private static SawbladeTiers getSawbladeTier(ItemStack stack) {
+        if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TungstenTitaniumCarbide;
+        if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.MysteriousCrystal;
+        if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Neutronium;
+        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Transcendent;
+        return null;
+    }
+
+    public static boolean isValidSawblade(ItemStack stack) {
+        return getSawbladeTier(stack) != null;
+    }
+
+    private boolean canSawbladeAcceptEnergyHatches(SawbladeTiers sawbladeTier) {
+        if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier.supportsExotic;
+        if (sawbladeTier.maxAllowedEnergyHatchTier == Integer.MAX_VALUE) return true;
+
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
+        }
+        return true;
     }
 
     @Override
@@ -262,6 +384,18 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
+        int sawbladeTierIndex = sawbladeTier == null ? -1 : sawbladeTier.ordinal();
+        if (renderSawbladeTier != sawbladeTierIndex) {
+            renderSawbladeTier = sawbladeTierIndex;
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
@@ -285,8 +419,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound data = super.getDescriptionData();
+        SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
         data.setBoolean("stopAllRendering", stopAllRendering);
         data.setBoolean("machineFormed", mMachine);
+        data.setInteger("renderSawbladeTier", sawbladeTier == null ? -1 : sawbladeTier.ordinal());
         return data;
     }
 
@@ -295,6 +431,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         super.onDescriptionPacket(data);
         stopAllRendering = data.getBoolean("stopAllRendering");
         mMachine = data.getBoolean("machineFormed");
+        renderSawbladeTier = data.getInteger("renderSawbladeTier");
     }
 
     @SideOnly(Side.CLIENT)
@@ -306,7 +443,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (stopAllRendering || !mMachine) {
+        if (base == null || stopAllRendering
+            || !mMachine
+            || renderSawbladeTier < 0
+            || renderSawbladeTier >= BLADE_TEXTURES.length) {
             return;
         }
 
@@ -322,7 +462,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURE);
+        Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURES[renderSawbladeTier]);
 
         GL11.glTranslated(x + context.centerX, y + context.centerY, z + context.centerZ);
 
