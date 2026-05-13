@@ -15,6 +15,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.objects.SubstituteFluidStack.solderingMats;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -26,7 +27,6 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gregtech.api.objects.SubstituteFluidStack.solderingMats;
 import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 

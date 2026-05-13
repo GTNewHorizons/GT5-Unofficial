@@ -1478,8 +1478,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
             }
 
-            if (display.isEmpty())
-                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+            if (display.isEmpty()) display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
 
             return display;
         }
