@@ -35,7 +35,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
             .itemOutputs(
                 Materials.BorosilicateGlass.getDust(9),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 8))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(maceratorRecipes);

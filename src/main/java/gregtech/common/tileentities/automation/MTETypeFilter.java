@@ -203,4 +203,9 @@ public class MTETypeFilter extends MTESpecialFilter {
             clickTypeIcon(clickData.mouseButton != 0, cursorStack);
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
