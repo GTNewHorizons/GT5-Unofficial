@@ -104,7 +104,6 @@ import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -880,183 +879,166 @@ public class PlatinumSludgeOverHaul {
 
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-            GTLog.err.println("Processing recipmap: " + map.unlocalizedName);
             if (isMapIgnored(map)) continue;
 
-            HashSet<GTRecipe> toDel = new HashSet<>();
+            GTLog.out.println("Processing recipe map: " + map.unlocalizedName);
+
+            ArrayList<GTRecipe> toDelete = new ArrayList<>();
 
             recipeloop: for (GTRecipe recipe : map.getAllRecipes()) {
                 if (recipe.mFakeRecipe) continue maploop;
+
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
-                    if (map.equals(multiblockChemicalReactorRecipes) || map.equals(chemicalReactorRecipes)) {
+                    if (map == multiblockChemicalReactorRecipes || map == chemicalReactorRecipes) {
                         if (GTUtility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i])
                             || GTUtility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i])) {
-                            toDel.add(recipe);
-                            GTLog.err.println("Recipe marked for deletion: " + displayRecipe(recipe));
+                            toDelete.add(recipe);
+                            GTLog.out.println("Recipe marked for deletion: " + displayRecipe(recipe));
                         } else if (GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = AcidicIridiumSolution.getFluidOrGas(1_000);
                             recipe.reloadOwner();
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                         } else if (GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = PTConcentrate.getFluidOrGas(2_000);
                             recipe.reloadOwner();
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                         } else if (GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = AcidicOsmiumSolution.getFluidOrGas(1_000);
                             recipe.reloadOwner();
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                         }
                     } else if (GTUtility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i])
                         || GTUtility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i])
                         || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i])
                         || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i])
                         || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i])) {
-                            GTLog.err.println("Recipe marked for deletion: " + displayRecipe(recipe));
-                            toDel.add(recipe);
+                            toDelete.add(recipe);
+                            GTLog.out.println("Recipe marked for deletion: " + displayRecipe(recipe));
                         }
                 }
+
                 for (int i = 0; i < recipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(recipe.mOutputs[i])) continue;
 
-                    if ((BWUtil.areStacksEqualOrNull(Ruthenium.get(dust), recipe.mOutputs[i])
-                        || BWUtil.areStacksEqualOrNull(Ruthenium.get(dustImpure), recipe.mOutputs[i])
-                        || BWUtil.areStacksEqualOrNull(Ruthenium.get(dustPure), recipe.mOutputs[i]))
-                        && !BWUtil.areStacksEqualOrNull(Ruthenium.get(ingot), recipe.mInputs[0])) {
-                        for (ItemStack mInput : recipe.mInputs)
-                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
-                        int amount = recipe.mOutputs[i].stackSize * 2;
-                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                        recipe.mOutputs[i] = LeachResidue.get(dust, amount);
-                        recipe.reloadOwner();
-                    }
-                    if ((BWUtil.areStacksEqualOrNull(Rhodium.get(dust), recipe.mOutputs[i])
-                        || BWUtil.areStacksEqualOrNull(Rhodium.get(dustImpure), recipe.mOutputs[i])
-                        || BWUtil.areStacksEqualOrNull(Rhodium.get(dustPure), recipe.mOutputs[i]))
-                        && !BWUtil.areStacksEqualOrNull(Rhodium.get(ingot), recipe.mInputs[0])) {
-                        for (ItemStack mInput : recipe.mInputs)
-                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
-                        int amount = recipe.mOutputs[i].stackSize * 2;
-                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                        recipe.mOutputs[i] = CrudeRhMetall.get(dust, amount);
-                        recipe.reloadOwner();
-                    }
-                    if (!BWUtil.checkStackAndPrefix(recipe.mOutputs[i])) continue;
-                    // Pt
-                    if (GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial
-                        .equals(Materials.Platinum)) {
+                    if ((GTUtility.areStacksEqual(Ruthenium.get(dust), recipe.mOutputs[i])
+                        || GTUtility.areStacksEqual(Ruthenium.get(dustImpure), recipe.mOutputs[i])
+                        || GTUtility.areStacksEqual(Ruthenium.get(dustPure), recipe.mOutputs[i]))
+                        && !GTUtility.areStacksEqual(Ruthenium.get(ingot), recipe.mInputs[0])) {
                         for (ItemStack mInput : recipe.mInputs) {
                             if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
                         }
-                        if (dust.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                            || dustImpure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                            || dustPure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
+                        int amount = recipe.mOutputs[i].stackSize * 2;
+                        recipe.mOutputs[i] = LeachResidue.get(dust, amount);
+                        recipe.reloadOwner();
+                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                    }
+
+                    if ((GTUtility.areStacksEqual(Rhodium.get(dust), recipe.mOutputs[i])
+                        || GTUtility.areStacksEqual(Rhodium.get(dustImpure), recipe.mOutputs[i])
+                        || GTUtility.areStacksEqual(Rhodium.get(dustPure), recipe.mOutputs[i]))
+                        && !GTUtility.areStacksEqual(Rhodium.get(ingot), recipe.mInputs[0])) {
+                        for (ItemStack mInput : recipe.mInputs) {
+                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                        }
+                        int amount = recipe.mOutputs[i].stackSize * 2;
+                        recipe.mOutputs[i] = CrudeRhMetall.get(dust, amount);
+                        recipe.reloadOwner();
+                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                    }
+
+                    ItemData association = GTOreDictUnificator.getAssociation(recipe.mOutputs[i]);
+                    if (!BWUtil.checkStackAndPrefix(association)) continue;
+
+                    // Pt
+                    if (association.mMaterial.mMaterial.equals(Materials.Platinum)) {
+                        for (ItemStack mInput : recipe.mInputs) {
+                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                        }
+                        if (dust.equals(association.mPrefix) || dustImpure.equals(association.mPrefix)
+                            || dustPure.equals(association.mPrefix)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
                             recipe.mOutputs[i] = BWUtil.setStackSize(PTMetallicPowder.get(dust), amount * 2);
                             recipe.reloadOwner();
-                        } else if (dustSmall.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustSmall.equals(association.mPrefix)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
                             recipe.mOutputs[i] = BWUtil.setStackSize(PTMetallicPowder.get(dustSmall), amount * 2);
                             recipe.reloadOwner();
-                        } else if (dustTiny.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustTiny.equals(association.mPrefix)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
                             recipe.mOutputs[i] = BWUtil.setStackSize(PTMetallicPowder.get(dustTiny), amount * 2);
                             recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                         }
-                    } else if (GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial
-                        .equals(Materials.Palladium)) {
-                            for (ItemStack mInput : recipe.mInputs) {
-                                if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList))
-                                    continue recipeloop;
-                            }
-                            if (dust.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                || dustImpure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                || dustPure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                int amount = recipe.mOutputs[i].stackSize;
-                                GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                recipe.mOutputs[i] = BWUtil.setStackSize(PDMetallicPowder.get(dust), amount * 4);
-                                recipe.reloadOwner();
-                            } else
-                                if (dustSmall.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                    int amount = recipe.mOutputs[i].stackSize;
-                                    GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                    recipe.mOutputs[i] = BWUtil
-                                        .setStackSize(PDMetallicPowder.get(dustSmall), amount * 4);
-                                    recipe.reloadOwner();
-                                } else if (dustTiny
-                                    .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                        int amount = recipe.mOutputs[i].stackSize;
-                                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                        recipe.mOutputs[i] = BWUtil
-                                            .setStackSize(PDMetallicPowder.get(dustTiny), amount * 4);
-                                        recipe.reloadOwner();
-                                    }
-                        } else if (GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial
-                            .equals(Materials.Osmium)) {
-                                for (ItemStack mInput : recipe.mInputs) {
-                                    if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList))
-                                        continue recipeloop;
-                                }
-                                if (dust.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                    || dustImpure.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                    || dustPure
-                                        .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                    int amount = recipe.mOutputs[i].stackSize;
-                                    GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                    recipe.mOutputs[i] = BWUtil.setStackSize(IrOsLeachResidue.get(dust), amount);
-                                    recipe.reloadOwner();
-                                } else if (dustSmall
-                                    .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                        int amount = recipe.mOutputs[i].stackSize;
-                                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                        recipe.mOutputs[i] = BWUtil
-                                            .setStackSize(IrOsLeachResidue.get(dustSmall), amount);
-                                        recipe.reloadOwner();
-                                    } else if (dustTiny
-                                        .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                            int amount = recipe.mOutputs[i].stackSize;
-                                            recipe.mOutputs[i] = BWUtil
-                                                .setStackSize(IrOsLeachResidue.get(dustTiny), amount);
-                                            recipe.reloadOwner();
-                                        }
-                            } else if (GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial
-                                .equals(Materials.Iridium)) {
-                                    for (ItemStack mInput : recipe.mInputs) {
-                                        if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList))
-                                            continue recipeloop;
-                                    }
-                                    if (dust.equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                        || dustImpure
-                                            .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)
-                                        || dustPure
-                                            .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                        int amount = recipe.mOutputs[i].stackSize;
-                                        recipe.mOutputs[i] = BWUtil.setStackSize(IrLeachResidue.get(dust), amount);
-                                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                        recipe.reloadOwner();
-                                    } else if (dustSmall
-                                        .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                            int amount = recipe.mOutputs[i].stackSize;
-                                            recipe.mOutputs[i] = BWUtil
-                                                .setStackSize(IrLeachResidue.get(dustSmall), amount);
-                                            GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                            recipe.reloadOwner();
-                                        } else if (dustTiny
-                                            .equals(GTOreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix)) {
-                                                int amount = recipe.mOutputs[i].stackSize;
-                                                recipe.mOutputs[i] = BWUtil
-                                                    .setStackSize(IrLeachResidue.get(dustTiny), amount);
-                                                GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
-                                                recipe.reloadOwner();
-                                            }
-                                }
+                    } else if (association.mMaterial.mMaterial.equals(Materials.Palladium)) {
+                        for (ItemStack mInput : recipe.mInputs) {
+                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                        }
+                        if (dust.equals(association.mPrefix) || dustImpure.equals(association.mPrefix)
+                            || dustPure.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(PDMetallicPowder.get(dust), amount * 4);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustSmall.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(PDMetallicPowder.get(dustSmall), amount * 4);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustTiny.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(PDMetallicPowder.get(dustTiny), amount * 4);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        }
+                    } else if (association.mMaterial.mMaterial.equals(Materials.Osmium)) {
+                        for (ItemStack mInput : recipe.mInputs) {
+                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                        }
+                        if (dust.equals(association.mPrefix) || dustImpure.equals(association.mPrefix)
+                            || dustPure.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrOsLeachResidue.get(dust), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustSmall.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrOsLeachResidue.get(dustSmall), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustTiny.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrOsLeachResidue.get(dustTiny), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        }
+                    } else if (association.mMaterial.mMaterial.equals(Materials.Iridium)) {
+                        for (ItemStack mInput : recipe.mInputs) {
+                            if (PlatinumSludgeOverHaul.isInBlackList(mInput, availableItemList)) continue recipeloop;
+                        }
+                        if (dust.equals(association.mPrefix) || dustImpure.equals(association.mPrefix)
+                            || dustPure.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrLeachResidue.get(dust), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustSmall.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrLeachResidue.get(dustSmall), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (dustTiny.equals(association.mPrefix)) {
+                            int amount = recipe.mOutputs[i].stackSize;
+                            recipe.mOutputs[i] = BWUtil.setStackSize(IrLeachResidue.get(dustTiny), amount);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        }
+                    }
                 }
             }
             map.getBackend()
-                .removeRecipes(toDel);
+                .removeRecipes(toDelete);
         }
         // TODO: remove EnderIO recipes
 
@@ -1075,7 +1057,7 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
-        GTLog.err.println("Processing hv circuit materials (circuit assembler map)");
+        GTLog.out.println("Processing hv circuit materials (circuit assembler map)");
         for (GTRecipe recipe : circuitAssemblerRecipes.getAllRecipes()) {
             if (recipe.mEUt > 512) continue;
             if (BWUtil.checkStackAndPrefix(recipe.mOutputs[0])) {
@@ -1084,7 +1066,7 @@ public class PlatinumSludgeOverHaul {
                     ItemData ass = GTOreDictUnificator.getAssociation(stack);
                     if (BWUtil.checkStackAndPrefix(stack) && ass.mMaterial.mMaterial.equals(Materials.Platinum)) {
                         recipe.mInputs[i] = GTOreDictUnificator.get(ass.mPrefix, Materials.BlueAlloy, stack.stackSize);
-                        GTLog.err.println("Recipe edited: " + displayRecipe(recipe));
+                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                         recipe.reloadOwner();
                     }
                 }
