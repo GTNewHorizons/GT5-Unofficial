@@ -23,6 +23,8 @@ import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
+import goodgenerator.items.GGMaterial;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -366,6 +368,21 @@ public class BeamCrafterRecipes implements Runnable {
                     .amount_B(30)
                     .build())
             .eut(TierEU.RECIPE_UIV)
+            .duration(2 * SECONDS)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(GGMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000))
+            .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1000))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(ETA.getId())
+                    .particleID_B(UPSILON.getId())
+                    .amount_A(2)
+                    .amount_B(2)
+                    .build())
+            .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
