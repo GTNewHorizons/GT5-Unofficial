@@ -6,7 +6,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +20,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,6 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
@@ -86,7 +88,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int i = 0; i < tagList.tagList.size(); i++) parameterList.get(i)
                     .loadFromParameterCard(tagList.getCompoundTagAt(i));
 
-                if(metaTE instanceof TileEntityModuleMiner Miner){
+                if (metaTE instanceof TileEntityModuleMiner Miner) {
                     NBTTagCompound minerTags = tNBT.getCompoundTag("filter");
                     Miner.isWhitelisted = minerTags.getBoolean("isWhitelisted");
                     Miner.filterInventory.deserializeNBT(minerTags.getCompoundTag("filteredOres"));
@@ -106,7 +108,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 newTag.setString("controller", controller.getLocalName());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
-                if(metaTE instanceof TileEntityModuleMiner Miner){
+                if (metaTE instanceof TileEntityModuleMiner Miner) {
                     NBTTagCompound minerTags = new NBTTagCompound();
                     minerTags.setBoolean("isWhitelisted", Miner.isWhitelisted);
                     minerTags.setTag("filteredOres", Miner.filterInventory.serializeNBT());
@@ -200,6 +202,23 @@ public final class ItemParametrizerMemoryCard extends Item {
                         + ": "
                         + EnumChatFormatting.GRAY
                         + getValueFromTag(tag));
+            }
+        }
+        if (tNBT.hasKey("filter")) {
+            NBTTagCompound tag = tNBT.getCompoundTag("filter");
+            boolean isWhitelisted = tag.getBoolean("isWhitelisted");
+
+            aList.add(
+                (isWhitelisted ? EnumChatFormatting.GREEN + translateToLocal("item.em.parametrizerMemoryCard.whitelist")
+                    : EnumChatFormatting.RED + translateToLocal("item.em.parametrizerMemoryCard.blacklist")) + ": ");
+
+            ItemStackHandler filterList = new LimitingItemStackHandler(64, 1);
+            filterList.deserializeNBT(tag.getCompoundTag("filteredOres"));
+            for (int i = 0; i < 64; i++) {
+                if (filterList.getStackInSlot(i) == null) continue;
+                aList.add(
+                    "- " + filterList.getStackInSlot(i)
+                        .getDisplayName());
             }
         }
     }

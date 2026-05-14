@@ -30,6 +30,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -45,21 +47,21 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import akka.japi.Pair;
 import gregtech.api.enums.Materials;
@@ -74,7 +76,6 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
 import gtnhintergalactic.recipe.SpaceMiningRecipes;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
-import org.jetbrains.annotations.NotNull;
 
 public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntityModuleMiner> {
 
@@ -222,13 +223,14 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .findSyncHandler("filter");
 
         // Update cache if parametrizer card was used to paste config
-        if(multiblock.wasFilterPasted){
+        if (multiblock.wasFilterPasted) {
             multiblock.wasFilterPasted = false;
             filterSyncer.updateCacheFromSource(false);
         }
 
         for (int i = 0; i < 64; i++) {
             filterModularSlots[i] = new ModularSlot(multiblock.filterInventory, i) {
+
                 @Override
                 public void onSlotChanged() {
                     multiblock.generateOreConfigurationList();
@@ -255,8 +257,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
 
         return new DynamicDrawable(() -> {
-            if (filterModularSlots[index].getStack() != null
-                && filterContainsOre(filterModularSlots[index].getStack())
+            if (filterModularSlots[index].getStack() != null && filterContainsOre(filterModularSlots[index].getStack())
                 && currentOresContainThis(
                     filterModularSlots[index].getStack(),
                     distanceParameterSyncer.getValue(),
