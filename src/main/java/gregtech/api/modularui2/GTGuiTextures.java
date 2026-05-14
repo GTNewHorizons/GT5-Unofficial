@@ -183,6 +183,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .location(GregTech.ID, "gui/picture/gray_rectangle")
         .build();
+
+    public static final UITexture BW_BACKGROUND_CIRCUIT_PROGRAMMER = UITexture
+        .fullImage(MainMod.MOD_ID, "GUI/background/circuit_programmer");
     // endregion background
 
     // region overlay
@@ -1570,6 +1573,11 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/sorting_mode")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_NBT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/nbt")
         .fullImage()
         .canApplyTheme()
         .build();
