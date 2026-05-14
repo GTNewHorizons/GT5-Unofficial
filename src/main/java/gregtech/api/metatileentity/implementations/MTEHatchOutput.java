@@ -72,6 +72,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     public void setMode(byte mode) {
         this.mMode = mode;
+        lockFluid(isFluidLocked());
     }
 
     @Override
@@ -293,15 +294,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public void lockFluid(boolean lock) {
-        if (lock) {
-            if (!isFluidLocked()) {
-                this.mMode = 9;
-                markDirty();
-            }
-        } else {
-            this.mMode = 0;
-            setLockedFluid(null);
-        }
+        if (lock) setLockedFluid(mFluid == null ? null : mFluid.getFluid());
     }
 
     @Override

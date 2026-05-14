@@ -49,17 +49,19 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
             .coverChildren()
             .childPadding(1)
             .paddingLeft(3)
-            .paddingTop(10)
+            .paddingTop(3)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        mainRow.childIf(supportsScreen(), this::createScreen);
+        mainRow.childIf(supportsScreen(), () -> createScreen(syncManager));
         mainRow.childIf(supportsIO(), this::createIO);
         mainRow.childIf(supportsFilterScreen(), () -> createFilterScreen(syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
-    protected ParentWidget<?> createScreen() {
+    protected ParentWidget<?> createScreen(PanelSyncManager syncManager) {
+        ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
+
         ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
@@ -85,9 +87,15 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
         screen.child(textColumn);
 
+        FluidSlotSyncHandler mainTank = new FluidSlotSyncHandler(hatch.getFluidTank());
+        mainTank.setChangeListener(() -> {
+            byte mode = modeSyncer.getValue();
+            hatch.lockFluid(mode == 8 || mode == 9);
+        });
+
         // fluid slot
         screen.child(
-            new FluidSlot().syncHandler(new FluidSlotSyncHandler(hatch.getFluidTank()))
+            new FluidSlot().syncHandler(mainTank)
                 .bottomRel(0)
                 .rightRel(0)
                 .background(GTGuiTextures.SLOT_FLUID_TANK));
@@ -162,7 +170,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
     @Override
     protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        ByteSyncValue modeSyncer = new ByteSyncValue(hatch::getMode, hatch::setMode);
+        ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
         FluidSlotSyncHandler lockedTankSyncer = syncManager.findSyncHandler("lockedTank", FluidSlotSyncHandler.class);
 
         return super.createLeftCornerFlow(panel, syncManager).paddingBottom(2)
@@ -171,18 +179,28 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
                     .value(modeSyncer)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
                     .tooltipDynamic(t -> {
-                        Object[] args = new Object[1];
+                        String[] args = new String[2];
                         byte mode = modeSyncer.getByteValue();
+                        FluidStack fluid = lockedTankSyncer.getValue();
 
                         if (mode == 8 || mode == 9) {
-                            FluidStack fluid = lockedTankSyncer.getValue();
-                            args[0] = GTUtility.translate(
-                                fluid == null ? "GT5U.chat.hatch.output.in_brackets.none" : fluid.getUnlocalizedName());
+                            if (fluid == null) {
+                                args[0] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.0");
+                                args[1] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.1");
+                            } else args[0] = GTUtility.translate(fluid.getUnlocalizedName());
                         }
 
-                        t.addLine(GTUtility.translate(MTEHatchOutput.getLangKeyForMode(mode), args));
+                        t.addLine(GTUtility.translate(MTEHatchOutput.getLangKeyForMode(mode), args[0]));
+                        if (args[1] != null) t.addLine(args[1]);
                         t.addLine(EnumChatFormatting.GRAY + GTUtility.translate("GT5U.gui.text.hatch.output.cycle"));
                     })
                     .tooltipAutoUpdate(true));
+    }
+
+    @Override
+    public void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+
+        syncManager.syncValue("mode", new ByteSyncValue(hatch::getMode, hatch::setMode));
     }
 }
