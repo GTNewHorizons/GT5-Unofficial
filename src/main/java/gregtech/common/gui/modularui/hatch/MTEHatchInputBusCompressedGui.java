@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -20,9 +19,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
@@ -102,15 +99,13 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
             .rightRel(1)
             .bottom(50)
             .size(150, 60)
-            .child(new Column()
-                .sizeRel(1)
-                .padding(3)
-                .align(Alignment.TopCenter)
+            .child(Flow.column()
+                .full()
+                .padding(4)
                 .child(IKey.lang("GT5U.gui.text.bus_settings")
                     .asWidget()
                     .marginBottom(4))
-                .child(new Row()
-                    .alignX(Alignment.Center)
+                .child(Flow.row()
                     .size(140, 20)
                     .child(IKey.lang("GT5U.gui.text.stack_capacity")
                         .asWidget()
