@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -66,7 +67,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_X = 4;
     private static final int OFFSET_Y = 4;
     private static final int OFFSET_Z = 0;
-    public static int casingAmount;
+    protected static int casingAmount;
     private static final int TURBINE_SLOTS = 12;
     private static final String TURBINE_HOLDER_NBT = "turbineHolder";
     private static final ClassValue<IStructureDefinition<MTEXLTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -510,9 +511,9 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GT_FML_LOGGER.error("Error while checking XL turbine fuel", t);
+            return CheckRecipeResultRegistry.CRASH;
         }
-        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override

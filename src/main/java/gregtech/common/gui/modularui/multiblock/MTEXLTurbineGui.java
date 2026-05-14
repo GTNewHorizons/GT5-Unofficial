@@ -69,7 +69,7 @@ public class MTEXLTurbineGui extends MTEMultiBlockBaseGui<MTEXLTurbineBase> {
                     .padding(5)
                     .childPadding(4)
                     .child(
-                        new TextWidget<>("Turbines").size(96, 18)
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.turbine_title")).size(96, 18)
                             .alignment(Alignment.Center))
                     .child(
                         SlotGroupWidget.builder()

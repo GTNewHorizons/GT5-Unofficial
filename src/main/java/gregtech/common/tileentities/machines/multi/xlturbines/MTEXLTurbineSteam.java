@@ -125,10 +125,12 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
                     remainingFlow -= flow;
                     totalFlow += flow;
                     if (!achievement) {
-                        GTMod.achievements.issueAchievement(
-                            getBaseMetaTileEntity().getWorld()
-                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()),
-                            "muchsteam");
+                        try {
+                            GTMod.achievements.issueAchievement(
+                                getBaseMetaTileEntity().getWorld()
+                                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()),
+                                "muchsteam");
+                        } catch (Exception ignored) {}
                         achievement = true;
                     }
                 }

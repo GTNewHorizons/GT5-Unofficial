@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -315,9 +316,9 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GT_FML_LOGGER.error("Error while checking XL plasma turbine fuel", t);
+            return CheckRecipeResultRegistry.CRASH;
         }
-        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
