@@ -56,7 +56,9 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.collect.ImmutableList;
 
+import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTUtility;
 
 public class DimensionHelper {
@@ -74,7 +76,8 @@ public class DimensionHelper {
     private static final String T10 = "gtnop.tier.10";
 
     @Desugar
-    public record Dimension(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {}
+    public record Dimension(String fullName, String internalName, String trimmedName, String abbr, String tierKey,
+        List<StoneType> stoneTypes) {}
 
     public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
     public static final Map<String, String> INTERNAL_TO_ABBR = new HashMap<>();
@@ -90,74 +93,93 @@ public class DimensionHelper {
         // capital letter in
         // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
         // Non GC dimensions in progression order instead of alphabetical
-        register("Overworld", OW, "Overworld", "Ow", T0);
-        register("Nether", NETHER, "Nether", "Ne", T0);
-        register("Twilight", TWILIGHT_FOREST, "Twilight", "TF", T0);
-        register("The End", THE_END, "The End", "ED", T0);
-        register("EndAsteroid", ENDASTEROID, "EndAsteroid", "EA", T0);
-        register("dimensionDarkWorld", EVERGLADES, "dimensionDarkWorld", "Eg", T0);
+        register("Overworld", OW, "Overworld", "Ow", T0, ImmutableList.of(StoneType.Stone));
+        register("Nether", NETHER, "Nether", "Ne", T0, ImmutableList.of(StoneType.Netherrack));
+        register("Twilight", TWILIGHT_FOREST, "Twilight", "TF", T0, ImmutableList.of(StoneType.Stone));
+        register("The End", THE_END, "The End", "ED", T0, ImmutableList.of(StoneType.Endstone));
+        register("EndAsteroid", ENDASTEROID, "EndAsteroid", "EA", T0, ImmutableList.of(StoneType.Endstone));
+        register("dimensionDarkWorld", EVERGLADES, "dimensionDarkWorld", "Eg", T0, ImmutableList.of(StoneType.Stone));
 
         // T1
-        register("GalacticraftCore_Moon", MOON, "Moon", "Mo", T1);
+        register("GalacticraftCore_Moon", MOON, "Moon", "Mo", T1, ImmutableList.of(StoneType.Moon));
 
         // T2
-        register("GalaxySpace_Deimos", DEIMOS, "De", "De", T2);
-        register("GalacticraftMars_Mars", MARS, "Mars", "Ma", T2);
-        register("GalaxySpace_Phobos", PHOBOS, "Phobos", "Ph", T2);
+        register("GalaxySpace_Deimos", DEIMOS, "De", "De", T2, ImmutableList.of(StoneType.Deimos));
+        register("GalacticraftMars_Mars", MARS, "Mars", "Ma", T2, ImmutableList.of(StoneType.Mars));
+        register("GalaxySpace_Phobos", PHOBOS, "Phobos", "Ph", T2, ImmutableList.of(StoneType.Phobos));
 
         // T3
-        register("GalacticraftMars_Asteroids", ASTEROIDS, "Asteroids", "As", T3);
-        register("GalaxySpace_Callisto", CALLISTO, "Callisto", "Ca", T3);
-        register("GalaxySpace_Ceres", CERES, "Ceres", "Ce", T3);
-        register("GalaxySpace_Europa", EUROPA, "Europa", "Eu", T3);
-        register("GalaxySpace_Ganymede", GANYMEDE, "Ganymede", "Ga", T3);
-        register("Ross128b", ROSS128B, "Ross128b", "Rb", T3);
+        register("GalacticraftMars_Asteroids", ASTEROIDS, "Asteroids", "As", T3, ImmutableList.of(StoneType.Asteroid));
+        register("GalaxySpace_Callisto", CALLISTO, "Callisto", "Ca", T3, ImmutableList.of(StoneType.Callisto));
+        register("GalaxySpace_Ceres", CERES, "Ceres", "Ce", T3, ImmutableList.of(StoneType.Ceres));
+        register("GalaxySpace_Europa", EUROPA, "Europa", "Eu", T3, ImmutableList.of(StoneType.Europa));
+        register("GalaxySpace_Ganymede", GANYMEDE, "Ganymede", "Ga", T3, ImmutableList.of(StoneType.Ganymede));
+        register("Ross128b", ROSS128B, "Ross128b", "Rb", T3, ImmutableList.of(StoneType.Stone));
 
         // T4
-        register("GalaxySpace_Io", IO, "Io", "Io", T4);
-        register("GalaxySpace_Mercury", MERCURY, "Mercury", "Me", T4);
-        register("GalaxySpace_Venus", VENUS, "Venus", "Ve", T4);
+        register("GalaxySpace_Io", IO, "Io", "Io", T4, ImmutableList.of(StoneType.Io));
+        register("GalaxySpace_Mercury", MERCURY, "Mercury", "Me", T4, ImmutableList.of(StoneType.Mercury));
+        register("GalaxySpace_Venus", VENUS, "Venus", "Ve", T4, ImmutableList.of(StoneType.Venus));
 
         // T5
-        register("GalaxySpace_Enceladus", ENCELADUS, "Enceladus", "En", T5);
-        register("GalaxySpace_Miranda", MIRANDA, "Miranda", "Mi", T5);
-        register("GalaxySpace_Oberon", OBERON, "Oberon", "Ob", T5);
-        register("GalaxySpace_Titan", TITAN, "Titan", "Ti", T5);
-        register("Ross128ba", ROSS128BA, "Ross128ba", "Ra", T5);
+        register("GalaxySpace_Enceladus", ENCELADUS, "Enceladus", "En", T5, ImmutableList.of(StoneType.Enceladus));
+        register("GalaxySpace_Miranda", MIRANDA, "Miranda", "Mi", T5, ImmutableList.of(StoneType.Miranda));
+        register("GalaxySpace_Oberon", OBERON, "Oberon", "Ob", T5, ImmutableList.of(StoneType.Oberon));
+        register("GalaxySpace_Titan", TITAN, "Titan", "Ti", T5, ImmutableList.of(StoneType.Titan));
+        register("Ross128ba", ROSS128BA, "Ross128ba", "Ra", T5, ImmutableList.of(StoneType.Moon));
 
         // T6
-        register("GalaxySpace_Proteus", PROTEUS, "Proteus", "Pr", T6);
-        register("GalaxySpace_Triton", TRITON, "Triton", "Tr", T6);
+        register("GalaxySpace_Proteus", PROTEUS, "Proteus", "Pr", T6, ImmutableList.of(StoneType.Proteus));
+        register("GalaxySpace_Triton", TRITON, "Triton", "Tr", T6, ImmutableList.of(StoneType.Triton));
 
         // T7
-        register("GalaxySpace_Haumea", HAUMEA, "Haumea", "Ha", T7);
-        register("GalaxySpace_Kuiperbelt", KUIPERBELT, "Kuiperbelt", "KB", T7);
-        register("GalaxySpace_MakeMake", MAKEMAKE, "MakeMake", "MM", T7);
-        register("GalaxySpace_Pluto", PLUTO, "Pluto", "Pl", T7);
+        register("GalaxySpace_Haumea", HAUMEA, "Haumea", "Ha", T7, ImmutableList.of(StoneType.Haumea));
+        register(
+            "GalaxySpace_Kuiperbelt",
+            KUIPERBELT,
+            "Kuiperbelt",
+            "KB",
+            T7,
+            ImmutableList.of(StoneType.PackedIce, StoneType.BlueIce));
+        register("GalaxySpace_MakeMake", MAKEMAKE, "MakeMake", "MM", T7, ImmutableList.of(StoneType.MakeMake));
+        register("GalaxySpace_Pluto", PLUTO, "Pluto", "Pl", T7, ImmutableList.of(StoneType.Pluto));
 
         // T8
-        register("GalaxySpace_BarnardC", BARNARDC, "BarnardC", "BC", T8);
-        register("GalaxySpace_BarnardE", BARNARDE, "BarnardE", "BE", T8);
-        register("GalaxySpace_BarnardF", BARNARDF, "BarnardF", "BF", T8);
-        register("GalaxySpace_CentauriA", CENTAURIBB, "CentauriA", "CB", T8);
-        register("GalaxySpace_TcetiE", TCETIE, "TcetiE", "TE", T8);
-        register("GalaxySpace_VegaB", VEGAB, "VegaB", "VB", T8);
+        register("GalaxySpace_BarnardC", BARNARDC, "BarnardC", "BC", T8, ImmutableList.of(StoneType.Stone));
+        register("GalaxySpace_BarnardE", BARNARDE, "BarnardE", "BE", T8, ImmutableList.of(StoneType.BarnardaE));
+        register("GalaxySpace_BarnardF", BARNARDF, "BarnardF", "BF", T8, ImmutableList.of(StoneType.BarnardaF));
+        register("GalaxySpace_CentauriA", CENTAURIBB, "CentauriA", "CB", T8, ImmutableList.of(StoneType.AlphaCentauri));
+        register("GalaxySpace_TcetiE", TCETIE, "TcetiE", "TE", T8, ImmutableList.of(StoneType.TCetiE));
+        register("GalaxySpace_VegaB", VEGAB, "VegaB", "VB", T8, ImmutableList.of(StoneType.VegaB));
 
         // T9
-        register("GalacticraftAmunRa_Anubis", ANUBIS, "Anubis", "An", T9);
-        register("GalacticraftAmunRa_Horus", HORUS, "Horus", "Ho", T9);
-        register("GalacticraftAmunRa_Maahes", MAAHES, "Maahes", "Mh", T9);
-        register("GalacticraftAmunRa_MehenBelt", MEHENBELT, "MehenBelt", "MB", T9);
-        register("GalacticraftAmunRa_Neper", NEPER, "Neper", "Np", T9);
-        register("GalacticraftAmunRa_Seth", SETH, "Seth", "Se", T9);
+        register("GalacticraftAmunRa_Anubis", ANUBIS, "Anubis", "An", T9, ImmutableList.of(StoneType.AnubisAndMaahes));
+        register("GalacticraftAmunRa_Horus", HORUS, "Horus", "Ho", T9, ImmutableList.of(StoneType.Horus));
+        register("GalacticraftAmunRa_Maahes", MAAHES, "Maahes", "Mh", T9, ImmutableList.of(StoneType.AnubisAndMaahes));
+        register(
+            "GalacticraftAmunRa_MehenBelt",
+            MEHENBELT,
+            "MehenBelt",
+            "MB",
+            T9,
+            ImmutableList.of(StoneType.Asteroid));
+        register("GalacticraftAmunRa_Neper", NEPER, "Neper", "Np", T9, ImmutableList.of(StoneType.Stone));
+        register(
+            "GalacticraftAmunRa_Seth",
+            SETH,
+            "Seth",
+            "Se",
+            T9,
+            ImmutableList.of(StoneType.SethIce, StoneType.SethClay));
 
         // T10
-        register("Underdark", DEEPDARK, "Underdark", "DD", T10);
+        register("Underdark", DEEPDARK, "Underdark", "DD", T10, ImmutableList.of(StoneType.Stone));
     }
 
-    public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {
+    public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey,
+        List<StoneType> stoneTypes) {
         if (!REGISTRY.containsKey(fullName)) {
-            Dimension dim = new Dimension(fullName, internalName, trimmedName, abbr, tierKey);
+            Dimension dim = new Dimension(fullName, internalName, trimmedName, abbr, tierKey, stoneTypes);
             REGISTRY.put(fullName, dim);
             INTERNAL_TO_ABBR.put(internalName, abbr);
             ABBR_TO_INTERNAL.put(abbr, internalName);

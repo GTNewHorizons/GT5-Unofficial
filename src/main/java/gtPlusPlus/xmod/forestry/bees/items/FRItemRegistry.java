@@ -14,30 +14,27 @@ public class FRItemRegistry {
     public static void Register() {
 
         GregtechItemList.HiveFrameVoid
-            .set(new MBItemFrame(MBFrameType.USELESS, EnumRarity.common, "No more cheaty frames for GTNH players."));
+            .set(new MBItemFrame(MBFrameType.USELESS, EnumRarity.common, "gtpp.tooltip.frame.void"));
 
-        GregtechItemList.HiveFrameAccelerated.set(
-            new MBItemFrame(
-                MBFrameType.ACCELERATED,
-                "Longevity for bees isn't very common, especially if they're working harder."));
+        GregtechItemList.HiveFrameAccelerated
+            .set(new MBItemFrame(MBFrameType.ACCELERATED, "gtpp.tooltip.frame.accelerated"));
 
-        GregtechItemList.HiveFrameMutagenic.set(
-            new MBItemFrame(MBFrameType.MUTAGENIC, EnumRarity.epic, "Evolution of the fittest, finest and fastest."));
+        GregtechItemList.HiveFrameMutagenic
+            .set(new MBItemFrame(MBFrameType.MUTAGENIC, EnumRarity.epic, "gtpp.tooltip.frame.mutagenic"));
 
-        GregtechItemList.HiveFrameBusy
-            .set(new MBItemFrame(MBFrameType.BUSY, "Your bee will work harder and longer than you expected."));
+        GregtechItemList.HiveFrameBusy.set(new MBItemFrame(MBFrameType.BUSY, "gtpp.tooltip.frame.busy"));
 
         GregtechItemList.HiveFrameDecay
-            .set(new MBItemFrame(MBFrameType.DECAYING, EnumRarity.uncommon, "Who really needs stable genetics?"));
+            .set(new MBItemFrame(MBFrameType.DECAYING, EnumRarity.uncommon, "gtpp.tooltip.frame.decaying"));
 
         GregtechItemList.HiveFrameSlow
-            .set(new MBItemFrame(MBFrameType.SLOWING, EnumRarity.common, "The journey is its own reward."));
+            .set(new MBItemFrame(MBFrameType.SLOWING, EnumRarity.common, "gtpp.tooltip.frame.slowing"));
 
-        GregtechItemList.HiveFrameStabilize.set(
-            new MBItemFrame(MBFrameType.STABILIZING, EnumRarity.rare, "If you wish your bees to keep their form."));
+        GregtechItemList.HiveFrameStabilize
+            .set(new MBItemFrame(MBFrameType.STABILIZING, EnumRarity.rare, "gtpp.tooltip.frame.stabilizing"));
 
         GregtechItemList.HiveFrameArborist
-            .set(new MBItemFrame(MBFrameType.ARBORISTS, EnumRarity.common, "Who need Bees when you can have Trees?"));
+            .set(new MBItemFrame(MBFrameType.ARBORISTS, EnumRarity.common, "gtpp.tooltip.frame.arborists"));
 
         ChestGenHooks.addItem(
             ChestGenHooks.STRONGHOLD_CORRIDOR,

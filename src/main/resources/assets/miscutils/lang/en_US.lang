@@ -4260,6 +4260,15 @@ gtplusplus.blocktieredcasings.1.1.name=Integral Encasement II
 gtplusplus.blocktieredcasings.1.2.name=Integral Encasement III
 gtplusplus.blocktieredcasings.1.3.name=Integral Encasement IV
 gtplusplus.blocktieredcasings.1.4.name=Integral Encasement V
+gtpp.tooltip.frame.void=No more cheaty frames for GTNH players.
+gtpp.tooltip.frame.accelerated=Longevity for bees isn't very common, especially if they're working harder.
+gtpp.tooltip.frame.mutagenic=Evolution of the fittest, finest and fastest.
+gtpp.tooltip.frame.busy=Your bee will work harder and longer than you expected.
+gtpp.tooltip.frame.decaying=Who really needs stable genetics?
+gtpp.tooltip.frame.slowing=The journey is its own reward.
+gtpp.tooltip.frame.stabilizing=If you wish your bees to keep their form.
+gtpp.tooltip.frame.arborists=Who need Bees when you can have Trees?
+
 gtplusplus.blocktieredcasings.1.5.name=Integral Framework I
 gtplusplus.blocktieredcasings.1.6.name=Integral Framework II
 gtplusplus.blocktieredcasings.1.7.name=Integral Framework III

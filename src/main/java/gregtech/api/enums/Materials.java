@@ -1095,6 +1095,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StargateCrystalSlurry;
     public static Materials LumipodExtract;
     public static Materials BiocatalyzedPropulsionFluid;
+    public static Materials Shijima;
+    public static Materials Churitsu;
     // endregion
 
     // region GTNH Materials
@@ -2074,6 +2076,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     @Override
     public String getInternalName() {
         return mName;
+    }
+
+    @Override
+    public String getDefaultLocalName() {
+        return mDefaultLocalName;
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {

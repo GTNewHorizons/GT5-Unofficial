@@ -164,6 +164,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(186,Materials.StagnantWasteWater);
         r(187,Materials.ActivatedWasteWater);
         r(188,Materials.ChlorosulfonicAcid);
+        r(189, Materials.Shijima);
+        r(190, Materials.Churitsu);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);

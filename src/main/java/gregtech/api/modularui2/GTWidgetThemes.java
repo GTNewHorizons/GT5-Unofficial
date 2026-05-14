@@ -119,7 +119,7 @@ public final class GTWidgetThemes {
             new WidgetTheme(
                 0,
                 0,
-                new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                new Rectangle().color(Color.rgb(100, 30, 80)),
                 Color.rgb(55, 255, 55),
                 0xFFFAFAFA,
                 false,
@@ -135,7 +135,7 @@ public final class GTWidgetThemes {
                 0,
                 0,
                 new DrawableStack(
-                    new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                    new Rectangle().color(Color.rgb(100, 30, 80)),
                     GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
                 Color.rgb(55, 255, 55),
                 0xFFFAFAFA,
