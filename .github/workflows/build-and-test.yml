@@ -6,7 +6,7 @@ on:
     branches: [ master, main, release/** ]
 
   push:
-    branches: [ master, main, release/** ]
+    branches: [ master, main, release/**, mal/fullpack-ci-tests ]
 
 jobs:
   build-and-test:
