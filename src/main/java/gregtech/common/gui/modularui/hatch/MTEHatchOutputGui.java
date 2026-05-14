@@ -2,12 +2,17 @@ package gregtech.common.gui.modularui.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -43,13 +48,13 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         Flow mainRow = Flow.row()
             .coverChildren()
             .childPadding(1)
-            .paddingLeft(4)
+            .paddingLeft(3)
             .paddingTop(10)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         mainRow.childIf(supportsScreen(), this::createScreen);
         mainRow.childIf(supportsIO(), this::createIO);
-        mainRow.childIf(supportsFilterScreen(), this::createFilterScreen);
+        mainRow.childIf(supportsFilterScreen(), () -> createFilterScreen(syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
@@ -82,10 +87,10 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
         // fluid slot
         screen.child(
-            new FluidSlot().syncHandler(new FluidSlotSyncHandler(hatch.getFluidTank()).canFillSlot(false))
+            new FluidSlot().syncHandler(new FluidSlotSyncHandler(hatch.getFluidTank()))
                 .bottomRel(0)
                 .rightRel(0)
-                .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK));
+                .background(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
     }
@@ -108,7 +113,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         return ioColumn;
     }
 
-    protected ParentWidget<?> createFilterScreen() {
+    protected ParentWidget<?> createFilterScreen(PanelSyncManager syncManager) {
         ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
@@ -127,24 +132,57 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
         // fluid name
         textColumn.child(IKey.dynamic(() -> {
-            if (fluidLockSlotWidget.getFluid() != null) {
-                return fluidLockSlotWidget.getFluid()
-                    .getLocalizedName();
-            }
-            return GTUtility.translate("GT5U.machines.hatch_output.lockfluid.empty");
+            FluidStack fluid = fluidLockSlotWidget.getFluid();
+            return GTUtility
+                .translate(fluid == null ? "GT5U.machines.hatch_output.lockfluid.empty" : fluid.getUnlocalizedName());
         })
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         screen.child(textColumn);
 
+        // needed for the mode setter button tooltip
+        syncManager.syncValue("lockedTank", new FluidSlotSyncHandler(fluidLockSlotWidget));
+        FluidSlotSyncHandler lockedTank = new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true);
+
         // fluid lock slot
         screen.child(
-            fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
+            fluidLockSlotWidget.syncHandler(lockedTank)
                 .bottomRel(0)
                 .rightRel(0)
-                .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK));
+                .background(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
+    }
+
+    @Override
+    protected boolean supportsLeftCornerFlow() {
+        return true;
+    }
+
+    @Override
+    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        ByteSyncValue modeSyncer = new ByteSyncValue(hatch::getMode, hatch::setMode);
+        FluidSlotSyncHandler lockedTankSyncer = syncManager.findSyncHandler("lockedTank", FluidSlotSyncHandler.class);
+
+        return super.createLeftCornerFlow(panel, syncManager).paddingBottom(2)
+            .child(
+                new CycleButtonWidget().stateCount(10)
+                    .value(modeSyncer)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                    .tooltipDynamic(t -> {
+                        Object[] args = new Object[1];
+                        byte mode = modeSyncer.getByteValue();
+
+                        if (mode == 8 || mode == 9) {
+                            FluidStack fluid = lockedTankSyncer.getValue();
+                            args[0] = GTUtility.translate(
+                                fluid == null ? "GT5U.chat.hatch.output.in_brackets.none" : fluid.getUnlocalizedName());
+                        }
+
+                        t.addLine(GTUtility.translate(MTEHatchOutput.getLangKeyForMode(mode), args));
+                        t.addLine(EnumChatFormatting.GRAY + GTUtility.translate("GT5U.gui.text.hatch.output.cycle"));
+                    })
+                    .tooltipAutoUpdate(true));
     }
 }

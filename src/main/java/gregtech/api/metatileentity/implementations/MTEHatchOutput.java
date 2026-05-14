@@ -47,7 +47,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
-    public byte mMode = 0;
+    protected byte mMode = 0;
 
     public MTEHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 4, (String) null);
@@ -64,6 +64,14 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     public MTEHatchOutput(String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
+    }
+
+    public byte getMode() {
+        return mMode;
+    }
+
+    public void setMode(byte mode) {
+        this.mMode = mode;
     }
 
     @Override
@@ -121,16 +129,16 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mMode", mMode);
         if (isFluidLocked() && lockedFluid != null) aNBT.setString("lockedFluidName", lockedFluid.getName());
         else aNBT.removeTag("lockedFluidName");
+        aNBT.setByte("mMode", mMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mMode = aNBT.getByte("mMode");
         if (isFluidLocked()) setLockedFluid(FluidRegistry.getFluid(aNBT.getString("lockedFluidName")));
+        mMode = aNBT.getByte("mMode");
     }
 
     @Override
@@ -187,39 +195,11 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         }
         final IChatComponent inBrackets;
         switch (mMode) {
-            case 0 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_steam_item");
+            case 0, 1, 2, 3, 4, 5, 6, 7 -> {
+                GTUtility.sendChatTrans(aPlayer, MTEHatchOutput.getLangKeyForMode(mMode));
                 lockedFluid = null;
             }
-            case 1 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam_item");
-                lockedFluid = null;
-            }
-            case 2 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam_fluid");
-                lockedFluid = null;
-            }
-            case 3 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam");
-                lockedFluid = null;
-            }
-            case 4 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_item");
-                lockedFluid = null;
-            }
-            case 5 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.item");
-                lockedFluid = null;
-            }
-            case 6 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid");
-                lockedFluid = null;
-            }
-            case 7 -> {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.nothing");
-                lockedFluid = null;
-            }
-            case 8 -> {
+            case 8, 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     lockedFluid = null;
@@ -230,22 +210,25 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                             .getFluid());
                     inBrackets = new ChatComponentFluidName(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", inBrackets);
-            }
-            case 9 -> {
-                playerThatLockedfluid = new WeakReference<>(aPlayer);
-                if (mFluid == null) {
-                    lockedFluid = null;
-                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
-                } else {
-                    this.setLockedFluid(
-                        this.getDrainableStack()
-                            .getFluid());
-                    inBrackets = new ChatComponentFluidName(this.getDrainableStack());
-                }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.specific_fluid", inBrackets);
+                GTUtility.sendChatTrans(aPlayer, MTEHatchOutput.getLangKeyForMode(mMode), inBrackets);
             }
         }
+    }
+
+    public static String getLangKeyForMode(byte mode) {
+        return switch (mode) {
+            case 0 -> "GT5U.chat.hatch.output.fluid_steam_item";
+            case 1 -> "GT5U.chat.hatch.output.steam_item";
+            case 2 -> "GT5U.chat.hatch.output.steam_fluid";
+            case 3 -> "GT5U.chat.hatch.output.steam";
+            case 4 -> "GT5U.chat.hatch.output.fluid_item";
+            case 5 -> "GT5U.chat.hatch.output.item";
+            case 6 -> "GT5U.chat.hatch.output.fluid";
+            case 7 -> "GT5U.chat.hatch.output.nothing";
+            case 8 -> "GT5U.chat.hatch.output.items_and_specific_fluid";
+            case 9 -> "GT5U.chat.hatch.output.specific_fluid";
+            default -> "";
+        };
     }
 
     private boolean tryToLockHatch(EntityPlayer aPlayer, ForgeDirection side) {
@@ -278,10 +261,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return false;
     }
 
-    public byte getMode() {
-        return mMode;
-    }
-
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
@@ -304,8 +283,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public void setLockedFluid(Fluid lockedFluid) {
         this.lockedFluid = lockedFluid;
-        if (lockedFluid != null) mMode = 9;
-        else mMode = 0;
+        markDirty();
     }
 
     @Override
@@ -323,7 +301,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         } else {
             this.mMode = 0;
             setLockedFluid(null);
-            markDirty();
         }
     }
 
@@ -333,7 +310,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public boolean acceptsFluidLock(Fluid lockedFluid) {
+    public boolean acceptsFluidLock(Fluid fluid) {
         return true;
     }
 
