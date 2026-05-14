@@ -305,4 +305,9 @@ public class MTERecipeFilter extends MTESpecialFilter {
 
         // endregion
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

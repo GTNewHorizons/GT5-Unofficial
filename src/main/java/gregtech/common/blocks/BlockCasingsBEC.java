@@ -21,7 +21,7 @@ public class BlockCasingsBEC extends BlockCasingsAbstract {
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return (16 << 7) | (aMeta + 96);
+        return (17 << 7) | aMeta;
     }
 
     @Override
