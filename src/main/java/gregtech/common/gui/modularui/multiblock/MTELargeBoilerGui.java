@@ -84,13 +84,17 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                         () -> EnumChatFormatting.WHITE + translateToLocalFormatted(
                             "GT5U.machines.large_boiler.gui.burn",
                             "Fluid",
-                            String.format("%.2f",fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D)))))
+                            String.format(
+                                "%.2f",
+                                fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D)))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> EnumChatFormatting.WHITE + translateToLocalFormatted(
                             "GT5U.machines.large_boiler.gui.burn",
                             "Solid",
-                            String.format("%.2f",solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D)))));
+                            String.format(
+                                "%.2f",
+                                solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D)))));
     }
 }
