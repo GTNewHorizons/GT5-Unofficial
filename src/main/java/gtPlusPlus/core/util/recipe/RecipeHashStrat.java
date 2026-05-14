@@ -19,6 +19,7 @@ public class RecipeHashStrat {
         @Override
         public int hashCode(GTRecipe recipe) {
             int hash = Fnv1a32.initialState();
+            if (recipe == null) return hash;
 
             // let's call it fastest effort to distinguish obviously different recipes
             hash = Fnv1a32.hashStep(hash, recipe.mDuration);
@@ -46,6 +47,10 @@ public class RecipeHashStrat {
         .thenComparing(fluidStack -> fluidStack.amount);
 
     public static boolean areRecipesEqual(GTRecipe recipe1, GTRecipe recipe2) {
+        if (recipe1 == null || recipe2 == null) {
+            return false;
+        }
+
         if (recipe1.mEUt != recipe2.mEUt) {
             return false;
         }
