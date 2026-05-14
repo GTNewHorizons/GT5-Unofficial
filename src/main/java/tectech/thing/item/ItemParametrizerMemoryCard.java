@@ -88,11 +88,11 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int i = 0; i < tagList.tagList.size(); i++) parameterList.get(i)
                     .loadFromParameterCard(tagList.getCompoundTagAt(i));
 
-                if (metaTE instanceof TileEntityModuleMiner Miner) {
+                if (metaTE instanceof TileEntityModuleMiner miner && tNBT.hasKey("filter")) {
                     NBTTagCompound minerTags = tNBT.getCompoundTag("filter");
-                    Miner.isWhitelisted = minerTags.getBoolean("isWhitelisted");
-                    Miner.filterInventory.deserializeNBT(minerTags.getCompoundTag("filteredOres"));
-                    Miner.filterPasted();
+                    miner.isWhitelisted = minerTags.getBoolean("isWhitelisted");
+                    miner.filterInventory.deserializeNBT(minerTags.getCompoundTag("filteredOres"));
+                    miner.filterPasted();
                 }
 
                 GTUtility.sendChatTrans(aPlayer, "item.em.parametrizerMemoryCard.pasteMessage");
@@ -108,10 +108,10 @@ public final class ItemParametrizerMemoryCard extends Item {
                 newTag.setString("controller", controller.getLocalName());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
-                if (metaTE instanceof TileEntityModuleMiner Miner) {
+                if (metaTE instanceof TileEntityModuleMiner miner) {
                     NBTTagCompound minerTags = new NBTTagCompound();
-                    minerTags.setBoolean("isWhitelisted", Miner.isWhitelisted);
-                    minerTags.setTag("filteredOres", Miner.filterInventory.serializeNBT());
+                    minerTags.setBoolean("isWhitelisted", miner.isWhitelisted);
+                    minerTags.setTag("filteredOres", miner.filterInventory.serializeNBT());
                     newTag.setTag("filter", minerTags);
                 }
                 aStack.setTagCompound(newTag);
