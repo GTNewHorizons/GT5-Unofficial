@@ -156,7 +156,7 @@ public class CoverBaseGui<T extends Cover> {
     }
 
     protected int getStringMaxWidth(String... strings) {
-        // Width doesn't matter on the server and the actual method relies on the client-only Font class
+        // Width doesn't matter on the server and the actual method relies on the client-only FontRenderer class
         if (FMLCommonHandler.instance()
             .getSide()
             .isServer()) return 100;
