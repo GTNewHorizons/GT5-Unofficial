@@ -130,4 +130,9 @@ public class MTEFilter extends MTEFilterBase {
                 GTUITextures.OVERLAY_BUTTON_NBT,
                 () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }
