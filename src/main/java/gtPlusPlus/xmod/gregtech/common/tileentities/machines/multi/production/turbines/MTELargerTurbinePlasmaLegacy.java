@@ -23,19 +23,19 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
-public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
+public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
 
-    public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbinePlasmaLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargerTurbinePlasma(String aName) {
+    public MTELargerTurbinePlasmaLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargerTurbinePlasma(mName);
+        return new MTELargerTurbinePlasmaLegacy(mName);
     }
 
     @Override
