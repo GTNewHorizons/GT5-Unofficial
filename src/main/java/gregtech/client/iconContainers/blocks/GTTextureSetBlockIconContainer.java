@@ -1,10 +1,12 @@
 package gregtech.client.iconContainers.blocks;
 
+import static gregtech.api.enums.Textures.OverlaySuffix;
+import static gregtech.api.enums.Textures.TextureSetFallback;
 import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.createIconName;
 import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.registerResourceOrFallback;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -29,20 +31,18 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     protected ResourceLocation iconResource, iconFallbackResource;
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
-    private static final String aTextMatIconDir = "materialicons/";
-
     private GTTextureSetBlockIconContainer(@NotNull Pair<String, String> pair) {
         this(pair.getLeft(), pair.getRight());
     }
 
     private GTTextureSetBlockIconContainer(@NotNull String setName, @NotNull String prefix) {
         this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName("NONE", prefix);
+        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconName);
         iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconName);
 
-        this.iconOverlayName = createIconName(setName, prefix + "_OVERLAY");
-        this.fallbackIconOverlayName = createIconName("NONE", prefix + "_OVERLAY");
+        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
+        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
         iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconOverlayName);
         iconOverlayFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconOverlayName);
 
@@ -50,10 +50,15 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
     }
 
-    static final Map<Pair<String, String>, IIconContainer> INSTANCES = new ConcurrentHashMap<>(2560);
+    // 2026-13-05: Counted 1782 unique Block TextureSetIcons, so 2.5K will avoid resize until 1920 entries
+    private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(2520);
 
     public static @NotNull IIconContainer create(@NotNull String setName, String prefix) {
         return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetBlockIconContainer::new);
+    }
+
+    public static void cleanup() {
+        INSTANCES = new HashMap<>();
     }
 
     protected void logRegisterIcons() {

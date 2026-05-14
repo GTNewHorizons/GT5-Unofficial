@@ -1,9 +1,12 @@
 package gregtech.client.iconContainers.items;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Textures.OverlaySuffix;
+import static gregtech.api.enums.Textures.TextureMaterialIconDirectory;
+import static gregtech.api.enums.Textures.TextureSetFallback;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -30,20 +33,18 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     protected ResourceLocation iconResource, iconFallbackResource;
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
-    private static final String aTextMatIconDir = "materialicons/";
-
     private GTTextureSetItemIconContainer(@NotNull Pair<String, String> pair) {
         this(pair.getLeft(), pair.getRight());
     }
 
     private GTTextureSetItemIconContainer(@NotNull String setName, @NotNull String prefix) {
         this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName("NONE", prefix);
+        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconName);
         iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconName);
 
-        this.iconOverlayName = createIconName(setName, prefix + "_OVERLAY");
-        this.fallbackIconOverlayName = createIconName("NONE", prefix + "_OVERLAY");
+        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
+        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
         iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconOverlayName);
         iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconOverlayName);
 
@@ -52,14 +53,19 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     }
 
     public static String createIconName(String setName, String prefix) {
-        String iconName = aTextMatIconDir + setName + prefix;
+        String iconName = TextureMaterialIconDirectory + setName + prefix;
         return iconName.contains(":") ? iconName : GregTech.resourceDomain + ":" + iconName;
     }
 
-    static final Map<Pair<String, String>, IIconContainer> INSTANCES = new ConcurrentHashMap<>(3072);
+    // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
+    private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, String prefix) {
+    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix) {
         return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetItemIconContainer::new);
+    }
+
+    public static void cleanup() {
+        INSTANCES = new HashMap<>();
     }
 
     protected void logRegisterIcons() {

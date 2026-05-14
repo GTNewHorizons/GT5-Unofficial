@@ -1,12 +1,9 @@
 package gregtech.api.enums;
 
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
-import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class TextureSet {
 
-    private static final String aTextMatIconDir = "materialicons/";
     private static final String aTextVoidDir = "/void";
 
     private static final TextureType[] IS_BLOCK_TEXTURE = new TextureType[] { TextureType.ITEM, TextureType.ITEM,
@@ -155,11 +152,11 @@ public class TextureSet {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 switch (SUFFIXES[i]) {
                     case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
-                        .customAlpha(aTextMatIconDir + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = GTTextureSetBlockIconContainer.create(aSetName, SUFFIXES[i]);
+                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + SUFFIXES[i]);
+                    default -> mTextures[i] = Textures.BlockIcons.textureSet(aSetName, SUFFIXES[i]);
                 }
             } else {
-                mTextures[i] = GTTextureSetItemIconContainer.create(aSetName, SUFFIXES[i]);
+                mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
             }
         }
     }
@@ -182,13 +179,13 @@ public class TextureSet {
         for (int i = 0; i < 192; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 if (overrideBlock) {
-                    mTextures[i] = Textures.BlockIcons.custom(aTextMatIconDir + mSetName + SUFFIXES[i]);
+                    mTextures[i] = Textures.BlockIcons.textureSet(mSetName, SUFFIXES[i]);
                 } else {
                     mTextures[i] = origin.mTextures[i];
                 }
             } else {
                 if (overrideItem) {
-                    mTextures[i] = Textures.ItemIcons.custom(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
                 } else {
                     mTextures[i] = origin.mTextures[i];
                 }
