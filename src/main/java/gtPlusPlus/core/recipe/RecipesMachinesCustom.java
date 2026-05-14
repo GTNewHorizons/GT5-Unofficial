@@ -365,7 +365,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 32))
             .circuit(21)
-            .itemOutputs(GregtechItemList.AlgaeFarm_Controller.get(1))
+            .itemOutputs(ItemList.AlgaeFarm.get(1))
             .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
