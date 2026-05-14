@@ -19,6 +19,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,6 +62,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -92,6 +95,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     protected final int pollutionPerSecond;
     private final IStructureDefinition<MTELargeBoilerBase> structureDefinition;
     private final int superToNormalSteam = 3;
+    private int fluidBurnTime = 0;
+    private int solidBurnTime = 0;
+    private int burnDecrease = 2;
+    private int currentMaxEfficiency = 10000;
 
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
         Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
@@ -316,73 +323,87 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             this.integratedCircuitConfig = 0;
         }
 
-        this.efficiencyChangePerTick = 0;
-        if (!isSuperheated()) {
-            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && tRecipe.mSpecialValue > 1) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease() * 4);
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (fluidBurnTime == 0) {
+            if (!isSuperheated()) {
+                for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
+                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                    if (tFluid != null && tRecipe.mSpecialValue > 1) {
+                        tFluid.amount = 1000;
+                        if (depleteInput(tFluid)) {
+                            setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease() * 4, true);
+                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                        }
+
                     }
                 }
-            }
-            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease());
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
+                for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
+                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                    if (tFluid != null) {
+                        tFluid.amount = 1000;
+                        if (depleteInput(tFluid)) {
+                            setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease(), true);
+                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                        }
+
                     }
                 }
             }
         }
 
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        if (!tInputList.isEmpty()) {
-            if (isSuperheated()) {
-                for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
-                        long fuelValue = GTModHandler.getFuelValue(tInput);
-                        if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0) {
-                            int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
-                            this.excessFuel += (int) (fuelValue % 80);
-                            burnTime += this.excessFuel / 80;
-                            this.excessFuel %= 80;
-                            setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease());
-                            this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
-                            tInput.stackSize -= 1;
-                            updateSlots();
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (solidBurnTime == 0) {
+            ArrayList<ItemStack> tInputList = getStoredInputs();
+            if (!tInputList.isEmpty()) {
+                if (isSuperheated()) {
+                    for (ItemStack tInput : tInputList) {
+                        if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                            long fuelValue = GTModHandler.getFuelValue(tInput);
+                            if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0) {
+                                int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
+                                this.excessFuel += (int) (fuelValue % 80);
+                                burnTime += this.excessFuel / 80;
+                                this.excessFuel %= 80;
+                                setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), true);
+                                this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
+                                tInput.stackSize -= 1;
+                                updateSlots();
+                                return CheckRecipeResultRegistry.SUCCESSFUL;
+                            }
                         }
                     }
-                }
-            } else {
-                for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
-                        long fuelValue = GTModHandler.getFuelValue(tInput);
-                        // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
-                        // those with very high fuel values that would cause an overflow error.
-                        if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0
-                            && (fuelValue * 2L / this.getEUt()) > 1) {
-                            int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
-                            this.excessFuel += (int) (fuelValue % 80);
-                            burnTime += this.excessFuel / 80;
-                            this.excessFuel %= 80;
-                            setupBoilerRecipe(
-                                runtimeBoost((int) (burnTime * getLongBurntimeRatio(fuelValue))),
-                                getEfficiencyIncrease());
-                            this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
-                            tInput.stackSize -= 1;
-                            updateSlots();
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                } else {
+                    for (ItemStack tInput : tInputList) {
+                        if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                            long fuelValue = GTModHandler.getFuelValue(tInput);
+                            // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and
+                            // also
+                            // those with very high fuel values that would cause an overflow error.
+                            if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0
+                                && (fuelValue * 2L / this.getEUt()) > 1) {
+                                int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
+                                this.excessFuel += (int) (fuelValue % 80);
+                                burnTime += this.excessFuel / 80;
+                                this.excessFuel %= 80;
+                                setupBoilerRecipe(
+                                    runtimeBoost((int) (burnTime * getLongBurntimeRatio(fuelValue))),
+                                    getEfficiencyIncrease(),
+                                    false);
+                                this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
+                                tInput.stackSize -= 1;
+                                updateSlots();
+                                return CheckRecipeResultRegistry.SUCCESSFUL;
+                            }
                         }
                     }
                 }
             }
         }
+
+        if (solidBurnTime > 0 || fluidBurnTime > 0) {
+            // this.mMaxProgresstime = Math.min(20,Math.min(solidBurnTime,fluidBurnTime));
+            this.mMaxProgresstime = 1;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
+
         this.mMaxProgresstime = 0;
         this.mEfficiencyIncrease = 0;
         this.efficiencyChangePerTick = 0;
@@ -390,9 +411,22 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
-    private void setupBoilerRecipe(int rawBurnTime, int changePerTick) {
+    private void tickBurnTime() {
+        if (fluidBurnTime > 0 && solidBurnTime > 0) burnDecrease = 1;
+        else burnDecrease = 2;
+        fluidBurnTime = Math.max(fluidBurnTime - burnDecrease, 0);
+        solidBurnTime = Math.max(solidBurnTime - burnDecrease, 0);
+    }
+
+    private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
         int safeBurnTime = Math.max(1, rawBurnTime);
-        this.mMaxProgresstime = adjustBurnTimeForConfig(safeBurnTime);
+        // this.mMaxProgresstime = Math.min(20,safeBurnTime);
+        this.mMaxProgresstime = 1;
+        if (isFluid) {
+            this.fluidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+        } else {
+            this.solidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+        }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 0;
         this.lEUt = adjustEUtForConfig(getEUt());
@@ -413,15 +447,16 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     public boolean onRunningTick(ItemStack aStack) {
         if (this.lEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
+            maxEff *= burnDecrease == 1 ? 2 : 1;
             adjustEfficiencyTowards(maxEff, Math.max(1, efficiencyChangePerTick));
             int tGeneratedEU = GTUtility.safeInt(this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 int waterToConsume = getWaterConsumptionForSteam(tGeneratedEU);
-                startRecipeProcessing();
                 if (isSuperheated()) {
                     if (consumeWater(waterToConsume)) {
                         int superheatedSteam = getSuperheatedSteam(tGeneratedEU);
                         if (superheatedSteam > 0) {
+                            tickBurnTime();
                             addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", superheatedSteam));
                         }
                     } else {
@@ -430,17 +465,22 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     }
                 } else {
                     if (consumeWater(waterToConsume)) {
+                        tickBurnTime();
                         addOutput(Materials.Steam.getGas(tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();
                     }
                 }
-                endRecipeProcessing();
             }
             return true;
         }
         return true;
+    }
+
+    @Override
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return burnDecrease == 1 ? 12500 : 10000;
     }
 
     private void adjustEfficiencyTowards(int targetEfficiency, int changePerTick) {
@@ -482,6 +522,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("excessProjectedEU", excessProjectedEU);
         aNBT.setInteger("excessSuperheatedSteam", excessSuperheatedSteam);
         aNBT.setInteger("efficiencyChangePerTick", efficiencyChangePerTick);
+        aNBT.setInteger("currentMaxEfficiency", currentMaxEfficiency);
+        aNBT.setInteger("burnDecrease", burnDecrease);
+        aNBT.setInteger("solidBurnTime", solidBurnTime);
+        aNBT.setInteger("fluidBurnTime", fluidBurnTime);
     }
 
     @Override
@@ -494,6 +538,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         efficiencyChangePerTick = aNBT.hasKey("efficiencyChangePerTick") ? aNBT.getInteger("efficiencyChangePerTick")
             : getEfficiencyIncrease();
         mEfficiencyIncrease = 0;
+        currentMaxEfficiency = aNBT.getInteger("currentMaxEfficiency");
+        burnDecrease = aNBT.getInteger("burnDecrease");
+        solidBurnTime = aNBT.getInteger("solidBurnTime");
+        fluidBurnTime = aNBT.getInteger("fluidBurnTime");
     }
 
     @Override
@@ -554,7 +602,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return isSuperheated() ? steamEquivalent / superToNormalSteam : steamEquivalent;
     }
 
-    private double getCurrentWaterConsumptionPerTick() {
+    public double getCurrentWaterConsumptionPerTick() {
         if (lEUt <= 0 || mMaxProgresstime <= 0) return 0D;
         double steamEquivalent = lEUt * 2D * mEfficiency / 10000D;
         return steamEquivalent / STEAM_PER_WATER / (isSuperheated() ? superToNormalSteam : 1);
@@ -603,14 +651,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     formatNumber(steamPerTick),
                     "L"));
         }
-        double energyPerTick = tag.getDouble("largeBoilerEnergyPerTick");
-        if (energyPerTick > 0D) {
-            currentTip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.large_boiler.energy_output",
-                    formatNumber(energyPerTick),
-                    "EU"));
-        }
         double waterPerTick = tag.getDouble("largeBoilerWaterPerTick");
         if (waterPerTick > 0D) {
             currentTip.add(
@@ -628,6 +668,27 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         tag.setDouble("largeBoilerSteamPerTick", getCurrentSteamOutputPerTick());
         tag.setDouble("largeBoilerEnergyPerTick", getCurrentEnergyOutputPerTick());
         tag.setDouble("largeBoilerWaterPerTick", getCurrentWaterConsumptionPerTick());
+    }
+
+    public int getFluidBurnTime() {
+        return fluidBurnTime;
+    }
+
+    public int getSolidBurnTime() {
+        return solidBurnTime;
+    }
+
+    public int getBurnDecrease() {
+        return burnDecrease;
+    }
+
+    public int getCurrentEfficiency() {
+        return mEfficiency;
+    }
+
+    @Override
+    protected @NotNull MTELargeBoilerGui getGui() {
+        return new MTELargeBoilerGui(this);
     }
 
     @Override
