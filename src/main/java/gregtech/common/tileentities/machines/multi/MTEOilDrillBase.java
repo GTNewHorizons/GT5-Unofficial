@@ -300,6 +300,20 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (requiresMiningPipes()) {
+            switch (tryLowerPipeState(true)) {
+                case SUCCESS -> {
+                    workState = WorkState.DOWNWARD;
+                    setElectricityStats();
+                    return true;
+                }
+                case CANCELED -> {
+                    workState = WorkState.UPWARD;
+                    return true;
+                }
+            }
+        }
+
         if ((!requiresMiningPipes() || reachingVoidOrBedrock()) && tryFillChunkList()) {
             if (mWorkChunkNeedsReload) {
                 mCurrentChunk = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
