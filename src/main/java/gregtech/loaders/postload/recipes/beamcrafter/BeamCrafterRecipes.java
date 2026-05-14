@@ -17,18 +17,16 @@ import static gtnhlanth.common.beamline.Particle.MUON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
-import static gtnhlanth.common.beamline.Particle.PHOTON;
 import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
-import goodgenerator.items.GGMaterial;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
