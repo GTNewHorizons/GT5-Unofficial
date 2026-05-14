@@ -2256,6 +2256,8 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
+GT5U.machines.stocking_bus.manual_slot.tooltip.1=Manual Input Slot
+GT5U.machines.stocking_bus.manual_slot.tooltip.2=Used for direct item insertion; not part of the ME stocked slots.
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -2999,7 +3001,7 @@ GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
-GT5U.gui.text.volumetric_flask.confirm=Confirm
+GT5U.gui.text.volumetric_flask.max_capacity=Max Capacity of %s
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Pattern Storage for §eLarge Molecular Assembler (LMA)§r
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.2=Capacity: %d Patterns
 
@@ -3141,8 +3143,8 @@ GT5U.gui.text.LHC.off=Off
 GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
 GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
-GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
-GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
+GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV)
+GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles
 GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
 GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 
@@ -3184,7 +3186,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEU Consumed in cycle§7 * §f0.1eV§7, until the
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.3§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
@@ -7874,6 +7876,7 @@ gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
 gt.blockcasings12.13.name=Mixer Casing
 gt.blockcasings12.14.name=Forming Core
+gt.blockcasings12.15.name=Algae Casing
 
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing

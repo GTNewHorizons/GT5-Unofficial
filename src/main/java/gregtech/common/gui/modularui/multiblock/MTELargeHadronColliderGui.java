@@ -253,46 +253,38 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         return new ModularPanel("statsPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(180, 110)
+            .coverChildren()
+            .padding(6)
             .widgetTheme("backgroundPopup")
             .child(
-                Flow.row()
-                    .full()
-                    .widgetTheme("backgroundPopup")
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(6)
                     .child(
-                        Flow.column()
-                            .size(160, 60)
-                            .paddingLeft(40)
-                            .child(
-                                new TextWidget<>(
-                                    IKey.dynamic(
-                                        () -> StatCollector
-                                            .translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
-                                                .size(160, 20)
-                                                .textAlign(Alignment.CENTER))
-                            .child(
-                                new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
-                                    .width(120)
-                                    .height(14)
-                                    .marginRight(2)
-                                    .value(playerTargetBeamEnergyeVSync)
-                                    .setDefaultNumber(1_000_000_000))
-                            .child(
-                                new TextWidget<>(
-                                    IKey.dynamic(
-                                        () -> StatCollector
-                                            .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
-                                                .size(160, 20)
-                                                .textAlign(Alignment.CENTER))
-                            .child(
-                                new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setFormatAsInteger(true)
-                                    .width(40)
-                                    .height(14)
-                                    .marginRight(2)
-                                    .value(playerTargetAccelerationCyclesSync)
-                                    .setDefaultNumber(10))));
+                        new TextWidget<>(
+                            IKey.dynamic(
+                                () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
+                                    .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .marginRight(2)
+                            .value(playerTargetBeamEnergyeVSync)
+                            .setDefaultNumber(1_000_000_000))
+                    .child(
+                        new TextWidget<>(
+                            IKey.dynamic(
+                                () -> StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
+                                        .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setFormatAsInteger(true)
+                            .size(40, 14)
+                            .marginRight(2)
+                            .value(playerTargetAccelerationCyclesSync)
+                            .setDefaultNumber(10)));
     }
 
 }
