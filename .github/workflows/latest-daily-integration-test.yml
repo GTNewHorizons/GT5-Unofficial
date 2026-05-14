@@ -1,9 +1,9 @@
 name: Test integration in latest daily
 
 on:
-  push:
-    branches:
-      - mal/fullpack-ci-tests
+  workflow_run:
+    workflows: ["Build and test"]
+    types: [completed]
 
 jobs:
   pack-test:
