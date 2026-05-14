@@ -220,13 +220,20 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         activeController = controllers.get(controllerIndex);
 
-        if (activeController == null) {
+        if (activeController == null || !isControllerAlive(activeController)) {
             controllers.remove(controllerIndex);
+            activeController = null;
             return true;
         }
 
         controllerIndex = (controllerIndex + 1) % controllers.size();
         return false;
+    }
+
+    /** Checks whether a controller's tile entity is still alive in the world. */
+    private static boolean isControllerAlive(MTECokeOven controller) {
+        IGregTechTileEntity te = controller.getBaseMetaTileEntity();
+        return te != null && !te.isDead();
     }
 
     @Override
