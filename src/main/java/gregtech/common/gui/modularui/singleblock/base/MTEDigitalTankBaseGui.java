@@ -5,7 +5,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -15,6 +14,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
@@ -99,8 +99,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         return new FluidSlot().syncHandler(fluidSlotSH)
             .bottomRel(0)
             .rightRel(0)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true);
+            .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
@@ -153,7 +152,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         textColumn.child(
             IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
-                .color(Color.WHITE.main));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // fluid name
         textColumn.child(IKey.dynamic(() -> {
@@ -164,7 +163,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
-            .color(Color.WHITE.main));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         screen.child(textColumn);
 
@@ -173,8 +172,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
             fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
                 .bottomRel(0)
                 .rightRel(0)
-                .disableThemeBackground(true)
-                .disableHoverThemeBackground(true));
+                .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
     }

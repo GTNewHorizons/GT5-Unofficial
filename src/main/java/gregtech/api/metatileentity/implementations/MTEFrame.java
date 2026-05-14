@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -140,11 +139,6 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalized
 
     @Override
     public String getPrefixKey() {
-        return "gt.oreprefix.material_frame_box_tileentity";
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocalFormatted(getPrefixKey(), BlockFrameBox.getLocalizedName(getMaterial()));
+        return OrePrefixes.getOreprefixKey(BlockFrameBox.getLocalizedName(getMaterial()));
     }
 }

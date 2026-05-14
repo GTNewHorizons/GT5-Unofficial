@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiData;
-import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -38,9 +38,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
         if (!world.isRemote) {
-            GuiFactories.item()
-                .open(player);
-
+            PlayerInventoryGuiFactory.INSTANCE.openFromMainHand(player);
         }
         return super.onItemRightClick(stack, world, player);
     }

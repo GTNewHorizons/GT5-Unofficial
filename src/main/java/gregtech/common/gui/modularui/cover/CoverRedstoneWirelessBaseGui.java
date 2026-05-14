@@ -20,11 +20,6 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 200;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(positionRow(createFrequencyRow()))
             .child(positionRow(createRedstoneModeRow()));
@@ -54,7 +49,8 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
             .child(createPrivacyModeButton(privateChannelSyncer))
             .child(
                 IKey.lang("gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq")
-                    .asWidget());
+                    .asWidget())
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 
     private IWidget createPrivacyModeButton(BooleanSyncValue privateChannelSyncer) {

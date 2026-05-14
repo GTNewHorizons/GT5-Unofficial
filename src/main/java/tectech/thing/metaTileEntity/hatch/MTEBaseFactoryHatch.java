@@ -14,6 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
 public abstract class MTEBaseFactoryHatch extends MTEHatch {
 
@@ -25,8 +26,9 @@ public abstract class MTEBaseFactoryHatch extends MTEHatch {
         super(prototype.mName, prototype.mTier, 0, prototype.mDescriptionArray, prototype.mTextures);
     }
 
-    public MTEBaseFactoryHatch(int id, String name, String nameRegional, int tier, String[] description) {
-        super(id, name, nameRegional, tier, 0, description);
+    public MTEBaseFactoryHatch(int id, String name, int tier, String[] description) {
+        // Temporarily translate here until hatches are properly localized
+        super(id, name, GTUtility.translate("gt.blockmachines." + name + ".name"), tier, 0, description);
     }
 
     @Override

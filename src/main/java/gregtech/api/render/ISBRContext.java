@@ -39,6 +39,8 @@ public interface ISBRContext {
      */
     ISBRContext reset();
 
+    void doCleanup();
+
     ISBRContext setBrightnessOverride(int brightness);
 
     ISBRContext setLightnessOverride(float lightness);

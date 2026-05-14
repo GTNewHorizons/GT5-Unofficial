@@ -3,7 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -1053,9 +1052,7 @@ public class ChemicalRecipes implements Runnable {
         // Co(NO3)2 + 2KOH = CoH2O2 + 2KNO3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Materials.CobaltIINitrate.getDust(9),
-                getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6L, 0))
+            .itemInputs(Materials.CobaltIINitrate.getDust(9), Materials.PotassiumHydroxide.getDust(6))
             .itemOutputs(Materials.CobaltIIHydroxide.getDust(5), Materials.Saltpeter.getDust(10))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1666,6 +1663,30 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
+        // H2O + K = KOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Potassium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.PotassiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // H2O + Cs = CsOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Caesium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.CaesiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // H + Cl = HCl
 
         GTValues.RA.stdBuilder()
@@ -1821,6 +1842,16 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.AllylChloride.getFluid(1_000))
             .fluidOutputs(Materials.Epichlorohydrin.getFluid(1_000))
             .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // Ba + H2SO4 = BaSO4 + H2
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Barium.getDust(1))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000L))
+            .itemOutputs(Materials.Barite.getDust(6))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 

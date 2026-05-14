@@ -3,7 +3,7 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -73,7 +73,7 @@ public class RecipesMachinesMulti {
     private static void multiFluidHeater() {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_IndustrialFluidHeater.get(1),
-            BITSD,
+            BITS,
             new Object[] { "PCP", "IHI", "PDP", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'C', "circuitElite", 'I',
                 "pipeHugeTantalloy60", 'H', ItemList.Machine_IV_FluidHeater.get(1), 'D', "circuitData" });
     }
@@ -114,7 +114,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
                 MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
-            .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
+            .itemOutputs(ItemList.IndustrialForgeHammer.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(12 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -122,7 +122,7 @@ public class RecipesMachinesMulti {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_IndustrialForgeHammer.get(1),
-            BITSD,
+            BITS,
             new Object[] { "IBI", "HCH", "IHI", 'I', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'B',
                 MaterialsAlloy.BABBIT_ALLOY.getPlate(1), 'C', ItemList.Casing_HeatProof.get(1), 'H',
                 MaterialsAlloy.HASTELLOY_X.getRod(1) });
@@ -607,7 +607,7 @@ public class RecipesMachinesMulti {
     private static void multiSifter() {
         // Large Sifter Control Block
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Sifter.get(1),
+            ItemList.LargeSifter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'C', "circuitAdvanced",
                 'W', OrePrefixes.cableGt04.get(Materials.Gold), 'M', ItemList.Machine_HV_Sifter });
@@ -771,7 +771,7 @@ public class RecipesMachinesMulti {
 
         // Cryogenic Freezer
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Cryogenic_Freezer.get(1),
+            ItemList.CryogenicFreezer.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "GCG", "PXP", "DOD", 'G', MaterialsAlloy.INCOLOY_MA956.getGear(1), 'C', "circuitMaster", 'P',
                 ItemList.Electric_Piston_IV, 'X', GregtechItemList.Casing_AdvancedVacuum, 'D',
