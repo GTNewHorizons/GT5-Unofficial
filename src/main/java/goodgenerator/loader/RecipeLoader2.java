@@ -432,7 +432,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
                 ItemRefer.Fluid_Storage_Core_T2.get(10),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 4),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 4),
                 ItemList.Electric_Pump_EV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 4))
             .circuit(5)
@@ -999,7 +999,7 @@ public class RecipeLoader2 {
                 GGMaterial.incoloy903.get(OrePrefixes.pipeLarge, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 ItemList.Hull_IV.get(1))
-            .itemOutputs(ItemRefer.SC_Fluid_Turbine.get(1))
+            .itemOutputs(ItemList.SCSteamTurbine.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

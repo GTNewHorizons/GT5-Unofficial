@@ -71,7 +71,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static final float RATE_SCALE_FACTOR = 1.1F;
+    public static final float RATE_SCALE_FACTOR = 1.3F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -444,6 +444,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public String[] getInfoData() {
 
+        if (cachedOutputParticle == null) {
+            return new String[] { EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.machineoff") };
+        }
+
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
         return new String[] {
@@ -605,13 +610,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mMaxProgresstime = TickTime.SECOND;
 
             this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
-
-            this.outputParticleID = generateOutputParticleID(this.outputEnergy);
-
-            Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
-            float outputMass = outputParticle.getMass();
-            this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
-
+            this.outputRate = max(0, (inputRate));
             this.outputFocus = inputFocus;
 
             if (this.outputRate == 0) {
@@ -619,12 +618,12 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            outputPacketAfterRecipe();
+            outputPacketAfterRecipe(this.outputRate);
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int generateOutputParticleID(float collisionEnergy) {
+    private int generateOutputParticleID(float collisionEnergy, java.util.Map<Particle, Boolean> acceptedInputMap) {
 
         // restMass is in MeV
         // beamline energies are in keV
@@ -639,6 +638,13 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
+
+            // filter module-incompatible particles
+            if (acceptedInputMap == null || !acceptedInputMap.getOrDefault(p, false)) {
+                weights[i] = 0.0;
+                continue;
+            }
+
             double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
             // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
@@ -649,7 +655,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             totalWeight += w;
         }
         if (totalWeight <= 0.0) {
-            return 0; // default to photons
+            return -1; // nothing eligible, output nothing
         }
 
         double[] cumulative = new double[n];
@@ -667,18 +673,21 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     }
 
-    private void outputPacketAfterRecipe() {
-        if (!this.mAdvancedOutputBeamline.isEmpty()) {
-            BeamLinePacket packet = new BeamLinePacket(
-                new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                if (!o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)) {
-                    o.dataPacket = null;
-                    continue;
-                }
-                o.dataPacket = packet;
+    private void outputPacketAfterRecipe(int rate) {
+        if (this.mAdvancedOutputBeamline.isEmpty()) return;
 
+        for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+
+            if (rate == 0) {
+                o.dataPacket = null;
+                continue;
             }
+            int rolledId = generateOutputParticleID(this.outputEnergy, o.acceptedInputMap);
+            if (rolledId < 0) { // energy too low for any valid particle
+                o.dataPacket = null;
+                continue;
+            }
+            o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }
 

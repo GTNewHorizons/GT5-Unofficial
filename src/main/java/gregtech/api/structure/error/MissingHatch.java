@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record MissingHatch(int itemId, int itemMeta) implements StructureError {
@@ -36,7 +37,7 @@ public record MissingHatch(int itemId, int itemMeta) implements StructureError {
     }
 
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return IKey
             .lang("GT5U.gui.missing_hatch", new ItemStack(Item.getItemById(itemId), 1, itemMeta).getDisplayName())
             .asWidget();

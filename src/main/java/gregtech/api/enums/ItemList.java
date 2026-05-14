@@ -1748,6 +1748,11 @@ public enum ItemList implements IItemContainer {
     Casing_Beryllium_Integrated_Reactor,
     Casing_Refined_Graphite,
 
+    SuperconductivePlasmaEnergyConduit,
+    ElectromagneticallyIsolatedCasing,
+    FineStructureConstantManipulator,
+    ElectromagneticWaveguide,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -2212,6 +2217,8 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     CasingMixer,
     FormingCore,
+    AlgaeCasing,
+    NaquadahReactorCasing,
     EntropicProcessor,
     DecayWarehouse,
     LATEX,
@@ -2861,6 +2868,7 @@ public enum ItemList implements IItemContainer {
     CryogenicFreezer,
     IndustrialMixer,
     MegaChemicalReactor,
+    InfiniteFluidDrillingRig,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
