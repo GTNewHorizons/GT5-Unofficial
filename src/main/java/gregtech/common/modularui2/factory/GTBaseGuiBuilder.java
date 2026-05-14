@@ -177,10 +177,12 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side));
+        CoverTabButton button = new CoverTabButton(coverable, side);
+        button.setPanel(getCoverPanel(button, coverable, side));
+        return button;
     }
 
-    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side) {
+    private IPanelHandler getCoverPanel(CoverTabButton button, ICoverable coverable, ForgeDirection side) {
         String panelKey = "cover_panel_" + side.toString()
             .toLowerCase();
         Cover cover = coverable.getCoverAtSide(side);
@@ -191,12 +193,13 @@ public final class GTBaseGuiBuilder {
             posGuiData.getX(),
             posGuiData.getY(),
             posGuiData.getZ(),
-            side);
+            side,
+            true);
         return syncManager.syncedPanel(
             panelKey,
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
                 .child(ButtonWidget.panelCloseButton()));
     }
 
