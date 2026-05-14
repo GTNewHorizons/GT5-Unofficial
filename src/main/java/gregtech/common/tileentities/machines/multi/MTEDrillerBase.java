@@ -634,8 +634,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         updateCoordinates();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
         checkHatches(errors);
-        checkHasMaintenanceHatch(errors);
-        checkOneEnergyHatch(errors);
         if (!mEnergyHatches.isEmpty()) {
             int cTier = GTUtility.getTier(getMaxInputVoltage());
             int machineTier = getMinTier();

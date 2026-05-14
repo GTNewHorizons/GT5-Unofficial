@@ -173,6 +173,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected void checkHatches(List<StructureError> errors) {
         checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkOneEnergyHatch(errors);
     }
 
