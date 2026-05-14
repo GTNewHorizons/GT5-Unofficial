@@ -58,9 +58,7 @@ public class RecipeHashStrat {
             return false;
         }
 
-        ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
-        ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
-        if (!areItemsStackArraysEqual(recipe1OutputCopy, recipe2OutputCopy)) {
+        if (!areItemsStackArraysEqual(recipe1.mOutputs, recipe2.mOutputs)) {
             return false;
         }
 
@@ -76,17 +74,20 @@ public class RecipeHashStrat {
             return false;
         }
 
-        Arrays.sort(array1, itemStackComparator);
-        Arrays.sort(array2, itemStackComparator);
+        ItemStack[] sortedCopy1 = array1.clone();
+        ItemStack[] sortedCopy2 = array2.clone();
 
-        for (int i = 0; i < array1.length; i++) {
-            if (array1[i].stackSize != array2[i].stackSize) {
+        Arrays.sort(sortedCopy1, itemStackComparator);
+        Arrays.sort(sortedCopy2, itemStackComparator);
+
+        for (int i = 0; i < sortedCopy1.length; i++) {
+            if (sortedCopy1[i].stackSize != sortedCopy2[i].stackSize) {
                 return false;
             }
-            if (array1[i].getItem() != array2[i].getItem()) {
+            if (sortedCopy1[i].getItem() != sortedCopy2[i].getItem()) {
                 return false;
             }
-            if (array1[i].getItemDamage() != array2[i].getItemDamage()) {
+            if (sortedCopy1[i].getItemDamage() != sortedCopy2[i].getItemDamage()) {
                 return false;
             }
         }
@@ -98,14 +99,17 @@ public class RecipeHashStrat {
             return false;
         }
 
-        Arrays.sort(array1, fluidStackComparator);
-        Arrays.sort(array2, fluidStackComparator);
+        FluidStack[] sortedCopy1 = array1.clone();
+        FluidStack[] sortedCopy2 = array2.clone();
 
-        for (int i = 0; i < array1.length; i++) {
-            if (array1[i].amount != array2[i].amount) {
+        Arrays.sort(sortedCopy1, fluidStackComparator);
+        Arrays.sort(sortedCopy2, fluidStackComparator);
+
+        for (int i = 0; i < sortedCopy1.length; i++) {
+            if (sortedCopy1[i].amount != sortedCopy2[i].amount) {
                 return false;
             }
-            if (array1[i].getFluid() != array2[i].getFluid()) {
+            if (sortedCopy1[i].getFluid() != sortedCopy2[i].getFluid()) {
                 return false;
             }
         }
