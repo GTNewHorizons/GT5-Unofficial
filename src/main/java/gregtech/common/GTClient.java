@@ -67,6 +67,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -408,6 +409,8 @@ public class GTClient extends GTProxy {
                             || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
             }
         }
+        Textures.ItemIcons.cleanup();
+        Textures.BlockIcons.cleanup();
     }
 
     @Override
