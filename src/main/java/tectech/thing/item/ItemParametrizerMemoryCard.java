@@ -90,6 +90,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     NBTTagCompound minerTags = tNBT.getCompoundTag("filter");
                     Miner.isWhitelisted = minerTags.getBoolean("isWhitelisted");
                     Miner.filterInventory.deserializeNBT(minerTags.getCompoundTag("filteredOres"));
+                    Miner.filterPasted();
                 }
 
                 GTUtility.sendChatTrans(aPlayer, "item.em.parametrizerMemoryCard.pasteMessage");

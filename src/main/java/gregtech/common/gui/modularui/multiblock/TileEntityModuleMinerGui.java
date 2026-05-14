@@ -11,6 +11,7 @@ import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.RANGE_PARAMETER;
 import static java.util.stream.Collectors.toList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -43,16 +45,21 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import akka.japi.Pair;
 import gregtech.api.enums.Materials;
@@ -67,6 +74,7 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
 import gtnhintergalactic.recipe.SpaceMiningRecipes;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
+import org.jetbrains.annotations.NotNull;
 
 public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntityModuleMiner> {
 
@@ -82,6 +90,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private SlotLikeButtonWidget droneSelectorButtonUtilityPanel;
     private ButtonWidget<?> droneSelectorButtonOptimizer;
     private SlotLikeButtonWidget droneSelectorButtonCalculator;
+
+    private PhantomItemSlot[] filterSlots = new PhantomItemSlot[64];
+    private ModularSlot[] filterModularSlots = new ModularSlot[64];
 
     public TileEntityModuleMinerGui(TileEntityModuleMiner multiblock) {
         super(multiblock);
@@ -207,19 +218,35 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createFilterSlotGroup(PanelSyncManager syncManager) {
-        StringBuilder builder;
-        String[] matrix = new String[8];
-        for (int i = 0; i < 8; i++) {
-            builder = new StringBuilder();
-            for (int j = 0; j < 8; j++) {
-                builder.append('S');
-            }
-            matrix[i] = builder.toString();
+        GenericSyncValue<ItemStackHandler> filterSyncer = (GenericSyncValue<ItemStackHandler>) syncManager
+            .findSyncHandler("filter");
+
+        // Update cache if parametrizer card was used to paste config
+        if(multiblock.wasFilterPasted){
+            multiblock.wasFilterPasted = false;
+            filterSyncer.updateCacheFromSource(false);
+        }
+
+        for (int i = 0; i < 64; i++) {
+            filterModularSlots[i] = new ModularSlot(multiblock.filterInventory, i) {
+                @Override
+                public void onSlotChanged() {
+                    multiblock.generateOreConfigurationList();
+                }
+            };
+            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
         }
 
         return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key('S', index -> multiblock.filterSlots[index].background(createFilterSlotBackground(index, syncManager)))
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .row("SSSSSSSS")
+            .key('S', index -> filterSlots[index])
             .build();
     }
 
@@ -228,10 +255,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
 
         return new DynamicDrawable(() -> {
-            if (multiblock.filterModularSlots[index].getStack() != null
-                && filterContainsOre(multiblock.filterModularSlots[index].getStack())
+            if (filterModularSlots[index].getStack() != null
+                && filterContainsOre(filterModularSlots[index].getStack())
                 && currentOresContainThis(
-                    multiblock.filterModularSlots[index].getStack(),
+                    filterModularSlots[index].getStack(),
                     distanceParameterSyncer.getValue(),
                     droneTierSyncer.getValue(),
                     syncManager,
@@ -274,8 +301,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.clearFilter")))
             .onMousePressed(mouseData -> {
                 for (int i = 0; i < 64; i++) {
-                    multiblock.filterModularSlots[i].putStack(null);
-                    multiblock.filterSlots[i].getSyncHandler()
+                    filterModularSlots[i].putStack(null);
+                    filterSlots[i].getSyncHandler()
                         .updateFromClient(null, 0);
                 }
                 return true;
@@ -490,8 +517,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             if (!filterContainsOre(ore)) {
                 int j = findFirstEmptySlot(visited);
-                multiblock.filterModularSlots[j].putStack(ore);
-                multiblock.filterSlots[j].getSyncHandler()
+                filterModularSlots[j].putStack(ore);
+                filterSlots[j].getSyncHandler()
                     .updateFromClient(ore, 0);
                 visited.add(j);
             }
@@ -853,8 +880,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (!isAsteroidPanelForFilter) return true;
             if (filterContainsOre(ore)) return true;
             int firstEmptySlot = findFirstEmptySlot();
-            multiblock.filterModularSlots[firstEmptySlot].putStack(ore);
-            multiblock.filterSlots[firstEmptySlot].getSyncHandler()
+            filterModularSlots[firstEmptySlot].putStack(ore);
+            filterSlots[firstEmptySlot].getSyncHandler()
                 .updateFromClient(ore, 0);
             return true;
         };
@@ -1268,6 +1295,13 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
+        GenericSyncValue<ItemStackHandler> filterSyncer = new GenericSyncValue<>(
+            ItemStackHandler.class,
+            () -> multiblock.filterInventory,
+            handler -> multiblock.filterInventory = handler,
+            new TileEntityModuleMinerGui.ItemStackListAdapter());
+        syncManager.syncValue("filter", filterSyncer);
+
         syncManager.findSyncHandler(CYCLE_PARAMETER, BooleanSyncValue.class)
             .setChangeListener(() -> checked = new boolean[64]);
 
@@ -1367,5 +1401,29 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     syncHandler,
                     droneSelectorButtonOptimizer,
                     "3")));
+    }
+
+    private static class ItemStackListAdapter implements IByteBufAdapter<ItemStackHandler> {
+
+        @Override
+        public ItemStackHandler deserialize(PacketBuffer buffer) throws IOException {
+            ItemStackHandler handler = new ItemStackHandler();
+            handler.deserializeNBT(buffer.readNBTTagCompoundFromBuffer());
+            return handler;
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, ItemStackHandler u) throws IOException {
+            buffer.writeNBTTagCompoundToBuffer(u.serializeNBT());
+        }
+
+        @Override
+        public boolean areEqual(@NotNull ItemStackHandler t1, @NotNull ItemStackHandler t2) {
+            if (t1.getSlots() != t2.getSlots()) return false;
+            for (int i = 0; i < t1.getSlots(); i++) {
+                if (!ItemStack.areItemStacksEqual(t1.getStackInSlot(i), t2.getStackInSlot(i))) return false;
+            }
+            return true;
+        }
     }
 }
