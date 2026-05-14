@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -16,20 +17,29 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.common.configs.Configuration;
+import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -117,8 +127,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "          CCC          ",
                 "          C~C          ",
                 "          CCC          ",
-                "          FDF          ",
-                "    HCCCCCHDHCCCCCH    "
+                "          FJF          ",
+                "    HCCCCCHJHCCCCCH    "
             },{
                 "                       ",
                 "                       ",
@@ -134,7 +144,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "           E           ",
                 "          CEC          ",
                 "          CEC          ",
-                "       FFDFDFDFF       ",
+                "       FFJFJFJFF       ",
                 "   HCCCHHHHCHHHHCCCH   "
             },{
                 "                       ",
@@ -151,7 +161,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "                       ",
                 "                       ",
                 "       E       E       ",
-                "      FEFFDDDFFEF      ",
+                "      FEFFJJJFFEF      ",
                 "  HCCCHHHHCCCHHHHCCCH  "
             },{
                 "                       ",
@@ -167,9 +177,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "     G CCECECECC G     ",
                 "     G    CCC    G     ",
                 "     G           G     ",
-                "     G    DDDD   G     ",
-                "     GDFDDDDDDDFDG     ",
-                "  HCCHDHCHDCDHCHDHCCH  "
+                "     G    JJJJ   G     ",
+                "     GJFJJJJJJJFJG     ",
+                "  HCCHJHCHJCJHCHJHCCH  "
             },{
                 "                       ",
                 "       CCECCCECC       ",
@@ -185,8 +195,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "    GIGCCECCCECCGIG    ",
                 "    GI           IG    ",
                 "    GI  G     G  IG    ",
-                "    GIGDDDDDDDDDGIG    ",
-                " HCCHHHDDCDCDCDDHHHCCH "
+                "    GIGJJJJJJJJJGIG    ",
+                " HCCHHHJJCJCJCJJHHHCCH "
             },{
                 "         ECCCE         ",
                 "      CCCECCCECCC      ",
@@ -202,8 +212,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "     GCCCECCCECCCG     ",
                 "         ECCCE         ",
                 "       G       G       ",
-                "    FGDDDDDDDDDDDGF    ",
-                " HCCHHCDDDCCCDDDCHHCCH "
+                "    FGJJJJJJJJJJJGF    ",
+                " HCCHHCJJJCCCJJJCHHCCH "
             },{
                 "        CEFFFEC        ",
                 "      CCCFDDDFCCCC     ",
@@ -218,9 +228,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "    CCG         GCC    ",
                 "     CCCCFDDDFCCCC     ",
                 "        CEFFFEC        ",
-                "      D      G  D      ",
-                "    DFDDDDDDDDDDDFD    ",
-                " HCCHHHCDCDCDCDCHHHCCH "
+                "      J      G  J      ",
+                "    JFJJJJJJJJJJJFJ    ",
+                " HCCHHHCJCJCJCJCHHHCCH "
             },{
                 "       CCECCCECC       ",
                 "     CCCFDDDDDFCCC     ",
@@ -235,9 +245,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "   CCCG         GCCC   ",
                 "     CCCFDEEEDFCCC     ",
                 "       CCEIIIECC       ",
-                "      D  G   G  D      ",
-                "   FFDDDDDDDDDDDDDFF   ",
-                "HCCHHCDDCDCCCDCDDCHHCCH"
+                "      J  G   G  J      ",
+                "   FFJJJJJJJJJJJJJFF   ",
+                "HCCHHCJJCJCCCJCJJCHHCCH"
             },{
                 "       CCECCCECC       ",
                 "    CCCCDDDDDDDCCCC    ",
@@ -252,9 +262,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "   CCDDD   B   DDDCC   ",
                 "    CCCCDDEBEDDCCCC    ",
                 "       CCEIBIECC       ",
-                "      D  G B G  D      ",
-                "   DDDDDDDDBDDDDDDDD   ",
-                "HCCDCCCCCCCCCCCCCCCDCCH"
+                "      J  G B G  J      ",
+                "   JJJJJJJJBJJJJJJJJ   ",
+                "HCCJCCCCCCCCCCCCCCCJCCH"
             },{
                 "       CCECCCECC       ",
                 "     CCCFDDDDDFCCC     ",
@@ -269,9 +279,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "   CCCG         GCCC   ",
                 "     CCCFDEEEDFCCC     ",
                 "       CCEIIIECC       ",
-                "      D  G   G  D      ",
-                "   FFDDDDDDBDDDDDDFF   ",
-                "HCCHHCDDCDCCCDCDDCHHCCH"
+                "      J  G   G  J      ",
+                "   FFJJJJJJBJJJJJJFF   ",
+                "HCCHHCJJCJCCCJCJJCHHCCH"
             },{
                 "        CEFFFEC        ",
                 "     CCCCFDDDFCCCC     ",
@@ -286,9 +296,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "    CCG         GCC    ",
                 "     CCCCFDDDFCCCC     ",
                 "        CEFFFEC        ",
-                "      D  G   G  D      ",
-                "    DFDDDDDBDDDDDFD    ",
-                " HCCHHHCDCDCDCDCHHHCCH "
+                "      J  G   G  J      ",
+                "    JFJJJJJBJJJJJFJ    ",
+                " HCCHHHCJCJCJCJCHHHCCH "
             },{
                 "         ECCCE         ",
                 "      CCCECCCECCC      ",
@@ -304,8 +314,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "     GCCCECCCECCCG     ",
                 "         ECCCE         ",
                 "       G       G       ",
-                "    FGDDDDDBDDDDDGF    ",
-                " HCCHHCDDDCCCDDDCHHCCH "
+                "    FGJJJJJBJJJJJGF    ",
+                " HCCHHCJJJCCCJJJCHHCCH "
             },{
                 "                       ",
                 "       CCECCCECC       ",
@@ -321,8 +331,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "    GIGCCECCCECCGIG    ",
                 "    GI           IG    ",
                 "    GI  G     G  IG    ",
-                "    GIGDDDDBDDDDGIG    ",
-                " HCCHHHDDCDCDCDDHHHCCH "
+                "    GIGJJJJBJJJJGIG    ",
+                " HCCHHHJJCJCJCJJHHHCCH "
             },{
                 "                       ",
                 "          CCC          ",
@@ -337,9 +347,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "     G CCECCCECC G     ",
                 "     G    CCC    G     ",
                 "     G           G     ",
-                "     G   DDDDD   G     ",
-                "     GDFDDDBDDDFDG     ",
-                "  HCCHDHCHDCDHCHDHCCH  "
+                "     G   JJJJJ   G     ",
+                "     GJFJJJBJJJFJG     ",
+                "  HCCHJHCHJCJHCHJHCCH  "
             },{
                 "                       ",
                 "                       ",
@@ -355,7 +365,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "                       ",
                 "                       ",
                 "       E       E       ",
-                "      FEEFDBDFEEF      ",
+                "      FEEFJBJFEEF      ",
                 "  HCCCHHHHCCCHHHHCCCH  "
             },{
                 "                       ",
@@ -372,7 +382,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "                       ",
                 "                       ",
                 "                       ",
-                "       FEDFBFDEF       ",
+                "       FEJFBFJEF       ",
                 "   HCCCHHHHCHHHHCCCH   "
             },{
                 "                       ",
@@ -390,7 +400,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "        B     B        ",
                 "        B     B        ",
                 "        BBBBBBB        ",
-                "    HCCCCCHDHCCCCCH    "
+                "    HCCCCCHJHCCCCCH    "
             },{
                 "                       ",
                 "                       ",
@@ -458,6 +468,14 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         .addElement('G', ofFrame(Materials.CallistoIce))
         .addElement('H', Casings.TungstenSteelReinforcedBlock.asElement())
         .addElement('I', ofSheetMetal(Materials.Ledox))
+        .addElement(
+            'J',
+            ofBlocksTiered(
+                MTEEndothermicFridge::getTierFromBlock,
+                ImmutableList.of(Pair.of(GregTechAPI.sBlockCasings2, 1), Pair.of(GregTechAPI.sBlockCasings8, 14)),
+                -1,
+                MTEEndothermicFridge::setMachineTier,
+                MTEEndothermicFridge::getMachineTier))
         .build();
 
     public MTEEndothermicFridge(final int aID, final String aName, final String aNameRegional) {
@@ -560,10 +578,39 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         casingAmount++;
     }
 
+    @Nullable
+    private static Integer getTierFromBlock(Block block, Integer metaID) {
+        if (block == GregTechAPI.sBlockCasings2 && metaID == 1) { // frost proof
+            return 1;
+        }
+        if (block == GregTechAPI.sBlockCasings8 && metaID == 14) {
+            return 2; // infinity cooled casing
+        }
+        return null;
+    }
+
+    private void setMachineTier(int tier) {
+        this.machineTier = tier;
+    }
+
+    private int getMachineTier() {
+        return this.machineTier;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET) && casingAmount >= 14;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override
