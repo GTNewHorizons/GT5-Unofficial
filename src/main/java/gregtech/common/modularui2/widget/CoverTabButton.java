@@ -28,19 +28,16 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
 
     private final ICoverable coverable;
     private final ForgeDirection side;
+    private IPanelHandler panel;
 
-    public CoverTabButton(ICoverable coverable, ForgeDirection side, IPanelHandler panel) {
+    public CoverTabButton(ICoverable coverable, ForgeDirection side) {
         this.coverable = coverable;
         this.side = side;
         this.setEnabledIf($ -> coverable.hasCoverAtSide(side))
             .onMousePressed(mouseButton -> {
                 if (coverable.getCoverAtSide(side)
                     .hasCoverGUI()) {
-                    if (panel.isPanelOpen()) {
-                        panel.closePanel();
-                    } else {
-                        panel.openPanel();
-                    }
+                    togglePanel();
                 }
                 return true;
             })
@@ -52,6 +49,19 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
             .tooltipBuilder(this::buildTooltip)
             .tooltipAutoUpdate(true)
             .size(20, 20);
+    }
+
+    public void setPanel(IPanelHandler panel) {
+        this.panel = panel;
+    }
+
+    private void togglePanel() {
+        if (panel == null) return;
+        if (panel.isPanelOpen()) {
+            panel.closePanel();
+        } else {
+            panel.openPanel();
+        }
     }
 
     private void buildTooltip(RichTooltip builder) {

@@ -183,6 +183,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .location(GregTech.ID, "gui/picture/gray_rectangle")
         .build();
+
+    public static final UITexture BW_BACKGROUND_CIRCUIT_PROGRAMMER = UITexture
+        .fullImage(MainMod.MOD_ID, "GUI/background/circuit_programmer");
     // endregion background
 
     // region overlay
@@ -316,7 +319,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_PRIMITIVE)
         .build();
-
+    public static final UITexture SLOT_FLUID_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_dark_gray")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_EMPTY = UITexture.builder()
         .location(GregTech.ID, "gui/slot/empty")
         .imageSize(18, 18)
@@ -332,11 +340,16 @@ public final class GTGuiTextures {
 
     // region slot overlay
 
-    public static final UITexture OVERLAY_SLOT_CANISTER_STANDARD = UITexture.builder()
+    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/canister")
         .fullImage()
         .canApplyTheme()
-        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_CANISTER_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/canister_dark")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_DARK)
         .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_CANISTER_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/canister_%s")
@@ -344,7 +357,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
-    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImage(GregTech.ID, "gui/overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/data_orb")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .fullImage()
@@ -658,12 +675,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/boxed")
-        .build();
-
-    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/canister")
         .build();
 
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.builder()
@@ -1562,6 +1573,16 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/sorting_mode")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_NBT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/nbt")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INVERT_FILTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/invert_filter")
         .fullImage()
         .canApplyTheme()
         .build();

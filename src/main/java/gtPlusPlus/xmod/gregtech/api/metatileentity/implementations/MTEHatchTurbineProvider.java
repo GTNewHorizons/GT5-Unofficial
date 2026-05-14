@@ -21,7 +21,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.util.Utils;
