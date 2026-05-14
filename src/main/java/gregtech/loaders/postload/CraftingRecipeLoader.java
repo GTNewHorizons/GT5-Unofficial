@@ -1232,6 +1232,11 @@ public class CraftingRecipeLoader implements Runnable {
 
         GTLog.out.println("GTMod: Beginning to add regular Crafting Recipes.");
         GTModHandler.addCraftingRecipe(
+            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
+            bits_no_remove_buffered,
+            new Object[] { "sLf", 'L', OrePrefixes.log.get(Materials.Wood) });
+
+        GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("scaffold", 4L),
             bits_no_remove_buffered,
             new Object[] { "WWW", " S ", "S S", 'W', OrePrefixes.plank.get(Materials.Wood), 'S',
