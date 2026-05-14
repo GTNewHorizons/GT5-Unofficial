@@ -319,7 +319,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.SLOT_FLUID_PRIMITIVE)
         .build();
-
+    public static final UITexture SLOT_FLUID_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/fluid_dark_gray")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_EMPTY = UITexture.builder()
         .location(GregTech.ID, "gui/slot/empty")
         .imageSize(18, 18)
@@ -1568,6 +1573,16 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/sorting_mode")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_NBT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/nbt")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INVERT_FILTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/invert_filter")
         .fullImage()
         .canApplyTheme()
         .build();
