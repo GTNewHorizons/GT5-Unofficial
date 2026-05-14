@@ -13,8 +13,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.common.blocks.rubbertree.BlockRubberLogNatural;
 import gregtech.api.enums.Materials;
+import gregtech.common.blocks.rubbertree.BlockRubberLogNatural;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
