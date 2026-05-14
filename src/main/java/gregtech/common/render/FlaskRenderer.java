@@ -33,8 +33,7 @@ public final class FlaskRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushAttrib(
-            GL11.GL_ENABLE_BIT
-                | GL11.GL_COLOR_BUFFER_BIT
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
                 | GL11.GL_CURRENT_BIT
                 | GL11.GL_DEPTH_BUFFER_BIT
                 | GL11.GL_TEXTURE_BIT);
