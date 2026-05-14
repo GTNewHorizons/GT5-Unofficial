@@ -1,0 +1,19 @@
+name: Test integration in latest daily
+
+on:
+  push:
+    branches:
+      - mal/fullpack-ci-tests
+
+jobs:
+  pack-test:
+    name: Pack Test
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    container:
+      image: ghcr.io/malteeez/gtnh-daily:latest
+
+    steps:
+      - name: Run pack test
+        run: |
+          bash /entrypoint.sh
