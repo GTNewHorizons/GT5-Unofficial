@@ -79,8 +79,8 @@ public class RecipeHashStrat {
             return false;
         }
 
-        ItemStack[] sortedCopy1 = array1.clone();
-        ItemStack[] sortedCopy2 = array2.clone();
+        ItemStack[] sortedCopy1 = Arrays.copyOf(array1, array1.length);
+        ItemStack[] sortedCopy2 = Arrays.copyOf(array2, array2.length);
 
         Arrays.sort(sortedCopy1, itemStackComparator);
         Arrays.sort(sortedCopy2, itemStackComparator);
@@ -104,8 +104,8 @@ public class RecipeHashStrat {
             return false;
         }
 
-        FluidStack[] sortedCopy1 = array1.clone();
-        FluidStack[] sortedCopy2 = array2.clone();
+        FluidStack[] sortedCopy1 = Arrays.copyOf(array1, array1.length);
+        FluidStack[] sortedCopy2 = Arrays.copyOf(array2, array2.length);
 
         Arrays.sort(sortedCopy1, fluidStackComparator);
         Arrays.sort(sortedCopy2, fluidStackComparator);
