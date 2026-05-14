@@ -23,7 +23,7 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    private GTCustomItemIconContainer(@NotNull String aIconName) {
+    GTCustomItemIconContainer(@NotNull String aIconName) {
         mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
         mOverlayName = mIconName + Textures.OverlaySuffix;

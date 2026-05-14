@@ -23,7 +23,7 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected final String mIconName, mOverlayName;
     protected IIcon mIcon, mOverlay = null;
 
-    private GTCustomBlockIconContainer(@NotNull String aIconName) {
+    GTCustomBlockIconContainer(@NotNull String aIconName) {
         mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
 
