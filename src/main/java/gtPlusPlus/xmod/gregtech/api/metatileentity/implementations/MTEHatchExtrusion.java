@@ -6,9 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
@@ -16,15 +20,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
+import gregtech.common.gui.modularui.util.ProxiedItemHandlerModifiable;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public int shapeSlot = getSlots(mTier);
     public int circuitSlot = getSlots(mTier) + 1;
+    private final @Nullable IItemHandlerModifiable limitedInventoryHandler;
 
     public static final ItemStack[] extruderShapes = {
         // Tools
@@ -46,14 +51,31 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
         ItemList.Shape_Extruder_Cell.get(1) };
 
-    public boolean oneStackLimit = false;
-
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
+        this.limitedInventoryHandler = null;
     }
 
     public MTEHatchExtrusion(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier) + 2, aDescription, aTextures);
+        this.limitedInventoryHandler = initializeLimitedInventoryHandler();
+    }
+
+    private @NotNull ProxiedItemHandlerModifiable initializeLimitedInventoryHandler() {
+        return new ProxiedItemHandlerModifiable(inventoryHandler) {
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return getInventoryStackLimit();
+            }
+        };
+    }
+
+    public @NotNull IItemHandlerModifiable getLimitedInventoryHandler() {
+        if (limitedInventoryHandler == null) {
+            throw new IllegalStateException("Cannot be called on the prototype MTE.");
+        }
+        return limitedInventoryHandler;
     }
 
     public static int getSlots(int aTier) {
@@ -128,58 +150,35 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex != shapeSlot && aIndex != circuitSlot && super.isValidSlot(aIndex);
+        return aIndex != shapeSlot && super.isValidSlot(aIndex);
     }
 
     @Override
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++) {
-            if (i != shapeSlot && i != circuitSlot && mInventory[i] != null && mInventory[i].stackSize <= 0) {
-                mInventory[i] = null;
-            }
-        }
-        if (!disableSort) fillStacksIntoFirstSlots();
-        if (oneStackLimit) {
-            for (ItemStack itemStack : mInventory) {
-                if (itemStack != null) {
-                    itemStack.stackSize = Math.min(1, itemStack.stackSize);
-                }
-            }
-        }
+    protected void fillStacksIntoFirstSlots() {
+        // don't sort the ghost shape slot
+        GTUtility.compactInventory(this, 0, mInventory.length - 2);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
+        return aIndex != shapeSlot && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
+        return aIndex != shapeSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
-    protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
-        for (int i = 0; i < getSizeInventory(); i++) {
-            if (isValidSlot(i) && GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mInventory[i])) {
-                return i == aIndex;
-            }
-        }
-        return mInventory[aIndex] == null;
+    public int getInventoryStackLimit() {
+        return 1;
     }
 
     @Override
     public int getCircuitSlot() {
         return circuitSlot;
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     @Override

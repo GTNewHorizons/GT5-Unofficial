@@ -264,6 +264,14 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
     }
 
     @Override
+    public long getMinimumStoredEU() {
+        if (mTier == 0) {
+            return 0;
+        }
+        return super.getMinimumStoredEU();
+    }
+
+    @Override
     public boolean isEnetOutput() {
         return true;
     }

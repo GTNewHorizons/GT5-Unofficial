@@ -381,6 +381,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
     FormingCore
         (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
+    AlgaeCasing
+        (() -> GregTechAPI.sBlockCasings12, 15, gt(16, 5, 15)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -602,11 +604,11 @@ public enum Casings implements ICasing {
 
     // BEC
     SuperconductivePlasmaEnergyConduit
-        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(16, 6, 0)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
-        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(16, 6, 1)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
     FineStructureConstantManipulator
-        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(16, 6, 2)),
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
 
     // Block Glass 1
     ChemicalGradeGlass

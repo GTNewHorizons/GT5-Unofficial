@@ -99,9 +99,4 @@ public class CoverWirelessMaintenenceDetectorGui
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK))
             .child(new TextWidget(StatCollector.translateToLocal(value.getDescriptorKey())));
     }
-
-    @Override
-    protected int getGUIHeight() {
-        return 180;
-    }
 }
