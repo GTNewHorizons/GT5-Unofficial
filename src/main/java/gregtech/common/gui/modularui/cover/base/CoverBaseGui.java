@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.cover.base;
 
+import java.util.Arrays;
+
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -14,6 +16,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -150,6 +153,14 @@ public class CoverBaseGui<T extends Cover> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(WIDGET_MARGIN)
             .childPadding(ROW_PADDING);
+    }
+
+    protected int getStringMaxWidth(String... strings) {
+        // Width doesn't matter on the server and the actual method relies on the client-only FontRenderer class
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isServer()) return 100;
+        return IKey.renderer.getMaxWidth(Arrays.asList(strings));
     }
 
     /**
