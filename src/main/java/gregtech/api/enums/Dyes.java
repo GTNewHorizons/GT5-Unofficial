@@ -73,7 +73,7 @@ public enum Dyes implements IColorModulationContainer {
         return (r << 16) | (g << 8) | b;
     }
 
-    /** RGBA color value (0xrrggbbaa). */
+    /** RGB color value (0xrrggbb). */
     public final int rgb;
     @Deprecated
     public final short[] mRGBa;
