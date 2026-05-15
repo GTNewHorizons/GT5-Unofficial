@@ -1896,7 +1896,7 @@ public class MTERecipeLoader implements Runnable {
             .duration(TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
-        
+
         // Infinite Fluid Drilling Rig Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.InfiniteFluidDrillingRig.get(1),
