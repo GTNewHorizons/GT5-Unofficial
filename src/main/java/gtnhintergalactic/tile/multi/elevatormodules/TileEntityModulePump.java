@@ -172,7 +172,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             recipeParameters[i] = new CompositeParameter(
                 parameters,
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe",
-                "repice" + i,
+                "recipe" + i,
                 i + 1);
         }
     }
