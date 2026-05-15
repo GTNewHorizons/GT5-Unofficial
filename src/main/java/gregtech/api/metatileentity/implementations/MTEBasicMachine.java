@@ -243,6 +243,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     }
 
     @Override
+    public boolean shouldSendInitialClientData() {
+        return isFacingValid(mMainFacing);
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[14][17][];
         aTextures = Arrays.copyOf(aTextures, 14);
