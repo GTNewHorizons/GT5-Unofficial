@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -26,6 +27,8 @@ import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 
 public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
+
+    private static final int FILTER_TEXT_MAX_SCALE_LENGTH = 32;
 
     public MTEHatchOutputGui(MTEHatchOutput hatch) {
         super(hatch);
@@ -62,7 +65,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     protected ParentWidget<?> createScreen(PanelSyncManager syncManager) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
 
-        ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
+        ParentWidget<?> screen = new ParentWidget<>().size(71, 53)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
 
@@ -105,8 +108,9 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
     protected Flow createIO() {
         Flow ioColumn = Flow.column()
-            .coverChildren()
-            .childPadding(9);
+            .coverChildrenWidth()
+            .fullHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         // input slot
         ioColumn.child(
@@ -122,7 +126,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     }
 
     protected ParentWidget<?> createFilterScreen(PanelSyncManager syncManager) {
-        ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
+        ParentWidget<?> screen = new ParentWidget<>().size(71, 53)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
 
@@ -139,12 +143,25 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // fluid name
-        textColumn.child(IKey.dynamic(() -> {
+        IKey lockKey = IKey.dynamic(() -> {
             FluidStack fluid = fluidLockSlotWidget.getFluid();
-            return GTUtility
-                .translate(fluid == null ? "GT5U.machines.hatch_output.lockfluid.empty" : fluid.getUnlocalizedName());
-        })
-            .asWidget()
+            return fluid == null ? GTUtility.translate("GT5U.machines.hatch_output.lockfluid.empty")
+                : fluid.getLocalizedName();
+        });
+        // noinspection unchecked,rawtypes
+        textColumn.child(new TextWidget(lockKey) {
+
+            @Override
+            protected void onTextChanged(String newText) {
+                // needed to scale down long fluid names
+                scale(Math.min(1, (float) FILTER_TEXT_MAX_SCALE_LENGTH / newText.length()));
+                super.onTextChanged(newText);
+            }
+        }.scale( // needed for initial scaling
+            Math.min(
+                1,
+                (float) FILTER_TEXT_MAX_SCALE_LENGTH / lockKey.getFormatted()
+                    .length()))
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         screen.child(textColumn);
@@ -187,7 +204,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
                             if (fluid == null) {
                                 args[0] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.0");
                                 args[1] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.1");
-                            } else args[0] = GTUtility.translate(fluid.getUnlocalizedName());
+                            } else args[0] = fluid.getLocalizedName();
                         }
 
                         t.addLine(GTUtility.translate(MTEHatchOutput.getLangKeyForMode(mode), args[0]));

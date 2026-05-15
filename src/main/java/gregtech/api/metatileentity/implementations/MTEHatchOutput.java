@@ -294,7 +294,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public void lockFluid(boolean lock) {
-        if (lock) setLockedFluid(mFluid == null ? null : mFluid.getFluid());
+        if (lock && lockedFluid == null) setLockedFluid(mFluid == null ? null : mFluid.getFluid());
     }
 
     @Override
