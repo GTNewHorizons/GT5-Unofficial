@@ -20,10 +20,16 @@ import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
 import gregtech.client.iconContainers.items.GTCustomItemIconContainer;
 import gregtech.client.iconContainers.items.GTItemIconContainer;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class Textures {
+
+    public static final String TextureMaterialIconDirectory = "materialicons/";
+    public static final String TextureSetFallback = "NONE";
+    public static final String OverlaySuffix = "_OVERLAY";
 
     // spotless:off
     public enum InvisibleIcon implements IIcon {
@@ -78,7 +84,7 @@ public class Textures {
         }
     }
 
-    public final class BlockIcons {
+    public static final class BlockIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -2629,26 +2635,15 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link BlockIcons} instead:
-         *             <ul>
-         *             <li>{@link BlockIcons#custom(String)}</li>
-         *             <li>{@link BlockIcons#customOptional(String)}</li>
-         *             <li>{@link BlockIcons#customAlpha(String)}</li>
-         *             </ul>
+         * Registers a Block {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomBlockIconContainer {
-
-            /**
-             * @deprecated Use {@link BlockIcons#custom(String)} instead.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2658,9 +2653,14 @@ public class Textures {
         private static @NotNull IIconContainer createOptional(@NotNull String name) {
             return GTOptionalBlockIconContainer.create(name);
         }
+
+        public static void cleanup() {
+            GTTextureSetBlockIconContainer.cleanup();
+            GTCustomBlockIconContainer.cleanup();
+        }
     }
 
-    public final class ItemIcons {
+    public static final class ItemIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -2729,26 +2729,24 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link ItemIcons#custom(String)} instead:
+         * Registers a Item {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomItemIconContainer {
-
-            /**
-             * @deprecated Use {@link ItemIcons#custom(String)} instead.
-             *             This constructor will become private later.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(setName, prefix);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
             return GTItemIconContainer.create(name);
+        }
+
+        public static void cleanup() {
+            GTTextureSetItemIconContainer.cleanup();
+            GTCustomItemIconContainer.cleanup();
         }
 
     }
