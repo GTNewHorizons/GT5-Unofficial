@@ -2575,6 +2575,10 @@ GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 GT5U.gui.text.nil=None
 GT5U.gui.text.turbine_title=Turbines
 
+GT5U.gui.text.hatch.output.cycle=Click to cycle modes
+GT5U.gui.text.hatch.output.filter.none.0=None
+GT5U.gui.text.hatch.output.filter.none.1=Will be locked to the next fluid that is put in (or use fluid cell to lock)
+
 # NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power

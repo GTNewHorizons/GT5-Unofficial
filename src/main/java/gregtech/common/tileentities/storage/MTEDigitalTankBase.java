@@ -206,22 +206,22 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public void setLockedFluid(Fluid fluid) {
+    public void setLockedFluid(Fluid lockedFluid) {
         if (mVoidFluidFull) return;
 
-        Fluid temp = lockedFluid;
-        this.lockedFluid = fluid;
-        if (fluid != null) {
+        Fluid temp = this.lockedFluid;
+        this.lockedFluid = lockedFluid;
+        if (lockedFluid != null) {
             if (getFluidAmount() == 0) {
                 // create new FluidStack, otherwise existing 0-amount FluidStack will
                 // prevent new fluid from being locked
-                setFillableStack(new FluidStack(fluid, getFluidAmount()));
+                setFillableStack(new FluidStack(lockedFluid, getFluidAmount()));
             }
             mLockFluid = true;
         }
 
         // disable lock if the lock slot was cleared
-        if (temp != null && fluid == null) mLockFluid = false;
+        if (temp != null && lockedFluid == null) mLockFluid = false;
     }
 
     @Override
