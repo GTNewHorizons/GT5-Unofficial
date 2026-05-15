@@ -1657,6 +1657,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
 
+        // Algae Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.AlgaeCasing.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
+
         // Naquadah Reactor Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1711,6 +1717,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.TreeGrowSimulator.get(1),
             new Object[] { GregtechItemList.Industrial_TreeFarm });
+
+        // Algae Farm Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AlgaeFarm.get(1),
+            new Object[] { GregtechItemList.AlgaeFarm_Controller });
 
         // Naquadah Fuel Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1806,6 +1817,23 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // XL Turbines Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Steam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.HPSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_HPSteam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.GasTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Gas_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlasmaTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Plasma_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SCSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_SCSteam_Turbine });
+
         // Large Turbines Conversion Recipes
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.SteamTurbine.get(1), new Object[] { ItemList.LargeSteamTurbine });
@@ -1858,6 +1886,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
+
+        // Infinite Fluid Drilling Rig Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.InfiniteFluidDrillingRig.get(1),
+            new Object[] { ItemList.OilDrillInfinite });
     }
 
     private static void registerSifter() {

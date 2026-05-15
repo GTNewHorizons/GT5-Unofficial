@@ -73,7 +73,6 @@ public class FluidLockSlotWidget extends FluidSlot implements IFluidTank {
 
     @Override
     public int fill(FluidStack fluidStack, boolean doFill) {
-        // null check for fluidStack?
         Fluid fluid = fluidStack.getFluid();
         if (doFill && machine.acceptsFluidLock(fluid)) machine.setLockedFluid(fluid);
         return 1;
