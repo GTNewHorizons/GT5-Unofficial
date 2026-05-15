@@ -149,7 +149,7 @@ public class BeamlineRecipeLoader {
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
                     .particleID(Particle.PROTON.ordinal())
-                    .rate(10)
+                    .rate(40)
                     .energy(1_000_000, 0.3f)
                     .focus(99)
                     .build())

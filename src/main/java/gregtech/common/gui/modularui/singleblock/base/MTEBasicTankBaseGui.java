@@ -75,7 +75,6 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTETieredMachin
         return new FluidSlot().syncHandler(new FluidSlotSyncHandler(machine.getFluidTank()))
             .bottomRel(0)
             .rightRel(0)
-            .align(Alignment.BottomRight)
             .backgroundOverlay(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
