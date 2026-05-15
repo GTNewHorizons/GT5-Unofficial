@@ -2,8 +2,8 @@ package gregtech.client.iconContainers.blocks;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
@@ -22,12 +23,11 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected final String mIconName, mOverlayName;
     protected IIcon mIcon, mOverlay = null;
 
-    // TODO: Change to package-private once API no longer extends this implementation
-    protected GTCustomBlockIconContainer(@NotNull String aIconName) {
+    GTCustomBlockIconContainer(@NotNull String aIconName) {
         mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
 
-        mOverlayName = mIconName + "_OVERLAY";
+        mOverlayName = mIconName + Textures.OverlaySuffix;
         overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
         GregTechAPI.sGTBlockIconload.add(this);
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
@@ -38,11 +38,15 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
         GTLog.ico.println("O " + overlayResource);
     }
 
-    // 2026-02-03: Counted 1771 unique Block CustomIcons, so 2.5K will avoid resize until 1920 entries
-    private static final Map<String, GTCustomBlockIconContainer> INSTANCES = new ConcurrentHashMap<>(2560);
+    // 2026-13-05: Counted 36 unique Block TextureSetIcons, so 52 will avoid resize until 50 entries
+    private static Map<String, GTCustomBlockIconContainer> INSTANCES = new HashMap<>(52);
 
     public static @NotNull IIconContainer create(@NotNull String aIconName) {
         return INSTANCES.computeIfAbsent(aIconName, GTCustomBlockIconContainer::new);
+    }
+
+    public static void cleanup() {
+        INSTANCES = new HashMap<>();
     }
 
     @Override

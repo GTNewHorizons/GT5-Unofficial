@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.cover.base;
 
-import java.util.Arrays;
-
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -93,7 +91,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             .dynamic(() -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? inputBlockText : outputBlockText)
             .asWidget()
             .coverChildrenHeight()
-            .width(IKey.renderer.getMaxWidth(Arrays.asList(inputBlockText, outputBlockText)))
+            .width(getStringMaxWidth(inputBlockText, outputBlockText))
             .marginRight(TICK_RATE_BUTTON_SIZE);
 
         column.child(
