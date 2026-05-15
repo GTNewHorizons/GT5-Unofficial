@@ -2031,6 +2031,12 @@ public final class GTGuiTextures {
         .imageSize(69, 24)
         .adaptable(0, 0, 12, 0)
         .build();
+
+    public static final UITexture PICTURE_SUPER_BUFFER = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/super_buffer")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion picture
 
     // region machine modes
