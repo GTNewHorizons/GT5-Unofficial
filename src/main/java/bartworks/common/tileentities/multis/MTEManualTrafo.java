@@ -26,6 +26,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -53,6 +55,9 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -244,7 +249,8 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
 
         if (itemStack == null || !itemStack.getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) this.mode = 0;
@@ -253,29 +259,41 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         this.upstep = this.mode % 2 == 0;
         boolean tapmode = this.mode > 1;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.isEmpty()) return false;
-
-        byte intier = this.mEnergyHatches.get(0).mTier;
-        for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         int mHeight;
         for (mHeight = 1; mHeight <= 8; mHeight++) {
             if (tapmode) {
                 this.mTiers = mHeight;
-                if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1)) break;
-            } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) break;
+                if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1, errors)) break;
+            } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) break;
         }
-        if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
+        errors.clear();
+        if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0, errors)) return;
         this.mTiers = mHeight - 1;
+        if (mTiers == 0) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
 
-        if (this.mDynamoHatches.isEmpty() || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
+        checkHasEnergyHatch(errors);
+        checkHatchMin(errors, Dynamo, 1);
+        checkOneMaintenanceHatch(errors);
+
+        if (!errors.isEmpty()) return; // don't crash the game. for accessing the first elem
+
+        byte intier = this.mEnergyHatches.get(0).mTier;
+        for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) {
+            errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_energy"));
+            return;
+        }
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
-            if (out.mTier != outtier) return false;
+            if (out.mTier != outtier) {
+                errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_dynamo"));
+            }
         }
-
-        return true;
     }
 
     @Override
