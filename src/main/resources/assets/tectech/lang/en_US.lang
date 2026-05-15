@@ -76,6 +76,8 @@ item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
 item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
 item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
 item.em.parametrizerMemoryCard.noConfig=Can't paste from empty card!
+item.em.parametrizerMemoryCard.whitelist=Whitelist
+item.em.parametrizerMemoryCard.blacklist=Blacklist
 
 item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
