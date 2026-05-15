@@ -1388,7 +1388,7 @@ public class GGMaterial implements Runnable {
         Pair.of(titaniumBetaC, 14),
         Pair.of(Tungsten, 10),
         Pair.of(NiobiumTitanium, 9),
-        Pair.of(WerkstoffLoader.LuVTierMaterial, 8),
+        Pair.of(WerkstoffLoader.RhodiumPlatedPalladium, 8),
         Pair.of(Quantium, 7),
         Pair.of(Erbium, 3));
 

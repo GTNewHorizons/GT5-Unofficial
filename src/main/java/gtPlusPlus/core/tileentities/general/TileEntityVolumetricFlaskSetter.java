@@ -182,7 +182,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                     if (aOutput != null) {
                         aOutput.stackSize = aSize;
                         int aCapacity = getCapacityForSlot(e);
-                        VolumetricFlaskHelper.setNewFlaskCapacity(aOutput, aCapacity);
+                        VolumetricFlaskHelper.setFlaskCapacity(aOutput, aCapacity);
                         if (aOutputFluid != null) {
                             if (aOutputFluid.amount > aCapacity) {
                                 aOutputFluid.amount = aCapacity;
