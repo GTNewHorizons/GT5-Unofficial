@@ -211,11 +211,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
                         if (output.mFluid != null && output.mFluid.getFluid() != null
-                            && output.getLockedFluidName() != null
-                            && output.getLockedFluidName()
-                                .equals(
-                                    fluid.getFluid()
-                                        .getName())
+                            && output.getLockedFluid() != null
+                            && output.getLockedFluid()
+                                .equals(fluid.getFluid())
                             && output.mFluid.getFluid()
                                 .equals(fluid.getFluid())) {
                             targetOutput = output;

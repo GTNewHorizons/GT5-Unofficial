@@ -81,19 +81,18 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private Flow createSlotRow(PanelSyncManager syncManager) {
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
         IItemHandler inventoryHandler = getInventoryHandler();
-
-        syncManager.syncValue(
-            "display_item",
-            GenericSyncValue.forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null));
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
+        GenericSyncValue<ItemStack> displayItemSyncer = GenericSyncValue
+            .forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null);
 
         return Flow.row()
             .child(createSlotInputField(slotSyncer))
-            .child(createItemDisplayWidget(slotSyncer))
+            .child(createItemDisplayWidget(slotSyncer, displayItemSyncer))
             .child(
                 IKey.lang("gt.interact.desc.item_slot")
-                    .asWidget());
+                    .asWidget()
+                    .paddingRight(TICK_RATE_BUTTON_SIZE));
     }
 
     private IWidget createSlotInputField(IntSyncValue slotSyncer) {
@@ -136,8 +135,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
         };
     }
 
-    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer) {
-        return new ItemDisplayWidget().syncHandler("display_item")
+    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack> stackSyncer) {
+        return new ItemDisplayWidget().item(stackSyncer)
             .displayAmount(false)
             .tooltipDynamic(getItemDisplayTooltip(slotSyncer));
     }

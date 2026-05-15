@@ -207,10 +207,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
         @Override
         public boolean hasAvailableSpace() {
-            // There's really no reason for the tick counter, it's just more accurate to the real bus's behaviour.
-            // Transactions should never be kept around long enough for it to matter, but in case someone does something
-            // stupid it's here to make sure nothing breaks.
-            // This condition should always return true unless this transaction is kept around for more than one tick.
             return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
         }
 
@@ -243,7 +239,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         public void commit() {
             cache.iterateAll(
                 (id, amount) -> {
-                    provider.addToCache(
+                    provider.storeToCache(
                         provider.getFilter()
                             .fromNative(id.getItemStack())
                             .setStackSize(amount));
