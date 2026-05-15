@@ -48,6 +48,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import galacticgreg.SpaceDimRegisterer;
+import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
@@ -565,6 +566,7 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
+        NaquadahReworkRecipeLoader.Remover();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
