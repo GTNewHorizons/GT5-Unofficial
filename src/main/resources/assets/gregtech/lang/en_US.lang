@@ -2361,8 +2361,12 @@ GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
 GT5U.gui.button.chunk_loading_on=§7Chunk Loading: §aON
 GT5U.gui.button.chunk_loading_off=§7Chunk Loading: §4OFF
-GT5U.gui.button.ore_drill_radius_1=§7Current Radius: §a%s
+GT5U.gui.button.ore_drill_radius_1=§7Current Radius: §a%s blocks
 GT5U.gui.button.ore_drill_radius_2=§7Left-click to increment, right-click to decrement
+GT5U.gui.button.oil_drill_radius_1=§7Current Radius: §a%s blocks
+GT5U.gui.button.oil_drill_radius_2=§7Left-click to increment, right-click to decrement
+GT5U.gui.button.work_area_preview_on=§7Hide working area
+GT5U.gui.button.work_area_preview_off=§7Show working area
 GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
 GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
@@ -2569,6 +2573,7 @@ GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 GT5U.gui.text.nil=None
+GT5U.gui.text.turbine_title=Turbines
 
 # NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
@@ -2932,7 +2937,7 @@ GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
-GT5U.gui.text.volumetric_flask.confirm=Confirm
+GT5U.gui.text.volumetric_flask.max_capacity=Max Capacity of %s
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Pattern Storage for §eLarge Molecular Assembler (LMA)§r
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.2=Capacity: %d Patterns
 
@@ -2963,10 +2968,10 @@ GT5U.gui.text.status.online=Online
 GT5U.gui.text.status.offline=Offline
 GT5U.gui.text.status.disabled=Disabled
 GT5U.gui.text.status.incomplete=Incomplete Structure
-GT5U.gui.text.x=X: %s
-GT5U.gui.text.y=Y: %s
-GT5U.gui.text.z=Z: %s
-GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.x=X:
+GT5U.gui.text.y=Y:
+GT5U.gui.text.z=Z:
+GT5U.gui.text.dim=Dim:
 GT5U.gui.text.dim.valid=Dim Valid: Yes
 GT5U.gui.text.dim.invalid=Dim Valid: No
 
@@ -3499,6 +3504,7 @@ GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed floc
 GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
+GT5U.nei.cauldron.anystack=Works with any stack size
 GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 
 

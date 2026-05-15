@@ -1817,6 +1817,23 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // XL Turbines Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Steam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.HPSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_HPSteam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.GasTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Gas_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlasmaTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Plasma_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SCSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_SCSteam_Turbine });
+
         // Large Turbines Conversion Recipes
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.SteamTurbine.get(1), new Object[] { ItemList.LargeSteamTurbine });

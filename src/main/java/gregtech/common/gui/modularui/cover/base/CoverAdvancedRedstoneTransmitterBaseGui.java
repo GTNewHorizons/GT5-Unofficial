@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.cover.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -42,7 +41,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
                 .child(
                     new TextWidget<>(IKey.dynamic(() -> invertedSyncer.getBoolValue() ? textInverted : textNormal))
                         .height(16)
-                        .width(IKey.renderer.getMaxWidth(Arrays.asList(textNormal, textInverted)))));
+                        .width(getStringMaxWidth(textNormal, textInverted))));
     }
 
     // method for subclasses that have in-world functionality
@@ -60,7 +59,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
             .child(
                 new TextWidget<>(
                     IKey.dynamic(() -> translateToLocal(physicalSyncer.getValue() ? redstone1 : redstone0))).height(16)
-                        .width(IKey.renderer.getMaxWidth(Arrays.asList(redstone0, redstone1))))
+                        .width(getStringMaxWidth(redstone0, redstone1)))
             .leftRel(0);
     }
 }
