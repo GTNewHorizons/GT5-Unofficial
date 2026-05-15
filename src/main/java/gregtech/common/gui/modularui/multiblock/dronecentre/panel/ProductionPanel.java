@@ -335,23 +335,7 @@ public class ProductionPanel extends ModularPanel {
         }
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().widthRel(1);
         cells.forEach(listWidget::child);
-        return listWidget.widthRel(1)
-            .expanded();
-    }
-
-    private Flow createMachineCell(ItemStack itemStack) {
-        return Flow.row()
-            .childPadding(4)
-            .verticalCenter()
-            .leftRel(0)
-            .coverChildren()
-            .paddingRight(2)
-            .child(
-                new ItemDisplayWidget().item(itemStack)
-                    .displayAmount(false)
-                    .size(16)
-                    .tooltipBuilder(builder -> DroneCentreGuiUtil.getTooltipFromItemSafely(builder, itemStack)))
-            .child(new TextWidget<>(": " + itemStack.stackSize));
+        return listWidget.expanded();
     }
 
     private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
@@ -400,6 +384,6 @@ public class ProductionPanel extends ModularPanel {
 
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().sizeRel(1);
         cells.forEach(listWidget::child);
-        return listWidget.sizeRel(1);
+        return listWidget;
     }
 }

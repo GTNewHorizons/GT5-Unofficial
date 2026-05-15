@@ -268,7 +268,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0)) {
-            return true;
+            return casingAmount >= 85 && !mInputBusses.isEmpty();
         }
 
         clearHatches();
