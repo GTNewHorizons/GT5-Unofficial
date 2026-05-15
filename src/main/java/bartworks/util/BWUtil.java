@@ -42,7 +42,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import bartworks.API.BioVatLogicAdder;
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
@@ -148,17 +147,6 @@ public class BWUtil {
             };
         }
         return new String(nu);
-    }
-
-    public static int calculateSv(Materials materials) {
-        for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
-            if (pair.getMaterials()
-                .equals(materials)) return pair.getSievert();
-        }
-        return (int) (materials.getProtons() == 43L
-            ? materials.equals(Materials.NaquadahEnriched) ? 140
-                : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
-            : materials.getProtons());
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {
