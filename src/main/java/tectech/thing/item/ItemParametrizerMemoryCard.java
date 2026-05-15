@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.base.Strings;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -32,11 +33,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
-import joptsimple.internal.Strings;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.util.CommonValues;
@@ -71,7 +72,7 @@ public final class ItemParametrizerMemoryCard extends Item {
 
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
-                if (!hasIdenticalParameterList(parameterList, tNBT)) {
+                if (!hasIdenticalParameterList("paramList", parameterList, tNBT)) {
                     String reason;
                     if (!tNBT.hasKey("controller")) {
                         reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
@@ -124,9 +125,10 @@ public final class ItemParametrizerMemoryCard extends Item {
         return false;
     }
 
-    private boolean hasIdenticalParameterList(List<Parameter<?>> controllerParameters, NBTTagCompound tNBT) {
-        if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
-            NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+    private boolean hasIdenticalParameterList(String key, List<Parameter<?>> controllerParameters,
+        NBTTagCompound tNBT) {
+        if (tNBT.hasKey(key, Constants.NBT.TAG_LIST)) {
+            NBTTagList tagList = tNBT.getTagList(key, Constants.NBT.TAG_COMPOUND);
 
             if (tagList.tagList.size() != controllerParameters.size()) return false;
 
@@ -135,6 +137,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                 Parameter<?> parameter = controllerParameters.get(i);
                 if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
+                if (parameter instanceof CompositeParameter compositeParameter
+                    && !hasIdenticalParameterList("value", compositeParameter.getValue(), tag)) return false;
             }
 
             return true;
@@ -243,7 +247,7 @@ public final class ItemParametrizerMemoryCard extends Item {
             .mapToObj(argsList::getStringTagAt)
             .toArray(Object[]::new);
 
-        return Strings.repeat(' ', offset) + EnumChatFormatting.AQUA
+        return Strings.repeat(" ", offset) + EnumChatFormatting.AQUA
             + GTUtility.translate(tag.getString("langKey"), args)
             + ": "
             + EnumChatFormatting.GRAY
