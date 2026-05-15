@@ -117,14 +117,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         super(aName);
     }
 
-    /********************************************************
-     * Parent overrides
-     *******************************************************/
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
-    }
-
     @Override
     protected void setElectricityStats() {
         // for a 6.4 second beautiful batch
