@@ -92,9 +92,4 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
         }
         return ItemList.Display_ITS_FREE.get(1);
     }
-
-    @Override
-    protected int getGUIHeight() {
-        return 160;
-    }
 }

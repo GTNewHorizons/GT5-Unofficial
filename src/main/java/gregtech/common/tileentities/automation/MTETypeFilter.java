@@ -13,6 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -29,6 +33,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTETypeFilterGui;
 
 public class MTETypeFilter extends MTESpecialFilter {
 
@@ -62,6 +67,22 @@ public class MTETypeFilter extends MTESpecialFilter {
 
     public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public int getRotationIndex() {
+        return mRotationIndex;
+    }
+
+    public void setRotationIndex(int rotationIndex) {
+        this.mRotationIndex = rotationIndex;
+    }
+
+    public String getPrefix() {
+        return mPrefix.toString();
+    }
+
+    public void setPrefix(String prefix) {
+        this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix);
     }
 
     @Override
@@ -202,5 +223,10 @@ public class MTETypeFilter extends MTESpecialFilter {
         protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
             clickTypeIcon(clickData.mouseButton != 0, cursorStack);
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETypeFilterGui(this).build(guiData, syncManager, uiSettings);
     }
 }
