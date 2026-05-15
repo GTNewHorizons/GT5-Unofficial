@@ -703,6 +703,9 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Only use if you are certain you can ignore {@link IInventory#getInventoryStackLimit}
+     */
     public static boolean compactInventory(List<ItemStack> inv, int start, int end) {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
