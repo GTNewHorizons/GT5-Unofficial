@@ -1079,6 +1079,12 @@ gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
 gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
 gt.interact.desc.ban_screwdriver=Do not attempt to use a screwdriver!
 
+# Toxic Residue Sensor
+gt.interact.desc.toxic_residue_sensor.flat=§8Residue Amount
+gt.interact.desc.toxic_residue_sensor.flat.tooltip=§fResidue Amount in base units
+gt.interact.desc.toxic_residue_sensor.percentage=§8Residue Percentage
+gt.interact.desc.toxic_residue_sensor.percentage.tooltip=§fResidue shown in percent
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
@@ -1407,7 +1413,7 @@ gtpp.material.Water=Water
 gtpp.material.WatertightSteel=Watertight Steel
 gtpp.material.WhiteMetal=White Metal
 gtpp.material.WoodsGlass=Wood's Glass
-gtpp.material.WroughtIron=WroughtIron
+gtpp.material.CastIron=CastIron
 gtpp.material.Xenon=Xenon
 gtpp.material.Xenotime=Xenotime
 gtpp.material.Ytterbium=Ytterbium
@@ -1678,6 +1684,7 @@ GT5U.MBTT.ConfigMenu=Configuration Menu
 GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
 GT5U.MBTT.Deprecated=§4DEPRECATED - %s
 GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
+GT5U.MBTT.Deprecated.RemovalMachine=Machine will be removed in next major update!
 GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
@@ -1851,6 +1858,10 @@ gt.casing.chemical-resistant=Able to resist the most extreme chemical conditions
 gt.casing.hawking-focus=Controls the outward flow of Hawking Radiation to stabilize a black hole.
 gt.casings.advanced-filter=Less than five 0.1μm particles per m^3
 
+gt.blockcasings.bec.0.tooltip=§b§lPrevents observation. Just don't look at it too hard.
+gt.blockcasings.bec.1.tooltip=§b§lPulsar-proof!
+gt.blockcasings.bec.2.tooltip=§b§lVacuum decay not included.
+
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
 gt.recipe.alloysmelter.description=HighTech combination Smelter
@@ -1929,7 +1940,7 @@ gt.recipe.oven.description=Just a Furnace with a different Design
 gt.recipe.packager=Packager
 gt.recipe.packager.description="Puts things into Boxes"
 gt.recipe.plasmaarcfurnace=Plasma Arc Furnace
-gt.recipe.plasmaarcfurnace.description=Arc Furnace wasn't hot enough
+gt.recipe.plasmaarcfurnace.description=§4[DEPRECATED - Use Arc Furnace]
 gt.recipe.polarizer=Electromagnetic Polarizer
 gt.recipe.polarizer.description=Bipolarising your Magnets
 gt.recipe.printer=Printer
@@ -2003,6 +2014,8 @@ gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
 gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
+gt.recipe.create-condensate=Condensate Entanglement
+gt.recipe.assemble-condensate=Condensate Assembling
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -2241,6 +2254,8 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
+GT5U.machines.stocking_bus.manual_slot.tooltip.1=Manual Input Slot
+GT5U.machines.stocking_bus.manual_slot.tooltip.2=Used for direct item insertion; not part of the ME stocked slots.
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.
@@ -2252,11 +2267,13 @@ GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
 GT5U.machines.output_bus.saved=Saved Config to Data Stick
 GT5U.machines.output_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.controller_hatch.saved=Saved Config to Data Stick
+GT5U.machines.controller_hatch.loaded=Loaded Config From Data Stick
 GT5U.machines.output_bus.invalid=Invalid Data Stick config
-GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
-GT5U.machines.dronecentre.turnon=Successfully turn on all machines in group: %s
-GT5U.machines.dronecentre.turnoff=Successfully turn off all machines in group: %s
-GT5U.machines.dronecentre.forceturnoff=Successfully turn off all machines in group: %s and disable all covers!
+GT5U.machines.dronecentre.shutdown=You cannot control machines when the Drone Centre is shut down!
+GT5U.machines.dronecentre.turnon=Successfully turned on all machines in group: %s
+GT5U.machines.dronecentre.turnoff=Successfully turned off all machines in group: %s
+GT5U.machines.dronecentre.forceturnoff=Successfully turned off all machines in group: %s and disabled all covers!
 GT5U.machines.dronecentre.noconnection=No valid connection
 GT5U.machines.dronecentre.enableRender=Enable Drone Render
 GT5U.machines.dronecentre.disableRender=Disable Drone Render
@@ -2321,45 +2338,46 @@ channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 channels.gregtech.component_casing=Decides the tier of component assemblyline casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
-GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
-GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
+GT5U.gui.button.liquid_filling=Liquid Filling
 GT5U.gui.button.power_switch=Power Switch
-GT5U.gui.button.voiding_mode=Voiding Mode:
+GT5U.gui.button.voiding_mode=Voiding Mode
 GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
-GT5U.gui.button.input_separation_on=Input Separation: ON
-GT5U.gui.button.input_separation_off=Input Separation: OFF
+GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.mode_switch=Mode Switch
-GT5U.gui.button.batch_mode_on=Batch Mode: ON
-GT5U.gui.button.batch_mode_off=Batch Mode: OFF
-GT5U.gui.button.lock_recipe_on=Lock Recipe: ON
-GT5U.gui.button.lock_recipe_off=Lock Recipe: OFF
+GT5U.gui.button.batch_mode=Batch Mode
+GT5U.gui.button.lock_recipe=Lock Recipe
 GT5U.gui.button.structure_update=Update Structure
+GT5U.gui.button.highlight_block=Highlight block in world
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
+GT5U.gui.button.feature_enabled=Enabled
+GT5U.gui.button.feature_disabled=Disabled
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
-GT5U.gui.button.chunk_loading_on=§7Chunk Loading: §aON
-GT5U.gui.button.chunk_loading_off=§7Chunk Loading: §4OFF
-GT5U.gui.button.ore_drill_radius_1=§7Current Radius: §a%s
+GT5U.gui.button.chunk_loading=Chunk Loading
+GT5U.gui.button.ore_drill_radius_1=Current Radius: §a%s blocks
 GT5U.gui.button.ore_drill_radius_2=§7Left-click to increment, right-click to decrement
-GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
-GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
-GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
+GT5U.gui.button.ore_drill_cobblestone=Replace with cobblestone
+GT5U.gui.button.drill_retract_pipes=Abort and retract mining pipes
+GT5U.gui.button.oil_drill_radius_1=Current Radius: §a%s blocks
+GT5U.gui.button.oil_drill_radius_2=§7Left-click to increment, right-click to decrement
+GT5U.gui.button.work_area_preview_on=Hide working area
+GT5U.gui.button.work_area_preview_off=Show working area
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
-GT5U.gui.button.drone_highlight=Left click to highlighting machine in the world
+GT5U.gui.button.drone_highlight=Left-click to highlight the machine in the world
 GT5U.gui.button.drone_teleport=Right click to teleport to the machine
 GT5U.gui.button.drone_open_list=Open Machine List
 GT5U.gui.button.drone_poweron_all=Turn on all machines in selected group
-GT5U.gui.button.drone_poweroff_all=Turn on all machines in selected group (Press Shift to disable machine control covers)
+GT5U.gui.button.drone_poweroff_all=Turn off all machines in the selected group (press Shift to disable Machine Controller covers)
 GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_status=Sort by §3shutdown status
 GT5U.gui.button.drone_searchoriname=Also search original name
-GT5U.gui.button.drone_select_group=Click here to add/remove machine
+GT5U.gui.button.drone_select_group=Click here to add or remove a machine
 GT5U.gui.button.drone_production=Open production panel
 GT5U.gui.button.drone_editmode=Group edit mode
 GT5U.gui.button.drone_pause.1=Auto update connection list
@@ -2367,6 +2385,8 @@ GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is m
 GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
+GT5U.gui.button.max_fluid=Maximum Fluid Consumption (L/t)
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
@@ -2453,17 +2473,17 @@ GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
-GT5U.gui.text.drone_no_connection=No any connection
+GT5U.gui.text.drone_no_connection=No connections
 GT5U.gui.text.drone_no_data=No data
 GT5U.gui.text.drone_active_production=Active production recorder
-GT5U.gui.text.drone_maxrecord=Max record：
+GT5U.gui.text.drone_maxrecord=Max record:
 GT5U.gui.text.drone_production_connection=Connection
 GT5U.gui.text.drone_production_power=Power
 GT5U.gui.text.drone_production_item=Item
 GT5U.gui.text.drone_production_fluid=Fluid
 GT5U.gui.text.drone_connectionCount=Total connections: %s
 GT5U.gui.text.drone_power_total=Total EU consumed in last %s:
-GT5U.gui.text.drone_connectionList=Connected machine list
+GT5U.gui.text.drone_connectionList=List of connected machines
 GT5U.gui.text.drone_average=Average EU consumed in last %s
 GT5U.gui.text.drone_item_total=Total item produced in last %s:
 GT5U.gui.text.drone_fluid_total=Total fluid produced in last %s:
@@ -2482,10 +2502,14 @@ GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.toxic_residue=§fToxic Residue: §c%s §f/ %s (%s%%)
+GT5U.gui.text.residue_change=§fResidue Change: §c+%s§f/§a-%s §f(%s)
 GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
+GT5U.gui.text.no_condensate=§4Insufficient condensate: §b%s§f x §6%s
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.toxic_residue_sensor=Toxic Residue threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
@@ -2494,6 +2518,13 @@ GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
 GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
+GT5U.gui.text.unknown_structure_error=Unknown structure error
+GT5U.gui.text.dt_missing_output_hatch=Missing Output Hatch on layer %s
+GT5U.gui.text.dangote_missing_top=Top layer is invalid or muffler hatch is not placed on the top layer
+GT5U.gui.text.too_short=The structure is too short
+GT5U.gui.text.hatch_invalid=Hatch requirement is not met
+GT5U.gui.not_loaded=Some block is not chunk loaded
+GT5U.gui.wrong_block=Invalid block at (%s, %s, %s)
 GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
@@ -2530,11 +2561,19 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.no_bec_assembler=Condensate Observation Array Offline
+GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too Low)
+GT5U.gui.text.bec_clogged=More Than 3 Condensates Present
 GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
+GT5U.gui.text.nil=None
+GT5U.gui.text.turbine_title=Turbines
 
+GT5U.gui.text.hatch.output.cycle=Click to cycle modes
+GT5U.gui.text.hatch.output.filter.none.0=None
+GT5U.gui.text.hatch.output.filter.none.1=Will be locked to the next fluid that is put in (or use fluid cell to lock)
 
 # NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
@@ -2838,6 +2877,9 @@ gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
 
+# NAC Machines
+gt.blockmachines.vacuum.pipe.name=Vacuum Conveyor Pipe
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
@@ -2880,8 +2922,8 @@ GT5U.gui.text.cannot_change_when_running=Can't change configuration when running
 
 GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
 GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
-GT5U.gui.tooltip.drone_production_clear=Clean production info
-GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone center with the same key
+GT5U.gui.tooltip.drone_production_clear=Clear production data
+GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone centre with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
 GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
@@ -2895,7 +2937,7 @@ GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
 GT5U.gui.text.fluid_limiter.threshold=§8Percent threshold
 GT5U.gui.text.volumetric_flask.capacity=Capacity
-GT5U.gui.text.volumetric_flask.confirm=Confirm
+GT5U.gui.text.volumetric_flask.max_capacity=Max Capacity of %s
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.1=Pattern Storage for §eLarge Molecular Assembler (LMA)§r
 GT5U.gui.tooltip.hatch.crafting_pattern_provider.2=Capacity: %d Patterns
 
@@ -2926,10 +2968,10 @@ GT5U.gui.text.status.online=Online
 GT5U.gui.text.status.offline=Offline
 GT5U.gui.text.status.disabled=Disabled
 GT5U.gui.text.status.incomplete=Incomplete Structure
-GT5U.gui.text.x=X: %s
-GT5U.gui.text.y=Y: %s
-GT5U.gui.text.z=Z: %s
-GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.x=X:
+GT5U.gui.text.y=Y:
+GT5U.gui.text.z=Z:
+GT5U.gui.text.dim=Dim:
 GT5U.gui.text.dim.valid=Dim Valid: Yes
 GT5U.gui.text.dim.invalid=Dim Valid: No
 
@@ -3037,8 +3079,8 @@ GT5U.gui.text.LHC.off=Off
 GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
 GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
-GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV):
-GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles:
+GT5U.gui.text.LHC.targetbeamenergyeV=Target Beam Energy (eV)
+GT5U.gui.text.LHC.maxaccelerationcycles=Max Acceleration Cycles
 GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
 GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 
@@ -3080,7 +3122,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §bEU Consumed in cycle§7 * §f0.1eV§7, until the
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.3§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
@@ -3117,6 +3159,7 @@ gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beaml
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
 gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
+gt.blockmachines.multimachine.beamcrafting.machineoff=Machine is off
 
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
@@ -3129,9 +3172,10 @@ GT5U.gui.text.contributors.playtesting=Playtesting
 GT5U.gui.tooltip.behaviour.cover_tool.data=Stored Cover Data:
 GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Can copy/paste cover data.
 
-GT5U.gui.chat.bindcentre=Successfully bind drone centre.
-GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
+GT5U.gui.chat.bindcentre=Successfully bound to Drone Centre.
+GT5U.gui.chat.drone_level_low=Upgrade to a T4 drone to activate the teleport function
 # chats
+GT5U.chat.dragon_blood_shards_dropped=%s Shards of Dragons Blood have crystallized into a metallic form.
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
 GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
@@ -3460,6 +3504,7 @@ GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed floc
 GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
+GT5U.nei.cauldron.anystack=Works with any stack size
 GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 
 
@@ -6768,6 +6813,7 @@ GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only w
 
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
+GT5U.tooltip.flour.cauldron=Throw into Cauldron with Water to make Dough
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
 # Scanner info
@@ -6824,7 +6870,7 @@ GT5U.scanner.chunk_info_1=§cPollution in Chunk: %s gibbl
 GT5U.scanner.chunk_info_2=§aNo Pollution in Chunk! HAYO!
 GT5U.scanner.chunk_info_3=§f%s: §6%sL
 GT5U.scanner.chunk_info_4=Nothing: §60L
-GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
+GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
 
@@ -6923,6 +6969,8 @@ GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed 
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
 
+GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
+
 GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
 
@@ -6974,6 +7022,12 @@ GT5U.gui.multimachine.purificationunitplasmaheater=Temperature Fluctuation
 GT5U.gui.multimachine.purificationunituvtreatment=Laser Purification
 GT5U.gui.multimachine.purificationunitdegasifier=Residual Degasser
 GT5U.gui.multimachine.purificationunitextractor=Baryonic Perfection
+
+# spinmatron
+GT5U.gui.multimachine.spinmatron.mode=Mode: %s
+GT5U.gui.multimachine.spinmatron.speed=Speed: %s
+GT5U.gui.multimachine.spinmatron.rotational_power=Rotational Power: %s
+GT5U.gui.multimachine.spinmatron.parallels=Parallels: %s
 
 GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
 GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
@@ -7250,11 +7304,38 @@ item.gt.depletedRodNaquadria.name=Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
+# Condensate Fluid and Cells
+fluid.prepared_quantium=Prepared Quantium Bose-Einstein Condensate
+fluid.entangled_quantium=Entangled Quantium Bose-Einstein Condensate
+abbrev.entangled_quantium=Quantium
+fluid.prepared_infinity=Prepared Infinity Bose-Einstein Condensate
+fluid.entangled_infinity=Entangled Infinity Bose-Einstein Condensate
+abbrev.entangled_infinity=Infinity
+
+item.gt.cell.prepared_quantium.name=Prepared Quantium Bose-Einstein Condensate Cell
+item.gt.cell.entangled_quantium.name=Entangled Quantium Bose-Einstein Condensate Cell
+item.gt.cell.prepared_infinity.name=Prepared Infinity Bose-Einstein Condensate Cell
+item.gt.cell.entangled_infinity.name=Entangled Infinity Bose-Einstein Condensate Cell
+
 # Entities
 entity.gregtech.PowderBarrelPrimed.name=Lit Powder Barrel
 
 #mui1
 mui.button.close=x
+
+# BEC Material System
+prefix.plate.name=%s Plate
+prefix.foil.name=%s Foil
+prefix.stickLong.name=Long %s Rod
+prefix.stick.name=%s Rod
+prefix.bolt.name=%s Bolt
+prefix.ring.name=%s Ring
+prefix.wireFine.name=Fire %s Wire
+prefix.lens.name=%s Lens
+
+material.ThermalCont1.name=UHV-Q-624 Thermal Containment
+
+#override.plateTest2.name=Test 2 Overrided Plate
 
 # Thaumcraft Aspects
 tc.aspect.custom1.name=Aequalitas
@@ -7728,12 +7809,16 @@ gt.blockcasings12.1.name=Nanochip Mesh Interface Casing
 gt.blockcasings12.2.name=Nanochip Reinforcement Casing
 gt.blockcasings12.3.name=Nanochip Computational Matrix Casing
 gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
+gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
+gt.blockcasings12.6.name=Precise Stationary Machine Casing
+gt.blockcasings12.7.name=Ultimately Static Machine Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
 gt.blockcasings12.12.name=Alchemically Immune Ichorium Casing
 gt.blockcasings12.13.name=Mixer Casing
 gt.blockcasings12.14.name=Forming Core
+gt.blockcasings12.15.name=Algae Casing
 
 gt.blockcasings13.0.name=Cable Casing
 gt.blockcasings13.1.name=Graphite Moderator Casing
@@ -7750,6 +7835,7 @@ gt.blockcasings13.11.name=Charged Matter Sensor Casing
 gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
 gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
 gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
+gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
@@ -7790,6 +7876,10 @@ gt.blockcasings.cyclotron_coils.8.name=UEV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.9.name=UIV Solenoid Superconductor Coil
 gt.blockcasings.cyclotron_coils.10.name=UMV Solenoid Superconductor Coil
 
+gt.blockcasings.bec.0.name=Coherence-preserving Plasma Conduit
+gt.blockcasings.bec.1.name=Electromagnetically-isolated Casing
+gt.blockcasings.bec.2.name=Fine-structure Constant Manipulator
+
 gt.blockglass1.0.name=Chemical Grade Glass
 gt.blockglass1.1.name=Electron-Permeable Neutronium Coated Glass
 gt.blockglass1.2.name=Omni-Purpose Infinity Fused Glass
@@ -7799,7 +7889,7 @@ gt.blockglass1.5.name=Nanite Shielding Glass
 gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
-
+gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
@@ -8079,3 +8169,81 @@ gt.item.gravitational_lens.name=Gravitational Lens
 gt.item.gravitational_lens.tooltip=Portable gravitational well
 gt.item.planck_manifold.name=Planck-Scale Manifold
 gt.item.planck_manifold.tooltip=The smallest there can be
+
+# BEC Machines
+gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
+gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
+gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
+gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
+
+gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
+gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
+gt.blockmachines.multi.bec.assembler.name=Bose-Einstein Condensate Observation Array
+gt.blockmachines.multi.bec.io-node.name=Observation Array Teleportation Node
+gt.blockmachines.multi.bec.diode.name=Bose-Einstein Condensate Maxwell Gate
+
+gt.blockmachines.pipe.bec.name=Bose-Einstein Condensate Conduit
+gt.blockmachines.pipe.bec.block.name=Bose-Einstein Condensate Conduit Casing
+
+# BEC UI
+GT5U.gui.text.nanite_threshold=Nanite Tier
+GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
+GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
+GT5U.gui.text.required_nanite=§7Required Nanite: %s
+GT5U.gui.text.required_condensate=§7Required Condensate:
+GT5U.gui.text.remaining_condensate=  §7%s §6%sL / %sL§f
+GT5U.gui.text.ionode_status=§7Status: %s
+GT5U.gui.text.ionode_status.Idle=Idle
+GT5U.gui.text.ionode_status.Unpowered=§cUnpowered
+GT5U.gui.text.ionode_status.AssemblerOffline=§cObservation Array Offline
+GT5U.gui.text.ionode_status.NaniteTierTooLow=§eInsufficient Nanite Tier
+GT5U.gui.text.ionode_status.PausedImmediate=Paused (Immediate)
+GT5U.gui.text.ionode_status.PausedStep=Paused (Step)
+GT5U.gui.text.ionode_status.Crafting=Crafting
+GT5U.gui.text.condensate_threshold=Condensate Amount
+GT5U.gui.text.entanglement-duration=Entanglement Duration: %s ticks
+GT5U.gui.text.bec-quota-required=Quota Required: %s
+GT5U.gui.text.pause-immediately=Pause Immediately
+GT5U.gui.text.pause-next-step=Pause Next Step
+GT5U.gui.text.providing-nanites=Providing Nanites:
+GT5U.gui.text.available-condensate=Available Condensate:
+GT5U.gui.text.bec-stored-condensate=Stored Condensate:
+
+# BEC Structure Hints
+GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
+GT5U.gui.text.bec-generator-bec-hatch-pos=The center casing in the last slice
+
+# BEC Settings
+GT5U.gui.text.bec-parameters=Parameters
+GT5U.gui.text.bec-filter=Filter
+GT5U.gui.text.bec-operation=Operation
+GT5U.gui.text.bec-threshold=Threshold
+GT5U.gui.text.bec-current=Current:
+GT5U.gui.text.bec-mode=Mode
+GT5U.gui.text.bec-field-strength=Field Strength
+GT5U.gui.text.bec-stored=Stored:
+GT5U.gui.text.bec-min-parallels=Min Parallels
+GT5U.gui.text.bec-max-parallels=Max Parallels
+GT5U.gui.text.bec-speed-divisor=Speed Divisor
+
+# Misc BEC Tooltips
+gt.tooltip.nanite-tier=Nanite Tier: %s
+gt.tooltip.max-nanite=Max Nanite Tier: %s
+GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
+GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
+
+# BEC Chat Messages
+GT5U.chat.bec-saved-link-data=Saved Link Data to the Data Stick
+GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Array
+GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
+
+# BEC Waila
+GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-slowdowns=Slowdowns: %s
+
+# BEC Structure
+GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer from the bottom
+
+# Test Factory Machines
+gt.blockmachines.pipe.test.name=Test Factory Pipe
+gt.blockmachines.hatch.test.name=Test Factory Hatch

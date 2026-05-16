@@ -474,6 +474,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     }
 
+    default boolean shouldSendInitialClientData() {
+        return true;
+    }
+
     /**
      * @return Actual color shown on GUI
      */
@@ -513,6 +517,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     @Override
     default boolean isMachineBlockUpdateRecursive() {
         return true;
+    }
+
+    default void onAdjacentBlockChange(int x, int y, int z) {
+        /* do nothing */
     }
 
     /**

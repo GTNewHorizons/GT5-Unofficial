@@ -121,6 +121,14 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.getExoticDynamoHatches()
                 .size();
         }
+    },
+    CryotheumHatch("GT5U.MBTT.CryotheumHatch", MTEMultiBlockBase::addCryotheumHatchToMachineList) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getCryotheumHatches()
+                .size();
+        }
     };
 
     private final String name;
