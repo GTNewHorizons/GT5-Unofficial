@@ -6,26 +6,21 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
-import gregtech.common.gui.modularui.widget.FluidLockWidget;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoid extends MTEHatchOutput {
@@ -112,12 +107,10 @@ public class MTEHatchVoid extends MTEHatchOutput {
     @Override
     public boolean canStoreFluid(@Nonnull FluidStack fluidStack) {
         if (isFluidLocked()) {
-            if (lockedFluidName == null) {
+            if (lockedFluid == null) {
                 return false;
             }
-            return lockedFluidName.equals(
-                fluidStack.getFluid()
-                    .getName());
+            return lockedFluid.equals(fluidStack.getFluid());
         }
         return false;
     }
@@ -126,27 +119,19 @@ public class MTEHatchVoid extends MTEHatchOutput {
     protected void onEmptyingContainerWhenEmpty() {}
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(new FluidLockWidget(this).setPos(58, 41))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.label"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(TextWidget.dynamicString(() -> {
-                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                return fluidStack != null ? fluidStack.getLocalizedName()
-                    : StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty");
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setMaxWidth(65)
-                .setPos(10, 30))
-            .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputGui(this) {
+
+            @Override
+            protected boolean supportsScreen() {
+                return false;
+            }
+
+            @Override
+            protected boolean supportsIO() {
+                return false;
+            }
+        }.build(guiData, syncManager, uiSettings);
     }
 
     @Override
