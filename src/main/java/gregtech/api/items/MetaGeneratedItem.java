@@ -124,8 +124,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (aID >= 0 && aID < mItemAmount) {
             short meta = (short) (mOffset + aID);
             ItemStack rStack = new ItemStack(this, 1, meta);
-            mNameLocalizationSuppliers.put(meta, nameSupplier);
-            mTooltipLocalizationSuppliers.put(meta, tooltipSupplier);
+            if (nameSupplier != null) mNameLocalizationSuppliers.put(meta, nameSupplier);
+            if (tooltipSupplier != null) mTooltipLocalizationSuppliers.put(meta, tooltipSupplier);
             if (mEnabledItems.get(aID)) {
                 throw new IllegalArgumentException(
                     String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));

@@ -1272,10 +1272,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
         ItemList.Spray_Color_Infinite.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Spray_Color_Infinite.ID,
-                "gt.item.spray_can.infinite.name",
-                "gt.item.spray_can.infinite.tooltip",
+                null,
+                () -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
