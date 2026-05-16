@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -69,6 +70,15 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     private static final int lavaFilterResilience = 30;
     private int dryHeatCounter = 0;
     private static final int dryHeatMaximum = 10;
+
+    private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
+    private static final Fluid fluidWater = FluidRegistry.WATER;
+    private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
+        .getFluid();
+    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
+        .getFluid();
+    private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
+        .getFluid();
 
     public MTEThermalBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -122,16 +132,15 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                 GTRecipe adjustedRecipe = recipe.copy();
 
                 for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
-                    if (inputFluid != null && (inputFluid.getFluid() == FluidRegistry.WATER
-                        || inputFluid.getFluid() == GTModHandler.getDistilledWater(1)
-                            .getFluid())) {
+                    if (inputFluid != null
+                        && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
                         inputFluid.amount = 0;
                     }
                 }
 
                 if (!findLavaFilter()) {
                     for (ItemStack outputItem : adjustedRecipe.mOutputs) {
-                        if (outputItem != null && outputItem.getItem() != Item.getItemFromBlock(Blocks.obsidian)) {
+                        if (outputItem != null && outputItem.getItem() != itemObsidian) {
                             outputItem.stackSize = 0;
                         }
                     }
@@ -151,13 +160,10 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
             if (mOutputFluids != null) {
                 for (FluidStack outputFluid : mOutputFluids) {
-                    if (outputFluid != null && (outputFluid.getFluid() == Materials.Steam.getGas(1)
-                        .getFluid() || outputFluid.getFluid()
-                            == GTModHandler.getSuperHeatedSteam(1)
-                                .getFluid())) {
+                    if (outputFluid != null
+                        && (outputFluid.getFluid() == fluidSteam || outputFluid.getFluid() == fluidSHSteam)) {
 
-                        if (outputFluid.getFluid() == Materials.Steam.getGas(1)
-                            .getFluid()) {
+                        if (outputFluid.getFluid() == fluidSteam) {
                             lEUt = outputFluid.amount / mMaxProgresstime / 2;
                         } else {
                             lEUt = outputFluid.amount / mMaxProgresstime;
@@ -179,7 +185,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             if (mOutputItems != null && mOutputItems.length > 0) {
                 if (!damageLavaFilter()) {
                     for (ItemStack outputItem : mOutputItems) {
-                        if (outputItem != null && outputItem.getItem() != Item.getItemFromBlock(Blocks.obsidian)) {
+                        if (outputItem != null && outputItem.getItem() != itemObsidian) {
                             outputItem.stackSize = 0;
                         }
                     }
