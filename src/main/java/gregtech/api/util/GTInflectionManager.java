@@ -113,7 +113,7 @@ public final class GTInflectionManager {
      * {@code part1/part2/part3} will execute the {@code part1} rule, {@code part2} rule, and {@code part3} rule in
      * sequence.<br>
      * See ({@code assets/gregtech/inflection/en_US.example.json} for an example JSON format.<br>
-     * See also: {@link <a href="https://gist.github.com/iouter/efcfb45dbc337e5c45f1c177df3cbaa0">document in gist</a>}
+     * See also: {@link <a href="https://wiki.gtnewhorizons.com/wiki/Inflection_Manager">document in wiki</a>}
      * <p>
      * On the client side, words are replaced according to the inflection rules; on the server side, inflection markers
      * are automatically removed (no inflection applied).<br>
