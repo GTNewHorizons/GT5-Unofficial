@@ -192,7 +192,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             requestCoverDataIfNeeded();
         }
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        mMetaTileEntity.onFirstTick(this);
+        getMetaTileEntity().onFirstTick(this);
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             return;
         }
         oldColor = mColor;
-        mMetaTileEntity.onColorChangeClient(mColor);
+        getMetaTileEntity().onColorChangeClient(mColor);
         issueTextureUpdate();
     }
 
@@ -219,7 +219,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         } else {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        mMetaTileEntity.onTextureUpdate();
+        getMetaTileEntity().onTextureUpdate();
         mNeedsUpdate = false;
     }
 
@@ -241,7 +241,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
      * Handles the update data changing
      */
     protected final void handleUpdateDataChangeServer() {
-        byte updateData = mMetaTileEntity.getUpdateData();
+        byte updateData = getMetaTileEntity().getUpdateData();
         if (updateData == oldUpdateData) {
             return;
         }
