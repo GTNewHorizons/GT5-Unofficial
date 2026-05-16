@@ -38,7 +38,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.microwaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -316,6 +315,7 @@ import gregtech.common.tileentities.storage.MTEQuantumTank;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
+import kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace;
 
 // TODO Some GT MetaTileEntity registrations are done in load/GT_Loader_MetaTileEntities_Recipes.java due to joint
 // registration+recipe methods, they should be split and brought here to register all in preload.
@@ -1059,6 +1059,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 ExtremeCombustionEngine.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
+
+        ItemList.IndustrialArcFurnace.set(
+            new MTEIndustrialArcFurnace(
+                IndustrialArcFurnace.ID,
+                "industrialarcfurnace.controller.tier.single",
+                "Industrial Arc Furnace").getStackForm(1));
 
         ItemList.IndustrialCokeOven.set(
             new MTEIndustrialCokeOven(
@@ -2489,7 +2495,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hull_HP.set(new MTEBasicHullSteel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0).getStackForm(1L));
         ItemList.Hull_HP_Bricks.set(
-            new MTEBasicHullSteelBricks(HULL_WROUGHT_IRON.ID, "hull.steel_bricked", "Bricked Wrought Iron Hull", 0)
+            new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
         ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
@@ -7419,10 +7425,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(1)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7432,10 +7438,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(2)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7445,10 +7451,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(3)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7458,10 +7464,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(4)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7471,10 +7477,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(5)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7484,10 +7490,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(6)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7497,10 +7503,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(7)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7510,10 +7516,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(8)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7523,10 +7529,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(9)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7536,10 +7542,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(10)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7549,10 +7555,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(11)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7562,10 +7568,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(12)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7730,14 +7736,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    @Deprecated
     private void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             MTEBasicMachineWithRecipeBuilder.builder(PLASMA_ARC_FURNACE_LV.ID)
                 .setName("basicmachine.plasmaarcfurnace.tier.01", "Basic Plasma Arc Furnace")
                 .setTier(1)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7749,8 +7756,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.02", "Advanced Plasma Arc Furnace")
                 .setTier(2)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7762,8 +7769,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.03", "Advanced Plasma Arc Furnace II")
                 .setTier(3)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7775,8 +7782,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.04", "Advanced Plasma Arc Furnace III")
                 .setTier(4)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7788,8 +7795,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.05", "Advanced Plasma Arc Furnace IV")
                 .setTier(5)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7801,8 +7808,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.06", "Elite Plasma Arc Furnace")
                 .setTier(6)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7814,8 +7821,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.07", "Elite Plasma Arc Furnace II")
                 .setTier(7)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7827,8 +7834,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.08", "Ultimate Plasma Discharge Heater")
                 .setTier(8)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7840,8 +7847,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.09", "Epic Plasma Discharge Heater")
                 .setTier(9)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7853,8 +7860,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.10", "Epic Plasma Discharge Heater II")
                 .setTier(10)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7866,8 +7873,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.11", "Epic Plasma Discharge Heater III")
                 .setTier(11)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7879,8 +7886,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.12", "Epic Plasma Discharge Heater IV")
                 .setTier(12)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)

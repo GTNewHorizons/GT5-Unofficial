@@ -252,7 +252,7 @@ public class RecipesMachinesMulti {
             GregtechItemList.Controller_SteamWasherMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "RFR", "CPC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron), 'R', OrePrefixes.rotor.get(Materials.Tin), 'F',
+                OrePrefixes.plate.get(Materials.CastIron), 'R', OrePrefixes.rotor.get(Materials.Tin), 'F',
                 MaterialsAlloy.TUMBAGA.getFrameBox(1), });
 
         // Steam Blender
@@ -275,7 +275,7 @@ public class RecipesMachinesMulti {
             GregtechItemList.Controller_SteamCentrifugeMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "GFG", "CPC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron), 'G', OrePrefixes.gearGt.get(Materials.Bronze), 'F',
+                OrePrefixes.plate.get(Materials.CastIron), 'G', OrePrefixes.gearGt.get(Materials.Bronze), 'F',
                 MaterialsAlloy.TUMBAGA.getFrameBox(1) });
 
         // Steam Presser
@@ -283,7 +283,7 @@ public class RecipesMachinesMulti {
             GregtechItemList.Controller_SteamForgeHammerMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PAP", "CFC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.WroughtIron), 'A', OreDictNames.craftingAnvil, 'F',
+                OrePrefixes.plate.get(Materials.CastIron), 'A', OreDictNames.craftingAnvil, 'F',
                 MaterialsAlloy.TUMBAGA.getFrameBox(1) });
 
         // Steam Squasher
@@ -311,7 +311,7 @@ public class RecipesMachinesMulti {
                 new Object[] { "RGR", "YBZ", "WFW", 'R', OrePrefixes.plateDouble.get(Materials.Bronze), 'G',
                     MaterialsAlloy.TUMBAGA.getGear(1), 'Y', getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'B',
                     ItemList.Machine_HP_Furnace, 'Z', getModItem(EtFuturumRequiem.ID, "smoker", 1, 0), 'W',
-                    OrePrefixes.plateDouble.get(Materials.WroughtIron), 'F', MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                    OrePrefixes.plateDouble.get(Materials.CastIron), 'F', MaterialsAlloy.TUMBAGA.getFrameBox(1) });
         }
 
         // Steam Hatch
@@ -910,20 +910,6 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // High Current Industrial Arc Furnace
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Industrial_Arc_Furnace.get(1),
-                ItemList.Field_Generator_EV.get(2),
-                ItemList.Robot_Arm_IV.get(4),
-                GregtechItemList.Energy_Core_EV.get(2),
-                MaterialsAlloy.ZERON_100.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
-            .itemOutputs(GregtechItemList.Industrial_Arc_Furnace.get(1))
-            .fluidInputs(MaterialsAlloy.LAFIUM.getFluidStack(20 * INGOTS))
-            .duration(8 * MINUTES)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
     }
 
     private static void multiDehydrator() {
