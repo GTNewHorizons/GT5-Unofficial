@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -16,14 +18,27 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -41,11 +56,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
     implements ISurvivalConstructable {
@@ -61,397 +81,145 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
-            new String[][]{{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "          HHH          "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "       HHHCCCHHH       "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "     HHCCCCCCCCCHH     "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "          CCC          ",
-                "          C~C          ",
-                "          CCC          ",
-                "          FJF          ",
-                "    HCCCCCHJHCCCCCH    "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "           E           ",
-                "           E           ",
-                "          CEC          ",
-                "          CEC          ",
-                "       FFJFJFJFF       ",
-                "   HCCCHHHHCHHHHCCCH   "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "          DDD          ",
-                "        DEFFFED        ",
-                "       DDE   EDD       ",
-                "       DFE   EFD       ",
-                "       DDE   EDD       ",
-                "        DEFFFED        ",
-                "          DDD          ",
-                "           E           ",
-                "                       ",
-                "                       ",
-                "       E       E       ",
-                "      FEFFJJJFFEF      ",
-                "  HCCCHHHHCCCHHHHCCCH  "
-            },{
-                "                       ",
-                "          CCC          ",
-                "       CCECCCECC       ",
-                "      CCCECCCECCC      ",
-                "      CCCEDDDECCC      ",
-                "     CCCFDAAADFCCC     ",
-                "    CCCCDDAAADDCCCC    ",
-                "     CCCFDAAADFCCC     ",
-                "     GCCCEDDDECCCG     ",
-                "     GCCCECCCECCCG     ",
-                "     G CCECECECC G     ",
-                "     G    CCC    G     ",
-                "     G           G     ",
-                "     G    JJJJ   G     ",
-                "     GJFJJJJJJJFJG     ",
-                "  HCCHJHCHJCJHCHJHCCH  "
-            },{
-                "                       ",
-                "       CCECCCECC       ",
-                "     CCCCGGGGGCCCC     ",
-                "     CC         CC     ",
-                "    CC           CC    ",
-                "   CCC           CCC   ",
-                "   CCDDD       DDDCC   ",
-                "   CCC           CCC   ",
-                "    CC           CC    ",
-                "    GCC         CCG    ",
-                "    GCCCCGGGGGCCCCG    ",
-                "    GIGCCECCCECCGIG    ",
-                "    GI           IG    ",
-                "    GI  G     G  IG    ",
-                "    GIGJJJJJJJJJGIG    ",
-                " HCCHHHJJCJCJCJJHHHCCH "
-            },{
-                "         ECCCE         ",
-                "      CCCECCCECCC      ",
-                "    CCCGG     GGCCC    ",
-                "    C             C    ",
-                "   CC             CC   ",
-                "  FC               CF  ",
-                "  FCD             DCF  ",
-                "  FC               CF  ",
-                "   CC             CC   ",
-                "    C             C    ",
-                "    CCCGG     GGCCC    ",
-                "     GCCCECCCECCCG     ",
-                "         ECCCE         ",
-                "       G       G       ",
-                "    FGJJJJJJJJJJJGF    ",
-                " HCCHHCJJJCCCJJJCHHCCH "
-            },{
-                "        CEFFFEC        ",
-                "      CCCFDDDFCCCC     ",
-                "    CCG         GCC    ",
-                "   CC             CC   ",
-                "  FC               CF  ",
-                "  EC               CE  ",
-                "  EDI             IDE  ",
-                "  EC               CE  ",
-                "  FC               CF  ",
-                "   CC             CC   ",
-                "    CCG         GCC    ",
-                "     CCCCFDDDFCCCC     ",
-                "        CEFFFEC        ",
-                "      J      G  J      ",
-                "    JFJJJJJJJJJJJFJ    ",
-                " HCCHHHCJCJCJCJCHHHCCH "
-            },{
-                "       CCECCCECC       ",
-                "     CCCFDDDDDFCCC     ",
-                "   CCCG         GCCC   ",
-                "  FC               CF  ",
-                "  EC               CE  ",
-                "   E               E   ",
-                "  GFI             IFG  ",
-                "   E               E   ",
-                "  EC               CE  ",
-                "  FC               CF  ",
-                "   CCCG         GCCC   ",
-                "     CCCFDEEEDFCCC     ",
-                "       CCEIIIECC       ",
-                "      J  G   G  J      ",
-                "   FFJJJJJJJJJJJJJFF   ",
-                "HCCHHCJJCJCCCJCJJCHHCCH"
-            },{
-                "       CCECCCECC       ",
-                "    CCCCDDDDDDDCCCC    ",
-                "   CCDDD       DDDCC   ",
-                "  FCD             DCF  ",
-                "  EDI             IDE  ",
-                "  GFI             IFG  ",
-                "  BBB             BBBB ",
-                "  GFI             IFG  ",
-                "  EDI             IDE  ",
-                "  FCD             DCF  ",
-                "   CCDDD   B   DDDCC   ",
-                "    CCCCDDEBEDDCCCC    ",
-                "       CCEIBIECC       ",
-                "      J  G B G  J      ",
-                "   JJJJJJJJBJJJJJJJJ   ",
-                "HCCJCCCCCCCCCCCCCCCJCCH"
-            },{
-                "       CCECCCECC       ",
-                "     CCCFDDDDDFCCC     ",
-                "   CCCG         GCCC   ",
-                "  FC               CF  ",
-                "  EC               CE  ",
-                "   E               E   ",
-                "  GFI             IFG  ",
-                "   E               E   ",
-                "  EC               CE  ",
-                "  FC               CF  ",
-                "   CCCG         GCCC   ",
-                "     CCCFDEEEDFCCC     ",
-                "       CCEIIIECC       ",
-                "      J  G   G  J      ",
-                "   FFJJJJJJBJJJJJJFF   ",
-                "HCCHHCJJCJCCCJCJJCHHCCH"
-            },{
-                "        CEFFFEC        ",
-                "     CCCCFDDDFCCCC     ",
-                "    CCG         GCC    ",
-                "   CC             CC   ",
-                "  FC               CF  ",
-                "  EC               CE  ",
-                "  EDI             IDE  ",
-                "  EC               CE  ",
-                "  FC               CF  ",
-                "   CC             CC   ",
-                "    CCG         GCC    ",
-                "     CCCCFDDDFCCCC     ",
-                "        CEFFFEC        ",
-                "      J  G   G  J      ",
-                "    JFJJJJJBJJJJJFJ    ",
-                " HCCHHHCJCJCJCJCHHHCCH "
-            },{
-                "         ECCCE         ",
-                "      CCCECCCECCC      ",
-                "    CCCGG     GGCCC    ",
-                "    C             C    ",
-                "   CC             CC   ",
-                "  FC               CF  ",
-                "  FCD             DCF  ",
-                "  FC               CF  ",
-                "   CC             CC   ",
-                "    C             C    ",
-                "    CCCGG     GGCCC    ",
-                "     GCCCECCCECCCG     ",
-                "         ECCCE         ",
-                "       G       G       ",
-                "    FGJJJJJBJJJJJGF    ",
-                " HCCHHCJJJCCCJJJCHHCCH "
-            },{
-                "                       ",
-                "       CCECCCECC       ",
-                "     CCCCGGGGGCCCC     ",
-                "     CC         CC     ",
-                "    CC           CC    ",
-                "   CCC           CCC   ",
-                "   CCDDDB     BDDDCC   ",
-                "   CCC           CCC   ",
-                "    CC           CC    ",
-                "    GCC         CCG    ",
-                "    GCCCCGGGGGCCCCG    ",
-                "    GIGCCECCCECCGIG    ",
-                "    GI           IG    ",
-                "    GI  G     G  IG    ",
-                "    GIGJJJJBJJJJGIG    ",
-                " HCCHHHJJCJCJCJJHHHCCH "
-            },{
-                "                       ",
-                "          CCC          ",
-                "       CCECCCECC       ",
-                "      CCCECCCECCC      ",
-                "      CCCEDDDECCC      ",
-                "     CCCFDAAADFCCC     ",
-                "    CCCCBDAAADBCCCC    ",
-                "     CCCFDAAADFCCC     ",
-                "     GCCCEDDDECCCG     ",
-                "     GCCCECCCECCCG     ",
-                "     G CCECCCECC G     ",
-                "     G    CCC    G     ",
-                "     G           G     ",
-                "     G   JJJJJ   G     ",
-                "     GJFJJJBJJJFJG     ",
-                "  HCCHJHCHJCJHCHJHCCH  "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "          DDD          ",
-                "        DEFFFED        ",
-                "       DDE   EDD       ",
-                "       DBE   EBD       ",
-                "       DDE   EDD       ",
-                "        DEFFFED        ",
-                "          DDD          ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "       E       E       ",
-                "      FEEFJBJFEEF      ",
-                "  HCCCHHHHCCCHHHHCCCH  "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "        B     B        ",
-                "                       ",
-                "        E     E        ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "       FEJFBFJEF       ",
-                "   HCCCHHHHCHHHHCCCH   "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        B     B        ",
-                "        BBBBBBB        ",
-                "    HCCCCCHJHCCCCCH    "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "          FFF          ",
-                "     HHCCCCCCCCCHH     "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "       HHHCCCHHH       "
-            },{
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "                       ",
-                "          HHH          "}})
+            new String[][] { {
+                "                       ", "                       ", "                       ",
+                "                       ", "                       ", "                       ",
+                "                       ", "                       ", "                       ",
+                "                       ", "                       ", "                       ",
+                "                       ", "                       ", "                       ",
+                "          HHH          " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "       HHHCCCHHH       " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "     HHCCCCCCCCCHH     " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "          CCC          ",
+                    "          C~C          ", "          CCC          ", "          FJF          ",
+                    "    HCCCCCHJHCCCCCH    " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "           E           ", "           E           ",
+                    "          CEC          ", "          CEC          ", "       FFJFJFJFF       ",
+                    "   HCCCHHHHCHHHHCCCH   " },
+                { "                       ", "                       ", "                       ",
+                    "          DDD          ", "        DEFFFED        ", "       DDE   EDD       ",
+                    "       DFE   EFD       ", "       DDE   EDD       ", "        DEFFFED        ",
+                    "          DDD          ", "           E           ", "                       ",
+                    "                       ", "       E       E       ", "      FEFFJJJFFEF      ",
+                    "  HCCCHHHHCCCHHHHCCCH  " },
+                { "                       ", "          CCC          ", "       CCECCCECC       ",
+                    "      CCCECCCECCC      ", "      CCCEDDDECCC      ", "     CCCFDAAADFCCC     ",
+                    "    CCCCDDAAADDCCCC    ", "     CCCFDAAADFCCC     ", "     GCCCEDDDECCCG     ",
+                    "     GCCCECCCECCCG     ", "     G CCECECECC G     ", "     G    CCC    G     ",
+                    "     G           G     ", "     G    JJJJ   G     ", "     GJFJJJJJJJFJG     ",
+                    "  HCCHJHCHJCJHCHJHCCH  " },
+                { "                       ", "       CCECCCECC       ", "     CCCCGGGGGCCCC     ",
+                    "     CC         CC     ", "    CC           CC    ", "   CCC           CCC   ",
+                    "   CCDDD       DDDCC   ", "   CCC           CCC   ", "    CC           CC    ",
+                    "    GCC         CCG    ", "    GCCCCGGGGGCCCCG    ", "    GIGCCECCCECCGIG    ",
+                    "    GI           IG    ", "    GI  G     G  IG    ", "    GIGJJJJJJJJJGIG    ",
+                    " HCCHHHJJCJCJCJJHHHCCH " },
+                { "         ECCCE         ", "      CCCECCCECCC      ", "    CCCGG     GGCCC    ",
+                    "    C             C    ", "   CC             CC   ", "  FC               CF  ",
+                    "  FCD             DCF  ", "  FC               CF  ", "   CC             CC   ",
+                    "    C             C    ", "    CCCGG     GGCCC    ", "     GCCCECCCECCCG     ",
+                    "         ECCCE         ", "       G       G       ", "    FGJJJJJJJJJJJGF    ",
+                    " HCCHHCJJJCCCJJJCHHCCH " },
+                { "        CEFFFEC        ", "      CCCFDDDFCCCC     ", "    CCG         GCC    ",
+                    "   CC             CC   ", "  FC               CF  ", "  EC               CE  ",
+                    "  EDI             IDE  ", "  EC               CE  ", "  FC               CF  ",
+                    "   CC             CC   ", "    CCG         GCC    ", "     CCCCFDDDFCCCC     ",
+                    "        CEFFFEC        ", "      J      G  J      ", "    JFJJJJJJJJJJJFJ    ",
+                    " HCCHHHCJCJCJCJCHHHCCH " },
+                { "       CCECCCECC       ", "     CCCFDDDDDFCCC     ", "   CCCG         GCCC   ",
+                    "  FC               CF  ", "  EC               CE  ", "   E               E   ",
+                    "  GFI             IFG  ", "   E               E   ", "  EC               CE  ",
+                    "  FC               CF  ", "   CCCG         GCCC   ", "     CCCFDEEEDFCCC     ",
+                    "       CCEIIIECC       ", "      J  G   G  J      ", "   FFJJJJJJJJJJJJJFF   ",
+                    "HCCHHCJJCJCCCJCJJCHHCCH" },
+                { "       CCECCCECC       ", "    CCCCDDDDDDDCCCC    ", "   CCDDD       DDDCC   ",
+                    "  FCD             DCF  ", "  EDI             IDE  ", "  GFI             IFG  ",
+                    "  BBB             BBBB ", "  GFI             IFG  ", "  EDI             IDE  ",
+                    "  FCD             DCF  ", "   CCDDD   B   DDDCC   ", "    CCCCDDEBEDDCCCC    ",
+                    "       CCEIBIECC       ", "      J  G B G  J      ", "   JJJJJJJJBJJJJJJJJ   ",
+                    "HCCJCCCCCCCCCCCCCCCJCCH" },
+                { "       CCECCCECC       ", "     CCCFDDDDDFCCC     ", "   CCCG         GCCC   ",
+                    "  FC               CF  ", "  EC               CE  ", "   E               E   ",
+                    "  GFI             IFG  ", "   E               E   ", "  EC               CE  ",
+                    "  FC               CF  ", "   CCCG         GCCC   ", "     CCCFDEEEDFCCC     ",
+                    "       CCEIIIECC       ", "      J  G   G  J      ", "   FFJJJJJJBJJJJJJFF   ",
+                    "HCCHHCJJCJCCCJCJJCHHCCH" },
+                { "        CEFFFEC        ", "     CCCCFDDDFCCCC     ", "    CCG         GCC    ",
+                    "   CC             CC   ", "  FC               CF  ", "  EC               CE  ",
+                    "  EDI             IDE  ", "  EC               CE  ", "  FC               CF  ",
+                    "   CC             CC   ", "    CCG         GCC    ", "     CCCCFDDDFCCCC     ",
+                    "        CEFFFEC        ", "      J  G   G  J      ", "    JFJJJJJBJJJJJFJ    ",
+                    " HCCHHHCJCJCJCJCHHHCCH " },
+                { "         ECCCE         ", "      CCCECCCECCC      ", "    CCCGG     GGCCC    ",
+                    "    C             C    ", "   CC             CC   ", "  FC               CF  ",
+                    "  FCD             DCF  ", "  FC               CF  ", "   CC             CC   ",
+                    "    C             C    ", "    CCCGG     GGCCC    ", "     GCCCECCCECCCG     ",
+                    "         ECCCE         ", "       G       G       ", "    FGJJJJJBJJJJJGF    ",
+                    " HCCHHCJJJCCCJJJCHHCCH " },
+                { "                       ", "       CCECCCECC       ", "     CCCCGGGGGCCCC     ",
+                    "     CC         CC     ", "    CC           CC    ", "   CCC           CCC   ",
+                    "   CCDDDB     BDDDCC   ", "   CCC           CCC   ", "    CC           CC    ",
+                    "    GCC         CCG    ", "    GCCCCGGGGGCCCCG    ", "    GIGCCECCCECCGIG    ",
+                    "    GI           IG    ", "    GI  G     G  IG    ", "    GIGJJJJBJJJJGIG    ",
+                    " HCCHHHJJCJCJCJJHHHCCH " },
+                { "                       ", "          CCC          ", "       CCECCCECC       ",
+                    "      CCCECCCECCC      ", "      CCCEDDDECCC      ", "     CCCFDAAADFCCC     ",
+                    "    CCCCBDAAADBCCCC    ", "     CCCFDAAADFCCC     ", "     GCCCEDDDECCCG     ",
+                    "     GCCCECCCECCCG     ", "     G CCECCCECC G     ", "     G    CCC    G     ",
+                    "     G           G     ", "     G   JJJJJ   G     ", "     GJFJJJBJJJFJG     ",
+                    "  HCCHJHCHJCJHCHJHCCH  " },
+                { "                       ", "                       ", "                       ",
+                    "          DDD          ", "        DEFFFED        ", "       DDE   EDD       ",
+                    "       DBE   EBD       ", "       DDE   EDD       ", "        DEFFFED        ",
+                    "          DDD          ", "                       ", "                       ",
+                    "                       ", "       E       E       ", "      FEEFJBJFEEF      ",
+                    "  HCCCHHHHCCCHHHHCCCH  " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "        B     B        ", "                       ", "        E     E        ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "       FEJFBFJEF       ",
+                    "   HCCCHHHHCHHHHCCCH   " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "        B     B        ", "        B     B        ", "        B     B        ",
+                    "        B     B        ", "        B     B        ", "        B     B        ",
+                    "        B     B        ", "        B     B        ", "        BBBBBBB        ",
+                    "    HCCCCCHJHCCCCCH    " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "          FFF          ",
+                    "     HHCCCCCCCCCHH     " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "       HHHCCCHHH       " },
+                { "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "                       ", "                       ", "                       ",
+                    "          HHH          " } })
         //spotless:on
         .addElement('A', chainAllGlasses())
         .addElement('B', Casings.CoolantDuct.asElement())
@@ -497,40 +265,6 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID) };
-        }
-        return rTexture;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Brewery, BBB")
@@ -571,8 +305,42 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             true);
     }
 
-    private int casingAmount;
-    private int machineTier;
+    @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        nbt.setBoolean("fluidDraining", isCryoEnabled);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        this.isCryoEnabled = nbt.getBoolean("fluidDraining");
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setBoolean("cryotheum",isCryoEnabled);
+        tag.setInteger("drain", (int)Math.floor(speedBoost*speedMultiplier*CRYOTHEUM_DRAIN_BASE));
+        tag.setFloat("speedBoost", speedBoost*speedMultiplier);
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean cryotheumActive = tag.getBoolean("cryotheum");
+        float speedModifier = tag.getFloat("speedBoost");
+        currentTip.add(translateToLocalFormatted("GT5U.waila.mvf.speedboost", formatNumber(speedModifier)));
+        if (cryotheumActive) {
+            currentTip
+                .add(translateToLocalFormatted("GT5U.waila.mvf.pyrotheum", formatFluid(tag.getInteger("drain"))));
+        }
+
+    }
 
     private void onCasingAdded() {
         casingAmount++;
@@ -603,9 +371,106 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET) && casingAmount >= 14;
     }
 
+    public BoosterFluid findBoosterFluid() {
+        for (MTEHatchInput hatch : this.mInputHatches) {
+            Optional<BoosterFluid> fluid = BOOSTER_FLUIDS.stream()
+                .filter(candidate -> drain(hatch, candidate.getStack(), false))
+                .findFirst();
+            if (fluid.isPresent()) return fluid.get();
+        }
+        return null;
+    }
+
+    private boolean checkFluid(int amount) {
+        final FluidStack fluidToDrain = new FluidStack(TFFluids.fluidCryotheum,amount);
+        return this.depleteInput(fluidToDrain,true);
+    }
+
+
+    private static final int BOOSTER_DRAIN = 20;
+    private static final List<BoosterFluid> BOOSTER_FLUIDS = ImmutableList.of(
+        new BoosterFluid(Materials.SpaceTime, 2f, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.Space, 4f, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.Eternity, 6f, BOOSTER_DRAIN));
+
+    // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)
+    // with cryotheum, it takes 1 minute.
+    private static final int CRYOTHEUM_DRAIN_BASE = 250;
+    private static final float INCREMENT_BASE = 1F / 60;
+    private static final float INCREMENT_CRYO = INCREMENT_BASE * 5;
+
+    private int casingAmount;
+    private int machineTier;
+    public boolean isCryoEnabled;
+    private int runningTickCounter = 0;
+    private float speedBoost = 1;
+    private float speedMultiplier = 1;
+    private BoosterFluid currentBoosterFluid = null;
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        runningTickCounter++;
+        if (runningTickCounter % 20 == 0) { // drain every 1 second
+
+            if (this.machineTier == 2 && this.currentBoosterFluid != null) { // booster fluid
+                FluidStack fluidStack = this.currentBoosterFluid.getStack();
+                if (!this.depleteInput(fluidStack, true))
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(fluidStack));
+                this.depleteInput(fluidStack, false);
+            }
+            if (isCryoEnabled) { // cryotheum for incrementing
+                final FluidStack cryotheum = new FluidStack(
+                    TFFluids.fluidCryotheum,
+                    (int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost * speedMultiplier));
+                if (!this.depleteInput(cryotheum, false)) stopMachine(ShutDownReasonRegistry.outOfFluid(cryotheum));
+            }
+        }
+        if (runningTickCounter % 100 == 0 && speedBoost < 1.5f) {
+            float increment = isCryoEnabled ? INCREMENT_CRYO : INCREMENT_BASE;
+            speedBoost = Math.min(1.5f, speedBoost + increment);
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMTE, long tick) {
+        super.onPostTick(baseMTE, tick);
+        if(!baseMTE.isServerSide()) return;
+        if(mMaxProgresstime == 0 && speedBoost > 1) {
+            if (tick % 20 == 0) speedBoost = Math.max(1,speedBoost-INCREMENT_BASE);
+        }
+    }
+
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        this.speedMultiplier = 1f;
+        logic.setSpeedBonus(speedBoost*speedMultiplier);
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
+    }
+
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if(machineTier == 2) {
+                    currentBoosterFluid = findBoosterFluid();
+                    speedMultiplier = currentBoosterFluid == null ? 1 : currentBoosterFluid.speedMultiplier;
+                }
+
+                if(isCryoEnabled) {
+                    if(!checkFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost*speedMultiplier)))
+                        return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                }
+
+                return super.validateRecipe(recipe);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -633,4 +498,59 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         return true;
     }
 
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_FRIDGE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_FRIDGE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID) };
+        }
+        return rTexture;
+    }
+
+    // data class
+    public static class BoosterFluid {
+
+        public Materials material;
+        public float speedMultiplier;
+        public int amount;
+
+        public BoosterFluid(Materials material, float speedMultiplier, int amount) {
+            this.material = material;
+            this.speedMultiplier = speedMultiplier;
+            this.amount = amount;
+        }
+
+        public FluidStack getStack() {
+            FluidStack stack = material.getFluid(amount);
+            if (stack == null) {
+                return material.getMolten(amount);
+            }
+            return stack;
+        }
+    }
 }
