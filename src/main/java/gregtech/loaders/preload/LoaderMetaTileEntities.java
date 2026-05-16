@@ -2512,7 +2512,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hull_HP.set(new MTEBasicHullSteel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0).getStackForm(1L));
         ItemList.Hull_HP_Bricks.set(
-            new MTEBasicHullSteelBricks(HULL_WROUGHT_IRON.ID, "hull.steel_bricked", "Bricked Wrought Iron Hull", 0)
+            new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
         ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));

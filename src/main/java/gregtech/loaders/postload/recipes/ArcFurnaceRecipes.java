@@ -13,6 +13,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 
@@ -507,15 +508,15 @@ public class ArcFurnaceRecipes implements Runnable {
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
 
-        for (final Materials coal : new Materials[] { Materials.Carbon, Materials.Coal, Materials.Charcoal }) {
-            for (final OrePrefixes ironPrefix : new OrePrefixes[] { OrePrefixes.dust, OrePrefixes.ingot }) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(Materials.Iron.getPart(ironPrefix, 1), coal.getDust(1))
-                    .itemOutputs(Materials.CastIron.getIngots(1))
-                    .duration(3 * SECONDS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(arcFurnaceRecipes);
-            }
+        for (final OrePrefixes ironPrefix : new OrePrefixes[] { OrePrefixes.dust, OrePrefixes.ingot }) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    Materials.Iron.getPart(ironPrefix, 3),
+                    new OreDictItemStack(OrePrefixes.dust.getName() + Materials.AnyCarbon.getName(), 1))
+                .itemOutputs(Materials.CastIron.getIngots(3))
+                .duration(9 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(arcFurnaceRecipes);
         }
     }
 }

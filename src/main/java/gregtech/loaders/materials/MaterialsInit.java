@@ -9441,7 +9441,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadCastIron() {
-        return new MaterialBuilder().setName("WroughtIron")
+        return new MaterialBuilder().setName("CastIron")
             .setDefaultLocalName("Cast Iron")
             .setChemicalFormula("Fe*")
             .setIconSet(TextureSet.SET_METALLIC)
