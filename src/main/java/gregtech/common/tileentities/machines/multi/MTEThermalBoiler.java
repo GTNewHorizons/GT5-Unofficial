@@ -195,7 +195,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                 for (ItemStack stack : bus.mInventory) {
                     if (stack != null && stack.getItem() == ItemList.Component_LavaFilter.getItem()) {
                         if (this.mInventory[1] == null) {
-                            this.mInventory[1] = stack != null ? stack.copy() : null;
+                            this.mInventory[1] = stack.copy();
                             this.depleteInput(stack);
                             this.updateSlots();
                         }
@@ -263,8 +263,8 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addCasingInfoExactly("Bronze Pipe Casing", 6, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
             .addCasingInfoExactly("Maraging Steel 350 Frame Box", 16, false)
-            .addInputHatch("Any Thermal Processing/Robust Tungstensteel Casing", 2)
-            .addOutputHatch("Any Thermal Processing/Robust Tungstensteel Casing", 2)
+            .addInputHatch("Any Thermal Processing or Robust Tungstensteel Casing", 2)
+            .addOutputHatch("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addInputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addOutputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addMaintenanceHatch("Any Thermal Containment Casing", 1)
