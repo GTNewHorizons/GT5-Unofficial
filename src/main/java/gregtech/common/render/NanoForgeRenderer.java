@@ -1,15 +1,18 @@
 package gregtech.common.render;
 
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
-import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
+import static gregtech.api.enums.Mods.GregTech;
+import static java.lang.Math.sin;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.api.enums.Mods.GregTech;
-import static java.lang.Math.sin;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
 public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 

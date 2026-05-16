@@ -1,13 +1,8 @@
 package gtnhintergalactic.render;
 
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import gtnhintergalactic.GTNHIntergalactic;
-import gtnhintergalactic.block.BlockSpaceElevatorCable;
-import gtnhintergalactic.config.IGConfig;
-import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -18,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+
 import org.joml.Math;
 import org.joml.Matrix4fStack;
 import org.lwjgl.BufferUtils;
@@ -26,8 +22,15 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gtnhintergalactic.GTNHIntergalactic;
+import gtnhintergalactic.block.BlockSpaceElevatorCable;
+import gtnhintergalactic.config.IGConfig;
+import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 /**
  * Renderer for the elevator cable
@@ -90,7 +93,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * Create a new render for the space elevator cable
      */
     public RenderSpaceElevatorCable() {
-        modelCustom = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
+        modelCustom = WavefrontVBOBuilder
+            .compileToVBO(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
     }
 
     /**

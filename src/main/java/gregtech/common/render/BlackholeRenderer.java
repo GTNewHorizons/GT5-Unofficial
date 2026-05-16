@@ -1,25 +1,28 @@
 package gregtech.common.render;
 
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
-import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
-import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
-import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
+import static gregtech.api.enums.Mods.GregTech;
+
+import java.nio.FloatBuffer;
+
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
 import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import java.nio.FloatBuffer;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 
-import static gregtech.api.enums.Mods.GregTech;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 
 public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
@@ -61,7 +64,8 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             return;
         }
 
-        blackholeModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
+        blackholeModel = WavefrontVBOBuilder
+            .compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
         blackholeTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.png");
 
         blackholeProgram.use();
