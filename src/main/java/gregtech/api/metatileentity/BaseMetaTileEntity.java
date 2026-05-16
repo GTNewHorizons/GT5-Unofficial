@@ -342,6 +342,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (isServerSide) {
                 handleCableUpdates();
 
+                if (mTickTimer % 10 == 0) {
+                    sendClientData();
+                }
+
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
                     handleUpdateDataChangeServer();
@@ -521,26 +525,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             .getPlayerEntityByName(mOwnerName),
                         "badweather");
                 } catch (Exception ignored) {}
-                GTLog.exp.println(
-                    "Machine at: " + this.getXCoord()
-                        + " | "
-                        + this.getYCoord()
-                        + " | "
-                        + this.getZCoord()
-                        + " DIMID: "
-                        + this.worldObj.provider.dimensionId
-                        + " explosion due to rain!");
+                GTLog
+                    .writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
                 doEnergyExplosion();
             } else {
-                GTLog.exp.println(
-                    "Machine at: " + this.getXCoord()
-                        + " | "
-                        + this.getYCoord()
-                        + " | "
-                        + this.getZCoord()
-                        + " DIMID: "
-                        + this.worldObj.provider.dimensionId
-                        + "  set to Fire due to rain!");
+                GTLog.writeExplosionLog(
+                    this,
+                    this.getLocalName(),
+                    "set to fire due to rain!");
                 setOnFire();
             }
         }
@@ -559,15 +551,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     .getPlayerEntityByName(mOwnerName),
                 "badweather");
         } catch (Exception ignored) {}
-        GTLog.exp.println(
-            "Machine at: " + this.getXCoord()
-                + " | "
-                + this.getYCoord()
-                + " | "
-                + this.getZCoord()
-                + " DIMID: "
-                + this.worldObj.provider.dimensionId
-                + " explosion due to Thunderstorm!");
+        GTLog.writeExplosionLog(
+            this,
+            this.getLocalName(),
+            "explosion due to thunderstorm!");
         doEnergyExplosion();
         return hasValidMetaTileEntity();
     }
@@ -628,9 +615,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             generatePowerNodes();
         }
         cableUpdateDelay--;
-        if (mTickTimer % 10 == 0) {
-            sendClientData();
-        }
     }
 
     @Override
