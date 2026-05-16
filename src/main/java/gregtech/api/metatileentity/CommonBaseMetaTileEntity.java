@@ -495,7 +495,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return !isDead && hasValidMetaTileEntity();
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    }
 
     @Override
     public String[] getDescription() {

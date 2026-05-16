@@ -1271,11 +1271,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         return false;
     }
 
-    @Override
-    protected final boolean hasValidMetaTileEntity() {
-        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
-    }
-
     public boolean setStoredEU(long aEnergy) {
         if (!canAccessData()) return false;
         if (aEnergy < 0) aEnergy = 0;
