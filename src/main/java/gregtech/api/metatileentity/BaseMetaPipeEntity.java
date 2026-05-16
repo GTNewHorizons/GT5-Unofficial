@@ -709,6 +709,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    }
+
+    @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
             mMetaTileEntity.onExplosion();
