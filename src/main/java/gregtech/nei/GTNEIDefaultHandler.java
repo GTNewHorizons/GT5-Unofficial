@@ -793,10 +793,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                     } else {
                                         FluidStack[] fluids = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter
                                             .apply(aRecipe);
-                                        if (i < fluids.length && fluids[i] != null && fluids[i].getFluid() != null)
+                                        if (i < fluids.length && fluids[i] != null && fluids[i].getFluid() != null) {
                                             input = GTUtility
                                                 .getFluidDisplayStack(fluids[i], FluidDisplayStackMode.SHOWN);
-                                        else input = null;
+                                        }
+                                        else {
+                                            input = null;
+                                        }
                                     }
 
                                     if (input != null) {

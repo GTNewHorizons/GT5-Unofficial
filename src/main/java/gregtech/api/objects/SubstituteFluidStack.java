@@ -30,10 +30,9 @@ public class SubstituteFluidStack {
      *          Materials.Water.get(500)
      *   )
      *   }
-     *
      * </pre>
      *
-     * @param fluidStacks list of fluids to use as substitutes. Fluids with null fluid or null stacks will be ignored.
+     * @param fluidStacks list of fluids to use as substitutes. Nulls or stacks with null fluid will be ignored.
      */
     public SubstituteFluidStack(FluidStack... fluidStacks) {
         if (fluidStacks == null) {
@@ -58,7 +57,6 @@ public class SubstituteFluidStack {
      * @param baseAmount Lowest fluid amount. Empty defaults to 144 (1 ingot)
      */
     public static SubstituteFluidStack soldering(long baseAmount) {
-        if (baseAmount <= 0) baseAmount = 144;
 
         List<FluidStack> fluids = new ArrayList<>();
 

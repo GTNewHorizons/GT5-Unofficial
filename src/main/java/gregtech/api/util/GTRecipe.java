@@ -62,12 +62,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
-    public ItemStack[] mInputs, mOutputs;
+    @NotNull public ItemStack[] mInputs, mOutputs;
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
-    public FluidStack[] mFluidInputs, mFluidOutputs;
+    @NotNull public FluidStack[] mFluidInputs, mFluidOutputs;
 
     public FluidStack[][] mAltFluidInputs;
     /**
@@ -540,7 +540,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 // Alternative FluidStacks for SubstituteFluidStack recipes
                 FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
                     && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
-                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
+                        : new FluidStack[] { mFluidInputs[i] };
 
                 if (alternatives == null || alternatives.length == 0) continue;
 
@@ -669,7 +669,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             for (int i = 0; i < mFluidInputs.length; i++) {
                 FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
                     && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
-                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
+                        : new FluidStack[] { mFluidInputs[i] };
 
                 if (alternatives == null || alternatives.length == 0) continue;
 
@@ -1463,7 +1463,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (mFluidInputs == null || aIndex >= mFluidInputs.length) return null;
 
             FluidStack mainFluid = mFluidInputs[aIndex];
-            if (mainFluid == null || mainFluid.getFluid() == null) return null;
 
             ArrayList<ItemStack> display = new ArrayList<>();
 
@@ -1478,7 +1477,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
             }
 
-            if (display.isEmpty()) display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+
+            // fallback
+            if (display.isEmpty()) {
+                if (mainFluid.getFluid() == null) return null;
+                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+            }
 
             return display;
         }

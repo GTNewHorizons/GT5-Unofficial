@@ -139,14 +139,12 @@ public class RecipeMapBackend {
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
 
-        if (recipe.mFluidInputs != null) {
-            for (FluidStack fluid : recipe.mFluidInputs) {
-                if (fluid == null || fluid.getFluid() == null) continue;
-                fluidIndex.put(
-                    fluid.getFluid()
-                        .getName(),
-                    recipe);
-            }
+        for (FluidStack fluid : recipe.mFluidInputs) {
+            if (fluid.getFluid() == null) continue;
+            fluidIndex.put(
+                fluid.getFluid()
+                    .getName(),
+                recipe);
         }
         return addToItemMap(recipe);
     }
@@ -157,7 +155,6 @@ public class RecipeMapBackend {
     protected GTRecipe addToItemMap(GTRecipe recipe) {
         if (recipe.mInputs != null) {
             for (ItemStack item : recipe.mInputs) {
-                if (item == null) continue;
                 itemIndex.put(new GTItemStack(item), recipe);
             }
         }
