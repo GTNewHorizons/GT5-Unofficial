@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -157,7 +158,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .leftRel(1)
             .padding(4);
 
-        return panel.child(getParameterEditor(panel, syncManager, ((IParametrized) multiblock).getParameters(), true));
+        List<Parameter<?>> parameters = new ArrayList<>();
+        if (multiblock instanceof IParametrized parametrized) parameters = parametrized.getParameters();
+        return panel.child(getParameterEditor(panel, syncManager, parameters, true));
     }
 
     protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
@@ -263,10 +266,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-
-        if (isParametrized()) {
-            ((IParametrized) multiblock).getParameters()
-                .forEach(parameter -> { if (parameter.shouldShowInGui()) parameter.registerSyncValue(syncManager); });
+        if (multiblock instanceof IParametrized parametrized) {
+            parametrized.getParameters()
+                .forEach(parameter -> parameter.registerSyncValue(syncManager));
         }
     }
 }
