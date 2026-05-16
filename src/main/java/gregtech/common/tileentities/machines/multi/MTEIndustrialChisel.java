@@ -76,7 +76,8 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
         tt.addMachineType("Chisel")
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
-            .addInfo("Without a circuit, chisels architecture blocks (reference block goes in CRIB or Controller)")
+            .addInfo(
+                "Without a circuit, chisels architecture and chisel blocks depending on reference block in CRIB or Controller")
             .addInfo("Use a programmed circuit to select a specific chiseled output - check NEI for the order")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
