@@ -50,6 +50,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
     protected byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+    protected MetaTileEntity mMetaTileEntity;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -179,7 +180,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles setting data on the first tick
      */
-    protected void handleFirstTick() {
+    protected final void handleFirstTick() {
         oldX = xCoord;
         oldY = yCoord;
         oldZ = zCoord;
@@ -195,7 +196,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles the color changing on the client side
      */
-    protected void handleColorChangeClient() {
+    protected final void handleColorChangeClient() {
         if (mColor == oldColor) {
             return;
         }
@@ -219,7 +220,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles the tile entity's position changing
      */
-    protected void handlePositionChange() {
+    protected final void handlePositionChange() {
         if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
             return;
         }
@@ -233,7 +234,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles the update data changing
      */
-    protected void handleUpdateDataChange() {
+    protected final void handleUpdateDataChange() {
         byte updateData = getMetaTileEntity().getUpdateData();
         if (updateData == oldUpdateData) {
             return;
@@ -245,7 +246,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles the color changing on the server side
      */
-    protected void handleColorChangeServer() {
+    protected final void handleColorChangeServer() {
         if (mColor == oldColor) {
             return;
         }
@@ -256,7 +257,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles sided Redstone changing
      */
-    protected void handleSidedRedstoneChange() {
+    protected final void handleSidedRedstoneChange() {
         byte redstone = getSidedRedstoneMask();
         if (redstone == oldRedstoneData) {
             return;
@@ -268,7 +269,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Performs a block update on the server side
      */
-    protected void handleBlockUpdateServer() {
+    protected final void handleBlockUpdateServer() {
         if (!mNeedsBlockUpdate) {
             return;
         }

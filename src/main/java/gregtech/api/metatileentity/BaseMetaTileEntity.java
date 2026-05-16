@@ -100,7 +100,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
-    protected MetaTileEntity mMetaTileEntity;
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
@@ -270,91 +269,79 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void updateEntityProfiled() {
+    public final void updateEntityProfiled() {
         if (!hasValidMetaTileEntity()) {
             if (mMetaTileEntity == null) return;
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
-        if (!hasValidMetaTileEntity()) {
-            mWorkUpdate = false;
-            mInventoryChanged = false;
-            mRunningThroughTick = false;
-            return;
-        }
-        updateValidEntity();
-    }
-
-    /**
-     * Updates a valid tile entity
-     */
-    private void updateValidEntity() {
-        mRunningThroughTick = true;
-        final boolean isServerSide = isServerSide();
-        if (mTickTimer++ == 0) {
-            handleFirstTick();
+        if (hasValidMetaTileEntity()) {
+            mRunningThroughTick = true;
+            final boolean isServerSide = isServerSide();
+            if (mTickTimer++ == 0) {
+                handleFirstTick();
+                if (!hasValidMetaTileEntity()) {
+                    mRunningThroughTick = false;
+                    return;
+                }
+            }
+            if (isServerSide) {
+                if (mTickTimer > 10 && !doCoverThings()) {
+                    mRunningThroughTick = false;
+                    return;
+                } else {
+                    updateAvgEUIO();
+                }
+            } else {
+                handleColorChangeClient();
+                handleLightValueChangeClient();
+                handleBlockUpdateClient();
+            }
+            mMetaTileEntity.onPreTick(this, mTickTimer);
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
             }
-        }
-        if (isServerSide) {
-            if (mTickTimer > 10 && !doCoverThings()) {
+            if (isServerSide) {
+                handleRedstoneChange();
+                if (mTickTimer == 10) {
+                    joinEnet();
+                }
+                handlePositionChange();
+                handleFacingChange();
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
+                }
+                if (!handleElectricUpdates()) {
+                    mRunningThroughTick = false;
+                    return;
+                }
+                handleInventoryDecharging();
+                handleInventoryCharging();
+            }
+            updateStatus();
+            if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
             }
-            updateAvgEUIO();
-        } else {
-            handleColorChangeClient();
-            handleLightValueChangeClient();
-            handleBlockUpdateClient();
-        }
-        mMetaTileEntity.onPreTick(this, mTickTimer);
-        if (!hasValidMetaTileEntity()) {
-            mRunningThroughTick = false;
-            return;
-        }
-        if (isServerSide) {
-            handleRedstoneChange();
-            if (mTickTimer == 10) {
-                joinEnet();
-            }
-            handlePositionChange();
-            handleFacingChange();
-            if (mNeedsTileUpdate) {
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                mNeedsTileUpdate = false;
-            }
-            if (!handleElectricUpdates()) {
+            mMetaTileEntity.onPostTick(this, mTickTimer);
+            if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
             }
-            handleInventoryDecharging();
-            handleInventoryCharging();
-        }
-        updateStatus();
-        if (!hasValidMetaTileEntity()) {
-            mRunningThroughTick = false;
-            return;
-        }
-        mMetaTileEntity.onPostTick(this, mTickTimer);
-        if (!hasValidMetaTileEntity()) {
-            mRunningThroughTick = false;
-            return;
-        }
-        if (isServerSide) {
-            handleCableUpdates();
-            if (mTickTimer > 10) {
-                handleTextureDataChange();
-                handleUpdateDataChange();
-                handleColorChangeServer();
-                handleSidedRedstoneChange();
-                handleLightValueChangeServer();
+            if (isServerSide) {
+                handleCableUpdates();
+                if (mTickTimer > 10) {
+                    handleTextureDataChange();
+                    handleUpdateDataChange();
+                    handleColorChangeServer();
+                    handleSidedRedstoneChange();
+                    handleLightValueChangeServer();
+                }
+                handleBlockUpdateServer();
             }
-            handleBlockUpdateServer();
         }
-        mWorkUpdate = false;
-        mInventoryChanged = false;
-        mRunningThroughTick = false;
+        mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
     }
 
     /**
