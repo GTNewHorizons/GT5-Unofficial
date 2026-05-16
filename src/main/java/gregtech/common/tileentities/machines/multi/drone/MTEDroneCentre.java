@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -265,16 +266,19 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0)) {
-            return casingAmount >= 85 && !mInputBusses.isEmpty();
+        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, errors)) {
+            checkCasingMin(errors, casingAmount, 85);
+            checkHasInputBus(errors);
+            return;
         }
-
+        errors.clear();
         clearHatches();
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= CASINGS_MIN
-            && !mInputBusses.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, CASINGS_MIN);
+        checkHasInputBus(errors);
     }
 
     @Override
