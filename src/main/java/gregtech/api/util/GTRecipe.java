@@ -62,12 +62,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
-    @NotNull public ItemStack[] mInputs, mOutputs;
+    @NotNull
+    public ItemStack[] mInputs, mOutputs;
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
-    @NotNull public FluidStack[] mFluidInputs, mFluidOutputs;
+    @NotNull
+    public FluidStack[] mFluidInputs, mFluidOutputs;
 
     public FluidStack[][] mAltFluidInputs;
     /**
@@ -539,8 +541,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             for (int i = 0; i < mFluidInputs.length; i++) {
                 // Alternative FluidStacks for SubstituteFluidStack recipes
                 FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
-                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
-                        : new FluidStack[] { mFluidInputs[i] };
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i] : new FluidStack[] { mFluidInputs[i] };
 
                 if (alternatives == null || alternatives.length == 0) continue;
 
@@ -668,8 +669,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
             for (int i = 0; i < mFluidInputs.length; i++) {
                 FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
-                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
-                        : new FluidStack[] { mFluidInputs[i] };
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i] : new FluidStack[] { mFluidInputs[i] };
 
                 if (alternatives == null || alternatives.length == 0) continue;
 
@@ -1476,7 +1476,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     }
                 }
             }
-
 
             // fallback
             if (display.isEmpty()) {

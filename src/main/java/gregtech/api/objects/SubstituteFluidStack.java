@@ -1,5 +1,7 @@
 package gregtech.api.objects;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,8 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 public class SubstituteFluidStack {
 
