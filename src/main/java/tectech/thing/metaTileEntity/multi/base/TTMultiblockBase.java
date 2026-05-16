@@ -1529,8 +1529,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchOutputBus) {
             return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
+        }
         if (aMetaTileEntity instanceof MTEHatchEnergy) {
             return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
+            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamo) {
             return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
@@ -1546,12 +1552,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty) {
             return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput) {
             return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
@@ -1666,15 +1666,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mEnergyHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eEnergyMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -1689,15 +1689,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDynamoHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eDynamoMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
         return false;
     }
@@ -1711,25 +1711,25 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mEnergyHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eEnergyMulti.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDynamoHatches.add(hatch);
+            return mEnergyHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eDynamoMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
         return false;
     }
