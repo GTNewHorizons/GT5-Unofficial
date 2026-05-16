@@ -393,14 +393,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public String[] getDescription() {
-        if (isUniversal) {
-            return GTSplit.splitLocalizedFormatted(
-                "gt.blockmachines.input_bus_crafting_slave.support_fluid.desc",
-                TIER_COLORS[11] + VN[11]);
-        } else {
-            return GTSplit.splitLocalizedFormatted(
-                "gt.blockmachines.input_bus_crafting_slave.not_support_fluid.desc",
-                TIER_COLORS[8] + VN[8]);
-        }
+       return GTSplit.splitLocalizedFormatted(isUniversal ? "gt.blockmachines.input_bus_crafting_slave.support_fluid.desc" : "gt.blockmachines.input_bus_crafting_slave.not_support_fluid.desc",
+                TIER_COLORS[getTier()] + VN[getTier()]);
     }
 }
