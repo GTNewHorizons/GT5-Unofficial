@@ -21,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.api.API;
 import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
@@ -33,7 +34,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1657,6 +1657,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.StainlessSteel) });
 
+        // Algae Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.AlgaeCasing.get(1),
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
+
         // Naquadah Reactor Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1692,6 +1698,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
 
+        // Drone Centre Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.DroneCentre.get(1),
+            new Object[] { ItemList.Machine_Multi_DroneCentre });
+
         // Industrial Sledgehammer/Forge Hammer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialForgeHammer.get(1),
@@ -1711,6 +1722,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.TreeGrowSimulator.get(1),
             new Object[] { GregtechItemList.Industrial_TreeFarm });
+
+        // Algae Farm Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.AlgaeFarm.get(1),
+            new Object[] { GregtechItemList.AlgaeFarm_Controller });
 
         // Naquadah Fuel Refinery Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1806,6 +1822,23 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TungstensteelBoilerLarge.get(1),
             new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
 
+        // XL Turbines Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Steam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.HPSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_HPSteam_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.GasTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Gas_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.PlasmaTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_Plasma_Turbine });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.SCSteamTurbineXL.get(1),
+            new Object[] { GregtechItemList.Large_SCSteam_Turbine });
+
         // Large Turbines Conversion Recipes
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.SteamTurbine.get(1), new Object[] { ItemList.LargeSteamTurbine });
@@ -1858,6 +1891,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
+
+        // Infinite Fluid Drilling Rig Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.InfiniteFluidDrillingRig.get(1),
+            new Object[] { ItemList.OilDrillInfinite });
     }
 
     private static void registerSifter() {
@@ -2111,7 +2149,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_LuV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()) });
+                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_ZPM.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2411,7 +2449,7 @@ public class MTERecipeLoader implements Runnable {
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
                 OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
+                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()), 'P',
                 OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_ZPM.get(1L),
@@ -3479,13 +3517,13 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_HV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeSteamTurbine.get(1L),
+            ItemList.SteamTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.gearGt.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeGasTurbine.get(1L),
+            ItemList.GasTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',
