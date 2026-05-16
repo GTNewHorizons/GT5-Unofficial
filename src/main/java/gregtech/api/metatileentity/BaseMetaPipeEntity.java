@@ -163,66 +163,63 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             if (mMetaTileEntity == null) return;
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
-        if (!hasValidMetaTileEntity()) {
-            mInventoryChanged = false;
-            mWorkUpdate = false;
-            return;
-        }
-        updateValidEntity();
-    }
-
-    private void updateValidEntity() {
         final boolean isServerSide = isServerSide();
-        if (mTickTimer++ == 0) {
-            handleFirstTick(isServerSide);
+        if (hasValidMetaTileEntity()) {
+            if (mTickTimer++ == 0) {
+                handleFirstTick(isServerSide);
+                if (!hasValidMetaTileEntity()) {
+                    return;
+                }
+            }
+            if (!isServerSide) {
+                handleColorChangeClient();
+                handleBlockUpdateClient();
+            } else {
+                if (mTickTimer > 10) {
+                    if (!doCoverThings()) {
+                        return;
+                    }
+                    updateConnections();
+                }
+            }
+            mMetaTileEntity.onPreTick(this, mTickTimer);
             if (!hasValidMetaTileEntity()) {
                 return;
             }
-        }
-        if (isServerSide) {
-            if (mTickTimer > 10) {
-                if (!doCoverThings()) {
-                    return;
+            if (isServerSide) {
+                if (mTickTimer == 10) {
+                    issueBlockUpdate();
+                    joinEnet();
                 }
-                updateConnections();
+                handlePositionChange();
             }
-        } else {
-            handleColorChangeClient();
-            handleBlockUpdateClient();
-        }
-        mMetaTileEntity.onPreTick(this, mTickTimer);
-        if (!hasValidMetaTileEntity()) {
-            return;
-        }
-        if (isServerSide) {
-            if (mTickTimer == 10) {
-                issueBlockUpdate();
-                joinEnet();
+            mMetaTileEntity.onPostTick(this, mTickTimer);
+            if (!hasValidMetaTileEntity()) {
+                return;
             }
-            handlePositionChange();
-        }
-        mMetaTileEntity.onPostTick(this, mTickTimer);
-        if (!hasValidMetaTileEntity()) {
-            return;
-        }
-        if (isServerSide) {
-            if (mTickTimer % 10 == 0) {
-                sendClientData();
-            }
-            if (mTickTimer > 10) {
-                handleConnectionsChangeServer();
-                handleUpdateDataChange();
-                handleColorChangeServer();
-                handleSidedRedstoneChange();
-            }
-            handleBlockUpdateServer();
-            if (mNeedsTileUpdate) {
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                mNeedsTileUpdate = false;
+            if (isServerSide) {
+                if (mTickTimer % 10 == 0) {
+                    sendClientData();
+                }
+
+                if (mTickTimer > 10) {
+                    handleConnectionsChangeServer();
+                    handleUpdateDataChangeServer();
+                    handleColorChangeServer();
+                    handleSidedRedstoneChangeServer();
+                }
+
+                if (mNeedsBlockUpdate) {
+                    doBlockUpdateServer();
+                }
+
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
+                }
             }
         }
-        mInventoryChanged = false;
-        mWorkUpdate = false;
+        mWorkUpdate = mInventoryChanged = false;
     }
 
     private void updateConnections() {

@@ -234,7 +234,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles the update data changing
      */
-    protected final void handleUpdateDataChange() {
+    protected final void handleUpdateDataChangeServer() {
         byte updateData = mMetaTileEntity.getUpdateData();
         if (updateData == oldUpdateData) {
             return;
@@ -257,7 +257,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles sided Redstone changing
      */
-    protected final void handleSidedRedstoneChange() {
+    protected final void handleSidedRedstoneChangeServer() {
         byte redstone = getSidedRedstoneMask();
         if (redstone == oldRedstoneData) {
             return;
