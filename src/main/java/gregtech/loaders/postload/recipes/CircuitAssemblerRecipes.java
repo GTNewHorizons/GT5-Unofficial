@@ -207,7 +207,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Iron, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
-            .fluidInputs(SubstituteFluidStack.soldering(576))
+            .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -221,7 +221,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Bronze, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
-            .fluidInputs(SubstituteFluidStack.soldering(576))
+            .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);

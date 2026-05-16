@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 public class SubstituteFluidStack {
 
     public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
@@ -71,6 +73,6 @@ public class SubstituteFluidStack {
     }
 
     public static SubstituteFluidStack soldering() {
-        return soldering(144);
+        return soldering(1 * INGOTS);
     }
 }
