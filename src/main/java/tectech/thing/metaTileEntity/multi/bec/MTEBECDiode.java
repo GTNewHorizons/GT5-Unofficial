@@ -59,6 +59,7 @@ import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
@@ -288,7 +289,8 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         }
 
         @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
+        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
+            List<Parameter<?>> parameters, boolean isRoot) {
             return SettingsPanel.builder()
                 .setDividerPosition(35)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))

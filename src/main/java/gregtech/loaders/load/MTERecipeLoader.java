@@ -1698,6 +1698,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.AdvancedImplosionCompressor.get(1),
             new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
 
+        // Drone Centre Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.DroneCentre.get(1),
+            new Object[] { ItemList.Machine_Multi_DroneCentre });
+
         // Industrial Sledgehammer/Forge Hammer Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialForgeHammer.get(1),
@@ -3517,13 +3522,13 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_HV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeSteamTurbine.get(1L),
+            ItemList.SteamTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.gearGt.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeGasTurbine.get(1L),
+            ItemList.GasTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',
