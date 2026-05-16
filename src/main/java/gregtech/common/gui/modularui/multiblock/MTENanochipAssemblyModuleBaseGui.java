@@ -57,6 +57,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             .widthRel(1)
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START)
+            .collapseDisabledChild()
             .setEnabledIf(w -> connected.getBoolValue());
         super.createTerminalTextWidget(syncManager, parent).getChildren()
             .forEach(statusWrapper::child);

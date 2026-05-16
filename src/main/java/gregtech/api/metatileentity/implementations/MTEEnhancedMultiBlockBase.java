@@ -629,10 +629,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchMin(errors, HatchElement.InputHatch, 1);
     }
 
-    protected final void checkMaxInputHatch(int limit, List<StructureError> errors) {
-        checkHatchMax(errors, HatchElement.InputHatch, limit);
-    }
-
     protected final void checkHasOutputHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.OutputHatch, 1);
     }
