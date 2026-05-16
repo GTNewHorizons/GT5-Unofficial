@@ -3517,13 +3517,13 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Electric_Pump_HV });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeSteamTurbine.get(1L),
+            ItemList.SteamTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.gearGt.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
-            ItemList.LargeGasTurbine.get(1L),
+            ItemList.GasTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',
