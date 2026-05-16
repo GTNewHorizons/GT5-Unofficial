@@ -174,7 +174,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     private void updateValidEntity() {
         final boolean isServerSide = isServerSide();
         if (mTickTimer++ == 0) {
-            handleFirstTick();
+            handleFirstTick(isServerSide);
             if (!hasValidMetaTileEntity()) {
                 return;
             }

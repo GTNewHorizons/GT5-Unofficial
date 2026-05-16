@@ -180,17 +180,17 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles setting data on the first tick
      */
-    protected final void handleFirstTick() {
+    protected final void handleFirstTick(boolean isServerSide) {
         oldX = xCoord;
         oldY = yCoord;
         oldZ = zCoord;
-        if (isServerSide()) {
+        if (isServerSide) {
             checkDropCover();
         } else {
             requestCoverDataIfNeeded();
         }
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        getMetaTileEntity().onFirstTick(this);
+        mMetaTileEntity.onFirstTick(this);
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             return;
         }
         oldColor = mColor;
-        getMetaTileEntity().onColorChangeClient(mColor);
+        mMetaTileEntity.onColorChangeClient(mColor);
         issueTextureUpdate();
     }
 
@@ -235,7 +235,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
      * Handles the update data changing
      */
     protected final void handleUpdateDataChange() {
-        byte updateData = getMetaTileEntity().getUpdateData();
+        byte updateData = mMetaTileEntity.getUpdateData();
         if (updateData == oldUpdateData) {
             return;
         }

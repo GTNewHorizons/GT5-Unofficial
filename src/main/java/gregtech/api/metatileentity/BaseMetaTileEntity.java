@@ -274,29 +274,30 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (mMetaTileEntity == null) return;
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
+        mRunningThroughTick = true;
         if (hasValidMetaTileEntity()) {
-            mRunningThroughTick = true;
             final boolean isServerSide = isServerSide();
             if (mTickTimer++ == 0) {
-                handleFirstTick();
+                handleFirstTick(isServerSide);
                 if (!hasValidMetaTileEntity()) {
                     mRunningThroughTick = false;
                     return;
                 }
             }
-            if (isServerSide) {
-                if (mTickTimer > 10 && !doCoverThings()) {
-                    mRunningThroughTick = false;
-                    return;
-                } else {
-                    updateAvgEUIO();
-                }
-            } else {
+            if (!isServerSide) {
                 handleColorChangeClient();
                 handleLightValueChangeClient();
                 handleBlockUpdateClient();
+            } else {
+                if (mTickTimer > 10 && !doCoverThings()) {
+                    mRunningThroughTick = false;
+                    return;
+                }
+                updateAvgEUIO();
             }
+
             mMetaTileEntity.onPreTick(this, mTickTimer);
+
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
@@ -306,16 +307,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 if (mTickTimer == 10) {
                     joinEnet();
                 }
+
                 handlePositionChange();
                 handleFacingChange();
+
                 if (mNeedsTileUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     mNeedsTileUpdate = false;
                 }
+
                 if (!handleElectricUpdates()) {
                     mRunningThroughTick = false;
                     return;
                 }
+
                 handleInventoryDecharging();
                 handleInventoryCharging();
             }
@@ -331,13 +336,19 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             if (isServerSide) {
                 handleCableUpdates();
+
                 if (mTickTimer > 10) {
-                    handleTextureDataChange();
+                    maybeSendTextureData();
+
                     handleUpdateDataChange();
+
                     handleColorChangeServer();
+
                     handleSidedRedstoneChange();
+
                     handleLightValueChangeServer();
                 }
+
                 handleBlockUpdateServer();
             }
         }
@@ -645,22 +656,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
     }
 
-    /**
-     * Handles the texture data changing
-     */
-    private void handleTextureDataChange() {
-        byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-            | (mRedstone ? 16 : 0)
-            | (mLockUpgrade ? 32 : 0)
-            | (mWorks ? 64 : 0)
-            | (mMuffler ? 128 : 0));
-        if (textureData == oldTextureData) {
-            return;
-        }
-        oldTextureData = textureData;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
-    }
-
     @Override
     protected void handleBlockUpdateClient() {
         if (!mNeedsUpdate) {
@@ -671,7 +666,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         } else {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        getMetaTileEntity().onTextureUpdate();
+        mMetaTileEntity.onTextureUpdate();
         mNeedsUpdate = false;
     }
 
