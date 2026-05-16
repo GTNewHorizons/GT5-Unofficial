@@ -525,14 +525,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             .getPlayerEntityByName(mOwnerName),
                         "badweather");
                 } catch (Exception ignored) {}
-                GTLog
-                    .writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
+                GTLog.writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
                 doEnergyExplosion();
             } else {
-                GTLog.writeExplosionLog(
-                    this,
-                    this.getLocalName(),
-                    "set to fire due to rain!");
+                GTLog.writeExplosionLog(this, this.getLocalName(), "set to fire due to rain!");
                 setOnFire();
             }
         }
@@ -551,10 +547,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     .getPlayerEntityByName(mOwnerName),
                 "badweather");
         } catch (Exception ignored) {}
-        GTLog.writeExplosionLog(
-            this,
-            this.getLocalName(),
-            "explosion due to thunderstorm!");
+        GTLog.writeExplosionLog(this, this.getLocalName(), "explosion due to thunderstorm!");
         doEnergyExplosion();
         return hasValidMetaTileEntity();
     }
