@@ -17,7 +17,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
@@ -56,6 +58,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
@@ -155,6 +158,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private int didOres = 0;
     private int didOCs = 0;
     private final Map<Fluid, Long> oreOutputs = new Object2LongOpenHashMap<>();
+    private HeatingCoilLevel coilTier; // unused
 
     private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
@@ -200,7 +204,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement('C', Casings.CupronickelCoilBlock.asElement())
+        .addElement('C', activeCoils(ofCoil((te, level) -> {
+            te.coilTier = level;
+            return true;
+        }, te -> te.coilTier)))
         .addElement('D', ofFrame(Materials.Steel))
         .addElement('E', Casings.BoltedNaquadahCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
@@ -236,6 +243,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
+        if (coilTier == null || coilTier == HeatingCoilLevel.None) return false;
         if (mCasing < 10) return false;
         if (electrodeHatch == null) return false;
         if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
