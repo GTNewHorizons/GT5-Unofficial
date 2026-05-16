@@ -43,6 +43,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -446,23 +447,27 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         switch (aIndex) {
             case START_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
+                if (getBaseMetaTileEntity().isMuffled()) return;
+                Vector3f position = getSoundPosition().getPosition();
                 GTUtility.doSoundAtClient(
                     SoundResource.GT_MACHINES_ARC_FURNACE_STARTUP,
                     STARTUP_DURATION_TICKS,
                     1.0F,
-                    aX,
-                    aY,
-                    aZ);
+                    position.x,
+                    position.y,
+                    position.z);
             }
             case STOP_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
+                if (getBaseMetaTileEntity().isMuffled()) return;
+                Vector3f position = getSoundPosition().getPosition();
                 GTUtility.doSoundAtClient(
                     SoundResource.GT_MACHINES_ARC_FURNACE_SHUTDOWN,
                     SHUTDOWN_DURATION_TICKS,
                     1.0F,
-                    aX,
-                    aY,
-                    aZ);
+                    position.x,
+                    position.y,
+                    position.z);
             }
             case LOOP_ARC_SOUND_INDEX -> phase = ArcFurnacePhase.Processing;
             default -> super.doSound(aIndex, aX, aY, aZ);
