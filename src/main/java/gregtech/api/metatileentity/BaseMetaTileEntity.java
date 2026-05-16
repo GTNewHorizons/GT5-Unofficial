@@ -652,20 +652,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    protected void handleBlockUpdateClient() {
-        if (!mNeedsUpdate) {
-            return;
-        }
-        if (GTMod.proxy.mUseBlockUpdateHandler) {
-            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
-        } else {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-        mMetaTileEntity.onTextureUpdate();
-        mNeedsUpdate = false;
-    }
-
-    @Override
     protected void onTickFail() {
         mMetaTileEntity.onTickFail(this, mTickTimer);
     }

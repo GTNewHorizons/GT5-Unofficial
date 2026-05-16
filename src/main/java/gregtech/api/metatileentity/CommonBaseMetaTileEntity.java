@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.IllegalFormatException;
 import java.util.List;
 
+import appeng.api.util.WorldCoord;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -208,12 +210,16 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Handles marking the tile entity's block for an update on the client side
      */
-    protected void handleBlockUpdateClient() {
+    protected final void handleBlockUpdateClient() {
         if (!mNeedsUpdate) {
             return;
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        getMetaTileEntity().onTextureUpdate();
+        if (GTMod.proxy.mUseBlockUpdateHandler) {
+            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, new WorldCoord(this));
+        } else {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+        mMetaTileEntity.onTextureUpdate();
         mNeedsUpdate = false;
     }
 
