@@ -335,7 +335,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (checkPiece(mName, 3, 7, 0, errors)) return;
+        if (!checkPiece(mName, 3, 7, 0, errors)) return;
         checkHasMaintenanceHatch(errors);
         int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
         if (dynamoCount != 1) {

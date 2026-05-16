@@ -273,7 +273,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             checkHasInputBus(errors);
             return;
         }
-
+        errors.clear();
         clearHatches();
         errors.clear();
         casingAmount = 0;
