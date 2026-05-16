@@ -36,6 +36,8 @@ public class ChiselBackend extends RecipeMapBackend {
 
     private static final int MAX_CIRCUIT_CONFIGURATION = 24;
 
+    private Collection<GTRecipe> neiRecipes;
+
     public ChiselBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
     }
@@ -85,16 +87,11 @@ public class ChiselBackend extends RecipeMapBackend {
 
     @Nullable
     private static ItemStack findChiselTarget(ItemStack[] items, @Nullable ItemStack specialSlot) {
-        if (isChiselTarget(specialSlot)) return specialSlot;
+        if (hasChiselResults(specialSlot)) return specialSlot;
         for (ItemStack item : items) {
-            if (isChiselTarget(item)) return item;
+            if (hasChiselResults(item)) return item;
         }
         return null;
-    }
-
-    private static boolean isChiselTarget(@Nullable ItemStack stack) {
-        if (stack == null) return false;
-        return !getItemsForChiseling(stack).isEmpty();
     }
 
     @Nullable
@@ -137,8 +134,8 @@ public class ChiselBackend extends RecipeMapBackend {
         return Collections.emptyMap();
     }
 
-    private static boolean hasChiselResults(ItemStack from) {
-        return !getItemsForChiseling(from).isEmpty();
+    private static boolean hasChiselResults(@Nullable ItemStack stack) {
+        return stack != null && !getItemsForChiseling(stack).isEmpty();
     }
 
     private static List<ItemStack> getItemsForChiseling(ItemStack stack) {
@@ -202,7 +199,7 @@ public class ChiselBackend extends RecipeMapBackend {
         if (!(input.getItem() instanceof ItemBlock) || input.getItem() instanceof ArchitectureItemBlock) return null;
 
         Block block = Block.getBlockFromItem(input.getItem());
-        if (block == null) return null;
+        if (block == Blocks.air) return null;
         if (block != Blocks.glass && block != Blocks.stained_glass
             && (!block.renderAsNormalBlock() || block.hasTileEntity())) {
             return null;
@@ -294,7 +291,14 @@ public class ChiselBackend extends RecipeMapBackend {
         return stacks;
     }
 
-    private static Collection<GTRecipe> getNEIRecipes() {
+    private Collection<GTRecipe> getNEIRecipes() {
+        if (neiRecipes == null) {
+            neiRecipes = buildNEIRecipes();
+        }
+        return neiRecipes;
+    }
+
+    private static List<GTRecipe> buildNEIRecipes() {
         List<GTRecipe> recipes = new ArrayList<>();
         for (String name : Carving.chisel.getSortedGroupNames()) {
             ICarvingGroup group = Carving.chisel.getGroup(name);
