@@ -261,8 +261,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         stepParameter = new IntegerParameter(0, "tt.spaceminer.step", STEP_PARAMETER, () -> 0, () -> Integer.MAX_VALUE);
         cycleDistanceParameter = new IntegerParameter(
             distanceParameter.getValue(),
-            CYCLE_DISTANCE_PARAMETER,
             "",
+            CYCLE_DISTANCE_PARAMETER,
             () -> distanceParameter.getValue() - rangeParameter.getValue(),
             () -> distanceParameter.getValue() + rangeParameter.getValue());
         cycleDistanceParameter.disableGui();
