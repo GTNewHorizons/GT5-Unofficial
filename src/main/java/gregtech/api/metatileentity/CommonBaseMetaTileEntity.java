@@ -266,18 +266,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
     }
 
-    /**
-     * Performs a block update on the server side
-     */
-    protected final void handleBlockUpdateServer() {
-        if (!mNeedsBlockUpdate) {
-            return;
-        }
-        updateNeighbours(mStrongRedstone, oldStrongRedstone);
-        oldStrongRedstone = mStrongRedstone;
-        mNeedsBlockUpdate = false;
-    }
-
     protected abstract void onTickFail();
 
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
@@ -471,11 +459,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
         if (mTickDisabled) {
-            doBlockUpdate();
+            doBlockUpdateServer();
         }
     }
 
-    public final void doBlockUpdate() {
+    public final void doBlockUpdateServer() {
         updateNeighbours(mStrongRedstone, oldStrongRedstone);
         oldStrongRedstone = mStrongRedstone;
         mNeedsBlockUpdate = false;

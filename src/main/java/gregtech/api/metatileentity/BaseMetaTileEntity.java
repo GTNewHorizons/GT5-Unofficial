@@ -321,8 +321,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     return;
                 }
 
-                handleInventoryDecharging();
-                handleInventoryCharging();
+                handleInventoryDechargingServer();
+                handleInventoryChargingServer();
             }
             updateStatus();
             if (!hasValidMetaTileEntity()) {
@@ -349,7 +349,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     handleLightValueChangeServer();
                 }
 
-                handleBlockUpdateServer();
+                if (mNeedsBlockUpdate) {
+                    doBlockUpdateServer();
+                }
             }
         }
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
@@ -441,20 +443,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             return true;
         }
         mAcceptedAmperes = 0;
-        handleOutputVoltageChange();
+        oldOutput = getOutputVoltage();
         updateActiveEUIOFaces();
         handleEUOutput();
         return handleEnvironmentalEffects();
-    }
-
-    /**
-     * Handles the output voltage changing
-     */
-    private void handleOutputVoltageChange() {
-        long outputVoltage = getOutputVoltage();
-        if (outputVoltage != oldOutput) {
-            oldOutput = outputVoltage;
-        }
     }
 
     /**
@@ -479,6 +471,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             return;
         }
         int voltageTier = Math.max(0, GTUtility.getTier(oldOutput) - 1);
+        // voltage + output loss
         long outputVoltage = Math.max(oldOutput, oldOutput + (1L << voltageTier));
         long availableAmperage = (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / outputVoltage;
         long usableAmperage = Math.min(getOutputAmperage(), availableAmperage);
@@ -600,7 +593,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     /**
      * Handles discharging items from the de-charger slot
      */
-    private void handleInventoryDecharging() {
+    private void handleInventoryDechargingServer() {
         if (mMetaTileEntity.dechargerSlotCount() <= 0 || getStoredEU() >= getEUCapacity()) {
             return;
         }
@@ -609,7 +602,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (mMetaTileEntity.mInventory[i] == null || getStoredEU() >= getEUCapacity()) {
                 continue;
             }
+            // electric batteries
             dischargeItem(mMetaTileEntity.mInventory[i]);
+            // consumable, e.g. redstone
             double ic2Energy = ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]);
             if (ic2Energy > 0 && getStoredEU() + ic2Energy < getEUCapacity()) {
                 increaseStoredEnergyUnits((long) ic2Energy, false);
@@ -626,7 +621,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     /**
      * Handles charging items in the charger slot
      */
-    private void handleInventoryCharging() {
+    private void handleInventoryChargingServer() {
         if (mMetaTileEntity.rechargerSlotCount() <= 0 || getStoredEU() <= 0) {
             return;
         }
