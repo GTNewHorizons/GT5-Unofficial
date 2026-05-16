@@ -46,6 +46,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         super(aCosts);
     }
 
+    @Override
     public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
             Future<?> scan = PENDING_SCANS.remove(aPlayer);
@@ -177,6 +178,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
     }
 
+    @Override
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
             aPlayer.addChatMessage(

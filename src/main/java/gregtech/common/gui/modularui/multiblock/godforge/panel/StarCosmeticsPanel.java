@@ -21,12 +21,11 @@ import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
@@ -57,11 +56,12 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .alignX(0.5f)
+                .horizontalCenter()
                 .marginTop(8));
 
         // Color options
-        Flow colorColumn = new Column().coverChildren()
+        Flow colorColumn = Flow.column()
+            .coverChildren()
             .marginTop(28)
             .marginLeft(4);
 
@@ -89,7 +89,8 @@ public class StarCosmeticsPanel {
             }
 
             // Create new star color button
-            Flow newStarColorRow = new Row().coverChildren();
+            Flow newStarColorRow = Flow.row()
+                .coverChildren();
             newStarColorRow.child(
                 new ButtonWidget<>().size(16)
                     .disableHoverBackground()
@@ -133,8 +134,9 @@ public class StarCosmeticsPanel {
         panel.child(colorColumn);
 
         // Misc options
-        Flow miscColumn = new Column().coverChildren()
-            .alignX(1)
+        Flow miscColumn = Flow.column()
+            .coverChildren()
+            .rightRel(0)
             .marginTop(28)
             .marginRight(9);
 
@@ -144,7 +146,6 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .alignX(0)
                 .marginBottom(10));
 
         // Text fields
@@ -155,7 +156,8 @@ public class StarCosmeticsPanel {
         BooleanSyncValue rendererDisabledSyncer = SyncValues.RENDERER_DISABLED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         miscColumn.child(
-            new Row().coverChildren()
+            Flow.row()
+                .coverChildren()
                 .child(
                     IKey.lang("fog.cosmetics.animations")
                         .style(EnumChatFormatting.GOLD)
@@ -211,7 +213,8 @@ public class StarCosmeticsPanel {
         StringSyncValue selectedStarColorSyncer = SyncValues.SELECTED_STAR_COLOR
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
 
-        Flow row = new Row().coverChildren()
+        Flow row = Flow.row()
+            .coverChildren()
             .marginBottom(4);
 
         row.child(
@@ -256,6 +259,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .size(75, 16)
                 .marginLeft(4));
 
@@ -267,7 +271,8 @@ public class StarCosmeticsPanel {
         IntSyncValue syncValue = syncer.create(hypervisor);
         syncValue
             .setChangeListener(() -> SyncActions.UPDATE_RENDERER.callFrom(Panels.STAR_COSMETICS, hypervisor, null));
-        return new Row().coverChildren()
+        return Flow.row()
+            .coverChildren()
             .marginBottom(2)
             .child(
                 IKey.lang("fog.cosmetics." + name)

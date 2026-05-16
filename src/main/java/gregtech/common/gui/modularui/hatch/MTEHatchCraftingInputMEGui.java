@@ -9,7 +9,6 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -77,7 +76,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
                         .slotGroup(PATTERN_INV_NAME)))
             .build()
             .coverChildren()
-            .alignX(Alignment.CENTER);
+            .horizontalCenter();
     }
 
     @Override
@@ -177,18 +176,13 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
                         's',
                         index -> new ItemSlot().slot(
                             new ModularSlot(hatch.inventoryHandler, SLOT_MANUAL_START + index)
-                                .changeListener((itemStack, onlyAmount, client, init) -> {
-                                    if (!client) {
-                                        hatch.resetCraftingInputRecipeMap();
-                                    }
-                                })
                                 .slotGroup(MANUAL_ITEM_INV_NAME)
 
                         ))
                     .build()
                     .coverChildren()
                     .top(16)
-                    .alignX(Alignment.CENTER));
+                    .horizontalCenter());
     }
 
 }

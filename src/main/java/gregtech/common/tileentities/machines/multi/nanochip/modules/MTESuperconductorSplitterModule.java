@@ -122,14 +122,17 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return SUPERCOND_SPLITTER_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return SUPERCOND_SPLITTER_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return SUPERCOND_SPLITTER_OFFSET_Z;
     }
@@ -179,6 +182,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
      *
      * @return A recipe if one was found, null otherwise
      */
+    @Override
     protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         return recipeMap.findRecipeQuery()

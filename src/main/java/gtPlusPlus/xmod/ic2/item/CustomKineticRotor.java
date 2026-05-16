@@ -200,11 +200,6 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return super.getDurabilityForDisplay(stack);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {

@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.common.render.SBRContextBase;
 
 @SuppressWarnings("UnusedReturnValue") // Fluent API is optional
 public interface ISBRContext {
@@ -36,9 +35,11 @@ public interface ISBRContext {
      * This ensures deterministic rendering by clearing any leftover state
      * from previous use of this context instance.
      *
-     * @return this {@link SBRContextBase} instance for chaining
+     * @return this context instance for chaining
      */
     ISBRContext reset();
+
+    void doCleanup();
 
     ISBRContext setBrightnessOverride(int brightness);
 

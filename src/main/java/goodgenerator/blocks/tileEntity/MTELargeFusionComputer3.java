@@ -64,6 +64,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
                     + " , you can't do it either")
             .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing MK II", 1664, false)
             .addCasingInfoMin("Advanced Compact Fusion Coil", 560, false)
             .addCasingInfoMin("Neutronium Frame Box", 128, false)

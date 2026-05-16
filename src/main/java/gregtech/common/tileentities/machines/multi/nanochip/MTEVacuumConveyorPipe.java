@@ -38,8 +38,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     private static IIconContainer CCBarOverlay, CCBarOverlayActive;
     public VacuumFactoryNetwork network;
 
-    public MTEVacuumConveyorPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEVacuumConveyorPipe(int aID, String aName) {
+        super(aID, aName);
     }
 
     public MTEVacuumConveyorPipe(MTEVacuumConveyorPipe prototype) {
@@ -51,6 +51,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         return GTMod.proxy.gt6Pipe;
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEVacuumConveyorPipe(this);
     }

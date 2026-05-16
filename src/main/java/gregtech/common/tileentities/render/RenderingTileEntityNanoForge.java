@@ -81,6 +81,7 @@ public class RenderingTileEntityNanoForge extends AbstractRenderingTileEntity {
         return lastSystemTime;
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound compound) {
         compound.setBoolean(RUNNING_NBT_TAG, running);
         compound.setFloat(TIMER_NBT_TAG, timer);

@@ -187,7 +187,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH  EBE  HH  ","   D E C E D   ","   D BC CB D   ","   D E C E D   ","  HH  EBE  HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
-                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHHEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
+                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHEEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
                     {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
@@ -510,7 +510,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
             .beginStructureBlock(15, 55, 15, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,
@@ -526,7 +526,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addCasingInfoExactlyColored(
                 "Inner Foundry Siphon Casing",
                 EnumChatFormatting.GRAY,
-                281,
+                282,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -557,6 +557,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
             .addStructureInfoSeparator()
             .addStructureInfo("Check NEI for Module structure costs");
 

@@ -1,8 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -12,17 +9,14 @@ import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -35,10 +29,9 @@ import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.StringParameter;
 
 public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
-
-    protected Map<String, SyncHandler> parameterSyncers = new HashMap<>();
 
     public TTMultiblockBaseGui(T multiblock) {
         super(multiblock);
@@ -54,7 +47,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
 
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .child(createPowerPassButton())
@@ -66,9 +60,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     private IWidget createControllerSlot() {
         return new ItemSlot()
             .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
             .marginTop(4)
-            .background(new DrawableStack(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH))
+            .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
             .overlay(
                 GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
                     .size(18, 6)
@@ -78,7 +72,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
             .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18, 18)
+            .size(18)
             .overlay(createPowerPassOverlay());
     }
 
@@ -105,29 +99,35 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     protected IWidget createEditParametersButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler infoPanel = syncManager
-            .syncedPanel("info_panel", true, (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
+        IPanelHandler infoPanel = syncManager.syncedPanel(
+            "parametersPanel",
+            true,
+            (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
             .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18, 18)
+            .size(18)
             .onMousePressed(onEditParametersPressed(infoPanel));
+    }
+
+    protected boolean isParametrized() {
+        return multiblock instanceof IParametrized;
     }
 
     private IDrawable createEditParametersOverlay() {
         return new DynamicDrawable(() -> {
-            if (multiblock instanceof IParametrized) {
+            if (isParametrized()) {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             } else {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             }
         });
     }
 
     private IGuiAction.MousePressed onEditParametersPressed(IPanelHandler infoPanel) {
         return mouseData -> {
-            if (!(multiblock instanceof IParametrized)) return false;
+            if (!isParametrized()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
@@ -137,9 +137,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         };
     }
 
-    // Panel implementation will come with first parametrized multiblock port
     private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        ModularPanel panel = new ModularPanel("parameters") {
+        ModularPanel panel = new ModularPanel("parametersPanel") {
 
             @Override
             public boolean isDraggable() {
@@ -151,37 +150,44 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .topRel(0)
             .padding(4);
 
+        return panel.child(getParameterEditor(panel, syncManager));
+    }
+
+    protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        multiblock.parameterMap.forEach((mapKey, parameter) -> {
-            String key = parameter.getLangKey();
-            ButtonWidget<?> parameterEditButton = new ButtonWidget<>().overlay(IKey.lang(key))
-                .width(100)
-                .marginBottom(2);
-
-            IPanelHandler editParameterPanel = syncManager.syncedPanel(
-                mapKey,
-                true,
-                (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager, mapKey));
-
-            column.child(parameterEditButton.onMousePressed(d -> {
-                if (!editParameterPanel.isPanelOpen()) {
-                    editParameterPanel.openPanel();
-                } else {
-                    editParameterPanel.closePanel();
+        ((IParametrized) multiblock).getParameters()
+            .forEach(parameter -> {
+                if (!parameter.shouldShowInGui()) {
+                    return;
                 }
-                return true;
-            }));
-        });
+                ButtonWidget<?> parameterEditButton = new ButtonWidget<>()
+                    .overlay(IKey.lang(parameter.getLangKey(), parameter.getLangArgs()))
+                    .width(100)
+                    .marginBottom(2);
 
-        return panel.child(column);
+                IPanelHandler editParameterPanel = syncManager.syncedPanel(
+                    "parameterEditPanel_" + parameter.getNbtKey(),
+                    true,
+                    (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager));
+
+                column.child(parameterEditButton.onMousePressed(d -> {
+                    if (!editParameterPanel.isPanelOpen()) {
+                        editParameterPanel.openPanel();
+                    } else {
+                        editParameterPanel.closePanel();
+                    }
+                    return true;
+                }));
+            });
+        return column;
     }
 
-    private @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
-        PanelSyncManager syncManager, String mapKey) {
-        return new ModularPanel(mapKey) {
+    protected @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
+        PanelSyncManager syncManager) {
+        return new ModularPanel("parameterEditPanel_" + parameter.getNbtKey()) {
 
             @Override
             public boolean isDraggable() {
@@ -196,16 +202,16 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     .coverChildren()
                     .padding(4)
                     .child(createParameterEditLabelRow(parameter))
-                    .child(createInputWidget(parameter, mapKey, syncManager)));
+                    .child(createInputWidget(parameter, parameter.getLangKey(), syncManager)));
     }
 
     private IWidget createParameterEditLabelRow(Parameter<?> parameter) {
         return Flow.row()
             .coverChildren()
             .child(
-                IKey.lang(parameter.getLangKey())
+                IKey.lang(parameter.getLangKey(), parameter.getLangArgs())
                     .asWidget()
-                    .alignment(Alignment.CenterLeft)
+                    .textAlign(Alignment.CenterLeft)
                     .margin(0, 14, 2, 2))
             .child(
                 ButtonWidget.panelCloseButton()
@@ -214,7 +220,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     private IWidget createInputWidget(Parameter<?> parameter, String mapKey, PanelSyncManager syncManager) {
-
         if (parameter instanceof IntegerParameter integerParameter) {
             return new TextFieldWidget().value((IStringValue<?>) integerParameter.createSyncHandler())
                 .setNumbers(integerParameter::getMin, integerParameter::getMax);
@@ -228,6 +233,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
         }
+        if (parameter instanceof StringParameter stringParameter) {
+            return new TextFieldWidget().value((IStringValue<?>) stringParameter.createSyncHandler());
+        }
         throw new IllegalArgumentException(
             "Tried to create an input widget for an unsupported parameter type " + parameter.getClass());
     }
@@ -235,7 +243,13 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        multiblock.parameterMap
-            .forEach((key, parameter) -> { syncManager.syncValue(key, parameter.createSyncHandler()); });
+        if (multiblock instanceof IParametrized parametrized) {
+            parametrized.getParameters()
+                .forEach(parameter -> {
+                    if (parameter.shouldShowInGui()) {
+                        syncManager.syncValue(parameter.getNbtKey(), parameter.createSyncHandler());
+                    }
+                });
+        }
     }
 }

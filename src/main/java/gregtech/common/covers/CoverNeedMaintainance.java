@@ -59,6 +59,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         setVariable(redstoneMode == RedstoneMode.NORMAL ? coverData & ~0x1 : coverData | 0x1);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

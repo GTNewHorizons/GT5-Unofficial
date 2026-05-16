@@ -55,6 +55,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         mCosts = aCosts;
     }
 
+    @Override
     public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
 

@@ -12,24 +12,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchMuffler extends MTEHatch {
-
-    private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-        "gt.blockmachines.hatch.muffler.desc.format",
-        "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-            + "Reduces Pollution to %d%%%n");
-    private final int pollutionReduction = calculatePollutionReduction(100);
-    private final int pollutionRecover = 100 - pollutionReduction;
-    private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-        .split("\\R");
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
@@ -51,7 +45,9 @@ public class MTEHatchMuffler extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return description;
+        String[] description = GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(calculatePollutionReduction(100)));
+        return mTier > 1 ? TooltipHelper.pollutionDisabledTooltip(description) : description;
     }
 
     @Override
@@ -95,6 +91,9 @@ public class MTEHatchMuffler extends MTEHatch {
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
         }
     }
 

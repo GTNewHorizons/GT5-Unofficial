@@ -142,14 +142,17 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return false;
     }
 
+    @Override
     public int structureOffsetX() {
         return SPLITTER_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return SPLITTER_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return SPLITTER_OFFSET_Z;
     }
@@ -376,6 +379,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTESplitterModule> adder() {
             return adder;
         }

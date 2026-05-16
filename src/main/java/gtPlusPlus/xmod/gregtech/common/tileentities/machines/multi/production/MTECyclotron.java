@@ -13,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,16 +65,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTECyclotron(this.mName);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -163,6 +152,8 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInfo("Similar structure to the Fusion Reactor")
             .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
             .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+            .addSeparator()
+            .addInfo("§4DEPRECATED")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
             .addCasingInfoMin("Cyclotron Coil", 32, false)
@@ -277,17 +268,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             }
         }
         return super.onRunningTick(aStack);
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        int powerRequired = 0;
-        if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt;
-        }
-
-        return new String[] { "COMET - Compact Cyclotron MK I", "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
     }
 
     @Override

@@ -91,8 +91,10 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
                 : block.getQuantaPercentage(world, x, y, z) * RendererSwitchingColorFluid.THREE_QUARTERS_FILLED;
     }
 
+    @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {}
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
@@ -318,10 +320,12 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
         return rendered;
     }
 
+    @Override
     public boolean shouldRender3DInInventory(int modelId) {
         return false;
     }
 
+    @Override
     public int getRenderId() {
         return FluidLoader.renderID;
     }

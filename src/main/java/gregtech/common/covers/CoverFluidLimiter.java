@@ -131,6 +131,7 @@ public class CoverFluidLimiter extends Cover {
         return true;
     }
 
+    @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidLimiterGui(this);
     }

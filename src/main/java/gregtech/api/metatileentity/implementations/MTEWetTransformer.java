@@ -5,24 +5,23 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWetTransformer extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEWetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -68,16 +67,12 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            mDescriptionArray,
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn1"),
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn2"),
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn3"),
-            EnumChatFormatting.BLUE + "Tec"
-                + EnumChatFormatting.DARK_BLUE
-                + "Tech"
-                + EnumChatFormatting.BLUE
-                + ": Interdimensional");
+        return GTSplit.splitLocalizedFormattedWithWarped(
+            "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
+            CommonValues.TEC_MARK_GENERAL,
+            16,
+            64);
     }
 
     @Override

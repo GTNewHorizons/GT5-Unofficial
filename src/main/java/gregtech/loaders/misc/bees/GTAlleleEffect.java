@@ -34,9 +34,6 @@ public abstract class GTAlleleEffect extends Allele implements IAlleleBeeEffect 
     }
 
     @Override
-    public abstract IEffectData validateStorage(IEffectData storedData);
-
-    @Override
     public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
         if (storedData != null) {
             int ticksPassed = storedData.getInteger(0);

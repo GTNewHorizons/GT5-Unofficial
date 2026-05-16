@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerHV;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerLV;
@@ -20,7 +19,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoiler
 public class GregtechAdvancedBoilers {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Advanced Boilers.");
         run1();
     }
 

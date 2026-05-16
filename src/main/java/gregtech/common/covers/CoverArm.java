@@ -140,6 +140,7 @@ public class CoverArm extends Cover {
         return true;
     }
 
+    @Override
     public boolean letsRedstoneGoOut() {
         return true;
     }

@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -151,7 +152,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Electrolyzer Casings", 6, false)
             .addCasingInfoExactly("Potin Frame Box", 12, false)
             .addCasingInfoExactly("Tin Item Pipe Casing", 4, false)
@@ -163,7 +164,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addEnergyHatch("Any Electrolyzer Casing", 1)
             .addMaintenanceHatch("Any Electrolyzer Casing", 1)
             .addMufflerHatch("Any Electrolyzer Casing", 1)
-            .addStructureAuthors("Vortex")
+            .addStructureAuthors(EnumChatFormatting.BLUE + "Vortex")
             .toolTipFinisher();
         return tt;
     }

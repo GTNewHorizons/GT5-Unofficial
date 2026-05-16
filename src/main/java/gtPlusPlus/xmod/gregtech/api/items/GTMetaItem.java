@@ -11,20 +11,15 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.interfaces.IFoodStat;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -49,10 +44,8 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
 
-    public final HashMap<Short, IFoodStat> mFoodStats = new HashMap<>();
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
     public final HashMap<Short, Long[]> mFluidContainerStats = new HashMap<>();
-    public final HashMap<Short, Short> mBurnValues = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -145,25 +138,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     }
 
     /**
-     * Sets the Furnace Burn Value for the Item.
-     *
-     * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]
-     * @param aValue     200 = 1 Burn Process = 500 EU, max = 32767 (that is 81917.5 EU)
-     * @return the Item itself for convenience in constructing.
-     */
-    public final GTMetaItem setBurnValue(final int aMetaValue, final int aValue) {
-        if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length())) || (aValue < 0)) {
-            return this;
-        }
-        if (aValue == 0) {
-            this.mBurnValues.remove((short) aMetaValue);
-        } else {
-            this.mBurnValues.put((short) aMetaValue, aValue > Short.MAX_VALUE ? Short.MAX_VALUE : (short) aValue);
-        }
-        return this;
-    }
-
-    /**
      * @param aMetaValue     the Meta Value of the Item you want to set it to. [0 - 32765]
      * @param aMaxCharge     Maximum Charge. (if this is == 0 it will remove the Electric Behavior)
      * @param aTransferLimit Transfer Limit.
@@ -194,62 +168,7 @@ public abstract class GTMetaItem extends GTMetaItemBase {
         return this;
     }
 
-    /**
-     * @param aMetaValue     the Meta Value of the Item you want to set it to. [0 - 32765]
-     * @param aMaxCharge     Maximum Charge. (if this is == 0 it will remove the Electric Behavior)
-     * @param aTransferLimit Transfer Limit.
-     * @param aTier          The electric Tier.
-     * @param aSpecialData   If this Item has a Fixed Charge, like a SingleUse Battery (if > 0). Use -1 if you want to
-     *                       make this Battery chargeable (the use and canUse Functions will still discharge if you just
-     *                       use this) Use -2 if you want to make this Battery dischargeable. Use -3 if you want to make
-     *                       this Battery charge/discharge-able.
-     * @return the Item itself for convenience in constructing.
-     */
-    public final GTMetaItem setFluidContainerStats(final int aMetaValue, final long aCapacity, final long aStacksize) {
-        if ((aMetaValue < 0) || (aMetaValue >= (this.mOffset + this.mEnabledItems.length()))) {
-            return this;
-        }
-        if (aCapacity < 0) {
-            this.mElectricStats.remove((short) aMetaValue);
-        } else {
-            this.mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
-        }
-        return this;
-    }
-
-    /**
-     * @return if this MetaGenerated Item should use my Default Renderer System.
-     */
-    public boolean useStandardMetaItemRenderer() {
-        return true;
-    }
-
-    /**
-     * @return the Color Modulation the Material is going to be rendered with.
-     */
-    public short[] getRGBa(final ItemStack aStack) {
-        return Materials._NULL.getRGBA();
-    }
-
-    /**
-     * @return the Icon the Material is going to be rendered with.
-     */
-    public IIconContainer getIconContainer(final int aMetaData) {
-        return null;
-    }
-
     /* ---------- INTERNAL OVERRIDES ---------- */
-
-    @Override
-    public int getMaxItemUseDuration(final ItemStack aStack) {
-        return this.mFoodStats.get((short) this.getDamage(aStack)) == null ? 0 : 32;
-    }
-
-    @Override
-    public final ItemStack onEaten(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        final IFoodStat tStat = this.mFoodStats.get((short) this.getDamage(aStack));
-        return aStack;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

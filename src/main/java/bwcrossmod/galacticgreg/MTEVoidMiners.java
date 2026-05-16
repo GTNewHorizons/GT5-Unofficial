@@ -83,6 +83,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(7, 9, 7, false)
+                .addController("Front center, 2nd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
@@ -99,10 +100,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 7, 1);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 7, 1, elementBudget, env, false, true);
@@ -190,6 +193,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 13, 8, false)
+                .addController("Front center, 3rd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
                 .addStructureInfo(
@@ -209,10 +213,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 10, 1);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 10, 1, elementBudget, env, false, true);
@@ -295,6 +301,7 @@ public class MTEVoidMiners {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 16, 9, false)
+                .addController("Front center, 3rd layer")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
                 .addStructureInfo(
@@ -312,10 +319,12 @@ public class MTEVoidMiners {
             return tt;
         }
 
+        @Override
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 13, 2);
         }
 
+        @Override
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             if (mMachine) return -1;
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 13, 2, elementBudget, env, false, true);

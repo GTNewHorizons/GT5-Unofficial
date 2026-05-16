@@ -19,6 +19,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
@@ -50,23 +51,23 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         int bar1Width = 17;
         int bar2Width = 18;
-        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
+        List<Supplier<Float>> splitProgress = splitProgress(ctx.progressSupplier, bar1Width, bar2Width);
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
-                .setPos(new Pos2d(88, 8).add(windowOffset))
+                .setPos(new Pos2d(88, 8).add(ctx.windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
-                .setPos(new Pos2d(124, 8).add(windowOffset))
+                .setPos(new Pos2d(124, 8).add(ctx.windowOffset))
                 .setSize(bar2Width, 72));
     }
 

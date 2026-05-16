@@ -56,6 +56,7 @@ import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
 import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
 
 public class MachineRecipeLoader implements Runnable {
 
@@ -98,6 +99,7 @@ public class MachineRecipeLoader implements Runnable {
         new FuelRecipes().run();
         new FusionReactorRecipes().run();
         new ImplosionCompressorRecipes().run();
+        new LargeHadronColliderRecipes().run();
         new LaserEngraverRecipes().run();
         new LatheRecipes().run();
         new MatterAmplifierRecipes().run();

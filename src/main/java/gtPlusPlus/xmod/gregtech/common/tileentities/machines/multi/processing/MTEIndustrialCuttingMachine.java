@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -68,7 +67,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Cutting Factory Frames", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -173,14 +172,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     public boolean isInputSeparationEnabled() {
         return true;
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings2Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 13;
     }
 
     public byte getCasingTextureIndex() {

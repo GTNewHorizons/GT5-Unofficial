@@ -260,7 +260,7 @@ public class EntityRenderer extends EntityFX {
         BossStatus.bossName = bossName;
         BossStatus.hasColorModifier = hasColorModifier;
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
         if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
@@ -303,6 +303,13 @@ public class EntityRenderer extends EntityFX {
             case COUNTER_CLOCKWISE -> vAxis.rotateAxis(RAD_90, hAxis.x, hAxis.y, hAxis.z);
             case UPSIDE_DOWN -> vAxis.negate();
         }
+
+        // hAxis only rotates in 90deg increments, and so is proper
+        // but vAxis using rotateAxis can produce weird small floats.
+        // This corrects it to be a proper cardinal vector
+        vAxis.x = Math.round(vAxis.x);
+        vAxis.y = Math.round(vAxis.y);
+        vAxis.z = Math.round(vAxis.z);
 
         this.verticalAxis = vAxis;
         this.horizontalAxis = hAxis;

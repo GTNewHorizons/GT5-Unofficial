@@ -55,7 +55,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
@@ -82,7 +81,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
 public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFusionComputer>
-    implements ISurvivalConstructable, IAddUIWidgets, IOverclockDescriptionProvider {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private final OverclockDescriber overclockDescriber;
 

@@ -225,7 +225,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, false)
-            .addController("Mid of the eighth layer")
+            .addController("Front center, 8th layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
             .addCasingInfoExactly("Any Tiered Glass (UV+)", 280, false)
@@ -354,21 +354,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         GTUtility.sendChatTrans(
             aPlayer,
             inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override

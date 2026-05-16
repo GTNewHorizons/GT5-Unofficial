@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -29,6 +28,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,9 +48,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -82,10 +81,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     /** The unlocalized name of this item. */
     private String unlocalizedName;
 
-    private final HashMap<Integer, IIcon> mIconMap = new LinkedHashMap<>();
-    private final HashMap<Integer, EnumRarity> rarity = new LinkedHashMap<>();
-
-    public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<>();
+    private final HashMap<Integer, IIcon> mIconMap = new HashMap<>();
+    private final HashMap<Integer, EnumRarity> rarity = new HashMap<>();
+    public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
         registerItem(
@@ -128,8 +126,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             id,
             localizedName,
             EnumChatFormatting.GRAY + "Can be used to remove fluids from GT machine input & output slots");
-        if (euStorage > 0 && tier > 0)
-            this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L, true);
+        if (euStorage > 0 && tier > 0) this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L);
         this.rarity.put(id, regRarity);
     }
 
@@ -359,8 +356,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (tStats[3] > 0) {
             return (int) (long) tStats[3];
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(final ItemStack aStack, long aCharge) {
@@ -368,22 +364,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if ((tStats == null) || (tStats[3] > 0)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(this.getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(this.getEmptyMetaData(aStack));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
-        } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
         this.isItemStackUsable(aStack);
         return true;
@@ -433,7 +420,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
      * @return the Item itself for convenience in constructing.
      */
     public final ItemGregtechPump setElectricStats(final int aMetaValue, final long aMaxCharge,
-        final long aTransferLimit, final long aTier, final long aSpecialData, final boolean aUseAnimations) {
+        final long aTransferLimit, final long aTier, final long aSpecialData) {
         if (aMetaValue < 0) {
             return this;
         }
@@ -637,45 +624,36 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     public void emptyStoredFluid(ItemStack aStack) {
         if (aStack.hasTagCompound()) {
-            NBTTagCompound t = aStack.getTagCompound();
-            if (t.hasKey("mInit")) {
-                t.removeTag("mInit");
-            }
-            if (t.hasKey("mFluid")) {
-                t.removeTag("mFluid");
-            }
-            if (t.hasKey("mFluidAmount")) {
-                t.removeTag("mFluidAmount");
+            final NBTTagCompound nbt = aStack.getTagCompound();
+            nbt.removeTag("mInit");
+            nbt.removeTag("mFluid");
+            nbt.removeTag("mFluidAmount");
+            if (nbt.hasNoTags()) {
+                aStack.setTagCompound(null);
             }
         }
     }
 
     public void storeFluid(ItemStack aStack, FluidStack aFluid) {
         if (aFluid != null) {
-            String fluidname = aFluid.getFluid()
+            final String fluidname = aFluid.getFluid()
                 .getName();
-            int amount = aFluid.amount;
+            final int amount = aFluid.amount;
             if (fluidname != null && !fluidname.isEmpty() && amount > 0) {
-                NBTUtils.setString(aStack, "mFluid", fluidname);
-                NBTUtils.setInteger(aStack, "mFluidAmount", amount);
+                ItemStackNBT.setString(aStack, "mFluid", fluidname);
+                ItemStackNBT.setInteger(aStack, "mFluidAmount", amount);
             }
         }
     }
 
     @Override
     public FluidStack getFluid(ItemStack container) {
-        if (!container.hasTagCompound() || !container.getTagCompound()
-            .hasKey("mInit")) {
+        if (!ItemStackNBT.hasKey(container, "mInit")) {
             initNBT(container);
         }
-        if (container.getTagCompound()
-            .hasKey("mInit")
-            && container.getTagCompound()
-                .getBoolean("mInit")) {
-            String fluidname;
-            Integer amount = 0;
-            fluidname = NBTUtils.getString(container, "mFluid");
-            amount = NBTUtils.getInteger(container, "mFluidAmount");
+        if (ItemStackNBT.getBoolean(container, "mInit")) {
+            final String fluidname = ItemStackNBT.getString(container, "mFluid");
+            final int amount = ItemStackNBT.getInteger(container, "mFluidAmount");
             if (fluidname != null && amount > 0) {
                 return FluidRegistry.getFluidStack(fluidname, amount);
             } else {
@@ -687,19 +665,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     @Override
     public int getCapacity(ItemStack container) {
-        if (!container.hasTagCompound() || !container.getTagCompound()
-            .hasKey("mInit")) {
+        if (!ItemStackNBT.hasKey(container, "mInit")) {
             initNBT(container);
         }
-        if (container.getTagCompound()
-            .hasKey("mInit")
-            && container.getTagCompound()
-                .getBoolean("mInit")) {
-            return container.getTagCompound()
-                .getInteger("mCapacity");
+        if (ItemStackNBT.getBoolean(container, "mInit")) {
+            return ItemStackNBT.getInteger(container, "mCapacity");
         }
-        int aMeta = this.getCorrectMetaForItemstack(container);
-
+        final int aMeta = this.getCorrectMetaForItemstack(container);
         return 2000 * (int) GTUtility.powInt(4, aMeta);
     }
 
@@ -713,21 +685,14 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return 0;
         }
 
-        if (!container.hasTagCompound() || !container.getTagCompound()
-            .hasKey("mInit")) {
+        if (!ItemStackNBT.hasKey(container, "mInit")) {
             initNBT(container);
         }
-        if (container.getTagCompound()
-            .hasKey("mInit")
-            && container.getTagCompound()
-                .getBoolean("mInit")) {
-            String aStored;
+        if (ItemStackNBT.getBoolean(container, "mInit")) {
             int aStoredAmount = 0;
             int aCapacity = getCapacity(container);
             FluidStack aStoredFluid = getFluid(container);
             if (aStoredFluid != null) {
-                aStored = aStoredFluid.getFluid()
-                    .getName();
                 aStoredAmount = aStoredFluid.amount;
                 if (aStoredAmount == aCapacity) {
                     return 0;
@@ -735,41 +700,21 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             }
             // Handle no stored fluid first
             if (aStoredFluid == null) {
-                Logger.INFO("Pump is empty, filling with tank fluids.");
-                FluidStack toConsume;
-                int amountToConsume = Math.min(resource.amount, aCapacity);
-                toConsume = new FluidStack(resource, amountToConsume);
-                if (toConsume != null && amountToConsume > 0) {
+                final int amountToConsume = Math.min(resource.amount, aCapacity);
+                final FluidStack toConsume = new FluidStack(resource, amountToConsume);
+                if (amountToConsume > 0) {
                     storeFluid(container, toConsume);
                     return amountToConsume;
                 }
             } else {
-                Logger.INFO("Pump is Partially full, filling with tank fluids.");
                 if (aStoredFluid.isFluidEqual(resource)) {
-                    Logger.INFO("Found matching fluids.");
-                    int aSpaceLeft = (aCapacity - aStoredAmount);
-                    Logger.INFO(
-                        "Capacity: " + aCapacity + " | Stored: " + aStoredAmount + " | Space left: " + aSpaceLeft);
-                    FluidStack toConsume;
-                    int amountToConsume = 0;
-                    if (resource.amount >= aSpaceLeft) {
-                        amountToConsume = aSpaceLeft;
-                        Logger.INFO("More or equal fluid amount to pump container space.");
-                    } else {
-                        amountToConsume = resource.amount;
-                        Logger.INFO("Less fluid than container space");
-                    }
-                    Logger.INFO("Amount to consume: " + amountToConsume);
-                    toConsume = new FluidStack(resource, (aStoredAmount + amountToConsume));
-                    if (toConsume != null && amountToConsume > 0) {
-                        Logger.INFO("Storing Fluid");
+                    final int aSpaceLeft = (aCapacity - aStoredAmount);
+                    final int amountToConsume = Math.min(resource.amount, aSpaceLeft);
+                    final FluidStack toConsume = new FluidStack(resource, (aStoredAmount + amountToConsume));
+                    if (amountToConsume > 0) {
                         storeFluid(container, toConsume);
                         return amountToConsume;
-                    } else {
-                        Logger.INFO("Not storing fluid");
                     }
-                } else {
-                    Logger.INFO("Fluids did not match.");
                 }
             }
         }
@@ -785,14 +730,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (!doDrain || maxDrain == 0) {
             return null;
         }
-        if (!container.hasTagCompound() || !container.getTagCompound()
-            .hasKey("mInit")) {
+        if (!ItemStackNBT.hasKey(container, "mInit")) {
             initNBT(container);
         }
-        if (container.getTagCompound()
-            .hasKey("mInit")
-            && container.getTagCompound()
-                .getBoolean("mInit")) {
+        if (ItemStackNBT.getBoolean(container, "mInit")) {
 
             FluidStack aStoredFluid = getFluid(container);
             if (aStoredFluid == null) {
@@ -821,26 +762,19 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
      * Handle ItemStack NBT
      */
 
-    public void initNBT(ItemStack aStack) {
-        NBTTagCompound aNewNBT;
-        if (!aStack.hasTagCompound()) {
-            aNewNBT = new NBTTagCompound();
-        } else {
-            aNewNBT = aStack.getTagCompound();
-        }
-
-        if (!aNewNBT.hasKey("mInit")) {
+    private void initNBT(ItemStack aStack) {
+        if (!ItemStackNBT.hasKey(aStack, "mInit")) {
+            final NBTTagCompound nbt = ItemStackNBT.get(aStack);
             int aMeta = this.getCorrectMetaForItemstack(aStack);
-            aNewNBT.setInteger("mMeta", aMeta);
-            aNewNBT.setBoolean("mInit", true);
-            aNewNBT.setString("mFluid", "@@@@@");
-            aNewNBT.setInteger("mFluidAmount", 0);
-            if (!aNewNBT.hasKey("capacityInit")) {
+            nbt.setInteger("mMeta", aMeta);
+            nbt.setBoolean("mInit", true);
+            nbt.setString("mFluid", "@@@@@");
+            nbt.setInteger("mFluidAmount", 0);
+            if (!nbt.hasKey("capacityInit")) {
                 int aCapacity = 2000 * (int) GTUtility.powInt(4, aMeta);
-                aNewNBT.setInteger("mCapacity", aCapacity);
-                aNewNBT.setBoolean("capacityInit", true);
+                nbt.setInteger("mCapacity", aCapacity);
+                nbt.setBoolean("capacityInit", true);
             }
-            aStack.setTagCompound(aNewNBT);
         }
     }
 
@@ -852,7 +786,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
      * Custom Fluid Handling for Tiles and GT Tiles.
      */
 
-    public boolean tryDrainTile(ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
+    private boolean tryDrainTile(ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
         try {
             if (aWorld.isRemote || aStack == null) {
                 return false;
@@ -864,7 +798,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
                     GTUtility.sendChatToPlayer(aPlayer, "Not enough power.");
-                    Logger.INFO("No Power");
                     return false;
                 }
 
@@ -906,17 +839,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return false;
         }
         if ((tTileEntity instanceof IGregTechTileEntity)) {
-            Logger.INFO("Right Clicking on GT Tile - drainTankGT.");
             if (((IGregTechTileEntity) tTileEntity).getTimer() < 50L) {
-                Logger.INFO("Returning False - Behaviour Class. Timer < 50");
                 return false;
             } else if ((!aWorld.isRemote) && (!((IGregTechTileEntity) tTileEntity).isUseableByPlayer(aPlayer))) {
-                Logger.INFO("Returning True - drainTankGT. NotUsable()");
                 return true;
             } else {
                 if (this.getFluid(aStack) == null
                     || (this.getFluid(aStack) != null && this.getFluid(aStack).amount < this.getCapacity(aStack))) {
-                    Logger.INFO("Trying to find Stored Fluid - drainTankGT.");
                     FluidStack aStored = getStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity);
                     if (aStored != null) {
                         int mAmountInserted = fill(aStack, aStored);
@@ -930,8 +859,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             boolean b = setStoredFluidOfGTMachine(
                                 (IGregTechTileEntity) tTileEntity,
                                 newStackRemainingInTank);
-                            Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
-                            Logger.INFO("Returning " + b + " - drainTankGT.");
                             if (b) {
                                 GTUtility.sendChatToPlayer(
                                     aPlayer,
@@ -941,15 +868,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             }
                             return b;
                         }
-                    } else {
-                        Logger.INFO("Found no valid Fluidstack - drainTankGT.");
                     }
-                } else {
-                    Logger.INFO("Pump is full.");
                 }
             }
         }
-        Logger.INFO("Could not drain GT tank.");
         return false;
     }
 
@@ -967,24 +889,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return null;
         }
         if (aMetaTileEntity instanceof MTEBasicTank) {
-            Logger.INFO("Tile Was Instanceof BasicTank.");
-            return getStoredFluidOfGTMachine((MTEBasicTank) aMetaTileEntity);
+            return ((MTEBasicTank) aMetaTileEntity).mFluid;
         } else {
             return null;
         }
     }
 
-    public FluidStack getStoredFluidOfGTMachine(MTEBasicTank aTileEntity) {
-        FluidStack f = aTileEntity.mFluid;
-
-        Logger.INFO(
-            "Returning Fluid stack from tile. Found: "
-                + (f != null ? f.getLocalizedName() + " - " + f.amount + "L" : "Nothing"));
-        return f;
-    }
-
     public boolean setStoredFluidOfGTMachine(IGregTechTileEntity aTileEntity, FluidStack aSetFluid) {
-        Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [1]");
         if (aTileEntity == null) {
             return false;
         }
@@ -993,7 +904,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return false;
         }
         if (aMetaTileEntity instanceof MTEBasicTank) {
-            Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [2]");
             return setStoredFluidOfGTMachine((MTEBasicTank) aMetaTileEntity, aSetFluid);
         } else {
             return false;
@@ -1003,10 +913,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public boolean setStoredFluidOfGTMachine(MTEBasicTank aTileEntity, FluidStack aSetFluid) {
         try {
             aTileEntity.mFluid = aSetFluid;
-            Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] success.");
             return true;
         } catch (Exception t) {
-            Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
             return false;
         }
     }

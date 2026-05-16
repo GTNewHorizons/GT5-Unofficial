@@ -32,7 +32,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,8 +50,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-public class MTECleanroom extends MTETooltipMultiBlockBase
-    implements IConstructable, ISecondaryDescribable, ICleanroom {
+public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstructable, ICleanroom {
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.
@@ -399,7 +397,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
             default:
                 throw new IllegalArgumentException(
-                    "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                    "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
         }
     }
 
@@ -546,7 +544,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
                     default:
                         throw new IllegalArgumentException(
-                            "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                            "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
                 }
             }
         }
@@ -795,12 +793,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTECleanRoomGui(this);
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTECleanRoomGui(this);
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

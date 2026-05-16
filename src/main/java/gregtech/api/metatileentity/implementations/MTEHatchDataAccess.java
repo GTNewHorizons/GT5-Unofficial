@@ -19,7 +19,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -29,7 +28,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGUI;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
+public class MTEHatchDataAccess extends MTEHatch {
 
     private int timeout = 4;
 

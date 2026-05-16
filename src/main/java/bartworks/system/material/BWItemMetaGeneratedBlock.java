@@ -26,7 +26,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Client;
 
 public class BWItemMetaGeneratedBlock extends BWItemBlocks {
 
@@ -41,7 +40,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             int aMetaData = aStack.getItemDamage();
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return metaBlock.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
@@ -49,20 +48,15 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (Client.tooltip.showFormula) {
-            if (!GTUtility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
-                return;
-            }
-            if (aList == null) {
-                aList = new ArrayList<>();
-            }
-            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
-            if (werkstoff != null) {
-                String tooltip = werkstoff.getLocalizedToolTip();
-                if (!tooltip.isEmpty()) {
-                    aList.add(tooltip);
-                }
-            }
+        if (!GTUtility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
+            return;
+        }
+        if (aList == null) {
+            aList = new ArrayList<>();
+        }
+        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
+        if (werkstoff != null) {
+            werkstoff.addTooltips(aList);
         }
     }
 

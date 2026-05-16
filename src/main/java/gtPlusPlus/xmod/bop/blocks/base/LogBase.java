@@ -27,7 +27,7 @@ public abstract class LogBase extends BlockLog {
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 
-    public LogBase(String blockNameLocalized, String blockNameUnlocalized, String[] treeTypes) {
+    public LogBase(String blockNameLocalized, String[] treeTypes) {
         this.treeType = treeTypes;
         String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);

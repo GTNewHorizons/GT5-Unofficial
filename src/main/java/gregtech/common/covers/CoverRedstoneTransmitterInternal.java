@@ -15,6 +15,7 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
         super(context, coverTexture);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

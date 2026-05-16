@@ -64,6 +64,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                     + " , you can't do it either")
             .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("LuV Machine Casing", 1664, false)
             .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)
             .addCasingInfoMin("Naquadah Alloy Frame Boxes", 128, false)

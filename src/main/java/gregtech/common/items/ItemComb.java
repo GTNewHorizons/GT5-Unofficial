@@ -135,7 +135,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return CombType.valueOf(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 
     @Override

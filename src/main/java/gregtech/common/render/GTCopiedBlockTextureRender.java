@@ -10,11 +10,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.prupe.mcpatcher.ctm.CTMUtils;
 
 import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.render.ISBRWorldContext;
 
-public class GTCopiedBlockTextureRender extends GTTextureBase implements ITexture, IBlockContainer {
+public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer {
 
     private final Block mBlock;
     private final byte mSide;
@@ -36,7 +35,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         else return ctx instanceof ISBRWorldContext ctxW
             ? CTMUtils
                 .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
-            : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
+            : icon;
     }
 
     @Override

@@ -30,11 +30,6 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 200;
     }
@@ -55,6 +50,11 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
+    public boolean isSaw() {
+        return true;
+    }
+
+    @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
@@ -67,13 +67,7 @@ public class ToolSaw extends GTTool {
                 aEvent.dropChance = 1.0F;
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
-            && (aDrops.isEmpty())) {
-                aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
-                aEvent.dropChance = 1.0F;
-                return 1;
-            }
+        }
         return 0;
     }
 

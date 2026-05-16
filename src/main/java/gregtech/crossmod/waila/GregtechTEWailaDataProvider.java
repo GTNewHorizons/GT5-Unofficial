@@ -44,6 +44,7 @@ public class GregtechTEWailaDataProvider implements IWailaDataProvider {
         return currenttip;
     }
 
+    @Override
     public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
 

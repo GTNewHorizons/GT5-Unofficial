@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,7 +46,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
@@ -70,7 +68,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
             .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
             .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
-            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LLL", "LLL" }, }))
+            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LcL", "LLL" }, }))
             .addElement(
                 'b',
                 ofChain(
@@ -139,13 +137,14 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
             .addEnergyHatch("Any casing except top centre", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
             .addInputHatch("Any bottom layer casing", 1)
             .addOutputBus("Any bottom layer casing", 1)
             .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -282,7 +281,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
     }
 
     @Override
@@ -335,20 +334,5 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

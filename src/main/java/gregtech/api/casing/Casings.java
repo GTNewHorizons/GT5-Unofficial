@@ -30,6 +30,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
+import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -362,6 +363,12 @@ public enum Casings implements ICasing {
         () -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
     NanochipFirewallProjectionCasing(
         () -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
+    StrengthenedInanimateCasing
+        (()->GregTechAPI.sBlockCasings12,5,gt(16,5,5)),
+    PreciseStationaryCasing
+        (()->GregTechAPI.sBlockCasings12,6,gt(16,5,6)),
+    UltimateStaticCasing
+        (()->GregTechAPI.sBlockCasings12,7,gt(16,5,7)),
     VibrationSafeCasing
         (() -> GregTechAPI.sBlockCasings12, 9, gt(16, 5, 9)),
     AlchemicallyResistantThaumiumCasing
@@ -370,6 +377,12 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 11, gt(16, 5, 11)),
     AlchemicallyImmuneIchoriumCasing
         (() -> GregTechAPI.sBlockCasings12, 12, gt(16, 5, 12)),
+    MixerCasing
+        (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
+    FormingCore
+        (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
+    AlgaeCasing
+        (() -> GregTechAPI.sBlockCasings12, 15, gt(16, 5, 15)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -491,6 +504,25 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13, 8, gt(16, 6, 8)),
     NaniteReplicationFramework
         (() -> GregTechAPI.sBlockCasings13, 9, gt(16, 6, 9)),
+    ColliderCasing
+        (() -> GregTechAPI.sBlockCasings13,10,gt(16,6,10)),
+    CMSCasing
+        (() -> GregTechAPI.sBlockCasings13,11,gt(16,6,11)),
+    ATLASCasing
+        (() -> GregTechAPI.sBlockCasings13,12,gt(16,6,12)),
+    ALICECasing
+        (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
+    LHCbCasing
+        (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+    NaquadahReactorCasing
+        (() -> GregTechAPI.sBlockCasings13,15,gt(16,6,15)),
+
+
+    // Block Casings 14
+
+    // Block Reinforced
+    NaquadahReinforcedBlock
+        (() -> GregTechAPI.sBlockReinforced,10,218),
 
     // Block Casings Foundry
     PrimaryExoFoundryCasing
@@ -570,6 +602,14 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
+    // BEC
+    SuperconductivePlasmaEnergyConduit
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
+    ElectromagneticallyIsolatedCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
+    FineStructureConstantManipulator
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
@@ -589,6 +629,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
     NanochipComplexGlass
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    ElectromagneticWaveguide
+        (() -> GregTechAPI.sBlockGlass1, 9, -1),
 
     // ------------------ Bartworks Casings -----------------
 
@@ -617,7 +659,7 @@ public enum Casings implements ICasing {
     HeatProofCokeOvenCasing
         (() -> ModBlocks.blockCasingsMisc, 3, gtpp(0, 3)),
     MaterialPressCasing
-        (() -> ModBlocks.blockCasingsMisc, 4, gtpp(0, 4)),
+        (() -> ModBlocks.blockCasingsMisc, 4, 50),
     ElectrolyzerCasing
         (() -> ModBlocks.blockCasingsMisc, 5, gtpp(0, 5)),
     WireFactoryCasing
@@ -654,7 +696,7 @@ public enum Casings implements ICasing {
     IncoloyDSFluidContainmentBlock
         (() -> ModBlocks.blockCasings2Misc, 3, gtpp(1, 3)),
     WashPlantCasing
-        (() -> ModBlocks.blockCasings2Misc, 4, -1),
+        (() -> ModBlocks.blockCasings2Misc, 4, 75),
     IndustrialSieveCasing
         (() -> ModBlocks.blockCasings2Misc, 5, gtpp(1, 5)),
     LargeSieveGrate
@@ -794,13 +836,13 @@ public enum Casings implements ICasing {
     TurbineShaft
         (() -> ModBlocks.blockSpecialMultiCasings, 0, gtpp(1, 0)),
     ReinforcedSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, gtpp(1, 1)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 1, 57),
     ReinforcedHPSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, gtpp(1, 2)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 2, 59),
     ReinforcedGasTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, gtpp(1, 3)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 3, 58),
     ReinforcedPlasmaTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, gtpp(1, 4)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, 60),
     TeslaContainmentCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
     StructuralSolarCasing
@@ -814,7 +856,7 @@ public enum Casings implements ICasing {
     ReinforcedEngineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     MolecularContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),
     HighVoltageCurrentCapacitor
         (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
     ParticleContainmentCasing
@@ -822,7 +864,7 @@ public enum Casings implements ICasing {
     ReinforcedHeatExchangerCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 14, gtpp(1, 14)),
     ReinforcedSCTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 15, gtpp(1, 15)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 15, 1538),
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
@@ -1003,9 +1045,26 @@ public enum Casings implements ICasing {
     SpatiallyTranscendentGravitationalLens
         (() -> BlockGodforgeGlass.INSTANCE, 0, -1),
 
+    // ------------------ Lanthanides -----------------
+
+    ShieldedAcceleratorCasing
+        (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,gt(12,126)),
+    // other lanth casings need to be registered manually
+
+
     // ------------------ Miscellaneous Elements -----------------
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
+    NaquadahFuelRefineryCasing
+        (() -> Loaders.FRF_Casings, 0, 179),
+    RadiantProofSteelFrameBox
+        (() -> Loaders.radiationProtectionSteelFrame, 0, -1),
+    FieldRestrictionCasing
+        (() -> Loaders.MAR_Casing, 0, -1),
+    FieldRestrictionGlass
+        (() -> Loaders.fieldRestrictingGlass, 0, -1),
+    SCTurbineCasing
+        (() -> Loaders.supercriticalFluidTurbineCasing, 0, 1538),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override

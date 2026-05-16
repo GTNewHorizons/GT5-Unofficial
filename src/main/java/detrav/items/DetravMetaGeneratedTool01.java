@@ -167,6 +167,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);

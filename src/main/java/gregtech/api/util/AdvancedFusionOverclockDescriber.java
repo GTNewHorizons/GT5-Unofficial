@@ -17,6 +17,7 @@ public class AdvancedFusionOverclockDescriber extends FusionOverclockDescriber {
         return 4.0;
     }
 
+    @Override
     protected double getDurationDecreasePerOC() {
         return 4.0;
     }

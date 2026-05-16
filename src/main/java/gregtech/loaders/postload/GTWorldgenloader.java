@@ -9,6 +9,7 @@ import gregtech.common.GTWorldgenerator;
 
 public class GTWorldgenloader implements Runnable {
 
+    @Override
     public void run() {
         new GTWorldgenerator();
         new WorldGeneratorSpace();

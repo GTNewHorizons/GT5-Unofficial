@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -305,6 +306,17 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<DecayType> DECAY_TYPE = SimpleRecipeMetadataKey
         .create(DecayType.class, "decay-type");
 
+    /// Each item in a BEC assembling recipe must have an associated nanite tier. This is because the I/O node will
+    /// change the progress speed depending on how many nanites are available, and whether their tier is high enough.
+    public static final RecipeMetadataKey<NaniteTier[]> NANITE_TIERS = SimpleRecipeMetadataKey
+        .create(NaniteTier[].class, "nanite_tiers");
+
+    /// This is just the fluid inputs for a BEC recipe, but we pull mFluidInputs into a meta entry so that recipes can
+    /// start without actually consuming them. I/O nodes will consume these fluids while the recipe runs. If it doesn't
+    /// get enough, the recipe fails.
+    public static final RecipeMetadataKey<FluidStack[]> CONDENSATE_INPUT = SimpleRecipeMetadataKey
+        .create(FluidStack[].class, "condensate_input");
+
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace. Will override the fluid input
      * with oxygen/plasma for the respective recipe maps, so there is no point setting it.
@@ -409,24 +421,19 @@ public class GTRecipeConstants {
         if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
         switch (wafer) {
             case Naquadah -> {
-                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
                 // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
                 // have to
                 // deal with circuits
                 return GTUtility.concat(
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(ArrayUtils.addAll(builder.fluidInputs, GTModHandler.getDistilledWater(100L)))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)

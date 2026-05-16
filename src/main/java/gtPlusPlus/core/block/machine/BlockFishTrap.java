@@ -98,11 +98,6 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public void onBlockAdded(final World world, final int x, final int y, final int z) {
-        super.onBlockAdded(world, x, y, z);
-    }
-
-    @Override
     public void breakBlock(final World world, final int x, final int y, final int z, final Block block,
         final int number) {
         InventoryUtils.dropInventoryItems(world, x, y, z, block);

@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -17,9 +16,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -27,7 +25,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
@@ -39,7 +36,8 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamSplitter>builder()
@@ -47,9 +45,9 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{{
-                "   BBB   ",
-                "   BCB   ",
-                "   B~B   "
+                "   EEE   ",
+                "   ECE   ",
+                "   E~E   "
             },{
                 "    B    ",
                 "   B B   ",
@@ -79,31 +77,30 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 "BB     BB",
                 "  BBBBB  "
             },{
-                "BBBBBBBBB",
-                "BDBDBDBDB",
-                "BBBBBBBBB"
+                "EEEEEEEEE",
+                "EDBDBDBDE",
+                "EEEEEEEEE"
             }})
         //spotless:on
-        .addElement(
-            'B', // collider casing
-            ofBlock(GregTechAPI.sBlockCasings13, 10))
+        .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamSplitter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(
                     (splitter, te, casingIndex) -> splitter
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
                 .build()) // adv beamline output hatch
+        .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
     public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
@@ -130,26 +127,21 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_SPLITTER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
         }
         return rTexture;
     }
@@ -193,7 +185,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                 false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
-            .toolTipFinisher(GTValues.AuthorHamCorp);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
 

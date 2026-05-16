@@ -9,12 +9,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicHull extends MTEBasicTank {
 
-    public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, 1, aDescription, aTextures);
+    public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, aTextures);
     }
 
     public MTEBasicHull(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -129,5 +130,14 @@ public class MTEBasicHull extends MTEBasicTank {
     @Override
     public int getCapacity() {
         return (mTier + 1) * 1000;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.basic_hull.desc");
     }
 }

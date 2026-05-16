@@ -2,7 +2,6 @@ package gregtech.common.items.toolbox;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
@@ -13,11 +12,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import gregtech.GTMod;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.ItemGTToolbox;
-import ic2.api.item.IElectricItemManager;
 
 /**
  * Contains various static methods used by toolbox classes.
@@ -53,21 +53,6 @@ public class ToolboxUtil {
     }
 
     /**
-     * Get the {@link IElectricItemManager} for the battery inside a toolbox and runs an action with no return value.
-     *
-     * @param toolbox The toolbox to search
-     * @param action  A function to run if a battery is found inside the toolbox.
-     *                Arguments are the battery's {@link ItemStack} and its manager.
-     */
-    public static void withBatteryAndManager(final ItemStack toolbox,
-        BiConsumer<? super ItemStack, ? super IElectricItemManager> action) {
-        final Optional<ItemStack> stack = getBattery(toolbox);
-
-        stack.flatMap(ItemGTToolbox::getElectricManager)
-            .ifPresent(manager -> action.accept(stack.get(), manager));
-    }
-
-    /**
      * {@code additionalAction} defaults to no operation.
      *
      * @see #saveToolbox(ItemStack, ItemStackHandler, Consumer)
@@ -86,7 +71,12 @@ public class ToolboxUtil {
      */
     public static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler,
         @Nullable Consumer<NBTTagCompound> additionalAction) {
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+        if (toolbox == null) {
+            GTMod.GT_FML_LOGGER.warn("[Toolbox Save Handler] Tried to save toolbox, but no toolbox was found.");
+            return;
+        }
+
+        final NBTTagCompound tag = ItemStackNBT.get(toolbox);
         final int selectedTool = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)
             ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY)
             : ItemGTToolbox.NO_TOOL_SELECTED;
@@ -108,7 +98,9 @@ public class ToolboxUtil {
             additionalAction.accept(tag);
         }
 
-        toolbox.setTagCompound(tag);
+        if (tag.hasNoTags()) {
+            toolbox.setTagCompound(null);
+        }
     }
 
     /**
@@ -142,9 +134,7 @@ public class ToolboxUtil {
      * @return The {@link ToolboxSlot} of the current tool, or empty if no tool is selected
      */
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
-        if (toolbox == null || !toolbox.hasTagCompound()
-            || !toolbox.getTagCompound()
-                .hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
+        if (toolbox == null || !ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
             return Optional.empty();
         }
 
@@ -204,9 +194,8 @@ public class ToolboxUtil {
      * @return true if the toolbox can be charged
      */
     public static boolean canCharge(final ItemStack toolbox) {
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-
-        return !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
+        final NBTTagCompound tag = toolbox.getTagCompound();
+        return tag == null || !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
             && !tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY);
     }
 }

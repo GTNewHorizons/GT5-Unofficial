@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -37,7 +36,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public abstract class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public abstract class MTEBaseModule extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -284,6 +283,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
     }
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
@@ -345,11 +345,6 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
 
     @Override
     public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

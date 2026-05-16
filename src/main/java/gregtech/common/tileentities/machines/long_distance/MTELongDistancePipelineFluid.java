@@ -37,12 +37,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
 
     static final FluidTankInfo[] emptyTank = { new FluidTankInfo(null, Integer.MAX_VALUE) };
 
     public MTELongDistancePipelineFluid(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Sends fluids over long distances");
+        super(aID, aName, aNameRegional, aTier);
+        this.tooltipPrefixKey = "gt.blockmachines.long_distance_fluid_pipeline.desc";
     }
 
     public MTELongDistancePipelineFluid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

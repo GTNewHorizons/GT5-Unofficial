@@ -35,6 +35,7 @@ public class WirelessActivityDetectorUIFactory
         return null;
     }
 
+    @Override
     protected @NotNull CoverDataControllerWidget<CoverWirelessDoesWorkDetector> getDataController() {
         return new CoverDataControllerWidget<>(this::getCover, this.getUIBuildContext());
     }

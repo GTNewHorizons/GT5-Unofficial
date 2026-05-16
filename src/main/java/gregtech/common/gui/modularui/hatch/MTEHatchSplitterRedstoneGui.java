@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -12,11 +11,11 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 
@@ -31,13 +30,15 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
         IntSyncValue redstone = syncManager.findSyncHandler("redstone", IntSyncValue.class);
         IntSyncValue channel = syncManager.findSyncHandler("channel", IntSyncValue.class);
         return super.createContentSection(panel, syncManager).child(
-            new Column().coverChildren()
-                .align(Alignment.CENTER)
+            Flow.column()
+                .coverChildren()
+                .center()
                 .child(
                     IKey.lang("GT5U.gui.text.nac.splitter.channel")
                         .asWidget())
                 .child(
-                    new Row().paddingBottom(4)
+                    Flow.row()
+                        .paddingBottom(4)
                         .coverChildren()
                         .child(
                             new ButtonWidget<>().size(14)
@@ -67,12 +68,8 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())
                         .alignment(Alignment.CENTER)
                         .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .paddingTop(3)));
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo();
     }
 
     @Override

@@ -13,19 +13,26 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTETieredTank extends MTEBasicTank {
+public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(
@@ -77,14 +84,14 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
+        if (ItemStackNBT.hasKey(stack, "mFluid")) {
             final FluidStack tContents = FluidStack
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTUtility.translate("gtpp.tiered_tank.tooltip.contains") + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    GTUtility.translate(
+                        "gtpp.tiered_tank.tooltip.contains",
+                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
 
                 tooltip.add(
                     GTUtility.translate(
@@ -159,11 +166,12 @@ public class MTETieredTank extends MTEBasicTank {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (mFluid != null) {
-            Logger.WARNING("Setting item fluid nbt");
             aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-            if (aNBT.hasKey("mFluid")) {
-                Logger.WARNING("Set mFluid to NBT.");
-            }
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETieredTankGui(this).build(guiData, syncManager, uiSettings);
     }
 }

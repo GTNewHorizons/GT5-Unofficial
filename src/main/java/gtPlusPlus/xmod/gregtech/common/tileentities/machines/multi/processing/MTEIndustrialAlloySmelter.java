@@ -125,7 +125,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Bottom center")
+            .addController("Front Bottom center")
             .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
             .addOtherStructurePart("Integral Encasement V", "Middle Layer")
             .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")

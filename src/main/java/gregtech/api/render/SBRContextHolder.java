@@ -10,7 +10,7 @@ import gregtech.common.render.SBRInventoryContext;
 import gregtech.common.render.SBRWorldContext;
 
 /**
- * Holds and manages single instances of {@link SBRInventoryContext} and {@link SBRWorldContext},
+ * Holds and manages single instances of {@link ISBRInventoryContext} and {@link ISBRWorldContext},
  * intended to be reused and reconfigured for each rendering operation.
  * <p>
  * This holder is expected to be used in a thread-confined context (e.g. via
@@ -19,18 +19,18 @@ import gregtech.common.render.SBRWorldContext;
  */
 public final class SBRContextHolder {
 
-    private final SBRInventoryContext inventoryContext = new SBRInventoryContext();
-    private final SBRWorldContext worldContext = new SBRWorldContext();
+    private final ISBRInventoryContext inventoryContext = SBRInventoryContext.create();
+    private final ISBRWorldContext worldContext = SBRWorldContext.create();
 
     /**
-     * Returns this holder's {@link SBRInventoryContext} instance configured to
+     * Returns this holder's {@link ISBRInventoryContext} instance configured to
      * render a single {@link Block} in an inventory, using the provided parameters.
      *
      * @param block        the block to render
      * @param meta         the block's metadata value (corresponds to the {@link Item} damage value)
      * @param modelId      the model ID for the block
      * @param renderBlocks the {@link RenderBlocks} renderer to use
-     * @return the configured {@link SBRInventoryContext} instance unique to this holder
+     * @return the configured {@link ISBRInventoryContext} instance unique to this holder
      */
     public ISBRInventoryContext getSBRInventoryContext(@NotNull Block block, int meta, int modelId,
         @NotNull RenderBlocks renderBlocks) {
@@ -38,7 +38,7 @@ public final class SBRContextHolder {
     }
 
     /**
-     * Returns this holder's {@link SBRWorldContext} instance configured to
+     * Returns this holder's {@link ISBRWorldContext} instance configured to
      * render a single {@link Block} in world, using the provided parameters.
      *
      * @param x        world X coordinate
@@ -47,7 +47,7 @@ public final class SBRContextHolder {
      * @param block    the block to render
      * @param modelId  the Model ID for the block
      * @param renderer the {@link RenderBlocks} renderer to use
-     * @return the configured {@link SBRWorldContext} instance unique to this holder
+     * @return the configured {@link ISBRWorldContext} instance unique to this holder
      */
     @SuppressWarnings("MethodWithTooManyParameters") // Blame ISimpleBlockRenderingHandler.renderWorldBlock
     public ISBRWorldContext getSBRWorldContext(int x, int y, int z, @NotNull Block block, int modelId,

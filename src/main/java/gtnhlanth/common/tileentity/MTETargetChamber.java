@@ -12,7 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
@@ -35,7 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
@@ -69,8 +68,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private final ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
-    private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int GrateMachineCasingTextureID = Casings.GrateMachineCasing.getTextureId();
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private GTRecipe lastRecipe;
 
     // spotless:off
@@ -86,25 +85,25 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     						{"cstsc", "s-u-s", "suius", "s-u-s", "ccccc"},
     						{"ggggg", "gjjjg", "gjojg", "gjjjg", "ggggg"}})
 
-    			.addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) //Grate casing
+    			.addElement('g', Casings.GrateMachineCasing.asElement())
     			.addElement(
     					'f',
     					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
-    					.casingIndex(CASING_INDEX_FRONT).hint(2).buildAndChain(ofBlock(GregTechAPI.sBlockCasings3, 10)))
+    					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX_CENTRE).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
-    			.addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
+    			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(CASING_INDEX_CENTRE).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
 
-    			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(CASING_INDEX_CENTRE).hint(3).build())
+    			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
     			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
     			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).hint(4).build())
+    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(4).build())
     			.build();
     }
     //spotless:on
@@ -162,26 +161,28 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         int colorIndex, boolean active, boolean redstoneLevel) {
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
     }
 
     @Override
@@ -202,9 +203,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(EnumChatFormatting.WHITE + "Processing Time = 5 seconds * " + EnumChatFormatting.GOLD + "Minimum Required Rate" + EnumChatFormatting.WHITE + " / " + createRateText("Input Beam Rate"))
             .addInfo("Can process up to the durability of all " + createMaskText("Mask's") + " in the Focus Input Bus of one type per game tick")
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Grate Machine Casing", 29, false)
-            .addCasingInfoExactly("Shielded Accelerator Casing", 28, false)
+            .addController("Front bottom center")
+            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
+            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Any Tiered Glass", 16, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
             .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
@@ -504,6 +505,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate() };
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private String createMaskText(String text) {

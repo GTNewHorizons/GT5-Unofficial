@@ -102,6 +102,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     /**
      * ICustomBlockSetting setBlock override
      */
+    @Override
     public void setBlock(World world, int x, int y, int z, int meta) {
         world.setBlock(x, y, z, this, meta, 2);
         try {

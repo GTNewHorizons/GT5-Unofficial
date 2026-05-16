@@ -1,25 +1,41 @@
 package gregtech.common.tileentities.machines.multi;
 
-import net.minecraft.block.Block;
-
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class MTELargeBoilerSteel extends MTELargeBoiler {
+public class MTELargeBoilerSteel extends MTELargeBoilerBase {
+
+    public static final int EUT_GENERATED = 1000;
+    public static final int EFFICIENCY_INCREASE = 12;
+    public static final boolean SUPERHEATED = false;
 
     public MTELargeBoilerSteel(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-        pollutionPerSecond = GTMod.proxy.mPollutionLargeSteelBoilerPerSecond;
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            Casings.SolidSteelMachineCasing,
+            Casings.SteelPipeCasing,
+            Casings.SteelFireboxCasing,
+            EUT_GENERATED,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
+            GTMod.proxy.mPollutionLargeSteelBoilerPerSecond);
     }
 
     public MTELargeBoilerSteel(String aName) {
-        super(aName);
-        pollutionPerSecond = GTMod.proxy.mPollutionLargeSteelBoilerPerSecond;
+        super(
+            aName,
+            Casings.SolidSteelMachineCasing,
+            Casings.SteelPipeCasing,
+            Casings.SteelFireboxCasing,
+            EUT_GENERATED,
+            EFFICIENCY_INCREASE,
+            SUPERHEATED,
+            GTMod.proxy.mPollutionLargeSteelBoilerPerSecond);
     }
-
-    public static final int EUT_GENERATED = 1000;
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -37,62 +53,7 @@ public class MTELargeBoilerSteel extends MTELargeBoiler {
     }
 
     @Override
-    public Block getCasingBlock() {
-        return GregTechAPI.sBlockCasings2;
-    }
-
-    @Override
-    public byte getCasingMeta() {
-        return 0;
-    }
-
-    @Override
-    public byte getCasingTextureIndex() {
-        return 16;
-    }
-
-    @Override
-    public Block getPipeBlock() {
-        return GregTechAPI.sBlockCasings2;
-    }
-
-    @Override
-    public byte getPipeMeta() {
-        return 13;
-    }
-
-    @Override
-    public Block getFireboxBlock() {
-        return GregTechAPI.sBlockCasings3;
-    }
-
-    @Override
-    public byte getFireboxMeta() {
-        return 14;
-    }
-
-    @Override
-    public byte getFireboxTextureIndex() {
-        return 46;
-    }
-
-    @Override
-    public int getEUt() {
-        return MTELargeBoilerSteel.EUT_GENERATED;
-    }
-
-    @Override
-    public int getEfficiencyIncrease() {
-        return 12;
-    }
-
-    @Override
     int runtimeBoost(int mTime) {
         return mTime;
-    }
-
-    @Override
-    boolean isSuperheated() {
-        return false;
     }
 }

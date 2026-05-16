@@ -139,7 +139,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
             .addCasingInfoExactly("Heating Coils", 16, true)
             .addEnergyHatch("Any bottom layer casing", 1)

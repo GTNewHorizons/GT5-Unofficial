@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.render.ISBRInventoryContext;
-import gregtech.api.render.SBRContextHolder;
 
 /**
  * Represents the Inventory rendering context for a single block during a render pass.
@@ -33,15 +32,16 @@ import gregtech.api.render.SBRContextHolder;
  */
 public final class SBRInventoryContext extends SBRContextBase implements ISBRInventoryContext {
 
-    private static final float[] LIGHTNESS = { 0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F };
     private int meta;
 
+    private SBRInventoryContext() {}
+
     /**
-     * Package-private constructor.
-     * <p>
-     * Instances should be obtained via {@link SBRContextHolder#getSBRInventoryContext}.
+     * @return a new {@link ISBRInventoryContext} instance
      */
-    public SBRInventoryContext() {}
+    public static ISBRInventoryContext create() {
+        return new SBRInventoryContext();
+    }
 
     /**
      * Configures this {@link SBRInventoryContext} to render a single {@link Block}

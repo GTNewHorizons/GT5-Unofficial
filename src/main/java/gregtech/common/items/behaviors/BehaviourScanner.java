@@ -8,21 +8,21 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -38,6 +38,7 @@ public class BehaviourScanner extends BehaviourNone {
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {
                     tNBT.setString("dataLines" + i, list.get(i));
+                    // FIXME: localize scanner data
                     GTUtility.sendChatToPlayer(aPlayer, list.get(i));
                 }
             }
@@ -50,16 +51,14 @@ public class BehaviourScanner extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            int lines = tNBT.getInteger("dataLinesCount");
-            if (lines < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + "Block scan data result:");
+        final int lines = ItemStackNBT.getInteger(aStack, "dataLinesCount");
+        if (0 < lines) {
+            aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
             for (int i = 0; i < lines; i++) {
-                aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
+                aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
             }
-        } catch (Exception e) {
-            aList.add(this.mTooltip);
+        } else {
+            aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));
         }
         return aList;
     }

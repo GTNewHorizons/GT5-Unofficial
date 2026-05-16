@@ -3,7 +3,6 @@ package gregtech.common.blocks;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -37,7 +36,7 @@ import gregtech.api.util.GTModHandler;
 public class BlockMachinesSubclassTest {
 
     @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-    private static class MyBlockMachines extends BlockMachines implements ITileEntityProvider {
+    private static class MyBlockMachines extends BlockMachines {
 
         public MyBlockMachines() {
             super(ItemBlock.class, "modid.machines", Material.wood);

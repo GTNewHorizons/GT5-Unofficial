@@ -49,6 +49,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
         this.mFluidCapacity = aAmount;
     }
 
+    @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {

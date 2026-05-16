@@ -48,7 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -209,7 +209,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
             .addCasingInfoMin("Quantum Force Conductor", 177, false)
             .addCasingInfoMin("Force Field Glass", 224, false)
@@ -223,7 +223,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
             .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
             .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
-            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
         //spotless:on
     }
@@ -683,6 +683,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
         }
@@ -786,7 +787,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
-        IIcon forceField = TexturesGtBlock.ForceField.getIcon();
+        IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();
@@ -832,21 +833,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     private String catalystText(String text) {

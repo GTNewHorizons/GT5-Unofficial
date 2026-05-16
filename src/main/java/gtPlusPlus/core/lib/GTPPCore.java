@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,12 +32,12 @@ public class GTPPCore {
     public static final String name = "GT++";
     public static final String VERSION = GT_Version.VERSION;
 
+    // Alkalus
+    public static final String AUTHOR = EnumChatFormatting.DARK_GREEN + "Alkalus";
+
     // Tooltips;
-    public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
-    public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
-        .translateToLocal("GTPP.core.GT_Tooltip_Builder");
-    public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
-        .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
+    public static final Supplier<String> GT_Tooltip = () -> StatCollector
+        .translateToLocalFormatted("GTPP.core.GT_Tooltip", AUTHOR);
 
     /**
      * Lists/Maps
@@ -51,4 +52,9 @@ public class GTPPCore {
 
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
+
+    public static void onServerStop() {
+        sTesseractGeneratorOwnershipMap.clear();
+        sTesseractTerminalOwnershipMap.clear();
+    }
 }

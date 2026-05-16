@@ -26,6 +26,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_NAMEPLATE_NANOCHIP = "gregtech:bg_nameplate_nanochip";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_TERMINAL_BLACK = "gregtech:bg_terminal_black";
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
     public static final String BACKGROUND_CHAOS_LOCATOR = "gregtech:bg_chaos_locator";
@@ -53,7 +54,7 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_BLOCK_STEEL = "gregtech:overlay_slot_block_steel";
     public static final String OVERLAY_SLOT_BLOCK_PRIMITIVE = "gregtech:overlay_slot_block_primitive";
 
-    public static final String OVERLAY_SLOT_CANISTER_STANDARD = "gregtech:overlay_slot_canister_standard";
+    public static final String OVERLAY_SLOT_CANISTER_DARK = "gregtech:overlay_slot_canister_dark";
     public static final String OVERLAY_SLOT_CANISTER_BRONZE = "gregtech:overlay_slot_canister_bronze";
     public static final String OVERLAY_SLOT_CANISTER_STEEL = "gregtech:overlay_slot_canister_steel";
 
@@ -127,7 +128,9 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_TECTECH_LOGO = "tectech:picture_tt_logo";
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
+    public static final String PICTURE_INTERGALACTIC_LOGO = "intergalactic:picture_intergalactic_logo";
     public static final String PICTURE_LOGO_EXOFOUNDRY = "gregtech:picture_logo_exofoundry";
     public static final String PICTURE_LOGO_NANOCHIP = "gregtech:picture_logo_nanochip";
 

@@ -8,6 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -16,7 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
-import gregtech.api.recipe.NEIRecipeProperties;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -80,13 +80,10 @@ public class FoundryModuleFrontend extends RecipeMapFrontend {
         if (ItemList.Magnetic_Chassis_T1_ExoFoundry.isStackEqual(pStack.item)
             || ItemList.Magnetic_Chassis_T2_ExoFoundry.isStackEqual(pStack.item)
             || ItemList.Magnetic_Chassis_T3_ExoFoundry.isStackEqual(pStack.item)) {
-            currentTip.add(EnumChatFormatting.GOLD + "Chassis must match Foundry Tier!");
+            currentTip
+                .add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.nei.foundry_module.chassis_tier"));
         }
         return currentTip;
     }
 
-    @Override
-    public NEIRecipeProperties getNEIProperties() {
-        return super.getNEIProperties();
-    }
 }

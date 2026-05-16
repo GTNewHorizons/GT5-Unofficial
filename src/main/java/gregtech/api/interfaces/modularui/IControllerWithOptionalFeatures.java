@@ -167,10 +167,20 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     }
 
     /**
+     * It is not recommended to override this function. It is recommended to override getMachineModeKey() and add the
+     * corresponding key in the language file to localize the mode name.
+     *
      * @return name for the current machine mode on this machine. Defaults "Unknown Mode"
      */
     default String getMachineModeName() {
-        return "Unknown Mode";
+        return StatCollector.translateToLocal(getMachineModeKey());
+    }
+
+    /**
+     * @return key of the name for the current machine mode on this machine. Defaults "Unknown Mode"
+     */
+    default String getMachineModeKey() {
+        return "GT5U.MULTI_MACHINE_MODE.unknown";
     }
 
     /**

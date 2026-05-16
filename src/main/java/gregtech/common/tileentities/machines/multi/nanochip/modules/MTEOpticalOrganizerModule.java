@@ -121,14 +121,17 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return OPTICAL_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return OPTICAL_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return OPTICAL_OFFSET_Z;
     }

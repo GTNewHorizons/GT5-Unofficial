@@ -28,7 +28,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,6 +42,7 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -192,18 +192,10 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
-        structureInstanceInfo.validate(errors, context);
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        structureInstanceInfo.localizeStructureErrors(errors, context, lines);
+        structureInstanceInfo.validate(errors);
     }
 
     @Override
@@ -223,8 +215,9 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addSeparator()
             .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)");
 
-        tt.beginStructureBlock(true)
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CASING);
         tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
@@ -266,11 +259,6 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

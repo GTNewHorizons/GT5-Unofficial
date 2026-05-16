@@ -89,6 +89,8 @@ public class UndergroundOil {
         // do stuff on it if needed
         FluidStack fluidInChunk = new FluidStack(chunkData.getFluid(), 0);
         if (readOrDrainCoefficient >= 0) {
+            // TODO fix int casting issue, with batch mode pumping x128 and
+            // casting to int isn't the same as casting to int and x128 afterwards
             int fluidExtracted = (int) Math.floor(chunkData.getAmount() * (double) readOrDrainCoefficient / DIVIDER);
             double averageDecrease = chunkData.getVein().DecreasePerOperationAmount * (double) readOrDrainCoefficient;
             int decrease = (int) Math.ceil(averageDecrease);
@@ -112,6 +114,7 @@ public class UndergroundOil {
                 chunkData.setAmount(0);
             } else {
                 // get the expected current output
+                // TODO same here
                 fluidInChunk.amount = (int) Math
                     .floor(chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
             }

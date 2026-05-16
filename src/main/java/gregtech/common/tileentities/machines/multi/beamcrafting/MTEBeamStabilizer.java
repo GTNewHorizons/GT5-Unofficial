@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -18,9 +17,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -41,7 +38,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
 
     public int playerTargetBeamRate = 100;
     private int storedParticleID = 0;
@@ -59,6 +57,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         aNBT.setFloat("storedBeamEnergy", storedBeamEnergy);
         aNBT.setInteger("cumulativeBeamRate", cumulativeBeamRate);
         aNBT.setFloat("storedBeamFocus", storedBeamFocus);
+        aNBT.setInteger("playerTargetBeamRate", playerTargetBeamRate);
     }
 
     @Override
@@ -68,6 +67,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         storedBeamEnergy = aNBT.getFloat("storedBeamEnergy");
         cumulativeBeamRate = aNBT.getInteger("cumulativeBeamRate");
         storedBeamFocus = aNBT.getFloat("storedBeamFocus");
+        playerTargetBeamRate = aNBT.getInteger("playerTargetBeamRate");
     }
 
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
@@ -78,9 +78,9 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             new String[][]{{
                 "       ",
                 "       ",
-                "  BBB  ",
-                "  BCB  ",
-                "  B~B  ",
+                "  EEE  ",
+                "  ECE  ",
+                "  E~E  ",
                 "       ",
                 "       "
             },{
@@ -158,31 +158,30 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             },{
                 "       ",
                 "       ",
-                "  BBB  ",
-                "  BDB  ",
-                "  BBB  ",
+                "  EEE  ",
+                "  EDE  ",
+                "  EEE  ",
                 "       ",
                 "       "
             }})
         //spotless:on
-        .addElement(
-            'B', // collider casing
-            ofBlock(GregTechAPI.sBlockCasings13, 10))
+        .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamStabilizer::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchOutputBeamline.class)
-                .casingIndex(CASING_INDEX_CENTRE)
+                .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
                 .build()) // beamline output hatch
+        .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
     public MTEBeamStabilizer(final int aID, final String aName, final String aNameRegional) {
@@ -209,25 +208,20 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE)
                         .extFacing()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)),
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_BEAM_STABILIZER)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings13, 10)) };
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
         }
         return rTexture;
     }
@@ -280,7 +274,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
                 1,
                 false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorHamCorp, GTValues.Authorzub);
+            .toolTipFinisher(GTAuthors.AuthorHamCorp, GTAuthors.Authorzub);
         return tt;
     }
 
@@ -305,7 +299,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        boolean packetStored = cumulateStoredBeamPacket();
+        cumulateStoredBeamPacket();
+        boolean packetStored = this.cumulativeBeamRate > 0;
         if (packetStored) {
             this.mMaxProgresstime = TickTime.SECOND;
             outputPacketAfterRecipe(this.playerTargetBeamRate);
@@ -314,18 +309,15 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
-    private boolean cumulateStoredBeamPacket() {
+    private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getNthInputParticle(0);
-
-        if (inputParticle.getEnergy() == 0) {
-            return false;
-        }
+        if (inputParticle.getEnergy() == 0) return;
 
         if (this.storedBeamEnergy == inputParticle.getEnergy()
             && this.storedParticleID == inputParticle.getParticleId()) {
             this.cumulativeBeamRate += inputParticle.getRate();
             this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
-            return true;
+            return;
         }
 
         if (this.cumulativeBeamRate == 0) {
@@ -335,7 +327,6 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             this.cumulativeBeamRate += inputParticle.getRate();
             this.cumulativeBeamRate = Math.min(this.cumulativeBeamRate, MAX_STORED_PARTICLES);
         }
-        return true;
     }
 
     private void outputPacketAfterRecipe(int rate) {

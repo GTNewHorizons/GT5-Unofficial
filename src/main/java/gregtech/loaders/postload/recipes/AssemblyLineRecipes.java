@@ -14,12 +14,12 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -34,7 +34,7 @@ public class AssemblyLineRecipes implements Runnable {
     private final Materials LuVMat;
 
     public AssemblyLineRecipes() {
-        LuVMat = ExternalMaterials.getRuridit();
+        LuVMat = WerkstoffLoader.Ruridit.getGTMaterial();
     }
 
     @Override
@@ -832,7 +832,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Component_Grinder_Diamond.get(64) },
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 32),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Chrome, 16))
-            .itemOutputs(ItemList.Ore_Processor.get(1))
+            .itemOutputs(ItemList.IntegratedOreFactory.get(1))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 Materials.Naquadria.getMolten(10 * INGOTS))

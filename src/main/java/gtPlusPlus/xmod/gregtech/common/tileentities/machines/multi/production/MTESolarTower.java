@@ -88,8 +88,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Surround with rings of Solar Reflectors")
             .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
             .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getLocalizedName())
-            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getLocalizedName())
+            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName())
+            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
             .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
             .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
             .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
@@ -102,7 +102,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Total number of reflectors based on how many rings are built:")
             .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top Middle")
+            .addController("Top center")
             .addCasingInfoMin("Structural Solar Casing", 229, false)
             .addCasingInfoMin("Thermally Insulated Casing", 60, false)
             .addCasingInfoMin("Salt Containment Casing", 66, false)
@@ -318,11 +318,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         mCasing4 = 0;
 
         boolean aStructureTop = checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0);
-        log("Top Check: " + aStructureTop);
         boolean aStructureTower = checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7);
-        log("Tower Check: " + aStructureTower);
         boolean aStructureBase = checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22);
-        log("Base Check: " + aStructureBase);
         boolean aCasingCount1 = mCasing1 >= 229;
         boolean aCasingCount2 = mCasing2 == 60;
         boolean aCasingCount3 = mCasing3 == 66;
@@ -333,49 +330,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             || mMaintenanceHatches.size() != 1
             || mInputHatches.isEmpty()
             || mOutputHatches.isEmpty()) {
-            log(
-                "Bad Hatches - Solar Heaters: " + mSolarHeaters.size()
-                    + ", Maint: "
-                    + mMaintenanceHatches.size()
-                    + ", Input Hatches: "
-                    + mInputHatches.size()
-                    + ", Output Hatches: "
-                    + mOutputHatches.size()
-                    + ", Top: "
-                    + aStructureTop
-                    + ", Tower: "
-                    + aStructureTower
-                    + ", Base: "
-                    + aStructureBase
-                    + ", Casing Count: "
-                    + aCasingCount1
-                    + " | Found: "
-                    + mCasing1
-                    + ", Casing Count: "
-                    + aCasingCount2
-                    + " | Found: "
-                    + mCasing2
-                    + ", Casing Count: "
-                    + aCasingCount3
-                    + " | Found: "
-                    + mCasing3
-                    + ", Casing Count: "
-                    + aCasingCount4
-                    + " | Found: "
-                    + mCasing4);
             return false;
         }
-        log(
-            "Built " + this.getLocalName()
-                + " with "
-                + mCasing1
-                + " Structural Solar casings, "
-                + mCasing2
-                + " Thermally Insulated casings, "
-                + mCasing3
-                + " Salt Containment casings, "
-                + mCasing4
-                + " Thermal Containment casings.");
         return aAllCasings && aAllStructure;
     }
 
@@ -532,7 +488,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTESolarHeater mTile) {
                 if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
-                    // Logger.INFO("Found Solar Reflector, Injecting Data.");
                     mTile.setSolarTower(this);
                     return this.mSolarHeaters.add(mTile);
                 }
@@ -673,8 +628,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Internal Heat Level: " + this.mHeatLevel,
-            "Connected Solar Reflectors: " + this.mSolarHeaters.size() };
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

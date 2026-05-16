@@ -75,7 +75,7 @@ public class TTRecipeAdder extends RecipeAdder {
 
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
-            .itemOutputs(aOutput)
+            .itemOutputs(GTUtility.copyAmount(1, aOutput))
             .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)
@@ -219,7 +219,7 @@ public class TTRecipeAdder extends RecipeAdder {
 
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
-            .itemOutputs(aOutput)
+            .itemOutputs(GTUtility.copyAmount(1, aOutput))
             .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)

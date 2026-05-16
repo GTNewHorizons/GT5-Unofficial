@@ -13,7 +13,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTDataUtils;
-import gregtech.common.config.Client;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -57,21 +56,17 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
-        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getDefaultLocalNameForItem(mat);
+        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        if (Client.tooltip.showFormula) {
-            Materials mat = GTDataUtils
-                .getIndexSafe(GregTechAPI.sGeneratedMaterials, blockOre.getMaterialIndex(stack.getItemDamage()));
+        Materials mat = GTDataUtils
+            .getIndexSafe(GregTechAPI.sGeneratedMaterials, blockOre.getMaterialIndex(stack.getItemDamage()));
 
-            if (mat == null) mat = Materials._NULL;
+        if (mat == null) mat = Materials._NULL;
 
-            if (mat.mChemicalFormula != null && !mat.mChemicalFormula.isEmpty()) {
-                desc.add(mat.mChemicalFormula);
-            }
-        }
+        mat.addTooltips(desc);
     }
 
     @Override

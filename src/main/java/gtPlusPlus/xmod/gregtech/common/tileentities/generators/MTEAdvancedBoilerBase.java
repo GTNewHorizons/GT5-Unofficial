@@ -58,10 +58,6 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             GTPPCore.GT_Tooltip.get());
     }
 
-    public ITexture getOverlayIcon() {
-        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
-    }
-
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[10][17][];

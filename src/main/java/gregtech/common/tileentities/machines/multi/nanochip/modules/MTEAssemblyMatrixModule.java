@@ -46,6 +46,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -59,14 +60,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
 
+    @Override
     public int structureOffsetX() {
         return ASSEMBLY_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ASSEMBLY_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ASSEMBLY_OFFSET_Z;
     }
@@ -220,6 +224,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addCasingInfoExactly(OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), 3, false)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
+            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .addStructureInfoSeparator()
             .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();

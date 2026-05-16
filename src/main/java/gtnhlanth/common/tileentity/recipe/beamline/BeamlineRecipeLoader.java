@@ -108,6 +108,20 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .addTo(sourceChamberRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.NEUTRON.ordinal())
+                    .rate(10)
+                    .energy(100_000, 999)
+                    .focus(95)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(sourceChamberRecipes);
+
         /*
          * ALPHA
          */
@@ -135,7 +149,7 @@ public class BeamlineRecipeLoader {
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
                     .particleID(Particle.PROTON.ordinal())
-                    .rate(10)
+                    .rate(40)
                     .energy(1_000_000, 0.3f)
                     .focus(99)
                     .build())

@@ -129,14 +129,17 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return BOARD_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return BOARD_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return BOARD_OFFSET_Z;
     }
@@ -342,11 +345,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        return super.checkProcessing();
-    }
-
     public void fillTank() {
         ArrayList<FluidStack> inputFluid = getStoredFluids();
         for (FluidStack fluid : inputFluid) {
@@ -405,6 +403,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         this.storedFluidStack = fluid;
     }
 
+    @Override
     public int getCapacity() {
         return fluidCapacity;
     }

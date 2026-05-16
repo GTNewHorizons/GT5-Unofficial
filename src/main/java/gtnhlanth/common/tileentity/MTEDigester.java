@@ -139,11 +139,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 400;
     }
@@ -169,6 +164,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return DescTextLocalization.addText("Digester.hint", 6);
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
         boolean active, boolean redstone) {
 
@@ -205,7 +201,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)

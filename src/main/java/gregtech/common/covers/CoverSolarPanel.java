@@ -20,6 +20,7 @@ public class CoverSolarPanel extends CoverLegacyData {
         this.mVoltage = aVoltage;
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

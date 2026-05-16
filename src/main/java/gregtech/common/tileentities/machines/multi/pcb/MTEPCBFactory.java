@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.pcb;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -88,6 +88,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTEPCBFactoryGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -778,6 +779,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Configure Trace Size in UI")
             .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(
                 EnumChatFormatting.GOLD + "1"
@@ -878,6 +880,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
+            .addStructureInfo("")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
@@ -1069,6 +1073,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
         }
@@ -1137,11 +1142,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

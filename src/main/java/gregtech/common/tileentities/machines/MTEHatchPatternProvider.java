@@ -92,12 +92,6 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchPatternProviderGui(this).build(data, syncManager, uiSettings);
     }

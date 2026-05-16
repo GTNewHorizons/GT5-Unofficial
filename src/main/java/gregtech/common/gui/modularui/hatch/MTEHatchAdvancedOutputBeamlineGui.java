@@ -54,7 +54,8 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
 
         return super.createContentSection(panel, syncManager).child(
             Flow.column()
-                .align(Alignment.START)
+                .topRel(0)
+                .leftRel(0)
                 .child(
                     IKey.lang("GT5U.gui.text.BeamlineHatch.blacklist")
                         .asWidget()

@@ -8,7 +8,6 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -19,22 +18,6 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
 
     public GregtechMetaCasingBlocksPipeGearbox() {
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", MaterialCasings.INSTANCE);
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Eglin Steel Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel-792 Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Incoloy MA956 Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Nitinol-60 Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Zeron-100 Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Pikyonium Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Titansteel Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Abyssal Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Babbit Alloy Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Inconel-690 Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Stellite Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Nitinol-60 Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Lafium Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cinobite Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Titansteel Pipe Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Abyssal Pipe Casing");
 
         int aMappingID = 0;
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.EGLIN_STEEL.getRgbAsHex());
@@ -59,11 +42,53 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     public IIcon getIcon(final int ordinalSide, final int meta) {
         if ((meta >= 0) && (meta < 16)) {
             switch (meta) {
-                case 0, 1, 2, 3, 4, 5, 6, 7 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_GENERIC.getIcon();
+                case 0 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_EGLINSTEEL.getIcon();
                 }
-                case 8, 9, 10, 11, 12, 13, 14, 15 -> {
-                    return TexturesGtBlock.TEXTURE_PIPE_GENERIC.getIcon();
+                case 1 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_INCONEL792.getIcon();
+                }
+                case 2 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_INCOLOYMA956.getIcon();
+                }
+                case 3 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_NITINOL60.getIcon();
+                }
+                case 4 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_ZERON100.getIcon();
+                }
+                case 5 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_PIKYONIUM.getIcon();
+                }
+                case 6 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_TITANSTEEL.getIcon();
+                }
+                case 7 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_ABYSSALALLOY.getIcon();
+                }
+                case 8 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_BABBITALLOY.getIcon();
+                }
+                case 9 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_INCONEL690.getIcon();
+                }
+                case 10 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_STELLITE.getIcon();
+                }
+                case 11 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_NITINOL60.getIcon();
+                }
+                case 12 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_LAFIUM.getIcon();
+                }
+                case 13 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_CINOBITE.getIcon();
+                }
+                case 14 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_TITANSTEEL.getIcon();
+                }
+                case 15 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_ABYSSALALLOY.getIcon();
                 }
             }
         }

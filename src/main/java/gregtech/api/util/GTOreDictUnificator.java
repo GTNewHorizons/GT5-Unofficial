@@ -212,18 +212,16 @@ public class GTOreDictUnificator {
     }
 
     /**
-     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
-     * comparisons
+     * Doesn't always copy the returned stack or set quantity. Be careful and do not mutate it
      */
     public static ItemStack get_nocopy(ItemStack aStack) {
         return get_nocopy(true, aStack);
     }
 
     /**
-     * Doesn't copy the returned stack or set quantity. Be careful and do not mutate it; intended only to optimize
-     * comparisons
+     * Doesn't always copy the returned stack or set quantity. Be careful and do not mutate it
      */
-    static ItemStack get_nocopy(boolean useBlackList, ItemStack stack) {
+    public static ItemStack get_nocopy(boolean useBlackList, ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return null;
         ItemData itemData = getAssociation(stack);
         if (itemData == null || !itemData.hasValidPrefixMaterialData() || (useBlackList && itemData.mBlackListed)) {
@@ -242,13 +240,13 @@ public class GTOreDictUnificator {
         }
 
         // Yes, == and not .equals().
-        // This check is primarily intended to optimize for the case where both rStack and aStack
+        // This check is primarily intended to optimize for the case where both rStack and stack
         // do not have NBT, and so we would be comparing null == null.
         //
-        // Even if aStack and rStack may have equal NBT, we prefer to do an inexpensive
+        // Even if stack and rStack may have equal NBT, we prefer to do an inexpensive
         // new ItemStack() over the potentially expensive NBTTagCompound.equals().
         if (stack.getTagCompound() == rStack.getTagCompound()) {
-            // Warning: rStack's stack size may not be equal to aStack's stack size.
+            // Warning: rStack's stack size may not be equal to stack's stack size.
             return rStack;
         }
 

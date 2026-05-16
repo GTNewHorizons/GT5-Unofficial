@@ -22,7 +22,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -37,7 +36,7 @@ import tectech.util.TTUtility;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
+public class MTEHatchCapacitor extends MTEHatch {
 
     private static IIconContainer TM_H;
     private static IIconContainer TM_H_ACTIVE;

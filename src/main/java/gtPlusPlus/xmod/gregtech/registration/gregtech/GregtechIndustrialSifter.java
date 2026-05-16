@@ -2,20 +2,18 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Sifter;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialSifter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialSifterLegacy;
 
 public class GregtechIndustrialSifter {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Industrial Sifter Multiblock.");
         run1();
     }
 
     private static void run1() {
         GregtechItemList.Industrial_Sifter.set(
-            new MTEIndustrialSifter(
+            new MTEIndustrialSifterLegacy(
                 Industrial_Sifter.ID,
                 "industrialsifter.controller.tier.single",
                 "Large Sifter Control Block").getStackForm(1L));

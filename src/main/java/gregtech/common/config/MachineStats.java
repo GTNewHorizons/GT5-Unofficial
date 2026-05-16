@@ -117,7 +117,7 @@ public class MachineStats {
         public boolean requiresUUA;
 
         @Config.Comment("Duration multiplier.")
-        @Config.DefaultInt(3215)
+        @Config.DefaultInt(3200)
         @Config.RequiresMcRestart
         public int durationMultiplier;
 

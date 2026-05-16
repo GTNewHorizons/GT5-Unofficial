@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.Constants;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -232,10 +234,7 @@ public class GTUtil {
 
     public static boolean hasMultiblockInputConfiguration(ItemStack dataOrb) {
         return !GTUtility.isStackInvalid(dataOrb) && ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)
-            && dataOrb.getTagCompound() != null
-            && "MultiblockConfiguration".equals(
-                dataOrb.getTagCompound()
-                    .getString("type"));
+            && "MultiblockConfiguration".equals(ItemStackNBT.getString(dataOrb, "type"));
     }
 
     public static boolean loadMultiblockInputConfiguration(MTEMultiBlockBase controller, EntityPlayer player) {

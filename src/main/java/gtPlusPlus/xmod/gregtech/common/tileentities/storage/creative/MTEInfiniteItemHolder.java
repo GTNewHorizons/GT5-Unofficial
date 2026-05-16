@@ -19,7 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTETieredChest;
 
 public class MTEInfiniteItemHolder extends MTETieredChest {
@@ -38,7 +37,7 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
             return false;
         }
 
-        if (!KeyboardUtils.isShiftKeyDown()) {
+        if (!aPlayer.isSneaking()) {
             if (this.mItemStack == null) {
                 if (aPlayer.getHeldItem() != null) {
                     this.mItemStack = aPlayer.getHeldItem()

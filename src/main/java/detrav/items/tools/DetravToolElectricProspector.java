@@ -16,15 +16,18 @@ public class DetravToolElectricProspector extends DetravToolElectricProspectorBa
         this.tier = tier;
     }
 
+    @Override
     public int getBaseQuality() {
         return tier - 6;
     }
 
+    @Override
     public float getMaxDurabilityMultiplier() {
         if (tier - 6 == 0) return 1.0F;
         else return (tier - 6F) * 2F;
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 
         if (tier <= 9 && tier >= 6) {

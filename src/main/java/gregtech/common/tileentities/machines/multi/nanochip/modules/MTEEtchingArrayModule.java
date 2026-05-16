@@ -149,14 +149,17 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return ETCHING_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return ETCHING_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return ETCHING_OFFSET_Z;
     }

@@ -35,6 +35,7 @@ public class CoverTeslaCoilUltimate extends CoverTeslaCoil {
         return true;
     }
 
+    @Override
     public byte getTeslaReceptionCapability() {
         return 1;
     }

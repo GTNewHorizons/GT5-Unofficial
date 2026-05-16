@@ -27,6 +27,7 @@ public class ClientProxy extends CommonProxy {
         super.onLoad();
     }
 
+    @Override
     public void openProspectorGUI() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(

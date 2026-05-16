@@ -42,7 +42,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     private boolean active;
 
     public MTEPipeData(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, 0);
     }
 
     public MTEPipeData(String aName) {

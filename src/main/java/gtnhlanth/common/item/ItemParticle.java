@@ -43,6 +43,7 @@ public class ItemParticle extends Item {
         return this.iconArray[j];
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack stack) {
         int i = MathHelper.clamp_int(stack.getItemDamage(), 0, NUMBER_OF_SUBTYPES - 1);
         return super.getUnlocalizedName() + "." + names[i];

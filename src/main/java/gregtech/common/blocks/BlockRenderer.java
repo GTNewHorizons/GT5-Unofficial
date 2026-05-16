@@ -40,6 +40,7 @@ public class BlockRenderer<T extends TileEntity> extends Block {
     /**
      * Returns the unlocalized name of the block with "gt." appended to the front.
      */
+    @Override
     public String getUnlocalizedName() {
         return "gt." + this.unlocalizedName;
     }

@@ -29,6 +29,7 @@ public class CoverVent extends CoverLegacyData {
         this.mEfficiency = aEfficiency;
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

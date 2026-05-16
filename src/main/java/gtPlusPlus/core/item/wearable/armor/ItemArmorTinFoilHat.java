@@ -11,7 +11,6 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityExpBottle;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityEgg;
@@ -70,11 +69,6 @@ public class ItemArmorTinFoilHat extends BaseItemWearable {
     }
 
     @Override
-    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return super.getArmorDisplay(player, armor, slot);
-    }
-
-    @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {}
 
     @Override
@@ -91,22 +85,6 @@ public class ItemArmorTinFoilHat extends BaseItemWearable {
     @Override
     public boolean isDamageable() {
         return false;
-    }
-
-    @Override
-    public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
-        EntityLivingBase p_111207_3_) {
-        return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
-    }
-
-    @Override
-    public void onUpdate(ItemStack aStack, World aWorld, Entity aEntity, int p_77663_4_, boolean p_77663_5_) {
-        super.onUpdate(aStack, aWorld, aEntity, p_77663_4_, p_77663_5_);
-    }
-
-    @Override
-    public boolean onEntityItemUpdate(EntityItem entityItem) {
-        return super.onEntityItemUpdate(entityItem);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class CoverRedstoneSignalizer extends CoverLegacyData {
         super(context, coverTexture);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }

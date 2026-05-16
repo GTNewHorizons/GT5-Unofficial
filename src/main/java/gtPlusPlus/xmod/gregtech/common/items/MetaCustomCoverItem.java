@@ -20,16 +20,13 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
 public class MetaCustomCoverItem extends Item {
 
     protected final IIcon[] icons;
-    private final String mModID;
     private final String mTextureSetName;
     protected final IIconContainer[] mTextures;
     private final short[][] mRGB;
@@ -38,25 +35,17 @@ public class MetaCustomCoverItem extends Item {
         short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
-        mModID = aModId;
         mTextureSetName = StringUtils.sanitizeString(aTextureSetName);
         mTextures = aTextures;
         mRGB = aRGB;
         this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
         this.setHasSubtypes(true);
-        String unlocalizedName = "itemCustomMetaCover." + mModID + "." + mTextureSetName;
+        String unlocalizedName = "itemCustomMetaCover." + aModId + "." + mTextureSetName;
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setMaxStackSize(1);
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
-        Logger.INFO(
-            "[Covers] Generated Custom covers for " + mModID
-                + " using "
-                + aTextureCount
-                + " textures from "
-                + mTextureSetName
-                + ".");
     }
 
     public boolean hide() {
@@ -113,18 +102,6 @@ public class MetaCustomCoverItem extends Item {
         return 0L;
     }
 
-    public static boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("CustomCoverMeta");
-            if (aNBT != null) {
-                aNBT.setLong("Damage", aDamage);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
@@ -162,7 +139,7 @@ public class MetaCustomCoverItem extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (KeyboardUtils.isShiftKeyDown()) {
+        if (!world.isRemote && player.isSneaking()) {
             boolean con = getCoverConnections(stack);
             setCoverConnections(stack, !con);
         }
@@ -182,18 +159,6 @@ public class MetaCustomCoverItem extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public Item setFull3D() {
-        // TODO Auto-generated method stub
-        return super.setFull3D();
-    }
-
-    @Override
-    public boolean isFull3D() {
-        // TODO Auto-generated method stub
-        return super.isFull3D();
     }
 
     @Override

@@ -28,13 +28,16 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     // simple name is rather expensive to compute and it's not cached
@@ -124,16 +127,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
-            "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
-            EnumChatFormatting.GOLD + "Blocks Mode: "
-                + EnumChatFormatting.RESET
-                + String.format("Range: 1-%d blocks to each side | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
-            EnumChatFormatting.GOLD + "TileEntity Mode: "
-                + EnumChatFormatting.RESET
-                + String.format("Adjacent blocks only | Amps \u2264%s", AMPERAGE_TE),
-            "Use a screwdriver to change mode, sneak to change range", "Use a wrench to change speed",
-            "Power consumption increases with speed/range" };
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicmachine.accelerator.tooltip",
+            mAccelerateStatic[mTier],
+            mTier,
+            AMPERAGE_NORMAL,
+            AMPERAGE_TE);
     }
 
     @Override

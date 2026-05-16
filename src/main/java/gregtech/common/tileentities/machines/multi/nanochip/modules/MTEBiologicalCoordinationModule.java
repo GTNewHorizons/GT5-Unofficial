@@ -79,14 +79,17 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         return STRUCTURE_DEFINITION;
     }
 
+    @Override
     public int structureOffsetX() {
         return BIO_OFFSET_X;
     }
 
+    @Override
     public int structureOffsetY() {
         return BIO_OFFSET_Y;
     }
 
+    @Override
     public int structureOffsetZ() {
         return BIO_OFFSET_Z;
     }
