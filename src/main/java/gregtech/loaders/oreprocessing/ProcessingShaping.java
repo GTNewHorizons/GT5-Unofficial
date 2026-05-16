@@ -428,7 +428,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
                     }
-                    case "Iron", "WroughtIron" -> {
+                    case "Iron", "CastIron" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(tAmount))

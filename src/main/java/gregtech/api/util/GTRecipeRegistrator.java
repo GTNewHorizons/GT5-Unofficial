@@ -292,7 +292,7 @@ public class GTRecipeRegistrator {
                 ItemData stackData = GTOreDictUnificator.getItemData(aStack);
                 if (stackData != null
                     && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
-                    // iron ingot/dust -> wrought iron, copper ingot/dust -> annealed copper
+                    // iron ingot/dust -> cast iron, copper ingot/dust -> annealed copper
                     isRecycle = false;
                 }
             }

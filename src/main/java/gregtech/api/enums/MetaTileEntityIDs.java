@@ -17,7 +17,7 @@ public enum MetaTileEntityIDs {
     HULL_BRONZE(1),
     HULL_BRICKED_BRONZE(2),
     HULL_STEEL(3),
-    HULL_WROUGHT_IRON(4),
+    HULL_CAST_IRON(4),
     HULL_ULV(10),
     HULL_LV(11),
     HULL_MV(12),
