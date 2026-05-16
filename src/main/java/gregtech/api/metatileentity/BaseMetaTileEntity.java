@@ -285,7 +285,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             if (!isServerSide) {
                 handleColorChangeClient();
-                handleLightValueChangeClient();
+
+                if (mLightValue != oldLightValueClient) {
+                    updateLightValue();
+                    oldLightValueClient = mLightValue;
+                    issueTextureUpdate();
+                }
+
                 handleBlockUpdateClient();
             } else {
                 if (mTickTimer > 10 && !doCoverThings()) {
@@ -341,7 +347,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     handleUpdateDataChangeServer();
                     handleColorChangeServer();
                     handleSidedRedstoneChangeServer();
-                    handleLightValueChangeServer();
+
+                    if (mLightValue != oldLightValue) {
+                        updateLightValue();
+                        issueTextureUpdate();
+                        oldLightValue = mLightValue;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, mLightValue);
+                    }
                 }
 
                 if (mNeedsBlockUpdate) {
@@ -350,31 +362,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
         }
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
-    }
-
-    /**
-     * Handles the light value changing on the client side
-     */
-    private void handleLightValueChangeClient() {
-        if (mLightValue == oldLightValueClient) {
-            return;
-        }
-        updateLightValue();
-        oldLightValueClient = mLightValue;
-        issueTextureUpdate();
-    }
-
-    /**
-     * Handles the light value changing on the server side
-     */
-    private void handleLightValueChangeServer() {
-        if (mLightValue == oldLightValue) {
-            return;
-        }
-        updateLightValue();
-        issueTextureUpdate();
-        oldLightValue = mLightValue;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, mLightValue);
     }
 
     /**
