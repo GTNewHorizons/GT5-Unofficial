@@ -18,33 +18,34 @@ import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class MBItemFrame extends Item implements IHiveFrame {
 
     private final MBFrameType type;
     private final EnumRarity rarity_value;
-    private final String toolTip;
+    private final String toolTipKey;
 
-    public MBItemFrame(final MBFrameType frameType, final String description) {
-        this(frameType, EnumRarity.uncommon, description);
+    public MBItemFrame(final MBFrameType frameType, final String tooltipKey) {
+        this(frameType, EnumRarity.uncommon, tooltipKey);
     }
 
-    public MBItemFrame(final MBFrameType frameType, final EnumRarity rarity, final String description) {
+    public MBItemFrame(final MBFrameType frameType, final EnumRarity rarity, final String tooltipKey) {
         this.type = frameType;
         this.setMaxDamage(this.type.maxDamage);
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName("frame" + frameType.getName());
         this.rarity_value = rarity;
-        this.toolTip = description;
+        this.toolTipKey = tooltipKey;
         GameRegistry.registerItem(this, "frame" + frameType.getName());
     }
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if (!this.toolTip.isEmpty()) {
-            list.add(EnumChatFormatting.GRAY + this.toolTip);
+        if (!this.toolTipKey.isEmpty()) {
+            list.add(EnumChatFormatting.GRAY + GTUtility.translate(this.toolTipKey));
         }
         super.addInformation(stack, aPlayer, list, bool);
     }
