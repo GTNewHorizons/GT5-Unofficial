@@ -269,5 +269,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         if (multiblock instanceof IParametrized parametrized) {
             parametrized.getParameters()
                 .forEach(parameter -> parameter.registerSyncValue(syncManager));
+        }
     }
 }
