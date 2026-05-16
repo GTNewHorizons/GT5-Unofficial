@@ -68,7 +68,6 @@ public class CompositeParameter extends Parameter<@UnmodifiableView List<Paramet
 
     @Override
     public void registerSyncValue(PanelSyncManager syncManager) {
-        for (Parameter<?> parameter : getValue())
-            if (parameter.shouldShowInGui()) parameter.registerSyncValue(syncManager);
+        for (Parameter<?> parameter : getValue()) parameter.registerSyncValue(syncManager);
     }
 }
