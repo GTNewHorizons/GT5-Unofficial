@@ -221,6 +221,8 @@ public final class ItemParametrizerMemoryCard extends Item {
 
     private List<String> getInfoLines(NBTTagCompound tag, int offset) {
         List<String> infoLines = new ArrayList<>();
+        if (tag.getString("langKey")
+            .isEmpty()) return infoLines;
 
         switch (tag.getString("type")) {
             case "integer" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getInteger("value"))));
