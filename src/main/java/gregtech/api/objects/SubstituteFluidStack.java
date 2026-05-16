@@ -22,7 +22,6 @@ public class SubstituteFluidStack {
      * This is useful for recipes that can use different fluids with similar properties, such as soldering alloys of
      * different qualities.
      *
-     *
      * <pre>
      * {@code new SubstituteFluidStack(
      *          // Each fluid has its own amount
