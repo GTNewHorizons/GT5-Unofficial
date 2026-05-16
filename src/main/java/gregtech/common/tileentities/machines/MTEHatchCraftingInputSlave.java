@@ -55,8 +55,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private final boolean isUniversal; // if true, the slave will accept patterns with fluid inputs,
                                        // else only accept patterns without fluid inputs
 
+    private int getTier() {
+        return this.isUniversal ? 11 : 8;
+    }
+    
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional, boolean isUniversal) {
-        super(aID, aName, aNameRegional, isUniversal ? 11 : 8, 0, null);
+        super(aID, aName, aNameRegional, getTier(), 0, null);
         disableSort = true;
         this.isUniversal = isUniversal;
     }
