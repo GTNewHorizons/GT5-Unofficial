@@ -64,19 +64,20 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
-public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreezer> implements ISurvivalConstructable {
+public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuumFreezerLegacy>
+    implements ISurvivalConstructable {
 
-    public MTEMegaVacuumFreezer(int aID, String aName, String aNameRegional) {
+    public MTEMegaVacuumFreezerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMegaVacuumFreezer(String aName) {
+    public MTEMegaVacuumFreezerLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaVacuumFreezer(this.mName);
+        return new MTEMegaVacuumFreezerLegacy(this.mName);
     }
 
     private int mCasingFrostProof = 0;
@@ -212,13 +213,13 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABBBBBABABA",
             "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" } };
 
-    private static final IStructureDefinition<MTEMegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaVacuumFreezer>builder()
+    private static final IStructureDefinition<MTEMegaVacuumFreezerLegacy> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaVacuumFreezerLegacy>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addShape(STRUCTURE_PIECE_MAIN_T2, structure_tier2)
         .addElement(
             'A',
-            buildHatchAdder(MTEMegaVacuumFreezer.class)
+            buildHatchAdder(MTEMegaVacuumFreezerLegacy.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
@@ -231,6 +232,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer, MVF")
+            .addStructureDeprecatedLine()
             .addInfo(
                 TooltipHelper.coloredText(
                     TooltipHelper.italicText("\"Handles all things cooling!\""),
@@ -306,7 +308,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     }
 
     @Override
-    public IStructureDefinition<MTEMegaVacuumFreezer> getStructureDefinition() {
+    public IStructureDefinition<MTEMegaVacuumFreezerLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

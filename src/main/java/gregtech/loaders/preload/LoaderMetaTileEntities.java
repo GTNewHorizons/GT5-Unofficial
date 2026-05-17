@@ -152,6 +152,7 @@ import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEEndothermicFridge;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
@@ -1066,6 +1067,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCokeOven.ID,
                 "industrialcokeoven.controller.tier.single",
                 "Industrial Coke Oven").getStackForm(1L));
+
+        ItemList.EndothermicFridge.set(
+            new MTEEndothermicFridge(EndothermicFridge.ID, "multimachine.endothermichfridge", "Endothermic Fridge")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
