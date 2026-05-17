@@ -40,7 +40,7 @@ public class HTGRLoader {
 
     @SuppressWarnings("unchecked")
     public static final RecipeMetadataKey<Pair<ItemStack, Integer>[]> FUEL = SimpleRecipeMetadataKey
-        .create((Class<Pair<ItemStack, Integer>[]>) (Class<?>) Pair[].class, "htgr_fuel");
+        .create((Class<Pair<ItemStack, Integer>[]>) Pair[].class, "htgr_fuel");
     public static final RecipeMetadataKey<ItemStack[]> SHELL = SimpleRecipeMetadataKey
         .create(ItemStack[].class, "htgr_shell");
     @SuppressWarnings("unchecked")

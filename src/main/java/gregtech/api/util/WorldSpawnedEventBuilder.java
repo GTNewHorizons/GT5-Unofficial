@@ -30,19 +30,17 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
 
     /* Methods */
 
-    @SuppressWarnings("unchecked")
-    public <U extends WorldSpawnedEventBuilder> void times(int times, Consumer<U> action) {
+    public void times(int times, Consumer<? super WorldSpawnedEventBuilder> action) {
         Objects.requireNonNull(action);
         for (int i = 0; i < times; i++) {
-            action.accept((U) this);
+            action.accept(this);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <U extends WorldSpawnedEventBuilder> void times(int times, BiConsumer<U, Integer> action) {
+    public void times(int times, BiConsumer<? super WorldSpawnedEventBuilder, Integer> action) {
         Objects.requireNonNull(action);
         for (int i = 0; i < times; i++) {
-            action.accept((U) this, i);
+            action.accept(this, i);
         }
     }
 
