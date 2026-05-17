@@ -60,9 +60,8 @@ public class GGItemBlocks extends ItemBlock {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked" })
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         if (stack == null) return;
         tooltip.add(translateToLocal("gt.casing.no-mob-spawning"));
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTEContainer tile) {
