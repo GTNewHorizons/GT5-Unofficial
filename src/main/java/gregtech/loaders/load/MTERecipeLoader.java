@@ -1923,11 +1923,6 @@ public class MTERecipeLoader implements Runnable {
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
 
-        // Industrial Arc Furnace Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialArcFurnace.get(1),
-            new Object[] { GregtechItemList.Industrial_Arc_Furnace });
-
         // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
         // Assembler to avoid accidental softlocks (due to tiering change)
         GTValues.RA.stdBuilder()
@@ -1936,6 +1931,11 @@ public class MTERecipeLoader implements Runnable {
             .duration(TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
+
+        // Industrial Arc Furnace Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialArcFurnace.get(1),
+            new Object[] { GregtechItemList.Industrial_Arc_Furnace });
 
         // Infinite Fluid Drilling Rig Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
