@@ -1,14 +1,11 @@
 package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -30,11 +26,10 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
@@ -47,19 +42,19 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
-    public final Supplier<String> translatedMaterialName;
+    public final String materialKey;
     public final ComponentTypes componentType;
     public final int componentColour;
     public short[] extraData;
 
-    protected IIcon base;
-    protected IIcon overlay;
+    @SideOnly(Side.CLIENT)
+    protected IIconContainer iconContainer;
 
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
         this.materialName = material.getDefaultLocalName();
-        this.translatedMaterialName = material::getLocalizedName;
+        this.materialKey = material.getLocalizedNameKey();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -89,7 +84,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = () -> GTUtility.getFluidName(fluid, true);
+        this.materialKey = fluid.getUnlocalizedName();
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -135,18 +130,6 @@ public class BaseItemComponent extends Item {
         }
     }
 
-    public String getCorrectTextures() {
-        String metType = null;
-        if (this.componentMaterial != null) {
-            TextureSet u = this.componentMaterial.getTextureSet();
-            if (u != null) {
-                metType = u.mSetName;
-            }
-        }
-        metType = (metType == null ? "METALLIC" : metType);
-        return GregTech.ID + ":" + "materialicons/" + metType + "/" + this.componentType.getOreDictName();
-    }
-
     public final String getMaterialName() {
         return this.materialName;
     }
@@ -157,7 +140,7 @@ public class BaseItemComponent extends Item {
             return componentType.getGtOrePrefix()
                 .getLocalizedNameForItem(componentMaterial);
         }
-        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", translatedMaterialName.get());
+        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", materialKey);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -276,23 +259,26 @@ public class BaseItemComponent extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.base;
+            return this.iconContainer.getIcon();
         }
-        return this.overlay;
+        return this.iconContainer.getOverlayIcon();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
-        final String iconPath = getCorrectTextures();
-        final ResourceLocation iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconPath);
-        this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath) : RENDERING_ERROR.getIcon();;
-
-        final String overlayPath = getCorrectTextures() + "_OVERLAY";
-        final ResourceLocation overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(overlayPath);
-        this.overlay = ResourceUtils.resourceExists(overlayResource) ? i.registerIcon(overlayPath)
-            : Textures.InvisibleIcon.INVISIBLE_ICON;
+        String metType = null;
+        if (this.componentMaterial != null) {
+            TextureSet u = this.componentMaterial.getTextureSet();
+            if (u != null) {
+                metType = u.mSetName;
+            }
+        }
+        metType = (metType == null ? "METALLIC" : metType);
+        iconContainer = Textures.ItemIcons.textureSet(metType, "/" + this.componentType.getOreDictName());
     }
 
     public enum ComponentTypes {
