@@ -18,7 +18,7 @@ public class BlockCasings14 extends BlockCasingsAbstract {
     public BlockCasings14() {
         super(ItemCasings.class, "gt.blockcasings14", MaterialCasings.INSTANCE, 16);
 
-        register(4, ItemList.FridgeCasing);
+        register(4, ItemList.CasingFridge);
     }
 
     @Override

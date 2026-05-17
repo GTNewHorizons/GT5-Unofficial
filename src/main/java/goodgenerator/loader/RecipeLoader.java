@@ -35,6 +35,8 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
+import gtPlusPlus.core.fluids.GTPPFluids;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -1355,6 +1357,22 @@ public class RecipeLoader {
                 Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_FrostProof.get(4),
+                new ItemStack(Items.snowball,64),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Ledox, 2L),
+                GTOreDictUnificator.get(OrePrefixes.gearGt,Materials.CallistoIce,2L))
+            .itemOutputs(ItemList.CasingFridge.get(4))
+            .fluidInputs(
+                Materials.SuperCoolant.getFluid(4000),
+                new FluidStack(GTPPFluids.Cryotheum, 1_000),
+                Materials.TungstenSteel.getMolten(2 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
