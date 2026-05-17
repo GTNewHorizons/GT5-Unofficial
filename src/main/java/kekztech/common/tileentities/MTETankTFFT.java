@@ -483,7 +483,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
                     final FluidStack tFluid = tHatch.getFluid();
 
-                    String lockedFluidName = tHatch.getLockedFluidName() == null ? "" : tHatch.getLockedFluidName();
+                    String lockedFluidName = tHatch.getLockedFluid() == null ? ""
+                        : tHatch.getLockedFluid()
+                            .getName();
                     String tFluidName = tFluid == null ? ""
                         : tFluid.getFluid()
                             .getName();

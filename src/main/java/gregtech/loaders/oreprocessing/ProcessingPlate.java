@@ -113,7 +113,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.mStandardMoltenFluid != null
-            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(aMaterial.getPlates(1))

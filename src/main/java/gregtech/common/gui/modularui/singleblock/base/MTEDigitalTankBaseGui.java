@@ -5,7 +5,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -153,7 +152,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         textColumn.child(
             IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
-                .color(Color.WHITE.main));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
 
         // fluid name
         textColumn.child(IKey.dynamic(() -> {

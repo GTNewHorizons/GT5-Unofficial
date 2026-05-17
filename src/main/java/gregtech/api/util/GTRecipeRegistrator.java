@@ -287,12 +287,12 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
-                || tMaterial.mMaterial == Materials.WroughtIron
+                || tMaterial.mMaterial == Materials.CastIron
                 || tMaterial.mMaterial == Materials.AnnealedCopper) {
                 ItemData stackData = GTOreDictUnificator.getItemData(aStack);
                 if (stackData != null
                     && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
-                    // iron ingot/dust -> wrought iron, copper ingot/dust -> annealed copper
+                    // iron ingot/dust -> cast iron, copper ingot/dust -> annealed copper
                     isRecycle = false;
                 }
             }
@@ -349,9 +349,8 @@ public class GTRecipeRegistrator {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack)
                 .itemOutputs(outputs.toArray(new ItemStack[0]))
-                .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
-                .duration(((int) Math.max(16, tAmount / M)) * TICKS)
-                .eut(90)
+                .duration(((int) Math.max(32L, (tAmount / M) * 2L)) * TICKS)
+                .eut(TierEU.RECIPE_LV)
                 .metadata(RECYCLE, isRecycle)
                 .addTo(UniversalArcFurnace);
         }
