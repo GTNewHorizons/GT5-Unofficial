@@ -24,7 +24,7 @@ import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitter
 
 public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessItemDetector> {
 
-    public CoverWirelessItemDetectorGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverWirelessItemDetectorGui(CoverWirelessItemDetector cover) {
         super(cover);
     }
 

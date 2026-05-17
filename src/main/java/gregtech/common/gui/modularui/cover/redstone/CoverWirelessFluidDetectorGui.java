@@ -16,7 +16,7 @@ import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitter
 
 public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessFluidDetector> {
 
-    public CoverWirelessFluidDetectorGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverWirelessFluidDetectorGui(CoverWirelessFluidDetector cover) {
         super(cover);
     }
 
@@ -35,7 +35,7 @@ public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmit
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
                             .marginRight(2))
-                    .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.fluidthreshold")))))
+                    .child(new TextWidget<>(IKey.lang(translateToLocal("gt.interact.desc.fluidthreshold")))))
             .child(physicalRow(physicalSyncer));
     }
 

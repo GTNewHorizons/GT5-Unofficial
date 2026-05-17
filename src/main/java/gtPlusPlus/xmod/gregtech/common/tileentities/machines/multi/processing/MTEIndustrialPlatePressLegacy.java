@@ -243,8 +243,8 @@ public class MTEIndustrialPlatePressLegacy extends GTPPMultiBlockBase<MTEIndustr
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<MTEIndustrialPlatePressLegacy> getGui() {
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_BENDING,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
     }

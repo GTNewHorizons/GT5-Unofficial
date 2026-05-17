@@ -41,11 +41,6 @@ public class FireProtectionBauble extends BaseBauble {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
-    }
-
-    @Override
     public boolean canEquip(final ItemStack arg0, final EntityLivingBase arg1) {
         return true;
     }

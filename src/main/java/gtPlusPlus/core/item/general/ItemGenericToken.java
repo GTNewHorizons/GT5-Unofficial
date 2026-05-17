@@ -99,8 +99,8 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
+    public void addInformation(ItemStack stack, EntityPlayer aPlayer, List<String> list, boolean adv) {
+        super.addInformation(stack, aPlayer, list, adv);
         for (int i = 0;; i++) {
             String tooltip = GTLanguageManager.getTranslation(
                 "gtplusplus." + this

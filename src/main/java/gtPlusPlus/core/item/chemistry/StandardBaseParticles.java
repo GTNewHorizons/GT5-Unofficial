@@ -107,7 +107,7 @@ public class StandardBaseParticles extends BaseItemParticle {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
         Particle aCharge = getParticle(stack);
         EnumChatFormatting aColour = EnumChatFormatting.GRAY;
         if (aCharge != null) {
@@ -137,7 +137,7 @@ public class StandardBaseParticles extends BaseItemParticle {
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocalFormatted("gtpp.tooltip.base_particles.type", aState));
         }
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

@@ -16,7 +16,7 @@ import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 public class CoverAdvancedRedstoneReceiverBaseGui
     extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedRedstoneReceiverBase> {
 
-    public CoverAdvancedRedstoneReceiverBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
+    public CoverAdvancedRedstoneReceiverBaseGui(CoverAdvancedRedstoneReceiverBase cover) {
         super(cover, true);
     }
 

@@ -87,10 +87,10 @@ public class ItemGenericChemBase extends Item {
     }
 
     @Override
-    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < aMetaSize; i++) {
             if (i >= 29 && i <= 32) continue; // prevent unused catalysts from generating
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

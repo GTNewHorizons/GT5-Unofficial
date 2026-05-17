@@ -187,7 +187,7 @@ public class BaseItemTickable extends CoreItem {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
-        boolean bool) {
+        boolean adv) {
         if (Client.tooltip.showFormula) {
             if (this.descriptionString.length > 0) {
                 list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);

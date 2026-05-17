@@ -46,8 +46,8 @@ public class DustDecayable extends BaseItemTickable {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        super.addInformation(stack, player, list, bool);
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
+        super.addInformation(stack, player, list, adv);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {
                 list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radLevel));

@@ -298,8 +298,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTENanochipAssemblyModuleBaseGui(this);
+    protected @NotNull MTEMultiBlockBaseGui<MTENanochipAssemblyModuleBase<T>> getGui() {
+        return new MTENanochipAssemblyModuleBaseGui<>(this);
     }
 
     protected static class ItemInputInformation {
