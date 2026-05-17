@@ -1741,7 +1741,7 @@ public class Textures {
             BLOCK_URANIUM235 = create("BLOCK_URANIUM235"),
             BLOCK_VANADIUM = create("BLOCK_VANADIUM"),
             BLOCK_VANADIUMGALLIUM = create("BLOCK_VANADIUMGALLIUM"),
-            BLOCK_WROUGHTIRON = create("BLOCK_WROUGHTIRON"),
+            BLOCK_CASTIRON = create("BLOCK_CASTIRON"),
             BLOCK_YTTRBIUM = create("BLOCK_YTTRBIUM"),
             BLOCK_YTTRIUM = create("BLOCK_YTTRIUM"),
             BLOCK_YTTRIUMBARIUMCUPRATE = create("BLOCK_YTTRIUMBARIUMCUPRATE"),
@@ -2243,7 +2243,7 @@ public class Textures {
             STORAGE_BLOCKS7 = { BLOCK_SUNNARIUM, BLOCK_TANTALUM, BLOCK_TELLURIUM, BLOCK_TERBIUM, BLOCK_THAUMIUM,
                 BLOCK_THORIUM, BLOCK_THULIUM, BLOCK_TIN, BLOCK_TINALLOY, BLOCK_TITANIUM, BLOCK_TRITANIUM,
                 BLOCK_TUNGSTEN, BLOCK_TUNGSTENSTEEL, BLOCK_ULTIMET, BLOCK_URANIUM, BLOCK_URANIUM235 },
-            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_WROUGHTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
+            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_CASTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
                 BLOCK_YTTRIUMBARIUMCUPRATE, BLOCK_ZINC, BLOCK_TUNGSTENCARBIDE, BLOCK_VANADIUMSTEEL, BLOCK_HSSG,
                 BLOCK_HSSE, BLOCK_HSSS, BLOCK_STEELEAF, BLOCK_ICHORIUM, BLOCK_FIRESTONE, BLOCK_SHADOW },
             STORAGE_BLOCKS9 = { BLOCK_AERCRYSTAL, BLOCK_AMBER, BLOCK_AMETHYST, BLOCK_AQUACRYSTAL, BLOCK_BLUETOPAZ,
@@ -2643,7 +2643,12 @@ public class Textures {
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix);
+            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        }
+
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2737,7 +2742,12 @@ public class Textures {
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(setName, prefix);
+            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        }
+
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
