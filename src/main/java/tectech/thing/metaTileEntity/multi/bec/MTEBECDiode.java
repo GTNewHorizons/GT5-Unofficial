@@ -290,7 +290,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
 
         @Override
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot) {
+            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
             return SettingsPanel.builder()
                 .setDividerPosition(35)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
