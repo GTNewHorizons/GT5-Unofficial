@@ -12,11 +12,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -60,7 +55,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArcFurnace>
+public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustrialArcFurnaceLegacy>
     implements ISurvivalConstructable {
 
     // 862
@@ -72,19 +67,19 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     private int mSize = 0;
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialArcFurnace> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialArcFurnaceLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialArcFurnace(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialArcFurnaceLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialArcFurnace(final String aName) {
+    public MTEIndustrialArcFurnaceLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialArcFurnace(this.mName);
+        return new MTEIndustrialArcFurnaceLegacy(this.mName);
     }
 
     @Override
@@ -96,6 +91,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addDeprecatedLine("CHECK NEI TO FIND NEW CONTROLLER")
             .addInfo(TooltipHelper.parallelText("Width * Voltage Tier") + " Parallels")
             .addInfo(TooltipHelper.parallelText("8x") + " Parallels in Plasma Mode")
             .addStaticSpeedInfo(3.5f)
@@ -129,9 +125,9 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     private static final int MAX_TIER = 3;
 
     @Override
-    public IStructureDefinition<MTEIndustrialArcFurnace> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialArcFurnaceLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialArcFurnace>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialArcFurnaceLegacy>builder()
                 .addShape(STRUCTURE_PIECE_FRONT + 1, new String[][] { { "CCC", "C~C", "CCC" } })
                 .addShape(STRUCTURE_PIECE_FRONT + 2, new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } })
                 .addShape(
@@ -148,7 +144,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                         { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" }, })
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialArcFurnace.class)
+                    buildHatchAdder(MTEIndustrialArcFurnaceLegacy.class)
                         .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
@@ -249,13 +245,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == MACHINE_MODE_PLASMA ? RecipeMaps.plasmaArcFurnaceRecipes : RecipeMaps.arcFurnaceRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.arcFurnaceRecipes, RecipeMaps.plasmaArcFurnaceRecipes);
+        return RecipeMaps.arcFurnaceRecipes;
     }
 
     @Override
