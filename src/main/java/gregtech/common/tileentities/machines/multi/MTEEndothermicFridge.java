@@ -299,8 +299,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     + EnumChatFormatting.AQUA
                     + "Cryotheum"
                     + EnumChatFormatting.GRAY
-                    + " to speed up heating by "
-                    + EnumChatFormatting.RED
+                    + " to speed up cooling by "
+                    + EnumChatFormatting.BLUE
                     + "5x")
             .addInfo(
                 "The drain rate of " + EnumChatFormatting.AQUA
