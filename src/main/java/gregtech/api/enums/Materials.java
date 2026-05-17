@@ -1791,6 +1791,10 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
+    /**
+     * @deprecated Always returns false, apparently.
+     */
+    @Deprecated
     public boolean isRadioactive() {
         return false;
     }
