@@ -87,10 +87,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     public enum SawbladeTiers {
 
-        TungstenTitaniumCarbide(2, 2.0F, 0.95F, VoltageIndex.LuV, false),
-        MysteriousCrystal(3, 2.5F, 0.9F, VoltageIndex.UV, false),
-        Neutronium(4, 3.0F, 0.85F, VoltageIndex.UEV, false),
-        Transcendent(6, 4.0F, 0.8F, Integer.MAX_VALUE, true);
+        TungstenTitaniumCarbide(2, 2.5F, 0.9F, VoltageIndex.LuV, false),
+        MysteriousCrystal(3, 3.0F, 0.8F, VoltageIndex.UV, false),
+        Neutronium(4, 3.5F, 0.7F, VoltageIndex.UEV, false),
+        Transcendent(6, 4.5F, 0.6F, Integer.MAX_VALUE, true);
 
         final int parallelPerVoltageTier;
         final float speedBoost, euModifier;
