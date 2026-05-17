@@ -383,6 +383,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addInputHatch("Any Casing", 1)
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
+            .addMultiAmpHatchInfo()
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
             .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
