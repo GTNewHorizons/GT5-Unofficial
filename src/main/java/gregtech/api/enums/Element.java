@@ -146,7 +146,7 @@ public enum Element {
     Nq(130, 200, 0, -1, null, "Naquadah", false),
     Nt(0, 100, 0, -1, null, "Neutronium", false),
 
-    ;
+    Tr(123, 203, 0, -1, null, "Tiberium", false);
 
     public final long mProtons, mNeutrons, mAdditionalMass, mHalfLifeSeconds;
     public final String mName, mDecayTo;
