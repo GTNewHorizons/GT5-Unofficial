@@ -144,11 +144,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return Optional.of(aList);
     }
 
-    public static String getNameOverride(ItemStack stack) {
+    public static String getNameWithColor(ItemStack stack) {
         final boolean isLocked = isLocked(stack);
         final char lBracket = isLocked ? '[' : '(';
         final char rBracket = isLocked ? ']' : ')';
-        Dyes color = getDye(stack);
+        final Dyes color = getDye(stack);
 
         if (color == Dyes.MACHINE_METAL) {
             return GTUtility.translate("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);

@@ -1274,7 +1274,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Spray_Color_Infinite.set(
             addItem(
                 Spray_Color_Infinite.ID,
-                BehaviourSprayColorInfinite::getNameOverride,
+                BehaviourSprayColorInfinite::getNameWithColor,
                 $ -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
