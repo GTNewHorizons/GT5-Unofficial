@@ -30,8 +30,8 @@ public class MTEEndothermicFridgeGui extends MTEMultiBlockBaseGui<MTEEndothermic
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createRightPanelGapRow(parent, syncManager).child(
             new ToggleButton().syncHandler("cryotheum")
-                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CRYOTHEUM_ON)
+                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CRYOTHEUM_OFF)
                 .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.text.button.cryotheum.enabled")))
                 .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.text.button.cryotheum.disabled"))));
     }

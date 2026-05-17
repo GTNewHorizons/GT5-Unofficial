@@ -295,7 +295,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 "Optionally supply " + EnumChatFormatting.DARK_AQUA
                     + formatFluid(CRYOTHEUM_DRAIN_BASE)
                     + EnumChatFormatting.GRAY
-                    + "/s of"
+                    + "/s of "
                     + EnumChatFormatting.AQUA
                     + "Cryotheum"
                     + EnumChatFormatting.GRAY
