@@ -302,7 +302,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             + EnumChatFormatting.WHITE
             + frequency
             + EnumChatFormatting.GRAY
-            + "/minute";
+            + "/"
+            + EnumChatFormatting.WHITE
+            + "minute";
     }
 
     private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
@@ -377,7 +379,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.GRAY
                     + "*"
                     + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L/t)"
+                    + "Fuel Consumption(L)"
                     + EnumChatFormatting.GRAY
                     + "*rand("
                     + EnumChatFormatting.WHITE
@@ -395,11 +397,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     + EnumChatFormatting.WHITE
                     + "0.05"
                     + EnumChatFormatting.GRAY
-                    + "*("
+                    + "*"
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "Fuel Value (EU/L)"
+                    + "Base Fuel Value (EU/L)"
                     + EnumChatFormatting.GRAY
-                    + ")^"
+                    + "^"
                     + EnumChatFormatting.WHITE
                     + "0.8")
             .addInfo(
@@ -495,19 +497,27 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 "Every " + EnumChatFormatting.WHITE
                     + "minute"
                     + EnumChatFormatting.GRAY
-                    + ", 1/("
+                    + ", "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Robot Arm Amount"
+                    + EnumChatFormatting.GRAY
+                    + "/("
                     + EnumChatFormatting.WHITE
                     + "45"
                     + EnumChatFormatting.GRAY
-                    + "*(1+"
+                    + "*("
+                    + EnumChatFormatting.WHITE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + "+"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Robot Arm Tier"
                     + EnumChatFormatting.GRAY
-                    + "))chance for "
+                    + ")) chance for "
                     + EnumChatFormatting.WHITE
-                    + "all "
+                    + "one "
                     + EnumChatFormatting.GRAY
-                    + "used robot arms to "
+                    + "used robot arm to "
                     + EnumChatFormatting.RED
                     + "void")
             .addSeparator()
@@ -788,15 +798,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
-        robotArmTier = getRobotArmTier();
+        robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
         if (robotArmTier != -1) {
             int amount = Math.min(robotArmAmount, 16);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {
-                int random = getBaseMetaTileEntity().getRandomNumber(45 * (1 + robotArmTier));
-                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
-                if (random == 0) depleteInput(robotArmItemStack);
+                int random = getBaseMetaTileEntity().getRandomNumber(45 * (2 + robotArmTier));
+                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(1);
+                if (random < amount) depleteInput(robotArmItemStack);
             }
         } else {
             this.robotArmDecayBoost = 1;
