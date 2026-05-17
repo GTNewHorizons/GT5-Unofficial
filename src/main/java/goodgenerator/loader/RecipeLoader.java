@@ -35,7 +35,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -1363,7 +1362,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_FrostProof.get(4),
-                new ItemStack(Items.snowball, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 64),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Ledox, 2L),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CallistoIce, 2L))
             .itemOutputs(ItemList.CasingFridge.get(4))
