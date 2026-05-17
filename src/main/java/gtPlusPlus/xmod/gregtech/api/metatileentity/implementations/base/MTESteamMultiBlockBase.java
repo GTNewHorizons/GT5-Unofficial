@@ -188,9 +188,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         for (MTEHatch h : mOutputHatches) h.updateTexture(id);
     }
 
-    // tierMachine isn't synced to client - getThemeTier() it is instead of a syncHandler
-    public abstract int getThemeTier();
-
     @Override
     protected GTGuiTheme getGuiTheme() {
         return isHighPressure() ? GTGuiThemes.STEEL : GTGuiThemes.BRONZE;
