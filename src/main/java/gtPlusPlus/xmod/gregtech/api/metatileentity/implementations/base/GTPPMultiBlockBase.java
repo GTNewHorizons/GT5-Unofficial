@@ -251,12 +251,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return false;
         }
 
-        // Check type
-        /*
-         * Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList); if
-         * (!aHatchType.isInstance(aTileEntity)) { return false; }
-         */
-
         // Try setRecipeMap
 
         try {
