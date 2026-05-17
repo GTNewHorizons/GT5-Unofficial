@@ -3,6 +3,8 @@ package toxiceverglades.world;
 import java.util.Iterator;
 import java.util.Random;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongListIterator;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
@@ -27,7 +29,7 @@ public class TeleporterDimensionMod extends Teleporter {
     /**
      * Stores successful portal placement locations for rapid lookup.
      */
-    private final LongHashMap destinationCoordinateCache = new LongHashMap();
+    private final Long2ObjectOpenHashMap<Teleporter.PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>();
     /**
      * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
      * location.
@@ -91,9 +93,8 @@ public class TeleporterDimensionMod extends Teleporter {
         double d7;
         int l3;
 
-        if (this.destinationCoordinateCache.containsItem(j1)) {
-            Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
-                .getValueByKey(j1);
+        if (this.destinationCoordinateCache.containsKey(j1)) {
+            Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(j1);
             d3 = 0.0D;
             i = portalposition.posX;
             j = portalposition.posY;
@@ -132,7 +133,7 @@ public class TeleporterDimensionMod extends Teleporter {
         if (d3 >= 0.0D) {
             if (flag) {
                 this.destinationCoordinateCache
-                    .add(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
+                    .put(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
                 this.destinationCoordinateKeys.add(j1);
             }
 
@@ -438,14 +439,12 @@ public class TeleporterDimensionMod extends Teleporter {
     @Override
     public void removeStalePortalLocations(long par1) {
         if (par1 % 100L == 0L) {
-            @SuppressWarnings("rawtypes")
-            Iterator iterator = this.destinationCoordinateKeys.iterator();
+            LongListIterator iterator = this.destinationCoordinateKeys.iterator();
             long j = par1 - 600L;
 
             while (iterator.hasNext()) {
-                Long olong = (Long) iterator.next();
-                Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
-                    .getValueByKey(olong);
+                long olong = iterator.nextLong();
+                Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(olong);
 
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
