@@ -44,7 +44,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI2:2.3.64-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.28:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-938-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.83-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.84-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.21:dev')
