@@ -11,6 +11,8 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -26,6 +28,7 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import net.minecraftforge.fluids.FluidStack;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -922,6 +925,31 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(Materials.ExcitedDTCC.getFluid(8_000), MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
+            .addTo(AssemblyLine);
+
+        // Endothermic Fridge
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_VacuumFreezer.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                ItemList.Machine_Multi_VacuumFreezer.get(64),
+                GregtechItemList.Industrial_Cryogenic_Freezer.get(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                ItemList.Coolant_Duct_Casing.get(4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Aluminium, 32L),
+                ItemList.Electric_Pump_ZPM.get(8),
+                ItemList.FluidRegulator_ZPM.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CallistoIce, 8L))
+            .fluidInputs(
+                new FluidStack(GTPPFluids.Cryotheum, 256_000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Lubricant.getFluid(16_000))
+            .itemOutputs(ItemList.EndothermicFridge.get(1))
+            .eut(TierEU.RECIPE_ZPM / 2)
+            .duration(1 * MINUTES)
             .addTo(AssemblyLine);
     }
 }
