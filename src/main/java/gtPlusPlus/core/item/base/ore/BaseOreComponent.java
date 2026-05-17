@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.base.ore;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -21,9 +19,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
@@ -33,10 +31,7 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 public class BaseOreComponent extends Item {
 
     @SideOnly(Side.CLIENT)
-    private IIcon base;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon overlay;
+    private IIconContainer iconContainer;
 
     public final Material componentMaterial;
     public final String materialName;
@@ -146,26 +141,9 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
-            if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister
-                    .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
-            }
+            iconContainer = Textures.ItemIcons.custom(GTPlusPlus.ID + ":processing/MilledOre/milled");
         } else {
-            this.base = par1IconRegister
-                .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
-            if (this.componentType.hasOverlay()) {
-                final String overlayPath = GregTech.ID + ":"
-                    + "materialicons/METALLIC/"
-                    + this.componentType.COMPONENT_NAME
-                    + "_OVERLAY";
-                final ResourceLocation overlayResource = ResourceUtils
-                    .getCompleteItemTextureResourceLocation(overlayPath);
-
-                this.overlay = ResourceUtils.resourceExists(overlayResource)
-                    ? par1IconRegister.registerIcon(overlayPath)
-                    : Textures.InvisibleIcon.INVISIBLE_ICON;
-            }
+            iconContainer = Textures.ItemIcons.textureSet("METALLIC", "/" + this.componentType.COMPONENT_NAME);
         }
     }
 
@@ -184,11 +162,12 @@ public class BaseOreComponent extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.base;
+            return this.iconContainer.getIcon();
         }
-        return this.overlay;
+        return this.iconContainer.getOverlayIcon();
     }
 
     public enum ComponentTypes {

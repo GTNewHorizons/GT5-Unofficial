@@ -2216,6 +2216,7 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     CasingMixer,
     FormingCore,
+    AlgaeCasing,
     NaquadahReactorCasing,
     EntropicProcessor,
     DecayWarehouse,
@@ -2854,6 +2855,7 @@ public enum ItemList implements IItemContainer {
     IndustrialBendingMachine,
     IndustrialPrinter,
     IndustrialForgeHammer,
+    DroneCentre,
     Boldarnator,
     ThermalBoiler,
     MolecularTransformer,
@@ -2866,6 +2868,7 @@ public enum ItemList implements IItemContainer {
     CryogenicFreezer,
     IndustrialMixer,
     MegaChemicalReactor,
+    InfiniteFluidDrillingRig,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
