@@ -44,9 +44,8 @@ public class DustDecayable extends BaseItemTickable {
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         super.addInformation(stack, player, list, adv);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {

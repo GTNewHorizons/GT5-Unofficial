@@ -105,9 +105,8 @@ public class StandardBaseParticles extends BaseItemParticle {
         return super.getColorFromParentClass(stack, HEX_OxFFFFFF);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         Particle aCharge = getParticle(stack);
         EnumChatFormatting aColour = EnumChatFormatting.GRAY;
         if (aCharge != null) {

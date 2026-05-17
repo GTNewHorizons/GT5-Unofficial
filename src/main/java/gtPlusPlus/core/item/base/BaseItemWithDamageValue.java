@@ -17,9 +17,4 @@ public class BaseItemWithDamageValue extends Item {
         this.setMaxDamage(100);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
-    }
 }

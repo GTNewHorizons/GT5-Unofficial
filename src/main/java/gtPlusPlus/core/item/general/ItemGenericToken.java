@@ -88,13 +88,12 @@ public class ItemGenericToken extends CoreItem {
     }
 
     // Handle Sub items
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
+    public void getSubItems(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0, j = mIcons.size(); i < j; i++) {
             final ItemStack tStack = new ItemStack(this, 1, i);
-            aList.add(tStack);
+            list.add(tStack);
         }
     }
 
