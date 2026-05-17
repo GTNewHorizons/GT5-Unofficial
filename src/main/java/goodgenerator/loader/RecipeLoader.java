@@ -1374,6 +1374,22 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_FrostProof.get(4),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 64),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Ledox, 2L),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CallistoIce, 2L))
+            .itemOutputs(ItemList.CasingFridge.get(4))
+            .fluidInputs(
+                Materials.SuperCoolant.getFluid(4000),
+                new FluidStack(GTPPFluids.Cryotheum, 1_000),
+                Materials.TungstenSteel.getMolten(2 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 
     public static void InitLoadRecipe() {

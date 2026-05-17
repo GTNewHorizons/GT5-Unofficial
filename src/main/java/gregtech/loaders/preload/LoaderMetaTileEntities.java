@@ -153,6 +153,7 @@ import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEEndothermicFridge;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExothermicHearth;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
@@ -1087,6 +1088,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.ExothermicHearth.set(
             new MTEExothermicHearth(ExothermicHearth.ID, "multimachine.exothermichearth", "Exothermic Hearth")
+                .getStackForm(1));
+
+        ItemList.EndothermicFridge.set(
+            new MTEEndothermicFridge(EndothermicFridge.ID, "multimachine.endothermichfridge", "Endothermic Fridge")
                 .getStackForm(1));
     }
 
