@@ -198,9 +198,9 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
+            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase hatch && aMetaTileEntity.getBaseMetaTileEntity()
                 .getMetaTileID() == 968) {
-                return addToMachineListInternal(mPyrotheumHatches, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mPyrotheumHatches, hatch, aBaseCasingIndex);
             }
         }
         return false;

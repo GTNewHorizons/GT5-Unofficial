@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public interface IDualInputHatch {
+public interface IDualInputHatch extends IMetaTileEntity {
 
     /**
      * @return {@code true} if there is new items and/or fluids inserted to the inventories, and it will trigger the
