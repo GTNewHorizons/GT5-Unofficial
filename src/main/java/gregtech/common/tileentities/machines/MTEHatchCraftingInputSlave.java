@@ -60,7 +60,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     protected static int getTier(boolean isUniversal) {
-        return isUniversal ? 11 : 8;    // if true, it is UIV; else it is UV
+        return isUniversal ? 11 : 8; // if true, it is UIV; else it is UV
     }
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional, boolean isUniversal) {
