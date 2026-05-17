@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -78,7 +79,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     private final OverclockDescriber overclockDescriber;
 
     public ArrayList<MTEHatchSteamBusInput> mSteamInputs = new ArrayList<>();
-    public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
+    public ArrayList<MTEHatchOutputBus> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
     public static final Casings bronzeCasing = Casings.BronzePlatedBricks;
@@ -278,8 +279,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         return true;
     }
 
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
-        final int aBaseCasingIndex) {
+    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final E aTileEntity, final int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
 
         if (aTileEntity instanceof MTEHatch mteHatch) {
@@ -293,8 +293,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
         if (aList.contains(aTileEntity)) return false;
 
-        // noinspection unchecked
-        return aList.add((E) aTileEntity);
+        return aList.add(aTileEntity);
     }
 
     @Override
@@ -303,15 +302,15 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
 
-        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase) {
-            return addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch) {
+            return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput steamBus) {
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
-            return addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mSteamInputs, steamBus, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
-            return addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchInput) {
-            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mSteamOutputs, (MTEHatchOutputBus) aMetaTileEntity, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchInput inputHatch) {
+            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
         }
 
         return false;
@@ -435,7 +434,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     public List<IOutputBus> getOutputBusses() {
         List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
-        for (MTEHatchSteamBusOutput outputBus : mSteamOutputs) {
+        for (MTEHatchOutputBus outputBus : mSteamOutputs) {
             if (outputBus.isValid()) output.add(outputBus);
         }
         return output;
