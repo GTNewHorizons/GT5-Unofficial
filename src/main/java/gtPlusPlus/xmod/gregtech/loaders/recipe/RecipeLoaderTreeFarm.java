@@ -194,6 +194,12 @@ public class RecipeLoaderTreeFarm {
             GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.HugeStalk", 5, 0),
             GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFLeaves3", 1, 1),
             null);
+
+        MTETreeFarm.registerTreeProducts( // Minewood
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFSapling", 1, 7),
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFMagicLog", 1, 2),
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFMagicLeaves", 1, 2),
+            null);
     }
 
     private static void generateGalaxySpaceTrees() {
