@@ -53,7 +53,7 @@ public class SubstituteFluidStack {
      * The amount of each fluid is controlled by baseAmount, and the multiplier is determined by soldering material
      * quality.
      *
-     * @param baseAmount Lowest fluid amount. Empty defaults to 144 (1 ingot)
+     * @param baseAmount Lowest fluid amount.
      */
     public static SubstituteFluidStack soldering(long baseAmount) {
 

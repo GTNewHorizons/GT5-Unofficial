@@ -140,7 +140,7 @@ public class RecipeMapBackend {
             .add(recipe);
 
         for (FluidStack fluid : recipe.mFluidInputs) {
-            if (fluid.getFluid() == null) continue;
+            if (fluid == null || fluid.getFluid() == null) continue;
             fluidIndex.put(
                 fluid.getFluid()
                     .getName(),
@@ -155,6 +155,7 @@ public class RecipeMapBackend {
     protected GTRecipe addToItemMap(GTRecipe recipe) {
         if (recipe.mInputs != null) {
             for (ItemStack item : recipe.mInputs) {
+                if (item == null) continue;
                 itemIndex.put(new GTItemStack(item), recipe);
             }
         }
