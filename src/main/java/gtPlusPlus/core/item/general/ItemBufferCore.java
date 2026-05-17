@@ -43,7 +43,8 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         list.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "gtpp.tooltip.buffer_core.key_crafting_component",

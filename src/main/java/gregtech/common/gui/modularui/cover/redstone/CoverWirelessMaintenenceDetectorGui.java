@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.cover.redstone;
 
-import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector.MaintenanceMode;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -15,8 +14,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;
+import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector.MaintenanceMode;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
@@ -56,32 +55,17 @@ public class CoverWirelessMaintenenceDetectorGui
         }
         return Flow.column()
             .coverChildren()
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    MaintenanceMode.NO_ISSUE,
-                    MaintenanceMode.ONE_ISSUE))
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    MaintenanceMode.TWO_ISSUES,
-                    MaintenanceMode.THREE_ISSUES))
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    MaintenanceMode.FOUR_ISSUES,
-                    MaintenanceMode.FIVE_ISSUES))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.NO_ISSUE, MaintenanceMode.ONE_ISSUE))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.TWO_ISSUES, MaintenanceMode.THREE_ISSUES))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.FOUR_ISSUES, MaintenanceMode.FIVE_ISSUES))
             .childIf(
                 usesTurbines,
-                () -> makeSyncedBoolRow(
-                    maintenanceSync,
-                    MaintenanceMode.ROTOR_80,
-                    MaintenanceMode.ROTOR_100))
+                () -> makeSyncedBoolRow(maintenanceSync, MaintenanceMode.ROTOR_80, MaintenanceMode.ROTOR_100))
             .child(physicalRow(physicalSyncer));
     }
 
     protected Flow makeSyncedBoolRow(EnumSyncValue<MaintenanceMode> syncValue, MaintenanceMode value1,
-                                     MaintenanceMode value2) {
+        MaintenanceMode value2) {
         return Flow.row()
             .coverChildren()
             .child(makeMaintanenceIssueRow(syncValue, value1).marginRight(8))
@@ -89,8 +73,7 @@ public class CoverWirelessMaintenenceDetectorGui
             .marginBottom(4);
     }
 
-    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode> syncValue,
-        MaintenanceMode value) {
+    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode> syncValue, MaintenanceMode value) {
         return Flow.row()
             .size(90, 18)
             .child(

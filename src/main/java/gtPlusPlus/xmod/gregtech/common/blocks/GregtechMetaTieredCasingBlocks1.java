@@ -34,7 +34,8 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
             int aMeta = stack.getItemDamage();
             if (aMeta < 10) {
-                tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
+                tooltip
+                    .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
             }
             super.addInformation(stack, player, tooltip, aF3_H);
         }

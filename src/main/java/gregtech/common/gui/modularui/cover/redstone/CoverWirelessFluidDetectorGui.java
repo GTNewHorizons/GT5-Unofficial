@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 

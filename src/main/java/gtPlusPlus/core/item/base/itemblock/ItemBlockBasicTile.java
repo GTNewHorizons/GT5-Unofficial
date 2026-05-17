@@ -20,7 +20,8 @@ public class ItemBlockBasicTile extends ItemBlock {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (this.mID == 1) { // Fish trap
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.1"));

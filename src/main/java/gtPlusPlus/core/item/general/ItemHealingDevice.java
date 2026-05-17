@@ -110,7 +110,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     int EUPerOperation = 1_638_400;
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
 
         String aString1 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.1");
         String aString2 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.2");

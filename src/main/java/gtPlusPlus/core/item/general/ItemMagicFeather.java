@@ -57,7 +57,8 @@ public class ItemMagicFeather extends CoreItem {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.0"));
         super.addInformation(stack, aPlayer, list, adv);
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.1"));

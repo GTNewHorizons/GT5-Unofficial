@@ -209,8 +209,8 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      * Strongly favors positive y positions.
      */
     @Override
-    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List<BiomeGenBase> p_150795_4_,
-        Random p_150795_5_) {
+    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_,
+        List<BiomeGenBase> p_150795_4_, Random p_150795_5_) {
         IntCache.resetIntCache();
         int l = p_150795_1_ - p_150795_3_ >> 2;
         int i1 = p_150795_2_ - p_150795_3_ >> 2;

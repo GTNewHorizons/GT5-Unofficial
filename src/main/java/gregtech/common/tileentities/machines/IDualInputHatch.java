@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
 public interface IDualInputHatch extends IMetaTileEntity {
 

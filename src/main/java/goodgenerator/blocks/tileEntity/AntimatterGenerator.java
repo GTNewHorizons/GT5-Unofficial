@@ -52,7 +52,8 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator> implements ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator>
+    implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;

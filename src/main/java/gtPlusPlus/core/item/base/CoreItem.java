@@ -48,7 +48,8 @@ public class CoreItem extends Item {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         for (int i = 0;; i++) {
             String tooltip = GTLanguageManager
                 .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);

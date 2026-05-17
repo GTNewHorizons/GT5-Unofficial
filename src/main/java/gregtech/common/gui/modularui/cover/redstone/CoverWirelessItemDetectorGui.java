@@ -18,7 +18,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 

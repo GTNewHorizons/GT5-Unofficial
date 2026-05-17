@@ -113,7 +113,8 @@ public class BaseItemDustUnique extends Item {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (Client.tooltip.showFormula) {
             if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
                 list.add(this.chemicalNotation);

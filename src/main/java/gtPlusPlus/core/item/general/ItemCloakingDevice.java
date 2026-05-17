@@ -99,7 +99,8 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         list.add("");
         list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.0"));
         list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.1"));
