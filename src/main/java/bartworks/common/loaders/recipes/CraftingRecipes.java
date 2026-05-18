@@ -60,7 +60,7 @@ public class CraftingRecipes implements Runnable {
         };
 
         ISubTagContainer[] hulls = { // Plate material used in the acid gen, diode and energy distributor below
-            Materials.WroughtIron, // ULV
+            Materials.CastIron, // ULV
             Materials.Steel, // LV
             Materials.Aluminium, // MV
             Materials.StainlessSteel, // HV

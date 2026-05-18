@@ -76,7 +76,9 @@ public enum ItemList implements IItemContainer {
     DEFCWyvernSchematic,
     DEFCAwakenedSchematic,
     DEFCChaoticSchematic,
-    KubaFakeItemEECVoid;
+    KubaFakeItemEECVoid,
+    ElectrodeHatch,
+    ElectrodeDetectorHatch,;
 
     private @Nullable ItemStack mStack;
     private boolean mHasNotBeenSet = true;

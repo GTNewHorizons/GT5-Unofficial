@@ -2,8 +2,6 @@ package gtPlusPlus.core.item.bauble;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,11 +36,6 @@ public class FireProtectionBauble extends BaseBauble {
     @Override
     public boolean showDurabilityBar(final ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override
