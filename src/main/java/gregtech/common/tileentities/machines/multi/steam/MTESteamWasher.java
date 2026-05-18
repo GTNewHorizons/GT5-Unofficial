@@ -547,8 +547,4 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
-    }
 }

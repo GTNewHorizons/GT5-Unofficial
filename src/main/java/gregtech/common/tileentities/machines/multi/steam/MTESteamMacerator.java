@@ -407,8 +407,4 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachine;
-    }
 }

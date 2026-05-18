@@ -109,7 +109,6 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 8))
-            .fluidInputs()
             .fluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)

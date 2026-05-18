@@ -376,8 +376,4 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
         return false;
     }
 
-    @Override
-    public int getThemeTier() {
-        return mSetTier;
-    }
 }

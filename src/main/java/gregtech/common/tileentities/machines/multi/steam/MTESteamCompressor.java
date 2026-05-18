@@ -423,8 +423,4 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         return SoundResource.GTCEU_LOOP_COMPRESSOR;
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachine;
-    }
 }
