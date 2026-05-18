@@ -135,10 +135,12 @@ public class RecipeMapBackend {
         if (recipe.getRecipeCategory() == null) {
             recipe.setRecipeCategory(recipeMap.getDefaultRecipeCategory());
         }
+
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
+
         for (FluidStack fluid : recipe.mFluidInputs) {
-            if (fluid == null) continue;
+            if (fluid == null || fluid.getFluid() == null) continue;
             fluidIndex.put(
                 fluid.getFluid()
                     .getName(),
@@ -151,16 +153,35 @@ public class RecipeMapBackend {
      * Adds the supplied recipe to the item cache.
      */
     protected GTRecipe addToItemMap(GTRecipe recipe) {
-        for (ItemStack item : recipe.mInputs) {
-            if (item == null) continue;
-            itemIndex.put(new GTItemStack(item), recipe);
+        if (recipe.mInputs != null) {
+            for (ItemStack item : recipe.mInputs) {
+                if (item == null) continue;
+                itemIndex.put(new GTItemStack(item), recipe);
+            }
         }
+
         if (recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
-            for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
-                if (itemStacks == null) continue;
-                for (ItemStack item : itemStacks) {
-                    if (item == null) continue;
-                    itemIndex.put(new GTItemStack(item), recipe);
+
+            if (recipeWithAlt.mOreDictAlt != null) {
+                for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
+                    if (itemStacks == null) continue;
+                    for (ItemStack item : itemStacks) {
+                        if (item == null) continue;
+                        itemIndex.put(new GTItemStack(item), recipe);
+                    }
+                }
+            }
+
+            if (recipeWithAlt.mAltFluidInputs != null) {
+                for (FluidStack[] fluidStacks : recipeWithAlt.mAltFluidInputs) {
+                    if (fluidStacks == null) continue;
+                    for (FluidStack fluid : fluidStacks) {
+                        if (fluid == null) continue;
+                        fluidIndex.put(
+                            fluid.getFluid()
+                                .getName(),
+                            recipe);
+                    }
                 }
             }
         }

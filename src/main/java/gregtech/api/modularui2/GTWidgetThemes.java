@@ -93,6 +93,11 @@ public final class GTWidgetThemes {
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .defaultHoverTheme(null)
         .register();
+    public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE = themeApi
+        .widgetThemeKeyBuilder("steamGauge", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.STEAM_GAUGE_BG, Color.WHITE.main, Color.WHITE.main, false, 0))
+        .defaultHoverTheme(null)
+        .register();
     public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_NEEDLE = themeApi
         .widgetThemeKeyBuilder("steamGaugeNeedle", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
@@ -119,7 +124,7 @@ public final class GTWidgetThemes {
             new WidgetTheme(
                 0,
                 0,
-                new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                new Rectangle().color(Color.rgb(100, 30, 80)),
                 Color.rgb(55, 255, 55),
                 0xFFFAFAFA,
                 false,
@@ -135,7 +140,7 @@ public final class GTWidgetThemes {
                 0,
                 0,
                 new DrawableStack(
-                    new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                    new Rectangle().color(Color.rgb(100, 30, 80)),
                     GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
                 Color.rgb(55, 255, 55),
                 0xFFFAFAFA,

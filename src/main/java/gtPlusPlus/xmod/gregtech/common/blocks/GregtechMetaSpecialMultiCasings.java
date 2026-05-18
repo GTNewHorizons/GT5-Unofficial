@@ -27,14 +27,15 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
         TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
+        TAE.registerTexture(3, 1, TextureFactory.of(this, 11));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));
@@ -82,7 +83,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 8 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
             case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
             case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
-            case 11 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+            case 11 -> Textures.BlockIcons.MOLECULAR_CONTAINMENT_CASING.getIcon();
             case 12 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
             case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();

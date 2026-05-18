@@ -230,6 +230,17 @@ public class Assembler implements Runnable {
         {
             // Dynamo Hatches 4A
             {
+                // Dynamo HV 4A
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        ItemList.Hatch_Dynamo_HV.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Gold, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
+                    .itemOutputs(CustomItemList.eM_dynamoMulti4_HV.get(1))
+                    .fluidInputs(Materials.Kanthal.getMolten(1 * INGOTS))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(assemblerRecipes);
                 // Dynamo EV 4A
                 GTValues.RA.stdBuilder()
                     .itemInputs(

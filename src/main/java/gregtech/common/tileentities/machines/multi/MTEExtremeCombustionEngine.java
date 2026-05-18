@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -114,9 +115,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
 
         String lubricantRate = TooltipHelper.fluidText(8000);
         String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euText(10900);
+        String defaultOutput = TooltipHelper.euRateText(10900);
         String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euText(32700);
+        String boostedOutput = TooltipHelper.euRateText(32700);
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
@@ -188,6 +189,11 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEExtremeCombustionEngine(this.mName);
     }
@@ -215,6 +221,11 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.proxy.mPollutionExtremeCombustionEnginePerSecond;
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return boostEu ? 30000 : 10000;
     }
 
     @Override
@@ -247,7 +258,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.engine.output") + ": "
                 + EnumChatFormatting.RED
-                + formatNumber((long) -mEUt * mEfficiency / 10000)
+                + formatNumber(lEUt * mEfficiency / 10000)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
@@ -288,6 +299,26 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && !mMufflerHatches.isEmpty()
             && casingAmount >= 30
             && turbineCasingAmount >= 4;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mEfficiency", mEfficiency);
+        aNBT.setBoolean("boostEu", boostEu);
+        aNBT.setInteger("fuelConsumption", fuelConsumption);
+        aNBT.setInteger("fuelValue", fuelValue);
+        aNBT.setInteger("fuelRemaining", fuelRemaining);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mEfficiency = aNBT.getInteger("mEfficiency");
+        boostEu = aNBT.getBoolean("boostEu");
+        fuelConsumption = aNBT.getInteger("fuelConsumption");
+        fuelValue = aNBT.getInteger("fuelValue");
+        fuelRemaining = aNBT.getInteger("fuelRemaining");
     }
 
     @Override
@@ -363,14 +394,14 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel
-                this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
+                this.lEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = getEfficiencyIncrease();
                 return CheckRecipeResultRegistry.GENERATING;
             }
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }

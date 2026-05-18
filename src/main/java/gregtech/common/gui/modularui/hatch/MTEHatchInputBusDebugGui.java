@@ -37,14 +37,15 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
         return super.createContentSection(panel, syncManager).child(
             SlotGroupWidget.builder()
                 .matrix("IIII", "IIII", "IIII", "IIII")
-                .key('I', index -> {
-                    return new PhantomItemSlot().slot(
+                .key(
+                    'I',
+                    index -> new PhantomItemSlot().slot(
                         new ModularSlot(hatch.phantomHolder, index).singletonSlotGroup(50 + index)
-                            .accessibility(true, false));
-                })
+                            .accessibility(true, false)))
                 .build()
                 .marginTop(4)
-                .align(Alignment.TopCenter));
+                .topRel(0)
+                .horizontalCenter());
     }
 
     @Override

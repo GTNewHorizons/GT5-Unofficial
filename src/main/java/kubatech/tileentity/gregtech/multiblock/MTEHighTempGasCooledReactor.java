@@ -62,6 +62,7 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -99,7 +100,7 @@ import kubatech.loaders.item.htgritem.HTGRItem;
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
 
-    private static final int BASECASINGINDEX = 181;
+    private static final int BASECASINGINDEX = Casings.IVMachineCasing.textureId;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
@@ -1020,13 +1021,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             @Override
-            @SuppressWarnings({ "unchecked", "rawtypes" })
-            public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-                if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
-                    aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                // aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
-                aList.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
-                super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+            public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
+                if (this.tooltip.containsKey(this.getDamage(stack)))
+                    tooltip.add(this.tooltip.get(this.getDamage(stack)));
+                // tooltip.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
+                tooltip.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
+                super.addInformation(stack, player, tooltip, adv);
             }
         }
 

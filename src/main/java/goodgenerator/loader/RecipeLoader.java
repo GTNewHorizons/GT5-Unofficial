@@ -33,7 +33,6 @@ import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,8 +48,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -107,7 +106,7 @@ public class RecipeLoader {
                 Materials.Trinium.getMolten(4 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.Lubricant.getFluid(8_000))
-            .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
+            .itemOutputs(ItemList.LargeNaquadahReactor.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
@@ -893,7 +892,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "PFP", "PPP", 'P', ItemRefer.Special_Ceramics_Plate.get(1), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
 
@@ -950,7 +949,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemList.UniversalChemicalFuelEngine.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "TZT", "ALB", "WGW", 'T',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1), 'Z', "circuitUltimate", 'A',
                 ItemList.LargeCombustionEngine.get(1), 'B', ItemList.ExtremeCombustionEngine.get(1), 'L',
@@ -982,6 +981,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Plastic_Case.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Polyethylene, 1), 'D', "dyeCyan" });
@@ -1037,74 +1037,69 @@ public class RecipeLoader {
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
-        for (Materials tMat : solderingMats) {
-            int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
-                : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Quartz_Crystal_Resonator.get(2),
+                ItemRefer.Plastic_Case.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                ItemList.Cover_Screen.get(1),
+                GTOreDictUnificator.get(OrePrefixes.componentCircuit, Materials.Diode, 16L),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
+            .itemOutputs(ItemRefer.Inverter.get(1))
+            .duration(12 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Quartz_Crystal_Resonator.get(2),
+                ItemRefer.Plastic_Case.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                ItemList.Cover_Screen.get(1),
+                ItemList.Circuit_Parts_DiodeASMD.get(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
+            .itemOutputs(ItemRefer.Inverter.get(1))
+            .duration(12 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemRefer.Quartz_Crystal_Resonator.get(2),
-                    ItemRefer.Plastic_Case.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
-                    ItemList.Cover_Screen.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.componentCircuit, Materials.Diode, 16L),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
-                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS))
-                .itemOutputs(ItemRefer.Inverter.get(1))
-                .duration(12 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
+                    ItemList.Circuit_Chip_SoC2.get(8),
+                    ItemList.Circuit_Chip_NOR.get(32),
+                    GGMaterial.signalium.get(OrePrefixes.bolt, 32),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                    GTModHandler.getIC2Item("reactorVent", 1L, 1))
+                .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
+                .itemOutputs(ItemRefer.HiC_T1.get(1))
+                .duration(1 * MINUTES)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemRefer.Quartz_Crystal_Resonator.get(2),
-                    ItemRefer.Plastic_Case.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
-                    ItemList.Cover_Screen.get(1),
-                    ItemList.Circuit_Parts_DiodeASMD.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
-                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS))
-                .itemOutputs(ItemRefer.Inverter.get(1))
-                .duration(12 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
+                    ItemList.Circuit_Chip_SoC2.get(8),
+                    ItemList.Circuit_Chip_NOR.get(32),
+                    GGMaterial.signalium.get(OrePrefixes.bolt, 32),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TinAlloy, 1))
+                .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
+                .itemOutputs(ItemRefer.HiC_T1.get(1))
+                .duration(1 * MINUTES)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
-            if (NewHorizonsCoreMod.isModLoaded()) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
-                        ItemList.Circuit_Chip_SoC2.get(8),
-                        ItemList.Circuit_Chip_NOR.get(32),
-                        GGMaterial.signalium.get(OrePrefixes.bolt, 32),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
-                        GTModHandler.getIC2Item("reactorVent", 1L, 1))
-                    .fluidInputs(tMat.getMolten(2 * tMultiplier * INGOTS))
-                    .itemOutputs(ItemRefer.HiC_T1.get(1))
-                    .duration(1 * MINUTES)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
-                        ItemList.Circuit_Chip_SoC2.get(8),
-                        ItemList.Circuit_Chip_NOR.get(32),
-                        GGMaterial.signalium.get(OrePrefixes.bolt, 32),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
-                        GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TinAlloy, 1))
-                    .fluidInputs(tMat.getMolten(2 * tMultiplier * INGOTS))
-                    .itemOutputs(ItemRefer.HiC_T1.get(1))
-                    .duration(1 * MINUTES)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-            }
         }
 
         // Neutron Accelerator ULV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[0].copy(),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "WPM", "CHI", "WPM", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
                 'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lead, 1), 'M',
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Lead, 1), 'C',
@@ -1114,7 +1109,7 @@ public class RecipeLoader {
         // Neutron Accelerator LV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[1].copy(),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "WPM", "CHI", "WPM", 'W',
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M', ItemList.Electric_Motor_LV,
@@ -1341,7 +1336,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Neutron_Source.get(1),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " P ", "PUP", " P ", 'P',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1), 'U',
                 ItemRefer.High_Density_Uranium.get(1) });

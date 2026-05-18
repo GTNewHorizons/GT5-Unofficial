@@ -3,7 +3,6 @@ package gregtech.api.modularui2;
 import java.awt.Color;
 
 import gregtech.api.enums.Dyes;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
 /**
  * Holds all the {@link GTGuiTheme}s registered.
@@ -60,7 +59,7 @@ public final class GTGuiThemes {
         .themedButton(
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
-        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTPPTextureIds.PICTURE_CANISTER_DARK)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_DARK)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
     public static final GTGuiTheme STANDARD_BLACK = GTGuiTheme.builder("gregtech:standard_black")
@@ -95,7 +94,7 @@ public final class GTGuiThemes {
         .parent(STANDARD)
         .fullColor(Dyes.dyeLightGray)
         .build();
-    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_standard_gray")
+    public static final GTGuiTheme STANDARD_GRAY = GTGuiTheme.builder("gregtech:standard_gray")
         .parent(STANDARD)
         .fullColor(Dyes.dyeGray)
         .build();
@@ -223,6 +222,7 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STEEL)
+        .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
         .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847)
         .build();
     public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")
@@ -322,6 +322,10 @@ public final class GTGuiThemes {
             GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
+        .parent(TECTECH_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
         .build();
 
     public static final GTGuiTheme NANOCHIP = GTGuiTheme.builder("nanochip")

@@ -97,7 +97,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
 
     @Override
     protected boolean isHighPressure() {
-        return tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2;
+        return tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2;
     }
 
     public Integer getTierMachineCasing(Block block, int meta) {
@@ -399,11 +399,6 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
-    }
-
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
     }
 
 }

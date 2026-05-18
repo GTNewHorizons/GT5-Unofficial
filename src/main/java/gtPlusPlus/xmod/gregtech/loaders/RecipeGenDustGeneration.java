@@ -44,13 +44,25 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack smallDust = M.getSmallDust(1);
         final ItemStack tinyDust = M.getTinyDust(1);
         if (tinyDust != null && normalDust != null) {
-            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-            GTModHandler.addCraftingRecipe(M.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
+            GTModHandler.addCraftingRecipe(
+                normalDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(
+                M.getTinyDust(9),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
-            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-            GTModHandler.addCraftingRecipe(M.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
+            GTModHandler.addCraftingRecipe(
+                normalDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(
+                M.getSmallDust(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
     }
 

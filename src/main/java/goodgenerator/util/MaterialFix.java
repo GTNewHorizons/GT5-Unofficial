@@ -153,6 +153,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateDouble, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "P", "P", "h", 'P', tMaterial.get(OrePrefixes.plate, 1) });
             }
             if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
@@ -180,6 +181,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "B", "P", "h", 'P', tMaterial.get(OrePrefixes.plate, 1), 'B',
                         tMaterial.get(OrePrefixes.plateDouble, 1) });
             }
@@ -225,12 +227,14 @@ public class MaterialFix {
                 if (tMaterial.hasItemType(OrePrefixes.stick)) {
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
+                        GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PhP", 'P', tMaterial.get(OrePrefixes.stick, 1) });
                 }
             }
             if (tMaterial.hasItemType(OrePrefixes.spring)) {
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.spring, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { " s ", "fPx", " P ", 'P', tMaterial.get(OrePrefixes.stickLong, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stickLong, 1))
@@ -247,6 +251,7 @@ public class MaterialFix {
             if (tMaterial.hasItemType(OrePrefixes.springSmall)) {
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.springSmall, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { " s ", "fPx", 'P', tMaterial.get(OrePrefixes.stick, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stick, 1))

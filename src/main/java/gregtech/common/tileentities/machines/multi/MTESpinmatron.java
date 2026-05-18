@@ -399,6 +399,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
             .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
                 "Gains " + EnumChatFormatting.WHITE

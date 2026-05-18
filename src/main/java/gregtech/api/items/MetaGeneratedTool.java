@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -331,7 +332,17 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
             }
             return false;
-        }
+        } else if (tStats.isSaw()
+            && ((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))) {
+                int aMetaData = aPlayer.worldObj.getBlockMetadata(aX, aY, aZ);
+                GTUtility
+                    .dropItem(aPlayer.worldObj, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMetaData));
+                aPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
+                onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+                doDamage(aStack, tStats.getToolDamagePerDropConversion());
+                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+                return true;
+            }
         return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
     }
 
@@ -693,6 +704,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
+        if (aStack.stackSize <= 0) return false;
         Long[] tElectric = getElectricStats(aStack);
         if (tElectric == null) {
             long tNewDamage = getToolDamage(aStack) + aAmount;

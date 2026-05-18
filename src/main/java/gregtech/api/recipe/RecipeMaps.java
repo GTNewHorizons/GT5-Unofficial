@@ -389,18 +389,9 @@ public final class RecipeMaps {
     /**
      * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
      */
-    public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
-        .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(2, 9, 1, 1)
-        .minInputs(1, 1)
-        .build();
-    /**
-     * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
-     */
     public static final RecipeMap<RecipeMapBackend> arcFurnaceRecipes = RecipeMapBuilder.of("gt.recipe.arcfurnace")
-        .maxIO(1, 9, 1, 0)
-        .minInputs(1, 1)
-        .amperage(3)
+        .maxIO(2, 9, 2, 1)
+        .minInputs(1, 0)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
@@ -1677,16 +1668,10 @@ public final class RecipeMaps {
             BeamCrafterMetadata metadata = recipeInfo.recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return Collections.emptyList();
 
-            float minEnergy_A = metadata.minEnergy_A;
-            float minEnergy_B = metadata.minEnergy_B;
-
             float amount_A = metadata.amount_A;
             float amount_B = metadata.amount_B;
 
             return Arrays.asList(
-                StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
-                StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
-
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
                 StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B));
         }))

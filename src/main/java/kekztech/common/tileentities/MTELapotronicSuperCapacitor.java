@@ -687,7 +687,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
-            final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
+            final long ttLaserWattage = eHatch.maxEUInput() * eHatch.getAmperes() - (eHatch.getAmperes() / 20);
             final long power = getPowerToDraw(ttLaserWattage);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
