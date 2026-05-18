@@ -63,9 +63,9 @@ public class BlockIchorJar extends BlockJar {
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked" })
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0)); // Normal jar
-        par3List.add(new ItemStack(par1, 1, 3)); // Void jar
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0)); // Normal jar
+        list.add(new ItemStack(item, 1, 3)); // Void jar
     }
 
     @Override

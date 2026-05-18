@@ -63,7 +63,7 @@ public class MetaCustomCoverItem extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < icons.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -147,13 +147,13 @@ public class MetaCustomCoverItem extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(
             EnumChatFormatting.GRAY + (getCoverConnections(stack)
                 ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
                 : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.cover_item.change_state"));
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override
