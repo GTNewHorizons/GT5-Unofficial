@@ -287,15 +287,51 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
 
-        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch) {
-            return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput steamBus) {
+        if (addSteamInputFluidHatch(aTileEntity, aBaseCasingIndex)) return true;
+        if (addSteamBusInput(aTileEntity, aBaseCasingIndex)) return true;
+        if (addSteamBusOutput(aTileEntity, aBaseCasingIndex)) return true;
+
+        if (aMetaTileEntity instanceof MTEHatchInput inputHatch) {
+            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
+        }
+
+        return false;
+    }
+
+    public boolean addSteamBusInput(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+
+        if (aMetaTileEntity instanceof MTEHatchSteamBusInput steamBus) {
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
             return addToMachineListInternal(mSteamInputs, steamBus, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
+        }
+
+        return false;
+    }
+
+    public boolean addSteamBusOutput(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+
+        if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
             return addToMachineListInternal(mSteamOutputs, (MTEHatchOutputBus) aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchInput inputHatch) {
-            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
+        }
+
+        return false;
+    }
+
+    public boolean addSteamInputFluidHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch
+            && fluidHatch.mLockedFluid.equals(Materials.Steam.mGas)
+            && mSteamInputFluids.isEmpty()) {
+            return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);
         }
 
         return false;
@@ -553,7 +589,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     protected static <T extends MTESteamMultiBlockBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
-        return buildHatchAdder(typeToken).adder(MTESteamMultiBlockBase::addToMachineList)
+        return buildHatchAdder(typeToken).adder(MTESteamMultiBlockBase::addSteamInputFluidHatch)
             .hatchIds(31040)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
     }
@@ -580,6 +616,12 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             public long count(MTESteamMultiBlockBase<?> t) {
                 return t.mSteamInputs.size();
             }
+
+            @Override
+            public IGTHatchAdder<? super MTESteamMultiBlockBase<?>> adder() {
+                return MTESteamMultiBlockBase::addSteamBusInput;
+            }
+
         },
         OutputBus_Steam {
 
@@ -592,11 +634,12 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             public long count(MTESteamMultiBlockBase<?> t) {
                 return t.mSteamOutputs.size();
             }
-        };
 
-        @Override
-        public IGTHatchAdder<? super MTESteamMultiBlockBase<?>> adder() {
-            return MTESteamMultiBlockBase::addToMachineList;
-        }
+            @Override
+            public IGTHatchAdder<? super MTESteamMultiBlockBase<?>> adder() {
+                return MTESteamMultiBlockBase::addSteamBusOutput;
+            }
+
+        };
     }
 }
