@@ -38,6 +38,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
@@ -437,32 +438,72 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+
+            // Fake recipe to make NEI less scary
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
                 .fluidInputs(
-                    Materials.Water.getFluid(
-                        Math.max(
-                            4,
-                            Math.min(
-                                1000,
-                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 320))))
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 320))),
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 426))),
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(
+                                    250,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 1280))),
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(
+                                    10,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 4000)))
+                    )
+                )
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
+                .fake()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
                 .fluidInputs(
-                    GTModHandler.getDistilledWater(
-                        Math.max(
-                            3,
-                            Math.min(
-                                750,
-                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 426))))
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 320))),
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 426)))
+                    )
+                )
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
+                .hidden()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -478,6 +519,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                     / 1280))))
                 .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
+                .hidden()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -493,6 +535,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                     / 4000))))
                 .duration(((int) Math.max(aMaterial.getMass() / 2.5, 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
+                .hidden()
                 .addTo(cutterRecipes);
         }
     }

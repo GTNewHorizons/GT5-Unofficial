@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.nei.formatter.CuttingRecipesFormatter;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -55,6 +56,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
@@ -1299,6 +1301,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CUT)
+        .neiSpecialInfoFormatter(CuttingRecipesFormatter.INSTANCE)
         .recipeEmitter(b -> {
             b.validateInputCount(1, 2)
                 .validateOutputCount(1, 4)
@@ -1308,22 +1311,34 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
-                .duration(aDuration * 2)
-                .build()
+                .fluidInputs(
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)),
+                        Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)),
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10))))
+                .duration(aDuration)
+                .fake()
+                .buildWithAlt()
                 .ifPresent(ret::add);
             b.copy()
-                .fluidInputs(GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)))
+                .fluidInputs(
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
                 .duration(aDuration * 2)
-                .build()
+                .hidden()
+                .buildWithAlt()
                 .ifPresent(ret::add);
             b.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
                 .duration(aDuration)
+                .hidden()
                 .build()
                 .ifPresent(ret::add);
             b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
+                .hidden()
                 .build()
                 .ifPresent(ret::add);
             return ret;

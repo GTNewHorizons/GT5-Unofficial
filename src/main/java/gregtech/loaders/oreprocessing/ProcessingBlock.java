@@ -37,6 +37,21 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.getDistilledWater(
                 Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))));
 
+        SubstituteFluidStack cuttingFluidSubstitutions = new SubstituteFluidStack(
+            Materials.Water.getFluid(
+                Math.max(4, Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))),
+            GTModHandler.getDistilledWater(
+                Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))),
+            Materials.Lubricant.getFluid(
+                Math.max(
+                    1,
+                    Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))),
+            Materials.DimensionallyShiftedSuperfluid.getFluid(
+                Math.max(
+                    1,
+                    Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000)))
+        );
+
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
@@ -47,6 +62,17 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             if (aMaterial == Materials.Livingrock || aMaterial == Materials.Livingwood
                 || aMaterial == Materials.Dreamwood) {
 
+                // Fake recipe to make NEI less scary
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(cuttingFluidSubstitutions)
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .fake()
+                    .addTo(cutterRecipes);
+
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .circuit(3)
@@ -54,6 +80,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(waterSubstitutions)
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -67,6 +94,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -80,18 +108,30 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
 
             }
 
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
 
+                // Fake recipe to make NEI less scary
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(cuttingFluidSubstitutions)
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .fake()
+                    .addTo(cutterRecipes);
+
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(waterSubstitutions)
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -104,6 +144,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -116,6 +157,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
+                    .hidden()
                     .addTo(cutterRecipes);
             }
         }
