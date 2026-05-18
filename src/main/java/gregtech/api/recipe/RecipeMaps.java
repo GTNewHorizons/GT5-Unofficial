@@ -1314,7 +1314,7 @@ public final class RecipeMaps {
                         Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
                         GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
                 .duration(aDuration * 2)
-                .build()
+                .buildWithAlt()
                 .ifPresent(ret::add);
             b.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
