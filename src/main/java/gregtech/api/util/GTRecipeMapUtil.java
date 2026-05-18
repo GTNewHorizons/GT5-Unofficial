@@ -124,7 +124,7 @@ public class GTRecipeMapUtil {
     }
 
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {
-        if (builder.getItemInputsOreDict() != null) {
+        if (builder.getItemInputsOreDict() != null || builder.getFluidInputsInterchangeable() != null) {
             return builder.buildWithAlt()
                 .<List<GTRecipe>>map(Collections::singletonList)
                 .orElse(Collections.emptyList());
