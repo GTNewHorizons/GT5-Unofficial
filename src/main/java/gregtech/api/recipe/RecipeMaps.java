@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1308,12 +1309,12 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
-                .duration(aDuration * 2)
-                .build()
-                .ifPresent(ret::add);
-            b.copy()
-                .fluidInputs(GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)))
+                .fluidInputs(
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))
+                    )
+                )
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
