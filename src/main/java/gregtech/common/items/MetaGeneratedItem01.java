@@ -3256,23 +3256,23 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.T1Sawblade.set(
             addItem(
                 T1Sawblade.ID,
-                () -> GTUtility.translate("gt.item.t1sawblade.name"),
-                () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
+                $ -> GTUtility.translate("gt.item.t1sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
         ItemList.T2Sawblade.set(
             addItem(
                 T2Sawblade.ID,
-                () -> GTUtility.translate("gt.item.t2sawblade.name"),
-                () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
+                $ -> GTUtility.translate("gt.item.t2sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
         ItemList.T3Sawblade
             .set(
                 addItem(
                     T3Sawblade.ID,
-                    () -> GTUtility.translate("gt.item.t3sawblade.name"),
-                    () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
+                    $ -> GTUtility.translate("gt.item.t3sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
             .setRender(new InfinityMetaItemRenderer());
@@ -3280,8 +3280,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItem(
                     T4Sawblade.ID,
-                    () -> GTUtility.translate("gt.item.t4sawblade.name"),
-                    () -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Transcendent),
+                    $ -> GTUtility.translate("gt.item.t4sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Transcendent),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
             .setRender(new TranscendentalMetaItemRenderer());
