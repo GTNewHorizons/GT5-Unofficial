@@ -31,7 +31,9 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 public class BaseOreComponent extends Item {
 
     @SideOnly(Side.CLIENT)
-    private IIconContainer iconContainer;
+    private IIcon iconBase;
+    @SideOnly(Side.CLIENT)
+    private IIcon iconOverlay;
 
     public final Material componentMaterial;
     public final String materialName;
@@ -141,9 +143,16 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            iconContainer = Textures.ItemIcons.custom(GTPlusPlus.ID + ":processing/MilledOre/milled");
+            this.iconBase = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
+            if (this.componentType.hasOverlay()) {
+                this.iconOverlay = par1IconRegister
+                    .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
+            }
         } else {
-            iconContainer = Textures.ItemIcons.textureSet("METALLIC", "/" + this.componentType.COMPONENT_NAME);
+            IIconContainer container = Textures.ItemIcons
+                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+            iconBase = container.getIcon();
+            iconOverlay = container.getOverlayIcon();
         }
     }
 
@@ -165,9 +174,9 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.iconContainer.getIcon();
+            return iconBase;
         }
-        return this.iconContainer.getOverlayIcon();
+        return iconOverlay;
     }
 
     public enum ComponentTypes {
