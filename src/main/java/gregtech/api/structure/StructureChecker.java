@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
@@ -15,10 +17,10 @@ public class StructureChecker<T> implements IStructureWalker<T> {
 
     T instance;
     final boolean forced;
-    final List<StructureError> errors;
+    final @Nullable List<StructureError> errors;
     public boolean success = true;
 
-    public StructureChecker(T instance, boolean forced, List<StructureError> errors) {
+    public StructureChecker(T instance, boolean forced, @Nullable List<StructureError> errors) {
         this.instance = instance;
         this.forced = forced;
         this.errors = errors;
@@ -30,7 +32,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
 
         if (!result) {
             this.success = false;
-            errors.add(new PositionedStructureError(x, y, z));
+            if (errors != null) errors.add(new PositionedStructureError(x, y, z));
         }
 
         return result;
@@ -42,7 +44,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
             return visit(element, world, x, y, z, a, b, c);
         }
         this.success = false;
-        errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
+        if (errors != null) errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
         return false;
     }
 }

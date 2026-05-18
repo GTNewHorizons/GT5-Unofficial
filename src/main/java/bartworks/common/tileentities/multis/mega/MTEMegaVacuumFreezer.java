@@ -59,6 +59,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -423,18 +424,22 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        this.mCasingFrostProof = 0;
-        this.mTier = 1;
-        // If check for T1 fails, also do a check for T2 structure
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0, new ArrayList<>())) {
-            // Reset state from failed T1 check
-            this.mCasingFrostProof = 0;
+        mCasingFrostProof = 0;
+        mTier = -1;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0, null)) {
+            mTier = 1;
+        } else {
+            mCasingFrostProof = 0;
             clearHatches();
-            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0, errors)) return;
-            // Structure is Tier 2
-            this.mTier = 2;
+            if (checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0, null)) {
+                mTier = 2;
+            } else {
+                // Cannot recognize structure, but emitting errors for either could be confusing
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
+            }
         }
-        checkCasingMin(errors, this.mCasingFrostProof, 700);
+        checkCasingMin(errors, mCasingFrostProof, 700);
         checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);

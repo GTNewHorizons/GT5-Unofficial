@@ -334,7 +334,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * All these offsets can be negative.
      */
     public final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-        List<StructureError> errors) {
+        @Nullable List<StructureError> errors) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         StructureChecker<MTEEnhancedMultiBlockBase<T>> checker = new StructureChecker<>(this, !mMachine, errors);
         getCastedStructureDefinition().iterate(
