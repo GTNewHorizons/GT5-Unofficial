@@ -94,9 +94,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                     Math.min(
                                         10,
                                         ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * calculateRecipeEU(aMaterial, 4)
-                                            / 4000)))
-                        )
-                    )
+                                            / 4000)))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .fake()

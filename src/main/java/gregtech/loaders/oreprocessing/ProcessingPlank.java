@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
@@ -20,6 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -200,9 +200,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                     Materials.Water.getFluid(4),
                     GTModHandler.getDistilledWater(3),
                     Materials.Lubricant.getFluid(1),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)
-                )
-            )
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
             .duration(2 * 25 * TICKS)
             .eut(4)
             .fake()

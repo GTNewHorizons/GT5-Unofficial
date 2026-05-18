@@ -1,12 +1,14 @@
 package gregtech.nei.formatter;
 
-import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -16,7 +18,6 @@ public class CuttingRecipesFormatter implements INEISpecialInfoFormatter {
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
-        return Collections
-            .singletonList(StatCollector.translateToLocal("GT5U.nei.cutter_fluids_warning"));
+        return Collections.singletonList(StatCollector.translateToLocal("GT5U.nei.cutter_fluids_warning"));
     }
 }

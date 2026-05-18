@@ -33,7 +33,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gregtech.nei.formatter.CuttingRecipesFormatter;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -106,6 +105,7 @@ import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
+import gregtech.nei.formatter.CuttingRecipesFormatter;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;

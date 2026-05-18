@@ -3,7 +3,6 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -11,6 +10,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -57,12 +57,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .fluidInputs(new SubstituteFluidStack(
-                                Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
-                                Materials.Lubricant.getFluid(1L),
-                                Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
-                                GTModHandler.getDistilledWater(3)
-                            ))
+                            .fluidInputs(
+                                new SubstituteFluidStack(
+                                    Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
+                                    Materials.Lubricant.getFluid(1L),
+                                    Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
+                                    GTModHandler.getDistilledWater(3)))
                             .duration(20 * SECONDS)
                             .eut(8)
                             .addTo(cutterRecipes);
@@ -143,12 +143,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs( new SubstituteFluidStack(
-                            Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
-                            Materials.Lubricant.getFluid(1L),
-                            Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
-                            GTModHandler.getDistilledWater(3))
-                        )
+                        .fluidInputs(
+                            new SubstituteFluidStack(
+                                Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
+                                Materials.Lubricant.getFluid(1L),
+                                Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
+                                GTModHandler.getDistilledWater(3)))
                         .duration(4 * SECONDS)
                         .eut(8)
                         .fake()

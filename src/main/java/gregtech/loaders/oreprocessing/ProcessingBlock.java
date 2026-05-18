@@ -43,14 +43,9 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.getDistilledWater(
                 Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))),
             Materials.Lubricant.getFluid(
-                Math.max(
-                    1,
-                    Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))),
+                Math.max(1, Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))),
             Materials.DimensionallyShiftedSuperfluid.getFluid(
-                Math.max(
-                    1,
-                    Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000)))
-        );
+                Math.max(1, Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))));
 
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;

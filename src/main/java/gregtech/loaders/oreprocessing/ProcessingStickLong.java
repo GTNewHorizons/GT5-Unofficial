@@ -49,13 +49,13 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                         1000,
                                         ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
                                             / 320))),
-                        GTModHandler.getDistilledWater(
-                            Math.max(
-                                3,
-                                Math.min(
-                                    750,
-                                    ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                        / 426))),
+                            GTModHandler.getDistilledWater(
+                                Math.max(
+                                    3,
+                                    Math.min(
+                                        750,
+                                        ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
+                                            / 426))),
                             Materials.Lubricant.getFluid(
                                 Math.max(
                                     1,
@@ -69,9 +69,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                     Math.min(
                                         10,
                                         ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                            / 4000)))
-                        )
-                    )
+                                            / 4000)))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .fake()

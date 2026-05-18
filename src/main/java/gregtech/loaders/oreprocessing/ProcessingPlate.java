@@ -472,9 +472,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(
                                     10,
                                     ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
-                                        / 4000)))
-                    )
-                )
+                                        / 4000)))))
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .fake()
@@ -498,9 +496,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                 Math.min(
                                     750,
                                     ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
-                                        / 426)))
-                    )
-                )
+                                        / 426)))))
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .hidden()
