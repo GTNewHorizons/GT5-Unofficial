@@ -29,19 +29,19 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
-public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
+public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
     protected boolean mAddGregTechLogo = false;
 
-    public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
+    public MTEBasicMachineBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
         this.slotOverlayFunction = properties.slotOverlaysMUI2;
     }
 
-    public MTEBasicMachineWithRecipeBaseGui useGregTechLogo(boolean addLogo) {
+    public MTEBasicMachineBaseGui useGregTechLogo(boolean addLogo) {
         this.mAddGregTechLogo = addLogo;
         return this;
     }

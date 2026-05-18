@@ -53,7 +53,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEMassfabricator extends MTEBasicMachine {
@@ -268,7 +268,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override

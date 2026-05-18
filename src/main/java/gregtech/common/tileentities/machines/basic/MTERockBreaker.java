@@ -52,7 +52,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -400,7 +400,7 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override

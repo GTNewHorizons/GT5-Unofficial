@@ -32,7 +32,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.misc.DrillingLogicDelegate;
 import gregtech.common.misc.IDrillingLogicDelegateOwner;
 
@@ -416,7 +416,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
             .build(data, syncManager, uiSettings);
     }
 

@@ -24,7 +24,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTENameRemover extends MTEBasicMachine {
@@ -270,7 +270,7 @@ public class MTENameRemover extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
             .build(data, syncManager, uiSettings);
     }
 

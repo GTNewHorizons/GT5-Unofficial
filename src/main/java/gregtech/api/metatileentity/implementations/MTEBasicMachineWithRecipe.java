@@ -40,7 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -475,7 +475,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override
