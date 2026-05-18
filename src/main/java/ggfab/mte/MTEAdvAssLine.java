@@ -254,7 +254,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
-                // this is the output layer
+                // Output layer found. Check machine requirements
                 checkHasAnyEnergy(errors);
                 checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {

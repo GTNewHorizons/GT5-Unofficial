@@ -531,7 +531,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             if (!checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0, errors)) return i;
             length = i + 1;
             if (!mOutputBusses.isEmpty()) {
-                // this is the output layer
+                // Output layer found. Check machine requirements
                 checkOneEnergyHatch(errors);
                 checkHasMaintenanceHatch(errors);
                 checkHasAnyInput(errors);
