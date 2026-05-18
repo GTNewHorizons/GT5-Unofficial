@@ -105,7 +105,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         initShutdownMaps();
     }
 
-    public MTEMultiBlockBaseGui withMachineModeIcons(UITexture... icons) {
+    public MTEMultiBlockBaseGui<T> withMachineModeIcons(UITexture... icons) {
         Collections.addAll(this.machineModeIcons, icons);
         return this;
     }

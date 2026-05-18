@@ -1310,7 +1310,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
+        return new MTETieredMachineBlockBaseGui<>(this).build(data, syncManager, uiSettings);
     }
 
     @Override

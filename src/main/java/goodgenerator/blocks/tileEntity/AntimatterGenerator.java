@@ -71,7 +71,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
-        protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
+        protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
                 .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
@@ -114,7 +114,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;

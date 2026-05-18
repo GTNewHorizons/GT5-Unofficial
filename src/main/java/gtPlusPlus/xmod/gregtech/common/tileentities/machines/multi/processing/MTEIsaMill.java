@@ -194,8 +194,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-                return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchMillingBalls hatch) {
+                return addToMachineListInternal(mMillingBallBuses, hatch, aBaseCasingIndex);
             }
         }
         return false;
@@ -208,8 +208,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-            return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchMillingBalls hatch) {
+            return addToMachineListInternal(mMillingBallBuses, hatch, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }

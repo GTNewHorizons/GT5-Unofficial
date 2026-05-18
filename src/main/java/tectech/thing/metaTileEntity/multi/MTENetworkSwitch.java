@@ -109,7 +109,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
-    public IStructureInstance getStructureInstance() {
+    public IStructureInstance<MTENetworkSwitch> getStructureInstance() {
         return structureInstanceInfo;
     }
 

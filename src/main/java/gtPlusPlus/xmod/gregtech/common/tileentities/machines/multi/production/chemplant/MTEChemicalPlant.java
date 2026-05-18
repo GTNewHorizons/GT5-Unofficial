@@ -513,8 +513,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchCatalysts) {
-            return addToMachineListInternal(mCatalystBuses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchCatalysts hatch) {
+            return addToMachineListInternal(mCatalystBuses, hatch, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }

@@ -264,9 +264,9 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder) {
+            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder hatch) {
                 try {
-                    return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);
+                    return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
                 } catch (Exception t) {
                     t.printStackTrace();
                 }
