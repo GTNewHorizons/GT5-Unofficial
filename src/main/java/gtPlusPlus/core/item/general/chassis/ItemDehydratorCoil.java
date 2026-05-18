@@ -42,7 +42,7 @@ public class ItemDehydratorCoil extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(item, 1, i));
         }

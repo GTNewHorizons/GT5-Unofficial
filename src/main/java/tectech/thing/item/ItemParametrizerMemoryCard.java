@@ -3,6 +3,7 @@ package tectech.thing.item;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -22,6 +23,7 @@ import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.base.Strings;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,6 +37,7 @@ import tectech.Reference;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.util.CommonValues;
@@ -69,7 +72,7 @@ public final class ItemParametrizerMemoryCard extends Item {
 
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
-                if (!hasIdenticalParameterList(parameterList, tNBT)) {
+                if (!hasIdenticalParameterList("paramList", parameterList, tNBT)) {
                     String reason;
                     if (!tNBT.hasKey("controller")) {
                         reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
@@ -122,9 +125,10 @@ public final class ItemParametrizerMemoryCard extends Item {
         return false;
     }
 
-    private boolean hasIdenticalParameterList(List<Parameter<?>> controllerParameters, NBTTagCompound tNBT) {
-        if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
-            NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+    private boolean hasIdenticalParameterList(String key, List<Parameter<?>> controllerParameters,
+        NBTTagCompound tNBT) {
+        if (tNBT.hasKey(key, Constants.NBT.TAG_LIST)) {
+            NBTTagList tagList = tNBT.getTagList(key, Constants.NBT.TAG_COMPOUND);
 
             if (tagList.tagList.size() != controllerParameters.size()) return false;
 
@@ -133,6 +137,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                 Parameter<?> parameter = controllerParameters.get(i);
                 if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
+                if (parameter instanceof CompositeParameter compositeParameter
+                    && !hasIdenticalParameterList("value", compositeParameter.getValue(), tag)) return false;
             }
 
             return true;
@@ -190,18 +196,8 @@ public final class ItemParametrizerMemoryCard extends Item {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
-                Object[] args = null;
 
-                NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
-                if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
-                    .mapToObj(argsList::getStringTagAt)
-                    .toArray(Object[]::new);
-
-                aList.add(
-                    EnumChatFormatting.AQUA + GTUtility.translate(tag.getString("langKey"), args)
-                        + ": "
-                        + EnumChatFormatting.GRAY
-                        + getValueFromTag(tag));
+                aList.addAll(getInfoLines(tag, 0));
             }
         }
         if (tNBT.hasKey("filter")) {
@@ -223,14 +219,41 @@ public final class ItemParametrizerMemoryCard extends Item {
         }
     }
 
-    private String getValueFromTag(NBTTagCompound tag) {
-        return switch (tag.getString("type")) {
-            case "integer" -> String.valueOf(tag.getInteger("value"));
-            case "double" -> String.valueOf(tag.getDouble("value"));
-            case "string" -> tag.getString("value");
-            case "boolean" -> String.valueOf(tag.getBoolean("value"));
-            default -> "";
-        };
+    private List<String> getInfoLines(NBTTagCompound tag, int offset) {
+        List<String> infoLines = new ArrayList<>();
+        if (tag.getString("langKey")
+            .isEmpty()) return infoLines;
+
+        switch (tag.getString("type")) {
+            case "integer" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getInteger("value"))));
+            case "double" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getDouble("value"))));
+            case "string" -> infoLines.add(getInfoLine(tag, offset, tag.getString("value")));
+            case "boolean" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getBoolean("value"))));
+            case "composite" -> {
+                infoLines.add(getInfoLine(tag, offset, ""));
+                NBTTagList parameters = tag.getTagList("value", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < parameters.tagCount(); i++)
+                    infoLines.addAll(getInfoLines(parameters.getCompoundTagAt(i), offset + 2));
+            }
+            default -> {}
+        }
+
+        return infoLines;
+    }
+
+    private String getInfoLine(NBTTagCompound tag, int offset, String value) {
+        Object[] args = null;
+
+        NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
+        if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
+            .mapToObj(argsList::getStringTagAt)
+            .toArray(Object[]::new);
+
+        return Strings.repeat(" ", offset) + EnumChatFormatting.AQUA
+            + GTUtility.translate(tag.getString("langKey"), args)
+            + ": "
+            + EnumChatFormatting.GRAY
+            + value;
     }
 
     public static void run() {
