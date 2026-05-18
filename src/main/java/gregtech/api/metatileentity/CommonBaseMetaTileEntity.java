@@ -52,7 +52,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
     protected byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
-    protected MetaTileEntity mMetaTileEntity;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
