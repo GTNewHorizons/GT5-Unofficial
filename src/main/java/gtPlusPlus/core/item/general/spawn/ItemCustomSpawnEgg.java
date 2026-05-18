@@ -206,9 +206,9 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int aMeta : mReverseEntityMap.values()) {
-            aList.add(new ItemStack(aItem, 1, aMeta));
+            list.add(new ItemStack(item, 1, aMeta));
         }
     }
 

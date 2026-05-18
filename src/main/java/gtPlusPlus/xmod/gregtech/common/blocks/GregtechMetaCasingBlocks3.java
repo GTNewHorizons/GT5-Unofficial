@@ -30,16 +30,16 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int meta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int meta = stack.getItemDamage();
             int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
-                aList.add(
+                tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
@@ -76,7 +76,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
 
     // exclude meta 14 to not create "Unnamed" casing
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
             if (i == 14) continue;
             list.add(new ItemStack(item, 1, i));

@@ -39,7 +39,7 @@ public class GTPPPollen extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPPollenType type : GTPPPollenType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));

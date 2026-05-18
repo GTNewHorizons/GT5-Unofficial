@@ -59,10 +59,9 @@ public class LeavesBase extends BlockLeaves {
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List metaList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> metaList) {
         for (int i = 0; i < this.treeType.length; ++i) {
             metaList.add(new ItemStack(item, 1, i));
         }
