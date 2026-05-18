@@ -61,6 +61,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -265,6 +266,9 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
         if (tierMachineCasing >= 1 && tierMachineCasing == tierGearBoxCasing && tierMachineCasing == tierPipeCasing) {
             tierMachine = tierMachineCasing;
             updateHatchTexture();
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
         checkCasingMin(errors, tCountCasing, 55);
         checkHasSteamInput(errors);

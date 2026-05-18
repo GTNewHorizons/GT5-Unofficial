@@ -48,6 +48,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -244,6 +245,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
             if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
                 tierMachine = tierMachineCasing;
                 updateHatchTexture();
+            } else {
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
             }
             checkHasSteamInput(errors);
             checkHasSteamInputBus(errors);
@@ -263,6 +267,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         if (tierFrame >= 1 && tierFrame <= 2 && tierFrame == tierMachineCasing && tierFrame == tierGearboxCasing) {
             tierMachine = tierFrame;
             updateHatchTexture();
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
 
         checkHasSteamInput(errors);

@@ -54,6 +54,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -319,6 +320,9 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
             && tierMachineCasing == tierFrame) {
             tierMachine = tierMachineCasing;
             updateHatchTexture();
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
         int casingMin = revision >= 1 ? 25 : 90;
         checkCasingMin(errors, tCountCasing, casingMin);

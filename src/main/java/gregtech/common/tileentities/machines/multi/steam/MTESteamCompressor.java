@@ -50,6 +50,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -261,6 +262,12 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
                 tierMachine = tierMachineCasing;
                 updateHatchTexture();
+            } else {
+                // We *could* also check for modern structure
+                // However, since this pass checkPiece for legacy, most likely this cannot happen anyway
+                // This branch means that the component tier mismatched
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
             }
             checkHasSteamInput(errors);
             checkHasSteamInputBus(errors);
@@ -282,6 +289,9 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             && tierPipeCasing == tierBlock) {
             tierMachine = tierPipeCasing;
             updateHatchTexture();
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
 
         checkHasSteamInput(errors);

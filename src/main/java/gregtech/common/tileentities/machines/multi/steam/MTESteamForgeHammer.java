@@ -49,6 +49,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -244,6 +245,9 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         if (tierMachineCasing >= 1 && tierMachineCasing == tierPipeCasing && tierMachineCasing == tierSimpleBlock) {
             tierMachine = tierMachineCasing;
             updateHatchTexture();
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
         checkCasingMin(errors, tCountCasing, 35);
         checkHasSteamInput(errors);
