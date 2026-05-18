@@ -33,11 +33,17 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected boolean mAddGregTechLogo = false;
 
     public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
         this.slotOverlayFunction = properties.slotOverlaysMUI2;
+    }
+
+    public MTEBasicMachineWithRecipeBaseGui useGregTechLogo(boolean addLogo) {
+        this.mAddGregTechLogo = addLogo;
+        return this;
     }
 
     @Override
@@ -352,6 +358,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     @Override
     protected boolean doesAddGregTechLogo() {
-        return false;
+        return this.mAddGregTechLogo;
     }
 }

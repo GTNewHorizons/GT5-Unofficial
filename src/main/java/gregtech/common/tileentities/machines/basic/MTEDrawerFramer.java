@@ -7,9 +7,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.jaquadro.minecraft.storagedrawers.block.BlockDrawersCustom;
 import com.jaquadro.minecraft.storagedrawers.item.ItemCustomDrawers;
 
@@ -93,14 +90,9 @@ public class MTEDrawerFramer extends MTEBasicMachine {
                     default -> null;
                 };
             })
+            .useSpecialSlot(false)
             .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_ARROW_MULTIPLE)
             .build();
-    }
-
-    // we don't need a special slot here
-    @Override
-    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
-        return null;
     }
 
     private boolean isCustomDrawer(ItemStack itemStack) {
@@ -161,7 +153,8 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
     }
 
     @Override
