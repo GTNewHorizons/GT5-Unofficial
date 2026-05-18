@@ -294,7 +294,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTEMassFabricator> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RECYCLING);

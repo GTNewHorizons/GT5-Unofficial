@@ -421,7 +421,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTEIndustrialWashPlantLegacy> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER,

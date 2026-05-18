@@ -298,7 +298,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTENanochipAssemblyModuleBase<T>> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyModuleBaseGui<>(this);
     }
 

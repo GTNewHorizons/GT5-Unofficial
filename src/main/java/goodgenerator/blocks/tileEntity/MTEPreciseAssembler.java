@@ -455,7 +455,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTEPreciseAssembler> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_PRECISE_MODE,
             GTGuiTextures.OVERLAY_BUTTON_ASSEMBLER_MODE);

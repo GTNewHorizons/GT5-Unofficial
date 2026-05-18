@@ -402,7 +402,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTEOreWashingPlant> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
