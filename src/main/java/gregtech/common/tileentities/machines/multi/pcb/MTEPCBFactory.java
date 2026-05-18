@@ -361,11 +361,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (mTier < 3) {
             byte tier1Or2 = getTier1Or2();
             if (tier1Or2 > 0) return tier1Or2;
-            return (byte) (checkPiece(tier3, 3, 21, 0, new ArrayList<>()) ? 3 : 0);
+            return (byte) (checkPiece(tier3, 3, 21, 0, null) ? 3 : 0);
         }
 
         // mTier == 3
-        return checkPiece(tier3, 3, 21, 0, new ArrayList<>()) ? 3 : getTier1Or2();
+        return checkPiece(tier3, 3, 21, 0, null) ? 3 : getTier1Or2();
     }
 
     /**
@@ -374,8 +374,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
      * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
      */
     private byte getTier1Or2() {
-        if (checkPiece(tier1, 3, 5, 0, new ArrayList<>())) {
-            return (byte) (checkPiece(tier2, 7, 6, 2, new ArrayList<>()) ? 2 : 1);
+        if (checkPiece(tier1, 3, 5, 0, null)) {
+            return (byte) (checkPiece(tier2, 7, 6, 2, null) ? 2 : 1);
         }
         return 0;
     }
