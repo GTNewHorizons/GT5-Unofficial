@@ -61,9 +61,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -207,13 +205,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         vacuumConveyors.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
         // Exactly one energy hatch is accepted
-        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
-            errors.add(StructureErrors.missingHatch(Energy));
-        } else if (mEnergyHatches.size() + mExoticEnergyHatches.size() > 1) {
-            errors.add(
-                StructureErrors
-                    .hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size() + mExoticEnergyHatches.size(), 1));
-        }
+        checkOneEnergyHatchMaybeExotic(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;

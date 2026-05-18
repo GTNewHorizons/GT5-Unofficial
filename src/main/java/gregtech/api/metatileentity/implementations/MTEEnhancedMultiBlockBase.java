@@ -681,6 +681,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    protected void checkOneEnergyHatchMaybeExotic(List<StructureError> errors) {
+        int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+        if (count == 0) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        } else if (count > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.Energy, count, 1));
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;

@@ -48,20 +48,14 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         public long count(MTEMultiBlockBase t) {
             return t.mInputHatches.size() + t.mDualInputHatches.stream()
                 .filter(IDualInputHatch::supportsFluids)
-                .count()
-                + t.mSmartInputHatches.stream()
-                    .filter(hatch -> hatch instanceof MTEHatchInput)
-                    .count();
+                .count();
         }
     },
     InputBus("GT5U.MBTT.InputBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchInputBus.class) {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.mInputBusses.size() + t.mDualInputHatches.size()
-                + t.mSmartInputHatches.stream()
-                    .filter(hatch -> hatch instanceof MTEHatchInputBus)
-                    .count();
+            return t.mInputBusses.size() + t.mDualInputHatches.size();
         }
 
         @Override
