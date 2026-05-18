@@ -149,6 +149,17 @@ public class BWUtil {
         return new String(nu);
     }
 
+    @SuppressWarnings("unused") // Used in NHCoreMod
+    public static int calculateSv(Materials materials) {
+        // TODO: Implement this method properly by giving materials actual radiation values
+        // TODO: instead of using the material's atomic number.
+
+        return (int) (materials.getProtons() == 43L
+            ? materials.equals(Materials.NaquadahEnriched) ? 140
+                : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
+            : materials.getProtons());
+    }
+
     public static ItemStack setStackSize(ItemStack stack, int size) {
         if (stack != null) stack.stackSize = size;
         return stack;
