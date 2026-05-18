@@ -7,11 +7,10 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
+import gregtech.api.objects.SubstituteFluidStack;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
