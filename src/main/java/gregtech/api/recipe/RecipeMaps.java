@@ -33,7 +33,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gregtech.api.objects.SubstituteFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -56,6 +55,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
@@ -1312,9 +1312,7 @@ public final class RecipeMaps {
                 .fluidInputs(
                     new SubstituteFluidStack(
                         Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
-                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))
-                    )
-                )
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
