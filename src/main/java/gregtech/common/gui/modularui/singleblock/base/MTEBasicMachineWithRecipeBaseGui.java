@@ -23,18 +23,18 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
-public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachineWithRecipe> {
+public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
 
-    public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachineWithRecipe machine, BasicUIProperties properties) {
+    public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
         this.slotOverlayFunction = properties.slotOverlaysMUI2;
