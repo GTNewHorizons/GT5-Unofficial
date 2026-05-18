@@ -151,7 +151,7 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
             .size(20)
             .bottom(5)
             .right(5)
-            .tooltip(t -> { t.addLine(IKey.lang("GT5U.gui.button.finite_mode_info")); });
+            .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.button.finite_mode_info")));
     }
 
     private IDrawable.DrawableWidget createInfoButton() {
