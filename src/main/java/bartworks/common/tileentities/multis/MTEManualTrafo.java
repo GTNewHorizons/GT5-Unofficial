@@ -280,18 +280,21 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         checkHatchMin(errors, Dynamo, 1);
         checkOneMaintenanceHatch(errors);
 
-        if (!errors.isEmpty()) return; // don't crash the game. for accessing the first elem
+        if (!errors.isEmpty()) return; // don't crash the game for accessing the first elem
 
         byte intier = this.mEnergyHatches.get(0).mTier;
-        for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) {
-            errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_energy"));
-            return;
+        for (MTEHatchEnergy in : this.mEnergyHatches) {
+            if (in.mTier != intier) {
+                errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_energy"));
+                break;
+            }
         }
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_dynamo"));
+                break;
             }
         }
     }
