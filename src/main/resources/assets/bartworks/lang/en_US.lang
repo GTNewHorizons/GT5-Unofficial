@@ -272,6 +272,9 @@ BW.NEI.display.radhatch.2=Time: %s s
 tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
+
+chat.proxy.reverse.false=§aRegular§r Recipe Order
+chat.proxy.reverse.true=§dReversed§r Recipe Order
 #Liquids
 
 # gui

@@ -357,7 +357,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration")
             .beginStructureBlock(23, 15, 15, false)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,

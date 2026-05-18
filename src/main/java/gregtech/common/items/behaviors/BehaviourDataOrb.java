@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
 
@@ -22,39 +24,19 @@ public class BehaviourDataOrb extends BehaviourNone {
     }
 
     public static String getDataName(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("mDataName");
+        return ItemStackNBT.getString(aStack, "mDataName");
     }
 
     public static String getDataTitle(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("mDataTitle");
+        return ItemStackNBT.getString(aStack, "mDataTitle");
     }
 
-    public static NBTTagCompound setDataName(ItemStack aStack, String aDataName) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.setString("mDataName", aDataName);
-        aStack.setTagCompound(tNBT);
-        return tNBT;
+    public static void setDataName(ItemStack aStack, String aDataName) {
+        ItemStackNBT.setString(aStack, "mDataName", aDataName);
     }
 
-    public static NBTTagCompound setDataTitle(ItemStack aStack, String aDataTitle) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.setString("mDataTitle", aDataTitle);
-        aStack.setTagCompound(tNBT);
-        return tNBT;
+    public static void setDataTitle(ItemStack aStack, String aDataTitle) {
+        ItemStackNBT.setString(aStack, "mDataTitle", aDataTitle);
     }
 
     public static ItemStack[] getNBTInventory(ItemStack aStack) {
@@ -74,12 +56,9 @@ public class BehaviourDataOrb extends BehaviourNone {
         return tInventory;
     }
 
-    public static NBTTagCompound setNBTInventory(ItemStack aStack, ItemStack[] aInventory) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        NBTTagList tNBT_ItemList = new NBTTagList();
+    public static void setNBTInventory(ItemStack aStack, ItemStack[] aInventory) {
+        final NBTTagCompound tNBT = ItemStackNBT.get(aStack);
+        final NBTTagList tNBT_ItemList = new NBTTagList();
         for (int i = 0; i < aInventory.length; i++) {
             ItemStack stack = aInventory[i];
             if (stack != null) {
@@ -90,8 +69,6 @@ public class BehaviourDataOrb extends BehaviourNone {
             }
         }
         tNBT.setTag("Inventory", tNBT_ItemList);
-        aStack.setTagCompound(tNBT);
-        return tNBT;
     }
 
     @Override

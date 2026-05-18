@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,6 +17,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -44,12 +44,13 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.",
-            "Does not use power.",
-            GTPPCore.GT_Tooltip.get());
+        return TooltipHelper.pollutionDisabledTooltip(
+            ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Right click to check pollution levels.",
+                "Configure with screwdriver to set redstone output amount.",
+                "Does not use power.",
+                GTPPCore.GT_Tooltip.get()));
     }
 
     @Override
@@ -206,11 +207,11 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
+    private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
             GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
@@ -315,11 +316,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
         this.mAveragePollution = aNBT.getInteger("mAveragePollution");
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
-    }
-
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     @Override

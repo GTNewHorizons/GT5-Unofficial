@@ -31,21 +31,11 @@ public class ItemGenericToken extends CoreItem {
     private final String mTextureDir;
 
     public ItemGenericToken() {
-        this("itemGenericToken", "Token", new String[] { "Can be reclaimed in some way, shape or form" }, "token");
+        this("itemGenericToken", new String[] { "Can be reclaimed in some way, shape or form" }, "token");
     }
 
-    public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
-        super(
-            aUnlocalName,
-            aInternalName,
-            AddToCreativeTab.tabMisc,
-            64,
-            1000,
-            aBaseTooltip,
-            EnumRarity.common,
-            EnumChatFormatting.RESET,
-            false,
-            null);
+    public ItemGenericToken(String aUnlocalName, String[] aBaseTooltip, String aTextureDir) {
+        super(aUnlocalName, AddToCreativeTab.tabMisc, 64, 1000, aBaseTooltip, EnumRarity.common, false, null);
         mLocalNames = new HashMap<>();
         mMaxStackSizes = new HashMap<>();
         mDescriptionArrays = new HashMap<>();

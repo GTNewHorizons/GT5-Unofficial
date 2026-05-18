@@ -13,8 +13,6 @@ import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -29,7 +27,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -140,7 +137,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 3, 3, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Wire Factory Casings", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -153,21 +150,18 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * itemPipeTier));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(EU_EFFICIENCY)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1F / (SPEED_INCREASE_TIER * itemPipeTier);
     }
 
     private int mCasingAmount;

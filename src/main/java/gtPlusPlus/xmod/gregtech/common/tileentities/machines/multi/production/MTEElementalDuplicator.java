@@ -88,7 +88,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top Center")
+            .addController("Top center")
             .addCasingInfoMin("Elemental Confinement Shell", 120, false)
             .addCasingInfoMin("Matter Fabricator Casing", 24, false)
             .addCasingInfoMin("Particle Containment Casing", 24, false)
@@ -185,7 +185,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         if (this.mReplicatorDataOrbHatches.size() != 1) {
             return false;
         }
-        log("Casings: " + mCasing);
         return aDidBuild && mCasing >= 120 && checkHatch();
     }
 

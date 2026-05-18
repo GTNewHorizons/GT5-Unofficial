@@ -44,7 +44,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -64,6 +63,7 @@ import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTStructureUtility;
@@ -160,18 +160,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
+    protected void validateStructure(Collection<StructureError> errors) {
+        super.validateStructure(errors);
 
-        structureInstanceInfo.validate(errors, context);
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        structureInstanceInfo.localizeStructureErrors(errors, context, lines);
+        structureInstanceInfo.validate(errors);
     }
 
     @Override
@@ -237,8 +229,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 
-        tt.beginStructureBlock(true)
-            .addAllCasingInfo();
+        tt.beginStructureBlock(true);
+        tt.addController("Front center");
+        tt.addAllCasingInfo();
 
         tt.toolTipFinisher();
 
@@ -326,6 +319,11 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public void setVoidingMode(VoidingMode mode) {
 
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

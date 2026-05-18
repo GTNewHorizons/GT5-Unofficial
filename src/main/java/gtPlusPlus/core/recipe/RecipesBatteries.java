@@ -20,6 +20,7 @@ public class RecipesBatteries {
     private static void addBatteryRecipe(ItemStack quad, ItemStack single) {
         GTModHandler.addCraftingRecipe(
             quad,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BWB", "CTC", "BWB", 'B', single, 'W',
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 1), 'C', "circuitAdvanced", 'T',
                 ItemList.Transformer_EV_HV.get(1) });

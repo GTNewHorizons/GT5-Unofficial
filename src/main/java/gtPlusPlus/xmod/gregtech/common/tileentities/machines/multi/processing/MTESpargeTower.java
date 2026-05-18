@@ -130,7 +130,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginStructureBlock(3, 8, 3, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
             .addEnergyHatch("Any casing", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
@@ -368,5 +368,10 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (lEUt > 0) {
             lEUt = (-lEUt);
         }
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

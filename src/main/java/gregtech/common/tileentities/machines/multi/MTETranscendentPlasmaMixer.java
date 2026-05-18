@@ -111,7 +111,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("All inputs will scale, except time...")
             .addInfo("All EU is deducted from wireless EU networks only")
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
             .addCasingInfoExactly("Dimensional Bridge", 16, false)
             .addCasingInfoRangeColored(

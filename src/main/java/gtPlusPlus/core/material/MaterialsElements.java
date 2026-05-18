@@ -3,7 +3,6 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -450,16 +449,11 @@ public final class MaterialsElements {
         144,
         false,
         StringUtils.superscript("238Pu"),
-        2,
-        false); // Not a GT Inherited Material
+        2); // Not a GT Inherited Material
 
     public final Material MAGIC = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });
     public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
-
-    static {
-        Logger.MATERIALS("Initialising Base Elements.");
-    }
 
     private static final MaterialsElements INSTANCE = new MaterialsElements();
 
@@ -526,7 +520,7 @@ public final class MaterialsElements {
             "Hypogen",
             MaterialState.SOLID,
             TextureSet.SET_HYPOGEN,
-            new short[] { 220, 120, 75, 2 },
+            new short[] { 255, 255, 255 },
             11255,
             19377,
             240,
@@ -637,7 +631,7 @@ public final class MaterialsElements {
         public static final Material DRAGON_METAL = new Material(
             "Dragonblood",
             MaterialState.SOLID,
-            TextureSet.SET_SHINY,
+            TextureSet.SET_HYPOGEN,
             new short[] { 220, 40, 20, 2 },
             10160,
             17850,

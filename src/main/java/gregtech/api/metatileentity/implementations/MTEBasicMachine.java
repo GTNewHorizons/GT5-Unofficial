@@ -243,6 +243,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     }
 
     @Override
+    public boolean shouldSendInitialClientData() {
+        return isFacingValid(mMainFacing);
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[14][17][];
         aTextures = Arrays.copyOf(aTextures, 14);
@@ -1609,5 +1614,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             case 4 -> 128000;
             default -> 256000;
         };
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

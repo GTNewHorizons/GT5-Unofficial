@@ -256,6 +256,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            .addController("Front center on the frontside of the main body")
             // Object Holder: Center of the front pillar
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -336,8 +337,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     private static String getMachineModeKey(int mode) {
-        if (mode == MODE_RESEARCH_STATION) return "gt.blockmachines.multimachine.em.research.mode.Assembly_line";
-        return "gt.blockmachines.multimachine.em.research.mode.Scanner";
+        return "gt.blockmachines.multimachine.em.research.mode." + mode;
     }
 
     // endregion machine mode
@@ -817,6 +817,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     // endregion gui
 
     // region MUI2
@@ -850,7 +855,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setInteger("machineMode", this.machineMode);
+        tag.setString("mode", getMachineModeName());
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());
     }
@@ -860,7 +865,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",

@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -38,6 +39,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
@@ -330,7 +332,17 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
             }
             return false;
-        }
+        } else if (tStats.isSaw()
+            && ((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))) {
+                int aMetaData = aPlayer.worldObj.getBlockMetadata(aX, aY, aZ);
+                GTUtility
+                    .dropItem(aPlayer.worldObj, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMetaData));
+                aPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
+                onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+                doDamage(aStack, tStats.getToolDamagePerDropConversion());
+                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+                return true;
+            }
         return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
     }
 
@@ -635,27 +647,27 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                     Float.MIN_NORMAL,
                                     tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed))
                         + EnumChatFormatting.GRAY);
-                NBTTagCompound aNBT = aStack.getTagCompound();
-                if (aNBT != null) {
-                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
-                    if (aNBT != null && aNBT.hasKey("Heat")) {
-                        int tHeat = aNBT.getInteger("Heat");
+                final NBTTagCompound nbt = aStack.getTagCompound();
+                if (nbt != null) {
+                    final NBTTagCompound toolStats = nbt.getCompoundTag("GT.ToolStats");
+                    if (toolStats != null && toolStats.hasKey("Heat")) {
+                        int tHeat = toolStats.getInteger("Heat");
                         long tWorldTime = aPlayer.getEntityWorld()
                             .getWorldTime();
-                        if (aNBT.hasKey("HeatTime")) {
-                            long tHeatTime = aNBT.getLong("HeatTime");
+                        if (toolStats.hasKey("HeatTime")) {
+                            long tHeatTime = toolStats.getLong("HeatTime");
                             if (tWorldTime > (tHeatTime + 10)) {
                                 tHeat = (int) (tHeat - ((tWorldTime - tHeatTime) / 10));
                                 if (tHeat < 300 && tHeat > -10000) tHeat = 300;
                             }
-                            aNBT.setLong("HeatTime", tWorldTime);
-                            if (tHeat > -10000) aNBT.setInteger("Heat", tHeat);
+                            toolStats.setLong("HeatTime", tWorldTime);
+                            if (tHeat > -10000) toolStats.setInteger("Heat", tHeat);
                         }
 
                         aList.add(
                             tOffset + 3,
                             EnumChatFormatting.RED
-                                + translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
+                                + translateToLocalFormatted("GT5U.tooltip.tool.heat", toolStats.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -692,6 +704,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
+        if (aStack.stackSize <= 0) return false;
         Long[] tElectric = getElectricStats(aStack);
         if (tElectric == null) {
             long tNewDamage = getToolDamage(aStack) + aAmount;
@@ -932,8 +945,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aStack == null) return false;
         IToolStats tStats = getToolStatsInternal(aStack);
         if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
-            NBTTagCompound aNBT = aStack.getTagCompound();
-            if (aNBT != null) aNBT.removeTag("ench");
+            ItemStackNBT.removeTag(aStack, "ench");
             return false;
         }
         Materials aMaterial = getPrimaryMaterial(aStack);
@@ -1015,8 +1027,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public short getEmptyMetaData(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) aNBT.removeTag("ench");
+        ItemStackNBT.removeTag(aStack, "ench");
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
     }
 }

@@ -14,6 +14,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
@@ -123,8 +125,7 @@ public class ItemAgrichemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (ItemStackNBT.hasNoTags(aStack)) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -175,8 +176,8 @@ public class ItemAgrichemBase extends Item {
         return false;
     }
 
-    public static boolean createCatalystNBT(ItemStack rStack) {
-        return ItemGenericChemBase.createCatalystNBT(rStack);
+    public static void createCatalystNBT(ItemStack rStack) {
+        ItemGenericChemBase.createCatalystNBT(rStack);
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
@@ -185,13 +186,5 @@ public class ItemAgrichemBase extends Item {
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
         return ItemGenericChemBase.getCatalystMaxDamage(aStack);
-    }
-
-    public static void setCatalystDamage(ItemStack aStack, int aAmount) {
-        ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
-    }
-
-    public static int getMaxCatalystDurability(ItemStack aStack) {
-        return ItemGenericChemBase.getMaxCatalystDurability(aStack);
     }
 }

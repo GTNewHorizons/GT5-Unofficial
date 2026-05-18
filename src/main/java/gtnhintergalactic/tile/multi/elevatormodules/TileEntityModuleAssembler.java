@@ -2,7 +2,11 @@ package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,11 +32,13 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -40,10 +46,11 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModuleAssembler extends TileEntityModuleBase implements IOverclockDescriptionProvider {
+public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
+    implements IOverclockDescriptionProvider, IParametrized {
 
     /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
@@ -53,6 +60,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     protected final OverclockDescriber overclockDescriber;
     /** Input parameters */
     Parameters.Group.ParameterIn parallelSetting;
+
+    private IntegerParameter parallelParameter;
 
     /**
      * Create new Space Assembler module
@@ -84,6 +93,27 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
         int bufferSizeMultiplier) {
         super(aName, tTier, tModuleTier, tMinMotorTier, bufferSizeMultiplier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
+    }
+
+    @Override
+    public void initParameters() {
+        parallelParameter = new IntegerParameter(
+            getMaxParallels(),
+            "gt.blockmachines.multimachine.project.ig.assembler.cfgi.0",
+            "parallels",
+            () -> 1,
+            this::getMaxParallels);
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
+        parallelParameter.setValue((int) legacyInput.getDouble(String.valueOf(0)));
+    }
+
+    @Override
+    public List<Parameter<?>> getParameters() {
+        return Collections.singletonList(parallelParameter);
     }
 
     /**
@@ -145,7 +175,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setAmperageOC(false)
-            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelSetting.get()));
+            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()));
     }
 
     /**
@@ -192,6 +222,16 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     public void registerIcons(IIconRegister aBlockIconRegister) {
         engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
@@ -273,6 +313,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .beginStructureBlock(1, 5, 2, false)
+                .addController("Front, 4th layer")
                 .addCasingInfoMin(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, false)
                 .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)

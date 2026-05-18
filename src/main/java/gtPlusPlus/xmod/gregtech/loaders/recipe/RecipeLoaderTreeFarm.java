@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class RecipeLoaderTreeFarm {
 
@@ -193,6 +193,12 @@ public class RecipeLoaderTreeFarm {
             GTModHandler.getModItem(Mods.TwilightForest.ID, "item.magicBeans", 1, 0),
             GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.HugeStalk", 5, 0),
             GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFLeaves3", 1, 1),
+            null);
+
+        MTETreeFarm.registerTreeProducts( // Minewood
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFSapling", 1, 7),
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFMagicLog", 1, 2),
+            GTModHandler.getModItem(Mods.TwilightForest.ID, "tile.TFMagicLeaves", 1, 2),
             null);
     }
 

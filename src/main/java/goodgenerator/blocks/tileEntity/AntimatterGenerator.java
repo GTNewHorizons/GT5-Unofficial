@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -192,8 +193,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 17, 41, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        checkPiece(MAIN_NAME, 17, 41, 0, errors);
     }
 
     @Override
@@ -368,6 +369,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -559,6 +561,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

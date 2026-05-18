@@ -264,4 +264,9 @@ public abstract class MTEHatch extends MTEBasicTank {
                     Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()));
         }
     }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

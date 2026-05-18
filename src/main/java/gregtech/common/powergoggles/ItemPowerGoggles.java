@@ -113,7 +113,6 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     private ItemStack equipHeldGoggles(EntityPlayer player, ItemStack stack) {
         InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-
         if (canEquip(stack, player)) {
             return equipIntoFreeSlot(stack, baubles, player);
         }

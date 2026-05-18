@@ -269,7 +269,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
             .beginStructureBlock(15, 10, 7, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
@@ -286,6 +286,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -455,11 +456,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

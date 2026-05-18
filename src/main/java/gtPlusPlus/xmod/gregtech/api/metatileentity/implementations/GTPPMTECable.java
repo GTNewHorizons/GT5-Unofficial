@@ -62,17 +62,22 @@ public class GTPPMTECable extends MTECable {
         this.material = aMaterial;
     }
 
-    public GTPPMTECable(final String aName, final float aThickNess, final long aCableLossPerMeter, final long aAmperage,
-        final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
-        this(aName, aThickNess, null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock, aRGB);
+    public GTPPMTECable(final String aName, final float aThickNess, final Material aMaterial,
+        final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
+        final boolean aCanShock, final short[] aRGB) {
+        this(aName, aThickNess, (Materials) null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock, aRGB);
+        this.material = aMaterial;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        if (material == null) {
+            return super.newMetaEntity(aTileEntity);
+        }
         return new GTPPMTECable(
             this.mName,
             this.mThickNess,
-            this.mMaterial,
+            this.material,
             this.mCableLossPerMeter,
             this.mAmperage,
             this.mVoltage,
@@ -84,50 +89,55 @@ public class GTPPMTECable extends MTECable {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean aRedstone) {
-        return getTextureGTNH(aBaseMetaTileEntity, side, aConnections, aColorIndex, aConnected, aRedstone);
+        if (material == null) {
+            return super.getTexture(aBaseMetaTileEntity, side, aConnections, aColorIndex, aConnected, aRedstone);
+        }
+        return getTextureGTPP(aColorIndex, aConnected);
     }
 
-    private ITexture[] getTextureGTNH(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
-        int aColorIndex, boolean aConnected, boolean aRedstone) {
+    private ITexture[] getTextureGTPP(int aColorIndex, boolean aConnected) {
 
-        Materials wireMaterial = mMaterial;
-        if (wireMaterial == null) {
-            wireMaterial = Materials.Iron;
-        }
+        final Material wireMaterial = material;
 
         if (!mInsulated) return new ITexture[] { TextureFactory
-            .of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(aColorIndex, vRGB)) };
+            .of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], Dyes.getModulation(aColorIndex, vRGB)) };
         if (aConnected) {
             float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,
                 Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.374F) // 0.375 x1
-                return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+                return new ITexture[] {
+                    TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.499F) // 0.500 x2
-                return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+                return new ITexture[] {
+                    TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.624F) // 0.625 x4
-                return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+                return new ITexture[] {
+                    TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.749F) // 0.750 x8
-                return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+                return new ITexture[] {
+                    TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.874F) // 0.825 x12
-                return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+                return new ITexture[] {
+                    TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
-            return new ITexture[] { TextureFactory.of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
+            return new ITexture[] {
+                TextureFactory.of(wireMaterial.getTextureSet().mTextures[TextureSet.INDEX_wire], vRGB),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
                     Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };

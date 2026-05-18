@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
@@ -42,10 +43,25 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .hasKey("droneCentre")) {
-            GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
+        if (!world.isRemote && ItemStackNBT.hasKey(stack, "droneCentre")) {
+            // check whether drone centre is still exists
+            NBTTagCompound centreNbt = stack.getTagCompound()
+                .getCompoundTag("droneCentre");
+            int x = centreNbt.getInteger("x");
+            int y = centreNbt.getInteger("y");
+            int z = centreNbt.getInteger("z");
+            int dim = centreNbt.getInteger("dim");
+
+            World targetWorld = MinecraftServer.getServer()
+                .worldServerForDimension(dim);
+            if (targetWorld != null) {
+                TileEntity te = targetWorld.getTileEntity(x, y, z);
+                if (te instanceof IGregTechTileEntity
+                    && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre)
+                    GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
+                else player
+                    .addChatMessage(new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_found", x, y, z, dim));
+            }
         }
         return super.onItemRightClick(stack, world, player);
     }
@@ -53,8 +69,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        if (aStack.hasTagCompound() && aStack.getTagCompound()
-            .hasKey("droneCentre")) {
+        if (ItemStackNBT.hasKey(aStack, "droneCentre")) {
             NBTTagCompound centreNbt = aStack.getTagCompound()
                 .getCompoundTag("droneCentre");
             int x = centreNbt.getInteger("x");
@@ -72,17 +87,12 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
         if (te instanceof IGregTechTileEntity
             && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre) {
             if (!world.isRemote) {
-                NBTTagCompound nbt = itemStack.getTagCompound();
-                if (nbt == null) {
-                    nbt = new NBTTagCompound();
-                    itemStack.setTagCompound(nbt);
-                }
-                NBTTagCompound centreNbt = new NBTTagCompound();
+                final NBTTagCompound centreNbt = new NBTTagCompound();
                 centreNbt.setInteger("x", x);
                 centreNbt.setInteger("y", y);
                 centreNbt.setInteger("z", z);
                 centreNbt.setInteger("dim", world.provider.dimensionId);
-                nbt.setTag("droneCentre", centreNbt);
+                ItemStackNBT.setTag(itemStack, "droneCentre", centreNbt);
                 player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.bindcentre"));
             }
             return true;
@@ -94,8 +104,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
     public ModularPanel buildUI(ItemStackGuiData guiData, PanelSyncManager guiSyncManager, UISettings uiSettings) {
         MTEDroneCentre centre = null;
         ItemStack stack = guiData.getItemStack();
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("droneCentre")) {
+        if (ItemStackNBT.hasKey(stack, "droneCentre")) {
             NBTTagCompound centreNbt = stack.getTagCompound()
                 .getCompoundTag("droneCentre");
             int x = centreNbt.getInteger("x");

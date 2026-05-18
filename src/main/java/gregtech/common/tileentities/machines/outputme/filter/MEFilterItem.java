@@ -29,11 +29,6 @@ public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, I
     }
 
     @Override
-    protected String getDisplayName(IAEItemStack stack) {
-        return stack.getDisplayName();
-    }
-
-    @Override
     public void onLoadNBTData(NBTTagCompound aNBT) {
         NBTBase lockedItemsTag = aNBT.getTag("lockedItems");
 
@@ -61,12 +56,12 @@ public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, I
 
     @Override
     public String getEnableKey() {
-        return "GT5U.hatch.fluid.filter.enable";
+        return "GT5U.hatch.item.filter.enable";
     }
 
     @Override
     public String getDisableKey() {
-        return "GT5U.hatch.fluid.filter.disable";
+        return "GT5U.hatch.item.filter.disable";
     }
 
     @Override

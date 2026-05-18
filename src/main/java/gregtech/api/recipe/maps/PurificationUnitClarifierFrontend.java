@@ -18,6 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitClarifier;
 import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -54,13 +55,17 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        super.prepareRecipe(recipe);
 
-        for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack.item.isItemEqual(ItemList.ActivatedCarbonFilterMesh.get(1))) {
-                drawNEIOverlayText((int) (MTEPurificationUnitClarifier.FILTER_DAMAGE_RATE) + "%", stack);
+        for (PositionedStack stack : recipe.mInputs) {
+            if (stack instanceof FixedPositionedStack fixed
+                && stack.item.isItemEqual(ItemList.ActivatedCarbonFilterMesh.get(1))) {
+                fixed.setChance(
+                    (int) (MTEPurificationUnitClarifier.FILTER_DAMAGE_RATE / 100 * PositionedStack.CHANCE_FULL));
             }
         }
+
     }
+
 }

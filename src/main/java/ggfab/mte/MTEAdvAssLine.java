@@ -941,6 +941,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private class SliceStatusWidget extends TextWidget implements ISyncedWidget {
 
         private final Slice slice;

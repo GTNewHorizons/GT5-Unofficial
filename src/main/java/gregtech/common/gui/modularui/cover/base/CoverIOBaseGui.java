@@ -68,27 +68,31 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         IWidget blockingButtons = new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
             .overlay(
                 new DynamicDrawable(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT
+                    () -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT
                         : GTGuiTextures.OVERLAY_BUTTON_ALLOW_OUTPUT),
                 new DynamicDrawable(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT ? GTGuiTextures.OVERLAY_BUTTON_BLOCK_INPUT
+                    () -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? GTGuiTextures.OVERLAY_BUTTON_BLOCK_INPUT
                         : GTGuiTextures.OVERLAY_BUTTON_BLOCK_OUTPUT))
             .tooltip(
                 IKey.dynamic(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                    () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.AllowOut")),
                 IKey.dynamic(
-                    () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
+                    () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
             .build();
+
+        String inputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock");
+        String outputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock");
+        IKey.renderer.setAlignment(Alignment.TopLeft, -1, -1);
         IWidget blockingLabel = IKey
-            .dynamic(
-                () -> ioModeSyncValue.getValue() == TransferMode.IMPORT
-                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
-                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
-            .asWidget();
+            .dynamic(() -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? inputBlockText : outputBlockText)
+            .asWidget()
+            .coverChildrenHeight()
+            .width(getStringMaxWidth(inputBlockText, outputBlockText))
+            .marginRight(TICK_RATE_BUTTON_SIZE);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

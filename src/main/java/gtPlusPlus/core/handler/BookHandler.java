@@ -9,7 +9,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -24,9 +23,6 @@ public class BookHandler {
     public static BookTemplate book_NuclearManual;
 
     public static void run() {
-
-        Logger.INFO("Writing books.");
-
         // Thermal Boiler
         book_ThermalBoiler = writeBookTemplate(
             0,

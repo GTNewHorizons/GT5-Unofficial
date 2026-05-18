@@ -22,12 +22,11 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -56,7 +55,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         panel.child(
             GTGuiTextures.PICTURE_HEAT_SINK_16x8.asWidget()
                 .size(16, 8)
-                .align(Alignment.BottomRight)
+                .bottomRel(0)
+                .rightRel(0)
                 .marginRight(8)
                 .marginBottom(1));
         return panel;
@@ -80,7 +80,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -3, 1)
             .childPadding(3)
             .mainAxisAlignment(MainAxis.END)
@@ -93,8 +94,9 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().collapseDisabledChild()
-            .widthRel(1)
+        return Flow.row()
+            .collapseDisabledChild()
+            .fullWidth()
             .paddingRight(6)
             .paddingLeft(5)
             .childPadding(2)
@@ -106,7 +108,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .rightRel(0, 6, 0)
             .bottomRel(0, 6, 0)
             .child(createGeneralInfoPanelButton());
@@ -114,7 +117,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .leftRel(0, 6, 0)
             .bottomRel(0, 6, 0)
             .child(createSpecialThanksPanelButton());
@@ -122,8 +126,9 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>().widthRel(1)
-            .align(Alignment.TopCenter)
+        return new ListWidget<>().fullWidth()
+            .topRel(0)
+            .horizontalCenter()
             .child(IKey.dynamic(() -> {
                 if (data.getInternalBattery() == 0) {
                     return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
@@ -134,7 +139,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .marginTop(1)
-                .widthRel(1))
+                .fullWidth())
             .child(IKey.dynamic(() -> {
                 Formatters formatter = data.getFormatter();
                 if (data.getInternalBattery() == 0) {
@@ -146,9 +151,10 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .color(Color.WHITE.main)
                 .alignment(Alignment.CENTER)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                 .marginTop(2)
-                .alignX(0.5f)
-                .widthRel(1));
+                .horizontalCenter()
+                .fullWidth());
     }
 
     @Override
@@ -160,7 +166,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     protected ToggleButton createMuffleButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
             .size(7)
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
             .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
             .top(8)

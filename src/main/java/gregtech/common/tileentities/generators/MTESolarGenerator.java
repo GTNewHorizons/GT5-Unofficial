@@ -249,12 +249,26 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public long maxEUStore() {
+        if (mTier == 0) {
+            return 2;
+        }
         return V[mTier] * 10000;
     }
 
     @Override
     public long maxEUOutput() {
+        if (mTier == 0) {
+            return 1;
+        }
         return GTValues.V[mTier];
+    }
+
+    @Override
+    public long getMinimumStoredEU() {
+        if (mTier == 0) {
+            return 0;
+        }
+        return super.getMinimumStoredEU();
     }
 
     @Override

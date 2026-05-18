@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.ItemList;
@@ -193,7 +194,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PCBFactory")) {
             return false;
         }

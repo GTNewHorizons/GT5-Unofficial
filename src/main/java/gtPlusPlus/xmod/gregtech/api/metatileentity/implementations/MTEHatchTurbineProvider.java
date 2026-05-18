@@ -19,10 +19,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -51,7 +52,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
     }
 
-    private MTELargeTurbine mParent = null;
+    private MTEMultiBlockBase mParent = null;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -63,7 +64,6 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     private void tryFindParentTurbine() {
-        Logger.INFO("This turbine housing has no parent, searching world.");
         IGregTechTileEntity T = this.getBaseMetaTileEntity();
         World W = T.getWorld();
         Chunk C = W.getChunkFromBlockCoords(T.getXCoord(), T.getZCoord());
@@ -73,11 +73,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTELargeTurbine aTurb) {
+                if (aMetaTileEntity instanceof MTEMultiBlockBase aTurb
+                    && (aMetaTileEntity instanceof MTELargeTurbineLegacy
+                        || aMetaTileEntity instanceof MTELargeTurbineBase)) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
-                            Logger.INFO("Found a Parent to attach to this housing.");
                             return;
                         }
                     }

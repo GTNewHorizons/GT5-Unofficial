@@ -22,6 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import bartworks.MainMod;
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BWColorUtil;
@@ -57,14 +59,11 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
-            && stack.getTagCompound()
-                .getIntArray("Color") != null
-            && stack.getTagCompound()
-                .getIntArray("Color").length > 0) {
-            int[] rgb = stack.getTagCompound()
-                .getIntArray("Color");
-            return BWColorUtil.getColorFromRGBArray(rgb);
+        if (stack.getItemDamage() == 0) {
+            final int[] colors = ItemStackNBT.getIntArray(stack, "Color");
+            if (colors != null && colors.length > 0) {
+                return BWColorUtil.getColorFromRGBArray(colors);
+            }
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
