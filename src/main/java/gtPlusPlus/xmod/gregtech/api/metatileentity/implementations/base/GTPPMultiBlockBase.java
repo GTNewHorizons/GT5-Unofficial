@@ -271,7 +271,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             BlockPos aCurPos = new BlockPos(aCur);
             for (E m : aList) {
-                IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
+                IGregTechTileEntity b = m.getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
@@ -282,7 +282,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
         if (aTileEntity instanceof MTEHatch) {
             updateTexture(aTileEntity, aBaseCasingIndex);
-            return aList.add((E) aTileEntity);
+            return aList.add(aTileEntity);
         }
         return false;
     }
