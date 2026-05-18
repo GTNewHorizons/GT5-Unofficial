@@ -174,6 +174,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         for (MTEHatch h : mSteamInputs) h.updateTexture(id);
         for (MTEHatch h : mSteamOutputs) h.updateTexture(id);
         for (MTEHatch h : mSteamInputFluids) h.updateTexture(id);
+        for (MTEHatch h : mInputHatches) h.updateTexture(id);
         for (MTEHatch h : mOutputHatches) h.updateTexture(id);
     }
 
@@ -240,10 +241,8 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
-                this.mSteamInputs.clear();
-                this.mSteamOutputs.clear();
-                this.mInputHatches.clear();
-                this.mSteamInputFluids.clear();
+                // looks completely useless to me, structure check will clear the hatch anyway...
+                clearHatches();
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -281,6 +280,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         return aList.add(aTileEntity);
     }
 
+    // This function should be deprecated at some point, completely unnecessary and easy to mess up
     @Override
     public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
@@ -484,7 +484,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     public void clearHatches() {
         super.clearHatches();
-        mInputHatches.clear();
         mSteamInputFluids.clear();
         mSteamInputs.clear();
         mSteamOutputs.clear();
