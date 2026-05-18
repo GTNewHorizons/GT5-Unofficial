@@ -426,7 +426,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(0D, 0D, 0D)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
