@@ -479,6 +479,38 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer")
+        .fullImage()
+        .canApplyTheme()
+        .name("overlay_slot/drawer")
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_side")
+        .fullImage()
+        .canApplyTheme()
+        .name("overlay_slot/drawer_side")
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_front")
+        .fullImage()
+        .canApplyTheme()
+        .name("overlay_slot/drawer_front")
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_trim")
+        .fullImage()
+        .canApplyTheme()
+        .name("overlay_slot/drawer_trim")
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MINING_PIPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/mining_pipe")
+        .fullImage()
+        .canApplyTheme()
+        .name("overlay_slot/mining_pipe")
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
