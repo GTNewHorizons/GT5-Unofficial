@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.objects.OreDictItemStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -61,19 +62,17 @@ public class RecipesMachines {
             .addTo(assemblerRecipes);
 
         // Lead Lined Chest
-        for (ItemStack plateRubber : OreDictionary.getOres("plateAnyRubber")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hull_LV.get(1),
-                    GTUtility.copyAmount(32, plateRubber),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 9),
-                    new ItemStack(Blocks.chest))
-                .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
-                .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
-                .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_MV / 2)
-                .addTo(assemblerRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_LV.get(1),
+                new OreDictItemStack("plateAnyRubber", 32),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 9),
+                new ItemStack(Blocks.chest))
+            .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
+            .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(assemblerRecipes);
 
         // RTG
         GTValues.RA.stdBuilder()
