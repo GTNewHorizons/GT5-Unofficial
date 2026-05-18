@@ -150,7 +150,7 @@ public class FluidUtils {
                 .size() > 1)
             || aMaterial.getDefaultLocalName()
                 .toLowerCase()
-                .contains("wrought")) {
+                .contains("cast")) {
             return null;
         }
         if (aMaterial.vComponentCount != 1) {
