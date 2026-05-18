@@ -354,8 +354,11 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
-        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+        int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
+        if (dynamoCount == 0) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        } else if (dynamoCount > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Dynamo, dynamoCount, 1));
         }
     }
 

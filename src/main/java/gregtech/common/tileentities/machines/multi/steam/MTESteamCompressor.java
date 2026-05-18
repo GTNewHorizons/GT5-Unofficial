@@ -250,13 +250,12 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        // Try legacy structure first (use deprecated overload to avoid polluting error list)
         tierMachineCasing = -1;
         tierBlock = -1;
         tierPipeCasing = -1;
         casingAmount = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0)) {
+        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
             // Legacy structure shape matched — commit to it
             checkCasingMin(errors, casingAmount, 14);
             if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {

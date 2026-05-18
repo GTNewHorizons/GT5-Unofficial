@@ -268,14 +268,12 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, errors)) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, null)) {
             checkCasingMin(errors, casingAmount, 85);
             checkHasInputBus(errors);
             return;
         }
-        errors.clear();
         clearHatches();
-        errors.clear();
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, CASINGS_MIN);

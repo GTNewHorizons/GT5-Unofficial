@@ -233,13 +233,12 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        // Try legacy structure first (use deprecated overload to avoid polluting error list)
         tierMachineCasing = -1;
         tierGearboxCasing = -1;
         tierFrame = -1;
         casingAmount = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0)) {
+        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
             // Legacy structure shape matched — commit to it
             checkCasingMin(errors, casingAmount, 14);
             if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {

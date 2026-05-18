@@ -294,7 +294,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         for (MTEHatchDynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_dynamo"));
-                break;
+                return;
             }
         }
     }
