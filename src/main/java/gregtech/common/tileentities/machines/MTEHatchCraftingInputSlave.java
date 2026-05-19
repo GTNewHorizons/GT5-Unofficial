@@ -26,6 +26,7 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,7 +61,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     protected static int getTier(boolean isUniversal) {
-        return isUniversal ? 11 : 8; // if true, it is UIV; else it is UV
+        return isUniversal ? VoltageIndex.UIV : VoltageIndex.UV;
     }
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional, boolean isUniversal) {
