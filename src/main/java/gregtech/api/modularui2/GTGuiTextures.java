@@ -483,32 +483,32 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/drawer")
         .fullImage()
         .canApplyTheme()
-        .name("overlay_slot/drawer")
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_STANDARD)
         .build();
     public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/drawer_side")
         .fullImage()
         .canApplyTheme()
-        .name("overlay_slot/drawer_side")
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_SIDE_STANDARD)
         .build();
     public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/drawer_front")
         .fullImage()
         .canApplyTheme()
-        .name("overlay_slot/drawer_front")
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_FRONT_STANDARD)
         .build();
     public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/drawer_trim")
         .fullImage()
         .canApplyTheme()
-        .name("overlay_slot/drawer_trim")
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_TRIM_STANDARD)
         .build();
 
     public static final UITexture OVERLAY_SLOT_MINING_PIPE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/mining_pipe")
         .fullImage()
         .canApplyTheme()
-        .name("overlay_slot/mining_pipe")
+        .name(GTTextureIds.OVERLAY_SLOT_MINING_PIPE_STANDARD)
         .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
