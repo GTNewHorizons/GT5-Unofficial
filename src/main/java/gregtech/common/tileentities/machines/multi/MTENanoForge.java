@@ -659,6 +659,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
+        // Max 1000 blocks per placement
+        int tier4Budget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
+
         if (stackSize.stackSize <= 3) {
             built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
             if (built >= 0) return built;
@@ -693,7 +696,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 20,
                 33,
                 0,
-                elementBudget,
+                tier4Budget,
                 env,
                 false,
                 true);
@@ -703,7 +706,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 20,
                 50,
                 0,
-                elementBudget,
+                tier4Budget,
                 env,
                 false,
                 true);

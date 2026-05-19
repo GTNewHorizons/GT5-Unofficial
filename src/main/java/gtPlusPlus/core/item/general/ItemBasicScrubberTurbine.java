@@ -43,7 +43,7 @@ public class ItemBasicScrubberTurbine extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 3; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -138,7 +138,7 @@ public class ItemBasicScrubberTurbine extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.scrubber_turbine.early_tier"));
         int maxDamage = getMaxDurability(stack);
         list.add(
@@ -146,7 +146,7 @@ public class ItemBasicScrubberTurbine extends Item {
                 "gtpp.tooltip.scrubber_turbine.uses_left",
                 (maxDamage - getFilterDamage(stack)),
                 maxDamage));
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

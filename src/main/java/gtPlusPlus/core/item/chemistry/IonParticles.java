@@ -104,7 +104,7 @@ public class IonParticles extends BaseItemParticle {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         long aCharge = getChargeState(stack);
         String ionName = MetaToNameMap.get(stack.getItemDamage());
         // State not set
@@ -123,7 +123,7 @@ public class IonParticles extends BaseItemParticle {
                         .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_negative", ionName, aCharge));
             }
         }
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override
