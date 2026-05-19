@@ -479,6 +479,38 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_side")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_SIDE_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_front")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_FRONT_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_trim")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_TRIM_STANDARD)
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MINING_PIPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/mining_pipe")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_MINING_PIPE_STANDARD)
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -1186,6 +1218,7 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/steam_fill_steel")
         .build();
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture.builder()
+        .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/progressbar/name_remover")
         .build();
