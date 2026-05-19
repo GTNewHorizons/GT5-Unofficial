@@ -17,14 +17,7 @@ import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -128,8 +121,8 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
     private long outputCurrentLastTick;
-    private LinkedList<Double> outputCurrentHistory = new LinkedList<>();
     private int historySize = 30;
+    private TeslaRingBuffer outputCurrentHistory = new TeslaRingBuffer(historySize);
     private int ticksBetweenDataPoints = 5;
     private int dataPointTick = 0;
     private int dataPointSum = 0;
@@ -814,12 +807,7 @@ public class MTETeslaTower extends TTMultiblockBase
         dataPointSum += usedAmps;
         dataPointTick++;
         if (dataPointTick >= ticksBetweenDataPoints) {
-            outputCurrentHistory.addLast((double) dataPointSum / dataPointTick);
-            // Users are allowed to change this variable, so if it decreases everything outside of it
-            // Has to be removed
-            while (outputCurrentHistory.size() > historySize) {
-                outputCurrentHistory.removeFirst();
-            }
+            outputCurrentHistory.add((double) dataPointSum / dataPointTick);
             dataPointSum = 0;
             dataPointTick = 0;
         }
@@ -1044,6 +1032,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public void setHistorySize(int historySize) {
         this.historySize = historySize;
+        outputCurrentHistory.resize(historySize);
     }
 
     public int getTicksBetweenDataPoints() {
@@ -1115,6 +1104,286 @@ public class MTETeslaTower extends TTMultiblockBase
         @Override
         public long count(MTETeslaTower MTETeslaTower) {
             return MTETeslaTower.eCapacitorHatches.size();
+        }
+    }
+
+    private class TeslaRingBuffer implements List<Double>, RandomAccess {
+        int capacity;
+        int size;
+        int index;
+        double[] buffer;
+
+        TeslaRingBuffer(int capacity) {
+            this.capacity = capacity;
+            this.index = 0;
+            this.size = 0;
+            buffer = new double[capacity];
+        }
+
+        public void resize(int newCapacity) {
+            if (capacity == newCapacity) return;
+            double[] newBuf = new double[newCapacity];
+
+            if (newCapacity < capacity) {
+                // grab the newest #newCapacity elements, and put them in the new buffer
+                for (int i = 0; i < newCapacity; i++) {
+                    // always add a capacity, for the edge case of index < newCapacity, so our index doesn't underflow 0
+                    newBuf[i] = buffer[(capacity + index + i - newCapacity) % capacity];
+                }
+            } else {
+                // place all elements aligned with the end of the new buffer
+                System.arraycopy(buffer, 0, newBuf, newCapacity - capacity, capacity);
+            }
+            this.capacity = newCapacity;
+            this.size = newCapacity;
+            this.buffer = newBuf;
+            // set the last element as the newest, implies that all zeros from idx 0..(start of old buf) are older values
+            this.index = 0;
+        }
+
+        // Always will have capacity as it's size, padding with zeros otherwise
+        @Override
+        public int size() {
+            return capacity;
+        }
+
+        // Always false, as it's always a constant size, considering the filled zeros as valid
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            if (o == null) return false;
+            if (o instanceof Number number) {
+                for (double v : buffer) {
+                    if (v == number.doubleValue()) return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public @NotNull Iterator<Double> iterator() {
+            return new Iterator<>() {
+                final int idx = index;
+                int i = 0;
+
+                @Override
+                public boolean hasNext() {
+                    // "invalidates" iterator, once the buffers index is moved, or end is reached for avoiding endless iteration
+                    return idx == index && i == 0 || (idx + i) % capacity != idx;
+                }
+
+                @Override
+                public Double next() {
+                    return buffer[(idx + i++) % capacity];
+                }
+            };
+        }
+
+        @Override
+        public Object[] toArray() {
+            Object[] out = new Object[capacity];
+            for (int i = 0; i < capacity; i++) {
+                out[i] = buffer[(index + i) % capacity];
+            }
+            return out;
+        }
+
+        @Override
+        public<T> T[] toArray(T[] a) {
+            if (a == null) throw new NullPointerException();
+            if (!Double.class.isAssignableFrom(a.getClass().getComponentType())) throw new IllegalArgumentException("provided type of array can't be cast to from type double");
+
+            Object[] out = new Object[capacity];
+            for (int i = 0; i < capacity; i++) {
+                out[i] = buffer[(index + i) % capacity];
+            }
+            return (T[]) out;
+        }
+
+        /**
+         * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
+         * @param doub double inserted into the ring buffer, potentially overwriting the oldest value
+         * @return always {@code true}
+         */
+        @Override
+        public boolean add(Double doub) {
+            if (size < capacity) {
+                buffer[index++] = doub;
+                size++;
+                return true;
+            }
+            // pre-increment, so when we are at the last index, we equal capacity, so the modulo will always wrap to 0
+            index = (++index) % capacity;
+            buffer[index] = doub;
+            return true;
+        }
+
+        /**
+         *
+         * @param index index of the element to replace
+         * @param element element to be stored at the specified position
+         * @see List#set(int, Object)
+         * @return the replaced value
+         */
+        @Override
+        public Double set(int index, Double element) {
+            if (index < 0 || index >= capacity) throw new IndexOutOfBoundsException();
+            int realIdx = (index + this.index) % capacity;
+            double old = buffer[realIdx];
+            buffer[realIdx] = element;
+            return old;
+        }
+
+
+        /**
+         * Careful, this will resize the backing array, if you plan to call this operation in a loop,
+         * use {@link #resize(int)} appropriately, in combination with {@link #toArray(Object[]) #toArray(double[])} and
+         * {@link #set(int, Double)} or {@link #addAll(int, Collection)}!
+         * @param index index at which the specified element is to be inserted
+         * @param doub element to be inserted
+         */
+        @Override
+        public void add(int index, Double doub) {
+            int realIdx = (index + this.index) % capacity;
+
+            double[] newBuf = new double[capacity+1];
+            System.arraycopy(buffer, 0, newBuf, 0, realIdx);
+            newBuf[realIdx] = doub;
+            System.arraycopy(buffer, realIdx, newBuf, realIdx+1, capacity-realIdx);
+
+            this.capacity += 1;
+            this.size += 1;
+            if (realIdx < this.index) this.index++;
+            buffer = newBuf;
+        }
+
+
+        @Override
+        public int indexOf(Object o) {
+            if (o == null) return -1;
+            if (!(o instanceof Number number)) return -1;
+            for (int i = 0; i < capacity; i++) {
+                if (buffer[(index+i) % capacity] == number.doubleValue())
+                    return i;
+            }
+            return -1;
+        }
+
+        @Override
+        public int lastIndexOf(Object o) {
+            if (o == null) return -1;
+            if (!(o instanceof Number number)) return -1;
+            for (int i = capacity-1; i >= 0; i--) {
+                if (buffer[(capacity+index-i) % capacity] == number.doubleValue())
+                    return i;
+            }
+            return -1;
+        }
+
+        @Override
+        public @NotNull ListIterator<Double> listIterator() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public @NotNull ListIterator<Double> listIterator(int index) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public @NotNull List<Double> subList(int fromIndex, int toIndex) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
+         * Will never remove anything.
+         * If you really need to shrink the ring buffer, use {@link #resize(int)}
+         * @return always returns {@code false}
+         */
+        @Override
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        /**
+         * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
+         * Will never remove anything.
+         * If you really need to shrink the ring buffer, use {@link #resize(int)}
+         * @return always returns {@code  0.0d}
+         */
+        @Override
+        public Double remove(int index) {
+            return 0.0;
+        }
+
+        @Override
+        public boolean containsAll(@NotNull Collection<?> c) {
+            for (Object o : c) {
+                if (!this.contains(o)) return false;
+            }
+            return true;
+        }
+
+        /**
+         * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
+         * @param c collection of doubles inserted one by one into the ring buffer, potentially overwriting the oldest values
+         * @return always {@code true}
+         */
+        @Override
+        public boolean addAll(@NotNull Collection<? extends Double> c) {
+            for (double v : c) {
+                this.add(v);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean addAll(int index, @NotNull Collection<? extends Double> c) {
+            int realIdx = (index + this.index) % capacity;
+
+            double[] newBuf = new double[capacity+c.size()];
+            System.arraycopy(buffer, 0, newBuf, 0, realIdx);
+
+            int i = 0;
+            for (Double v : c) {
+                newBuf[realIdx+i] = v;
+                i++;
+            }
+
+            System.arraycopy(buffer, realIdx, newBuf, realIdx+c.size(), capacity-realIdx);
+
+            this.capacity += c.size();
+            this.size += c.size();
+            if (realIdx < this.index) this.index += c.size();
+            buffer = newBuf;
+            return true;
+        }
+
+        @Override
+        public boolean removeAll(@NotNull Collection<?> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean retainAll(@NotNull Collection<?> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void clear() {
+            buffer = new double[capacity];
+            size = 0;
+            index = 0;
+        }
+
+        @Override
+        public Double get(int index) {
+            return buffer[(index + this.index) % capacity];
         }
     }
 }
