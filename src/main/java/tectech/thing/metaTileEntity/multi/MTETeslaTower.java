@@ -1138,7 +1138,7 @@ public class MTETeslaTower extends TTMultiblockBase
             this.size = newCapacity;
             this.buffer = newBuf;
             // set the last element as the newest, implies that all zeros from idx 0..(start of old buf) are older values
-            this.index = 0;
+            this.index = newCapacity-1;
         }
 
         // Always will have capacity as it's size, padding with zeros otherwise
@@ -1178,7 +1178,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
                 @Override
                 public Double next() {
-                    return buffer[(idx + i++) % capacity];
+                    return buffer[(idx + ++i) % capacity];
                 }
             };
         }
@@ -1383,6 +1383,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         @Override
         public Double get(int index) {
+            if (index < 0 || index >= capacity) throw new IndexOutOfBoundsException();
             return buffer[(index + this.index) % capacity];
         }
     }
