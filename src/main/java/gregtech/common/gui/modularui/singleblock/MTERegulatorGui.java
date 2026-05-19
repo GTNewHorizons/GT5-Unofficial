@@ -2,14 +2,12 @@ package gregtech.common.gui.modularui.singleblock;
 
 import java.util.stream.IntStream;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -70,7 +68,7 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue[] targetSlotSyncer = IntStream.range(0, 9)
+        IntSyncValue[] targetSlotSyncers = IntStream.range(0, 9)
             .mapToObj(i -> syncManager.findSyncHandler("targetSlot", i, IntSyncValue.class))
             .toArray(IntSyncValue[]::new);
 
@@ -99,34 +97,33 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
 
         // target slot selector grid
-        mainRow.child(new Grid().gridOfWidthHeight(3, 3, ($x, $y, index) -> new ButtonWidget() {
+        mainRow.child(
+            new Grid().gridOfWidthHeight(3, 3, ($x, $y, index) -> new ButtonWidget<>().onMousePressed(mouseButton -> {
+                targetSlotSyncers[index].setIntValue(
+                    GTUtility.clamp(
+                        targetSlotSyncers[index].getIntValue()
+                            + (mouseButton == 0 ? 1 : -1) * (Interactable.hasShiftDown() ? 16 : 1),
+                        0,
+                        99));
 
-            @Override
-            public @Nullable IDrawable getCurrentOverlay(WidgetThemeEntry widgetTheme) {
-                if (isHovering()) return IDrawable.of(getOverlay(), getHoverOverlay());
-                return getOverlay();
-            }
-        }.onMousePressed(mouseButton -> {
-            targetSlotSyncer[index].setIntValue(
-                GTUtility.clamp(
-                    targetSlotSyncer[index].getIntValue()
-                        + (mouseButton == 0 ? 1 : -1) * (Interactable.hasShiftDown() ? 16 : 1),
-                    0,
-                    99));
-
-            return true;
-        })
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true)
-            .overlay(IKey.dynamic(() -> String.valueOf(targetSlotSyncer[index].getIntValue())))
-            .hoverOverlay(
-                new Rectangle().color(Color.withAlpha(Color.WHITE.main, 0x60))
-                    .asIcon()
-                    .size(16)))
-            .coverChildren()
-            .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
+                return true;
+            })
+                .disableThemeBackground(true)
+                .disableHoverThemeBackground(true)
+                .overlay(getTargetSlotText(targetSlotSyncers[index]))
+                .hoverOverlay(
+                    getTargetSlotText(targetSlotSyncers[index]),
+                    new Rectangle().color(Color.withAlpha(Color.WHITE.main, 0x60))
+                        .asIcon()
+                        .size(16)))
+                .coverChildren()
+                .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
+    }
+
+    private static @NotNull IKey getTargetSlotText(IntSyncValue targetSlotSyncer) {
+        return IKey.dynamic(() -> String.valueOf(targetSlotSyncer.getIntValue()));
     }
 
     @Override
