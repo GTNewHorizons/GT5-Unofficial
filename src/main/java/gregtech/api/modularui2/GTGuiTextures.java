@@ -1218,6 +1218,7 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/steam_fill_steel")
         .build();
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture.builder()
+        .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/progressbar/name_remover")
         .build();
