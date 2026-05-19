@@ -1108,6 +1108,7 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     private class TeslaRingBuffer implements List<Double>, RandomAccess {
+
         int capacity;
         int size;
         int index;
@@ -1137,8 +1138,9 @@ public class MTETeslaTower extends TTMultiblockBase
             this.capacity = newCapacity;
             this.size = newCapacity;
             this.buffer = newBuf;
-            // set the last element as the newest, implies that all zeros from idx 0..(start of old buf) are older values
-            this.index = newCapacity-1;
+            // set the last element as the newest, implies that all zeros from idx 0..(start of old buf) are older
+            // values
+            this.index = newCapacity - 1;
         }
 
         // Always will have capacity as it's size, padding with zeros otherwise
@@ -1167,12 +1169,14 @@ public class MTETeslaTower extends TTMultiblockBase
         @Override
         public @NotNull Iterator<Double> iterator() {
             return new Iterator<>() {
+
                 final int idx = index;
                 int i = 0;
 
                 @Override
                 public boolean hasNext() {
-                    // "invalidates" iterator, once the buffers index is moved, or end is reached for avoiding endless iteration
+                    // "invalidates" iterator, once the buffers index is moved, or end is reached for avoiding endless
+                    // iteration
                     return idx == index && i == 0 || (idx + i) % capacity != idx;
                 }
 
@@ -1193,9 +1197,12 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         @Override
-        public<T> T[] toArray(T[] a) {
+        public <T> T[] toArray(T[] a) {
             if (a == null) throw new NullPointerException();
-            if (!Double.class.isAssignableFrom(a.getClass().getComponentType())) throw new IllegalArgumentException("provided type of array can't be cast to from type double");
+            if (!Double.class.isAssignableFrom(
+                a.getClass()
+                    .getComponentType()))
+                throw new IllegalArgumentException("provided type of array can't be cast to from type double");
 
             Object[] out = new Object[capacity];
             for (int i = 0; i < capacity; i++) {
@@ -1206,6 +1213,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         /**
          * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
+         * 
          * @param doub double inserted into the ring buffer, potentially overwriting the oldest value
          * @return always {@code true}
          */
@@ -1224,7 +1232,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         /**
          *
-         * @param index index of the element to replace
+         * @param index   index of the element to replace
          * @param element element to be stored at the specified position
          * @see List#set(int, Object)
          * @return the replaced value
@@ -1238,22 +1246,22 @@ public class MTETeslaTower extends TTMultiblockBase
             return old;
         }
 
-
         /**
          * Careful, this will resize the backing array, if you plan to call this operation in a loop,
          * use {@link #resize(int)} appropriately, in combination with {@link #toArray(Object[]) #toArray(double[])} and
          * {@link #set(int, Double)} or {@link #addAll(int, Collection)}!
+         * 
          * @param index index at which the specified element is to be inserted
-         * @param doub element to be inserted
+         * @param doub  element to be inserted
          */
         @Override
         public void add(int index, Double doub) {
             int realIdx = (index + this.index) % capacity;
 
-            double[] newBuf = new double[capacity+1];
+            double[] newBuf = new double[capacity + 1];
             System.arraycopy(buffer, 0, newBuf, 0, realIdx);
             newBuf[realIdx] = doub;
-            System.arraycopy(buffer, realIdx, newBuf, realIdx+1, capacity-realIdx);
+            System.arraycopy(buffer, realIdx, newBuf, realIdx + 1, capacity - realIdx);
 
             this.capacity += 1;
             this.size += 1;
@@ -1261,14 +1269,12 @@ public class MTETeslaTower extends TTMultiblockBase
             buffer = newBuf;
         }
 
-
         @Override
         public int indexOf(Object o) {
             if (o == null) return -1;
             if (!(o instanceof Number number)) return -1;
             for (int i = 0; i < capacity; i++) {
-                if (buffer[(index+i) % capacity] == number.doubleValue())
-                    return i;
+                if (buffer[(index + i) % capacity] == number.doubleValue()) return i;
             }
             return -1;
         }
@@ -1277,9 +1283,8 @@ public class MTETeslaTower extends TTMultiblockBase
         public int lastIndexOf(Object o) {
             if (o == null) return -1;
             if (!(o instanceof Number number)) return -1;
-            for (int i = capacity-1; i >= 0; i--) {
-                if (buffer[(capacity+index-i) % capacity] == number.doubleValue())
-                    return i;
+            for (int i = capacity - 1; i >= 0; i--) {
+                if (buffer[(capacity + index - i) % capacity] == number.doubleValue()) return i;
             }
             return -1;
         }
@@ -1303,6 +1308,7 @@ public class MTETeslaTower extends TTMultiblockBase
          * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
          * Will never remove anything.
          * If you really need to shrink the ring buffer, use {@link #resize(int)}
+         * 
          * @return always returns {@code false}
          */
         @Override
@@ -1314,6 +1320,7 @@ public class MTETeslaTower extends TTMultiblockBase
          * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
          * Will never remove anything.
          * If you really need to shrink the ring buffer, use {@link #resize(int)}
+         * 
          * @return always returns {@code  0.0d}
          */
         @Override
@@ -1331,7 +1338,9 @@ public class MTETeslaTower extends TTMultiblockBase
 
         /**
          * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
-         * @param c collection of doubles inserted one by one into the ring buffer, potentially overwriting the oldest values
+         * 
+         * @param c collection of doubles inserted one by one into the ring buffer, potentially overwriting the oldest
+         *          values
          * @return always {@code true}
          */
         @Override
@@ -1346,16 +1355,16 @@ public class MTETeslaTower extends TTMultiblockBase
         public boolean addAll(int index, @NotNull Collection<? extends Double> c) {
             int realIdx = (index + this.index) % capacity;
 
-            double[] newBuf = new double[capacity+c.size()];
+            double[] newBuf = new double[capacity + c.size()];
             System.arraycopy(buffer, 0, newBuf, 0, realIdx);
 
             int i = 0;
             for (Double v : c) {
-                newBuf[realIdx+i] = v;
+                newBuf[realIdx + i] = v;
                 i++;
             }
 
-            System.arraycopy(buffer, realIdx, newBuf, realIdx+c.size(), capacity-realIdx);
+            System.arraycopy(buffer, realIdx, newBuf, realIdx + c.size(), capacity - realIdx);
 
             this.capacity += c.size();
             this.size += c.size();
