@@ -169,6 +169,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         if (getPollutionPerTick(null) != 0) {
             checkHasMufflerHatch(errors);
         }
+        if (!errors.isEmpty()) return;
         maxPower = getMaximumOutput();
     }
 
