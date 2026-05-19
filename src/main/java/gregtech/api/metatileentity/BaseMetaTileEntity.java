@@ -99,6 +99,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
+    protected MetaTileEntity mMetaTileEntity;
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
