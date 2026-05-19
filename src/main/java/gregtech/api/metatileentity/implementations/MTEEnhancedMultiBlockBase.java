@@ -46,6 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -625,8 +626,16 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchMin(errors, HatchElement.OutputBus, 1);
     }
 
+    // NOTE: Despite the name, this also allow crafting inputs, if they support fluids
+    // Most of the time it's what you want. If you don't want such inputs,
+    // you can omit InputBus in your structure or roll your own checks
     protected final void checkHasInputHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.InputHatch, 1);
+        long count = mInputHatches.size() + mDualInputHatches.stream()
+            .filter(IDualInputHatch::supportsFluids)
+            .count();
+        if (count == 0) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.InputHatch, 0, 1));
+        }
     }
 
     protected final void checkHasOutputHatch(List<StructureError> errors) {
