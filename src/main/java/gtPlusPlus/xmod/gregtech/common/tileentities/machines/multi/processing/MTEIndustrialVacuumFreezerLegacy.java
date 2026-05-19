@@ -192,9 +192,9 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
+            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase hatch && aMetaTileEntity.getBaseMetaTileEntity()
                 .getMetaTileID() == MetaTileEntityIDs.Hatch_Input_Cryotheum.ID) {
-                return addToMachineListInternal(mCryotheumHatches, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mCryotheumHatches, hatch, aBaseCasingIndex);
             }
         }
         return false;
