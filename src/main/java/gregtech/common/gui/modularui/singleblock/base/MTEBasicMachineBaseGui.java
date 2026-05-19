@@ -23,21 +23,27 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
-public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachineWithRecipe> {
+public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected boolean mAddGregTechLogo = false;
 
-    public MTEBasicMachineWithRecipeBaseGui(MTEBasicMachineWithRecipe machine, BasicUIProperties properties) {
+    public MTEBasicMachineBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
         this.slotOverlayFunction = properties.slotOverlaysMUI2;
+    }
+
+    public MTEBasicMachineBaseGui useGregTechLogo(boolean addLogo) {
+        this.mAddGregTechLogo = addLogo;
+        return this;
     }
 
     @Override
@@ -352,6 +358,6 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTETieredMachineBlockBaseG
 
     @Override
     protected boolean doesAddGregTechLogo() {
-        return false;
+        return this.mAddGregTechLogo;
     }
 }

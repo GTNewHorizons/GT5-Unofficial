@@ -2,13 +2,11 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,17 +24,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.CircularGaugeDrawable;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputBus;
@@ -45,11 +36,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -78,7 +69,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     private final OverclockDescriber overclockDescriber;
 
     public ArrayList<MTEHatchSteamBusInput> mSteamInputs = new ArrayList<>();
-    public ArrayList<MTEHatchSteamBusOutput> mSteamOutputs = new ArrayList<>();
+    public ArrayList<MTEHatchOutputBus> mSteamOutputs = new ArrayList<>();
     public ArrayList<MTEHatchCustomFluidBase> mSteamInputFluids = new ArrayList<>();
 
     public static final Casings bronzeCasing = Casings.BronzePlatedBricks;
@@ -188,9 +179,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         for (MTEHatch h : mOutputHatches) h.updateTexture(id);
     }
 
-    // tierMachine isn't synced to client - getThemeTier() it is instead of a syncHandler
-    public abstract int getThemeTier();
-
     @Override
     protected GTGuiTheme getGuiTheme() {
         return isHighPressure() ? GTGuiThemes.STEEL : GTGuiThemes.BRONZE;
@@ -278,8 +266,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         return true;
     }
 
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
-        final int aBaseCasingIndex) {
+    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final E aTileEntity, final int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
 
         if (aTileEntity instanceof MTEHatch mteHatch) {
@@ -293,8 +280,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
         if (aList.contains(aTileEntity)) return false;
 
-        // noinspection unchecked
-        return aList.add((E) aTileEntity);
+        return aList.add(aTileEntity);
     }
 
     @Override
@@ -303,15 +289,15 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
 
-        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase) {
-            return addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch) {
+            return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput steamBus) {
             this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
-            return addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mSteamInputs, steamBus, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchSteamBusOutput || aMetaTileEntity instanceof MTEHatchVoidBus) {
-            return addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof MTEHatchInput) {
-            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mSteamOutputs, (MTEHatchOutputBus) aMetaTileEntity, aBaseCasingIndex);
+        } else if (aMetaTileEntity instanceof MTEHatchInput inputHatch) {
+            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
         }
 
         return false;
@@ -435,7 +421,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     public List<IOutputBus> getOutputBusses() {
         List<IOutputBus> output = new ArrayList<>(mSteamOutputs.size());
-        for (MTEHatchSteamBusOutput outputBus : mSteamOutputs) {
+        for (MTEHatchOutputBus outputBus : mSteamOutputs) {
             if (outputBus.isValid()) output.add(outputBus);
         }
         return output;
@@ -485,36 +471,13 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTESteamMultiBlockBaseGui(this);
+    protected boolean forceUseMui2() {
+        return true;
     }
 
-    private int uiSteamStored = 0;
-    private int uiSteamCapacity = 0;
-
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamCapacity, val -> uiSteamCapacity = val));
-        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStored, val -> uiSteamStored = val));
-
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG_STEEL)
-                .dynamicTooltip(
-                    () -> Collections.singletonList(
-                        translateToLocalFormatted(
-                            MTEBasicMachine.STEAM_AMOUNT_LANGKEY,
-                            numberFormat.format(uiSteamStored),
-                            numberFormat.format(uiSteamCapacity))))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setUpdateTooltipEveryTick(true)
-                .setSize(48, 42)
-                .setPos(-48, -8));
-
-        builder.widget(
-            new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
-                .setPos(-48 + 21, -8 + 21)
-                .setSize(18, 4));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBlockBaseGui(this);
     }
 
     @Override

@@ -38,6 +38,11 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
+GT5U.gui.text.arc_shutdown=Arc Furnace is shutting down!
+GT5U.gui.text.arc_ignition=Arc Furnace is starting up!
+GT5U.gui.text.no_electrode=No electrode inserted!
+GT5U.gui.text.electrode_changed=Electrode changed while running!
+
 ## General
 kubatech.gui.text.configuration=Configuration
 
@@ -89,13 +94,20 @@ kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
 kubatech.gui.text.mia.secondary_mode=Secondary mode
 
+kubatech.gui.tooltip.contributors.added=Added by %s
+kubatech.gui.tooltip.contributors.design=Designed by %s
+kubatech.gui.tooltip.contributors.structure=Structure designed by %s
+
 kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
 kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
 
+kubatech.gui.text.electrode_detector=Durability threshold
+
 #Chat Messages
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
+kubatech.chat.mode.generic=Now running in mode: %s
 
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
@@ -191,6 +203,38 @@ item.htgr_item.incomplete_biso_fuel.name=Incomplete BISO Fuel (%s)
 item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
 item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
 item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
+
+item.arc_furnace_electrode.GraphiteElectrode.name=Graphite Electrode
+item.arc_furnace_electrode.TantalumElectrode.name=Tantalum Electrode
+item.arc_furnace_electrode.MolybdenumElectrode.name=Molybdenum Electrode
+item.arc_furnace_electrode.TungstenElectrode.name=Tungsten Electrode
+item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungsten Steel Electrode
+item.arc_furnace_electrode.GrapheneElectrode.name=Graphene Electrode
+item.arc_furnace_electrode.YBCOElectrode.name=YBCO Electrode
+item.arc_furnace_electrode.NetheriteElectrode.name=Netherite Electrode
+item.arc_furnace_electrode.TritaniumElectrode.name=Tritanium Electrode
+item.arc_furnace_electrode.InfinityElectrode.name=Infinity Electrode
+item.arc_furnace_electrode.HypogenElectrode.name=Hypogen Electrode
+item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Electrode
+item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
+item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
+
+item.arc_furnace_electrode.tip.durability=Durability: %s/%s
+item.arc_furnace_electrode.tip.speed=Speed: %s
+item.arc_furnace_electrode.tip.parallel_limit=Parallel: %s
+item.arc_furnace_electrode.tip.parallel_limit_none=None
+item.arc_furnace_electrode.tip.oc=OC: %s%s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amp/Parallel: %s
+item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s
+
+item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%
+item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds skip startup entirely
+item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing the amount of parallels doubles, until powerfail or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
+item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material dust in the input bus gives 70% chance on recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Providing electrode material dust in the input bus gives 90% chance on recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Providing electrode material dust in the input bus fully repairs the electrode
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea

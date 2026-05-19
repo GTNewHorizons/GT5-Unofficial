@@ -129,9 +129,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     private IntegerParameter distanceParameter;
     private IntegerParameter parallelParameter;
     private BooleanParameter cycleParameter;
-    private IntegerParameter cycleDistanceParameter;
     private IntegerParameter rangeParameter;
     private IntegerParameter stepParameter;
+    private IntegerParameter cycleDistanceParameter;
 
     public static final String DISTANCE_PARAMETER = "distance";
     public static final String PARALLEL_PARAMETER = "parallel";
@@ -247,25 +247,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             () -> 0,
             this::getMaxParallels);
         cycleParameter = new BooleanParameter(false, "tt.spaceminer.cycle", CYCLE_PARAMETER);
-        cycleDistanceParameter = new IntegerParameter(
-            0,
-            "tt.spaceminer.range",
-            CYCLE_DISTANCE_PARAMETER,
-            () -> 0,
-            () -> Integer.MAX_VALUE);
         rangeParameter = new IntegerParameter(
             0,
-            "tt.spaceminer.step",
+            "tt.spaceminer.range",
             RANGE_PARAMETER,
             () -> 0,
             () -> Integer.MAX_VALUE);
-        stepParameter = new IntegerParameter(
+        stepParameter = new IntegerParameter(0, "tt.spaceminer.step", STEP_PARAMETER, () -> 0, () -> Integer.MAX_VALUE);
+        cycleDistanceParameter = new IntegerParameter(
             distanceParameter.getValue(),
             "",
-            STEP_PARAMETER,
+            CYCLE_DISTANCE_PARAMETER,
             () -> distanceParameter.getValue() - rangeParameter.getValue(),
             () -> distanceParameter.getValue() + rangeParameter.getValue());
-        stepParameter.disableGui();
+        cycleDistanceParameter.disableGui();
     }
 
     @Override
