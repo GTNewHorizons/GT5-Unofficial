@@ -36,7 +36,8 @@ public enum Particle {
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_NEUTRON),
     LAMBDA(false, 13, 1115.68f, 0, "lambda", "\u039B \u2070", 0, null, 80,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_LAMBDA),
-    OMEGA(true, 14, 1672.45f, 0, "omega", "\u03A9 \u207B", -1, null, 60, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
+    OMEGA(true, 14, 1672.45f, 1700000, "omega", "\u03A9 \u207B", -1, null, 60,
+        GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
     // Mesons
     ETA(false, 15, 547.86f, 0, "eta", "\u03B7", 0, null, 400, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ETA),
     JPSI(false, 16, 3096.92f, 0, "jpsi", "J/\u03C8", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_JPSI),

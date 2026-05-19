@@ -48,7 +48,9 @@ public class BaseItemComponent extends Item {
     public short[] extraData;
 
     @SideOnly(Side.CLIENT)
-    protected IIconContainer iconContainer;
+    protected IIcon iconBase;
+    @SideOnly(Side.CLIENT)
+    protected IIcon iconOverlay;
 
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
@@ -262,9 +264,9 @@ public class BaseItemComponent extends Item {
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.iconContainer.getIcon();
+            return iconBase;
         }
-        return this.iconContainer.getOverlayIcon();
+        return iconOverlay;
     }
 
     @Override
@@ -278,7 +280,10 @@ public class BaseItemComponent extends Item {
             }
         }
         metType = (metType == null ? "METALLIC" : metType);
-        iconContainer = Textures.ItemIcons.textureSet(metType, "/" + this.componentType.getOreDictName());
+        IIconContainer container = Textures.ItemIcons
+            .textureSetWithRegister(metType, "/" + this.componentType.getOreDictName(), i);
+        iconBase = container.getIcon();
+        iconOverlay = container.getOverlayIcon();
     }
 
     public enum ComponentTypes {
