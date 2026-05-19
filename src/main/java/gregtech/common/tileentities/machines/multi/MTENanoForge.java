@@ -650,6 +650,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;
             }
+
             if (!errors.isEmpty()) return;
         }
         if (mSpecialTier == 0) {

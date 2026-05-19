@@ -177,7 +177,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
 
         checkCasingMin(errors, mCasing, MINIMUM_CASINGS);
         if (checkMeta <= 0) {
-            // If the player do not provide any casing, skip this diagnostic.
+            // Somehow the player manage to provide 0 machine casing for tier identification.
             errors.add(StructureErrors.of("GT5U.gui.text.unknown_machine_casing_tier"));
         }
 

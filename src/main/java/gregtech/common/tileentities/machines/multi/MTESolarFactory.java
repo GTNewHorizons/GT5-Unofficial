@@ -18,7 +18,6 @@ import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -227,16 +226,16 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         hasEnoughCasings = false;
         casingTier = -3;
         mTier = 0;
-        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0, new ArrayList<>())) {
+        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0, null)) {
             mTier = 1;
             checkCasingMin(errors, casingAmount, 15);
-        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0, new ArrayList<>())) {
+        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0, null)) {
             mTier = 2;
             checkCasingMin(errors, casingAmount, 35);
             if (casingTier < -1) {
                 errors.add(StructureErrors.of("GT5U.gui.text.solar_factory_precise"));
             }
-        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, new ArrayList<>())) {
+        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, null)) {
             mTier = 3;
             checkCasingMin(errors, casingAmount, 50);
             if (casingTier < -1) {

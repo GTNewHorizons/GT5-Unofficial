@@ -389,6 +389,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        // NOTE: the proper way to do this is to override clearHatches
         this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
         if (!checkPiece("sc", 2, 4, 0, errors)) return;
         checkOneMaintenanceHatch(errors);

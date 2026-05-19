@@ -61,6 +61,8 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     implements ISurvivalConstructable {
 
     private int casingAmount = 0;
+    // Old limit from tooltip: 42, it does not even allow 2 input hatch so it is lowered to reasonable amount.
+    private static final int MIN_CASINGS = 30;
 
     private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
         .<MTEDissolutionTank>builder()
@@ -99,7 +101,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(mName, 2, 3, 0, errors)) return;
-        checkCasingMin(errors, casingAmount, 30);
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
         checkHasEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkHasAnyInput(errors);
@@ -228,7 +230,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info2"))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 30, false)
+            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), MIN_CASINGS, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
             .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 9, false)
             .addInputHatch(addHintNumber(1))

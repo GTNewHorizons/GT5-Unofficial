@@ -61,6 +61,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     private static final int OFFSET_X = 13;
     private static final int OFFSET_Y = 13;
     private static final int OFFSET_Z = 0;
+    // Total casing without hatch = 483
+    private static final int MIN_CASINGS = 470;
     private static int casingAmount;
 
     public MTENaquadahFuelRefinery(String name) {
@@ -211,7 +213,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 27, 27, false)
             .addController("Front center")
-            .addCasingInfoMin("Naquadah Fuel Refinery Casing", 470, false)
+            .addCasingInfoMin("Naquadah Fuel Refinery Casing", MIN_CASINGS, false)
             .addCasingInfoExactly("Field Restriction Coil", 72, true)
             .addCasingInfoExactly("Field Restriction Glass", 192, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
@@ -248,8 +250,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
         tier = -1;
         casingAmount = 0;
         checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors);
-        checkCasingMin(errors, casingAmount, 470);
-        checkHasMaintenanceHatch(errors);
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
         checkHasAnyEnergy(errors);
         checkHasInputHatch(errors);
         checkHasInputBus(errors);

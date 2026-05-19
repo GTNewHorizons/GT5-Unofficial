@@ -211,9 +211,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         if (requiresMuffler()) {
             checkHasMufflerHatch(errors);
-        }
-
-        if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
+        } else if (!mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
     }

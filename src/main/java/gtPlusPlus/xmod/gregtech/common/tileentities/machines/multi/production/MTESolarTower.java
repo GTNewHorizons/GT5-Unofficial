@@ -58,9 +58,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 9);
     private int mHeatLevel = 0;
     private int mCasing1;
-    private int mCasing2;
-    private int mCasing3;
-    private int mCasing4;
 
     public ArrayList<MTESolarHeater> mSolarHeaters = new ArrayList<>();
 
@@ -279,18 +276,15 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         }
                     };
                 }))
+                // mCasing1 is shared with the element `h`, this counting can be removed as well
+                // but I would need to count how many `t` occurs in the structure.
                 .addElement(
                     't',
                     lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
-                .addElement(
-                    'i',
-                    lazy(t -> onElementPass(x -> ++x.mCasing2, ofBlock(t.getCasingBlock(), t.getCasingMeta2()))))
-                .addElement(
-                    's',
-                    lazy(t -> onElementPass(x -> ++x.mCasing3, ofBlock(t.getCasingBlock(), t.getCasingMeta3()))))
-                .addElement(
-                    'c',
-                    lazy(t -> onElementPass(x -> ++x.mCasing4, ofBlock(t.getCasingBlock2(), t.getCasingMeta4()))))
+                // Elements that don't have a hatch adder must be casing, no need to count the casing.
+                .addElement('i', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta2())))
+                .addElement('s', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta3())))
+                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock2(), t.getCasingMeta4())))
                 .addElement(
                     'h',
                     lazy(
@@ -315,16 +309,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         this.mInputHatches.clear();
         this.mOutputHatches.clear();
         mCasing1 = 0;
-        mCasing2 = 0;
-        mCasing3 = 0;
-        mCasing4 = 0;
         if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
         if (!checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7, errors)) return;
         if (!checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22, errors)) return;
         checkCasingMin(errors, mCasing1, 229);
-        checkCasingMin(errors, mCasing2, 60);
-        checkCasingMin(errors, mCasing3, 66);
-        checkCasingMin(errors, mCasing4, 60);
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);

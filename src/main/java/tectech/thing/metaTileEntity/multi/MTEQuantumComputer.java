@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.Uncertainty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,7 +112,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 .atLeast(
                     Energy.or(HatchElement.EnergyMulti),
                     Maintenance,
-                    Uncertainty,
+                    HatchElement.Uncertainty,
                     HatchElement.InputData,
                     HatchElement.OutputData,
                     WirelessComputationHatchElement.INSTANCE)

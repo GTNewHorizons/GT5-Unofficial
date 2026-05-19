@@ -276,12 +276,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         checkHasOutputHatch(errors);
         hasMeOutputHatch = false;
-        if (errors.isEmpty()) {
-            for (MTEHatchOutput output : mOutputHatches) {
-                if (output instanceof MTEHatchOutputME) {
-                    hasMeOutputHatch = true;
-                    break;
-                }
+        if (!errors.isEmpty()) return;
+        for (MTEHatchOutput output : mOutputHatches) {
+            if (output instanceof MTEHatchOutputME) {
+                hasMeOutputHatch = true;
+                break;
             }
         }
     }

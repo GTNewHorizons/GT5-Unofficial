@@ -140,7 +140,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
             }
         }
-        checkCasingMin(errors, casingAmount, 50);
+        checkCasingMin(errors, casingAmount, 90);
     }
 
     @Override
