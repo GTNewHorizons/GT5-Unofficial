@@ -90,7 +90,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         TungstenTitaniumCarbide(2, 2.5F, 0.9F, VoltageIndex.LuV, false),
         MysteriousCrystal(3, 3.0F, 0.8F, VoltageIndex.UV, false),
         Neutronium(4, 3.5F, 0.7F, VoltageIndex.UEV, false),
-        Transcendent(6, 4.5F, 0.6F, Integer.MAX_VALUE, true);
+        TranscendentMetal(6, 4.5F, 0.6F, Integer.MAX_VALUE, true);
 
         final int parallelPerVoltageTier;
         final float speedBoost, euModifier;
@@ -340,7 +340,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         if (ItemList.T1Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TungstenTitaniumCarbide;
         if (ItemList.T2Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.MysteriousCrystal;
         if (ItemList.T3Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Neutronium;
-        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.Transcendent;
+        if (ItemList.T4Sawblade.isStackEqual(stack, false, true)) return SawbladeTiers.TranscendentMetal;
         return null;
     }
 
