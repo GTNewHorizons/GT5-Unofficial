@@ -391,17 +391,18 @@ public class FluidUtils {
 
     // Used in waila
     public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
-        FluidStack tFStack = (FluidRegistry.getFluidStack(aFluidName, amount));
+        FluidStack tFStack = FluidRegistry.getFluidStack(aFluidName, amount);
         if (tFStack != null) return tFStack;
-        tFStack = (FluidRegistry.getFluidStack(aFluidName.toLowerCase(), amount));
+        String tFNameLower = aFluidName.toLowerCase();
+        tFStack = FluidRegistry.getFluidStack(tFNameLower, amount);
         if (tFStack != null) return tFStack;
-        tFStack = (FluidRegistry.getFluidStack("molten" + "." + aFluidName.toLowerCase(), amount));
+        tFStack = FluidRegistry.getFluidStack("molten." + tFNameLower, amount);
         if (tFStack != null) return tFStack;
-        tFStack = (FluidRegistry.getFluidStack("fluid" + "." + aFluidName.toLowerCase(), amount));
+        tFStack = FluidRegistry.getFluidStack("fluid." + tFNameLower, amount);
         if (tFStack != null) return tFStack;
-        tFStack = (FluidRegistry.getFluidStack("liquid_" + aFluidName.toLowerCase(), amount));
+        tFStack = FluidRegistry.getFluidStack("liquid_" + tFNameLower, amount);
         if (tFStack != null) return tFStack;
-        tFStack = (FluidRegistry.getFluidStack("liquid" + "." + aFluidName.toLowerCase(), amount));
+        tFStack = FluidRegistry.getFluidStack("liquid." + tFNameLower, amount);
         return tFStack;
     }
 
