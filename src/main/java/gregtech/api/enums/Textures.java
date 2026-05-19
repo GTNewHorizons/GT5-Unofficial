@@ -2643,7 +2643,12 @@ public class Textures {
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix);
+            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        }
+
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2737,7 +2742,12 @@ public class Textures {
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(setName, prefix);
+            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        }
+
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
