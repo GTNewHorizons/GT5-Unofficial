@@ -53,7 +53,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -203,7 +202,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // beamline input hatch
+                .build()) // beamline input hatch
         .addElement(
             '1',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
@@ -212,7 +211,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .adder(
                     (collider, te, casingIndex) -> collider
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // EM beam output hatch
+                .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
@@ -221,7 +220,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .adder(
                     (collider, te, casingIndex) -> collider
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // Weak beam output hatch
+                .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
@@ -230,7 +229,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .adder(
                     (collider, te, casingIndex) -> collider
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // Strong beam output hatch
+                .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
@@ -239,7 +238,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 .adder(
                     (collider, te, casingIndex) -> collider
                         .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement())) // Grav beam output hatch
+                .build()) // Grav beam output hatch
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())
@@ -451,23 +450,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         if (energyCount != 1) {
             errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
         }
-        if (mInputBeamline.size() != 1) {
-            errors.add(
-                StructureErrors.hatchCount(
-                    ErrorType.NOT_MATCH,
-                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                    mInputBeamline.size(),
-                    1));
-        }
-        if (mAdvancedOutputBeamline.size() != 4) {
-            errors.add(
-                StructureErrors.hatchCount(
-                    ErrorType.NOT_MATCH,
-                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
-                    mAdvancedOutputBeamline.size(),
-                    4));
-        }
-
     }
 
     @Override

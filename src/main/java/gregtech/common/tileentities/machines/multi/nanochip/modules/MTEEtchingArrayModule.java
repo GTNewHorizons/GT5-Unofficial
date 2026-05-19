@@ -84,7 +84,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
                 .hatchClass(MTEHatchDynamoTunnel.class)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .hint(1)
-                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+                .build())
         .build();
 
     private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -95,7 +95,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
     			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
@@ -405,9 +405,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         mInputFocus.clear();
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
-        if (this.mInputBeamline.size() != 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_beamline_input"));
-        }
         checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         checkHatchExact(errors, InputBus, 1);

@@ -48,10 +48,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -131,14 +129,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
-                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
+                    .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)
-                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
+                    .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
             .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
@@ -381,24 +379,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         length += 9;
-
-        if (mInputBeamline.size() != 1) {
-            errors.add(
-                StructureErrors.hatchCount(
-                    ErrorType.NOT_MATCH,
-                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                    mInputBeamline.size(),
-                    1));
-        }
-
-        if (mOutputBeamline.size() != 1) {
-            errors.add(
-                StructureErrors.hatchCount(
-                    ErrorType.NOT_MATCH,
-                    TranslatableText.lang("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
-                    mOutputBeamline.size(),
-                    1));
-        }
 
         checkHatchMax(errors, Energy, 2);
         checkHasMaintenanceHatch(errors);

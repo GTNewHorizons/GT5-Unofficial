@@ -152,8 +152,6 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     private void findCoolantHatch(List<StructureError> errors) {
-        // NOTE: technically it means advanced stocking input hatch on auto-pull cannot be recognized but it's annoying
-        // to fix
         if (!mInputHatches.isEmpty()) {
             coolantInputHatch = mInputHatches.get(0);
             if (mInputHatches.size() > 1) {

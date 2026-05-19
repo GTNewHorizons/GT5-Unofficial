@@ -44,7 +44,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -90,7 +89,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
-                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
+                    .build())
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)
@@ -395,9 +394,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         checkOneMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHatchExact(errors, OutputBus, 1);
-        if (this.mOutputBeamline.size() != 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_beamline_output"));
-        }
         checkOneEnergyHatch(errors);
     }
 
