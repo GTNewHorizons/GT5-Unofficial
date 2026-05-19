@@ -167,4 +167,7 @@ public final class GTTextureIds {
     public static final String PICTURE_WATER_PURIFICATION_ONLINE = "gregtech:picture_water_purification_online";
     public static final String PICTURE_WATER_PURIFICATION_IDLE = "gregtech:picture_water_purification_idle";
     public static final String PICTURE_WATER_PURIFICATION_OFFLINE = "gregtech:picture_water_purification_offline";
+    public static final String PICTURE_STEAM_GAUGE = "gregtech:steam_dial";
+    public static final String PICTURE_STEAM_GAUGE_STEEL = "gregtech:steam_dial_steel";
+
 }

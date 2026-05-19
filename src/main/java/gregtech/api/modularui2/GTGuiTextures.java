@@ -1226,9 +1226,16 @@ public final class GTGuiTextures {
         .location(GTPlusPlus.ID, "gui/progressbar/fluid_reactor")
         .build();
 
-    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
-    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
-        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
+    public static final UITexture STEAM_GAUGE_BG = UITexture.builder()
+        .fullImage()
+        .location(GregTech.ID, "gui/background/steam_dial")
+        .name(GTTextureIds.PICTURE_STEAM_GAUGE)
+        .build();
+    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture.builder()
+        .fullImage()
+        .location(GregTech.ID, "gui/background/steam_dial_steel")
+        .name(GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
+        .build();
 
     public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
         .fullImage(MODID, "gui/tesla_tower_current");

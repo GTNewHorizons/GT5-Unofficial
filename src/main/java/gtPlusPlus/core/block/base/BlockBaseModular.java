@@ -20,7 +20,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
@@ -35,7 +34,7 @@ public class BlockBaseModular extends BasicBlock {
     protected String materialName;
 
     @SideOnly(Side.CLIENT)
-    private IIconContainer iconContainer;
+    private IIcon blockIcon;
 
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
@@ -173,13 +172,14 @@ public class BlockBaseModular extends BasicBlock {
         metType = (metType == null ? "METALLIC" : metType);
         int tier = this.material.vTier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-        iconContainer = Textures.BlockIcons.textureSet(metType, "/" + aType);
+        blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
+            .getIcon();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return iconContainer.getIcon();
+        return blockIcon;
     }
 
     @Override

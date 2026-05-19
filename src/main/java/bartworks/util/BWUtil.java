@@ -167,10 +167,13 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return itemStack != null && GTOreDictUnificator.getAssociation(itemStack) != null
-            && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
+        return checkStackAndPrefix(GTOreDictUnificator.getAssociation(itemStack));
+    }
+
+    public static boolean checkStackAndPrefix(ItemData association) {
+        return association != null && association.mPrefix != null
+            && association.mMaterial != null
+            && association.mMaterial.mMaterial != null;
     }
 
     @Deprecated
