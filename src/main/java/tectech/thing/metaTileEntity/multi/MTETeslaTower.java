@@ -17,7 +17,17 @@ import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.RandomAccess;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -1213,7 +1223,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         /**
          * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
-         * 
+         *
          * @param doub double inserted into the ring buffer, potentially overwriting the oldest value
          * @return always {@code true}
          */
@@ -1250,7 +1260,7 @@ public class MTETeslaTower extends TTMultiblockBase
          * Careful, this will resize the backing array, if you plan to call this operation in a loop,
          * use {@link #resize(int)} appropriately, in combination with {@link #toArray(Object[]) #toArray(double[])} and
          * {@link #set(int, Double)} or {@link #addAll(int, Collection)}!
-         * 
+         *
          * @param index index at which the specified element is to be inserted
          * @param doub  element to be inserted
          */
@@ -1308,7 +1318,7 @@ public class MTETeslaTower extends TTMultiblockBase
          * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
          * Will never remove anything.
          * If you really need to shrink the ring buffer, use {@link #resize(int)}
-         * 
+         *
          * @return always returns {@code false}
          */
         @Override
@@ -1320,7 +1330,7 @@ public class MTETeslaTower extends TTMultiblockBase
          * Unneeded (as data is constantly overwritten) & potentially breaking to throw UnsupportedOperation here
          * Will never remove anything.
          * If you really need to shrink the ring buffer, use {@link #resize(int)}
-         * 
+         *
          * @return always returns {@code  0.0d}
          */
         @Override
@@ -1338,7 +1348,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         /**
          * Has the side effect of always moving index forwards, until it wraps back to 0, once capacity is reached.
-         * 
+         *
          * @param c collection of doubles inserted one by one into the ring buffer, potentially overwriting the oldest
          *          values
          * @return always {@code true}
