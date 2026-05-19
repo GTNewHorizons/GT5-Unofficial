@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import java.util.EnumMap;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Mods;
@@ -54,23 +51,8 @@ public class RecipeLoaderTreeFarm {
 
     private static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
-        // Legacy farm populates NEI, new farm only has recipes added (Remove with 2.10)
         MTETreeFarmLegacy.registerTreeProducts(saplingIn, log, saplingOut, leaves, fruit);
-        registerTreeProductsForNewFarm(saplingIn, log, saplingOut, leaves, fruit);
-    }
-
-    private static void registerTreeProductsForNewFarm(ItemStack saplingIn, ItemStack log, ItemStack saplingOut,
-        ItemStack leaves, ItemStack fruit) {
-        if (saplingIn == null) {
-            return;
-        }
-        String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
-        EnumMap<MTETreeFarm.Mode, ItemStack> map = new EnumMap<>(MTETreeFarm.Mode.class);
-        if (log != null) map.put(MTETreeFarm.Mode.LOG, log);
-        if (saplingOut != null) map.put(MTETreeFarm.Mode.SAPLING, saplingOut);
-        if (leaves != null) map.put(MTETreeFarm.Mode.LEAVES, leaves);
-        if (fruit != null) map.put(MTETreeFarm.Mode.FRUIT, fruit);
-        MTETreeFarm.treeProductsMap.put(key, map);
+        MTETreeFarm.registerTreeProducts(saplingIn, log, saplingOut, leaves, fruit);
     }
 
     private static void generateVanillaTrees() {
