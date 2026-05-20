@@ -879,21 +879,21 @@ public class MTETeslaTower extends TTMultiblockBase
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
