@@ -231,6 +231,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
+import gregtech.common.tileentities.machines.multi.MTEThermalBoiler;
 import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
@@ -990,6 +991,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
+
+        ItemList.ThermalBoiler.set(
+            new MTEThermalBoiler(ThermalBoiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
 
         ItemList.FishingPort.set(
             new MTEIndustrialFishingPond(
