@@ -109,13 +109,30 @@ public final class CommonWidgets {
         return null;
     }
 
-    // TODO javadoc
+    /**
+     * Creates a styled parent widget intended to act as a monitor or display area,
+     * commonly used for rendering fluid tanks.
+     * <p>
+     * This widget comes pre-configured with a black screen background texture and
+     * standardized internal padding to ensure its contents are framed correctly.
+     *
+     * @param width  The width of the screen widget.
+     * @param height The height of the screen widget.
+     * @return A configured {@link ParentWidget}
+     */
     public static ParentWidget<?> createFluidScreen(int width, int height) {
         return new ParentWidget<>().size(width, height)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
     }
 
+    /**
+     * Creates a horizontal row widget containing a toggle button and a dynamic text label,
+     * typically used for toggling redstone behavior between "Normal" and "Inverted" modes.
+     *
+     * @param invertedSyncer The synced boolean value that handles the toggle state and updates the label.
+     * @return A configured {@link Flow} row containing the toggle button and its label.
+     */
     public static Flow createInvertButtonRow(BooleanSyncValue invertedSyncer) {
         return Flow.row()
             .child(
