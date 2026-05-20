@@ -33,9 +33,9 @@ public class HTGRItemRenderer implements IItemRenderer {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         IIcon icon = item.getIconIndex();
 
-        int color = material.mColor.rgba;
+        int color = material.mColor.rgb;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor3ub((byte) ((color >>> 24) & 0xff), (byte) ((color >>> 16) & 0xff), (byte) ((color >>> 8) & 0xff));
+        GL11.glColor3ub((byte) (color >>> 16), (byte) (color >>> 8), (byte) color);
         ItemRenderUtil.renderItem(type, icon);
         GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
     }

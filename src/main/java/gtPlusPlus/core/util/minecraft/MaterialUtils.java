@@ -16,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -62,21 +61,9 @@ public class MaterialUtils {
             final long neutrons = material.getNeutrons();
             final boolean blastFurnace = material.mBlastFurnaceRequired;
             int radioactivity = 0;
-            if (material.isRadioactive()) {
-                ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = GTUtility.getRadioactivityLevel(aDustStack);
-                if (radioactivity == 0) {
-                    long aProtons = material.getProtons();
-                    radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
-                }
-            }
-            TextureSet iconSet = null;
+            TextureSet iconSet;
             if (aCustomTextures == null) {
-                if (material.isRadioactive()) {
-                    iconSet = TextureSet.SET_NUCLEAR;
-                } else {
-                    iconSet = material.mIconSet;
-                }
+                iconSet = material.mIconSet;
             } else {
                 iconSet = aCustomTextures;
             }
