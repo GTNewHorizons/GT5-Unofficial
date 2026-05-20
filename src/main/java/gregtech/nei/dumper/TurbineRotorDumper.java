@@ -100,7 +100,7 @@ public class TurbineRotorDumper extends DataDumper {
             }
             TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
             w.printf(
-                "%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
+                "%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
                 prefix,
                 SIZE_NAMES[si],
                 DUR_MULTS[si],
