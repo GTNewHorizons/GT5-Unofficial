@@ -67,6 +67,8 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
 
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+            // Draw item
             ItemRenderUtil.renderItem(type, tIcon);
 
             GL11.glEnable(GL11.GL_BLEND);
