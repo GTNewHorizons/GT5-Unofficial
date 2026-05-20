@@ -402,7 +402,7 @@ public class MTEBoilerLava extends MTEBoiler {
             .setWorld(getBaseMetaTileEntity().getWorld())
             // Particles emitted with a 1 block/s velocity toward rear
             .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D)
-            .<ParticleEventBuilder>times(
+            .times(
                 8,
                 // Particles emitted from center of rear face (Steam Output)
                 x -> x.setPosition(aX + rearDirection.offsetX / 2D, aY, aZ + rearDirection.offsetZ / 2D)
