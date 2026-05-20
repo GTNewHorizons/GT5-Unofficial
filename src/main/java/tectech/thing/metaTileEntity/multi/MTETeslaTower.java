@@ -1119,10 +1119,10 @@ public class MTETeslaTower extends TTMultiblockBase
 
     private class TeslaRingBuffer implements List<Double>, RandomAccess {
 
-        int capacity;
-        int size;
-        int index;
-        double[] buffer;
+        private int capacity;
+        private int size;
+        private int index;
+        private double[] buffer;
 
         TeslaRingBuffer(int capacity) {
             this.capacity = capacity;
