@@ -41,6 +41,8 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
         return new MissingStructureWrapperCasings(compound.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND));
     }
 
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
 
@@ -60,6 +62,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                         stack.getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
+                    .color(TEXT_COLOR)
                     .asWidget());
         }
         return column;
