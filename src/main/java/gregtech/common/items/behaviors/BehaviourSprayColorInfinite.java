@@ -17,8 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
@@ -146,21 +144,19 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return Optional.of(aList);
     }
 
-    @Override
-    public @Nullable String getNameOverride(final String oldName, final ItemStack stack) {
+    public static String getNameWithColor(ItemStack stack) {
         final boolean isLocked = isLocked(stack);
         final char lBracket = isLocked ? '[' : '(';
         final char rBracket = isLocked ? ']' : ')';
+        final Dyes color = getDye(stack);
 
-        if (mCurrentColor == REMOVE_COLOR) {
-            return StatCollector
-                .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
+        if (color == Dyes.MACHINE_METAL) {
+            return GTUtility.translate("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
         } else {
-            return StatCollector.translateToLocalFormatted(
+            return GTUtility.translate(
                 "item.GT5U.infinite_spray_can.name.colored",
                 lBracket,
-                Dyes.get(mCurrentColor)
-                    .getLocalizedDyeName(),
+                color.getLocalizedDyeName(),
                 rBracket);
         }
     }
