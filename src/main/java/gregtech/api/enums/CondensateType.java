@@ -18,6 +18,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
 import gregtech.common.items.GTItemCell;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.recipe.TecTechRecipeMaps;
 
@@ -31,20 +32,97 @@ import tectech.recipe.TecTechRecipeMaps;
 /// just used to tell the player that the fluid exists. Prepared condensate is a real fluid that can be used in any way.
 public enum CondensateType {
 
-    // Both of these condensates are temporary
     // spotless:off
-    Quantium(
-        "quantium",
-        () -> Materials.Quantium,
+    ChromaticGlass(
+        "chromaticglass",
+        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
         144,
-        prepare -> prepare.fluidInputs(Materials.Quantium.getMolten(144)),
-        generate -> generate.duration(20).eut(TierEU.RECIPE_UHV)),
+        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144)),
+        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
+    CelestialTungsten(
+        "celestialtungsten",
+        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
+        144,
+        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144)),
+        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
         144,
         prepare -> prepare.fluidInputs(Materials.Infinity.getMolten(144)),
-        generate -> generate.duration(40).eut(TierEU.RECIPE_UEV)),
+        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
+    Hypogen(
+        "hypogen",
+        () -> MaterialsElements.STANDALONE.HYPOGEN,
+        144,
+        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144)),
+        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+    TranscendentMetal(
+        "transcendentmetal",
+        () -> Materials.TranscendentMetal,
+        144,
+        prepare -> prepare.fluidInputs(Materials.TranscendentMetal.getMolten(144)),
+        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+    DimensionallyShiftedSuperfluid(
+        "dimshiftedsuperfluid",
+        () -> Materials.DimensionallyShiftedSuperfluid,
+        144,
+        prepare -> prepare.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(144)),
+        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+    SpaceTime(
+        "spacetime",
+        () -> Materials.SpaceTime,
+        144,
+        prepare -> prepare.fluidInputs(Materials.SpaceTime.getMolten(144)),
+        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+    Time(
+        "time",
+        () -> Materials.Time,
+        144,
+        prepare -> prepare.fluidInputs(Materials.Time.getMolten(144)),
+        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+    Space(
+        "space",
+        () -> Materials.Space,
+        144,
+        prepare -> prepare.fluidInputs(Materials.Space.getMolten(144)),
+        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+    Hexanite(
+        "hexanite",
+        () -> Materials.Hexanite,
+        144,
+        prepare -> prepare.fluidInputs(Materials.Hexanite.getMolten(144)),
+        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+    BoundlessCosmicSolder(
+        "cosmicsolder",
+        () -> Materials.BoundlessCosmicSolder,
+        144,
+        prepare -> prepare.fluidInputs(Materials.BoundlessCosmicSolder.getFluid(144)),
+        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+    MHDCSM(
+        "mhdcsm",
+        () -> Materials.MHDCSM,
+        144,
+        prepare -> prepare.fluidInputs(Materials.MHDCSM.getMolten(144)),
+        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+    MagMatter(
+        "magmatter",
+        () -> Materials.MagMatter,
+        144,
+        prepare -> prepare.fluidInputs(Materials.MagMatter.getMolten(144)),
+        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+    Universium(
+        "universium",
+        () -> Materials.Universium,
+        144,
+        prepare -> prepare.fluidInputs(Materials.Universium.getMolten(144)),
+        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+    Eternity(
+        "eternity",
+        () -> Materials.Eternity,
+        144,
+        prepare -> prepare.fluidInputs(Materials.Eternity.getMolten(144)),
+        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
     // spotless:on
     ;
 
