@@ -1184,23 +1184,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         @Override
         public @NotNull Iterator<Double> iterator() {
-            return new Iterator<>() {
-
-                final int idx = index;
-                int i = 0;
-
-                @Override
-                public boolean hasNext() {
-                    // "invalidates" iterator, once the buffers index is moved, or end is reached for avoiding endless
-                    // iteration
-                    return idx == index && i == 0 || (idx + i) % capacity != idx;
-                }
-
-                @Override
-                public Double next() {
-                    return buffer[(idx + ++i) % capacity];
-                }
-            };
+            return new BufferIterator(this);
         }
 
         @Override
@@ -1302,12 +1286,12 @@ public class MTETeslaTower extends TTMultiblockBase
 
         @Override
         public @NotNull ListIterator<Double> listIterator() {
-            throw new UnsupportedOperationException();
+            return new BufferIterator(this);
         }
 
         @Override
         public @NotNull ListIterator<Double> listIterator(int index) {
-            throw new UnsupportedOperationException();
+            return new BufferIterator(this);
         }
 
         @Override
@@ -1404,6 +1388,65 @@ public class MTETeslaTower extends TTMultiblockBase
         public Double get(int index) {
             if (index < 0 || index >= capacity) throw new IndexOutOfBoundsException();
             return buffer[(index + this.index) % capacity];
+        }
+
+        private class BufferIterator implements ListIterator<Double> {
+
+            private final TeslaRingBuffer ringRef;
+            private final int idx;
+            private int i = 0;
+
+            private BufferIterator(TeslaRingBuffer ringRef) {
+                this.ringRef = ringRef;
+                this.idx = ringRef.index;
+            }
+
+            @Override
+            public boolean hasNext() {
+                // "invalidates" iterator, once the buffers index is moved, or end is reached for avoiding endless
+                // iteration, as the ring buffers index could be modified, if we try to read from a different thread
+                return idx == ringRef.index && (i == 0 || (idx + i) % capacity != idx);
+            }
+
+            @Override
+            public Double next() {
+                return buffer[(idx + i++) % capacity];
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return idx == ringRef.index && (i == capacity || (capacity + idx + i - 1) % capacity != idx);
+            }
+
+            @Override
+            public Double previous() {
+                return buffer[(capacity + idx + --i) % capacity];
+            }
+
+            @Override
+            public int nextIndex() {
+                return index + i + 1;
+            }
+
+            @Override
+            public int previousIndex() {
+                return index + i - 1;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void set(Double aDouble) {
+                buffer[(idx + i) % capacity] = aDouble;
+            }
+
+            @Override
+            public void add(Double aDouble) {
+                throw new UnsupportedOperationException();
+            }
         }
     }
 }
