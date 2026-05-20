@@ -80,7 +80,7 @@ public class BlockCompressedObsidian extends BlockObsidian {
     }
 
     @Override
-    public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0; i < 14; i++) {
             list.add(new ItemStack(item, 1, i));
         }
