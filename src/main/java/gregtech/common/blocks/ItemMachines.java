@@ -194,7 +194,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (GTLanguageManager.canTranslatedGT(key)) {
+        if (GTLanguageManager.hasGTLocalizationKey(key)) {
             GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
             return;
         }

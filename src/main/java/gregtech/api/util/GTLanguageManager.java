@@ -461,7 +461,7 @@ public class GTLanguageManager {
         }
     }
 
-    public static boolean canTranslatedGT(final String key) {
+    public static boolean hasGTLocalizationKey(final String key) {
         return LANGMAP.containsKey(key);
     }
 }
