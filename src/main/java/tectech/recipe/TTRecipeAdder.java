@@ -239,6 +239,7 @@ public class TTRecipeAdder extends RecipeAdder {
             assEUt,
             0,
             tAlts,
+            null,
             false);
         return true;
     }
