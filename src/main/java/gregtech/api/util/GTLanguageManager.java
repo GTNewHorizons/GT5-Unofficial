@@ -460,4 +460,8 @@ public class GTLanguageManager {
             LANGMAP.put(key, english);
         }
     }
+
+    public static boolean canTranslatedGT(final String key) {
+        return LANGMAP.containsKey(key);
+    }
 }
