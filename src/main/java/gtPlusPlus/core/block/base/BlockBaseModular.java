@@ -21,7 +21,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
@@ -187,9 +186,12 @@ public class BlockBaseModular extends BasicBlock {
 
         if (isCustomBlockOnly(this.material)) {
             metType = "CUSTOM/" + this.material.getUnlocalizedName();
+        }
+
+        String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
 
         if (isCustomBlockOnly(this.material) && iIcon instanceof TextureMap) {
-            ((TextureMap) iIcon).setTextureEntry(GregTech.ID + ":materialicons/" + metType + "/" + aType, new TextureBlockMaterial(iconName, this.material));
+            ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
         }
 
         this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
