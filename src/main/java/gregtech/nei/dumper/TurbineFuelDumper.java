@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -15,6 +16,43 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class TurbineFuelDumper extends DataDumper {
+
+    /** A single fuel row: name, EU/L value, and optional xlgt flag (null = not applicable). */
+    private static final class FuelEntry {
+
+        final String name;
+        final double euL;
+        final Boolean xlgt;
+
+        FuelEntry(String name, double euL, Boolean xlgt) {
+            this.name = name;
+            this.euL = euL;
+            this.xlgt = xlgt;
+        }
+    }
+
+    /** A named group of fuel entries (corresponds to one turbine type). */
+    private static final class FuelGroup {
+
+        final String label;
+        final List<FuelEntry> entries;
+
+        FuelGroup(String label, List<FuelEntry> entries) {
+            this.label = label;
+            this.entries = entries;
+        }
+    }
+
+    // Steam EU/L values are game-engine constants, not stored in RecipeMaps.
+    // Factor 0.5 comes from MTELargeTurbineSteam.fluidIntoPower() (* 0.5f).
+    // Dense variants are 1000x more energy-dense.
+    private static final List<FuelEntry> STEAM_ENTRIES = Arrays.asList(
+        new FuelEntry("Steam", 0.5, null),
+        new FuelEntry("SH Steam", 1.0, null),
+        new FuelEntry("SC Steam", 1.0, null),
+        new FuelEntry("Dense Steam", 500.0, null),
+        new FuelEntry("Dense SH Steam", 1000.0, null),
+        new FuelEntry("Dense SC Steam", 1000.0, null));
 
     public TurbineFuelDumper() {
         super("tools.dump.gt5u.fuels");
@@ -52,117 +90,84 @@ public class TurbineFuelDumper extends DataDumper {
 
     @Override
     public void dumpTo(File file) throws IOException {
-        if (getMode() == 0) dumpCsv(file);
-        else dumpJson(file);
+        List<FuelGroup> groups = buildGroups();
+        if (getMode() == 0) dumpCsv(file, groups);
+        else dumpJson(file, groups);
     }
 
-    private void dumpCsv(File file) throws IOException {
+    /**
+     * Builds the list of fuel groups from RecipeMaps and hardcoded steam constants.
+     * To add a new turbine fuel type, add a new entry here.
+     */
+    private static List<FuelGroup> buildGroups() {
+        List<FuelGroup> groups = new ArrayList<>();
+        groups.add(buildRecipeGroup("gas", RecipeMaps.gasTurbineFuels.getAllRecipes(), true));
+        groups.add(buildRecipeGroup("plasma", RecipeMaps.plasmaFuels.getAllRecipes(), false));
+        groups.add(new FuelGroup("steam", STEAM_ENTRIES));
+        return groups;
+    }
+
+    private static FuelGroup buildRecipeGroup(String label, Iterable<GTRecipe> recipes, boolean hasXlgt) {
+        List<FuelEntry> entries = new ArrayList<>();
+        for (GTRecipe recipe : recipes) {
+            FluidStack fluid = getFirstFluid(recipe);
+            if (fluid == null) continue;
+            String name = fluid.getFluid()
+                .getLocalizedName(fluid);
+            double euL = recipe.mSpecialValue * 1000.0;
+            Boolean xlgt = hasXlgt ? !isBenzene(fluid) : null;
+            entries.add(new FuelEntry(name, euL, xlgt));
+        }
+        return new FuelGroup(label, entries);
+    }
+
+    private static void dumpCsv(File file, List<FuelGroup> groups) throws IOException {
         try (PrintWriter w = new PrintWriter(file)) {
             w.println("type,name,eu_l,xlgt");
-            writeGasFuelsCsv(w);
-            writePlasmaFuelsCsv(w);
-            writeSteamFuelsCsv(w);
+            for (FuelGroup group : groups) {
+                for (FuelEntry entry : group.entries) {
+                    String xlgt = entry.xlgt != null ? String.valueOf(entry.xlgt) : "";
+                    w.printf(
+                        "%s,%s,%s,%s%n",
+                        group.label,
+                        DumperUtils.csvField(entry.name),
+                        DumperUtils.formatDouble(entry.euL),
+                        xlgt);
+                }
+            }
         }
     }
 
-    private void dumpJson(File file) throws IOException {
+    private static void dumpJson(File file, List<FuelGroup> groups) throws IOException {
         try (PrintWriter w = new PrintWriter(file)) {
             w.println("{");
-            w.println("  \"gas\": [");
-            writeGasFuels(w);
-            w.println("  ],");
-            w.println("  \"plasma\": [");
-            writePlasmaFuels(w);
-            w.println("  ],");
-            w.println("  \"steam\": [");
-            writeSteamFuels(w);
-            w.println("  ]");
+            List<String> lines = new ArrayList<>();
+            for (int gi = 0; gi < groups.size(); gi++) {
+                FuelGroup group = groups.get(gi);
+                boolean lastGroup = gi == groups.size() - 1;
+                w.printf("  %s: [%n", DumperUtils.jsonString(group.label));
+                lines.clear();
+                for (FuelEntry entry : group.entries) {
+                    if (entry.xlgt != null) {
+                        lines.add(
+                            String.format(
+                                "    {\"name\": %s, \"eu_l\": %s, \"xlgt\": %b}",
+                                DumperUtils.jsonString(entry.name),
+                                DumperUtils.formatDouble(entry.euL),
+                                entry.xlgt));
+                    } else {
+                        lines.add(
+                            String.format(
+                                "    {\"name\": %s, \"eu_l\": %s}",
+                                DumperUtils.jsonString(entry.name),
+                                DumperUtils.formatDouble(entry.euL)));
+                    }
+                }
+                DumperUtils.printLines(w, lines);
+                w.println(lastGroup ? "  ]" : "  ],");
+            }
             w.println("}");
         }
-    }
-
-    private void writeGasFuelsCsv(PrintWriter w) {
-        for (GTRecipe recipe : RecipeMaps.gasTurbineFuels.getAllRecipes()) {
-            FluidStack fluid = getFirstFluid(recipe);
-            if (fluid == null) continue;
-            String name = fluid.getFluid()
-                .getLocalizedName(fluid);
-            double euL = recipe.mSpecialValue * 1000.0;
-            boolean xlgt = !isBenzene(fluid);
-            w.printf("gas,%s,%s,%b%n", DumperUtils.csvField(name), DumperUtils.formatDouble(euL), xlgt);
-        }
-    }
-
-    private void writePlasmaFuelsCsv(PrintWriter w) {
-        for (GTRecipe recipe : RecipeMaps.plasmaFuels.getAllRecipes()) {
-            FluidStack fluid = getFirstFluid(recipe);
-            if (fluid == null) continue;
-            String name = fluid.getFluid()
-                .getLocalizedName(fluid);
-            double euL = recipe.mSpecialValue * 1000.0;
-            w.printf("plasma,%s,%s,%n", DumperUtils.csvField(name), DumperUtils.formatDouble(euL));
-        }
-    }
-
-    private void writeSteamFuelsCsv(PrintWriter w) {
-        double[] euValues = { 0.5, 1.0, 1.0, 500.0, 1000.0, 1000.0 };
-        String[] names = { "Steam", "SH Steam", "SC Steam", "Dense Steam", "Dense SH Steam", "Dense SC Steam" };
-        for (int i = 0; i < names.length; i++) {
-            w.printf("steam,%s,%s,%n", DumperUtils.csvField(names[i]), DumperUtils.formatDouble(euValues[i]));
-        }
-    }
-
-    private void writeGasFuels(PrintWriter w) {
-        List<String> lines = new ArrayList<>();
-        for (GTRecipe recipe : RecipeMaps.gasTurbineFuels.getAllRecipes()) {
-            FluidStack fluid = getFirstFluid(recipe);
-            if (fluid == null) continue;
-            String name = fluid.getFluid()
-                .getLocalizedName(fluid);
-            double euL = recipe.mSpecialValue * 1000.0;
-            boolean xlgt = !isBenzene(fluid);
-            lines.add(
-                String.format(
-                    "    {\"name\": %s, \"eu_l\": %s, \"xlgt\": %b}",
-                    DumperUtils.jsonString(name),
-                    DumperUtils.formatDouble(euL),
-                    xlgt));
-        }
-        DumperUtils.printLines(w, lines);
-    }
-
-    private void writePlasmaFuels(PrintWriter w) {
-        List<String> lines = new ArrayList<>();
-        for (GTRecipe recipe : RecipeMaps.plasmaFuels.getAllRecipes()) {
-            FluidStack fluid = getFirstFluid(recipe);
-            if (fluid == null) continue;
-            String name = fluid.getFluid()
-                .getLocalizedName(fluid);
-            double euL = recipe.mSpecialValue * 1000.0;
-            lines.add(
-                String.format(
-                    "    {\"name\": %s, \"eu_l\": %s}",
-                    DumperUtils.jsonString(name),
-                    DumperUtils.formatDouble(euL)));
-        }
-        DumperUtils.printLines(w, lines);
-    }
-
-    private void writeSteamFuels(PrintWriter w) {
-        // Steam EU/L values are game-engine constants, not stored in RecipeMaps.
-        // Factor 0.5 comes from MTELargeTurbineSteam.fluidIntoPower() (* 0.5f).
-        // Dense variants are 1000x more energy-dense.
-        double[] euValues = { 0.5, 1.0, 1.0, 500.0, 1000.0, 1000.0 };
-        String[] names = { "Steam", "SH Steam", "SC Steam", "Dense Steam", "Dense SH Steam", "Dense SC Steam" };
-        List<String> lines = new ArrayList<>();
-        for (int i = 0; i < names.length; i++) {
-            lines.add(
-                String.format(
-                    "    {\"name\": %s, \"eu_l\": %s}",
-                    DumperUtils.jsonString(names[i]),
-                    DumperUtils.formatDouble(euValues[i])));
-        }
-        DumperUtils.printLines(w, lines);
     }
 
     private static FluidStack getFirstFluid(GTRecipe recipe) {
@@ -181,5 +186,4 @@ public class TurbineFuelDumper extends DataDumper {
     private static boolean isBenzene(FluidStack fluid) {
         return Materials.Benzene.mFluid != null && fluid.getFluid() == Materials.Benzene.mFluid;
     }
-
 }
