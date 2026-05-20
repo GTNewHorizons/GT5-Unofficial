@@ -309,11 +309,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .getSyncHandlerFromMapKey("shutdownDuration:0");
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds(shutdownDurationSyncer.getValue());
-            return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.shutdown_duration",
-                time.toHours(),
-                time.toMinutes() % 60,
-                time.getSeconds() % 60);
+            String formatted = String
+                .format("%02d:%02d:%02d", time.toHours(), time.toMinutes() % 60, time.getSeconds() % 60);
+            return StatCollector.translateToLocalFormatted("GT5U.gui.text.shutdown_duration", formatted);
         })
             .asWidget()
             .fullWidth()

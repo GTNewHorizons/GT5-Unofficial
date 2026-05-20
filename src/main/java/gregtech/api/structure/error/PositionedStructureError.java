@@ -41,6 +41,8 @@ public record PositionedStructureError(int x, int y, int z) implements Structure
             .child(gui.createHighlightButton(x, y, z))
             .child(
                 IKey.lang("GT5U.gui.wrong_block", x, y, z)
+                    .color(0xFFE0E0E0)
+                    .alignment(Alignment.CenterLeft)
                     .asWidget()
                     .expanded());
     }

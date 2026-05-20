@@ -10,6 +10,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
 import gregtech.api.structure.error.PositionedStructureError;
+import gregtech.api.structure.error.PositionedStructureErrorWithExpected;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 
@@ -32,7 +33,14 @@ public class StructureChecker<T> implements IStructureWalker<T> {
 
         if (!result) {
             this.success = false;
-            if (errors != null) errors.add(new PositionedStructureError(x, y, z));
+            if (errors != null) {
+                List<String> description = element.getDescription();
+                if (description != null && !description.isEmpty()) {
+                    errors.add(new PositionedStructureErrorWithExpected(x, y, z, description));
+                } else {
+                    errors.add(new PositionedStructureError(x, y, z));
+                }
+            }
         }
 
         return result;
