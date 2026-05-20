@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -76,6 +75,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
