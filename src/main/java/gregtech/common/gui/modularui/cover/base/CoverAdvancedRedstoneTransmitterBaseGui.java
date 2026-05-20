@@ -17,7 +17,7 @@ import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedRedstoneTransmitterBase>
     extends CoverAdvancedWirelessRedstoneBaseGui<T> {
 
-    public CoverAdvancedRedstoneTransmitterBaseGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverAdvancedRedstoneTransmitterBaseGui(T cover) {
         super(cover, false);
     }
 

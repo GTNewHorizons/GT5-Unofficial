@@ -86,15 +86,13 @@ public class ThreadAspectScanner extends Thread {
                 Item item = (Item) Item.itemRegistry.getObject(s);
                 if (item != null) {
                     if (item.getHasSubtypes()) {
-                        List q1 = new ArrayList();
+                        List<ItemStack> q1 = new ArrayList<>();
                         item.getSubItems(item, item.getCreativeTab(), q1);
-                        if (q1 != null && !q1.isEmpty()) {
+                        if (!q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
                                 ItemStack check = new ItemStack(item, 1, e);
-                                if (check != null) {
-                                    tryCacheObject(check);
-                                    mItemsCounter++;
-                                }
+                                tryCacheObject(check);
+                                mItemsCounter++;
                             }
                         } else {
                             tryCacheObject(new ItemStack(item));

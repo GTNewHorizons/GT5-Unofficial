@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -34,10 +35,11 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
     private GTTextureSetItemIconContainer(@NotNull Pair<String, String> pair) {
-        this(pair.getLeft(), pair.getRight());
+        this(pair.getLeft(), pair.getRight(), null);
     }
 
-    private GTTextureSetItemIconContainer(@NotNull String setName, @NotNull String prefix) {
+    private GTTextureSetItemIconContainer(@NotNull String setName, @NotNull String prefix,
+        @Nullable IIconRegister override) {
         this.iconName = createIconName(setName, prefix);
         this.fallbackIconName = createIconName(TextureSetFallback, prefix);
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconName);
@@ -48,7 +50,11 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
         iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconOverlayName);
         iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconOverlayName);
 
-        GregTechAPI.sGTItemIconload.add(this);
+        if (override != null) {
+            run(override);
+        } else {
+            GregTechAPI.sGTItemIconload.add(this);
+        }
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
     }
 
@@ -60,7 +66,11 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix) {
+    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix,
+        IIconRegister override) {
+        if (override != null) {
+            return new GTTextureSetItemIconContainer(setName, prefix, override);
+        }
         return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetItemIconContainer::new);
     }
 
@@ -85,18 +95,22 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
 
     @Override
     public void run() {
+        run(GregTechAPI.sItemIcons);
+    }
+
+    private void run(IIconRegister register) {
         Pair<IIcon, TextureSetIconType> iconPair = registerResourceOrFallback(
             iconResource,
             iconName,
             iconFallbackResource,
             fallbackIconName,
-            GregTechAPI.sItemIcons);
+            register);
         Pair<IIcon, TextureSetIconType> overlayPair = registerResourceOrFallback(
             iconOverlayResource,
             iconOverlayName,
             iconOverlayFallbackResource,
             fallbackIconOverlayName,
-            GregTechAPI.sItemIcons);
+            register);
 
         mIcon = iconPair.getLeft();
         mOverlay = overlayPair.getLeft();
