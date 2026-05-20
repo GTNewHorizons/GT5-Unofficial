@@ -150,7 +150,7 @@ public class FluidUtils {
                 .size() > 1)
             || aMaterial.getDefaultLocalName()
                 .toLowerCase()
-                .contains("wrought")) {
+                .contains("cast")) {
             return null;
         }
         if (aMaterial.vComponentCount != 1) {
@@ -391,41 +391,29 @@ public class FluidUtils {
 
     // Used in waila
     public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
-        FluidStack aFStack1 = (FluidRegistry.getFluidStack(aFluidName, amount));
-        FluidStack aFStack2 = (FluidRegistry.getFluidStack(aFluidName.toLowerCase(), amount));
-        FluidStack aFStack3 = (FluidRegistry.getFluidStack("molten" + "." + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack4 = (FluidRegistry.getFluidStack("fluid" + "." + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack5 = (FluidRegistry.getFluidStack("liquid_" + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack6 = (FluidRegistry.getFluidStack("liquid" + "." + aFluidName.toLowerCase(), amount));
-        if (aFStack1 != null) {
-            return aFStack1;
-        }
-        if (aFStack2 != null) {
-            return aFStack2;
-        }
-        if (aFStack3 != null) {
-            return aFStack3;
-        }
-        if (aFStack4 != null) {
-            return aFStack4;
-        }
-        if (aFStack5 != null) {
-            return aFStack5;
-        }
-        return aFStack6;
+        FluidStack tFStack = FluidRegistry.getFluidStack(aFluidName, amount);
+        if (tFStack != null) return tFStack;
+        String tFNameLower = aFluidName.toLowerCase();
+        tFStack = FluidRegistry.getFluidStack(tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("molten." + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("fluid." + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("liquid_" + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("liquid." + tFNameLower, amount);
+        return tFStack;
     }
 
     public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
-        FluidStack aFStack1 = aMaterial.getFluid(amount);
-        FluidStack aFStack2 = aMaterial.getGas(amount);
-        FluidStack aFStack3 = aMaterial.getMolten(amount);
-        FluidStack aFStack4 = aMaterial.getSolid(amount);
-        if (aFStack1 != null) {
-            return aFStack1;
-        } else if (aFStack2 != null) {
-            return aFStack2;
-        } else if (aFStack3 != null) {
-            return aFStack3;
-        } else return aFStack4;
+        FluidStack tFStack = aMaterial.getFluid(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getGas(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getMolten(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getSolid(amount);
+        return tFStack;
     }
 }

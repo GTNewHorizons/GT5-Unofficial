@@ -17,9 +17,7 @@ import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -183,7 +181,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected long eMaxAmpereFlow = 0, eMaxAmpereGen = 0;
 
     // What is the max and minimal tier of eu hatches installed
-    private long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
+    protected long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
@@ -198,8 +196,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         numberFormat.setMaximumFractionDigits(8);
     }
 
-    // Parameters for IParametrized multiblocks
-    public Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
     // endregion
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
@@ -659,7 +655,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setTag("eParamsOutS", paramOs);
 
         if (this instanceof IParametrized parametrized) {
-            parametrized.saveParameters(aNBT);
+            NBTTagCompound parameterTag = new NBTTagCompound();
+
+            for (Parameter<?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
+
+            aNBT.setTag("parameters", parameterTag);
         }
     }
 
@@ -739,8 +739,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
 
+        // this needs to be last because legacy loading will return from this function
         if (this instanceof IParametrized parametrized) {
-            parametrized.loadParameters(aNBT);
+            if (!aNBT.hasKey("parameters")) {
+                parametrized.loadLegacyParameters(aNBT);
+                return;
+            }
+
+            NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
+
+            for (Parameter<?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
         }
     }
 
@@ -985,37 +993,43 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                                    hatchesStatusUpdate_EM();
+                                // progress increase and done
+                                if (mMaxProgresstime > 0) {
+                                    incrementProgressTime();
 
-                                    outputAfterRecipe_EM();
+                                    if (getProgresstime() >= mMaxProgresstime) {
+                                        hatchesStatusUpdate_EM();
 
-                                    addClassicOutputs_EM();
+                                        outputAfterRecipe_EM();
 
-                                    updateSlots();
-                                    mProgresstime = 0;
-                                    mMaxProgresstime = 0;
-                                    mEfficiencyIncrease = 0;
-                                    mLastWorkingTick = mTotalRunTime;
-                                    if (processingLogic != null) {
-                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
-                                    } else {
-                                        recipesDone += 1;
-                                    }
-                                    if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                        if (checkRecipe()) {
-                                            mEfficiency = Math.max(
-                                                0,
-                                                min(
-                                                    mEfficiency + mEfficiencyIncrease,
-                                                    getMaxEfficiency(mInventory[1])
-                                                        - (getIdealStatus() - getRepairStatus()) * 1000));
-                                        } else {
-                                            afterRecipeCheckFailed();
-                                        }
+                                        addClassicOutputs_EM();
+
                                         updateSlots();
-                                    } else {
-                                        notAllowedToWork_stopMachine_EM();
+                                        mProgresstime = 0;
+                                        mMaxProgresstime = 0;
+                                        mEfficiencyIncrease = 0;
+                                        mLastWorkingTick = mTotalRunTime;
+                                        if (processingLogic != null) {
+                                            recipesDone += Math
+                                                .max(processingLogic.getCurrentParallels(), lastParallel);
+                                        } else {
+                                            recipesDone += 1;
+                                        }
+                                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                                            if (checkRecipe()) {
+                                                mEfficiency = Math.max(
+                                                    0,
+                                                    min(
+                                                        mEfficiency + mEfficiencyIncrease,
+                                                        getMaxEfficiency(mInventory[1])
+                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                            } else {
+                                                afterRecipeCheckFailed();
+                                            }
+                                            updateSlots();
+                                        } else {
+                                            notAllowedToWork_stopMachine_EM();
+                                        }
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick
@@ -1069,15 +1083,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mOutputItems = null;
 
         if (mOutputFluids != null) {
-            if (mOutputFluids.length == 1) {
-                for (FluidStack tStack : mOutputFluids) {
-                    if (tStack != null) {
-                        addOutput(tStack);
-                    }
-                }
-            } else if (mOutputFluids.length > 1) {
-                addFluidOutputs(mOutputFluids);
-            }
+            addFluidOutputs(mOutputFluids);
         }
         mOutputFluids = null;
     }
@@ -1261,30 +1267,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 break;
             }
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-    }
-
-    protected final void powerInput_EM() {
-        long euVar;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput();
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput() * tHatch.getAmperes();
             if (tHatch.getBaseMetaTileEntity()
                 .decreaseStoredEnergyUnits(euVar, false)) {
                 setEUVar(getEUVar() + euVar);
@@ -1545,7 +1527,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> list = new ArrayList<>();
+        List<MTEHatch> list = new ArrayList<>(mEnergyHatches.size() + eEnergyMulti.size());
         list.addAll(filterValidMTEs(mEnergyHatches));
         list.addAll(filterValidMTEs(eEnergyMulti));
         return list;
@@ -1610,8 +1592,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchOutputBus) {
             return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
         }
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
+        }
         if (aMetaTileEntity instanceof MTEHatchEnergy) {
             return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
+            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamo) {
             return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
@@ -1627,12 +1615,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty) {
             return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput) {
             return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
@@ -1747,15 +1729,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mEnergyHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eEnergyMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -1770,15 +1752,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDynamoHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eDynamoMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
         return false;
     }
@@ -1792,25 +1774,25 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mEnergyHatches.add(hatch);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eEnergyMulti.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDynamoHatches.add(hatch);
+            return mEnergyHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eDynamoMulti.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
         return false;
     }
@@ -2059,21 +2041,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
-    protected <T> T getParamValue(String key, Class<T> tClass) {
-        if (!parameterMap.containsKey(key)) {
-            throw new IllegalArgumentException("Tried to access nonexistent parameter " + key);
-        }
-
-        Object value = parameterMap.get(key)
-            .getValue();
-        if (value.getClass()
-            .equals(tClass)) {
-            return tClass.cast(value);
-        }
-
-        throw new IllegalArgumentException(
-            String.format("Tried to cast parameter %s to %s when its type is %s", key, tClass, value.getClass()));
-    }
     // region ModularUI
 
     @Override
@@ -2115,7 +2082,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new TTMultiblockBaseGui(this);
+        return new TTMultiblockBaseGui<>(this);
     }
 
     @Override

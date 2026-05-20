@@ -38,7 +38,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.microwaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -139,6 +138,7 @@ import gregtech.common.tileentities.machines.multi.MTEAdvImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
+import gregtech.common.tileentities.machines.multi.MTEAlgaePond;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
@@ -146,6 +146,7 @@ import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
@@ -171,6 +172,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticS
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialForgeHammer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFormingPress;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
@@ -178,6 +180,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMolecularTransformer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialRockBreaker;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialSifter;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
@@ -194,11 +197,12 @@ import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteamLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasmaLegacy;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
@@ -214,6 +218,7 @@ import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill3;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill4;
 import gregtech.common.tileentities.machines.multi.MTEOilDrillInfinite;
+import gregtech.common.tileentities.machines.multi.MTEOilDrillInfiniteLegacy;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
@@ -225,6 +230,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
+import gregtech.common.tileentities.machines.multi.MTEThermalBoiler;
 import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
@@ -278,6 +284,16 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineGas;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineHPSteam;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbinePlasma;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineSCSteam;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineGas;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineHPSteam;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbinePlasma;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineSCSteam;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineSteam;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
@@ -299,6 +315,7 @@ import gregtech.common.tileentities.storage.MTEQuantumTank;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
+import kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace;
 
 // TODO Some GT MetaTileEntity registrations are done in load/GT_Loader_MetaTileEntities_Recipes.java due to joint
 // registration+recipe methods, they should be split and brought here to register all in preload.
@@ -458,15 +475,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Integrated Ore Factory").getStackForm(1L));
 
         ItemList.LargeSteamTurbine.set(
-            new MTELargeTurbineSteam(
+            new MTELargeTurbineSteamLegacy(
                 LARGE_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largeturbine",
                 "Large Steam Turbine").getStackForm(1L));
         ItemList.LargeGasTurbine.set(
-            new MTELargeTurbineGas(LARGE_GAS_TURBINE_CONTROLLER.ID, "multimachine.largegasturbine", "Large Gas Turbine")
-                .getStackForm(1L));
+            new MTELargeTurbineGasLegacy(
+                LARGE_GAS_TURBINE_CONTROLLER.ID,
+                "multimachine.largegasturbine",
+                "Large Gas Turbine").getStackForm(1L));
         ItemList.LargeHPSteamTurbine.set(
-            new MTELargeTurbineHPSteam(
+            new MTELargeTurbineHPSteamLegacy(
                 LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largehpturbine",
                 "Large HP Steam Turbine").getStackForm(1L));
@@ -477,7 +496,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Transcendent Plasma Mixer").getStackForm(1));
 
         ItemList.LargePlasmaTurbine.set(
-            new MTELargeTurbinePlasma(
+            new MTELargeTurbinePlasmaLegacy(
                 LARGE_PLASMA_TURBINE_CONTROLLER.ID,
                 "multimachine.largeplasmaturbine",
                 "Large Plasma Turbine").getStackForm(1L));
@@ -506,7 +525,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
                 .getStackForm(1));
         ItemList.OilDrillInfinite.set(
-            new MTEOilDrillInfinite(
+            new MTEOilDrillInfiniteLegacy(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
                 "multimachine.oildrillinfinite",
                 "Infinite Fluid Drilling Rig").getStackForm(1));
@@ -823,6 +842,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Large Thermal Refinery").getStackForm(1));
 
+        ItemList.IndustrialForgeHammer.set(
+            new MTEIndustrialForgeHammer(
+                IndustrialForgeHammer.ID,
+                "industrialhammer.controller.tier.single",
+                "Industrial Sledgehammer").getStackForm(1L));
+
+        ItemList.LargeSifter.set(
+            new MTEIndustrialSifter(
+                LargeSifter.ID,
+                "industrialsifter.controller.tier.single",
+                "Large Sifter Control Block").getStackForm(1L));
+
+        ItemList.CryogenicFreezer.set(
+            new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
+                .getStackForm(1L));
+
         ItemList.NaquadahFuelRefinery
             .set(new MTENaquadahFuelRefinery(NaquadahFuelRefinery.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1));
 
@@ -860,6 +895,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialelectrolyzer.controller.tier.single",
                 "Industrial Electrolyzer").getStackForm(1L));
 
+        ItemList.AlgaeFarm
+            .set(new MTEAlgaePond(AlgaeFarm.ID, "algaefarm.controller.tier.single", "Algae Farm").getStackForm(1L));
+
         ItemList.BronzeBoilerLarge.set(
             new MTELargeBoilerBronze(BronzeBoilerLarge.ID, "multimachine.boiler.bronze", "Large Bronze Boiler")
                 .getStackForm(1L));
@@ -877,6 +915,28 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 TungstensteelBoilerLarge.ID,
                 "multimachine.boiler.tungstensteel",
                 "Large Tungstensteel Boiler").getStackForm(1L));
+
+        ItemList.SteamTurbine.set(
+            new MTELargeTurbineSteam(SteamTurbine.ID, "multimachine.largeturbine", "Large Steam Turbine")
+                .getStackForm(1L));
+
+        ItemList.HPSteamTurbine.set(
+            new MTELargeTurbineHPSteam(HPSteamTurbine.ID, "multimachine.largehpturbine", "Large HP Steam Turbine")
+                .getStackForm(1L));
+
+        ItemList.SCSteamTurbine.set(
+            new MTELargeTurbineSCSteam(
+                SCSteamTurbine.ID,
+                "SupercriticalSteamTurbine",
+                "Large Supercritical Steam Turbine").getStackForm(1L));
+
+        ItemList.GasTurbine.set(
+            new MTELargeTurbineGas(GasTurbine.ID, "multimachine.largegasturbine", "Large Gas Turbine")
+                .getStackForm(1L));
+
+        ItemList.PlasmaTurbine.set(
+            new MTELargeTurbinePlasma(PlasmaTurbine.ID, "multimachine.largeplasmaturbine", "Large Plasma Turbine")
+                .getStackForm(1L));
 
         ItemList.FlotationCell.set(
             new MTEFrothFlotationCell(FlotationCell.ID, "gtpp.multimachine.flotationcell", "Flotation Cell Regulator")
@@ -906,6 +966,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "industrialbender.controller.tier.single",
                 "Industrial Bending Machine").getStackForm(1L));
 
+        ItemList.SteamTurbineXL.set(
+            new MTEXLTurbineSteam(SteamTurbineXL.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
+                .getStackForm(1L));
+        ItemList.HPSteamTurbineXL.set(
+            new MTEXLTurbineHPSteam(HPSteamTurbineXL.ID, "multimachine.largerhpturbine", "XL Turbo HP Steam Turbine")
+                .getStackForm(1L));
+        ItemList.SCSteamTurbineXL.set(
+            new MTEXLTurbineSCSteam(SCSteamTurbineXL.ID, "multimachine.largerscturbine", "XL Turbo SC Steam Turbine")
+                .getStackForm(1L));
+        ItemList.GasTurbineXL.set(
+            new MTEXLTurbineGas(GasTurbineXL.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
+                .getStackForm(1L));
+        ItemList.PlasmaTurbineXL.set(
+            new MTEXLTurbinePlasma(PlasmaTurbineXL.ID, "multimachine.largerplasmaturbine", "XL Turbo Plasma Turbine")
+                .getStackForm(1L));
+
         ItemList.PyrolyzeOven
             .set(new MTEPyrolyseOven(PyrolyzeOven.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
 
@@ -914,6 +990,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MolecularTransformer.ID,
                 "moleculartransformer.controller.tier.single",
                 "Molecular Transformer").getStackForm(1L));
+
+        ItemList.ThermalBoiler.set(
+            new MTEThermalBoiler(ThermalBoiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
 
         ItemList.FishingPort.set(
             new MTEIndustrialFishingPond(
@@ -933,6 +1012,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.adv.implosioncompressor",
                 "Density^2").getStackForm(1L));
 
+        ItemList.LargeNaquadahReactor
+            .set(new MTELargeNaquadahReactor(LargeNaquadahReactor.ID, "NaG", "Large Naquadah Reactor").getStackForm(1));
+
         ItemList.UniversalChemicalFuelEngine.set(
             new MTEUniversalChemicalFuelEngine(
                 UniversalChemicalFuelEngine.ID,
@@ -942,6 +1024,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Boldarnator.set(
             new MTEIndustrialRockBreaker(Boldarnator.ID, "industrialrockcrusher.controller.tier.single", "Boldarnator")
                 .getStackForm(1L));
+
+        ItemList.InfiniteFluidDrillingRig.set(
+            new MTEOilDrillInfinite(
+                InfiniteFluidDrillingRig.ID,
+                "multimachine.oildrillinfinite",
+                "Infinite Fluid Drilling Rig").getStackForm(1));
+
+        ItemList.DroneCentre
+            .set(new MTEDroneCentre(DroneCentre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
@@ -967,6 +1058,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 ExtremeCombustionEngine.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
+
+        ItemList.IndustrialArcFurnace.set(
+            new MTEIndustrialArcFurnace(
+                IndustrialArcFurnace.ID,
+                "industrialarcfurnace.controller.tier.single",
+                "Industrial Arc Furnace").getStackForm(1));
 
         ItemList.IndustrialCokeOven.set(
             new MTEIndustrialCokeOven(
@@ -2397,7 +2494,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hull_HP.set(new MTEBasicHullSteel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0).getStackForm(1L));
         ItemList.Hull_HP_Bricks.set(
-            new MTEBasicHullSteelBricks(HULL_WROUGHT_IRON.ID, "hull.steel_bricked", "Bricked Wrought Iron Hull", 0)
+            new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
         ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
@@ -7327,10 +7424,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(1)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7340,10 +7437,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(2)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7353,10 +7450,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(3)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7366,10 +7463,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(4)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7379,10 +7476,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(5)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7392,10 +7489,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(6)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7405,10 +7502,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(7)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7418,10 +7515,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(8)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7431,10 +7528,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(9)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7444,10 +7541,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(10)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7457,10 +7554,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(11)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7470,10 +7567,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(12)
                 .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
                 .setRecipes(arcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
-                .setFluidSlots(true, false)
+                .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
 
@@ -7638,14 +7735,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    @Deprecated
     private void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             MTEBasicMachineWithRecipeBuilder.builder(PLASMA_ARC_FURNACE_LV.ID)
                 .setName("basicmachine.plasmaarcfurnace.tier.01", "Basic Plasma Arc Furnace")
                 .setTier(1)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7657,8 +7755,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.02", "Advanced Plasma Arc Furnace")
                 .setTier(2)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7670,8 +7768,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.03", "Advanced Plasma Arc Furnace II")
                 .setTier(3)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 4)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 4)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7683,8 +7781,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.04", "Advanced Plasma Arc Furnace III")
                 .setTier(4)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7696,8 +7794,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.05", "Advanced Plasma Arc Furnace IV")
                 .setTier(5)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7709,8 +7807,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.06", "Elite Plasma Arc Furnace")
                 .setTier(6)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7722,8 +7820,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.07", "Elite Plasma Arc Furnace II")
                 .setTier(7)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7735,8 +7833,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.08", "Ultimate Plasma Discharge Heater")
                 .setTier(8)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7748,8 +7846,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.09", "Epic Plasma Discharge Heater")
                 .setTier(9)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7761,8 +7859,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.10", "Epic Plasma Discharge Heater II")
                 .setTier(10)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7774,8 +7872,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.11", "Epic Plasma Discharge Heater III")
                 .setTier(11)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -7787,8 +7885,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setName("basicmachine.plasmaarcfurnace.tier.12", "Epic Plasma Discharge Heater IV")
                 .setTier(12)
                 .setDescription(MachineType.PLASMA_ARC_FURNACE.tooltipDescription())
-                .setRecipes(plasmaArcFurnaceRecipes)
-                .setSlotsCount(1, 9)
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
@@ -9928,8 +10026,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Splitter Redstone Input",
                 10).getStackForm(1));
 
-        ItemList.VacuumConveyorPipe.set(
-            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
+        ItemList.VacuumConveyorPipe
+            .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
     @Override

@@ -34,10 +34,8 @@ public class ItemCasingSpaceElevator extends ItemCasings {
      * @param tooltip Tooltip of the item stack
      * @param f3_h    Flag if advanced tooltips are enabled
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
-        boolean f3_h) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
         tooltip.add(GTUtility.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD

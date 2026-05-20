@@ -512,24 +512,32 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return hasAvailableSpace() && filter.isAllowed(stack);
     }
 
-    public void addToCache(I stack) {
+    public void addToCache(@NotNull I stack) {
         addToCache(filter.fromNative(stack));
     }
 
-    public void addToCache(T stack) {
+    public void addToCache(@NotNull T stack) {
         if (!isVoidCell) {
             cache.insert(stack, stack.getStackSize());
-            env.dispatchMarkDirty();
         }
     }
 
-    public boolean storePartial(I stack, boolean simulate) {
+    public void storeToCache(@NotNull T stack) {
+        addToCache(stack);
+        lastInputTick = tickCounter;
+    }
+
+    public void storeToCache(@NotNull I stack) {
+        storeToCache(filter.fromNative(stack));
+    }
+
+    public boolean storePartial(@NotNull I stack, boolean simulate) {
         if (lastInputTick != tickCounter && !canStore(stack)) {
             return false;
         }
         if (!simulate) {
-            addToCache(stack);
-            lastInputTick = tickCounter;
+            storeToCache(stack);
+            env.dispatchMarkDirty();
         }
         return true;
     }

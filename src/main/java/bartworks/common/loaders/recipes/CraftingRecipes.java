@@ -60,13 +60,13 @@ public class CraftingRecipes implements Runnable {
         };
 
         ISubTagContainer[] hulls = { // Plate material used in the acid gen, diode and energy distributor below
-            Materials.WroughtIron, // ULV
+            Materials.CastIron, // ULV
             Materials.Steel, // LV
             Materials.Aluminium, // MV
             Materials.StainlessSteel, // HV
             Materials.Titanium, // EV
             Materials.TungstenSteel, // IV
-            WerkstoffLoader.LuVTierMaterial, // LuV
+            WerkstoffLoader.RhodiumPlatedPalladium, // LuV
             Materials.Iridium, // ZPM
             Materials.Osmium, // UV
             Materials.Naquadah // UHV
@@ -90,7 +90,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
                 'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1L), 'C', "circuitGood", 'B',
-                ItemList.IC2_AdvBattery.get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.battery, Materials.MV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_LV),
@@ -106,7 +106,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
                 'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), 'C', "circuitAdvanced", 'B',
-                ItemList.IC2_EnergyCrystal.get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.battery, Materials.HV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.TESLASTAFF),
@@ -377,7 +377,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "FEF", "CPC", "FSF", 'N',
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C', "circuit" + Materials.LuV,
                 'F', ItemList.Field_Generator_LuV.get(1L), 'E', ItemList.Emitter_LuV.get(1L), 'S',
-                ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
+                ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 1), });
 
         GTModHandler.addCraftingRecipe(
             ItemRegistry.vat.copy(),
