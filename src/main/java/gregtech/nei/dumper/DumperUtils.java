@@ -17,6 +17,13 @@ final class DumperUtils {
             .replace("\"", "\\\"") + "\"";
     }
 
+    static String csvField(String s) {
+        if (s.contains(",") || s.contains("\"") || s.contains("\n")) {
+            return "\"" + s.replace("\"", "\"\"") + "\"";
+        }
+        return s;
+    }
+
     static void printLines(PrintWriter w, List<String> lines) {
         for (int i = 0; i < lines.size(); i++) {
             w.print(lines.get(i));

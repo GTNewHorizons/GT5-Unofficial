@@ -50,27 +50,89 @@ public class TurbineRotorDumper extends DataDumper {
 
     @Override
     public String getFileExtension() {
-        return ".json";
+        return getMode() == 0 ? ".csv" : ".json";
     }
 
     @Override
     public int modeCount() {
-        return 1;
+        return 2;
+    }
+
+    @Override
+    public String modeButtonText() {
+        return getMode() == 0 ? "CSV" : "JSON";
     }
 
     @Override
     public void dumpTo(File file) throws IOException {
+        if (getMode() == 0) dumpCsv(file);
+        else dumpJson(file);
+    }
+
+    private void dumpCsv(File file) throws IOException {
         List<Materials> materials = collectMaterials();
-        materials.sort(
-            Comparator.comparingInt((Materials m) -> (int) m.mToolQuality)
-                .reversed()
-                .thenComparing(m -> m.mDefaultLocalName));
+        try (PrintWriter w = new PrintWriter(file)) {
+            w.println(
+                "name,tier,mining_speed,base_durability,overflow_tier,size,dur_mult,"
+                    + "steam_tight_eff,steam_loose_eff,steam_opt_flow_tight,steam_opt_flow_loose,steam_power_tight,steam_power_loose,"
+                    + "gas_tight_eff,gas_loose_eff,gas_opt_flow_tight,gas_opt_flow_loose,gas_power_tight,gas_power_loose,"
+                    + "plasma_tight_eff,plasma_loose_eff,plasma_opt_flow_tight,plasma_opt_flow_loose,plasma_power_tight,plasma_power_loose");
+            for (Materials mat : materials) {
+                writeMaterialCsv(w, mat);
+            }
+        }
+    }
+
+    private void writeMaterialCsv(PrintWriter w, Materials mat) {
+        int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
+        String prefix = String.format(
+            "%s,%d,%s,%s,%d",
+            DumperUtils.csvField(mat.mDefaultLocalName),
+            (int) mat.mToolQuality,
+            DumperUtils.formatDouble(mat.mToolSpeed),
+            DumperUtils.formatDouble(mat.mDurability * 100.0),
+            overflowTier);
+        for (int si = 0; si < TOOL_IDS.length; si++) {
+            ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
+            if (stack == null) {
+                w.printf("%s,%s,%d,,,,,,,,,,,,,,,,,%n", prefix, SIZE_NAMES[si], DUR_MULTS[si]);
+                continue;
+            }
+            TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
+            w.printf(
+                "%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
+                prefix,
+                SIZE_NAMES[si],
+                DUR_MULTS[si],
+                DumperUtils.formatDouble(c.getSteamEfficiency()),
+                DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
+                DumperUtils.formatDouble(c.getOptimalSteamFlow()),
+                DumperUtils.formatDouble(c.getOptimalLooseSteamFlow()),
+                DumperUtils.formatDouble(c.getOptimalSteamEUt()),
+                DumperUtils.formatDouble(c.getOptimalLooseSteamEUt()),
+                DumperUtils.formatDouble(c.getGasEfficiency()),
+                DumperUtils.formatDouble(c.getLooseGasEfficiency()),
+                DumperUtils.formatDouble(c.getOptimalGasFlow()),
+                DumperUtils.formatDouble(c.getOptimalLooseGasFlow()),
+                DumperUtils.formatDouble(c.getOptimalGasEUt()),
+                DumperUtils.formatDouble(c.getOptimalLooseGasEUt()),
+                DumperUtils.formatDouble(c.getPlasmaEfficiency()),
+                DumperUtils.formatDouble(c.getLoosePlasmaEfficiency()),
+                DumperUtils.formatDouble(c.getOptimalPlasmaFlow()),
+                DumperUtils.formatDouble(c.getOptimalLoosePlasmaFlow()),
+                DumperUtils.formatDouble(c.getOptimalPlasmaEUt()),
+                DumperUtils.formatDouble(c.getOptimalLoosePlasmaEUt()));
+        }
+    }
+
+    private void dumpJson(File file) throws IOException {
+        List<Materials> materials = collectMaterials();
         try (PrintWriter w = new PrintWriter(file)) {
             w.println("[");
             for (int mi = 0; mi < materials.size(); mi++) {
                 Materials mat = materials.get(mi);
                 String comma = (mi < materials.size() - 1) ? "," : "";
-                writeMaterial(w, mat, comma);
+                writeMaterialJson(w, mat, comma);
             }
             w.println("]");
         }
@@ -92,10 +154,14 @@ public class TurbineRotorDumper extends DataDumper {
             if (mat.mDurability <= 0 || mat.mToolSpeed <= 0) continue;
             result.add(mat);
         }
+        result.sort(
+            Comparator.comparingInt((Materials m) -> (int) m.mToolQuality)
+                .reversed()
+                .thenComparing(m -> m.mDefaultLocalName));
         return result;
     }
 
-    private void writeMaterial(PrintWriter w, Materials mat, String trailingComma) {
+    private void writeMaterialJson(PrintWriter w, Materials mat, String trailingComma) {
         int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
         w.println("  {");
         w.printf("    \"name\": %s,%n", DumperUtils.jsonString(mat.mDefaultLocalName + " (" + mat.mToolQuality + ")"));

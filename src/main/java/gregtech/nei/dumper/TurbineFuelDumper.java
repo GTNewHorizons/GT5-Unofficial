@@ -37,16 +37,35 @@ public class TurbineFuelDumper extends DataDumper {
 
     @Override
     public String getFileExtension() {
-        return ".json";
+        return getMode() == 0 ? ".csv" : ".json";
     }
 
     @Override
     public int modeCount() {
-        return 1;
+        return 2;
+    }
+
+    @Override
+    public String modeButtonText() {
+        return getMode() == 0 ? "CSV" : "JSON";
     }
 
     @Override
     public void dumpTo(File file) throws IOException {
+        if (getMode() == 0) dumpCsv(file);
+        else dumpJson(file);
+    }
+
+    private void dumpCsv(File file) throws IOException {
+        try (PrintWriter w = new PrintWriter(file)) {
+            w.println("type,name,eu_l,xlgt");
+            writeGasFuelsCsv(w);
+            writePlasmaFuelsCsv(w);
+            writeSteamFuelsCsv(w);
+        }
+    }
+
+    private void dumpJson(File file) throws IOException {
         try (PrintWriter w = new PrintWriter(file)) {
             w.println("{");
             w.println("  \"gas\": [");
@@ -59,6 +78,37 @@ public class TurbineFuelDumper extends DataDumper {
             writeSteamFuels(w);
             w.println("  ]");
             w.println("}");
+        }
+    }
+
+    private void writeGasFuelsCsv(PrintWriter w) {
+        for (GTRecipe recipe : RecipeMaps.gasTurbineFuels.getAllRecipes()) {
+            FluidStack fluid = getFirstFluid(recipe);
+            if (fluid == null) continue;
+            String name = fluid.getFluid()
+                .getLocalizedName(fluid);
+            double euL = recipe.mSpecialValue * 1000.0;
+            boolean xlgt = !isBenzene(fluid);
+            w.printf("gas,%s,%s,%b%n", DumperUtils.csvField(name), DumperUtils.formatDouble(euL), xlgt);
+        }
+    }
+
+    private void writePlasmaFuelsCsv(PrintWriter w) {
+        for (GTRecipe recipe : RecipeMaps.plasmaFuels.getAllRecipes()) {
+            FluidStack fluid = getFirstFluid(recipe);
+            if (fluid == null) continue;
+            String name = fluid.getFluid()
+                .getLocalizedName(fluid);
+            double euL = recipe.mSpecialValue * 1000.0;
+            w.printf("plasma,%s,%s,%n", DumperUtils.csvField(name), DumperUtils.formatDouble(euL));
+        }
+    }
+
+    private void writeSteamFuelsCsv(PrintWriter w) {
+        double[] euValues = { 0.5, 1.0, 1.0, 500.0, 1000.0, 1000.0 };
+        String[] names = { "Steam", "SH Steam", "SC Steam", "Dense Steam", "Dense SH Steam", "Dense SC Steam" };
+        for (int i = 0; i < names.length; i++) {
+            w.printf("steam,%s,%s,%n", DumperUtils.csvField(names[i]), DumperUtils.formatDouble(euValues[i]));
         }
     }
 
