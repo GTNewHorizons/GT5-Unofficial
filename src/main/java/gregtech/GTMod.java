@@ -27,6 +27,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -47,10 +48,12 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import galacticgreg.SpaceDimRegisterer;
+import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -58,7 +61,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.interfaces.IBlockWithClientMeta;
+import gregtech.api.materials.bec.BECMaterialList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -98,8 +101,10 @@ import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
+import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
+import gregtech.loaders.load.BECRecipeLoader;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
@@ -330,7 +335,7 @@ public class GTMod {
 
         GTUIInfos.init();
 
-        IBlockWithClientMeta.register();
+        CondensateType.registerFluids();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
@@ -343,6 +348,8 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
+        DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
+
         if (GregTechAPI.sLoadStarted) {
             return;
         }
@@ -370,6 +377,8 @@ public class GTMod {
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
+        BECMaterialList.init();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -383,6 +392,8 @@ public class GTMod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
+
+        CondensateType.registerRecipes();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
@@ -555,11 +566,13 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
+        NaquadahReworkRecipeLoader.Remover();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
+        BECRecipeLoader.run();
 
         achievements = new GTAchievements();
 

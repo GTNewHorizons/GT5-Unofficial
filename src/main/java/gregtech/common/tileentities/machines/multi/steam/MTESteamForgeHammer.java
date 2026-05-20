@@ -400,9 +400,4 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
-    }
-
 }

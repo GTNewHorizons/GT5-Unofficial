@@ -65,6 +65,7 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsBEC;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
@@ -740,6 +741,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings14 = new BlockCasings14();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
+        GregTechAPI.sBlockCasingsBEC = new BlockCasingsBEC();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
@@ -825,7 +827,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
+            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
                 Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
                 Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
                 Materials.Ichorium, Materials.Firestone, Materials.Shadow },
@@ -1721,7 +1723,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")

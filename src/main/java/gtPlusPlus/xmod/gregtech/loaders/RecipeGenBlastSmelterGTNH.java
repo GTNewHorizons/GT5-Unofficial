@@ -130,7 +130,7 @@ public class RecipeGenBlastSmelterGTNH {
             FluidStack mMoltenStack = null;
             int mMoltenCount = 0;
             // If We have a valid Output, let's try use our cached data to get it's molten form.
-            if (x.mOutputs != null && x.mOutputs[0] != null) {
+            if (x.mOutputs != null && x.mOutputs.length > 0 && x.mOutputs[0] != null) {
                 mMoltenCount = x.mOutputs[0].stackSize;
                 FluidStack tempFluid = getFluidFromIngot(x.mOutputs[0]);
                 if (tempFluid != null) {

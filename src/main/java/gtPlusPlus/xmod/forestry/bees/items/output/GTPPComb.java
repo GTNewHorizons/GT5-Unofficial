@@ -48,7 +48,7 @@ public class GTPPComb extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPCombType type : GTPPCombType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));

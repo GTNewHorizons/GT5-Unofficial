@@ -1,16 +1,22 @@
 package gregtech.common.gui.modularui.cover.base;
 
+import java.util.Arrays;
+
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -28,6 +34,7 @@ public class CoverBaseGui<T extends Cover> {
     protected static final int WIDGET_MARGIN = 5;
     protected static final int ROW_PADDING = 3;
     protected static final int ROW_ELEMENT_PADDING = 2;
+    protected static final int TICK_RATE_BUTTON_SIZE = 20;
 
     /**
      * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.
@@ -57,15 +64,13 @@ public class CoverBaseGui<T extends Cover> {
      */
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
-        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings, data);
-        if (doesBindPlayerInventory()) {
-            int slotHeight = 18;
-            int inventoryRows = 4;
-            int hotbarToInventoryGap = 4;
-            int inventoryMargin = 4;
-            basePanel.height(getGUIHeight() + slotHeight * inventoryRows + hotbarToInventoryGap + inventoryMargin);
-            basePanel.bindPlayerInventory();
-        }
+        return createBasePanel(syncManager, uiSettings, data).coverChildren();
+    }
+
+    public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
+        IWidget parent) {
+        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).coverChildren();
+        layoutPopUp(basePanel, parent);
         return basePanel;
     }
 
@@ -73,51 +78,70 @@ public class CoverBaseGui<T extends Cover> {
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}. Override this method if you want to
      * implement more customized GUI. Otherwise, implement {@link #addUIWidgets} instead.
      *
-     * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered
-     * @return UI panel to show
      */
-    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings,
-        CoverGuiData data) {
+    protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
+        ModularPanel panel = new ModularPanel(getGuiId());
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
                     .markDirty();
             }
         });
-        final ModularPanel panel = ModularPanel.defaultPanel(getGuiId(), getGUIWidth(), getGUIHeight());
-        final Flow widgetsColumn = Flow.column()
+        final Flow mainColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginLeft(WIDGET_MARGIN)
-            .marginTop(WIDGET_MARGIN);
-        panel.child(widgetsColumn);
-        addTitleToUI(widgetsColumn);
-        addUIWidgets(syncManager, widgetsColumn, data);
+            .margin(WIDGET_MARGIN);
+        panel.child(mainColumn);
 
+        // Header
+        final Flow headerRow = Flow.row()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginBottom(4)
+            .marginRight(data.isPopUp() ? 12 : 0) // Filler for close button
+            .coverChildren();
+        addTitleToUI(headerRow, data);
+        mainColumn.child(headerRow);
+
+        // Widgets
+        final Flow widgetsColumn = Flow.column()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .coverChildren();
+        addUIWidgets(syncManager, widgetsColumn, data);
+        mainColumn.child(widgetsColumn);
+
+        // Footer
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
                 new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
         }
-
+        if (!data.isPopUp() && doesBindPlayerInventory()) {
+            mainColumn.child(
+                SlotGroupWidget.playerInventory(false)
+                    .marginTop(4));
+        }
         return panel;
     }
 
-    protected void addTitleToUI(Flow column) {
+    protected void addTitleToUI(Flow titleRow, CoverGuiData data) {
         ItemStack coverItem = GTUtility.intToStack(cover.getCoverID());
         if (coverItem == null) return;
-        column.child(
-            Flow.row()
-                .coverChildren()
-                .marginBottom(4)
-                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
-                .child(
-                    IKey.str(coverItem.getDisplayName())
-                        .asWidget()
-                        .marginLeft(4)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+        titleRow.child(new ItemDrawable(coverItem).asWidget())
+            .childIf(
+                !data.isPopUp() || shouldIncludeTitleInPopUp(),
+                () -> IKey.str(coverItem.getDisplayName())
+                    .asWidget()
+                    .marginLeft(4)
+                    .verticalCenter()
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE));
+    }
 
+    private void layoutPopUp(ModularPanel panel, IWidget button) {
+        if (positionRelativeToCoverButton()) {
+            panel.relative(button)
+                .right(24);
+        }
     }
 
     /**
@@ -129,6 +153,14 @@ public class CoverBaseGui<T extends Cover> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(WIDGET_MARGIN)
             .childPadding(ROW_PADDING);
+    }
+
+    protected int getStringMaxWidth(String... strings) {
+        // Width doesn't matter on the server and the actual method relies on the client-only FontRenderer class
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isServer()) return 100;
+        return IKey.renderer.getMaxWidth(Arrays.asList(strings));
     }
 
     /**
@@ -156,16 +188,16 @@ public class CoverBaseGui<T extends Cover> {
         return makeNumberField(80);
     }
 
-    protected int getGUIWidth() {
-        return 176;
-    }
-
-    protected int getGUIHeight() {
-        return 107;
-    }
-
     protected boolean doesBindPlayerInventory() {
         return false;
+    }
+
+    protected boolean positionRelativeToCoverButton() {
+        return false;
+    }
+
+    protected boolean shouldIncludeTitleInPopUp() {
+        return true;
     }
 
 }

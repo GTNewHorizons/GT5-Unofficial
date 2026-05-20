@@ -470,9 +470,4 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
-    }
-
 }

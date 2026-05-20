@@ -798,10 +798,10 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
         ItemStack fruit) {
         String key = "Forestry:sapling:" + speciesUID;
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
-        map.put(Mode.LOG, log);
-        map.put(Mode.SAPLING, sapling);
-        map.put(Mode.LEAVES, leaves);
-        map.put(Mode.FRUIT, fruit);
+        if (log != null) map.put(Mode.LOG, log);
+        if (sapling != null) map.put(Mode.SAPLING, sapling);
+        if (leaves != null) map.put(Mode.LEAVES, leaves);
+        if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
 
         // In the NEI recipe we want to display outputs adjusted for the default genetics of this tree type.
@@ -904,7 +904,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                 TICKS_PER_OPERATION,
                 0,
                 recipeCount, // special value, also sorts recipes correctly in order of addition.
-                inputStacks));
+                inputStacks,
+                null));
 
         return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size() > recipeCount;
