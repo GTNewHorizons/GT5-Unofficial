@@ -13,6 +13,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -29,6 +31,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -141,17 +145,21 @@ public class MTEIndustrialCokeOvenLegacy extends GTPPMultiBlockBase<MTEIndustria
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mCasing1 = 0;
         mCasing2 = 0;
         tier = 0;
-        if (checkPiece(mName, 1, 2, 0)) {
+        if (checkPiece(mName, 1, 2, 0, errors)) {
             if (mCasing1 == 8) tier = 1;
             if (mCasing2 == 8) tier = 2;
-            return tier > 0 && mCasing >= 8 && checkHatch();
+            if (tier == 0) {
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
+            }
+            checkCasingMin(errors, mCasing, 8);
+            checkHatch(errors);
         }
-        return false;
     }
 
     @Override

@@ -19,5 +19,10 @@ public interface StructureError {
 
     IWidget createWidget(MTEMultiBlockBaseGui<?> gui);
 
+    /**
+     * Returns a localized display string for this error. Must be called client-side.
+     */
+    String getDisplayString();
+
     StructureError copy();
 }
