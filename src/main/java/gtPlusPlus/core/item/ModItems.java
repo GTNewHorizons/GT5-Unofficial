@@ -6,6 +6,8 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.RING;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.RODLONG;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
@@ -408,6 +410,12 @@ public final class ModItems {
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
+
+        // Ring
+        MaterialUtils.generateComponentAndAssignToAMaterial(RING, MaterialsElements.STANDALONE.HYPOGEN);
+
+        // Long Rod
+        MaterialUtils.generateComponentAndAssignToAMaterial(RODLONG, MaterialsElements.STANDALONE.HYPOGEN);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
