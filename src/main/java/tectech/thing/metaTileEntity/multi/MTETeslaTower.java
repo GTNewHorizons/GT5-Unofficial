@@ -1129,14 +1129,12 @@ public class MTETeslaTower extends TTMultiblockBase
     private class TeslaRingBuffer implements List<Double>, RandomAccess {
 
         private int capacity;
-        private int size;
         private int index;
         private double[] buffer;
 
         TeslaRingBuffer(int capacity) {
             this.capacity = capacity;
             this.index = 0;
-            this.size = 0;
             buffer = new double[capacity];
         }
 
@@ -1155,11 +1153,10 @@ public class MTETeslaTower extends TTMultiblockBase
                 System.arraycopy(buffer, 0, newBuf, newCapacity - capacity, capacity);
             }
             this.capacity = newCapacity;
-            this.size = newCapacity;
             this.buffer = newBuf;
             // set the last element as the newest, implies that all zeros from idx 0..(start of old buf) are older
             // values
-            this.index = newCapacity - 1;
+            this.index = 0;
         }
 
         // Always will have capacity as it's size, padding with zeros otherwise
@@ -1238,14 +1235,10 @@ public class MTETeslaTower extends TTMultiblockBase
          */
         @Override
         public boolean add(Double doub) {
-            if (size < capacity) {
-                buffer[index++] = doub;
-                size++;
-                return true;
-            }
-            // pre-increment, so when we are at the last index, we equal capacity, so the modulo will always wrap to 0
-            index = (++index) % capacity;
             buffer[index] = doub;
+            // increment after insertion, so when we were at the last index,
+            // we equal capacity, so the modulo will have wrapped us back to 0
+            index = (index+1) % capacity;
             return true;
         }
 
@@ -1283,7 +1276,6 @@ public class MTETeslaTower extends TTMultiblockBase
             System.arraycopy(buffer, realIdx, newBuf, realIdx + 1, capacity - realIdx);
 
             this.capacity += 1;
-            this.size += 1;
             if (realIdx < this.index) this.index++;
             buffer = newBuf;
         }
@@ -1320,6 +1312,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
         @Override
         public @NotNull List<Double> subList(int fromIndex, int toIndex) {
+            // eh, I don't feel like implementing a view unless requested
             throw new UnsupportedOperationException();
         }
 
@@ -1386,7 +1379,6 @@ public class MTETeslaTower extends TTMultiblockBase
             System.arraycopy(buffer, realIdx, newBuf, realIdx + c.size(), capacity - realIdx);
 
             this.capacity += c.size();
-            this.size += c.size();
             if (realIdx < this.index) this.index += c.size();
             buffer = newBuf;
             return true;
@@ -1405,7 +1397,6 @@ public class MTETeslaTower extends TTMultiblockBase
         @Override
         public void clear() {
             buffer = new double[capacity];
-            size = 0;
             index = 0;
         }
 
