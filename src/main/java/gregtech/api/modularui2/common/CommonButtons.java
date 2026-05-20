@@ -126,32 +126,55 @@ public final class CommonButtons {
     }
 
     /**
-     *
      * @return a button that when clicked, closes the panel its on
      */
     public static ButtonWidget<?> panelCloseButton() {
         return ButtonWidget.panelCloseButton();
     }
 
-    // TODO javadoc
+    /**
+     * Creates a standard toggle button with a single overlay texture and a localized static tooltip.
+     *
+     * @param syncValue The unsynced boolean value handling the toggle state.
+     * @param overlay   The texture to display over the button regardless of its toggle state.
+     * @param key       The translation key used to generate the tooltip text.
+     * @return A configured {@link ToggleButton} with a static tooltip and a standard delay.
+     */
     public static ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture overlay, String key) {
         return new ToggleButton().value(syncValue)
             .overlay(overlay)
             .addTooltipLine(GTUtility.translate(key))
-            .tooltipAutoUpdate(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    /**
+     * Creates a standard toggle button with distinct overlay textures for its selected and unselected states,
+     * and a localized static tooltip.
+     *
+     * @param syncValue         The unsynced boolean value handling the toggle state.
+     * @param selectedOverlay   The texture to display when the button is toggled on (true).
+     * @param unselectedOverlay The texture to display when the button is toggled off (false).
+     * @param key               The translation key used to generate the tooltip text.
+     * @return A configured {@link ToggleButton} with a static tooltip and a standard delay.
+     */
     public static ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture selectedOverlay,
         UITexture unselectedOverlay, String key) {
         return new ToggleButton().value(syncValue)
             .overlay(true, selectedOverlay)
             .overlay(false, unselectedOverlay)
             .addTooltipLine(GTUtility.translate(key))
-            .tooltipAutoUpdate(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    /**
+     * Creates a toggle button with a single overlay texture and a dynamically built tooltip.
+     * This is useful when the tooltip text needs to change based on the current state of the machine or button.
+     *
+     * @param syncValue      The unsynced boolean value handling the toggle state.
+     * @param overlay        The texture to display over the button regardless of its toggle state.
+     * @param tooltipBuilder A consumer function that dynamically constructs the tooltip content when hovered.
+     * @return A configured {@link ToggleButton} with a dynamic, auto-updating tooltip and a standard delay.
+     */
     public static ToggleButton createToggleButtonDynamicTooltip(BooleanSyncValue syncValue, UITexture overlay,
         Consumer<RichTooltip> tooltipBuilder) {
         return new ToggleButton().value(syncValue)
@@ -161,6 +184,16 @@ public final class CommonButtons {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    /**
+     * Creates a toggle button with distinct overlay textures for its selected and unselected states,
+     * and a dynamically built tooltip.
+     *
+     * @param syncValue         The unsynced boolean value handling the toggle state.
+     * @param selectedOverlay   The texture to display when the button is toggled on (true).
+     * @param unselectedOverlay The texture to display when the button is toggled off (false).
+     * @param tooltipBuilder    A consumer function that dynamically constructs the tooltip content when hovered.
+     * @return A configured {@link ToggleButton} with a dynamic, auto-updating tooltip and a standard delay.
+     */
     public static ToggleButton createToggleButtonDynamicTooltip(BooleanSyncValue syncValue, UITexture selectedOverlay,
         UITexture unselectedOverlay, Consumer<RichTooltip> tooltipBuilder) {
         return new ToggleButton().value(syncValue)
