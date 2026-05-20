@@ -133,8 +133,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     private List<MTEHatchBEC> mPreviousBECHatches;
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
 
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
 
@@ -156,19 +156,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        boolean success = structure.checkStructure((TSelf) this);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!structure.checkStructure((TSelf) this, errors)) return;
+        structureInstanceInfo.validate(errors);
+        structureInstanceInfo.onPostCheck((TSelf) this);
 
         if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
-
-        return success;
-    }
-
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        structureInstanceInfo.validate(errors);
     }
 
     @Override
