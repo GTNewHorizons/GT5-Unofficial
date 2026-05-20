@@ -48,6 +48,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -235,23 +236,19 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
 
+        checkHasInputHatch(errors);
         // At most three input hatches allowed
-        if (mInputHatches.size() > 3) {
-            return false;
-        }
+        checkHatchMax(errors, InputHatch, 3);
 
+        checkHasOutputHatch(errors);
         // At most three output hatches allowed
-        if (mOutputHatches.size() > 3) {
-            return false;
-        }
-
-        if (casingCount < MIN_CASING) return false;
-
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        checkHatchMax(errors, OutputHatch, 3);
+        checkCasingMin(errors, casingCount, MIN_CASING);
     }
 
     @Override
