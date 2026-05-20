@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -17,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -60,6 +60,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -96,7 +97,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         .addElement(
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)
-                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
@@ -134,7 +135,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputBus("Any Wash Plant Casing", 1)
             .addOutputBus("Any Wash Plant Casing", 1)
             .addInputHatch("Any Wash Plant Casing", 1)
-            .addOutputHatch("Any Wash Plant Casing", 1)
             .addEnergyHatch("Any Wash Plant Casing", 1)
             .addMaintenanceHatch("Any Wash Plant Casing", 1)
             .addMufflerHatch("Any Wash Plant Casing", 1)
@@ -169,13 +169,16 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 70 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mInputHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 70);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
