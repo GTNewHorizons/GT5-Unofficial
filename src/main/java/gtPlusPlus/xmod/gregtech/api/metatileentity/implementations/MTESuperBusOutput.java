@@ -8,6 +8,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
@@ -15,7 +16,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTESuperBusOutput extends MTEHatchOutputBus {
+public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtechLogo {
 
     public MTESuperBusOutput(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, getSlots(tier));

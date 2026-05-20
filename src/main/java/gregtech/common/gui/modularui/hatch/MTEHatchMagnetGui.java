@@ -6,14 +6,14 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 
-public class MTEHatchTurbineGui extends MTEHatchBaseGui<MTEHatchTurbine> {
+public class MTEHatchMagnetGui extends MTEHatchBaseGui<MTEHatchMagnet> {
 
-    public MTEHatchTurbineGui(MTEHatchTurbine hatch) {
-        super(hatch);
+    public MTEHatchMagnetGui(MTEHatchMagnet machine) {
+        super(machine);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class MTEHatchTurbineGui extends MTEHatchBaseGui<MTEHatchTurbine> {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlot().slot(
                 new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(MTELargerTurbineBaseLegacy::isValidTurbine))
+                    .filter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet))
                 .center());
     }
 

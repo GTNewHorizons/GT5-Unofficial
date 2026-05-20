@@ -35,8 +35,8 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
@@ -100,13 +100,12 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             })
                 .backgroundOverlay(GuiTextures.GEAR)
                 .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager")))
-                .size(18));
+                .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager"))));
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
         ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager").child(
-            CommonWidgets.panelCloseButton()
+            CommonButtons.panelCloseButton()
                 .background(GTGuiTextures.BUTTON_NANOCHIP));
         var rulesSyncer = (GenericListSyncHandler<SplitterRule>) syncManager.findSyncHandler("rules");
 
@@ -124,7 +123,6 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         syncManager.callSyncedAction("refresh_dynamic", $ -> {});
                         return true;
                     })
-                    .size(18)
                     .marginTop(4)
                     .overlay(GuiTextures.ADD)
                     .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.add_rule"))))

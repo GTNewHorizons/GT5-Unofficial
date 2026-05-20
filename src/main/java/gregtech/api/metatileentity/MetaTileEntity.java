@@ -122,6 +122,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             protected void onContentsChanged(int slot) {
                 MetaTileEntity.this.onContentsChanged(slot);
             }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return MetaTileEntity.this.getSlotLimit(slot);
+            }
         };
     }
 
@@ -135,6 +140,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             @Override
             protected void onContentsChanged(int slot) {
                 MetaTileEntity.this.onContentsChanged(slot);
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return MetaTileEntity.this.getSlotLimit(slot);
             }
         };
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);

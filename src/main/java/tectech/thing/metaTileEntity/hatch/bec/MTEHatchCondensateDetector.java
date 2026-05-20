@@ -123,6 +123,16 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
 
         @Override
+        protected boolean supportsBottomRowOverlap() {
+            return true;
+        }
+
+        @Override
+        protected int getBasePanelHeight() {
+            return super.getBasePanelHeight() + SLOT_SIZE / 2;
+        }
+
+        @Override
         protected UITexture getLogoTexture() {
             return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
         }
@@ -156,7 +166,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
                     .build(panel, syncManager)
                     .widthRel(1)
-                    .height(getContentRowHeight()));
+                    .height(getContentHolderHeight()));
             // spotless:on
         }
     }

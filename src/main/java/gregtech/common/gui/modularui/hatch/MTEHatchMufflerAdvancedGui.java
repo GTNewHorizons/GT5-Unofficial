@@ -19,8 +19,13 @@ public class MTEHatchMufflerAdvancedGui extends MTEHatchBaseGui<MTEHatchMufflerA
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlot().slot(
-                new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(hatch::isAirFilter))
+                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
+                    .filter(machine::isAirFilter))
                 .center());
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

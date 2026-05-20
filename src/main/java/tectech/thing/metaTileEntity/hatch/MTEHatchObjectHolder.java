@@ -12,27 +12,23 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
-import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
+public class MTEHatchObjectHolder extends MTEHatch {
 
     private static IIconContainer EM_H;
     private static IIconContainer EM_H_ACTIVE;
@@ -114,14 +110,6 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     @Override
     public int getInventoryStackLimit() {
         return 1;
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
-                .setSize(18, 18)
-                .setPos(151, 63));
     }
 
     @Override

@@ -20,7 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
-import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchVoidGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoid extends MTEHatchOutput {
@@ -120,18 +120,7 @@ public class MTEHatchVoid extends MTEHatchOutput {
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchOutputGui(this) {
-
-            @Override
-            protected boolean supportsScreen() {
-                return false;
-            }
-
-            @Override
-            protected boolean supportsIO() {
-                return false;
-            }
-        }.build(guiData, syncManager, uiSettings);
+        return new MTEHatchVoidGui(this).build(guiData, syncManager, uiSettings);
     }
 
     @Override

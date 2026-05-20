@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,6 +20,7 @@ import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
@@ -35,33 +34,32 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = hatch.getProvider();
+        MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = machine.getProvider();
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority);
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode);
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode);
 
         Flow mainRow = Flow.row()
-            .full()
-            .childPadding(5);
+            .coverChildren()
+            .verticalCenter();
 
         // cell slot
         mainRow.child(
             new ItemSlot().slot(
-                new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isFluidCell))
-                .marginLeft(3));
+                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
+                    .filter(this::isFluidCell)));
 
         // check mode toggle
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
-                .tooltip(t -> t.addLine(translateToLocal("GT5U.hatch.outputme.toggle_checking"))));
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
 
         // caching mode toggle
         mainRow.child(
             new ToggleButton().value(isCaching)
                 .overlay(GuiTextures.FOLDER)
-                .tooltip(t -> t.addLine(translateToLocal("GT5U.hatch.outputme.toggle_caching"))));
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_caching")));
 
         // priority input text field
         mainRow.child(
@@ -71,7 +69,8 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
                 .setNumbers(1, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
-                .setEnabledIf(t -> isCaching.getBoolValue()));
+                .setEnabledIf(t -> isCaching.getBoolValue())
+                .marginLeft(5));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
@@ -79,5 +78,10 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
     private boolean isFluidCell(ItemStack itemStack) {
         Item item = itemStack.getItem();
         return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

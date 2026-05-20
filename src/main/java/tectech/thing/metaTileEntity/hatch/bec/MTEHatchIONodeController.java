@@ -137,7 +137,7 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
                         })
                     .build(panel, syncManager)
                     .widthRel(1)
-                    .height(getContentRowHeight()));
+                    .coverChildrenHeight());
             // spotless:on
         }
     }

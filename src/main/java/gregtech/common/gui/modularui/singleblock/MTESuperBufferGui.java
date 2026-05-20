@@ -24,11 +24,15 @@ public class MTESuperBufferGui extends MTEBufferBaseGui<MTESuperBuffer> {
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createLeftCornerFlow(panel, syncManager).child(
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(
             GTGuiTextures.PICTURE_ARROW_22_RED.asWidget()
                 .size(50, 22)
-                .marginBottom(1)
                 .marginLeft(1));
+    }
+
+    @Override
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 4;
     }
 }
