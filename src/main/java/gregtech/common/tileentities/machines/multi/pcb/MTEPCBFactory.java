@@ -820,7 +820,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
+                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithographic Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
             .addStructureInfo(
@@ -837,13 +837,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "158"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.BLUE + ":")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "292"
                     + EnumChatFormatting.GRAY
-                    + " Radiation Proof Photolithography Framework Casing")
+                    + " Radiation Proof Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
             .addStructureInfo(EnumChatFormatting.BLUE + "Biochamber Upgrade")
@@ -864,9 +864,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "21"
+                EnumChatFormatting.GOLD + "19"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Thermosink Radiator(Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -875,9 +875,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "):")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "41"
+                EnumChatFormatting.GOLD + "39"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
