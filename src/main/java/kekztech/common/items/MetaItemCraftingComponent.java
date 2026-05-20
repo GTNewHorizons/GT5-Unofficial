@@ -51,9 +51,8 @@ public class MetaItemCraftingComponent extends Item {
         return icons[meta];
     }
 
-    @SuppressWarnings({ "unchecked" })
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 9; i < icons.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -64,9 +63,8 @@ public class MetaItemCraftingComponent extends Item {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
-    @SuppressWarnings({ "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(StatCollector.translateToLocal("tooltip.kekztech.crafting_component"));
     }
 

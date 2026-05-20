@@ -34,9 +34,8 @@ public class ItemBlockTFFTStorageField extends ItemBlock {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> lines, boolean advancedTooltips) {
         int meta = stack.getItemDamage();
         if (meta > 0) {
             lines.add(StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.desc"));
