@@ -353,11 +353,11 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.QuasiStar.get(16L), Materials.TranscendentMetal.getNanite(1))
-            .fluidInputs(Materials.InactiveCosmicSolder.getFluid(40_000L), Materials.SpaceTime.getFluid(4 * INGOTS))
-            .itemOutputs(Materials.TranscendentMetal.getNanite(1))
+            .itemInputs(ItemList.QuasiStar.get(64L), Materials.TranscendentMetal.getNanite(2))
+            .fluidInputs(Materials.InactiveCosmicSolder.getFluid(160_000L), Materials.SpaceTime.getFluid(16 * INGOTS))
+            .itemOutputs(Materials.TranscendentMetal.getNanite(2))
             .outputChances(8000)
-            .fluidOutputs(Materials.BoundlessCosmicSolder.getFluid(40_000L))
+            .fluidOutputs(Materials.BoundlessCosmicSolder.getFluid(160_000L))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
