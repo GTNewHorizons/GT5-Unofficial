@@ -2,6 +2,7 @@ package gregtech.api.structure;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +11,8 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.ApiStatus;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,6 +29,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -167,36 +171,45 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return maxSize;
     }
 
+    public boolean checkStructure(MTE instance, List<StructureError> errors) {
+        checkStructure(instance, STRUCTURE_SHAPE_MAIN, null, errors);
+        return errors.isEmpty();
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public boolean checkStructure(MTE instance) {
-        return checkStructure(instance, STRUCTURE_SHAPE_MAIN, null);
+        List<StructureError> errors = new ArrayList<>();
+        checkStructure(instance, errors);
+        return errors.isEmpty();
     }
 
     /**
      * Checks if the given piece exists at the given offset. The offset's coordinate system is in multi space, not world
      * space.
      */
-    public boolean checkStructure(MTE instance, String piece, Vec3Impl pieceOffset) {
+    public boolean checkStructure(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
         ensureStructureLoaded();
 
         if (!GTValues.DEVENV) {
-            return checkStructureImpl(instance, piece, pieceOffset);
+            return checkStructureImpl(instance, piece, pieceOffset, errors);
         } else {
             try {
-                return checkStructureImpl(instance, piece, pieceOffset);
+                return checkStructureImpl(instance, piece, pieceOffset, errors);
             } catch (NoSuchMethodError e) {
                 GTMod.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
 
                 loadStructure();
 
-                return checkStructureImpl(instance, piece, pieceOffset);
+                return checkStructureImpl(instance, piece, pieceOffset, errors);
             }
         }
     }
 
-    private boolean checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset) {
+    private boolean checkStructureImpl(MTE instance, String piece, Vec3Impl pieceOffset, List<StructureError> errors) {
         final IGregTechTileEntity tTile = instance.getBaseMetaTileEntity();
-        return structureDefinition.check(
-            instance,
+        StructureChecker<MTE> checker = new StructureChecker<>(instance, !instance.mMachine, errors);
+        structureDefinition.iterate(
             piece,
             tTile.getWorld(),
             instance.getExtendedFacing(),
@@ -206,7 +219,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             controllerOffset.get0() + (pieceOffset == null ? 0 : pieceOffset.get0()),
             controllerOffset.get1() + (pieceOffset == null ? 0 : pieceOffset.get1()),
             controllerOffset.get2() + (pieceOffset == null ? 0 : pieceOffset.get2()),
-            !instance.mMachine);
+            checker);
+        return checker.success;
     }
 
     public void construct(MTE instance, ItemStack trigger, boolean hintsOnly) {
