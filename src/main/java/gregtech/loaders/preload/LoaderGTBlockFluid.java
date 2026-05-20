@@ -1723,7 +1723,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")
