@@ -1129,6 +1129,11 @@ public class GTStructureUtility {
         public boolean isNavigating() {
             return proxiedElement.isNavigating();
         }
+
+        @Override
+        public @Nullable List<String> getDescription() {
+            return proxiedElement.getDescription();
+        }
     }
 
     /**
