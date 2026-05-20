@@ -25,6 +25,8 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +50,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -181,28 +186,29 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
-
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
-
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
+                    return;
                 }
                 if (this.glassTier < hatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
             for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
-
-        return true;
     }
 
     private static final int CASING_INDEX = 176;

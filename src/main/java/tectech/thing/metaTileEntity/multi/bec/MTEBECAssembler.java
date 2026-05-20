@@ -116,8 +116,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
 
         naniteHatches.clear();
     }
