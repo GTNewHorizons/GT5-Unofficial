@@ -40,6 +40,7 @@ import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.blocks.ItemMachines;
@@ -98,7 +99,9 @@ public class HatchElementBuilder<T> {
                                     StatCollector.translateToLocal("gt.hatch_element_of_type"),
                                     "")));
         mDescriptionNames = () -> Arrays.stream(elements)
-            .map(IHatchElement::getDescriptionLangKey)
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
             .collect(Collectors.toList());
         return this;
     }
@@ -197,7 +200,9 @@ public class HatchElementBuilder<T> {
                                     "")));
         mDescriptionNames = () -> elements.keySet()
             .stream()
-            .map(IHatchElement::getDescriptionLangKey)
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
             .collect(Collectors.toList());
         return this;
     }
@@ -353,12 +358,29 @@ public class HatchElementBuilder<T> {
      * overrides any description auto-detected by {@link #hatchClass}, {@link #hatchClasses}, {@link #anyOf}, or
      * {@link #atLeast}. Can be chained after any of those methods.
      */
+    public HatchElementBuilder<T> descriptionFromStacks(IItemContainer... items) {
+        IItemContainer[] copy = items.clone();
+        mDescriptionNames = () -> {
+            List<String> keys = new ArrayList<>(copy.length);
+            for (IItemContainer item : copy) {
+                keys.add(
+                    item.get(1)
+                        .getUnlocalizedName() + ".name");
+            }
+            return keys;
+        };
+        return this;
+    }
+
     public HatchElementBuilder<T> descriptionFromStacks(ItemStack... stacks) {
-        List<String> keys = new ArrayList<>(stacks.length);
-        for (ItemStack stack : stacks) {
-            keys.add(stack.getUnlocalizedName() + ".name");
-        }
-        mDescriptionNames = () -> keys;
+        ItemStack[] copy = stacks.clone();
+        mDescriptionNames = () -> {
+            List<String> keys = new ArrayList<>(copy.length);
+            for (ItemStack stack : copy) {
+                keys.add(stack.getUnlocalizedName() + ".name");
+            }
+            return keys;
+        };
         return this;
     }
 

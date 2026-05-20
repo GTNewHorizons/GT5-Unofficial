@@ -70,7 +70,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement(
             'M',
             buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                .descriptionFromStacks(ItemList.Hatch_Input_LV)
                 .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .hint(2)
@@ -83,7 +83,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement(
             'S',
             buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                .descriptionFromStacks(ItemList.Hatch_Input_LV)
                 .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .hint(2)

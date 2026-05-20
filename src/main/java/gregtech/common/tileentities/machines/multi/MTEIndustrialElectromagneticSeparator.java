@@ -144,7 +144,7 @@ public class MTEIndustrialElectromagneticSeparator
             buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(MTEHatchMagnet.class)
-                .descriptionFromStacks(ItemList.Hatch_Electromagnet.get(1))
+                .descriptionFromStacks(ItemList.Hatch_Electromagnet)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
                 .build())

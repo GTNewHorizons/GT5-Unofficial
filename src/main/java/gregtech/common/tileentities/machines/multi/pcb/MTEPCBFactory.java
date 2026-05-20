@@ -213,7 +213,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement(
             'L',
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                .descriptionFromStacks(ItemList.Hatch_Input_LV)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .hint(2)

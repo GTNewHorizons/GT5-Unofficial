@@ -100,7 +100,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(

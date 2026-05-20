@@ -208,7 +208,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '1',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(
@@ -218,7 +218,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(4)
                 .adder(
@@ -228,7 +228,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(5)
                 .adder(
@@ -238,7 +238,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(6)
                 .adder(

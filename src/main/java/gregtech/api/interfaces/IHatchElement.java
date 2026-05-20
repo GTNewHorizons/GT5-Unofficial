@@ -1,5 +1,6 @@
 package gregtech.api.interfaces;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,10 @@ public interface IHatchElement<T> {
 
     default String getDescriptionLangKey() {
         return "hatch_type_" + name().toLowerCase();
+    }
+
+    default List<String> getDescriptionLangKeys() {
+        return Collections.singletonList(getDescriptionLangKey());
     }
 
     long count(T t);
@@ -178,6 +183,14 @@ class HatchElementEither<T> implements IHatchElement<T> {
     @Override
     public String getDescriptionLangKey() {
         return first.getDescriptionLangKey() + " or " + second.getDescriptionLangKey();
+    }
+
+    @Override
+    public List<String> getDescriptionLangKeys() {
+        List<String> keys = new ArrayList<>();
+        keys.addAll(first.getDescriptionLangKeys());
+        keys.addAll(second.getDescriptionLangKeys());
+        return keys;
     }
 
     @Override

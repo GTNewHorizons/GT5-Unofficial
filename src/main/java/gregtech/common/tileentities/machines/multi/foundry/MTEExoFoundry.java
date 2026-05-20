@@ -298,7 +298,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
         .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                .descriptionFromStacks(ItemList.Hatch_Input_LV)
                 .adder(MTEExoFoundry::addCoolantInputToMachineList)
                 .casingIndex(TAE.getIndexFromPage(2, 10))
                 .hint(2)

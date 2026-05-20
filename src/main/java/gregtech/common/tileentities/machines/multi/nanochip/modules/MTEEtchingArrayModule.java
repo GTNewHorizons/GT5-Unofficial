@@ -83,7 +83,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             'H',
             buildHatchAdder(MTEEtchingArrayModule.class).adder(MTEEtchingArrayModule::addLaserSource)
                 .hatchClass(MTEHatchDynamoTunnel.class)
-                .descriptionFromStacks(CustomItemList.eM_dynamoTunnel1_IV.get(1))
+                .descriptionFromStacks(CustomItemList.eM_dynamoTunnel1_IV)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .hint(1)
                 .build())

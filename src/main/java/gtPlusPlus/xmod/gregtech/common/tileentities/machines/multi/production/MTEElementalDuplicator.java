@@ -166,7 +166,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .hatchClass(MTEHatchElementalDataOrbHolder.class)
-                                .descriptionFromStacks(GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1))
+                                .descriptionFromStacks(GregtechItemList.Hatch_Input_Elemental_Duplicator)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())

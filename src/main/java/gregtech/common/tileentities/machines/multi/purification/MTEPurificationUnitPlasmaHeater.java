@@ -174,7 +174,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
-                    .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                    .descriptionFromStacks(ItemList.Hatch_Input_LV)
                     .hint(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
@@ -186,7 +186,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
-                    .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
+                    .descriptionFromStacks(ItemList.Hatch_Input_LV)
                     .hint(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
