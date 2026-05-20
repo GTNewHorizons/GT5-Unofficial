@@ -1222,7 +1222,7 @@ public class MTETeslaTower extends TTMultiblockBase
             buffer[index] = doub;
             // increment after insertion, so when we were at the last index,
             // we equal capacity, so the modulo will have wrapped us back to 0
-            index = (index+1) % capacity;
+            index = (index + 1) % capacity;
             return true;
         }
 
@@ -1425,12 +1425,12 @@ public class MTETeslaTower extends TTMultiblockBase
 
             @Override
             public int nextIndex() {
-                return index + i + 1;
+                return (idx + i) % capacity;
             }
 
             @Override
             public int previousIndex() {
-                return index + i - 1;
+                return (capacity + idx + i - 1) % capacity;
             }
 
             @Override
