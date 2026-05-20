@@ -28,8 +28,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -206,32 +204,17 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+    public void checkHatch(List<StructureError> errors) {
+        if (shouldCheckMaintenance()) {
+            checkHasMaintenanceHatch(errors);
         }
 
-        if (requiresMuffler() && mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
-
-        if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
+        if (requiresMuffler()) {
+            checkHasMufflerHatch(errors);
+        } else if (!mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
     }
-
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    public boolean checkHatch() {
-        return true;
-    }
-
-    // Use this, so that validateStructure can be removed
-    // Please do not remove the call to this function during refactoring.
-    public void checkHatch(List<StructureError> errors) {}
 
     @Override
     public void clearHatches() {

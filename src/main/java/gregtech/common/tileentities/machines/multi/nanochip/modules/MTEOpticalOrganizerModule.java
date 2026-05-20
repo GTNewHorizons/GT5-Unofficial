@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -35,6 +36,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -137,9 +139,11 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        return this.mInputHatches.size() <= 2 && !this.mInputHatches.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputHatch(errors);
+        checkHatchMax(errors, HatchElement.InputHatch, 2);
     }
 
     @Override

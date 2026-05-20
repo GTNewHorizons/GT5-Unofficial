@@ -3113,7 +3113,7 @@ public class OrePrefixes {
                 if (name.startsWith("foil")) return "Thin " + "%material" + " Sheet";
             }
             case "FierySteel" -> {
-                if (isContainer) return materialPrefix + "Fiery Blood" + materialPostfix;
+                if (isContainer && this != cellMolten) return materialPrefix + "Fiery Blood" + materialPostfix;
             }
             case "Steeleaf" -> {
                 if (name.startsWith("ingot")) return materialPrefix + "%material";
