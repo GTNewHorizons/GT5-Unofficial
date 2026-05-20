@@ -24,9 +24,9 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -161,7 +161,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ToggleButton createMuffleButton() {
-        return CommonWidgets.createMuffleButton("mufflerSyncer")
+        return CommonButtons.createMuffleButton("mufflerSyncer")
             .size(7)
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
@@ -342,8 +342,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     private IWidget createGeneralInfoPanelButton() {
         IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(Panels.MAIN, hypervisor);
-        return new ButtonWidget<>().size(18)
-            .overlay(IDrawable.EMPTY)
+        return new ButtonWidget<>().overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
             .disableHoverBackground()
             .onMousePressed(d -> {

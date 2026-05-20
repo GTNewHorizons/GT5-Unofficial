@@ -180,8 +180,7 @@ public class ManualInsertionPanel {
                                 }
                             })
                             .tooltipAutoUpdate(true)
-                            .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index))
-                            .size(18))
+                            .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index)))
             .child(IKey.dynamic(() -> {
                 ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
                 ItemStack costStack = upgrade.getExtraCost()[index];

@@ -15,13 +15,13 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTabButton;
 
@@ -213,7 +213,7 @@ public final class GTBaseGuiBuilder {
 
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
-            .size(17, 17) // todo: size
+            .size(18)
             .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }

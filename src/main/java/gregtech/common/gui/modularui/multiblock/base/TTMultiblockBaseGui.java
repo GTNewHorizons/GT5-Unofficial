@@ -82,7 +82,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
             .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18)
             .overlay(createPowerPassOverlay());
     }
 
@@ -113,7 +112,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
             .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18)
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 

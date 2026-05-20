@@ -175,8 +175,7 @@ public class CustomStarColorPanel {
 
         // Edit color button
         parent.child(
-            new ButtonWidget<>().size(18)
-                .background(GTGuiTextures.UNSELECTED_OPTION)
+            new ButtonWidget<>().background(GTGuiTextures.UNSELECTED_OPTION)
                 .disableHoverThemeBackground(true)
                 .overlay(new DynamicDrawable(() -> {
                     if (index == editingIndex.intValue()) {
