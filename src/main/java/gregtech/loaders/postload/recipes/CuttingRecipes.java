@@ -334,28 +334,20 @@ public class CuttingRecipes implements Runnable {
             .addTo(cutterRecipes);
 
         // From ProcessingStone - Concrete cutter
-
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneConcrete", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Concrete, 1L))
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(18),
-                    GTModHandler.getDistilledWater(14),
-                    Materials.Lubricant.getFluid(2),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+            .fluidInputs(Materials.Water.getFluid(18))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .fake()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneConcrete", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Concrete, 1L))
-            .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(18), GTModHandler.getDistilledWater(14)))
+            .fluidInputs(GTModHandler.getDistilledWater(14))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -364,7 +356,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.Lubricant.getFluid(2))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -373,34 +364,25 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         // From ProcessingStone - Redrock cutter
         if (!OreDictionary.getOres("stoneRedrock")
             .isEmpty()) {
-
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(
-                    new SubstituteFluidStack(
-                        Materials.Water.getFluid(37),
-                        GTModHandler.getDistilledWater(28),
-                        Materials.Lubricant.getFluid(4),
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+                .fluidInputs(Materials.Water.getFluid(37))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .fake()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(37), GTModHandler.getDistilledWater(28)))
+                .fluidInputs(GTModHandler.getDistilledWater(28))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .hidden()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -409,7 +391,6 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(Materials.Lubricant.getFluid(4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .hidden()
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -418,33 +399,24 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
                 .duration(4 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .hidden()
                 .addTo(cutterRecipes);
         }
 
         // From ProcessingStone - Marble cutter
-
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneMarble", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Marble, 1L))
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(37),
-                    GTModHandler.getDistilledWater(28),
-                    Materials.Lubricant.getFluid(4),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+            .fluidInputs(Materials.Water.getFluid(37))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .fake()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneMarble", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Marble, 1L))
-            .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(37), GTModHandler.getDistilledWater(28)))
+            .fluidInputs(GTModHandler.getDistilledWater(28))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -453,7 +425,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -462,34 +433,25 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         // From ProcessingStone - Basalt cutter (circuit 3)
-
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneBasalt", 1))
             .circuit(3)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Basalt, 1L))
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(37),
-                    GTModHandler.getDistilledWater(28),
-                    Materials.Lubricant.getFluid(4),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+            .fluidInputs(Materials.Water.getFluid(37))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .fake()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneBasalt", 1))
             .circuit(3)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Basalt, 1L))
-            .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(37), GTModHandler.getDistilledWater(28)))
+            .fluidInputs(GTModHandler.getDistilledWater(28))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -499,7 +461,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -509,32 +470,23 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         // From ProcessingStone - GraniteBlack cutter
-
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteBlack, 1L))
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(37),
-                    GTModHandler.getDistilledWater(28),
-                    Materials.Lubricant.getFluid(4),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+            .fluidInputs(Materials.Water.getFluid(37))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .fake()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteBlack, 1L))
-            .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(37), GTModHandler.getDistilledWater(28)))
+            .fluidInputs(GTModHandler.getDistilledWater(28))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -543,7 +495,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -552,31 +503,23 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         // From ProcessingStone - GraniteRed cutter
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteRed, 1L))
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(37),
-                    GTModHandler.getDistilledWater(28),
-                    Materials.Lubricant.getFluid(4),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
+            .fluidInputs(Materials.Water.getFluid(37))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .fake()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.GraniteRed, 1L))
-            .fluidInputs(new SubstituteFluidStack(Materials.Water.getFluid(37), GTModHandler.getDistilledWater(28)))
+            .fluidInputs(GTModHandler.getDistilledWater(28))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -585,7 +528,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.Lubricant.getFluid(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -594,31 +536,18 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .hidden()
             .addTo(cutterRecipes);
 
     }
 
     public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
         Materials highTierWater, int duration, int boostedDuration, long eut) {
-
-        // Fake recipe to make NEI less scary
-        GTValues.RA.stdBuilder()
-            .itemInputs(inputs)
-            .itemOutputs(outputs)
-            .fluidInputs(new SubstituteFluidStack(lowTierWater.getFluid(100L), GTModHandler.getDistilledWater(100L)))
-            .duration(duration)
-            .eut(eut)
-            .fake()
-            .addTo(cutterRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
             .fluidInputs(lowTierWater.getFluid(100L))
             .duration(duration)
             .eut(eut)
-            .hidden()
             .addTo(cutterRecipes);
         // Bonus for using higher tier water
         GTValues.RA.stdBuilder()
@@ -627,7 +556,6 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(highTierWater.getFluid(100L))
             .duration(boostedDuration)
             .eut(eut)
-            .hidden()
             .addTo(cutterRecipes);
     }
 
@@ -640,27 +568,10 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 new SubstituteFluidStack(
                     Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))),
-                    GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))),
-                    Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))),
-                    Materials.DimensionallyShiftedSuperfluid
-                        .getFluid(Math.max(1, Math.min(10, duration * eut / 4000)))))
-            .duration(2 * duration)
-            .eut(eut)
-            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
-            .fake()
-            .addTo(cutterRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(inputs)
-            .itemOutputs(outputs)
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))),
                     GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426)))))
             .duration(2 * duration)
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -670,7 +581,6 @@ public class CuttingRecipes implements Runnable {
             .duration(duration)
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -681,7 +591,7 @@ public class CuttingRecipes implements Runnable {
             .duration((int) (duration / 2.5))
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
-            .hidden()
             .addTo(cutterRecipes);
+
     }
 }

@@ -19,7 +19,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -190,29 +189,12 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     private void addSlabRecipes(ItemStack plankInput, ItemStack slabOutput) {
-
-        // Fake recipe to make NEI less scary
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, plankInput))
-            .itemOutputs(slabOutput)
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(4),
-                    GTModHandler.getDistilledWater(3),
-                    Materials.Lubricant.getFluid(1),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(1)))
-            .duration(2 * 25 * TICKS)
-            .eut(4)
-            .fake()
-            .addTo(cutterRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
             .fluidInputs(Materials.Water.getFluid(4))
             .duration(2 * 25 * TICKS)
             .eut(4)
-            .hidden()
             .addTo(cutterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
@@ -220,7 +202,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .fluidInputs(GTModHandler.getDistilledWater(3))
             .duration(2 * 25 * TICKS)
             .eut(4)
-            .hidden()
             .addTo(cutterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
@@ -228,7 +209,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .fluidInputs(Materials.Lubricant.getFluid(1))
             .duration(25 * TICKS)
             .eut(4)
-            .hidden()
             .addTo(cutterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
@@ -236,7 +216,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
             .duration(10 * TICKS)
             .eut(4)
-            .hidden()
             .addTo(cutterRecipes);
 
         GTModHandler.addCraftingRecipe(

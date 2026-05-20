@@ -10,7 +10,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -48,25 +47,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                     if (tPlanks != null) {
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-
-                        // Fake recipe to make NEI less scary
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
-                            .itemOutputs(
-                                GTUtility.copyAmount(
-                                    GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                                    tStack),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .fluidInputs(
-                                new SubstituteFluidStack(
-                                    Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
-                                    Materials.Lubricant.getFluid(1L),
-                                    Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
-                                    GTModHandler.getDistilledWater(3)))
-                            .duration(20 * SECONDS)
-                            .eut(8)
-                            .addTo(cutterRecipes);
-
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
@@ -75,7 +55,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
                             .duration(4 * SECONDS)
                             .eut(8)
-                            .hidden()
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
@@ -85,7 +64,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(Materials.Lubricant.getFluid(1L))
                             .duration(10 * SECONDS)
                             .eut(8)
-                            .hidden()
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
@@ -97,7 +75,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(8)
-                            .hidden()
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
@@ -109,7 +86,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(GTModHandler.getDistilledWater(3))
                             .duration(20 * SECONDS)
                             .eut(8)
-                            .hidden()
                             .addTo(cutterRecipes);
                         GTModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
                         GTModHandler.addCraftingRecipe(
@@ -136,24 +112,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-
-                    // Fake recipe to make NEI less scary
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(
-                            GTUtility.copyOrNull(tPlanks),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs(
-                            new SubstituteFluidStack(
-                                Materials.DimensionallyShiftedSuperfluid.getFluid(1L),
-                                Materials.Lubricant.getFluid(1L),
-                                Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)),
-                                GTModHandler.getDistilledWater(3)))
-                        .duration(4 * SECONDS)
-                        .eut(8)
-                        .fake()
-                        .addTo(cutterRecipes);
-
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
@@ -162,7 +120,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
                         .duration(4 * SECONDS)
                         .eut(8)
-                        .hidden()
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -172,7 +129,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(Materials.Lubricant.getFluid(1L))
                         .duration(10 * SECONDS)
                         .eut(8)
-                        .hidden()
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -184,7 +140,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(8)
-                        .hidden()
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -196,7 +151,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(GTModHandler.getDistilledWater(3))
                         .duration(20 * SECONDS)
                         .eut(8)
-                        .hidden()
                         .addTo(cutterRecipes);
                     GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
                     GTModHandler.addCraftingRecipe(
