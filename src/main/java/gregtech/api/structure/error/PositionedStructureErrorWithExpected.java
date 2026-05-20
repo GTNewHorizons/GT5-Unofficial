@@ -68,7 +68,8 @@ public class PositionedStructureErrorWithExpected implements StructureError {
         sb.append('\n')
             .append(StatCollector.translateToLocal("GT5U.gui.any_of"));
         for (String block : expectedBlocks) {
-            sb.append("\n     - ")
+            sb.append('\n')
+                .append("- ")
                 .append(block);
         }
 
