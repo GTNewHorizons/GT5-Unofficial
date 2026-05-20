@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import gregtech.api.structure.error.StructureErrorRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,6 +74,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -240,20 +245,25 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         coilTier = null;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
-        if (coilTier == null || coilTier == HeatingCoilLevel.None) return false;
-        if (mCasing < 10) return false;
-        if (electrodeHatch == null) return false;
-        if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
-        if (electrodeDetectorHatch != null) {
-            if (electrode != null)
-                updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
-            else updateDetectorHatches(0);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) return;
+        checkCasingMin(errors, mCasing, 10);
+        if (coilTier == null || coilTier == HeatingCoilLevel.None)
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        if (electrodeHatch == null) {
+            errors
+                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, TranslatableText.literal("Electrode Hatch"), 0, 1));
+        } else {
+            if (!errors.isEmpty()) return;
+            if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
+            if (electrodeDetectorHatch != null) {
+                if (electrode != null)
+                    updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
+                else updateDetectorHatches(0);
+            }
         }
-        return true;
     }
 
     @Override

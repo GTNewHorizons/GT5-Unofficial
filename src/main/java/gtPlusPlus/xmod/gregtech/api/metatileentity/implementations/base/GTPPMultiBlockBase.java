@@ -28,8 +28,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -206,32 +204,17 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+    public void checkHatch(List<StructureError> errors) {
+        if (shouldCheckMaintenance()) {
+            checkHasMaintenanceHatch(errors);
         }
 
-        if (requiresMuffler() && mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
-
-        if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
+        if (requiresMuffler()) {
+            checkHasMufflerHatch(errors);
+        } else if (!mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
     }
-
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    public boolean checkHatch() {
-        return true;
-    }
-
-    // Use this, so that validateStructure can be removed
-    // Please do not remove the call to this function during refactoring.
-    public void checkHatch(List<StructureError> errors) {}
 
     @Override
     public void clearHatches() {
@@ -245,22 +228,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         this.mAllDynamoHatches.clear();
     }
 
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity,
-        final int aBaseCasingIndex) {
-        return addToMachineListInternal(aList, getMetaTileEntity(aTileEntity), aBaseCasingIndex);
-    }
-
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
+    public <E extends IMetaTileEntity> boolean addToMachineListInternal(ArrayList<E> aList, final E aTileEntity,
         final int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
-
-        // Check type
-        /*
-         * Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList); if
-         * (!aHatchType.isInstance(aTileEntity)) { return false; }
-         */
 
         // Try setRecipeMap
 
@@ -282,7 +254,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             BlockPos aCurPos = new BlockPos(aCur);
             for (E m : aList) {
-                IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
+                IGregTechTileEntity b = m.getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
@@ -293,7 +265,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
         if (aTileEntity instanceof MTEHatch) {
             updateTexture(aTileEntity, aBaseCasingIndex);
-            return aList.add((E) aTileEntity);
+            return aList.add(aTileEntity);
         }
         return false;
     }
@@ -317,51 +289,51 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
 
-        if (aMetaTileEntity instanceof MTEHatchInputBattery) {
-            return addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchInputBattery inputBattery) {
+            return addToMachineListInternal(mChargeHatches, inputBattery, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
-            return addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchOutputBattery outputBattery) {
+            return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
-            boolean addedAir = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex);
-            boolean addedInput = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchAirIntake airIntake) {
+            boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
+            boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
             return addedAir && addedInput;
         }
-        if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            boolean added = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti multiEnergyHatch) {
+            boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
-        if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-            boolean added = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti multiDynamoHatch) {
+            boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
         }
 
         // Handle Fluid Hatches using separate logic
-        if (aMetaTileEntity instanceof MTEHatchInput)
-            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutput)
-            return addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchInput inputHatch)
+            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchOutput outputHatch)
+            return addToMachineListInternal(mOutputHatches, outputHatch, aBaseCasingIndex);
 
         // Process Remaining hatches using base GT Logic
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return addToMachineListInternal(mDualInputHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchInputBus)
-            return addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutputBus)
-            return addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            boolean added = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchInputBus inputBus)
+            return addToMachineListInternal(mInputBusses, inputBus, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus outputBus)
+            return addToMachineListInternal(mOutputBusses, outputBus, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchEnergy energyHatch) {
+            boolean added = addToMachineListInternal(mEnergyHatches, energyHatch, aBaseCasingIndex);
             if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            boolean added = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchDynamo dynamoHatch) {
+            boolean added = addToMachineListInternal(mDynamoHatches, dynamoHatch, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
         }
@@ -369,10 +341,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
                 droneDownLink.registerMachineController(this);
             }
-            return addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mMaintenanceHatches, hatch, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchMuffler)
-            return addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchMuffler mufflerHatch)
+            return addToMachineListInternal(mMufflerHatches, mufflerHatch, aBaseCasingIndex);
 
         return false;
     }
@@ -516,8 +488,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (isThisHatchMultiDynamo(aTileEntity)) {
-            return addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
+            return addToMachineListInternal(mTecTechDynamoHatches, hatch, aBaseCasingIndex);
         }
         return false;
     }
@@ -561,8 +533,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            return addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
+            return addToMachineListInternal(mTecTechEnergyHatches, hatch, aBaseCasingIndex);
         }
         return false;
     }

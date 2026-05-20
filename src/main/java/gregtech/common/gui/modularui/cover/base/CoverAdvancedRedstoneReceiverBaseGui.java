@@ -10,13 +10,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverAdvancedRedstoneReceiverBaseGui
     extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedRedstoneReceiverBase> {
 
-    public CoverAdvancedRedstoneReceiverBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
+    public CoverAdvancedRedstoneReceiverBaseGui(CoverAdvancedRedstoneReceiverBase cover) {
         super(cover, true);
     }
 
