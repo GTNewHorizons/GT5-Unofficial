@@ -29,7 +29,7 @@ public class DetravCreativeTab extends GTCreativeTab {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void displayAllReleventItems(List p_78018_1_) {
+    public void displayAllReleventItems(List<ItemStack> items) {
         for (Object o : Item.itemRegistry) {
             Item item = (Item) o;
 
@@ -39,16 +39,16 @@ public class DetravCreativeTab extends GTCreativeTab {
 
             for (CreativeTabs tab : item.getCreativeTabs()) {
                 if (tab == this) {
-                    item.getSubItems(item, this, p_78018_1_);
+                    item.getSubItems(item, this, items);
                     if (item instanceof DetravMetaGeneratedTool01) {
-                        ((DetravMetaGeneratedTool01) item).getDetravSubItems(item, this, p_78018_1_);
+                        ((DetravMetaGeneratedTool01) item).getDetravSubItems(item, this, items);
                     }
                 }
             }
         }
 
         if (this.func_111225_m() != null) {
-            this.addEnchantmentBooksToList(p_78018_1_, this.func_111225_m());
+            this.addEnchantmentBooksToList(items, this.func_111225_m());
         }
     }
 }

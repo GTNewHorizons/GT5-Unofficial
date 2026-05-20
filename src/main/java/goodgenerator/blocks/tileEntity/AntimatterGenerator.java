@@ -44,7 +44,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -52,7 +54,8 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator>
+    implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
@@ -68,7 +71,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
-        protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
+        protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
                 .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
@@ -111,7 +114,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;
@@ -195,7 +198,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        checkPiece(MAIN_NAME, 17, 41, 0, errors);
+        if (!checkPiece(MAIN_NAME, 17, 41, 0, errors)) return;
+        if (mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.ExoticDynamo, 0, 1));
+        }
+        checkHasInputHatch(errors);
     }
 
     @Override

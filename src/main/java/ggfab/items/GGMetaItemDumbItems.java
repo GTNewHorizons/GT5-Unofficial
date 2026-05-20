@@ -127,16 +127,15 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
         return mIconList.get(aMetaData);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         int j = mEnabledItems.length();
         for (int i = 0; i < j; i++) {
             if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
-                aList.add(tStack);
+                list.add(tStack);
             }
         }
     }

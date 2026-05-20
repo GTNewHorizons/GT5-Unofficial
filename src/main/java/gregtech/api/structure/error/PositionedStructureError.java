@@ -1,6 +1,7 @@
 package gregtech.api.structure.error;
 
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -12,11 +13,11 @@ import gregtech.api.enums.StructureErrorId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
-public record WrongBlockError(int x, int y, int z) implements StructureError {
+public record PositionedStructureError(int x, int y, int z) implements StructureError {
 
     @Override
     public StructureErrorId getId() {
-        return StructureErrorId.WRONG_BLOCK;
+        return StructureErrorId.POSITIONED_ERROR;
     }
 
     @Override
@@ -28,7 +29,7 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
 
     @Override
     public StructureError deserialize(PacketBuffer buffer) {
-        return new WrongBlockError(buffer.readInt(), buffer.readInt(), buffer.readInt());
+        return new PositionedStructureError(buffer.readInt(), buffer.readInt(), buffer.readInt());
     }
 
     @Override
@@ -45,7 +46,12 @@ public record WrongBlockError(int x, int y, int z) implements StructureError {
     }
 
     @Override
+    public String getDisplayString() {
+        return StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block", x, y, z);
+    }
+
+    @Override
     public StructureError copy() {
-        return new WrongBlockError(x, y, z);
+        return new PositionedStructureError(x, y, z);
     }
 }
