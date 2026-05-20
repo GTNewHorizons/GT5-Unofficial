@@ -319,7 +319,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         if (mFluid != null && !GTUtility.areFluidsEqual(mFluid, fluidStack)) {
             return false;
         }
-        if (isFluidLocked()) {
+        if (isFluidLocked() || lockedFluid != null) {
             if (lockedFluid == null) {
                 return true;
             }
