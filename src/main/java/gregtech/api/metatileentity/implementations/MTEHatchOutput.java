@@ -296,7 +296,15 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public void lockFluid(boolean lock) {
-        if (lock && lockedFluid == null) setLockedFluid(mFluid == null ? null : mFluid.getFluid());
+        if (lock) {
+            if (!isFluidLocked()) {
+                mMode = 9;
+                markDirty();
+            }
+        } else if (isFluidLocked()) {
+            mMode = 0;
+            setLockedFluid(null);
+        }
     }
 
     @Override
@@ -319,7 +327,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         if (mFluid != null && !GTUtility.areFluidsEqual(mFluid, fluidStack)) {
             return false;
         }
-        if (isFluidLocked() || lockedFluid != null) {
+        if (isFluidLocked()) {
             if (lockedFluid == null) {
                 return true;
             }
