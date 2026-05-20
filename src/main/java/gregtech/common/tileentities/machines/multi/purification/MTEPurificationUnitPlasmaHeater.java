@@ -37,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -173,6 +174,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
+                    .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
                     .hint(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
@@ -184,6 +186,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
+                    .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
                     .hint(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))

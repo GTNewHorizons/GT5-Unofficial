@@ -36,6 +36,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> implements ISurvivalConstructable {
 
@@ -173,6 +174,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         .addElement(
             'C',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamStabilizer::addBeamLineInputHatch)
@@ -180,6 +182,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         .addElement(
             'D',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchOutputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)

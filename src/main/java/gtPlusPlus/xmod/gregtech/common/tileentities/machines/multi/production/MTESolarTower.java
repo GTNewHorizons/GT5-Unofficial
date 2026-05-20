@@ -225,6 +225,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                 .addElement('g', lazy(t -> {
                     IStructureElement<MTESolarTower> delegate = buildHatchAdder(MTESolarTower.class)
                         .hatchClass(MTESolarHeater.class)
+                        .descriptionFromStacks(GregtechItemList.Solar_Tower_Reflector.get(1))
                         .adder(MTESolarTower::addSolarHeater)
                         // Use a positive casing index to make adder builder happy
                         .casingIndex(1)

@@ -134,6 +134,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
                             .hatchClass(AntimatterOutputHatch.class)
+                            .descriptionFromStacks(Loaders.AMHatch)
                             .casingIndex(x.textureIndex(1))
                             .hint(3)
                             .build()))

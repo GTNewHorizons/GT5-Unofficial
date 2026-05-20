@@ -70,7 +70,7 @@ public class PositionedStructureErrorWithExpected implements StructureError {
         for (String block : expectedBlocks) {
             sb.append('\n')
                 .append("- ")
-                .append(block);
+                .append(StatCollector.translateToLocal(block));
         }
 
         return Flow.row()
@@ -95,7 +95,7 @@ public class PositionedStructureErrorWithExpected implements StructureError {
         for (String block : expectedBlocks) {
             sb.append('\n')
                 .append(" - ")
-                .append(block);
+                .append(StatCollector.translateToLocal(block));
         }
         return sb.toString();
     }

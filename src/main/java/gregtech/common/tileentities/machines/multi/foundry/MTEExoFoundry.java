@@ -65,6 +65,7 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -297,6 +298,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
         .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
+                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
                 .adder(MTEExoFoundry::addCoolantInputToMachineList)
                 .casingIndex(TAE.getIndexFromPage(2, 10))
                 .hint(2)

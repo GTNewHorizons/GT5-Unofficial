@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
-import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -99,7 +98,7 @@ public class HatchElementBuilder<T> {
                                     StatCollector.translateToLocal("gt.hatch_element_of_type"),
                                     "")));
         mDescriptionNames = () -> Arrays.stream(elements)
-            .map(IHatchElement::getDisplayName)
+            .map(IHatchElement::getDescriptionLangKey)
             .collect(Collectors.toList());
         return this;
     }
@@ -198,7 +197,7 @@ public class HatchElementBuilder<T> {
                                     "")));
         mDescriptionNames = () -> elements.keySet()
             .stream()
-            .map(IHatchElement::getDisplayName)
+            .map(IHatchElement::getDescriptionLangKey)
             .collect(Collectors.toList());
         return this;
     }
@@ -349,6 +348,20 @@ public class HatchElementBuilder<T> {
     }
     // endregion
 
+    /**
+     * Sets the description from one or more ItemStacks. Uses each stack's unlocalized name as the lang key. This
+     * overrides any description auto-detected by {@link #hatchClass}, {@link #hatchClasses}, {@link #anyOf}, or
+     * {@link #atLeast}. Can be chained after any of those methods.
+     */
+    public HatchElementBuilder<T> descriptionFromStacks(ItemStack... stacks) {
+        List<String> keys = new ArrayList<>(stacks.length);
+        for (ItemStack stack : stacks) {
+            keys.add(stack.getUnlocalizedName() + ".name");
+        }
+        mDescriptionNames = () -> keys;
+        return this;
+    }
+
     // region intermediate
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
@@ -356,7 +369,7 @@ public class HatchElementBuilder<T> {
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
-        mDescriptionNames = () -> Collections.singletonList(getMTEDisplayName(clazz));
+        mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
         return this;
     }
 
@@ -379,9 +392,11 @@ public class HatchElementBuilder<T> {
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream()
                     .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
-        mDescriptionNames = () -> list.stream()
-            .map(HatchElementBuilder::getMTEDisplayName)
-            .collect(Collectors.toList());
+        List<String> classNames = new ArrayList<>(list.size());
+        for (var clazz : list) {
+            classNames.add(clazz.getSimpleName());
+        }
+        mDescriptionNames = () -> classNames;
         return this;
     }
 
@@ -430,19 +445,6 @@ public class HatchElementBuilder<T> {
 
     public final IStructureElementChain<T> buildAndChain(Block block, int meta) {
         return buildAndChain(ofBlock(block, meta));
-    }
-
-    /**
-     * Finds the localized display name for the first registered MTE that is an instance of the given class.
-     * Falls back to the class simple name if no registered instance is found.
-     */
-    private static String getMTEDisplayName(Class<? extends IMetaTileEntity> clazz) {
-        for (IMetaTileEntity mte : GregTechAPI.METATILEENTITIES) {
-            if (mte != null && clazz.isInstance(mte)) {
-                return mte.getLocalName();
-            }
-        }
-        return clazz.getSimpleName();
     }
 
     public IStructureElement<T> build() {

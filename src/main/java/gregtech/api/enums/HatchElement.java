@@ -154,6 +154,11 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
     }
 
     @Override
+    public String getDescriptionLangKey() {
+        return name;
+    }
+
+    @Override
     public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
         return adder;
     }

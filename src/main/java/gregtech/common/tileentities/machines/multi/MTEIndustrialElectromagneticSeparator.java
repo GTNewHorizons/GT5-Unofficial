@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -143,6 +144,7 @@ public class MTEIndustrialElectromagneticSeparator
             buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(MTEHatchMagnet.class)
+                .descriptionFromStacks(ItemList.Hatch_Electromagnet.get(1))
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
                 .build())

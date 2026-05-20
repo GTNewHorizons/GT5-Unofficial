@@ -32,6 +32,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
 
@@ -81,6 +82,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         .addElement(
             'C',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(1)
                 .adder(MTEBeamMirror::addBeamLineInputHatch)
@@ -88,6 +90,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         .addElement(
             'D',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamMirror::addBeamLineOutputHatch)

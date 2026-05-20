@@ -95,10 +95,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).descriptionFromStacks(LanthItemList.BEAMLINE_FOCUS_INPUT_BUS).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
 
     			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))

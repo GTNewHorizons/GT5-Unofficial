@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,6 +35,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
@@ -90,6 +92,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         .addElement(
             'C',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamSplitter::addBeamLineInputHatch)
@@ -97,6 +100,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(

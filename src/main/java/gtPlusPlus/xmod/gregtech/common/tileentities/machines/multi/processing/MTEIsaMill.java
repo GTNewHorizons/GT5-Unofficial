@@ -117,6 +117,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                     ofChain(
                         buildHatchAdder(MTEIsaMill.class).adder(MTEIsaMill::addMillingBallsHatch)
                             .hatchClass(MTEHatchMillingBalls.class)
+                            .descriptionFromStacks(GregtechItemList.Bus_Milling_Balls.get(1))
                             .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)

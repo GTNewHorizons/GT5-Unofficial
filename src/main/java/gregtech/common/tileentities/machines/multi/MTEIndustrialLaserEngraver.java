@@ -62,6 +62,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
@@ -90,6 +91,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             's',
             buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .hatchClass(MTEHatchDynamoTunnel.class)
+                .descriptionFromStacks(CustomItemList.eM_dynamoTunnel1_IV.get(1))
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .hint(3)
                 .build())

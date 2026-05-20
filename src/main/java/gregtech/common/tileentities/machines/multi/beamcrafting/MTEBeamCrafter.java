@@ -50,6 +50,7 @@ import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
@@ -224,6 +225,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         .addElement(
             'C',
             buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)

@@ -126,6 +126,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
+                    .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
@@ -133,6 +134,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
+                    .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)

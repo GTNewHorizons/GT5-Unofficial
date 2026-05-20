@@ -555,7 +555,7 @@ public class GTStructureUtility {
         if (aHeatingCoilSetter == null || aHeatingCoilGetter == null) {
             throw new IllegalArgumentException();
         }
-        return withDescription(Collections.singletonList("Heating Coil"), new IStructureElement<>() {
+        return withDescription(Collections.singletonList("GT5U.structure.heating_coil"), new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -806,7 +806,7 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
         return withDescription(
-            Collections.singletonList("Tiered Glass"),
+            Collections.singletonList("GT5U.structure.tiered_glass"),
             GTStructureChannels.BOROGLASS.use(
                 lazy(
                     t -> ofBlocksTiered(

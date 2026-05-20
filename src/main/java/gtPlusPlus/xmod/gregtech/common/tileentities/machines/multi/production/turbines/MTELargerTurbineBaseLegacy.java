@@ -92,6 +92,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                         t -> buildHatchAdder(MTELargerTurbineBaseLegacy.class)
                             .adder(MTELargerTurbineBaseLegacy::addTurbineHatch)
                             .hatchClass(MTEHatchTurbine.class)
+                            .descriptionFromStacks(Hatch_Turbine_Rotor.get(1))
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(1)
                             .build()))

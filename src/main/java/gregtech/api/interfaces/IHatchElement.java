@@ -32,6 +32,10 @@ public interface IHatchElement<T> {
         return StatCollector.translateToLocal("hatch_type_" + name().toLowerCase());
     }
 
+    default String getDescriptionLangKey() {
+        return "hatch_type_" + name().toLowerCase();
+    }
+
     long count(T t);
 
     default <T2 extends T> IHatchElement<T2> withMteClass(Class<? extends IMetaTileEntity> aClass) {
@@ -172,6 +176,11 @@ class HatchElementEither<T> implements IHatchElement<T> {
     }
 
     @Override
+    public String getDescriptionLangKey() {
+        return first.getDescriptionLangKey() + " or " + second.getDescriptionLangKey();
+    }
+
+    @Override
     public long count(T t) {
         return first.count(t) + second.count(t);
     }
@@ -213,6 +222,11 @@ class HatchElement<T> implements IHatchElement<T> {
     @Override
     public String getDisplayName() {
         return mDisplayName == null ? mBacking.getDisplayName() : mDisplayName;
+    }
+
+    @Override
+    public String getDescriptionLangKey() {
+        return mBacking.getDescriptionLangKey();
     }
 
     @Override

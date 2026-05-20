@@ -470,9 +470,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
                 .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(ShieldedAccCasingTextureID).build())
-                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID)
+                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH).casingIndex(ShieldedAccCasingTextureID)
                         .hint(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
-                .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(ShieldedAccCasingTextureID)
+                .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH).casingIndex(ShieldedAccCasingTextureID)
                         .hint(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',

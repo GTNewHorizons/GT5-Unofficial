@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -69,6 +70,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement(
             'M',
             buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
+                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
                 .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .hint(2)
@@ -81,6 +83,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement(
             'S',
             buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
+                .descriptionFromStacks(ItemList.Hatch_Input_LV.get(1))
                 .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                 .hint(2)

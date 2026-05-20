@@ -38,6 +38,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -199,6 +200,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             'F',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(2)
                 .adder(MTELargeHadronCollider::addBeamLineInputHatch)
@@ -206,6 +208,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '1',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(3)
                 .adder(
@@ -215,6 +218,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(4)
                 .adder(
@@ -224,6 +228,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(5)
                 .adder(
@@ -233,6 +238,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch.get(1))
                 .casingIndex(ShieldedAccCasingTextureID)
                 .hint(6)
                 .adder(
