@@ -35,12 +35,54 @@ public class TurbineRotorDumper extends DataDumper {
 
     @Override
     public String[] header() {
-        return new String[0];
+        return new String[] { "name", "tier", "mining_speed", "base_durability", "overflow_tier", "size", "dur_mult",
+            "steam_tight_eff", "steam_loose_eff", "steam_opt_flow_tight", "steam_opt_flow_loose", "steam_power_tight",
+            "steam_power_loose", "gas_tight_eff", "gas_loose_eff", "gas_opt_flow_tight", "gas_opt_flow_loose",
+            "gas_power_tight", "gas_power_loose", "plasma_tight_eff", "plasma_loose_eff", "plasma_opt_flow_tight",
+            "plasma_opt_flow_loose", "plasma_power_tight", "plasma_power_loose" };
     }
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        return java.util.Collections.emptyList();
+        List<String[]> rows = new ArrayList<>();
+        for (Materials mat : collectMaterials()) {
+            int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
+            for (int si = 0; si < TOOL_IDS.length; si++) {
+                ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
+                if (stack == null) {
+                    rows.add(
+                        new String[] { mat.mDefaultLocalName, String.valueOf((int) mat.mToolQuality),
+                            DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
+                            String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(DUR_MULTS[si]), "", "", "", "",
+                            "", "", "", "", "", "", "", "", "", "", "", "", "", "" });
+                    continue;
+                }
+                TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
+                rows.add(
+                    new String[] { mat.mDefaultLocalName, String.valueOf((int) mat.mToolQuality),
+                        DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
+                        String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(DUR_MULTS[si]),
+                        DumperUtils.formatDouble(c.getSteamEfficiency()),
+                        DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
+                        DumperUtils.formatDouble(c.getOptimalSteamFlow()),
+                        DumperUtils.formatDouble(c.getOptimalLooseSteamFlow()),
+                        DumperUtils.formatDouble(c.getOptimalSteamEUt()),
+                        DumperUtils.formatDouble(c.getOptimalLooseSteamEUt()),
+                        DumperUtils.formatDouble(c.getGasEfficiency()),
+                        DumperUtils.formatDouble(c.getLooseGasEfficiency()),
+                        DumperUtils.formatDouble(c.getOptimalGasFlow()),
+                        DumperUtils.formatDouble(c.getOptimalLooseGasFlow()),
+                        DumperUtils.formatDouble(c.getOptimalGasEUt()),
+                        DumperUtils.formatDouble(c.getOptimalLooseGasEUt()),
+                        DumperUtils.formatDouble(c.getPlasmaEfficiency()),
+                        DumperUtils.formatDouble(c.getLoosePlasmaEfficiency()),
+                        DumperUtils.formatDouble(c.getOptimalPlasmaFlow()),
+                        DumperUtils.formatDouble(c.getOptimalLoosePlasmaFlow()),
+                        DumperUtils.formatDouble(c.getOptimalPlasmaEUt()),
+                        DumperUtils.formatDouble(c.getOptimalLoosePlasmaEUt()) });
+            }
+        }
+        return rows;
     }
 
     @Override
@@ -50,7 +92,7 @@ public class TurbineRotorDumper extends DataDumper {
 
     @Override
     public String getFileExtension() {
-        return getMode() == 0 ? ".csv" : ".json";
+        return getMode() == 1 ? ".json" : ".csv";
     }
 
     @Override
@@ -65,77 +107,8 @@ public class TurbineRotorDumper extends DataDumper {
 
     @Override
     public void dumpTo(File file) throws IOException {
-        if (getMode() == 0) dumpCsv(file);
-        else dumpJson(file);
-    }
-
-    private void dumpCsv(File file) throws IOException {
-        List<Materials> materials = collectMaterials();
-        try (PrintWriter w = new PrintWriter(file)) {
-            w.println(
-                "name,tier,mining_speed,base_durability,overflow_tier,size,dur_mult,"
-                    + "steam_tight_eff,steam_loose_eff,steam_opt_flow_tight,steam_opt_flow_loose,steam_power_tight,steam_power_loose,"
-                    + "gas_tight_eff,gas_loose_eff,gas_opt_flow_tight,gas_opt_flow_loose,gas_power_tight,gas_power_loose,"
-                    + "plasma_tight_eff,plasma_loose_eff,plasma_opt_flow_tight,plasma_opt_flow_loose,plasma_power_tight,plasma_power_loose");
-            for (Materials mat : materials) {
-                writeMaterialCsv(w, mat);
-            }
-        }
-    }
-
-    private void writeMaterialCsv(PrintWriter w, Materials mat) {
-        int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
-        String prefix = String.format(
-            "%s,%d,%s,%s,%d",
-            DumperUtils.csvField(mat.mDefaultLocalName),
-            (int) mat.mToolQuality,
-            DumperUtils.formatDouble(mat.mToolSpeed),
-            DumperUtils.formatDouble(mat.mDurability * 100.0),
-            overflowTier);
-        for (int si = 0; si < TOOL_IDS.length; si++) {
-            ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
-            if (stack == null) {
-                w.printf("%s,%s,%d,,,,,,,,,,,,,,,,,%n", prefix, SIZE_NAMES[si], DUR_MULTS[si]);
-                continue;
-            }
-            TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
-            w.printf(
-                "%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
-                prefix,
-                SIZE_NAMES[si],
-                DUR_MULTS[si],
-                DumperUtils.formatDouble(c.getSteamEfficiency()),
-                DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
-                DumperUtils.formatDouble(c.getOptimalSteamFlow()),
-                DumperUtils.formatDouble(c.getOptimalLooseSteamFlow()),
-                DumperUtils.formatDouble(c.getOptimalSteamEUt()),
-                DumperUtils.formatDouble(c.getOptimalLooseSteamEUt()),
-                DumperUtils.formatDouble(c.getGasEfficiency()),
-                DumperUtils.formatDouble(c.getLooseGasEfficiency()),
-                DumperUtils.formatDouble(c.getOptimalGasFlow()),
-                DumperUtils.formatDouble(c.getOptimalLooseGasFlow()),
-                DumperUtils.formatDouble(c.getOptimalGasEUt()),
-                DumperUtils.formatDouble(c.getOptimalLooseGasEUt()),
-                DumperUtils.formatDouble(c.getPlasmaEfficiency()),
-                DumperUtils.formatDouble(c.getLoosePlasmaEfficiency()),
-                DumperUtils.formatDouble(c.getOptimalPlasmaFlow()),
-                DumperUtils.formatDouble(c.getOptimalLoosePlasmaFlow()),
-                DumperUtils.formatDouble(c.getOptimalPlasmaEUt()),
-                DumperUtils.formatDouble(c.getOptimalLoosePlasmaEUt()));
-        }
-    }
-
-    private void dumpJson(File file) throws IOException {
-        List<Materials> materials = collectMaterials();
-        try (PrintWriter w = new PrintWriter(file)) {
-            w.println("[");
-            for (int mi = 0; mi < materials.size(); mi++) {
-                Materials mat = materials.get(mi);
-                String comma = (mi < materials.size() - 1) ? "," : "";
-                writeMaterialJson(w, mat, comma);
-            }
-            w.println("]");
-        }
+        if (getMode() == 1) dumpJson(file);
+        else super.dumpTo(file);
     }
 
     private List<Materials> collectMaterials() {
@@ -159,6 +132,19 @@ public class TurbineRotorDumper extends DataDumper {
                 .reversed()
                 .thenComparing(m -> m.mDefaultLocalName));
         return result;
+    }
+
+    private void dumpJson(File file) throws IOException {
+        List<Materials> materials = collectMaterials();
+        try (PrintWriter w = new PrintWriter(file)) {
+            w.println("[");
+            for (int mi = 0; mi < materials.size(); mi++) {
+                Materials mat = materials.get(mi);
+                String comma = (mi < materials.size() - 1) ? "," : "";
+                writeMaterialJson(w, mat, comma);
+            }
+            w.println("]");
+        }
     }
 
     private void writeMaterialJson(PrintWriter w, Materials mat, String trailingComma) {
@@ -209,5 +195,4 @@ public class TurbineRotorDumper extends DataDumper {
         w.printf("        \"dur_mult\": %d%n", durMult);
         w.printf("      }%s%n", trailingComma);
     }
-
 }

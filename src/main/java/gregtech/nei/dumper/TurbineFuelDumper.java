@@ -60,12 +60,20 @@ public class TurbineFuelDumper extends DataDumper {
 
     @Override
     public String[] header() {
-        return new String[0];
+        return new String[] { "type", "name", "eu_l", "xlgt" };
     }
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        return java.util.Collections.emptyList();
+        List<String[]> rows = new ArrayList<>();
+        for (FuelGroup group : buildGroups()) {
+            for (FuelEntry entry : group.entries) {
+                rows.add(
+                    new String[] { group.label, entry.name, DumperUtils.formatDouble(entry.euL),
+                        entry.xlgt != null ? String.valueOf(entry.xlgt) : "" });
+            }
+        }
+        return rows;
     }
 
     @Override
@@ -75,7 +83,7 @@ public class TurbineFuelDumper extends DataDumper {
 
     @Override
     public String getFileExtension() {
-        return getMode() == 0 ? ".csv" : ".json";
+        return getMode() == 1 ? ".json" : ".csv";
     }
 
     @Override
@@ -90,9 +98,8 @@ public class TurbineFuelDumper extends DataDumper {
 
     @Override
     public void dumpTo(File file) throws IOException {
-        List<FuelGroup> groups = buildGroups();
-        if (getMode() == 0) dumpCsv(file, groups);
-        else dumpJson(file, groups);
+        if (getMode() == 1) dumpJson(file, buildGroups());
+        else super.dumpTo(file);
     }
 
     /**
@@ -119,23 +126,6 @@ public class TurbineFuelDumper extends DataDumper {
             entries.add(new FuelEntry(name, euL, xlgt));
         }
         return new FuelGroup(label, entries);
-    }
-
-    private static void dumpCsv(File file, List<FuelGroup> groups) throws IOException {
-        try (PrintWriter w = new PrintWriter(file)) {
-            w.println("type,name,eu_l,xlgt");
-            for (FuelGroup group : groups) {
-                for (FuelEntry entry : group.entries) {
-                    String xlgt = entry.xlgt != null ? String.valueOf(entry.xlgt) : "";
-                    w.printf(
-                        "%s,%s,%s,%s%n",
-                        group.label,
-                        DumperUtils.csvField(entry.name),
-                        DumperUtils.formatDouble(entry.euL),
-                        xlgt);
-                }
-            }
-        }
     }
 
     private static void dumpJson(File file, List<FuelGroup> groups) throws IOException {
