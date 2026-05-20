@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -25,9 +23,9 @@ public class MTEElectrodeHatchGui extends MTEHatchInputBusGui {
 
     @Override
     protected boolean isValidStack(ItemStack itemStack) {
-        return Arrays.stream(ArcFurnaceElectrode.values())
-            .anyMatch(
-                electrode -> electrode.getElectrodeItem(1)
-                    .isItemEqual(itemStack));
+        for (ArcFurnaceElectrode electrode : ArcFurnaceElectrode.values()) if (electrode.getElectrodeItem(1)
+            .isItemEqual(itemStack)) return true;
+
+        return false;
     }
 }
