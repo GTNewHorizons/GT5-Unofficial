@@ -109,9 +109,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     int EUPerOperation = 1_638_400;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
 
         String aString1 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.1");
         String aString2 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.2");
@@ -179,7 +179,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 + (!isShowing ? EnumChatFormatting.DARK_GREEN : EnumChatFormatting.DARK_RED)
                 + !isShowing
                 + EnumChatFormatting.GRAY);
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

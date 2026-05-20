@@ -71,7 +71,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static final float RATE_SCALE_FACTOR = 1.1F;
+    public static final float RATE_SCALE_FACTOR = 1.3F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -639,8 +639,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
 
-            // filter module-incompatible particles
-            if (acceptedInputMap == null || !acceptedInputMap.getOrDefault(p, false)) {
+            // filter module-incompatible particles -- keep blacklisted particles in the pool but output nothing if
+            // rolled
+            if (acceptedInputMap == null || !acceptedInputMap.containsKey(p)) {
                 weights[i] = 0.0;
                 continue;
             }
@@ -687,6 +688,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 o.dataPacket = null;
                 continue;
             }
+
+            // void blacklisted particles
+            Particle rolled = Particle.getParticleFromId(rolledId);
+            if (!o.acceptedInputMap.getOrDefault(rolled, false)) {
+                o.dataPacket = null;
+                continue;
+            }
+
             o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }

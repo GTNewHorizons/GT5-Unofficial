@@ -4,6 +4,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.sourceChamberRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.targetChamberRecipes;
+import static gtnhlanth.common.beamline.Particle.OMEGA;
 import static gtnhlanth.common.beamline.Particle.PHOTON;
 
 import java.util.Arrays;
@@ -149,7 +150,7 @@ public class BeamlineRecipeLoader {
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
                     .particleID(Particle.PROTON.ordinal())
-                    .rate(10)
+                    .rate(40)
                     .energy(1_000_000, 0.3f)
                     .focus(99)
                     .build())
@@ -157,6 +158,24 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_UV)
             .addTo(sourceChamberRecipes);
 
+        /*
+         * OMEGA
+         */
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Unstable.getDust(1))
+            .itemOutputs(Materials.Ash.getDust(1))
+            .outputChances(500)
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(OMEGA.ordinal())
+                    .rate(60)
+                    .energy(1_700_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(sourceChamberRecipes);
         /*
          * TARGET CHAMBER
          */
@@ -263,5 +282,26 @@ public class BeamlineRecipeLoader {
             .duration(1)
             .eut(TierEU.RECIPE_LuV)
             .addTo(targetChamberRecipes);
+
+        // Lapotron chip
+
+        focusItem = new ItemStack(LanthItemList.maskMap.get(MaskList.ACC), 0);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                focusItem,
+                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+            .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
+            .metadata(
+                TARGET_CHAMBER_METADATA,
+                TargetChamberMetadata.builder(focusItem)
+                    .particleID(PHOTON.getId())
+                    .amount(36)
+                    .energy(6, 14, 1)
+                    .minFocus(70)
+                    .build())
+            .duration(1)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(targetChamberRecipes);
+
     }
 }

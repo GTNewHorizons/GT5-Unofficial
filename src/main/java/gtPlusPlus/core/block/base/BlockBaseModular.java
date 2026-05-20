@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.client.TextureBlockMaterial;
@@ -33,6 +36,9 @@ public class BlockBaseModular extends BasicBlock {
     protected int blockColour;
     public BlockTypes blockType;
     protected String materialName;
+
+    @SideOnly(Side.CLIENT)
+    private IIcon blockIcon;
 
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
@@ -181,15 +187,19 @@ public class BlockBaseModular extends BasicBlock {
 
         if (isCustomBlockOnly(this.material)) {
             metType = "CUSTOM/" + this.material.getUnlocalizedName();
-        }
-
-        String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
 
         if (isCustomBlockOnly(this.material) && iIcon instanceof TextureMap) {
-            ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
+            ((TextureMap) iIcon).setTextureEntry(GregTech.ID + ":materialicons/" + metType + "/" + aType, new TextureBlockMaterial(iconName, this.material));
         }
 
-        this.blockIcon = iIcon.registerIcon(iconName);
+        this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
+            .getIcon();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return blockIcon;
     }
 
     @Override

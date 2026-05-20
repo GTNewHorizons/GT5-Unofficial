@@ -34,16 +34,6 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 204;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 148;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
@@ -52,11 +42,10 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
-        syncManager.syncValue("frequency", frequencySyncer);
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(makeFrequencyRow())
+            .child(makeFrequencyRow(frequencySyncer))
             .child(makeButtonRow(uuid))
             .child(
                 new Grid().coverChildren()
@@ -94,11 +83,11 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
                             .asWidget()));
     }
 
-    protected Flow makeFrequencyRow() {
+    protected Flow makeFrequencyRow(StringSyncValue frequencySyncer) {
         return Flow.row()
             .height(16)
             .child(
-                new TextFieldWidget().syncHandler("frequency")
+                new TextFieldWidget().value(frequencySyncer)
                     .height(12)
                     .width(88)
                     .marginRight(2))

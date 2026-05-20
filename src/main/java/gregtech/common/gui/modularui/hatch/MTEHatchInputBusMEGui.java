@@ -36,6 +36,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -183,7 +184,13 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
 
         // manual slot
         mainColumn.child(
-            new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, hatch.getManualSlot()).slotGroup("item_inv")));
+            new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, hatch.getManualSlot()).slotGroup("item_inv"))
+                .tooltip(t -> {
+                    t.addLine(translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
+                    t.addLine(
+                        EnumChatFormatting.GRAY + translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
+                            + EnumChatFormatting.RESET);
+                }));
 
         // arrow
         mainColumn.child(
@@ -331,16 +338,16 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
 
             if (isActive && isPowered) {
                 return MessageFormat.format(
-                    "{0}{1}§f ({2})",
-                    EnumChatFormatting.GREEN,
-                    state,
+                    "{0} ({1})",
+                    EnumChatFormatting.GREEN + state + EnumChatFormatting.RESET,
                     translateToLocal(
                         isAllowedToWorkSyncer.getBoolValue() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
             } else {
-                return EnumChatFormatting.DARK_RED + state;
+                return EnumChatFormatting.DARK_RED + state + EnumChatFormatting.RESET;
             }
         })
-            .asWidget();
+            .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
 
         return super.createLeftCornerFlow(panel, syncManager).child(status);
     }
