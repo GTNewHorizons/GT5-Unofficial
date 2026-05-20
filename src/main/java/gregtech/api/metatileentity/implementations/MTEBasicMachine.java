@@ -243,6 +243,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     }
 
     @Override
+    public boolean shouldSendInitialClientData() {
+        return isFacingValid(mMainFacing);
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[14][17][];
         aTextures = Arrays.copyOf(aTextures, 14);
@@ -1305,7 +1310,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
+        return new MTETieredMachineBlockBaseGui<>(this).build(data, syncManager, uiSettings);
     }
 
     @Override

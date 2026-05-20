@@ -101,6 +101,7 @@ import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IDataCopyable {
@@ -170,8 +171,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
 
         naniteDetectors.clear();
         controllerHatches.clear();
@@ -909,7 +910,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
+        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
+            List<Parameter<?>> parameters, boolean isRoot) {
             return SettingsPanel.builder()
                 .setDividerPosition(75)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))

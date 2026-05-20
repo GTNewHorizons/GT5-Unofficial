@@ -55,6 +55,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
@@ -389,18 +390,9 @@ public final class RecipeMaps {
     /**
      * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
      */
-    public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
-        .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(2, 9, 1, 1)
-        .minInputs(1, 1)
-        .build();
-    /**
-     * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
-     */
     public static final RecipeMap<RecipeMapBackend> arcFurnaceRecipes = RecipeMapBuilder.of("gt.recipe.arcfurnace")
-        .maxIO(1, 9, 1, 0)
-        .minInputs(1, 1)
-        .amperage(3)
+        .maxIO(2, 9, 2, 1)
+        .minInputs(1, 0)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
@@ -1317,14 +1309,12 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
+                .fluidInputs(
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
                 .duration(aDuration * 2)
-                .build()
-                .ifPresent(ret::add);
-            b.copy()
-                .fluidInputs(GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)))
-                .duration(aDuration * 2)
-                .build()
+                .buildWithAlt()
                 .ifPresent(ret::add);
             b.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
