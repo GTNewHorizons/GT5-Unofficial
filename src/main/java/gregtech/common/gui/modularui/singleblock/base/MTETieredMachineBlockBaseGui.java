@@ -75,8 +75,6 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("item_inv", 1, false);
-
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
             if (bool) baseMetaTileEntity.enableWorking();
             else baseMetaTileEntity.disableWorking();
@@ -111,7 +109,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return false;
     }
 
-    protected ParentWidget<?> createContentHolder(ModularPanel panel, PanelSyncManager syncManager) {
+    private ParentWidget<?> createContentHolder(ModularPanel panel, PanelSyncManager syncManager) {
         ParentWidget<?> holder = supportsBottomRowOverlap() ? new ParentWidget<>()
             : Flow.column()
                 .childPadding(2);
@@ -131,6 +129,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return new ParentWidget<>().full();
     }
 
+    /**
+     * Override this method to make a custom GUI.
+     */
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return supportsBottomRowOverlap() ? getOverlappingEmptyContent() : getEmptyContent();
     }
@@ -151,13 +152,19 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return (getBasePanelHeight() - borderRadius * 2) - (machine.doesBindPlayerInventory() ? 80 : 0);
     }
 
+    /**
+     * Contains the bottom left and bottom right corner flows. Usually the place for the logo, buttons,
+     * or extra slots.
+     * <p>
+     * Will not overlap with the main content section by default, override {@link #supportsBottomRowOverlap()}
+     * to change this behaviour.
+     */
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
         ParentWidget<?> bottomSection = new ParentWidget<>().fullWidth()
             .coverChildrenHeight()
             .childIf(this.supportsBottomLeftCornerFlow(), () -> createBottomLeftCornerFlow(panel, syncManager))
             .childIf(this.supportsBottomRightCornerFlow(), () -> createBottomRightCornerFlow(panel, syncManager));
 
-        // TODO documentation
         if (supportsBottomRowOverlap()) bottomSection.bottomRel(0);
 
         return bottomSection;
