@@ -1191,12 +1191,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.circuit_board.cosmic.name",
                 "gt.item.circuit_board.cosmic.tooltip",
                 o));
-        ItemList.Circuit_Board_Transcendent.set(
-            addItemWithLocalizationKeys(
-                Circuit_Board_Transcendent.ID,
-                "gt.item.circuit_board.transcendent.name",
-                "gt.item.circuit_board.transcendent.tooltip",
-                o)).setRender(new InfinityMetaItemRenderer());
+        ItemList.Circuit_Board_Transcendent
+            .set(
+                addItemWithLocalizationKeys(
+                    Circuit_Board_Transcendent.ID,
+                    "gt.item.circuit_board.transcendent.name",
+                    "gt.item.circuit_board.transcendent.tooltip",
+                    o))
+            .setRender(new InfinityMetaItemRenderer());
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
@@ -1376,7 +1378,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o))
             .setRender(new UniversiumMetaItemRenderer(MASK_VOLTAGE_COIL));
         ItemList.MAX_Coil
-            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o)).setRender(new InfinityMetaItemRenderer());
+            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o))
+            .setRender(new InfinityMetaItemRenderer());
 
         ItemList.GalliumArsenideCrystal.set(
             addItemWithLocalizationKeys(
