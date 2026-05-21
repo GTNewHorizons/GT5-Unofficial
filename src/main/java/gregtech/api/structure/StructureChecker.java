@@ -1,5 +1,6 @@
 package gregtech.api.structure;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.world.World;
@@ -10,7 +11,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
 import gregtech.api.structure.error.PositionedStructureError;
-import gregtech.api.structure.error.PositionedStructureErrorWithExpected;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 
@@ -35,11 +35,10 @@ public class StructureChecker<T> implements IStructureWalker<T> {
             this.success = false;
             if (errors != null) {
                 List<String> description = element.getDescription();
-                if (description != null && !description.isEmpty()) {
-                    errors.add(new PositionedStructureErrorWithExpected(x, y, z, description));
-                } else {
-                    errors.add(new PositionedStructureError(x, y, z));
+                if (description == null) {
+                    description = Collections.emptyList();
                 }
+                errors.add(new PositionedStructureError(x, y, z, description));
             }
         }
 

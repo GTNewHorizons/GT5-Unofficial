@@ -1,7 +1,6 @@
 package gregtech.api.structure.error;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.function.Supplier;
 
 import net.minecraft.nbt.NBTTagList;
@@ -45,7 +44,6 @@ public class StructureErrorRegistry {
 
     static {
         register(new PositionedStructureError(0, 0, 0));
-        register(new PositionedStructureErrorWithExpected(0, 0, 0, Collections.emptyList()));
         register(new MissingStructureWrapperCasings(new NBTTagList()));
         register(new TranslatableStructureError(TranslatableText.literal("")));
     }

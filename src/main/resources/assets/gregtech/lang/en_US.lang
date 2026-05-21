@@ -2596,6 +2596,7 @@ GT5U.gui.text.one_uncertainty_hatch=Require exactly 1 Uncertainty Hatch
 GT5U.gui.not_loaded=Some block is not chunk loaded
 GT5U.gui.wrong_block=Invalid block at (%s, %s, %s)
 GT5U.gui.wrong_block_expected=Expected at (%s, %s, %s):
+GT5U.gui.wrong_block_expected_single=Expect %s at (%s, %s, %s)
 GT5U.gui.any_of=Any of:
 GT5U.gui.missing_casings=Not enough casings: needs at least %s, found %s
 GT5U.gui.missing_casings_specific=Not enough %s: need at least %s, found %s

@@ -38,6 +38,7 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -133,8 +134,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'E',
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
-                            .hatchClass(AntimatterOutputHatch.class)
-                            .descriptionFromStacks(Loaders.AMHatch)
+                            .hatchId(MetaTileEntityIDs.AntimatterHatch.ID)
                             .casingIndex(x.textureIndex(1))
                             .hint(3)
                             .build()))

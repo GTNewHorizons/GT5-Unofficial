@@ -39,6 +39,7 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -423,6 +424,13 @@ public class HatchElementBuilder<T> {
     }
 
     public HatchElementBuilder<T> hatchId(int aId) {
+        mDescriptionNames = () -> {
+            IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[aId];
+            if (mte != null) {
+                return Collections.singletonList("gt.blockmachines." + mte.getMetaName() + ".name");
+            }
+            return Collections.singletonList("Unknown MTE #" + aId);
+        };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines && is.getItemDamage() == aId)
                 .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_id") + aId)
@@ -435,6 +443,18 @@ public class HatchElementBuilder<T> {
         if (aIds == null || aIds.length == 0) throw new IllegalArgumentException();
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
+        int[] sortedIds = coll.toArray();
+        Arrays.sort(sortedIds);
+        mDescriptionNames = () -> {
+            List<String> names = new ArrayList<>(sortedIds.length);
+            for (int id : sortedIds) {
+                IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[id];
+                if (mte != null) {
+                    names.add("gt.blockmachines." + mte.getMetaName() + ".name");
+                }
+            }
+            return names;
+        };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines
                 && coll.contains(is.getItemDamage())).cacheHint(
