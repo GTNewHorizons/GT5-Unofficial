@@ -30,12 +30,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 

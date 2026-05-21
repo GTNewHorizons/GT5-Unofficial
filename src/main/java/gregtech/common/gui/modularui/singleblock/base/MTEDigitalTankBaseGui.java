@@ -22,12 +22,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
     }
 
     @Override
-    protected boolean supportsMuffler() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsPowerSwitch() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 

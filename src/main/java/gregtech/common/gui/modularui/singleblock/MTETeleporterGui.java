@@ -21,12 +21,7 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 

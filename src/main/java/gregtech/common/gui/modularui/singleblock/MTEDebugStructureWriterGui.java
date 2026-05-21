@@ -266,12 +266,7 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 }
