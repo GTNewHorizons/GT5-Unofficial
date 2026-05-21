@@ -1,4 +1,4 @@
-package gregtech.api.modularui2;
+package gregtech.common.gui.modularui.util;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-public final class WirelessEnergyHatchGui {
+public final class WirelessEnergyHatchGuiHelper {
 
     public static Flow createMainColumn(IntSyncValue amperageSyncer, int maxAmperage) {
         Flow mainColumn = Flow.column()

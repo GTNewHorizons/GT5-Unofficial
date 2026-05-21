@@ -6,8 +6,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.modularui2.WirelessEnergyHatchGui;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.util.WirelessEnergyHatchGuiHelper;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunnel> {
@@ -19,7 +19,7 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager)
-            .child(WirelessEnergyHatchGui.createMainColumn(new IntSyncValue(machine::getAmperes, amps -> {
+            .child(WirelessEnergyHatchGuiHelper.createMainColumn(new IntSyncValue(machine::getAmperes, amps -> {
                 machine.setAmperes(amps);
 
                 // If max amperage gets changed, update the multi structure
