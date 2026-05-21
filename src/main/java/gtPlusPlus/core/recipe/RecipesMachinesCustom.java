@@ -108,7 +108,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCOLOY_DS.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Steam_Turbine.get(1))
+            .itemOutputs(ItemList.SteamTurbineXL.get(1))
             .fluidInputs(Materials.Titanium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -136,7 +136,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.ZERON_100.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Gas_Turbine.get(1))
+            .itemOutputs(ItemList.GasTurbineXL.get(1))
             .fluidInputs(Materials.Chrome.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -164,7 +164,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_HPSteam_Turbine.get(1))
+            .itemOutputs(ItemList.HPSteamTurbineXL.get(1))
             .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -192,7 +192,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.PIKYONIUM.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Plasma_Turbine.get(1))
+            .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
             .fluidInputs(Materials.Iridium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -220,7 +220,7 @@ public class RecipesMachinesCustom {
                 GGMaterial.dalisenite.get(OrePrefixes.gearGt, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_SCSteam_Turbine.get(1))
+            .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
             .fluidInputs(GGMaterial.hikarium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -365,7 +365,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 32))
             .circuit(21)
-            .itemOutputs(GregtechItemList.AlgaeFarm_Controller.get(1))
+            .itemOutputs(ItemList.AlgaeFarm.get(1))
             .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1028,7 +1028,7 @@ public class RecipesMachinesCustom {
     private static void thermalBoiler() {
         // Thermal Boiler
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
+            ItemList.ThermalBoiler.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
                 ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.get(Materials.TungstenSteel), 'I',

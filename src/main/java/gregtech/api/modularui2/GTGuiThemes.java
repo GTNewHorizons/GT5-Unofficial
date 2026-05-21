@@ -183,7 +183,7 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_STEEL)
         .fluidSlot(GTTextureIds.SLOT_FLUID_STEEL)
         .color(Dyes.dyeWhite.toInt())
-        .textColor(0xfafaff)
+        .textColor(0x404040)
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
         .button(GTTextureIds.BUTTON_STEEL)
         .simpleToggleButton(GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_STEEL_PRESSED, Dyes.dyeWhite.toInt())
@@ -222,6 +222,7 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STEEL)
+        .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
         .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847)
         .build();
     public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")

@@ -20,10 +20,16 @@ import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
 import gregtech.client.iconContainers.items.GTCustomItemIconContainer;
 import gregtech.client.iconContainers.items.GTItemIconContainer;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class Textures {
+
+    public static final String TextureMaterialIconDirectory = "materialicons/";
+    public static final String TextureSetFallback = "NONE";
+    public static final String OverlaySuffix = "_OVERLAY";
 
     // spotless:off
     public enum InvisibleIcon implements IIcon {
@@ -78,7 +84,7 @@ public class Textures {
         }
     }
 
-    public final class BlockIcons {
+    public static final class BlockIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -334,6 +340,7 @@ public class Textures {
             MACHINE_CASING_RADIANT_NAQUADAH_ALLOY = create("MACHINE_CASING_RADIANT_NAQUADAH_ALLOY"),
 
             MACHINE_CASING_FIREBOX_TITANIUM = create("MACHINE_CASING_FIREBOX_TITANIUM"),
+            MACHINE_CASING_FIREBOX_TITANIUM_TOP = create("MACHINE_CASING_FIREBOX_TITANIUM_TOP"),
             MACHINE_CASING_FUSION_COIL = create("MACHINE_CASING_FUSION_COIL"),
             MACHINE_CASING_FUSION = create("MACHINE_CASING_FUSION"),
             MACHINE_CASING_FUSION_GLASS = create("MACHINE_CASING_FUSION_GLASS"),
@@ -472,6 +479,7 @@ public class Textures {
 
             MIXING_CASING = create("MIXING_CASING"),
             FORMING_CORE = create("FORMING_CORE"),
+            ALGAE_CASING = create("ALGAE_CASING"),
             NAQUADAH_REACTOR_CASING = create("NAQUADAH_REACTOR_CASING"),
 
             DECAY_WAREHOUSE_BACKGROUND = create("DECAY_WAREHOUSE_BACKGROUND"),
@@ -480,8 +488,11 @@ public class Textures {
             MACHINE_CASING_RADIATIONPROOF = create("MACHINE_CASING_RADIATIONPROOF"),
             MACHINE_CASING_ADVANCEDRADIATIONPROOF = create("MACHINE_CASING_ADVANCEDRADIATIONPROOF"),
             MACHINE_CASING_FIREBOX_BRONZE = create("MACHINE_CASING_FIREBOX_BRONZE"),
+            MACHINE_CASING_FIREBOX_BRONZE_TOP = create("MACHINE_CASING_FIREBOX_BRONZE_TOP"),
             MACHINE_CASING_FIREBOX_STEEL = create("MACHINE_CASING_FIREBOX_STEEL"),
+            MACHINE_CASING_FIREBOX_STEEL_TOP = create("MACHINE_CASING_FIREBOX_STEEL_TOP"),
             MACHINE_CASING_FIREBOX_TUNGSTENSTEEL = create("MACHINE_CASING_FIREBOX_TUNGSTENSTEEL"),
+            MACHINE_CASING_FIREBOX_TUNGSTENSTEEL_TOP = create("MACHINE_CASING_FIREBOX_TUNGSTENSTEEL_TOP"),
             MACHINE_CASING_ENGINE_INTAKE = create("MACHINE_CASING_ENGINE_INTAKE"),
             MACHINE_CASING_EXTREME_ENGINE_INTAKE = create("MACHINE_CASING_EXTREME_ENGINE_INTAKE"), // changed color in a terrible way
             MACHINE_CASING_CHEMICALLY_INERT = create("MACHINE_CASING_CHEMICALLY_INERT"),
@@ -1416,12 +1427,14 @@ public class Textures {
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE"),
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW"),
 
-            BEC_CONDUIT_BLANK = createOptional("BEC_CONDUIT_BLANK"),
-            BEC_CONDUIT = createOptional("BEC_CONDUIT"),
-            BEC_CONDUIT_90 = createOptional("BEC_CONDUIT_90"),
-            BEC_CASING = createOptional("BEC_CASING"),
-            BEC_MANIPULATOR = createOptional("BEC_MANIPULATOR"),
-            BEC_GLASS = createOptional("BEC_GLASS"),
+            BEC_CONDUIT = create("BEC_CONDUIT"),
+            BEC_CASING = create("BEC_CASING"),
+            BEC_MANIPULATOR = create("BEC_MANIPULATOR"),
+            BEC_CONFLICTCASING = create("BEC_CONFLICTCASING"),
+            BEC_PEACECASING = create("BEC_PEACECASING"),
+            BEC_PRIMARYCOIL = create("BEC_PRIMARYCOIL"),
+            BEC_SECONDARYCOIL = create("BEC_SECONDARYCOIL"),
+            BEC_GLASS = create("BEC_GLASS"),
 
             BEC_CONTROLLER_BACKGROUND = createOptional("BEC_CONTROLLER_BACKGROUND"),
             BEC_GENERATOR_ACTIVE = createOptional("BEC_GENERATOR_ACTIVE"),
@@ -1730,7 +1743,7 @@ public class Textures {
             BLOCK_URANIUM235 = create("BLOCK_URANIUM235"),
             BLOCK_VANADIUM = create("BLOCK_VANADIUM"),
             BLOCK_VANADIUMGALLIUM = create("BLOCK_VANADIUMGALLIUM"),
-            BLOCK_WROUGHTIRON = create("BLOCK_WROUGHTIRON"),
+            BLOCK_CASTIRON = create("BLOCK_CASTIRON"),
             BLOCK_YTTRBIUM = create("BLOCK_YTTRBIUM"),
             BLOCK_YTTRIUM = create("BLOCK_YTTRIUM"),
             BLOCK_YTTRIUMBARIUMCUPRATE = create("BLOCK_YTTRIUMBARIUMCUPRATE"),
@@ -2232,7 +2245,7 @@ public class Textures {
             STORAGE_BLOCKS7 = { BLOCK_SUNNARIUM, BLOCK_TANTALUM, BLOCK_TELLURIUM, BLOCK_TERBIUM, BLOCK_THAUMIUM,
                 BLOCK_THORIUM, BLOCK_THULIUM, BLOCK_TIN, BLOCK_TINALLOY, BLOCK_TITANIUM, BLOCK_TRITANIUM,
                 BLOCK_TUNGSTEN, BLOCK_TUNGSTENSTEEL, BLOCK_ULTIMET, BLOCK_URANIUM, BLOCK_URANIUM235 },
-            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_WROUGHTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
+            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_CASTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
                 BLOCK_YTTRIUMBARIUMCUPRATE, BLOCK_ZINC, BLOCK_TUNGSTENCARBIDE, BLOCK_VANADIUMSTEEL, BLOCK_HSSG,
                 BLOCK_HSSE, BLOCK_HSSS, BLOCK_STEELEAF, BLOCK_ICHORIUM, BLOCK_FIRESTONE, BLOCK_SHADOW },
             STORAGE_BLOCKS9 = { BLOCK_AERCRYSTAL, BLOCK_AMBER, BLOCK_AMETHYST, BLOCK_AQUACRYSTAL, BLOCK_BLUETOPAZ,
@@ -2624,26 +2637,20 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link BlockIcons} instead:
-         *             <ul>
-         *             <li>{@link BlockIcons#custom(String)}</li>
-         *             <li>{@link BlockIcons#customOptional(String)}</li>
-         *             <li>{@link BlockIcons#customAlpha(String)}</li>
-         *             </ul>
+         * Registers a Block {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomBlockIconContainer {
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        }
 
-            /**
-             * @deprecated Use {@link BlockIcons#custom(String)} instead.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2653,9 +2660,14 @@ public class Textures {
         private static @NotNull IIconContainer createOptional(@NotNull String name) {
             return GTOptionalBlockIconContainer.create(name);
         }
+
+        public static void cleanup() {
+            GTTextureSetBlockIconContainer.cleanup();
+            GTCustomBlockIconContainer.cleanup();
+        }
     }
 
-    public final class ItemIcons {
+    public static final class ItemIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -2724,26 +2736,29 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link ItemIcons#custom(String)} instead:
+         * Registers a Item {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomItemIconContainer {
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        }
 
-            /**
-             * @deprecated Use {@link ItemIcons#custom(String)} instead.
-             *             This constructor will become private later.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
             return GTItemIconContainer.create(name);
+        }
+
+        public static void cleanup() {
+            GTTextureSetItemIconContainer.cleanup();
+            GTCustomItemIconContainer.cleanup();
         }
 
     }

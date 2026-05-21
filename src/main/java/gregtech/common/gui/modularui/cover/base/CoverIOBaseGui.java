@@ -83,12 +83,16 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
             .build();
+
+        String inputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock");
+        String outputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock");
+        IKey.renderer.setAlignment(Alignment.TopLeft, -1, -1);
         IWidget blockingLabel = IKey
-            .dynamic(
-                () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
-                    ? StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock")
-                    : StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock"))
-            .asWidget();
+            .dynamic(() -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? inputBlockText : outputBlockText)
+            .asWidget()
+            .coverChildrenHeight()
+            .width(getStringMaxWidth(inputBlockText, outputBlockText))
+            .marginRight(TICK_RATE_BUTTON_SIZE);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

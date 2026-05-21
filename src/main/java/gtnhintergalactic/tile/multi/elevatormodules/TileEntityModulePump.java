@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,6 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -42,6 +44,7 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
@@ -64,10 +67,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     private Parameters.Group.ParameterIn batchSetting;
 
     /** New MUI2 parameters */
+    private IntegerParameter batchParameter;
+    private CompositeParameter[] recipeParameters;
     private IntegerParameter[] planetTypeParameters;
     private IntegerParameter[] gasTypeParameters;
     private IntegerParameter[] parallelParameters;
-    private IntegerParameter batchParameter;
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
@@ -129,60 +133,71 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     @Override
     public void initParameters() {
         int recipes = getParallelRecipes();
-        planetTypeParameters = new IntegerParameter[recipes];
-        gasTypeParameters = new IntegerParameter[recipes];
-        parallelParameters = new IntegerParameter[recipes];
-        for (int i = 0; i < recipes; i++) {
-            planetTypeParameters[i] = new IntegerParameter(
-                1,
-                "gt.blockmachines.multimachine.project.ig.pump.cfgi.0",
-                "planetType" + i,
-                () -> 0,
-                () -> 100,
-                i + 1);
-            gasTypeParameters[i] = new IntegerParameter(
-                1,
-                "gt.blockmachines.multimachine.project.ig.pump.cfgi.1",
-                "gasType" + i,
-                () -> 0,
-                () -> 100,
-                i + 1);
-            parallelParameters[i] = new IntegerParameter(
-                getParallels(),
-                "gt.blockmachines.multimachine.project.ig.pump.cfgi.2",
-                "parallel" + i,
-                () -> 0,
-                this::getParallels,
-                i + 1);
-        }
+
         batchParameter = new IntegerParameter(
             1,
             "gt.blockmachines.multimachine.project.ig.pump.cfgi.3",
             "batch",
             () -> 1,
             () -> 128);
+
+        planetTypeParameters = new IntegerParameter[recipes];
+        gasTypeParameters = new IntegerParameter[recipes];
+        parallelParameters = new IntegerParameter[recipes];
+        recipeParameters = new CompositeParameter[recipes];
+        for (int i = 0; i < recipes; i++) {
+            planetTypeParameters[i] = new IntegerParameter(
+                1,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.0",
+                "planetType" + i,
+                () -> 0,
+                () -> 100);
+            gasTypeParameters[i] = new IntegerParameter(
+                1,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.1",
+                "gasType" + i,
+                () -> 0,
+                () -> 100);
+            parallelParameters[i] = new IntegerParameter(
+                getParallels(),
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.2",
+                "parallel" + i,
+                () -> 0,
+                this::getParallels);
+
+            List<Parameter<?>> parameters = new ArrayList<>();
+            parameters.add(planetTypeParameters[i]);
+            parameters.add(gasTypeParameters[i]);
+            parameters.add(parallelParameters[i]);
+
+            recipeParameters[i] = new CompositeParameter(
+                parameters,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe",
+                "recipe" + i,
+                i + 1);
+        }
     }
 
     @Override
     public void loadLegacyParameters(NBTTagCompound nbt) {
         NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
+
+        batchParameter.setValue((int) legacyInput.getDouble(String.valueOf(19)));
+
         for (int i = 0; i < getParallelRecipes(); i++) {
             planetTypeParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2)));
             gasTypeParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2 + 10)));
             parallelParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2 + 1)));
         }
-        batchParameter.setValue((int) legacyInput.getDouble(String.valueOf(19)));
     }
 
     @Override
     public List<Parameter<?>> getParameters() {
         List<Parameter<?>> parameters = new ArrayList<>();
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            parameters.add(planetTypeParameters[i]);
-            parameters.add(gasTypeParameters[i]);
-            parameters.add(parallelParameters[i]);
-        }
+
         parameters.add(batchParameter);
+        parameters.addAll(Arrays.asList(recipeParameters));
+
         return parameters;
     }
 
@@ -211,11 +226,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
                         if (output.mFluid != null && output.mFluid.getFluid() != null
-                            && output.getLockedFluidName() != null
-                            && output.getLockedFluidName()
-                                .equals(
-                                    fluid.getFluid()
-                                        .getName())
+                            && output.getLockedFluid() != null
+                            && output.getLockedFluid()
+                                .equals(fluid.getFluid())
                             && output.mFluid.getFluid()
                                 .equals(fluid.getFluid())) {
                             targetOutput = output;
@@ -259,18 +272,17 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean state = super.checkMachine_EM(aBaseMetaTileEntity, aStack);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        checkHasOutputHatch(errors);
         hasMeOutputHatch = false;
-        if (state) {
-            for (MTEHatchOutput output : mOutputHatches) {
-                if (output instanceof MTEHatchOutputME) {
-                    hasMeOutputHatch = true;
-                    break;
-                }
+        if (!errors.isEmpty()) return;
+        for (MTEHatchOutput output : mOutputHatches) {
+            if (output instanceof MTEHatchOutputME) {
+                hasMeOutputHatch = true;
+                break;
             }
         }
-        return state;
     }
 
     /**

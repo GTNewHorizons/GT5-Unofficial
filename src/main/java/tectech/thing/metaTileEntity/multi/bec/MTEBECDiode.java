@@ -1,8 +1,12 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
-import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
-import static gregtech.api.casing.Casings.CyclotronCoil;
+import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
+import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
+import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
+import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -59,6 +63,7 @@ import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
@@ -90,11 +95,15 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 8, Arrays.asList(Energy, ExoticEnergy));
-        structure.addCasing('C', CyclotronCoil);
-        structure.addCasing('D', AdvancedFusionCoilII);
-        structure.addCasing('1', ElectromagneticallyIsolatedCasing)
+        structure.addCasing('C', FineStructureConstantManipulator);
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
+        structure.addCasing('F', CondensateTransformativeCoil);
+        structure.addCasing('G', CondensateGuidanceCoil);
+        structure.addCasing('H', ElectromagneticWaveguide);
+        structure.addCasing('1', FineStructureConstantManipulator)
             .withHatches(2, 1, Arrays.asList(INPUT_HATCH));
-        structure.addCasing('2', ElectromagneticallyIsolatedCasing)
+        structure.addCasing('2', FineStructureConstantManipulator)
             .withHatches(3, 1, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
@@ -288,7 +297,8 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         }
 
         @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
+        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
+            List<Parameter<?>> parameters, boolean isRoot) {
             return SettingsPanel.builder()
                 .setDividerPosition(35)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))

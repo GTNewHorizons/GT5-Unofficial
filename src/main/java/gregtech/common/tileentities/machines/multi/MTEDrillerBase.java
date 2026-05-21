@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -74,6 +76,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -287,6 +291,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return isPickingPipes = false;
     }
 
+    protected boolean requiresMiningPipes() {
+        return true;
+    }
+
     protected enum PipeActionResult {
         SUCCESS,
         INVALID_BLOCK,
@@ -393,6 +401,11 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.AT_BOTTOM;
+            return true;
+        }
+
         switch (tryLowerPipeState()) {
             case NO_PIPE -> {
                 mMaxProgresstime = 0;
@@ -425,6 +438,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -453,6 +472,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     // exclusively on the workingUpward phase. It also allows for more distinct status messages.
     protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
         int zPipe, int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -491,7 +516,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
-        putMiningPipesFromInputsInController();
+        if (requiresMiningPipes()) {
+            putMiningPipesFromInputsInController();
+        }
 
         final boolean wasSuccessful;
         switch (workState) {
@@ -600,19 +627,25 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public final IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
+    public IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         updateCoordinates();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches()
-            && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-            && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkHatches(errors);
+        if (!mEnergyHatches.isEmpty()) {
+            int cTier = GTUtility.getTier(getMaxInputVoltage());
+            int machineTier = getMinTier();
+            if (cTier < machineTier) {
+                errors.add(StructureErrors.energyHatchTierTooLow(machineTier));
+            }
+        }
     }
 
-    private void updateCoordinates() {
+    protected void updateCoordinates() {
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
@@ -654,7 +687,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected abstract int getMinTier();
 
-    protected abstract boolean checkHatches();
+    protected abstract void checkHatches(List<StructureError> errors);
 
     protected abstract void setElectricityStats();
 
@@ -798,11 +831,13 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                         newBoolean -> mChunkLoadingEnabled = newBoolean),
                     builder,
                     (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
+                .dynamicTooltip(() -> {
+                    String title = StatCollector.translateToLocal("GT5U.gui.button.chunk_loading");
+                    String statusKey = mChunkLoadingEnabled ? BUTTON_FEATURE_ENABLED_TOOLTIP
+                        : BUTTON_FEATURE_DISABLED_TOOLTIP;
+                    String statusText = StatCollector.translateToLocal(statusKey);
+                    return ImmutableList.of(title, GTUtility.getColoredSecondaryTooltip(statusText));
+                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
                 .setSize(16, 16))

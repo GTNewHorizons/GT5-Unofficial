@@ -1,10 +1,10 @@
 package gtPlusPlus.core.item.base.cell;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import java.awt.Color;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,8 +15,6 @@ import gtPlusPlus.core.util.Utils;
 
 public class BaseItemPlasmaCell extends BaseItemComponent {
 
-    private IIcon base;
-    private IIcon overlay;
     private int tickCounter = 0;
 
     public BaseItemPlasmaCell(final Material material) {
@@ -30,25 +28,38 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     }
 
     @Override
-    public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(getCorrectTextures());
-        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
-    }
-
-    @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
-        return this.componentColour;
-    }
-
-    @Override
-    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0) {
-            return this.base;
+        if (this.componentMaterial == null) {
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+            }
+            return this.componentColour;
         }
-        return this.overlay;
+
+        if (this.componentMaterial.getRGBA()[3] <= 1) {
+            return this.componentColour;
+        } else {
+            // Mild Glow Effect
+            if (this.componentMaterial.getRGBA()[3] == 2) {
+                // 4 sec cycle, 200 control point. 20ms interval.
+                int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
+                int value = currentFrame < 50 ? currentFrame + 1
+                    : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
+                return Utils.rgbtoHexValue(
+                    Math.min(255, Math.max(componentMaterial.getRGBA()[0] + value, 0)),
+                    Math.min(255, Math.max(componentMaterial.getRGBA()[1] + value, 0)),
+                    Math.min(255, Math.max(componentMaterial.getRGBA()[2] + value, 0)));
+            }
+
+            // Rainbow Hue Cycle
+            else if (this.componentMaterial.getRGBA()[3] == 3) {
+                return Color.HSBtoRGB((float) (System.nanoTime() % 8_000_000_000L) / 8_000_000_000f, 1, 1);
+            }
+        }
+        return this.componentColour;
     }
 
     @Override
