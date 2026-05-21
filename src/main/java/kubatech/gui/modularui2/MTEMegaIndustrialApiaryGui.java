@@ -179,8 +179,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private void notifyBeeInventoryUpdate() {
         int beeTypeCount = buildAggregatedBeeList().size();
-        boolean hasEmptySlot = multiblock.mStorage.size() < multiblock.mMaxSlots;
-        int activeCount = beeTypeCount + (hasEmptySlot ? 1 : 0);
+        int activeCount = beeTypeCount + 1;
         beeInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
     }
 
