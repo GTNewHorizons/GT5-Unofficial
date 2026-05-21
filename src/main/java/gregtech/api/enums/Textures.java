@@ -2706,6 +2706,7 @@ public class Textures {
             WIRELESS_HEADPHONES = create("WIRELESS_HEADPHONES"),
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
+            MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
