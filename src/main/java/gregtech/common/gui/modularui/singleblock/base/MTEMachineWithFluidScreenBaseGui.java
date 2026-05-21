@@ -25,6 +25,11 @@ import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 
 public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> extends MTETieredMachineBlockBaseGui<T> {
 
+    protected static final int FLUID_SCREEN_WIDTH = 71;
+    protected static final int FLUID_SCREEN_HEIGHT = 54;
+    protected static final int FLUID_FILTER_SCREEN_WIDTH = 71;
+    protected static final int FLUID_FILTER_SCREEN_HEIGHT = 54;
+
     public MTEMachineWithFluidScreenBaseGui(T machine) {
         super(machine);
     }
@@ -33,16 +38,8 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         return true;
     }
 
-    protected int getFluidScreenWidth() {
-        return 71;
-    }
-
-    protected int getFluidScreenHeight() {
-        return 54;
-    }
-
     protected ParentWidget<?> createScreen(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
-        ParentWidget<?> screen = CommonWidgets.createFluidScreen(getFluidScreenWidth(), getFluidScreenHeight());
+        ParentWidget<?> screen = CommonWidgets.createFluidScreen(FLUID_SCREEN_WIDTH, FLUID_SCREEN_HEIGHT);
 
         Flow textColumn = Flow.column()
             .childPadding(1)
@@ -104,20 +101,11 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         return machine instanceof IFluidLockableMui2;
     }
 
-    protected int getFluidFilterScreenWidth() {
-        return 71;
-    }
-
-    protected int getFluidFilterScreenHeight() {
-        return 54;
-    }
-
     protected ParentWidget<?> createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
         if (!(machine instanceof IFluidLockableMui2))
             throw new UnsupportedOperationException("Machine must be IFluidLockableMui2");
 
-        ParentWidget<?> screen = CommonWidgets
-            .createFluidScreen(getFluidFilterScreenWidth(), getFluidFilterScreenHeight());
+        ParentWidget<?> screen = CommonWidgets.createFluidScreen(FLUID_FILTER_SCREEN_WIDTH, FLUID_FILTER_SCREEN_HEIGHT);
 
         Flow textColumn = Flow.column()
             .childPadding(1)

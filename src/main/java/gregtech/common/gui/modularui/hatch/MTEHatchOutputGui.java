@@ -66,8 +66,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
     @Override
     protected ParentWidget<?> createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> screen = CommonWidgets
-            .createFluidScreen(getFluidFilterScreenWidth(), getFluidFilterScreenHeight());
+        ParentWidget<?> screen = CommonWidgets.createFluidScreen(FLUID_FILTER_SCREEN_WIDTH, FLUID_FILTER_SCREEN_HEIGHT);
 
         Flow textColumn = Flow.column()
             .childPadding(1)
