@@ -1986,6 +1986,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
 
         @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+
+        @Override
         public IGTHatchAdder<? super TTMultiblockBase> adder() {
             return adder;
         }
