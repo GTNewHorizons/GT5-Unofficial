@@ -30,7 +30,6 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         Item item = aStack.getItem();
         if (item == null || !Client.render.renderUniversiumFancy) return false;
 
-
         magicRenderMethod(
             type,
             ItemList.Emitter_UEV.get(1), // hack to make it render correctly
