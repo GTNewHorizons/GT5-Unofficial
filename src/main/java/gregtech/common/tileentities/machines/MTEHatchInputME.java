@@ -365,6 +365,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
+        return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
@@ -374,7 +379,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, fluid.amount);
+            int toDrain = Math.min(slot.extracted.amount, amount);
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
@@ -389,6 +394,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (slot == null) return null;
 
             IAEFluidStack request = AEFluidStack.create(fluid);
+            request.setStackSize(amount);
 
             IMEMonitor<IAEFluidStack> sg;
             IEnergyGrid energy;
