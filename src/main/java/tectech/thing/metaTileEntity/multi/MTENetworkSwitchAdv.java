@@ -3,7 +3,6 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -118,7 +117,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitchAdv> compile(String[][] definition) {
         structure.addCasing('A', Casings.ComputerCasing)
-            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData, Maintenance));
+            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
         structure.addCasing('B', Casings.AdvancedComputerCasing);
         structure.addCasing('C', Casings.AdvancedComputerCasing)
             .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
