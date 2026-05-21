@@ -1688,8 +1688,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (simulate) return true;
             fluidCost = aLiquid.amount;
             for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-                FluidStack tLiquid = tHatch
-                    .drain(ForgeDirection.UNKNOWN, new FluidStack(aLiquid.getFluid(), fluidCost), true);
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, fluidCost, true);
                 if (tLiquid == null) continue;
                 fluidCost -= tLiquid.amount;
                 if (fluidCost == 0) return true;
