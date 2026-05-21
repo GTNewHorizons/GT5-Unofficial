@@ -1,6 +1,6 @@
 package gtPlusPlus.core.item.base.cell;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.item.ItemStack;
 
