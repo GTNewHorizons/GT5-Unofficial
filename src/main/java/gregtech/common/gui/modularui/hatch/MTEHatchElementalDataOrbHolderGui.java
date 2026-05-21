@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.ItemSlotGridBuilder;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 

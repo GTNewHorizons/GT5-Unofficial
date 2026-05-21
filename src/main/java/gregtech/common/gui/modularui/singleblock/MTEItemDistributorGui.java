@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.modularui2.ItemSlotGridBuilder;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
 import gregtech.common.tileentities.automation.MTEItemDistributor;

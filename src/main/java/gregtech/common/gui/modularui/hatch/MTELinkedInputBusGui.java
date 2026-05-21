@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.ItemSlotGridBuilder;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.synchandler.NBTSerializableSyncHandler;

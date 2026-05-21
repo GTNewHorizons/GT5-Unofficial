@@ -5,7 +5,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.modularui2.ItemSlotGridBuilder;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 
 public class MTEBusInputFocusGui extends MTEHatchNbtConsumableGui {

@@ -1,4 +1,4 @@
-package gregtech.api.modularui2;
+package gregtech.common.modularui2.widget.builder;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
