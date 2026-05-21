@@ -281,7 +281,7 @@ public class Client {
         @Config.DefaultBoolean(true)
         public boolean renderGlitchFancy;
 
-        @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.Comment("Enables or disables Universium rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderUniversiumFancy;
     }
