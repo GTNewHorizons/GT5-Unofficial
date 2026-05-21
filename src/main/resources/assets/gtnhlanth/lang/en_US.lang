@@ -10,6 +10,29 @@ gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
 
 gtnhlanth.tt.hintNumber=Hint block with number %s
 
+# Digester
+gtnhlanth.tt.digester.machinetype=Digester
+gtnhlanth.tt.digester.info1=Input ores and fluid, output water
+
+# Dissolution Tank
+gtnhlanth.tt.disstank.machinetype=Dissolution Tank
+gtnhlanth.tt.disstank.info1=Input Water and Fluid, output Fluid
+gtnhlanth.tt.disstank.info2=Fluids must be input in the exact ratio as listed in NEI
+
+# Target Chamber
+gtnhlanth.tt.tc.machinetype=Collision Chamber
+gtnhlanth.tt.tc.info1=Engraves Wafers with §dParticle Beams§7 and §aMasks
+gtnhlanth.tt.tc.info2=§aMasks§7 have limited durability, degrading by 1 with each engraving
+gtnhlanth.tt.tc.info3=NEI shows the required §dparticle type§7, minimum §bEU/t
+gtnhlanth.tt.tc.info4=minimum §cBeam Focus§7, minimum §6Beam Rate§7(Amount), and required §9Beam Energy Range
+gtnhlanth.tt.tc.info5=The incoming §dBeam§7 must be within the required §9Energy Range§7, be the correct §dparticle type
+gtnhlanth.tt.tc.info6=and have sufficient §cFocus§7 and §6Rate
+gtnhlanth.tt.tc.info7=§fProcessing Time§7 is determined solely by the §eBeam Rate
+gtnhlanth.tt.tc.info8=§fProcessing Time = 5 seconds * §6Minimum Required Rate§f / §eInput Beam Rate
+gtnhlanth.tt.tc.info9=Can process up to the durability of all §aMask's§7 in the Focus Input Bus of one type per game tick
+gtnhlanth.tt.tc.focusinputbus=Focus Input Bus
+gtnhlanth.tt.tc.beamlineinputhatch=Beamline Input Hatch
+
 GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
 GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!

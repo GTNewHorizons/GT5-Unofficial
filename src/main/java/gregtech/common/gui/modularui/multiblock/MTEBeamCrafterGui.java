@@ -60,9 +60,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-
-        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
 
         IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
         IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);
