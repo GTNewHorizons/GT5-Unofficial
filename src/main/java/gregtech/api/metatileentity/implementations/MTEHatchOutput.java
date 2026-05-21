@@ -299,10 +299,13 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         if (lock) {
             if (!isFluidLocked()) {
                 mMode = 9;
-                markDirty();
             }
-        } else if (isFluidLocked()) {
-            mMode = 0;
+            Fluid fluid = mFluid == null ? null : mFluid.getFluid();
+            setLockedFluid(lockedFluid == null ? fluid : lockedFluid);
+        } else {
+            if (isFluidLocked()) {
+                mMode = 0;
+            }
             setLockedFluid(null);
         }
     }
