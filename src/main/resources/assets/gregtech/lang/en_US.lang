@@ -1893,6 +1893,7 @@ gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
 gt.recipe.cuttingsaw.description=Slice'N Dice
+gt.recipe.fakecuttingsaw=Cutting Machine
 gt.recipe.distillery=Distillery
 gt.recipe.distillery.description=Extracting the most relevant Parts of Fluids
 gt.recipe.furnace=Furnace
@@ -3471,6 +3472,7 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
+GT5U.nei.cutter_fluids_warning=§cRecipe time depends on fluid
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)

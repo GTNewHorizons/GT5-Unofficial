@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -50,6 +51,7 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -127,6 +129,25 @@ public class NEIGTConfig implements IConfigureNEI {
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
 
         API.addRecipeCatalyst(new ItemStack(Items.cauldron), RecipeMaps.cauldronRecipe.unlocalizedName);
+
+        for (ItemList item : Arrays.asList(
+            ItemList.Machine_LV_Cutter,
+            ItemList.Machine_MV_Cutter,
+            ItemList.Machine_HV_Cutter,
+            ItemList.Machine_EV_Cutter,
+            ItemList.Machine_IV_Cutter,
+            ItemList.CuttingMachineLuV,
+            ItemList.CuttingMachineZPM,
+            ItemList.CuttingMachineUV,
+            ItemList.CuttingMachineUHV,
+            ItemList.CuttingMachineUEV,
+            ItemList.CuttingMachineUIV,
+            ItemList.CuttingMachineUMV)) {
+            API.addRecipeCatalyst(item.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
+        }
+        API.addRecipeCatalyst(
+            GregtechItemList.Industrial_CuttingFactoryController.get(1),
+            RecipeMaps.cutterFakeRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
