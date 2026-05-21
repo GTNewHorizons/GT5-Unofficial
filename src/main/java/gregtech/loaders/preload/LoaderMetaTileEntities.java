@@ -166,6 +166,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialChisel;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCokeOven;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
@@ -841,6 +842,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeThermalRefinery.ID,
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Large Thermal Refinery").getStackForm(1));
+
+        ItemList.IndustrialPrinter.set(
+            new MTEIndustrialChisel(IndustrialPrinter.ID, "multimachine.adv.chisel", "Industrial 3D Copying Machine")
+                .getStackForm(1L));
 
         ItemList.IndustrialForgeHammer.set(
             new MTEIndustrialForgeHammer(
