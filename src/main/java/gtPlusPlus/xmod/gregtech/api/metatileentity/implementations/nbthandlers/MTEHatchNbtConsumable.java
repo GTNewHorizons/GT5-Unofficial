@@ -76,7 +76,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
 
         // Make hasInventoryBeenModified return true

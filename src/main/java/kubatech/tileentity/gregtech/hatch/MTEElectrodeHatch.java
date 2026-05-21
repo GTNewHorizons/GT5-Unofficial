@@ -55,7 +55,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         hasBeenUpdated = true;
     }
 
