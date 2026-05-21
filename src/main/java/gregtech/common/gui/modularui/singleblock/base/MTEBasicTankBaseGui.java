@@ -21,10 +21,8 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTEMachineWithF
             .childPadding(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.childIf(
-            supportsFluidIOColumn(),
-            () -> createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
+        mainRow.child(createScreen(panel, syncManager, machine.getFluidTank()));
+        mainRow.child(createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
         mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
