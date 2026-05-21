@@ -1750,6 +1750,10 @@ public enum ItemList implements IItemContainer {
     SuperconductivePlasmaEnergyConduit,
     ElectromagneticallyIsolatedCasing,
     FineStructureConstantManipulator,
+    ConflictInducementCasing,
+    PeaceEnforcementCasing,
+    CondensateTransformativeCoil,
+    CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
     MobRep_LV,
@@ -2855,6 +2859,7 @@ public enum ItemList implements IItemContainer {
     IndustrialBendingMachine,
     IndustrialPrinter,
     IndustrialForgeHammer,
+    DroneCentre,
     Boldarnator,
     ThermalBoiler,
     MolecularTransformer,

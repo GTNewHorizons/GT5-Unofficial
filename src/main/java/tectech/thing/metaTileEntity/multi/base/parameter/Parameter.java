@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
 public abstract class Parameter<T> {
@@ -60,9 +61,8 @@ public abstract class Parameter<T> {
         return max.get();
     }
 
-    public Parameter<T> disableGui() {
+    public void disableGui() {
         this.showInGui = false;
-        return this;
     }
 
     public abstract void saveNBT(NBTTagCompound tag);
@@ -87,4 +87,8 @@ public abstract class Parameter<T> {
     }
 
     public abstract SyncHandler createSyncHandler();
+
+    public void registerSyncValue(PanelSyncManager syncManager) {
+        syncManager.syncValue(getNbtKey(), createSyncHandler());
+    }
 }

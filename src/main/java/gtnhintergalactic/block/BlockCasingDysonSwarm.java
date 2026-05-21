@@ -60,7 +60,7 @@ public class BlockCasingDysonSwarm extends Block {
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List variants) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> variants) {
         for (int i = 0; i < names.length; i++) {
             variants.add(new ItemStack(item, 1, i));
         }
