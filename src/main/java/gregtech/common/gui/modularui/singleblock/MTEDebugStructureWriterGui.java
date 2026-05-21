@@ -130,52 +130,6 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
         return textColumn;
     }
 
-    @Override
-    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose);
-        BooleanSyncValue showHighlightBoxSyncer = new BooleanSyncValue(
-            machine::getShowHighlightBox,
-            machine::setShowHighlightBox);
-
-        Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
-
-        // button for printing
-        row.child(
-            new com.cleanroommc.modularui.widgets.ButtonWidget<>()
-                .syncHandler(
-                    new InteractionSyncHandler().setOnMousePressed(
-                        mouseData -> {
-                            if (baseMetaTileEntity.isServerSide()) machine.printStructure(MCHelper.getPlayer());
-                        }))
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
-                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.print.tooltip"))));
-
-        // button for copying to clipboard
-        row.child(
-            new com.cleanroommc.modularui.widgets.ButtonWidget<>()
-                .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-                    if (!baseMetaTileEntity.isServerSide()) {
-                        GuiScreen.setClipboardString(machine.getPseudoJavaCode());
-                    }
-                }))
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_COPY)
-                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.copy.tooltip"))));
-
-        // button for toggling transpose
-        row.child(
-            new ToggleButton().value(transposeSyncer)
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
-                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.transpose.tooltip"))));
-
-        // button for toggling the bounding box
-        row.child(
-            new ToggleButton().value(showHighlightBoxSyncer)
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX)
-                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.highlight.tooltip"))));
-
-        return row;
-    }
-
     private void createAddButtonTooltip(RichTooltip t, boolean isOriginColumn, String axis) {
         t.addLine(
             EnumChatFormatting.GREEN + "(Shift) "
@@ -263,6 +217,52 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
         }
 
         numberSyncer.setIntValue(changedNumber);
+    }
+
+    @Override
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose);
+        BooleanSyncValue showHighlightBoxSyncer = new BooleanSyncValue(
+            machine::getShowHighlightBox,
+            machine::setShowHighlightBox);
+
+        Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
+
+        // button for printing
+        row.child(
+            new com.cleanroommc.modularui.widgets.ButtonWidget<>()
+                .syncHandler(
+                    new InteractionSyncHandler().setOnMousePressed(
+                        mouseData -> {
+                            if (baseMetaTileEntity.isServerSide()) machine.printStructure(MCHelper.getPlayer());
+                        }))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
+                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.print.tooltip"))));
+
+        // button for copying to clipboard
+        row.child(
+            new com.cleanroommc.modularui.widgets.ButtonWidget<>()
+                .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                    if (!baseMetaTileEntity.isServerSide()) {
+                        GuiScreen.setClipboardString(machine.getPseudoJavaCode());
+                    }
+                }))
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_COPY)
+                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.copy.tooltip"))));
+
+        // button for toggling transpose
+        row.child(
+            new ToggleButton().value(transposeSyncer)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
+                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.transpose.tooltip"))));
+
+        // button for toggling the bounding box
+        row.child(
+            new ToggleButton().value(showHighlightBoxSyncer)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX)
+                .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.highlight.tooltip"))));
+
+        return row;
     }
 
     @Override
