@@ -121,7 +121,7 @@ public class TurbineFuelDumper extends DataDumper {
             if (fluid == null) continue;
             String name = fluid.getFluid()
                 .getLocalizedName(fluid);
-            double euL = recipe.mSpecialValue * 1000.0;
+            double euL = recipe.mSpecialValue;
             Boolean xlgt = hasXlgt ? !isBenzene(fluid) : null;
             entries.add(new FuelEntry(name, euL, xlgt));
         }
