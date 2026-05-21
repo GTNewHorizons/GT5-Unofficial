@@ -200,15 +200,4 @@ public class MTEHatchInput extends MTEHatch {
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatNumber(getCapacity()));
     }
-
-    /**
-     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
-     * needs to drain a different amount than {@code fluid.amount}.
-     */
-    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
-        if (getFluid() != null && fluid != null && getFluid().isFluidEqual(fluid)) {
-            return drain(amount, doDrain);
-        }
-        return null;
-    }
 }
