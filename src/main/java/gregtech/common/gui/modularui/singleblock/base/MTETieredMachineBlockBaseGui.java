@@ -268,7 +268,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected ToggleButton createPowerSwitchButton() {
-        return CommonButtons.createSmallPowerSwitchButton("powerSwitch", baseMetaTileEntity)
+        return CommonButtons.createSmallPowerSwitchButton("powerSwitch")
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY);

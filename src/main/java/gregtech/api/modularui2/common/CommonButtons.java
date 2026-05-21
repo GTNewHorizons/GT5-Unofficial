@@ -95,28 +95,10 @@ public final class CommonButtons {
     /**
      * Returns a small, 12x12 power toggle button with the syncKey
      *
-     * @param syncValue          - unsynced BooleanSyncValue
-     * @param baseMetaTileEntity - base MTE of machine
+     * @param syncKey - key of synced value
      * @return synced power button
      */
-    public static ToggleButton createSmallPowerSwitchButton(BooleanSyncValue syncValue,
-        IGregTechTileEntity baseMetaTileEntity) {
-        return new ToggleButton().value(syncValue)
-            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.gui.button.power_switch")))
-            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON)
-            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_OFF)
-            .size(12)
-            .excludeAreaInRecipeViewer(true);
-    }
-
-    /**
-     * Returns a small, 12x12 power toggle button with the syncKey
-     *
-     * @param syncKey            - key of synced value
-     * @param baseMetaTileEntity - base MTE of machine
-     * @return synced power button
-     */
-    public static ToggleButton createSmallPowerSwitchButton(String syncKey, IGregTechTileEntity baseMetaTileEntity) {
+    public static ToggleButton createSmallPowerSwitchButton(String syncKey) {
         return new ToggleButton().syncHandler(syncKey)
             .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.gui.button.power_switch")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON)
@@ -143,25 +125,6 @@ public final class CommonButtons {
     public static ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture overlay, String key) {
         return new ToggleButton().value(syncValue)
             .overlay(overlay)
-            .addTooltipLine(GTUtility.translate(key))
-            .tooltipShowUpTimer(TOOLTIP_DELAY);
-    }
-
-    /**
-     * Creates a standard toggle button with distinct overlay textures for its selected and unselected states,
-     * and a localized static tooltip.
-     *
-     * @param syncValue         The unsynced boolean value handling the toggle state.
-     * @param selectedOverlay   The texture to display when the button is toggled on (true).
-     * @param unselectedOverlay The texture to display when the button is toggled off (false).
-     * @param key               The translation key used to generate the tooltip text.
-     * @return A configured {@link ToggleButton} with a static tooltip and a standard delay.
-     */
-    public static ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture selectedOverlay,
-        UITexture unselectedOverlay, String key) {
-        return new ToggleButton().value(syncValue)
-            .overlay(true, selectedOverlay)
-            .overlay(false, unselectedOverlay)
             .addTooltipLine(GTUtility.translate(key))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
