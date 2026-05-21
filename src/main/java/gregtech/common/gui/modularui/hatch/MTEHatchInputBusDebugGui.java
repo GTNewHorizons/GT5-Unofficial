@@ -10,8 +10,8 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDebug> {
 
@@ -23,7 +23,7 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.phantomHolder, syncManager).size(4)
-                .overrideItemSlot(PhantomItemSlot.class)
+                .itemSlotSupplier(PhantomItemSlot::new)
                 .canTake(false)
                 .build()
                 .center());

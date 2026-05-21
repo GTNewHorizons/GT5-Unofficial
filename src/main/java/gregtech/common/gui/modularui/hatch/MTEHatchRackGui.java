@@ -13,9 +13,9 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.RackSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
 
 public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
@@ -78,8 +78,9 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         // input slots
         parent.child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
-                .slotModifier(itemSlot -> itemSlot.backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
-                .overrideItemSlot(RackSlot.class, isActiveSyncer, heatSyncer)
+                .itemSlotSupplier(
+                    () -> new RackSlot(isActiveSyncer, heatSyncer)
+                        .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
                 .filter(
                     itemStack -> machine.isValidItem(itemStack) && !isActiveSyncer.getBoolValue()
                         && heatSyncer.getIntValue() <= 0)

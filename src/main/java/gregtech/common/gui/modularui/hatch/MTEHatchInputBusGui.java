@@ -10,9 +10,9 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 

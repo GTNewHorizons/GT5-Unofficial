@@ -18,9 +18,9 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTERegulator;
 
 public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
@@ -83,9 +83,8 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
                 .indexOffset(9)
                 .hasSlotGroup(false)
-                .overrideItemSlot(PhantomItemSlot.class)
-                .slotModifier(
-                    itemSlot -> itemSlot.disableThemeBackground(true)
+                .itemSlotSupplier(
+                    () -> new PhantomItemSlot().disableThemeBackground(true)
                         .disableHoverThemeBackground(true))
                 .build()
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));

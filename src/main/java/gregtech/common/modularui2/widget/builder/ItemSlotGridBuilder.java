@@ -1,8 +1,7 @@
 package gregtech.common.modularui2.widget.builder;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
@@ -40,8 +39,7 @@ public class ItemSlotGridBuilder {
     @NotNull
     private Predicate<ItemStack> filter = $ -> true;
     @NotNull
-    private UnaryOperator<ItemSlot> slotModifier = UnaryOperator.identity();
-    private Class<? extends ItemSlot> itemSlotOverride;
+    private Supplier<? extends ItemSlot> itemSlotSupplier = ItemSlot::new;
     private Object[] overrideParameters;
 
     /**
@@ -157,37 +155,8 @@ public class ItemSlotGridBuilder {
         return this;
     }
 
-    /**
-     * Applies a custom modifier function to every {@link ItemSlot} after it has been instantiated
-     * and configured, but right before it is added to the layout grid.
-     * <p>
-     * Example: Change the background overlay of the slot
-     *
-     * <pre>
-     *     {@code slotModifier(itemSlot -> itemSlot.backgroundOverlay(<texture>))}
-     * </pre>
-     *
-     * @param slotModifier A unary operator to modify or wrap the slot. Defaults to {@code UnaryOperator.identity()}
-     *                     which does not modify the item slot.
-     * @return This builder instance for method chaining.
-     */
-    public ItemSlotGridBuilder slotModifier(@NotNull UnaryOperator<ItemSlot> slotModifier) {
-        this.slotModifier = slotModifier;
-        return this;
-    }
-
-    /**
-     * Overrides the default {@link ItemSlot} implementation with a custom subclass.
-     * The custom slot class will be instantiated dynamically via reflection during the build process.
-     *
-     * @param itemSlotOverride   The {@link Class} of the custom item slot.
-     * @param overrideParameters The arguments to pass directly to the custom slot's constructor.
-     * @return This builder instance for method chaining.
-     */
-    public ItemSlotGridBuilder overrideItemSlot(Class<? extends ItemSlot> itemSlotOverride,
-        Object... overrideParameters) {
-        this.itemSlotOverride = itemSlotOverride;
-        this.overrideParameters = overrideParameters;
+    public ItemSlotGridBuilder itemSlotSupplier(@NotNull Supplier<? extends ItemSlot> itemSlotSupplier) {
+        this.itemSlotSupplier = itemSlotSupplier;
         return this;
     }
 
@@ -209,20 +178,8 @@ public class ItemSlotGridBuilder {
                     modularSlot.slotGroup(slotGroupKey);
                 }
 
-                ItemSlot itemSlot = new ItemSlot();
-                if (itemSlotOverride != null) {
-                    try {
-                        itemSlot = itemSlotOverride.getConstructor(
-                            Arrays.stream(overrideParameters)
-                                .map(Object::getClass)
-                                .toArray(Class[]::new))
-                            .newInstance(overrideParameters);
-                    } catch (Exception e) {
-                        throw new RuntimeException("An error occurred: " + e);
-                    }
-                }
-
-                return slotModifier.apply(itemSlot.slot(modularSlot));
+                return itemSlotSupplier.get()
+                    .slot(modularSlot);
             });
     }
 }

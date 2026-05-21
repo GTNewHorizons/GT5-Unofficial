@@ -35,12 +35,12 @@ import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.adapter.MTEHatchInputBusMESlotAdapter;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.StockingSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME.Slot;
 
@@ -130,7 +130,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         return new ItemSlotGridBuilder(configItemHandler, syncManager).size(FILTER_SLOT_PER_ROW, FILTER_SLOT_ROW)
             .slotGroupKey(FILTER_INV_NAME)
             .filter(is -> doesNotContainsSuchStack(is) && !isAutoPullSyncer.getBoolValue())
-            .overrideItemSlot(StockingSlot.class, isAutoPullSyncer)
+            .itemSlotSupplier(() -> new StockingSlot(isAutoPullSyncer))
             .build();
     }
 
@@ -145,7 +145,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .slotGroupKey(STOCK_INV_NAME)
             .indexOffset(SLOT_COUNT)
             .accessibility(false, false)
-            .slotModifier(itemSlot -> itemSlot.backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
+            .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
             .build();
     }
 

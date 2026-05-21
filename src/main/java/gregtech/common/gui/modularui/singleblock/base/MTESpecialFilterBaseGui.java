@@ -16,8 +16,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.modularui2.common.CommonButtons;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import xyz.wagyourtail.jvmdg.util.Pair;
 
 public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extends MTEFilterBaseGui<T> {

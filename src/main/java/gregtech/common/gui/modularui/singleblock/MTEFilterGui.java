@@ -15,9 +15,9 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTEFilter;
 import xyz.wagyourtail.jvmdg.util.Pair;
 

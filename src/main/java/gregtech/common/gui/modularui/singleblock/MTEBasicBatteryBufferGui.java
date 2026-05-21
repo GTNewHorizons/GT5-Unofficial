@@ -5,8 +5,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEBasicBatteryBufferGui extends MTETieredMachineBlockBaseGui<MTEBasicBatteryBuffer> {
 

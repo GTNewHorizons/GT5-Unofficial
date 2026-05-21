@@ -3,12 +3,13 @@ package gregtech.common.gui.modularui.hatch;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
 
@@ -22,7 +23,7 @@ public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(machine.mTier == 4 ? 2 : 4)
                 .slotGroupKey("data_inv")
                 .filter(itemStack -> ItemList.Tool_DataStick.isStackEqual(itemStack, false, true))
-                .slotModifier(itemSlot -> itemSlot.backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CIRCUIT))
+                .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CIRCUIT))
                 .build()
                 .center());
     }

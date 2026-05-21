@@ -8,9 +8,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.CapacitorSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.util.TTUtility;
 
@@ -30,8 +30,8 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
                 .filter(
                     itemStack -> !isActive.getBoolValue()
                         && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack)))
-                .slotModifier(itemSlot -> itemSlot.backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
-                .overrideItemSlot(CapacitorSlot.class, isActive)
+                .itemSlotSupplier(
+                    () -> new CapacitorSlot(isActive).backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
                 .build()
                 .center());
     }

@@ -4,9 +4,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 
-import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.PatternSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 
 public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternProvider> {
@@ -33,7 +33,7 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(ROW_SIZE, numRows())
                 .slotGroupKey(PATTERN_INV_NAME)
                 .filter(machine::isValidPattern)
-                .overrideItemSlot(PatternSlot.class)
+                .itemSlotSupplier(PatternSlot::new)
                 .build()
                 .horizontalCenter());
     }
