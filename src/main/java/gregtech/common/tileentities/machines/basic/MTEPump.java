@@ -19,26 +19,30 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.misc.DrillingLogicDelegate;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -153,24 +157,21 @@ public class MTEPump extends MTEBasicMachine {
         return new MTEPump(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("pump", GTUITextures.PROGRESSBAR_CANNER);
-
     @Override
     protected BasicUIProperties getUIProperties() {
         return BasicUIProperties.builder()
             .maxItemInputs(2)
             .maxItemOutputs(2)
-            .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
+            .slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
                 if (!isFluid && !isOutput && !isSpecial) {
-                    return GTUITextures.OVERLAY_SLOT_MINING_PIPE;
+                    return GTGuiTextures.OVERLAY_SLOT_MINING_PIPE;
                 } else {
                     return null;
                 }
             })
             .maxFluidInputs(0)
             .maxFluidOutputs(1)
-            .progressBarTexture(progressBarTexture)
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_CANNER)
             .build();
     }
 
@@ -850,4 +851,14 @@ public class MTEPump extends MTEBasicMachine {
         return SoundResource.GTCEU_LOOP_PUMP;
     }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

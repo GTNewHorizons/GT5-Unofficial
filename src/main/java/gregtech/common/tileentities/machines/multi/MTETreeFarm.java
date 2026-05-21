@@ -5,12 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -75,6 +73,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -188,13 +187,15 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 8 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mEnergyHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 8);
+        checkHasMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -304,14 +305,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                 .addElement(
                     'C',
                     buildHatchAdder(MTETreeFarm.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(MultiAmpEnergy),
-                            Muffler)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy), Muffler)
                         .casingIndex(Casings.SterileFarmCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SterileFarmCasing.asElement())))
@@ -798,10 +792,10 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
         ItemStack fruit) {
         String key = "Forestry:sapling:" + speciesUID;
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
-        map.put(Mode.LOG, log);
-        map.put(Mode.SAPLING, sapling);
-        map.put(Mode.LEAVES, leaves);
-        map.put(Mode.FRUIT, fruit);
+        if (log != null) map.put(Mode.LOG, log);
+        if (sapling != null) map.put(Mode.SAPLING, sapling);
+        if (leaves != null) map.put(Mode.LEAVES, leaves);
+        if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
 
         // In the NEI recipe we want to display outputs adjusted for the default genetics of this tree type.

@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +22,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -29,6 +32,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -231,19 +237,40 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check self, last known tier first.
         checkFactories();
+        mCoolantInputHatch = null;
 
-        if (checkPiece(isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2, 2, 9, 0))
-            return true;
-        else {
-            if (checkPiece(!isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2, 2, 9, 0)) {
-                isTier1 = false;
-                return true;
-            }
+        if (checkPiece(
+            isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2,
+            2,
+            9,
+            0,
+            errors)) {
+            checkHasCoolantInputHatch(errors);
+            return;
         }
-        return false;
+        errors.clear();
+        mCoolantInputHatch = null;
+        if (checkPiece(
+            !isTier1 ? STRUCTURE_PIECE_COOLING_TOWER_T1 : STRUCTURE_PIECE_COOLING_TOWER_T2,
+            2,
+            9,
+            0,
+            errors)) {
+            isTier1 = !isTier1;
+            checkHasCoolantInputHatch(errors);
+            return;
+        }
+        errors.clear();
+        errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+    }
+
+    private void checkHasCoolantInputHatch(List<StructureError> errors) {
+        if (mCoolantInputHatch == null) {
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
+        }
     }
 
     @Override

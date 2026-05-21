@@ -17,6 +17,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,6 +43,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -385,14 +387,14 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        // NOTE: the proper way to do this is to override clearHatches
         this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
-
-        return checkPiece("sc", 2, 4, 0) && this.mMaintenanceHatches.size() == 1
-            && (this.mInputBusses.size() == 1 || this.mInputHatches.size() == 1)
-            && this.mOutputBusses.size() == 1
-            && this.mOutputBeamline.size() == 1
-            && this.mEnergyHatches.size() == 1;
+        if (!checkPiece("sc", 2, 4, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHatchExact(errors, OutputBus, 1);
+        checkOneEnergyHatch(errors);
     }
 
     @Override

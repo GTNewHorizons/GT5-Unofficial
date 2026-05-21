@@ -1,5 +1,10 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.OrePrefixes.___placeholder___;
+
+import java.util.Arrays;
+
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -11,15 +16,22 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
+
+    // Offset from WerkstoffMaterialPool
+    private static final int OFFSET_ID_3 = 11_300;
+    private static final int[] WERKSTOFFS_REMOVED_IN_2_9 = new int[] { OFFSET_ID_3, OFFSET_ID_3 + 2, OFFSET_ID_3 + 6,
+        OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
 
     @Override
     public void run() {
         registerFrameboxTransformers();
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
+        registerPTMEGTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -98,5 +110,42 @@ public class PosteaTransformers implements Runnable {
             "dreamcraft:item.PotassiumHydroxideDust",
             Materials.PotassiumHydroxide.getDust(1),
             true); // FML Warning suppression in coremod
+    }
+
+    private void registerPTMEGTransformers() {
+        removeWerkstoffMetaGeneratedItems();
+        removeWerkstoffItems("bartworks:bw.werkstoffblocks.01");
+        removeWerkstoffTileEntities();
+    }
+
+    private static void removeWerkstoffMetaGeneratedItems() {
+        String placeholderName = ___placeholder___.getName();
+        Arrays.stream(OrePrefixes.VALUES)
+            .map(OrePrefixes::getName)
+            .filter(prefix -> !placeholderName.equals(prefix))
+            .map(prefix -> String.format("bartworks:gt.bwMetaGenerated%s", prefix))
+            .forEach(PosteaTransformers::removeWerkstoffItems);
+    }
+
+    private static void removeWerkstoffItems(String originalId) {
+        for (int removedWerkstoff : WERKSTOFFS_REMOVED_IN_2_9) {
+            ItemStackReplacementManager
+                .addSimpleReplacement(originalId, removedWerkstoff, Item.getItemFromBlock(Blocks.dirt), 0);
+        }
+    }
+
+    private static void removeWerkstoffTileEntities() {
+        TileEntityReplacementManager.tileEntityTransformer(
+            "bw.werkstoffblockTE",
+            (nbt, world, chunk) -> isWerkstoffRemoved(nbt.getShort("m")) ? new BlockInfo(Blocks.dirt, 0) : null);
+    }
+
+    private static boolean isWerkstoffRemoved(short meta) {
+        for (int j : WERKSTOFFS_REMOVED_IN_2_9) {
+            if (j == meta) {
+                return true;
+            }
+        }
+        return false;
     }
 }
