@@ -93,6 +93,8 @@ kubatech.gui.text.mia.primary_mode=Primary mode
 kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
 kubatech.gui.text.mia.secondary_mode=Secondary mode
+kubatech.gui.text.mia.show_bee_inventory=Show Bee Inventory
+kubatech.gui.text.mia.show_machine_status=Show Machine Status
 
 kubatech.gui.tooltip.contributors.added=Added by %s
 kubatech.gui.tooltip.contributors.design=Designed by %s
