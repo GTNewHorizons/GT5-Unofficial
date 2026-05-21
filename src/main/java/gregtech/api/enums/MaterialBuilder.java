@@ -220,6 +220,11 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setMiningLevel(int level) {
+        this.toolQuality = level;
+        return this;
+    }
+
     public MaterialBuilder setToolEnchantment(Supplier<Enchantment> enchantment, int level) {
         this.pendingToolEnchantment = enchantment;
         this.toolEnchantmentLevel = level;
