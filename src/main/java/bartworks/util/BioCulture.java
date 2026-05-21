@@ -20,11 +20,11 @@ import java.util.Objects;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
@@ -36,11 +36,9 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                                                                                                      // also Blue =)
 
     public String getLocalisedName() {
-        return GTLanguageManager.getTranslation(this.getName());
-    }
-
-    public void setLocalisedName(String localisedName) {
-        GTLanguageManager.addStringLocalization(this.getName(), localisedName);
+        return StatCollector.translateToLocal(
+            "bw.bioname." + getName().toLowerCase()
+                .replace(" ", "_"));
     }
 
     Color color;
