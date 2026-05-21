@@ -36,25 +36,24 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
 
             if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+                SubstituteFluidStack water = new SubstituteFluidStack(
+                    Materials.Water.getFluid(
+                        Math.max(
+                            4,
+                            Math.min(
+                                1000,
+                                ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4) / 320))),
+                    GTModHandler.getDistilledWater(
+                        Math.max(
+                            3,
+                            Math.min(
+                                750,
+                                ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4) / 426))));
+
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
-                    .fluidInputs(
-                        new SubstituteFluidStack(
-                            Materials.Water.getFluid(
-                                Math.max(
-                                    4,
-                                    Math.min(
-                                        1000,
-                                        ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                            / 320)))),
-                        GTModHandler.getDistilledWater(
-                            Math.max(
-                                3,
-                                Math.min(
-                                    750,
-                                    ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                        / 426))))
+                    .fluidInputs(water)
                     .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);
