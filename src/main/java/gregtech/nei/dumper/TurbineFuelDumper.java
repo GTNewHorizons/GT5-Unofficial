@@ -1,13 +1,16 @@
 package gregtech.nei.dumper;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import codechicken.nei.config.DataDumper;
 import gregtech.api.enums.Materials;
@@ -129,34 +132,20 @@ public class TurbineFuelDumper extends DataDumper {
     }
 
     private static void dumpJson(File file, List<FuelGroup> groups) throws IOException {
-        try (PrintWriter w = new PrintWriter(file)) {
-            w.println("{");
-            List<String> lines = new ArrayList<>();
-            for (int gi = 0; gi < groups.size(); gi++) {
-                FuelGroup group = groups.get(gi);
-                boolean lastGroup = gi == groups.size() - 1;
-                w.printf("  %s: [%n", DumperUtils.jsonString(group.label));
-                lines.clear();
-                for (FuelEntry entry : group.entries) {
-                    if (entry.xlgt != null) {
-                        lines.add(
-                            String.format(
-                                "    {\"name\": %s, \"eu_l\": %s, \"xlgt\": %b}",
-                                DumperUtils.jsonString(entry.name),
-                                DumperUtils.formatDouble(entry.euL),
-                                entry.xlgt));
-                    } else {
-                        lines.add(
-                            String.format(
-                                "    {\"name\": %s, \"eu_l\": %s}",
-                                DumperUtils.jsonString(entry.name),
-                                DumperUtils.formatDouble(entry.euL)));
-                    }
-                }
-                DumperUtils.printLines(w, lines);
-                w.println(lastGroup ? "  ]" : "  ],");
+        JsonObject root = new JsonObject();
+        for (FuelGroup group : groups) {
+            JsonArray arr = new JsonArray();
+            for (FuelEntry entry : group.entries) {
+                JsonObject obj = new JsonObject();
+                obj.addProperty("name", entry.name);
+                obj.addProperty("eu_l", entry.euL);
+                if (entry.xlgt != null) obj.addProperty("xlgt", entry.xlgt);
+                arr.add(obj);
             }
-            w.println("}");
+            root.add(group.label, arr);
+        }
+        try (FileWriter w = new FileWriter(file)) {
+            DumperUtils.GSON.toJson(root, w);
         }
     }
 
