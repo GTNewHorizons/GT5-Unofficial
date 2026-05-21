@@ -48,7 +48,7 @@ import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
 import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
 import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
@@ -379,7 +379,7 @@ public class ItemRegistry {
             LegacyMegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
+        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
             LegacyMegaVacuumFreezer.ID,
             "MegaVacuumFreezer",
             StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
