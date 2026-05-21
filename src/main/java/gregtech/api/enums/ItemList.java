@@ -1750,6 +1750,10 @@ public enum ItemList implements IItemContainer {
     SuperconductivePlasmaEnergyConduit,
     ElectromagneticallyIsolatedCasing,
     FineStructureConstantManipulator,
+    ConflictInducementCasing,
+    PeaceEnforcementCasing,
+    CondensateTransformativeCoil,
+    CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
     MobRep_LV,
