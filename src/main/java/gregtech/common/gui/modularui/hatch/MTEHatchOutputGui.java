@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -38,15 +39,17 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
             .childPadding(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager));
-        mainRow.childIf(supportsFluidIOColumn(), () -> createIO(panel, syncManager));
+        mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager, machine.getFluidTank()));
+        mainRow.childIf(
+            supportsFluidIOColumn(),
+            () -> createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
         mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override
-    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
 
         FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());

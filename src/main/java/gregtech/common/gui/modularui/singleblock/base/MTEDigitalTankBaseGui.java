@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraftforge.fluids.IFluidTank;
+
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -60,8 +62,8 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
     }
 
     @Override
-    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
-        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
+        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(fluidTank);
         fluidSlotSH.setChangeListener(machine::setLockIfEmpty);
 
         return new FluidSlot().syncHandler(fluidSlotSH)
