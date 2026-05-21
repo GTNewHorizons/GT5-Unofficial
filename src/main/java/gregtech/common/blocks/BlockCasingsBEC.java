@@ -16,8 +16,8 @@ public class BlockCasingsBEC extends BlockCasingsAbstract {
         register(0, ItemList.SuperconductivePlasmaEnergyConduit, translatedText("gt.blockcasings.bec.0.tooltip"));
         register(1, ItemList.ElectromagneticallyIsolatedCasing, translatedText("gt.blockcasings.bec.1.tooltip"));
         register(2, ItemList.FineStructureConstantManipulator, translatedText("gt.blockcasings.bec.2.tooltip"));
-        register(3, ItemList.ConflictInducerCasing, translatedText("gt.blockcasings.bec.3.tooltip"));
-        register(4, ItemList.PeaceInhibitorCasing, translatedText("gt.blockcasings.bec.4.tooltip"));
+        register(3, ItemList.ConflictInducementCasing, translatedText("gt.blockcasings.bec.3.tooltip"));
+        register(4, ItemList.PeaceEnforcementCasing, translatedText("gt.blockcasings.bec.4.tooltip"));
         register(5, ItemList.CondensateTransformativeCoil, translatedText("gt.blockcasings.bec.5.tooltip"));
         register(6, ItemList.CondensateGuidanceCoil, translatedText("gt.blockcasings.bec.6.tooltip"));
     }

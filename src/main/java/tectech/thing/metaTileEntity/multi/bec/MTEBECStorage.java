@@ -2,11 +2,11 @@ package tectech.thing.metaTileEntity.multi.bec;
 
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
-import static gregtech.api.casing.Casings.ConflictInducerCasing;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
-import static gregtech.api.casing.Casings.PeaceInhibitorCasing;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -110,8 +110,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
-        structure.addCasing('D', ConflictInducerCasing);
-        structure.addCasing('E', PeaceInhibitorCasing);
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
         structure.addCasing('F', CondensateTransformativeCoil);
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
@@ -162,8 +162,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 SuperconductivePlasmaEnergyConduit,
                 ElectromagneticallyIsolatedCasing,
                 FineStructureConstantManipulator,
-                ConflictInducerCasing,
-                PeaceInhibitorCasing,
+                ConflictInducementCasing,
+                PeaceEnforcementCasing,
                 CondensateTransformativeCoil,
                 CondensateGuidanceCoil,
                 ElectromagneticWaveguide),

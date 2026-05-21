@@ -609,9 +609,9 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
     FineStructureConstantManipulator
         (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
-    ConflictInducerCasing
+    ConflictInducementCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 3, gt(17, 0, 3)),
-    PeaceInhibitorCasing
+    PeaceEnforcementCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 4, gt(17, 0, 4)),
     CondensateTransformativeCoil
         (() -> GregTechAPI.sBlockCasingsBEC, 5, gt(17, 0, 5)),

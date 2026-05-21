@@ -7885,8 +7885,8 @@ gt.blockcasings.cyclotron_coils.10.name=UMV Solenoid Superconductor Coil
 gt.blockcasings.bec.0.name=Coherence-Preserving Plasma Conduit
 gt.blockcasings.bec.1.name=Electromagnetically-Isolated Casing
 gt.blockcasings.bec.2.name=Fine-Structure Constant Manipulator
-gt.blockcasings.bec.3.name=Conflict Inducer Casing
-gt.blockcasings.bec.4.name=Peace Inhibitor Casing
+gt.blockcasings.bec.3.name=Conflict Inducement Casing
+gt.blockcasings.bec.4.name=Peace Enforcement Casing
 gt.blockcasings.bec.5.name=Condensate Transformative Coil
 gt.blockcasings.bec.6.name=Condensate Guidance Coil
 
