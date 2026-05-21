@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
 public class FakeCuttingRecipes implements Runnable {
@@ -33,7 +34,7 @@ public class FakeCuttingRecipes implements Runnable {
             if (recipe.mInputs == null) continue;
             if (recipe.mOutputs == null) continue;
 
-            String key = buildGroupingKey(recipe);
+            String key = buildRecipeKey(recipe);
             groups.computeIfAbsent(key, k -> new ArrayList<>())
                 .add(recipe);
         }
@@ -42,57 +43,32 @@ public class FakeCuttingRecipes implements Runnable {
             if (group.isEmpty()) continue;
 
             int maxDuration = 0;
-            GTRecipe base = group.get(0);
+            GTRecipe template = group.get(0);
             List<FluidStack> fluids = new ArrayList<>();
 
             for (GTRecipe recipe : group) {
-                List<FluidStack> candidates = new ArrayList<>();
-
-                if (recipe.mFluidInputs.length > 0 && recipe.mFluidInputs[0] != null) {
-                    candidates.add(recipe.mFluidInputs[0]);
-                }
-
-                if (recipe.mAltFluidInputs != null) {
-                    for (FluidStack[] alt : recipe.mAltFluidInputs) {
-                        Collections.addAll(candidates, alt);
-                    }
-                }
-
-                for (FluidStack candidate : candidates) {
-                    boolean isDuplicate = fluids.stream()
-                        .anyMatch(f -> f.isFluidStackIdentical(candidate));
-
-                    if (!isDuplicate) fluids.add(candidate);
-                }
-
+                mergeFluidVariants(recipe, fluids);
                 maxDuration = Math.max(maxDuration, recipe.mDuration);
             }
 
-            if (fluids.size() <= 1) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(base.mInputs)
-                    .itemOutputs(base.mOutputs)
-                    .fluidInputs(fluids.isEmpty() ? new FluidStack[0] : new FluidStack[] { fluids.get(0) })
-                    .eut(base.mEUt)
-                    .duration(maxDuration)
-                    .fake()
-                    .addTo(cutterFakeRecipes);
-                continue;
+            GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+                .itemInputs(template.mInputs)
+                .itemOutputs(template.mOutputs)
+                .eut(template.mEUt)
+                .duration(maxDuration)
+                .fake();
+
+            if (!fluids.isEmpty()) {
+                builder.fluidInputs(new SubstituteFluidStack(fluids.toArray(new FluidStack[0])));
             }
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(base.mInputs)
-                .itemOutputs(base.mOutputs)
-                .fluidInputs(new SubstituteFluidStack(fluids.toArray(new FluidStack[0])))
-                .eut(base.mEUt)
-                .duration(maxDuration)
-                .fake()
-                .addTo(cutterFakeRecipes);
+            builder.addTo(cutterFakeRecipes);
         }
     }
 
-    private static String buildGroupingKey(GTRecipe recipe) {
+    private static String buildRecipeKey(GTRecipe recipe) {
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < recipe.mInputs.length; i++) {
             sb.append(":IN")
                 .append(i)
@@ -106,6 +82,29 @@ public class FakeCuttingRecipes implements Runnable {
                 .append(':')
                 .append(GTUtility.persistentHash(recipe.mOutputs[i], true, true));
         }
+
         return sb.toString();
+    }
+
+    private void mergeFluidVariants(GTRecipe recipe, List<FluidStack> fluids) {
+
+        List<FluidStack> candidates = new ArrayList<>();
+
+        if (recipe.mFluidInputs.length > 0 && recipe.mFluidInputs[0] != null) {
+            candidates.add(recipe.mFluidInputs[0]);
+        }
+
+        if (recipe.mAltFluidInputs != null) {
+            for (FluidStack[] alt : recipe.mAltFluidInputs) {
+                Collections.addAll(candidates, alt);
+            }
+        }
+
+        for (FluidStack candidate : candidates) {
+            boolean isDuplicate = fluids.stream()
+                .anyMatch(f -> f.isFluidStackIdentical(candidate));
+
+            if (!isDuplicate) fluids.add(candidate);
+        }
     }
 }
