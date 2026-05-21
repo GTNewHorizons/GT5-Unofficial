@@ -1932,6 +1932,15 @@ public class MTERecipeLoader implements Runnable {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
+        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[0]))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
         // Industrial Arc Furnace Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialArcFurnace.get(1),

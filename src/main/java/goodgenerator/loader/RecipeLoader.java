@@ -1368,6 +1368,22 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_HeatProof.get(4),
+                Materials.AshDark.getDust(64),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Netherite, 1L),
+                GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1))
+            .itemOutputs(ItemList.CasingHearth.get(4))
+            .fluidInputs(
+                new FluidStack(GTPPFluids.Pyrotheum, 1_000),
+                Materials.TungstenCarbide.getMolten(2 * INGOTS),
+                Materials.PrismaticNaquadah.getMolten(72))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 
     public static void InitLoadRecipe() {
