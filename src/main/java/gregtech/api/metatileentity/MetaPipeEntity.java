@@ -164,7 +164,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         switch (aConnections) {
-            case NO_CONNECTION -> {
+            case NO_CONNECTION, INVALID_CONNECTION -> {
                 renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
 
                 ctx.renderNegativeYFacing(textureDown);
@@ -651,12 +651,29 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        if (getBaseMetaTileEntity().isClientSide()) {
+            if (aEventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
+                mConnections = aValue;
+            }
+        }
+    }
+
+    @Override
+    public boolean shouldSendInitialClientData() {
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            return pipe.mConnections != INVALID_CONNECTION;
+        }
+        return true;
+    }
+
+    @Override
     public int connect(ForgeDirection side) {
         if (side == ForgeDirection.UNKNOWN) return 0;
 
         final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
+        if (baseMetaTile == null) return 0;
 
         final Cover cover = baseMetaTile.getCoverAtSide(side);
 
@@ -710,6 +727,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private void connectAtSide(ForgeDirection side) {
         mConnections |= side.flag;
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe && pipe.isClientSide()) {
+            pipe.mConnections = mConnections;
+        }
     }
 
     @Override

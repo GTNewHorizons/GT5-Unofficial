@@ -60,7 +60,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     implements IPipeRenderedTileEntity, IDebugableTileEntity {
 
-    public byte mConnections = IConnectable.NO_CONNECTION;
+    public byte mConnections = IConnectable.INVALID_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte oldConnections = 0;
@@ -198,11 +198,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 return;
             }
             if (isServerSide) {
-                if (mTickTimer % 10 == 0) {
-                    sendClientData();
-                }
-
                 if (mTickTimer > 10) {
+                    if (mTickTimer % 10 == 0) {
+                        sendClientData();
+                    }
                     handleConnectionsChangeServer();
                     handleUpdateDataChangeServer();
                     handleColorChangeServer();
@@ -223,9 +222,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     private void updateConnections() {
-        if (mTickTimer <= 12) {
-            return;
-        }
         if (mConnections == mMetaTileEntity.mConnections) {
             return;
         }
@@ -704,7 +700,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             sideDirection,
             tConnections,
             mColor - 1,
-            tConnections == 0 || (tConnections & sideDirection.flag) != 0,
+            tConnections == IConnectable.NO_CONNECTION || tConnections == IConnectable.INVALID_CONNECTION
+                || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
     }
 

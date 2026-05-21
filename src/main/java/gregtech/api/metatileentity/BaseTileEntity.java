@@ -604,7 +604,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void joinEnet() {
-        if (joinedIc2Enet || !shouldJoinIc2Enet()) return;
+        if (!isServerSide() || joinedIc2Enet || !shouldJoinIc2Enet()) return;
 
         if (ic2EnergySink == null) createIc2Sink();
 
