@@ -440,6 +440,10 @@ import static gregtech.common.items.IDMetaItem01.Steam_Valve_IV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_LV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_MV;
 import static gregtech.common.items.IDMetaItem01.SuperconductorComposite;
+import static gregtech.common.items.IDMetaItem01.T1Sawblade;
+import static gregtech.common.items.IDMetaItem01.T2Sawblade;
+import static gregtech.common.items.IDMetaItem01.T3Sawblade;
+import static gregtech.common.items.IDMetaItem01.T4Sawblade;
 import static gregtech.common.items.IDMetaItem01.Tesseract;
 import static gregtech.common.items.IDMetaItem01.Thermos_Can_Empty;
 import static gregtech.common.items.IDMetaItem01.Tool_Cheat;
@@ -550,6 +554,7 @@ import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.render.items.WireFrameTesseractRenderer;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.SawbladeTiers;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -3248,6 +3253,38 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L),
                 OreDictNames.craftingDiamondBlade));
+        ItemList.T1Sawblade.set(
+            addItem(
+                T1Sawblade.ID,
+                $ -> GTUtility.translate("gt.item.t1sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
+        ItemList.T2Sawblade.set(
+            addItem(
+                T2Sawblade.ID,
+                $ -> GTUtility.translate("gt.item.t2sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
+        ItemList.T3Sawblade
+            .set(
+                addItem(
+                    T3Sawblade.ID,
+                    $ -> GTUtility.translate("gt.item.t3sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
+                    new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.T4Sawblade
+            .set(
+                addItem(
+                    T4Sawblade.ID,
+                    $ -> GTUtility.translate("gt.item.t4sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TranscendentMetal),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
+                    new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Component_Grinder_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Diamond.ID,
