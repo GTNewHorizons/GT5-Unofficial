@@ -4,11 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -17,73 +16,45 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
-import codechicken.lib.render.TextureUtils;
-import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.config.Client;
 
-@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
-public class UniversiumRenderer extends GeneratedMaterialRenderer {
+public class UniversiumMetaItemRenderer implements IItemRenderer {
 
-    @Override
-    public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        Item item = aStack.getItem();
-        if (item == null || !Client.render.renderUniversiumFancy) return false;
+    private final IIconContainer mask;
 
-        magicRenderMethod(
-            type,
-            ItemList.Emitter_UEV.get(1), // hack to make it render correctly
-            item.getIconFromDamage(aStack.getItemDamage()),
-            true,
-            data);
-        return true;
+    public UniversiumMetaItemRenderer(IIconContainer mask) {
+        this.mask = mask;
     }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        short aMetaData = (short) aStack.getItemDamage();
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return Client.render.renderUniversiumFancy
+            && (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
+                || type == ItemRenderType.INVENTORY
+                || type == ItemRenderType.ENTITY);
+    }
 
-        if (!Client.render.renderUniversiumFancy) {
-            super.renderItem(type, aStack, data);
-            return;
-        }
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
+            || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
+    }
 
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
-
-        int passes = 1;
-        if (aItem.requiresMultipleRenderPasses()) {
-            passes = aItem.getRenderPasses(aMetaData);
-        }
-
-        for (int pass = 0; pass < passes; pass++) {
-            IIcon tIcon = aItem.getIcon(aMetaData, pass);
-            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
-
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-            if (tIcon != null) {
-                magicRenderMethod(type, aStack, tIcon, false, data);
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        if (item.getItem() instanceof MetaGeneratedItem mgItem) {
+            IIcon[] icons = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
+            if (icons != null && icons.length > 0 && icons[0] != null) {
+                if (mask != null) {
+                    magicRenderMethod(type, icons[0], mask.getIcon(), data);
+                }
             }
-
-            GL11.glDisable(GL11.GL_LIGHTING);
-
-            if (tOverlay != null) {
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-                TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                renderItemOverlay(type, tOverlay);
-            }
-
-            GL11.glDisable(GL11.GL_BLEND);
         }
     }
 
-    private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
-        Object... data) {
-
-        Minecraft mc = Minecraft.getMinecraft();
-
+    private void magicRenderMethod(ItemRenderType type, IIcon tIcon, IIcon mask, Object... data) {
         final UniversiumShader shader = UniversiumShader.getInstance();
 
         processLightLevel(type, shader, data);
@@ -97,15 +68,8 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-            if (fluidDisplay) {
-                // this somehow makes shader render correctly
-                ResourceLocation resourcelocation = mc.getTextureManager()
-                    .getResourceLocation(aStack.getItemSpriteNumber());
-                mc.getTextureManager()
-                    .bindTexture(resourcelocation);
-            } else {
-                ItemRenderUtil.renderItem(type, tIcon);
-            }
+            // Draw item
+            ItemRenderUtil.renderItem(type, tIcon);
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -114,17 +78,13 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-            if (fluidDisplay) {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-
             shader.setRenderInInventory()
                 .use();
 
             GL11.glColor4f(1, 1, 1, 1);
 
             // Draw cosmic overlay
-            ItemRenderUtil.renderItem(type, tIcon);
+            ItemRenderUtil.renderItem(type, mask);
 
             UniversiumShader.clear();
 
@@ -140,7 +100,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             shader.use();
 
             // RENDER COSMIC OVERLAY
-            ItemRenderUtil.renderItem(type, tIcon);
+            ItemRenderUtil.renderItem(type, mask);
             UniversiumShader.unbind();
             GL11.glDepthFunc(GL11.GL_LEQUAL);
 
