@@ -44,7 +44,8 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ShortSyncValue[] numberSyncers = IntStream.range(0, 6)
             .mapToObj(
-                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number)))
+                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number))
+                    .allowC2S())
             .toArray(ShortSyncValue[]::new);
 
         Flow mainRow = Flow.row()
