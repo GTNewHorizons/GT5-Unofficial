@@ -412,14 +412,20 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
             if (this.machineTier == 2 && this.currentBoosterFluid != null) { // booster fluid
                 FluidStack fluidStack = this.currentBoosterFluid.getStack();
-                if (!this.depleteInput(fluidStack, true)) stopMachine(ShutDownReasonRegistry.outOfFluid(fluidStack));
-                else this.depleteInput(fluidStack, false);
+                if (!this.depleteInput(fluidStack, true)) {
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(fluidStack));
+                    return false;
+                }
+                this.depleteInput(fluidStack, false);
             }
             if (isCryoEnabled) { // cryotheum for incrementing
                 final FluidStack cryotheum = new FluidStack(
                     TFFluids.fluidCryotheum,
                     (int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost * speedMultiplier));
-                if (!this.depleteInput(cryotheum, false)) stopMachine(ShutDownReasonRegistry.outOfFluid(cryotheum));
+                if (!this.depleteInput(cryotheum, false)) {
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(cryotheum));
+                    return false;
+                }
             }
         }
         if (runningTickCounter % 100 == 0 && speedBoost < 1.5f) {
