@@ -1430,12 +1430,14 @@ public class Textures {
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE"),
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW"),
 
-            BEC_CONDUIT_BLANK = createOptional("BEC_CONDUIT_BLANK"),
-            BEC_CONDUIT = createOptional("BEC_CONDUIT"),
-            BEC_CONDUIT_90 = createOptional("BEC_CONDUIT_90"),
-            BEC_CASING = createOptional("BEC_CASING"),
-            BEC_MANIPULATOR = createOptional("BEC_MANIPULATOR"),
-            BEC_GLASS = createOptional("BEC_GLASS"),
+            BEC_CONDUIT = create("BEC_CONDUIT"),
+            BEC_CASING = create("BEC_CASING"),
+            BEC_MANIPULATOR = create("BEC_MANIPULATOR"),
+            BEC_CONFLICTCASING = create("BEC_CONFLICTCASING"),
+            BEC_PEACECASING = create("BEC_PEACECASING"),
+            BEC_PRIMARYCOIL = create("BEC_PRIMARYCOIL"),
+            BEC_SECONDARYCOIL = create("BEC_SECONDARYCOIL"),
+            BEC_GLASS = create("BEC_GLASS"),
 
             BEC_CONTROLLER_BACKGROUND = createOptional("BEC_CONTROLLER_BACKGROUND"),
             BEC_GENERATOR_ACTIVE = createOptional("BEC_GENERATOR_ACTIVE"),
@@ -1546,8 +1548,7 @@ public class Textures {
             CONTAINMENT_CASING = create("CONTAINMENT_CASING"),
             CONTAINMENT_FRAME = create("CONTAINMENT_FRAME"),
             MOLECULAR_CONTAINMENT_CASING = create("MOLECULAR_CONTAINMENT_CASING"),
-            CUTTING_FACTORY_FRAME_SIDE = create("CUTTING_FACTORY_FRAME_SIDE"),
-            CUTTING_FACTORY_FRAME_TOP = create("CUTTING_FACTORY_FRAME_TOP"),
+            CUTTING_FACTORY_FRAME = create("CUTTING_FACTORY_FRAME"),
             ELEMENTAL_CONFINEMENT_SHELL = create("ELEMENTAL_CONFINEMENT_SHELL"),
             FORGE_CASING = create("FORGE_CASING"),
             INCONEL_REINFORCED_CASING = create("INCONEL_REINFORCED_CASING"),
@@ -2711,6 +2712,7 @@ public class Textures {
             WIRELESS_HEADPHONES = create("WIRELESS_HEADPHONES"),
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
+            MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
