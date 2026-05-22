@@ -147,7 +147,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            updateSlots();
+            if (aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                updateSlots();
+            }
         }
     }
 
@@ -214,6 +216,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                     disableLimited = true;
                 }
             }
+            updateSlots();
             GTUtility.sendChatComp(
                 aPlayer,
                 new ChatComponentTranslation("GT5U.hatch.disableSort." + disableSort).appendText("   ")
@@ -277,12 +280,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void addSortStacksButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> !disableSort,
-                val -> disableSort = !val,
-                GTUITextures.OVERLAY_BUTTON_SORTING_MODE,
-                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+        builder.widget(createToggleButton(() -> !disableSort, val -> {
+            disableSort = !val;
+            updateSlots();
+        }, GTUITextures.OVERLAY_BUTTON_SORTING_MODE, () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
     }
 
     protected void addOneStackLimitButton(ModularWindow.Builder builder) {
