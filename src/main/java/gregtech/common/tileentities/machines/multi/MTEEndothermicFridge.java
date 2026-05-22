@@ -243,7 +243,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 false)
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier 2 Structure:")
             .addStructureInfo(EnumChatFormatting.GRAY + "Replace Frost Proof Machine Casing On")
-            .addStructureInfo("Layers 1-3 With Infinity Cooled Casing")
+            .addStructureInfo("layers 1-3 with Infinity Cooled Casing")
             .addCasingInfoExactlyColored(
                 "Frost Proof Machine Casing",
                 EnumChatFormatting.GRAY,
