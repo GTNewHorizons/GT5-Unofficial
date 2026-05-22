@@ -46,7 +46,6 @@ public class RingBuffer implements List<Double>, RandomAccess {
             // place all elements ordered by age aligned with the end of the new buffer
             System.arraycopy(buffer, index, newBuf, newCapacity - capacity, capacity - index);
             System.arraycopy(buffer, 0, newBuf, newCapacity - capacity + index, index);
-            //this.index = capacity;
         }
         this.capacity = newCapacity;
         this.buffer = newBuf;
