@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
@@ -28,6 +27,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.StatColorSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ForgeOfGodsSyncValue;
@@ -198,7 +198,7 @@ public class StarCosmeticsPanel {
     }
 
     private static void setEditingStarColor(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
-        GenericSyncValue<ForgeOfGodsStarColor, ?> starColorClicked = SyncValues.STAR_COLOR_CLICKED
+        StatColorSyncValue starColorClicked = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         IntSyncValue editingColorIndex = SyncValues.STAR_COLOR_EDITING_INDEX
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
