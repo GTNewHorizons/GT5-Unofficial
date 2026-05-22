@@ -172,7 +172,7 @@ public abstract class GTMetaItem extends GTMetaItemBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
+    public void getSubItems(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0, j = this.mEnabledItems.length(); i < j; i++) {
             if (this.mVisibleItems.get(i) || (D1 && this.mEnabledItems.get(i))) {
                 final Long[] tStats = this.mElectricStats.get((short) (this.mOffset + i));
@@ -180,12 +180,12 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                     final ItemStack tStack = new ItemStack(this, 1, this.mOffset + i);
                     this.setCharge(tStack, Math.abs(tStats[0]));
                     this.isItemStackUsable(tStack);
-                    aList.add(tStack);
+                    list.add(tStack);
                 }
                 if ((tStats == null) || (tStats[3] != -2)) {
                     final ItemStack tStack = new ItemStack(this, 1, this.mOffset + i);
                     this.isItemStackUsable(tStack);
-                    aList.add(tStack);
+                    list.add(tStack);
                 }
             }
         }

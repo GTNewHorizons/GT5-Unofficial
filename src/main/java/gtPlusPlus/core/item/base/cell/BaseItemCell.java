@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.base.cell;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -14,16 +13,21 @@ public class BaseItemCell extends BaseItemComponent {
     }
 
     @Override
-    public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(getCorrectTextures());
-        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
-    }
-
-    @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
-        return this.componentColour;
+        if (this.componentMaterial == null) {
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+            }
+            return this.componentColour;
+        }
+
+        if (this.componentMaterial.getRGBA()[3] <= 1) {
+            return this.componentColour;
+        } else {
+            return getMaterialCustomColor(this.componentMaterial);
+        }
     }
 }

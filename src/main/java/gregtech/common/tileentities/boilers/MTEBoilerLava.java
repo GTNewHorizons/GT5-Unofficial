@@ -402,7 +402,7 @@ public class MTEBoilerLava extends MTEBoiler {
             .setWorld(getBaseMetaTileEntity().getWorld())
             // Particles emitted with a 1 block/s velocity toward rear
             .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D)
-            .<ParticleEventBuilder>times(
+            .times(
                 8,
                 // Particles emitted from center of rear face (Steam Output)
                 x -> x.setPosition(aX + rearDirection.offsetX / 2D, aY, aZ + rearDirection.offsetZ / 2D)
@@ -417,7 +417,7 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
         lavaTank.drain(amountToDrain, true);
-        this.mProcessingEnergy += drainedLava.amount * ENERGY_PER_LAVA;
+        addProcessingEnergy(drainedLava.amount * ENERGY_PER_LAVA);
     }
 
     @Override

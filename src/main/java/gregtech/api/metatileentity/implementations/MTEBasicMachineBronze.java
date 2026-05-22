@@ -225,7 +225,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
                     getBaseMetaTileEntity().getFrontFacing().offsetX / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetY / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetZ / 5.0)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x
                         .setPosition(

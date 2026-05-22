@@ -748,7 +748,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(10_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.WroughtIron)
+            .material(Materials.CastIron)
             .startId(5260)
             .baseCapacity(180)
             .heatCapacity(2250)

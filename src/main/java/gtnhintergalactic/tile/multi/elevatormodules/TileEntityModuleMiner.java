@@ -22,8 +22,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
@@ -44,6 +42,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -103,7 +103,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     protected long getAvailableData_EM() {
-        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        if (eInputData.isEmpty()) {
+            if (this.parent == null) return 0;
+            return this.parent.getAvailableDataForModules();
+        }
         return super.getAvailableData_EM();
     }
 
@@ -118,8 +121,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected boolean wasFilterModified;
 
     public com.cleanroommc.modularui.utils.item.ItemStackHandler filterInventory = new LimitingItemStackHandler(64, 1);
-    public PhantomItemSlot[] filterSlots = new PhantomItemSlot[64];
-    public ModularSlot[] filterModularSlots = new ModularSlot[64];
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -133,9 +134,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     private IntegerParameter distanceParameter;
     private IntegerParameter parallelParameter;
     private BooleanParameter cycleParameter;
-    private IntegerParameter cycleDistanceParameter;
     private IntegerParameter rangeParameter;
     private IntegerParameter stepParameter;
+    private IntegerParameter cycleDistanceParameter;
 
     public static final String DISTANCE_PARAMETER = "distance";
     public static final String PARALLEL_PARAMETER = "parallel";
@@ -200,6 +201,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     /** Bitmask of tiers for which a drone, drills, and rods were present when prevRecipes was computed */
     protected int prevAvailDroneMask = 0;
     public int currentDroneMask = 0;
+    public boolean wasFilterPasted = false;
     /**
      * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
      * to the user
@@ -220,16 +222,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
-        for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
-
-                @Override
-                public void onSlotChanged() {
-                    generateOreConfigurationList();
-                }
-            };
-            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
-        }
     }
 
     /**
@@ -243,16 +235,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public TileEntityModuleMiner(String aName, int tTier, int tModuleTier, int tMinMotorTier) {
         super(aName, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
-        for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
-
-                @Override
-                public void onSlotChanged() {
-                    generateOreConfigurationList();
-                }
-            };
-            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
-        }
     }
 
     @Override
@@ -270,25 +252,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             () -> 0,
             this::getMaxParallels);
         cycleParameter = new BooleanParameter(false, "tt.spaceminer.cycle", CYCLE_PARAMETER);
-        cycleDistanceParameter = new IntegerParameter(
-            0,
-            "tt.spaceminer.range",
-            CYCLE_DISTANCE_PARAMETER,
-            () -> 0,
-            () -> Integer.MAX_VALUE);
         rangeParameter = new IntegerParameter(
             0,
-            "tt.spaceminer.step",
+            "tt.spaceminer.range",
             RANGE_PARAMETER,
             () -> 0,
             () -> Integer.MAX_VALUE);
-        stepParameter = new IntegerParameter(
+        stepParameter = new IntegerParameter(0, "tt.spaceminer.step", STEP_PARAMETER, () -> 0, () -> Integer.MAX_VALUE);
+        cycleDistanceParameter = new IntegerParameter(
             distanceParameter.getValue(),
             "",
-            STEP_PARAMETER,
+            CYCLE_DISTANCE_PARAMETER,
             () -> distanceParameter.getValue() - rangeParameter.getValue(),
             () -> distanceParameter.getValue() + rangeParameter.getValue());
-        stepParameter.disableGui();
+        cycleDistanceParameter.disableGui();
     }
 
     @Override
@@ -711,7 +688,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     /**
      * Generate configured ore list from input ore block stacks
      */
-    protected void generateOreConfigurationList() {
+    public void generateOreConfigurationList() {
         if (configuredOres == null) {
             configuredOres = new HashSet<>();
         } else {
@@ -722,6 +699,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 configuredOres.add(getOreString(item));
             }
         }
+    }
+
+    /**
+     * Refresh filter ui and re-generate configured ore list
+     */
+    public void filterPasted() {
+        wasFilterPasted = true;
+        generateOreConfigurationList();
     }
 
     /**
@@ -916,9 +901,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
-            return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty() && this.parent != null && !this.parent.hasDataHatches()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
         if (wasFilterModified) {
             wasFilterModified = false;
@@ -931,7 +921,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
-        return true;
     }
 
     @Override
