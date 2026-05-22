@@ -54,10 +54,10 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class RecipeLoader {
 
@@ -1362,7 +1362,7 @@ public class RecipeLoader {
             .itemOutputs(ItemList.CasingFridge.get(4))
             .fluidInputs(
                 Materials.SuperCoolant.getFluid(4000),
-                new FluidStack(GTPPFluids.Cryotheum, 1_000),
+                new FluidStack(TFFluids.fluidCryotheum, 1_000),
                 Materials.TungstenSteel.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)

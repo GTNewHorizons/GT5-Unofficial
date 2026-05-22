@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -77,7 +78,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
     implements ISurvivalConstructable {
 
-    // todo: some structure tweaks, mechanic, old t2 integration, tooltip
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int HORIZONTAL_OFFSET = 11;
     private static final int VERTICAL_OFFSET = 12;
@@ -114,7 +114,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         .addElement(
             'C',
             buildHatchAdder(MTEEndothermicFridge.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(Casings.FridgeCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(MTEEndothermicFridge::onCasingAdded, Casings.FridgeCasing.asElement())))
@@ -413,7 +413,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             if (this.machineTier == 2 && this.currentBoosterFluid != null) { // booster fluid
                 FluidStack fluidStack = this.currentBoosterFluid.getStack();
                 if (!this.depleteInput(fluidStack, true)) stopMachine(ShutDownReasonRegistry.outOfFluid(fluidStack));
-                this.depleteInput(fluidStack, false);
+                else this.depleteInput(fluidStack, false);
             }
             if (isCryoEnabled) { // cryotheum for incrementing
                 final FluidStack cryotheum = new FluidStack(

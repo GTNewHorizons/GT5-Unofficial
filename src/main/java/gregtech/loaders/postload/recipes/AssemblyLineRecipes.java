@@ -24,10 +24,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -943,7 +943,7 @@ public class AssemblyLineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Aluminium, 8L))
             .fluidInputs(
-                new FluidStack(GTPPFluids.Cryotheum, 256_000),
+                new FluidStack(TFFluids.fluidCryotheum, 256_000),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Lubricant.getFluid(16_000))
             .itemOutputs(ItemList.EndothermicFridge.get(1))
