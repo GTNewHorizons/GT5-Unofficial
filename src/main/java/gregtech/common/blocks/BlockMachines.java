@@ -55,6 +55,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -680,6 +681,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
+        // The basic machine will set output face to be equal to front facing if it set the facing here.
+        if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEBasicMachine) return;
+        // It's unclear whether this can be removed.
+        // If you figure this is not needed this entire override method can be removed.
         iGregTechTileEntity.setFrontFacing(
             BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
     }

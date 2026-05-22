@@ -308,7 +308,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing != mMainFacing;
+        // TODO: this is always true, the main facing is always horizontal.
+        // It's unclear whether facing == mMainFacing is intended, but it can be
+        // achieved using a wrench atm and let's just keep that.
+        // Either mMainFacing or mMainFacing is horizontal
+        return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
     }
 
     @Override
