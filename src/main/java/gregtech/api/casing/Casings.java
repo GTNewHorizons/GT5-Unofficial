@@ -519,6 +519,7 @@ public enum Casings implements ICasing {
 
 
     // Block Casings 14
+    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
 
     FridgeCasing(()->GregTechAPI.sBlockCasings14,4,gt(16,7,4)),
     // Block Reinforced

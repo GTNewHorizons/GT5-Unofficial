@@ -1928,6 +1928,12 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs((ItemRegistry.megaMachines[1]))
             .itemOutputs(ItemList.EndothermicFridge.get(1))
+        
+        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[0]))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
             .duration(TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);

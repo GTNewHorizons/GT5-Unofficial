@@ -35,6 +35,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(13, ItemList.CasingMixer);
         register(14, ItemList.FormingCore);
         register(15, ItemList.AlgaeCasing);
+
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }

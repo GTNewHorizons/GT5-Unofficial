@@ -24,10 +24,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -936,6 +938,16 @@ public class AssemblyLineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 ItemList.Coolant_Duct_Casing.get(4),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.CallistoIce, 32L),
+        // Exothermic Hearth
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                ItemList.Machine_Multi_BlastFurnace.get(64),
+                GregtechItemList.Machine_Adv_BlastFurnace.get(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                ItemList.Heating_Duct_Casing.get(4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Firestone, 32L),
                 ItemList.Electric_Pump_ZPM.get(8),
                 ItemList.FluidRegulator_ZPM.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
@@ -947,6 +959,13 @@ public class AssemblyLineRecipes implements Runnable {
                 MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Lubricant.getFluid(16_000))
             .itemOutputs(ItemList.EndothermicFridge.get(1))
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Invar, 8L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Cupronickel, 8L))
+            .fluidInputs(
+                new FluidStack(GTPPFluids.Pyrotheum, 256_000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Lubricant.getFluid(16_000))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
