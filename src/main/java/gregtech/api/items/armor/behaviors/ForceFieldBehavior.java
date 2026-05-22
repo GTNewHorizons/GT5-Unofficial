@@ -16,7 +16,7 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class ForceFieldBehavior implements IArmorBehavior {
 
-    public static ForceFieldBehavior INSTANCE = new ForceFieldBehavior();
+    public static final ForceFieldBehavior INSTANCE = new ForceFieldBehavior();
 
     @Override
     public BehaviorName getName() {
@@ -32,8 +32,7 @@ public class ForceFieldBehavior implements IArmorBehavior {
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState()
-            .toggle(context, BehaviorName.ForceField);
+        context.toggleBehavior(BehaviorName.ForceField);
     }
 
     @Override

@@ -13,14 +13,13 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class OmniMovementBehavior implements IArmorBehavior {
 
-    public static OmniMovementBehavior INSTANCE = new OmniMovementBehavior();
+    public static final OmniMovementBehavior INSTANCE = new OmniMovementBehavior();
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState()
-            .toggle(context, BehaviorName.OmniMovement);
+        context.toggleBehavior(BehaviorName.OmniMovement);
     }
 
     @Override

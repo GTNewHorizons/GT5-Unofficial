@@ -9,7 +9,7 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class FireImmunityBehavior implements IArmorBehavior {
 
-    public static FireImmunityBehavior INSTANCE = new FireImmunityBehavior();
+    public static final FireImmunityBehavior INSTANCE = new FireImmunityBehavior();
 
     @Override
     public BehaviorName getName() {

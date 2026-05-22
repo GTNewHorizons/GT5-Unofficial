@@ -2,7 +2,7 @@ package gregtech.api.items.armor.behaviors;
 
 public class JetpackPerfectHoverBehavior implements IArmorBehavior {
 
-    public static JetpackPerfectHoverBehavior INSTANCE = new JetpackPerfectHoverBehavior();
+    public static final JetpackPerfectHoverBehavior INSTANCE = new JetpackPerfectHoverBehavior();
 
     @Override
     public BehaviorName getName() {

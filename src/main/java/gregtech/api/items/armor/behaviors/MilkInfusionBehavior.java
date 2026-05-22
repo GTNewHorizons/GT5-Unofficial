@@ -14,7 +14,7 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class MilkInfusionBehavior implements IArmorBehavior {
 
-    public static MilkInfusionBehavior INSTANCE = new MilkInfusionBehavior();
+    public static final MilkInfusionBehavior INSTANCE = new MilkInfusionBehavior();
 
     @Override
     public BehaviorName getName() {

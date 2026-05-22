@@ -15,7 +15,7 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
 
-    public static InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
+    public static final InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {

@@ -3515,6 +3515,7 @@ GT5U.armor.part.tooltip.ForceField=Allows user to deploy a powerful forcefield w
 GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in all directions
 GT5U.armor.part.tooltip.WaterBreathing=Restore's the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
+GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
@@ -3546,6 +3547,10 @@ GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
+GT5U.armor.tooltip.armorframe=Armor Frame: %s
+GT5U.armor.tooltip.energycorelabel=Energy Core: %s
+GT5U.armor.tooltip.installed_augments=Installed Augments:
+GT5U.armor.tooltip.active_augments=Active Augments:
 GT5U.armor.tooltip.energycoreminimum=Minimum Energy Core Tier: %s
 GT5U.armor.tooltip.energycore=Energy Core Tier: %s
 GT5U.armor.tooltip.chargetier=Charge Tier: %s

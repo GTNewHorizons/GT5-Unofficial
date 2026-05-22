@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.util.GTUtility;
 
 public class VisDiscountBehavior implements IArmorBehavior {
 
@@ -43,7 +43,7 @@ public class VisDiscountBehavior implements IArmorBehavior {
     public void addArmorInformation(@NotNull ArmorContext context, @NotNull List<String> tooltip) {
         if (Thaumcraft.isModLoaded()) {
             tooltip.add(
-                EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+                EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount")
                     + ": "
                     + visDiscount
                     + "%");
@@ -54,7 +54,7 @@ public class VisDiscountBehavior implements IArmorBehavior {
     public void addPartInformation(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
         if (Thaumcraft.isModLoaded()) {
             desc.add(
-                EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+                EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount")
                     + ": "
                     + visDiscount
                     + "%");

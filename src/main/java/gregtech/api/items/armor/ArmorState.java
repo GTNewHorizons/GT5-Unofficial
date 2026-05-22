@@ -66,12 +66,12 @@ public class ArmorState {
 
         if (showAllInfo) {
             if (frame != null) {
-                tooltip.add(GRAY + "Armor Frame: " + frame.getLocalizedName());
+                tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.armorframe", frame.getLocalizedName()));
                 tooltip.add("");
             }
 
             if (core != null) {
-                tooltip.add(GRAY + "Energy Core: " + core.getLocalizedName());
+                tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.energycorelabel", core.getLocalizedName()));
                 tooltip.add("");
             }
         }
@@ -84,7 +84,7 @@ public class ArmorState {
 
                 if (!printedHeader) {
                     printedHeader = true;
-                    tooltip.add(GRAY + "Installed Augments:");
+                    tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.installed_augments"));
                 }
 
                 tooltip.add(GRAY + "- " + behavior.getDisplayName());
@@ -99,7 +99,7 @@ public class ArmorState {
 
                 if (!printedHeader) {
                     printedHeader = true;
-                    tooltip.add(GREEN + "Active Augments:");
+                    tooltip.add(GREEN + GTUtility.translate("GT5U.armor.tooltip.active_augments"));
                 }
 
                 tooltip.add("- " + behavior.getDisplayName());
