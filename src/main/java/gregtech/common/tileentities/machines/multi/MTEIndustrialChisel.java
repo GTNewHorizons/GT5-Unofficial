@@ -90,9 +90,10 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
         tt.addMachineType("Chisel")
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
-            .addInfo(
-                "Without a circuit, chisels architecture and chisel blocks depending on reference block in CRIB or Controller")
-            .addInfo("Use a programmed circuit to select a specific chiseled output - check NEI for the order")
+            .addInfo("Chisel Bus: Set ghost targets to define the desired output variants")
+            .addInfo("CRIB: Uses the pattern output as the target block")
+            .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
+            .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front left, 3rd layer")
@@ -366,7 +367,14 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
 
     @Nonnull
     private CheckRecipeResult checkRegularBusesCombined(@Nonnull CheckRecipeResult currentResult, byte color) {
-        List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
+        List<ItemStack> inputItems = new ArrayList<>();
+        for (MTEHatchInputBus bus : mInputBusses) {
+            if (bus instanceof MTEHatchCraftingInputME) continue;
+            if (bus instanceof MTEHatchChiselBus) continue;
+            byte busColor = bus.getColor();
+            if (busColor != -1 && busColor != color) continue;
+            inputItems.addAll(collectBusItems(bus));
+        }
         if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
             inputItems.add(getControllerSlot());
         }

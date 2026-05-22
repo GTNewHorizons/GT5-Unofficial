@@ -70,9 +70,8 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
             .matrix(ghostMatrix)
             .key(
                 't',
-                index -> new PhantomItemSlot().slot(
-                    new ModularSlot(hatch.ghostTargets, index).singletonSlotGroup(100 + index)
-                        .accessibility(true, false)))
+                index -> new PhantomItemSlot()
+                    .slot(new ModularSlot(hatch.ghostTargets, index).accessibility(true, false)))
             .build();
 
         // Input slots grid
