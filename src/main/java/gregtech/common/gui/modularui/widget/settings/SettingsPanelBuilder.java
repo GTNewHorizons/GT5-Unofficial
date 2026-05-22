@@ -121,7 +121,7 @@ public class SettingsPanelBuilder {
                 public String getStringValue() {
                     return NumberFormatUtil.formatNumber(this.getValue());
                 }
-            });
+            }.allowC2S());
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });

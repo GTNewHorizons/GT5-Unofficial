@@ -58,7 +58,7 @@ public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
             .child(
                 new TextFieldWidget().setNumbersDouble(val -> Math.min(14, Math.max(0, val)))
                     .size(77, 12)
-                    .value(new DoubleSyncValue(hatch::getThreshold, hatch::setThreshold))
+                    .value(new DoubleSyncValue(hatch::getThreshold, hatch::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.ph_sensor")

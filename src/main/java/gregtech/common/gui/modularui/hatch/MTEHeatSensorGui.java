@@ -59,7 +59,7 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 100)
                     .size(77, 12)
-                    .value(new DoubleSyncValue(hatch::getThreshold, hatch::setThreshold))
+                    .value(new DoubleSyncValue(hatch::getThreshold, hatch::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.heat_sensor")
