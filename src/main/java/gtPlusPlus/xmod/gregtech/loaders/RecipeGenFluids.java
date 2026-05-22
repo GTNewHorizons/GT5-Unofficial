@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +50,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
                     .itemOutputs(material.getIngot(1))
                     .fluidInputs(material.getFluidStack(144))
-                    .duration(3 * SECONDS + 4 * TICKS)
+                    .duration(3 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
@@ -62,7 +61,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemInputs(ItemList.Shape_Mold_Plate.get(0))
                     .itemOutputs(material.getPlate(1))
                     .fluidInputs(material.getFluidStack(144))
-                    .duration(3 * SECONDS + 4 * TICKS)
+                    .duration(3 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
@@ -73,7 +72,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0))
                     .itemOutputs(material.getNugget(1))
                     .fluidInputs(material.getFluidStack(16))
-                    .duration(1 * SECONDS + 12 * TICKS)
+                    .duration(3 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
@@ -84,7 +83,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemInputs(ItemList.Shape_Mold_Gear.get(0))
                     .itemOutputs(material.getGear(1))
                     .fluidInputs(material.getFluidStack(576))
-                    .duration(12 * SECONDS + 16 * TICKS)
+                    .duration(12 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
@@ -95,7 +94,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemInputs(ItemList.Shape_Mold_Block.get(0))
                     .itemOutputs(material.getBlock(1))
                     .fluidInputs(material.getFluidStack(144 * 9))
-                    .duration(28 * SECONDS + 16 * TICKS)
+                    .duration(25 * SECONDS)
                     .eut(material.vVoltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
