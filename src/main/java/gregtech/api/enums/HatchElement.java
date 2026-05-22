@@ -21,9 +21,9 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
@@ -131,7 +131,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
                 .size();
         }
     },
-    LaserSource("GT5U.MBTT.LaserSourceHatch", MTEMultiBlockBase::addExoticDynamoToMachineList,
+    LaserSource("GT5U.MBTT.LaserSourceHatch", MTEMultiBlockBase::addLaserSourceToMachineList,
         MTEHatchDynamoTunnel.class) {
 
         @Override

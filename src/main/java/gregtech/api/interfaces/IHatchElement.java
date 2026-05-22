@@ -181,16 +181,10 @@ class HatchElementEither<T> implements IHatchElement<T> {
     }
 
     @Override
-    public String getDescriptionLangKey() {
-        return first.getDescriptionLangKey() + " or " + second.getDescriptionLangKey();
-    }
-
-    @Override
     public List<String> getDescriptionLangKeys() {
-        List<String> keys = new ArrayList<>();
-        keys.addAll(first.getDescriptionLangKeys());
-        keys.addAll(second.getDescriptionLangKeys());
-        return keys;
+        List<String> result = new ArrayList<>(first.getDescriptionLangKeys());
+        result.addAll(second.getDescriptionLangKeys());
+        return result;
     }
 
     @Override
@@ -238,8 +232,8 @@ class HatchElement<T> implements IHatchElement<T> {
     }
 
     @Override
-    public String getDescriptionLangKey() {
-        return mBacking.getDescriptionLangKey();
+    public List<String> getDescriptionLangKeys() {
+        return mBacking.getDescriptionLangKeys();
     }
 
     @Override

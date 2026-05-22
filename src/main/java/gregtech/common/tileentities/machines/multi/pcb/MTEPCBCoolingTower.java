@@ -3,11 +3,11 @@ package gregtech.common.tileentities.machines.multi.pcb;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.GTAuthors.Authorguid118;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
@@ -23,7 +23,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -69,12 +68,12 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addShape(STRUCTURE_PIECE_COOLING_TOWER_T2, tier_2)
         .addElement(
             'M',
-            buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV)
-                .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
+            InputHatch.withAdder(MTEPCBCoolingTower::addCoolantInputToMachineList)
+                .newAnyOrCasing(
+                    GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12),
+                    2,
+                    GregTechAPI.sBlockCasings8,
+                    12))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
@@ -82,12 +81,12 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
             'S',
-            buildHatchAdder(MTEPCBCoolingTower.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV)
-                .adder(MTEPCBCoolingTower::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
+            InputHatch.withAdder(MTEPCBCoolingTower::addCoolantInputToMachineList)
+                .newAnyOrCasing(
+                    GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12),
+                    2,
+                    GregTechAPI.sBlockCasings8,
+                    12))
         .addElement('R', ofFrame(Materials.Americium))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))

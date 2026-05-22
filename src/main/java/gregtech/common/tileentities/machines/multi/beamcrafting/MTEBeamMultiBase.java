@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -110,32 +111,35 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineInputHatch(Class<T> clazz,
         int casingIndex, int hint) {
-        return buildHatchAdder(clazz).hatchClass(MTEHatchInputBeamline.class)
-            .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
-            .casingIndex(casingIndex)
-            .hint(hint)
-            .adder(MTEBeamMultiBase::addBeamLineInputHatch)
-            .build();
+        return lazy(
+            t -> buildHatchAdder(clazz).hatchClass(MTEHatchInputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
+                .casingIndex(casingIndex)
+                .hint(hint)
+                .adder(MTEBeamMultiBase::addBeamLineInputHatch)
+                .build());
     }
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineOutputHatch(Class<T> clazz,
         int casingIndex, int hint) {
-        return buildHatchAdder(clazz).hatchClass(MTEHatchOutputBeamline.class)
-            .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
-            .casingIndex(casingIndex)
-            .hint(hint)
-            .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
-            .build();
+        return lazy(
+            t -> buildHatchAdder(clazz).hatchClass(MTEHatchOutputBeamline.class)
+                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
+                .casingIndex(casingIndex)
+                .hint(hint)
+                .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
+                .build());
     }
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildAdvancedBeamlineOutputHatch(
         Class<T> clazz, int casingIndex, int hint, FundamentalForce force) {
-        return buildHatchAdder(clazz).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-            .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
-            .casingIndex(casingIndex)
-            .hint(hint)
-            .adder((multi, te, ci) -> multi.addAdvancedBeamlineOutputHatch(te, ci, force))
-            .build();
+        return lazy(
+            t -> buildHatchAdder(clazz).hatchClass(MTEHatchAdvancedOutputBeamline.class)
+                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
+                .casingIndex(casingIndex)
+                .hint(hint)
+                .adder((multi, te, ci) -> multi.addAdvancedBeamlineOutputHatch(te, ci, force))
+                .build());
     }
 
 }

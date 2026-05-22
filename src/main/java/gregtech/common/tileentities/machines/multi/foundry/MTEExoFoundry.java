@@ -65,7 +65,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -297,12 +296,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
-        .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-                .descriptionFromStacks(ItemList.Hatch_Input_LV)
-                .adder(MTEExoFoundry::addCoolantInputToMachineList)
-                .casingIndex(TAE.getIndexFromPage(2, 10))
-                .hint(2)
-                .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
+        .addElement(
+            'w',
+            lazy(
+                () -> InputHatch.withAdder(MTEExoFoundry::addCoolantInputToMachineList)
+                    .newAnyOrCasing(TAE.getIndexFromPage(2, 10), 2, ModBlocks.blockCasings3Misc, 10)))
         .addShape(
             FoundryModule.HELIOCAST_REINFORCEMENT.structureID,
             transpose(
@@ -649,7 +647,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            if (checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
+            if (!checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
                 if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
                     errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_too_many_hatch"));
                 }

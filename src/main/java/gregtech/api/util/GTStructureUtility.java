@@ -7,7 +7,6 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withDescription;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
@@ -555,7 +554,12 @@ public class GTStructureUtility {
         if (aHeatingCoilSetter == null || aHeatingCoilGetter == null) {
             throw new IllegalArgumentException();
         }
-        return withDescription(Collections.singletonList("GT5U.structure.heating_coil"), new IStructureElement<>() {
+        return new IStructureElement<>() {
+
+            @Override
+            public @Nullable List<String> getDescription() {
+                return Collections.singletonList("GT5U.structure.heating_coil");
+            }
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -639,7 +643,7 @@ public class GTStructureUtility {
                     env.getActor(),
                     env.getChatter());
             }
-        });
+        };
     }
 
     /**
@@ -805,16 +809,15 @@ public class GTStructureUtility {
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
-        return withDescription(
-            Collections.singletonList("GT5U.structure.tiered_glass"),
-            GTStructureChannels.BOROGLASS.use(
-                lazy(
-                    t -> ofBlocksTiered(
-                        GlassTier::getGlassBlockTier,
-                        GlassTier.getGlassList(),
-                        notSet,
-                        setter,
-                        getter))));
+        return GTStructureChannels.BOROGLASS.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    GlassTier::getGlassBlockTier,
+                    GlassTier.getGlassList(),
+                    notSet,
+                    setter,
+                    getter,
+                    Collections.singletonList("GT5U.structure.tiered_glass"))));
     }
 
     private static Integer getItemPipeCasingTier(Block block, int meta) {

@@ -79,7 +79,12 @@ public class HatchElementBuilder<T> {
     @SafeVarargs
     public final HatchElementBuilder<T> anyOf(IHatchElement<? super T>... elements) {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
-        adder(
+        mDescriptionNames = () -> Arrays.stream(elements)
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
+            .collect(Collectors.toList());
+        return adder(
             Arrays.stream(elements)
                 .map(
                     e -> e.adder()
@@ -99,12 +104,6 @@ public class HatchElementBuilder<T> {
                                     StatCollector.translateToLocal("gt.hatch_element_or"),
                                     StatCollector.translateToLocal("gt.hatch_element_of_type"),
                                     "")));
-        mDescriptionNames = () -> Arrays.stream(elements)
-            .flatMap(
-                e -> e.getDescriptionLangKeys()
-                    .stream())
-            .collect(Collectors.toList());
-        return this;
     }
 
     /**
@@ -142,6 +141,13 @@ public class HatchElementBuilder<T> {
         if (elements == null || elements.isEmpty() || elements.containsKey(null) || elements.containsValue(null))
             throw new IllegalArgumentException();
 
+        mDescriptionNames = () -> elements.keySet()
+            .stream()
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
+            .collect(Collectors.toList());
+
         List<Class<? extends IMetaTileEntity>> blacklist = elements.keySet()
             .stream()
             .map(IHatchElement::mteBlacklist)
@@ -154,7 +160,7 @@ public class HatchElementBuilder<T> {
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
         // map cannot be null or empty, so assert Optional isPresent
-        adder(
+        return adder(
             elements.keySet()
                 .stream()
                 .map(
@@ -199,13 +205,6 @@ public class HatchElementBuilder<T> {
                                     StatCollector.translateToLocal("gt.hatch_element_or"),
                                     StatCollector.translateToLocal("gt.hatch_element_of_type"),
                                     "")));
-        mDescriptionNames = () -> elements.keySet()
-            .stream()
-            .flatMap(
-                e -> e.getDescriptionLangKeys()
-                    .stream())
-            .collect(Collectors.toList());
-        return this;
     }
     // endregion
 
@@ -374,26 +373,22 @@ public class HatchElementBuilder<T> {
     }
 
     public HatchElementBuilder<T> descriptionFromStacks(ItemStack... stacks) {
-        ItemStack[] copy = stacks.clone();
-        mDescriptionNames = () -> {
-            List<String> keys = new ArrayList<>(copy.length);
-            for (ItemStack stack : copy) {
-                keys.add(stack.getUnlocalizedName() + ".name");
-            }
-            return keys;
-        };
+        List<String> keys = new ArrayList<>(stacks.length);
+        for (ItemStack stack : stacks) {
+            keys.add(stack.getUnlocalizedName() + ".name");
+        }
+        mDescriptionNames = () -> keys;
         return this;
     }
 
     // region intermediate
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
-        hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
+        mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
+        return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
             .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_class") + clazz.getSimpleName())
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
-        mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
-        return this;
     }
 
     @SafeVarargs
@@ -403,7 +398,12 @@ public class HatchElementBuilder<T> {
 
     public final HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
-        hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
+        List<String> classNames = new ArrayList<>(list.size());
+        for (var clazz : list) {
+            classNames.add(clazz.getSimpleName());
+        }
+        mDescriptionNames = () -> classNames;
+        return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
                 .map(Class::getSimpleName)
                 .sorted()
@@ -415,12 +415,6 @@ public class HatchElementBuilder<T> {
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream()
                     .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
-        List<String> classNames = new ArrayList<>(list.size());
-        for (var clazz : list) {
-            classNames.add(clazz.getSimpleName());
-        }
-        mDescriptionNames = () -> classNames;
-        return this;
     }
 
     public HatchElementBuilder<T> hatchId(int aId) {
