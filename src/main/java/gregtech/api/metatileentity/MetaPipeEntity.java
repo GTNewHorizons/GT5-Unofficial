@@ -506,6 +506,14 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public void receiveClientEvent(byte eventID, byte value) {
+        super.receiveClientEvent(eventID, value);
+        if (eventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
+            mConnections = value;
+        }
+    }
+
+    @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
