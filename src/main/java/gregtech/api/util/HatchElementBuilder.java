@@ -373,11 +373,14 @@ public class HatchElementBuilder<T> {
     }
 
     public HatchElementBuilder<T> descriptionFromStacks(ItemStack... stacks) {
-        List<String> keys = new ArrayList<>(stacks.length);
-        for (ItemStack stack : stacks) {
-            keys.add(stack.getUnlocalizedName() + ".name");
-        }
-        mDescriptionNames = () -> keys;
+        ItemStack[] copy = stacks.clone();
+        mDescriptionNames = () -> {
+            List<String> keys = new ArrayList<>(copy.length);
+            for (ItemStack stack : copy) {
+                keys.add(stack.getUnlocalizedName() + ".name");
+            }
+            return keys;
+        };
         return this;
     }
 
@@ -398,11 +401,13 @@ public class HatchElementBuilder<T> {
 
     public final HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
-        List<String> classNames = new ArrayList<>(list.size());
-        for (var clazz : list) {
-            classNames.add(clazz.getSimpleName());
-        }
-        mDescriptionNames = () -> classNames;
+        mDescriptionNames = () -> {
+            List<String> classNames = new ArrayList<>(list.size());
+            for (var clazz : list) {
+                classNames.add(clazz.getSimpleName());
+            }
+            return classNames;
+        };
         return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
                 .map(Class::getSimpleName)
