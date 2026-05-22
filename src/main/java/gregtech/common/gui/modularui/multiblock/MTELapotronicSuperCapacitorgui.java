@@ -257,7 +257,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             () -> multiblock.getBaseMetaTileEntity()
                 .isActive());
         BigIntSyncValue capacity = new BigIntSyncValue(multiblock::getEnergyCapacity, multiblock::setCapacity);
-        BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored);
+        BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored).allowC2S();
         LongSyncValue passiveDischargeSync = new LongSyncValue(multiblock::getPassiveDischargeAmount);
         LongSyncValue avgEuIn = new LongSyncValue(
             () -> multiblock.getEnergyInputValues()
