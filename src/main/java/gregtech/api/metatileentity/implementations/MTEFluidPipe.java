@@ -284,8 +284,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        if ((((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0
-            && aEntity instanceof EntityLivingBase) {
+        if (aEntity instanceof EntityLivingBase) {
             for (FluidStack tFluid : mFluids) {
                 if (tFluid != null) {
                     final int tTemperature = tFluid.getFluid()
