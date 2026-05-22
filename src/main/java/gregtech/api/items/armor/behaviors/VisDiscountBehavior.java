@@ -34,7 +34,7 @@ public class VisDiscountBehavior implements IArmorBehavior {
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        if (!(other instanceof VisDiscountBehavior discount)) return null;
+        if (!(other instanceof VisDiscountBehavior discount)) return this;
 
         return new VisDiscountBehavior(this.visDiscount + discount.visDiscount);
     }
@@ -42,22 +42,15 @@ public class VisDiscountBehavior implements IArmorBehavior {
     @Override
     public void addArmorInformation(@NotNull ArmorContext context, @NotNull List<String> tooltip) {
         if (Thaumcraft.isModLoaded()) {
-            tooltip.add(
-                EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount")
-                    + ": "
-                    + visDiscount
-                    + "%");
+            tooltip
+                .add(EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount") + ": " + visDiscount + "%");
         }
     }
 
     @Override
     public void addPartInformation(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
         if (Thaumcraft.isModLoaded()) {
-            desc.add(
-                EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount")
-                    + ": "
-                    + visDiscount
-                    + "%");
+            desc.add(EnumChatFormatting.DARK_PURPLE + GTUtility.translate("tc.visdiscount") + ": " + visDiscount + "%");
         }
     }
 }

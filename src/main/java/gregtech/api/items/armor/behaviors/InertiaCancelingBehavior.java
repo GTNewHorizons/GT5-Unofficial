@@ -21,8 +21,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState()
-            .toggle(context, BehaviorName.InertiaCanceling);
+        context.toggleBehavior(BehaviorName.InertiaCanceling);
     }
 
     @Override
@@ -41,7 +40,9 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
         EntityPlayer player = context.getPlayer();
 
-        if (player.moveForward == 0 && player.moveStrafing == 0 && player.capabilities.isFlying) {
+        if (context.isBehaviorActive(BehaviorName.InertiaCanceling) && player.moveForward == 0
+            && player.moveStrafing == 0
+            && player.capabilities.isFlying) {
             player.motionX *= 0.5;
             player.motionZ *= 0.5;
         }

@@ -21,7 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -161,17 +160,19 @@ public class MechArmorBase extends ItemArmor
                     keyBind.registerPlayerListener(playerMP, this);
 
                     if (!initMessage) {
-                        GTUtility.sendChatToPlayer(player, "Armor Systems Online... Active keybindings: ");
+                        GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
                         initMessage = true;
                     }
 
-                    GTUtility.sendChatToPlayer(
-                        playerMP,
-                        StatCollector.translateToLocal(
-                            keyBind.getKeybinding()
-                                .getKeyDescription())
-                            + ": "
-                            + Keyboard.getKeyName(keyBind.getKeyCode()));
+                    if (keyBind.getKeybinding() != null) {
+                        GTUtility.sendChatToPlayer(
+                            playerMP,
+                            GTUtility.translate(
+                                keyBind.getKeybinding()
+                                    .getKeyDescription())
+                                + ": "
+                                + Keyboard.getKeyName(keyBind.getKeyCode()));
+                    }
                 }
             }
         }

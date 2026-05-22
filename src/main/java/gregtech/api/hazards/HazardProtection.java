@@ -42,6 +42,8 @@ public class HazardProtection {
     }
 
     public static boolean isWearingFullHazmatAgainst(@NotNull EntityLivingBase entity, @NotNull Hazard hazard) {
+        boolean allProtect = true;
+
         for (byte i = 1; i < 5; i++) {
             ItemStack stack = entity.getEquipmentInSlot(i);
 
@@ -50,11 +52,11 @@ public class HazardProtection {
             }
 
             if (!protectsAgainstHazard(entity, stack, hazard)) {
-                return false;
+                allProtect = false;
             }
         }
 
-        return true;
+        return allProtect;
     }
 
     public static boolean protectsAgainstHazard(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,

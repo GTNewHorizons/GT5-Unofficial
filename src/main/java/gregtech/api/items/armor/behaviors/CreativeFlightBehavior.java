@@ -29,23 +29,19 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        if (context.drainEnergy(75)) {
+        boolean hasEnergy = context.drainEnergy(75);
+
+        if (hasEnergy) {
             player.fallDistance = 0;
-        }
-
-        if (!context.isRemote()) return;
-
-        // Constantly re-check because allowFlying is reset when you travel between dimensions
-        if (!player.capabilities.allowFlying) {
-            player.capabilities.allowFlying = true;
-            player.sendPlayerAbilities();
-        }
-
-        if (player.capabilities.isFlying) {
-            if (!context.drainEnergy(75)) {
-                player.capabilities.isFlying = false;
+            // Constantly re-check because allowFlying is reset when you travel between dimensions
+            if (!player.capabilities.allowFlying) {
+                player.capabilities.allowFlying = true;
                 player.sendPlayerAbilities();
             }
+        } else if (!player.capabilities.isCreativeMode) {
+            player.capabilities.isFlying = false;
+            player.capabilities.allowFlying = false;
+            player.sendPlayerAbilities();
         }
     }
 

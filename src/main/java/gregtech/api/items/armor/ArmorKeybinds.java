@@ -17,9 +17,9 @@ public class ArmorKeybinds {
     public static final SyncedKeybind GOGGLES_OF_REVEALING_KEYBIND = SyncedKeybind
         .createConfigurable("key.gt.toggle_goggles_of_revealing", "Gregtech Armor", Keyboard.KEY_T);
     public static final SyncedKeybind INERTIA_CANCELING_KEYBIND = SyncedKeybind
-        .createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_T);
+        .createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_J);
     public static final SyncedKeybind OMNI_MOVEMENT_KEYBIND = SyncedKeybind
-        .createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_T);
+        .createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_V);
     public static final SyncedKeybind SPEED_INCREASE_KEYBIND = SyncedKeybind
         .createConfigurable("key.gt.speed_increase", "Gregtech Armor", Keyboard.KEY_EQUALS);
     public static final SyncedKeybind SPEED_DECREASE_KEYBIND = SyncedKeybind

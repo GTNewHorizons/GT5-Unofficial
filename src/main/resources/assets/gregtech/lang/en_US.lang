@@ -3513,7 +3513,7 @@ GT5U.armor.part.tooltip.FallProtection=Converts the user's fall damage into EU u
 GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Must be applied to all four armor pieces
 GT5U.armor.part.tooltip.ForceField=Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu
 GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in all directions
-GT5U.armor.part.tooltip.WaterBreathing=Restore's the user's air if they run out underwater
+GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
 
@@ -3545,6 +3545,7 @@ GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
+GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s

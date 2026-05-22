@@ -1,6 +1,9 @@
 package gregtech.api.items.armor;
 
 import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
+
+import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,6 +92,7 @@ public class ArmorEventHandlers {
     }
 
     private static final float MAGIC_STEP_HEIGHT = 1.0023f;
+    private final WeakHashMap<EntityPlayer, Float> savedStepHeight = new WeakHashMap<>();
 
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
@@ -104,6 +108,7 @@ public class ArmorEventHandlers {
 
                     if (context.hasBehavior(BehaviorName.StepAssist)) {
                         if (player.stepHeight < MAGIC_STEP_HEIGHT) {
+                            savedStepHeight.putIfAbsent(player, player.stepHeight);
                             player.stepHeight = MAGIC_STEP_HEIGHT;
                             return;
                         }
@@ -112,7 +117,8 @@ public class ArmorEventHandlers {
             }
         }
         if (player.stepHeight == MAGIC_STEP_HEIGHT) {
-            player.stepHeight = 0.6f;
+            player.stepHeight = savedStepHeight.getOrDefault(player, 0.6f);
+            savedStepHeight.remove(player);
         }
     }
 
@@ -128,10 +134,9 @@ public class ArmorEventHandlers {
             ArmorContext context = MechArmorBase.load(player, boots);
 
             float jumpBoost = context.getArmorState().jumpBoost;
-            if (jumpBoost > 0) {
+            if (jumpBoost > 0 && context.drainEnergy(50)) {
                 player.motionY += jumpBoost;
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
-                context.drainEnergy(50);
             }
         }
     }
@@ -139,6 +144,15 @@ public class ArmorEventHandlers {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLivingFall(LivingFallEvent event) {
         if (event.entityLiving instanceof EntityPlayerMP player) {
+
+            ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
+            if (chest != null && chest.getItem() instanceof MechArmorBase) {
+                ArmorContext chestContext = MechArmorBase.load(player, chest);
+                if (chestContext.hasBehavior(BehaviorName.CreativeFlight)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
 
             if (player.fallDistance < 3.2f) {
                 return;

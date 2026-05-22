@@ -18,10 +18,12 @@ public class KnockbackResistBehavior implements IArmorBehavior {
 
     Multimap<String, AttributeModifier> attributes = HashMultimap.create();
 
+    private static final UUID KNOCKBACK_RESIST_UUID = UUID.fromString("a8b4c6d2-3e5f-4a1b-9c7d-0e2f8a4b6c8d");
+
     protected KnockbackResistBehavior() {
         attributes.put(
             SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(),
-            new AttributeModifier(UUID.randomUUID(), "KnockbackResistanceBehavior", 1, 0));
+            new AttributeModifier(KNOCKBACK_RESIST_UUID, "KnockbackResistanceBehavior", 1, 0));
     }
 
     @Override

@@ -3,6 +3,7 @@ package gregtech.api.items.armor.behaviors;
 import java.util.Set;
 
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,8 +12,6 @@ import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.ArmorState;
@@ -75,46 +74,47 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void onArmorTick(@NotNull ArmorContext context) {
-        if (!context.isRemote()) return;
-
-        EntityPlayerSP player = (EntityPlayerSP) context.getPlayer();
+        EntityPlayer player = context.getPlayer();
 
         float speed = context.getArmorState().speedBoost * this.speedup;
 
         if (speed <= 0) return;
 
-        if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
+        boolean isMoving = (player.onGround || player.capabilities.isFlying) && !player.isInWater()
             && (player.moveForward != 0 || player.moveStrafing != 0
-                || (player.capabilities.isFlying && (player.movementInput.sneak || player.movementInput.jump)))) {
-            if (context.drainEnergy(1)) {
-                if (player.moveForward > 0F) {
-                    player.moveFlying(0F, 1F, speed);
+                || (player.capabilities.isFlying && player.isSneaking()));
+
+        if (!isMoving || !context.drainEnergy(1)) return;
+
+        if (!context.isRemote()) return;
+
+        EntityPlayerSP sp = (EntityPlayerSP) player;
+
+        if (sp.moveForward > 0F) {
+            sp.moveFlying(0F, 1F, speed);
+        }
+
+        if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
+            if (sp.moveForward < 0F) {
+                sp.moveFlying(0F, -1F, speed);
+            }
+
+            if (sp.moveStrafing > 0F) {
+                sp.moveFlying(1F, 0F, speed);
+            }
+
+            if (sp.moveStrafing < 0F) {
+                sp.moveFlying(-1F, 0F, speed);
+            }
+
+            if (sp.capabilities.isFlying) {
+                if (sp.movementInput.sneak) {
+                    sp.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
                 }
 
-                if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
-                    if (player.moveForward < 0F) {
-                        player.moveFlying(0F, -1F, speed);
-                    }
-
-                    if (player.moveStrafing > 0F) {
-                        player.moveFlying(1F, 0F, speed);
-                    }
-
-                    if (player.moveStrafing < 0F) {
-                        player.moveFlying(-1F, 0F, speed);
-                    }
-
-                    if (player.capabilities.isFlying) {
-                        if (player.movementInput.sneak) {
-                            player.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
-                        }
-
-                        if (player.movementInput.jump) {
-                            player.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
-                        }
-                    }
+                if (sp.movementInput.jump) {
+                    sp.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
                 }
             }
         }

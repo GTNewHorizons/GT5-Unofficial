@@ -28,7 +28,7 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        if (!(other instanceof JumpBoostBehavior jumpBoost)) return null;
+        if (!(other instanceof JumpBoostBehavior jumpBoost)) return this;
 
         return new JumpBoostBehavior(this.boost + jumpBoost.boost);
     }

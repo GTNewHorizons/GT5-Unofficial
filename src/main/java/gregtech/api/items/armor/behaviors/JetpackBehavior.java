@@ -70,14 +70,14 @@ public class JetpackBehavior implements IArmorBehavior {
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
         boolean isGuiOpen = context.getPlayer().worldObj.isRemote && ClientGuiHelper.isGuiOpen();
 
-        if (ascend || isHovering && !player.onGround) {
+        if ((ascend && !isGuiOpen) || isHovering && !player.onGround) {
             if (!player.isInWater() && context.drainEnergy(20)) {
                 if (ascend && !isGuiOpen) {
                     if (!isHovering) {
                         player.motionY = Math.min(player.motionY + currentAccel, currentSpeedVertical);
                     } else {
                         if (descend) player.motionY = Math
-                            .min(player.motionY + currentAccel, jetpackStats.getVerticalHoverSlowSpeed());
+                            .min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
                         else player.motionY = Math
                             .min(player.motionY + currentAccel, jetpackStats.getVerticalHoverSpeed());
                     }
