@@ -167,7 +167,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
                         { "C         C", " DEEEEEEED ", "  D     D  ", "ABBBBBBBBBA" },
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
-                        { " C       C ", "  DEEEEED  ", "       D   ", " ABBBBBBBA " },
+                        { " C       C ", "  DEEEEED  ", "   D   D   ", " ABBBBBBBA " },
                         { " C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA " },
                         { "  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  " },
                         { "    CCC    ", "           ", "           ", "    AAA    " } })
