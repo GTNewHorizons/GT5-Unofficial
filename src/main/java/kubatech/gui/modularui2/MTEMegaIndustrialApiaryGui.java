@@ -277,8 +277,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     @Override
     protected IWidget createMaintIssueHoverableTerminal(PanelSyncManager syncManager) {
-        return ((Widget<?>) super.createMaintIssueHoverableTerminal(syncManager))
-            .marginTop(1);
+        return ((Widget<?>) super.createMaintIssueHoverableTerminal(syncManager)).marginTop(1);
     }
 
     private IWidget createBeeInventoryWidget() {
