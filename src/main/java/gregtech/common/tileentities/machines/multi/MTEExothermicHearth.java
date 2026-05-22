@@ -338,7 +338,10 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 final FluidStack pyrotheum = new FluidStack(
                     TFFluids.fluidPyrotheum,
                     (int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier));
-                if (!this.depleteInput(pyrotheum, false)) stopMachine(ShutDownReasonRegistry.outOfFluid(pyrotheum));
+                if (!this.depleteInput(pyrotheum, false)) {
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(pyrotheum));
+                    return false;
+                }
             }
         }
         if (runningTickCounter % 100 == 0 && parallelModifier < 2) {
