@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -81,9 +82,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         // Laser Source hatch
         .addElement(
             'H',
-            buildHatchAdder(MTEEtchingArrayModule.class).adder(MTEEtchingArrayModule::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
-                .descriptionFromStacks(CustomItemList.eM_dynamoTunnel1_IV)
+            buildHatchAdder(MTEEtchingArrayModule.class).anyOf(HatchElement.LaserSource)
+                .adder(MTEEtchingArrayModule::addLaserSource)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .hint(1)
                 .build())

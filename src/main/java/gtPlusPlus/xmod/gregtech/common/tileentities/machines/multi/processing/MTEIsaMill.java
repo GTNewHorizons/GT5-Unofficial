@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -116,8 +117,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                     'C',
                     ofChain(
                         buildHatchAdder(MTEIsaMill.class).adder(MTEIsaMill::addMillingBallsHatch)
-                            .hatchClass(MTEHatchMillingBalls.class)
-                            .descriptionFromStacks(GregtechItemList.Bus_Milling_Balls)
+                            .hatchId(MetaTileEntityIDs.Bus_Milling_Balls.ID)
                             .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)

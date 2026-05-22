@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,8 +32,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.register.LanthItemList;
 
 public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
@@ -89,24 +85,14 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
-                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamSplitter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             'D',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (splitter, te, casingIndex) -> splitter
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
-                .build()) // adv beamline output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTEBeamSplitter.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.All))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 

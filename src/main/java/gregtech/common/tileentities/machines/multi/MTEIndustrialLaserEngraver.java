@@ -89,9 +89,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
-            buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
-                .descriptionFromStacks(CustomItemList.eM_dynamoTunnel1_IV)
+            buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
+                .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .hint(3)
                 .build())
