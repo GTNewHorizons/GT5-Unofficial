@@ -167,7 +167,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
                         { "C         C", " DEEEEEEED ", "  D     D  ", "ABBBBBBBBBA" },
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
-                        { " C       C ", "  DEEEEED  ", "       D   ", " ABBBBBBBA " },
+                        { " C       C ", "  DEEEEED  ", "   D   D   ", " ABBBBBBBA " },
                         { " C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA " },
                         { "  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  " },
                         { "    CCC    ", "           ", "           ", "    AAA    " } })
@@ -228,7 +228,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", CASINGS_MIN, false)
             .addCasingInfoExactly("Iron Frame Box", 28, false)
-            .addCasingInfoExactly("Steel Frame Box", 47, false)
+            .addCasingInfoExactly("Steel Frame Box", 48, false)
             .addCasingInfoExactly("Steel Pipe Casing", 61, false)
             .addCasingInfoExactly("Hempcrete", 29, false)
             .addInputBus("Any Solid Steel Machine Casing", 1)
