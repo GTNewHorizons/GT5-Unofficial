@@ -652,10 +652,15 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
             if (tileEntity instanceof IReactorChamber)
                 ic2Energy = (TileEntity) ((IReactorChamber) tileEntity).getReactor();
-            else ic2Energy = (tileEntity == null || tileEntity instanceof IEnergyTile || EnergyNet.instance == null)
-                ? tileEntity
-                : EnergyNet.instance
-                    .getTileEntity(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+            else ic2Energy = (tileEntity == null || tileEntity instanceof IEnergyTile
+                || EnergyNet.instance == null
+                || baseMetaTile.isClientSide())
+                    ? tileEntity
+                    : EnergyNet.instance.getTileEntity(
+                        tileEntity.getWorldObj(),
+                        tileEntity.xCoord,
+                        tileEntity.yCoord,
+                        tileEntity.zCoord);
 
             // IC2 Sink Compat
             if ((ic2Energy instanceof IEnergySink)

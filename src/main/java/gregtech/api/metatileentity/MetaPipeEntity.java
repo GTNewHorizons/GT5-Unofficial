@@ -607,6 +607,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         // Do nothing apparently
     }
 
+    public void updateClientConnections() {
+        checkConnections();
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            pipe.mConnections = mConnections;
+        }
+    }
+
     public void setCheckConnections() {
         mCheckConnections = true;
     }
@@ -657,14 +664,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 mConnections = aValue;
             }
         }
-    }
-
-    @Override
-    public boolean shouldSendInitialClientData() {
-        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
-            return pipe.mConnections != INVALID_CONNECTION;
-        }
-        return true;
     }
 
     @Override

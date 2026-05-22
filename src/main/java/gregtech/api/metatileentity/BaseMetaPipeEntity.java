@@ -308,10 +308,16 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
         CoverRegistry.cover(this, aCover0, aCover1, aCover2, aCover3, aCover4, aCover5);
 
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aConnections);
+        boolean hasInvalidConnection = aConnections == IConnectable.INVALID_CONNECTION;
+        if (!hasInvalidConnection) {
+            receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aConnections);
+        }
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
+        if (hasInvalidConnection && hasValidMetaTileEntity()) {
+            mMetaTileEntity.updateClientConnections();
+        }
     }
 
     @Override
