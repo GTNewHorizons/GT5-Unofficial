@@ -38,7 +38,7 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
         EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
-            cover::setRedstoneCondition);
+            cover::setRedstoneCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);

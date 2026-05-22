@@ -24,7 +24,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
         EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?> gateModeSync = new EnumSyncValue<>(
             CoverAdvancedRedstoneReceiverBase.GateMode.class,
             cover::getGateMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("gateMode", gateModeSync);
         super.addUIWidgets(syncManager, column, data);
     }

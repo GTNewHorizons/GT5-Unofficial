@@ -71,7 +71,7 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
         EnumSyncValue<MTEToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
             MTEToxicResidueSensor.ThresholdType.class,
             hatch::getThresholdType,
-            hatch::setThresholdType);
+            hatch::setThresholdType).allowC2S();
         return Flow.row()
             .child(
                 addToxicResidueTypeTooltips(

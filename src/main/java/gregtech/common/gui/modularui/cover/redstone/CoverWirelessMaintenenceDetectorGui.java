@@ -32,7 +32,7 @@ public class CoverWirelessMaintenenceDetectorGui
         EnumSyncValue<MaintenanceMode, ?> maintenanceModeSync = new EnumSyncValue<>(
             MaintenanceMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("maintenanceMode", maintenanceModeSync);
         super.addUIWidgets(syncManager, column, data);
     }

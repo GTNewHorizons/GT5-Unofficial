@@ -213,7 +213,7 @@ public class DroneCentreGuiUtil {
         EnumSyncValue<SortMode, ?> sortModeSyncHandler = new EnumSyncValue<>(
             DroneCentreGuiUtil.SortMode.class,
             multiblock::getSortMode,
-            multiblock::setSortMode);
+            multiblock::setSortMode).allowC2S();
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
             multiblock::setSearchBarText);

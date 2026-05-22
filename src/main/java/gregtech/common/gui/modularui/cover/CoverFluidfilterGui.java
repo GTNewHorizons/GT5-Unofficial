@@ -43,17 +43,17 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
         EnumSyncValue<FilterDirectionMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,
-            cover::setFilterDirection);
+            cover::setFilterDirection).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
         EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
-            cover::setFilterType);
+            cover::setFilterType).allowC2S();
         syncManager.syncValue("filter_type", filterTypeSyncValue);
         EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
-            cover::setBlockMode);
+            cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
 
         IFluidTank filterTank = new FluidStackTank(() -> {

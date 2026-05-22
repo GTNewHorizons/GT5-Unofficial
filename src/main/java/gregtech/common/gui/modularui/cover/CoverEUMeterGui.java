@@ -33,7 +33,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
         EnumSyncValue<CoverEUMeter.EnergyType, ?> energyTypeSyncValue = new EnumSyncValue<>(
             CoverEUMeter.EnergyType.class,
             cover::getType,
-            cover::setType);
+            cover::setType).allowC2S();
         return Flow.row()
             .child(
                 addEnergyTypeTooltips(

@@ -27,7 +27,7 @@ public class CoverWirelessDoesWorkDetectorGui
         EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityModeSync = new EnumSyncValue<>(
             CoverWirelessDoesWorkDetector.ActivityMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("activityMode", activityModeSync);
 
         super.addUIWidgets(syncManager, column, data);

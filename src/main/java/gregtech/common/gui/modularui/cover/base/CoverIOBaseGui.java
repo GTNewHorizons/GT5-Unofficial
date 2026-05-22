@@ -38,7 +38,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            cover::setIOMode);
+            cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
@@ -49,7 +49,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
-            cover::setMachineProcessingCondition);
+            cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         IWidget conditionButtons = new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
             .overlay(
@@ -63,7 +63,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
-            cover::setBlockMode);
+            cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
         IWidget blockingButtons = new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
             .overlay(

@@ -35,7 +35,7 @@ public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
         EnumSyncValue<DetectionMode, ?> detectionModeSyncValue = new EnumSyncValue<>(
             DetectionMode.class,
             cover::getDetectionMode,
-            cover::setDetectionMode);
+            cover::setDetectionMode).allowC2S();
         syncManager.syncValue("detection_mode", detectionModeSyncValue);
         BinaryEnumSyncValue<RedstoneMode, ?> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
             RedstoneMode.class,

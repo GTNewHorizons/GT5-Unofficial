@@ -42,12 +42,12 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
         EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            cover::setIOMode);
+            cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
         EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
-            cover::setMachineProcessingCondition);
+            cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         column.child(
             makeRowLayout().child(positionRow(makeTransferModeRow(ioModeSyncValue)))

@@ -57,12 +57,12 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
         EnumSyncValue<BlockMode, ?> outputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidOutputMode,
-            cover::setFluidOutputMode);
+            cover::setFluidOutputMode).allowC2S();
         syncManager.syncValue("output_mode", outputModeSyncValue);
         EnumSyncValue<BlockMode, ?> inputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidInputMode,
-            cover::setFluidInputMode);
+            cover::setFluidInputMode).allowC2S();
         syncManager.syncValue("input_mode", inputModeSyncValue);
         return Flow.row()
             .child(

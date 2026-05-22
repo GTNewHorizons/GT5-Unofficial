@@ -35,12 +35,12 @@ public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance>
         EnumSyncValue<MaintenanceAlertCondition, ?> thresholdSyncValue = new EnumSyncValue<>(
             MaintenanceAlertCondition.class,
             cover::getMaintenanceAlertCondition,
-            cover::setMaintenanceAlertCondition);
+            cover::setMaintenanceAlertCondition).allowC2S();
         syncManager.syncValue("threshold", thresholdSyncValue);
         EnumSyncValue<RedstoneMode, ?> redstoneModeSyncValue = new EnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            cover::setRedstoneMode);
+            cover::setRedstoneMode).allowC2S();
 
         column.child(
             Flow.row()

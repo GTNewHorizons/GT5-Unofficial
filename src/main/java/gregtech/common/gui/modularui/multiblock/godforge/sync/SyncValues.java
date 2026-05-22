@@ -41,7 +41,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters, ?>> FORMATTER = new ForgeOfGodsSyncValue<>(
         "fog.sync.formatter",
-        data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
+        data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter).allowC2S());
 
     public static final HybridSyncValue<BooleanSyncValue> INVERSION = new HybridSyncValue<>(
         "fog.sync.inversion",
@@ -58,7 +58,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels, ?>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_fuel",
-        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
+        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)).allowC2S());
 
     public static final ForgeOfGodsSyncValue<LongSyncValue> FUEL_CONSUMPTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_consumption",
@@ -116,7 +116,7 @@ public class SyncValues {
             return new EnumSyncValue<>(
                 ForgeOfGodsUpgrade.class,
                 () -> ForgeOfGodsUpgrade.VALUES[i.intValue()],
-                val -> i.setValue(val.ordinal()));
+                val -> i.setValue(val.ordinal())).allowC2S();
         });
 
     public static final ForgeOfGodsSyncValue<GenericListSyncHandler<?>> UPGRADES_LIST = new ForgeOfGodsSyncValue<>(
@@ -139,7 +139,7 @@ public class SyncValues {
             return new EnumSyncValue<>(
                 Milestones.class,
                 () -> Milestones.VALUES[i.intValue()],
-                val -> i.setValue(val.ordinal()));
+                val -> i.setValue(val.ordinal())).allowC2S();
         });
 
     public static final ForgeOfGodsSyncValue<BigIntSyncValue> TOTAL_POWER_CONSUMED = new ForgeOfGodsSyncValue<>(

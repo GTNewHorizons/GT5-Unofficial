@@ -31,7 +31,7 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
         EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
-            cover::setFilterType);
+            cover::setFilterType).allowC2S();
         syncManager.syncValue("filter_type", filterTypeSyncValue);
 
         column.child(
