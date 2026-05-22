@@ -64,7 +64,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             ItemStackHandler.class,
             () -> multiblock.selected,
             handler -> multiblock.selected = handler,
-            new ItemStackListAdapter());
+            new ItemStackListAdapter()).allowC2S();
         syncManager.syncValue("selected", listSyncer);
 
         GTUtility.ItemId[] ores = sortOres(multiblock.dropMap);
