@@ -1627,8 +1627,20 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_CRYOTHEUM_ON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mvf_cryo_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_PYROTHEUM_ON = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/mebf_pyro_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_CRYOTHEUM_OFF = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mvf_cryo_off")
         .fullImage()
         .canApplyTheme()
         .build();
