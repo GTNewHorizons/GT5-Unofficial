@@ -1,8 +1,10 @@
 package gregtech.api.objects;
 
-import java.util.*;
-
-import org.jetbrains.annotations.NotNull;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.RandomAccess;
 
 public class RingBuffer implements List<Double>, RandomAccess {
 
@@ -81,7 +83,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public @NotNull Iterator<Double> iterator() {
+    public Iterator<Double> iterator() {
         return new BufferIterator(this);
     }
 
@@ -183,17 +185,17 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public @NotNull ListIterator<Double> listIterator() {
+    public ListIterator<Double> listIterator() {
         return new BufferIterator(this);
     }
 
     @Override
-    public @NotNull ListIterator<Double> listIterator(int index) {
+    public ListIterator<Double> listIterator(int index) {
         return new BufferIterator(this);
     }
 
     @Override
-    public @NotNull List<Double> subList(int fromIndex, int toIndex) {
+    public List<Double> subList(int fromIndex, int toIndex) {
         // eh, I don't feel like implementing a view unless requested
         throw new UnsupportedOperationException();
     }
@@ -223,7 +225,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
             if (!this.contains(o)) return false;
         }
@@ -238,7 +240,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
      * @return always {@code true}
      */
     @Override
-    public boolean addAll(@NotNull Collection<? extends Double> c) {
+    public boolean addAll(Collection<? extends Double> c) {
         for (double v : c) {
             this.add(v);
         }
@@ -246,7 +248,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends Double> c) {
+    public boolean addAll(int index, Collection<? extends Double> c) {
         int realIdx = (index + this.index) % capacity;
 
         double[] newBuf = new double[capacity + c.size()];
@@ -267,12 +269,12 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         throw new UnsupportedOperationException();
     }
 
