@@ -127,7 +127,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
-    public ForgeDirection mMainFacing = ForgeDirection.UNKNOWN;
+    public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
     protected final OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
@@ -308,8 +308,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        // Either mMainFacing or mMainFacing is horizontal
-        return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
+        boolean w = facing != mMainFacing;
+        return w;
     }
 
     @Override
