@@ -514,7 +514,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     public void initDefaultModes(NBTTagCompound nbt) {
         super.initDefaultModes(nbt);
         if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
-            pipe.mConnections = mConnections;
+            pipe.updateConnections();
         }
     }
 

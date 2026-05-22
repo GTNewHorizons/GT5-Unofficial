@@ -221,7 +221,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mWorkUpdate = mInventoryChanged = false;
     }
 
-    private void updateConnections() {
+    public void updateConnections() {
         if (mConnections == mMetaTileEntity.mConnections) {
             return;
         }
