@@ -28,8 +28,8 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -938,6 +938,20 @@ public class AssemblyLineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 ItemList.Coolant_Duct_Casing.get(4),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.CallistoIce, 32L),
+                ItemList.Electric_Pump_ZPM.get(8),
+                ItemList.FluidRegulator_ZPM.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Aluminium, 8L))
+            .fluidInputs(
+                new FluidStack(TFFluids.fluidCryotheum, 256_000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Lubricant.getFluid(16_000))
+            .itemOutputs(ItemList.EndothermicFridge.get(1))
+            .eut(TierEU.RECIPE_ZPM / 2)
+            .duration(1 * MINUTES)
+            .addTo(AssemblyLine);
         // Exothermic Hearth
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
@@ -952,13 +966,6 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.FluidRegulator_ZPM.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(16),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Aluminium, 8L))
-            .fluidInputs(
-                new FluidStack(TFFluids.fluidCryotheum, 256_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Lubricant.getFluid(16_000))
-            .itemOutputs(ItemList.EndothermicFridge.get(1))
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Invar, 8L),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Cupronickel, 8L))
             .fluidInputs(

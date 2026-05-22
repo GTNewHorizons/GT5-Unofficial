@@ -30,6 +30,7 @@ public class BlockCasings14 extends BlockCasingsAbstract {
                 if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_BOTTOM.getIcon();
                 if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_TOP.getIcon();
                 yield Textures.BlockIcons.MACHINE_CASING_HEARTH_SIDE.getIcon();
+            }
             case 4 -> {
                 if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_BOTTOM.getIcon();
                 if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_TOP.getIcon();

@@ -1354,6 +1354,7 @@ public class RecipeLoader {
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
+        // Fridge Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_FrostProof.get(4),
@@ -1365,6 +1366,14 @@ public class RecipeLoader {
                 Materials.SuperCoolant.getFluid(4000),
                 new FluidStack(TFFluids.fluidCryotheum, 1_000),
                 Materials.TungstenSteel.getMolten(2 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Hearth Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 ItemList.Casing_HeatProof.get(4),
                 Materials.AshDark.getDust(64),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Netherite, 1L),

@@ -1087,6 +1087,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.EndothermicFridge.set(
             new MTEEndothermicFridge(EndothermicFridge.ID, "multimachine.endothermichfridge", "Endothermic Fridge")
+                .getStackForm(1));
+
         ItemList.ExothermicHearth.set(
             new MTEExothermicHearth(ExothermicHearth.ID, "multimachine.exothermichearth", "Exothermic Hearth")
                 .getStackForm(1));
