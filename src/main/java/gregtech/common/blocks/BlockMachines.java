@@ -686,8 +686,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
-        // To prevent MTEBasicMachine from setting the output face to be the front facing on placement.
-        if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEBasicMachine) return;
         iGregTechTileEntity.setFrontFacing(
             BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
     }
