@@ -647,7 +647,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            if (checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
+            if (!checkCasingMin(errors, casingAmount, MIN_CASINGS)) {
                 if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
                     errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_too_many_hatch"));
                 }
