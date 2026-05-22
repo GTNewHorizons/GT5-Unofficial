@@ -31,7 +31,9 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 public class BaseOreComponent extends Item {
 
     @SideOnly(Side.CLIENT)
-    private IIconContainer iconContainer;
+    private IIcon iconBase;
+    @SideOnly(Side.CLIENT)
+    private IIcon iconOverlay;
 
     public final Material componentMaterial;
     public final String materialName;
@@ -94,23 +96,22 @@ public class BaseOreComponent extends Item {
         return this.materialName;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-        final boolean bool) {
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
+        final boolean adv) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                componentMaterial.addTooltips(list);
+                componentMaterial.addTooltips(tooltip);
             } else {
                 if (Client.tooltip.showFormula) {
                     String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                     if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                        tooltip.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
                     }
                 }
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, tooltip, adv);
     }
 
     @Override
@@ -141,9 +142,16 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            iconContainer = Textures.ItemIcons.custom(GTPlusPlus.ID + ":processing/MilledOre/milled");
+            this.iconBase = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
+            if (this.componentType.hasOverlay()) {
+                this.iconOverlay = par1IconRegister
+                    .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
+            }
         } else {
-            iconContainer = Textures.ItemIcons.textureSet("METALLIC", "/" + this.componentType.COMPONENT_NAME);
+            IIconContainer container = Textures.ItemIcons
+                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+            iconBase = container.getIcon();
+            iconOverlay = container.getOverlayIcon();
         }
     }
 
@@ -165,9 +173,9 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.iconContainer.getIcon();
+            return iconBase;
         }
-        return this.iconContainer.getOverlayIcon();
+        return iconOverlay;
     }
 
     public enum ComponentTypes {

@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -18,9 +17,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -61,19 +60,17 @@ public class RecipesMachines {
             .addTo(assemblerRecipes);
 
         // Lead Lined Chest
-        for (ItemStack plateRubber : OreDictionary.getOres("plateAnyRubber")) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hull_LV.get(1),
-                    GTUtility.copyAmount(32, plateRubber),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 9),
-                    new ItemStack(Blocks.chest))
-                .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
-                .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
-                .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_MV / 2)
-                .addTo(assemblerRecipes);
-        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_LV.get(1),
+                new OreDictItemStack("plateAnyRubber", 32),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 9),
+                new ItemStack(Blocks.chest))
+            .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
+            .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(assemblerRecipes);
 
         // RTG
         GTValues.RA.stdBuilder()

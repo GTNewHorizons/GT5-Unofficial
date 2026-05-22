@@ -45,30 +45,30 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
     @Override
-    public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, List<String> tooltip,
         final boolean aF3_H) {
-        final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
+        final String tKey = this.getUnlocalizedName(stack) + ".tooltip",
             tString = GTLanguageManager.getTranslation(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
-            aList.add(tString);
+            tooltip.add(tString);
         }
 
-        Long[] tStats = this.getElectricStats(aStack);
+        Long[] tStats = this.getElectricStats(stack);
         if (tStats != null) {
             if (tStats[3] > 0) {
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
                         formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
-                final long tCharge = this.getRealCharge(aStack);
+                final long tCharge = this.getRealCharge(stack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
                             + EnumChatFormatting.GRAY);
                 } else {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
@@ -81,14 +81,14 @@ public abstract class GTMetaItemBase extends GTGenericItem
             }
         }
 
-        tStats = this.getFluidContainerStats(aStack);
+        tStats = this.getFluidContainerStats(stack);
         if ((tStats != null) && (tStats[0] > 0)) {
-            final FluidStack tFluid = this.getFluidContent(aStack);
-            aList.add(
+            final FluidStack tFluid = this.getFluidContent(stack);
+            tooltip.add(
                 EnumChatFormatting.BLUE
                     + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
                     + EnumChatFormatting.GRAY);
-            aList.add(
+            tooltip.add(
                 EnumChatFormatting.BLUE
                     + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / " + formatNumber(tStats[0]) + "L")
                     + EnumChatFormatting.GRAY);

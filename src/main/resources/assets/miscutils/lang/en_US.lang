@@ -1766,8 +1766,8 @@ item.SteelMultispade.name=Steel Multispade
 item.TinAlloyMultispade.name=Tin Alloy Multispade
 item.UltimetMultipick.name=Ultimet Multipick
 item.UltimetMultispade.name=Ultimet Multispade
-item.WroughtIronMultipick.name=Wrought Iron Multipick
-item.WroughtIronMultispade.name=Wrought Iron Multispade
+item.CastIronMultipick.name=Cast Iron Multipick
+item.CastIronMultispade.name=Cast Iron Multispade
 item.SterlingSilverMultipick.name=Sterling Silver Multipick
 item.SterlingSilverMultispade.name=Sterling Silver Multispade
 item.RoseGoldMultipick.name=Rose Gold Multipick
@@ -1848,7 +1848,7 @@ item.itemPlateLithium.name=Lithium Plate
 item.itemPlateDoubleEuropium.name=Double Europium Plate
 
 # Gears
-item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
+item.itemSmallGearCastIron.name=Small Cast Iron Gear
 
 # Misc
 item.itemFoilUranium235.name=Uranium 235 Foil
