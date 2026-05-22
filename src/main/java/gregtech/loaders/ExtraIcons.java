@@ -24,6 +24,7 @@ public class ExtraIcons {
 
     // Modular Augments
     public static IIcon nightVisionAugment;
+    public static IIcon holoInventoryAugment;
     public static IIcon jetpackAugment;
     public static IIcon creativeFlightAugment;
     public static IIcon forceFieldAugment;
@@ -56,6 +57,8 @@ public class ExtraIcons {
             rebreatherAugment = reg
                 .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_rebreather"));
             revealingAugment = reg.registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_revealing"));
+            holoInventoryAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_holoinventory"));
             jetpackAugment = reg
                 .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_jetpack"));
             creativeFlightAugment = reg

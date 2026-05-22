@@ -3493,6 +3493,7 @@ GT5U.armor.part.name.ForceField=Augment: Energy Grid Defense
 GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
 GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
+GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -3538,6 +3539,7 @@ GT5U.armor.behavior.ForceField=Force Field
 GT5U.armor.behavior.WaterBreathing=Water Breathing
 GT5U.armor.behavior.Teleporter=Personal Teleporter
 GT5U.armor.behavior.MilkInfusion=Milk Infusion
+GT5U.armor.behavior.HoloInventory=Holographic Inventory
 
 GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
@@ -6784,6 +6786,7 @@ key.gt.toggle_night_vision=Toggle Night Vision
 key.gt.toggle_jetpack_hover=Toggle Jetpack Hover
 key.gt.toggle_jetpack=Toggle Jetpack Engine
 key.gt.toggle_goggles_of_revealing=Toggle Goggles of Revealing
+key.gt.toggle_holo_inventory=Toggle Holographic Inventory
 key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
 key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed

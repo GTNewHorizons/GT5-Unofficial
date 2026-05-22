@@ -18,11 +18,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,10 +65,12 @@ import thaumcraft.api.nodes.IRevealer;
     value = { @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = ModIDs.FORESTRY),
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
-        @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT), })
+        @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
+        @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY), })
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
-    IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem {
+public class MechArmorBase extends ItemArmor
+    implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem, IGoggles, IRevealer, IVisDiscountGear,
+    IArmorApiarist, IHazardProtector, ICustomDamageItem, net.dries007.holoInventory.api.IHoloGlasses {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -349,6 +353,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load(entity, stack);
 
         context.drainEnergy(damage * 100);
+    }
+
+    @Override
+    public boolean shouldRender(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag == null) return false;
+        NBTTagList active = tag.getTagList("active", NBT.TAG_STRING);
+        String name = BehaviorName.HoloInventory.name();
+        for (int i = 0; i < active.tagCount(); i++) {
+            if (name.equals(active.getStringTagAt(i))) return true;
+        }
+        return false;
     }
 
     // Thaumcraft compat

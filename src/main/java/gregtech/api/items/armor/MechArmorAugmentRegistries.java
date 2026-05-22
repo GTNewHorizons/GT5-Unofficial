@@ -23,6 +23,7 @@ import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
 import gregtech.api.items.armor.behaviors.ForceFieldBehavior;
 import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
 import gregtech.api.items.armor.behaviors.HazmatBehavior;
+import gregtech.api.items.armor.behaviors.HoloInventoryBehavior;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
 import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
@@ -550,6 +551,14 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Helmet)
             .providesBehaviors(MilkInfusionBehavior.INSTANCE)
             .setMinimumCore(1)
+            .setCategory(AugmentCategory.Utility)
+            .setRarity(EnumRarity.uncommon)
+        ),
+        HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
+            .setId("HoloInventory")
+            .setItemId("augmentholoinventory")
+            .fitsInto(ArmorType.Helmet)
+            .providesBehaviors(HoloInventoryBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
         );
