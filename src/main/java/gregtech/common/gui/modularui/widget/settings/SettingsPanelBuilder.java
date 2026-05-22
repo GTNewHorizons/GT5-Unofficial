@@ -138,7 +138,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new StringSyncValue(getter, setter));
+            textField.value(new StringSyncValue(getter, setter).allowC2S());
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 

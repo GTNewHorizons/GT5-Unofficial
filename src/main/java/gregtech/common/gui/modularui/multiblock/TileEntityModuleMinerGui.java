@@ -1329,7 +1329,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
 
         AtomicReference<String> oreFilter = new AtomicReference<>("");
-        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set);
+        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set).allowC2S();
         syncManager.syncValue("oreFilter", oreFilterSyncer);
 
         AtomicInteger distanceFilter = new AtomicInteger(0);

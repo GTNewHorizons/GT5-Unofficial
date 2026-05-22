@@ -176,7 +176,8 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .size(51, 50))
             .child(
                 new TextFieldWidget().setNumbers(0, 100)
-                    .value(new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue))
+                    .value(
+                        new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue).allowC2S())
                     .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
                     .setTextAlignment(Alignment.CenterLeft)
                     .pos(86, 27)

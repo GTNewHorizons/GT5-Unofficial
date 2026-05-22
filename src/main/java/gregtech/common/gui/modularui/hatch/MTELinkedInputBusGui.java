@@ -34,7 +34,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        StringSyncValue channelSyncer = new StringSyncValue(hatch::getChannel, hatch::setChannel);
+        StringSyncValue channelSyncer = new StringSyncValue(hatch::getChannel, hatch::setChannel).allowC2S();
         BooleanSyncValue isPrivateSyncer = new BooleanSyncValue(hatch::isPrivate, hatch::setPrivate);
 
         Flow mainColumn = Flow.column()

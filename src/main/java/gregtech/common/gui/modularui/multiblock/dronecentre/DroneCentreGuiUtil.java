@@ -216,7 +216,7 @@ public class DroneCentreGuiUtil {
             multiblock::setSortMode).allowC2S();
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
-            multiblock::setSearchBarText);
+            multiblock::setSearchBarText).allowC2S();
         IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,

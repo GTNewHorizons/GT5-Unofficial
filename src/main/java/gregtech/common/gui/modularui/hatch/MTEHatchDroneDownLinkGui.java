@@ -135,6 +135,6 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     public void registerSyncValues(PanelSyncManager syncManager) {
         droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(hatch::getConnections);
         syncManager.syncValue("droneConnections", droneConnectionListSyncHandler);
-        syncManager.syncValue("setkey", new StringSyncValue(hatch::getKey, hatch::setKey));
+        syncManager.syncValue("setkey", new StringSyncValue(hatch::getKey, hatch::setKey).allowC2S());
     }
 }

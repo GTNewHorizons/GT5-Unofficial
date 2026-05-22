@@ -39,7 +39,7 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     private Flow createFrequencyRow(PanelSyncManager syncManager) {
         StringSyncValue frequencySyncer = new StringSyncValue(
             this::getFrequency,
-            val -> this.setFrequency(val, syncManager));
+            val -> this.setFrequency(val, syncManager)).allowC2S();
 
         return Flow.row()
             .marginBottom(4)

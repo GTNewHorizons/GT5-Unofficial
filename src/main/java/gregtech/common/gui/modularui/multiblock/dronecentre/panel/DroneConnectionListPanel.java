@@ -223,7 +223,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                                 () -> new StringSyncValue(
                                     () -> groupSyncValue.getValue()
                                         .get(finalI),
-                                    var -> centre.group.set(finalI, var)))));
+                                    var -> centre.group.set(finalI, var)).allowC2S())));
                 continue;
             }
             column.child(
@@ -406,7 +406,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .stream()
                     .filter(connection -> connection.uuid.equals(conn.uuid))
                     .findFirst()
-                    .ifPresent(c -> c.setCustomName(var))));
+                    .ifPresent(c -> c.setCustomName(var))).allowC2S());
         return new TextFieldWidget().expanded()
             .value(nameSyncValue);
     }

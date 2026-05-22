@@ -211,7 +211,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<StringSyncValue> SELECTED_STAR_COLOR = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_star_color",
-        data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor));
+        data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor).allowC2S());
 
     public static final ForgeOfGodsSyncValue<GenericListSyncHandler<ForgeOfGodsStarColor>> STAR_COLORS = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_colors",

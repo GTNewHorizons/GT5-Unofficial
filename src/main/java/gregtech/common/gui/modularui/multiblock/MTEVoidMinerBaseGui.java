@@ -82,7 +82,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                             .crossAxisAlignment(Alignment.CrossAxis.START)
                             .coverChildren())
                     .child(
-                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str))
+                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str).allowC2S())
                             .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                             .autoUpdateOnChange(true)
                             .anchorLeft(0)

@@ -127,6 +127,6 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
         syncManager.registerSlotGroup("item_inv", 3);
 
         syncManager.syncValue("rotationIndex", new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex));
-        syncManager.syncValue("orePrefix", new StringSyncValue(machine::getPrefix, machine::setPrefix));
+        syncManager.syncValue("orePrefix", new StringSyncValue(machine::getPrefix, machine::setPrefix).allowC2S());
     }
 }

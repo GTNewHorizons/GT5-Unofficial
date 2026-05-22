@@ -30,7 +30,7 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
+        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.child(makeFrequencyRow(frequencySyncer))
