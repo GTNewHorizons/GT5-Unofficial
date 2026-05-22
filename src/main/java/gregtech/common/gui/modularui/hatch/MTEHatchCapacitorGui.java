@@ -22,7 +22,7 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isActive = new BooleanSyncValue(baseMetaTileEntity::isActive);
+        BooleanSyncValue isActive = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
 
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(4)
@@ -39,5 +39,12 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
     @Override
     protected boolean supportsBottomRowOverlap() {
         return true;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+
+        syncManager.syncValue("isActive", new BooleanSyncValue(baseMetaTileEntity::isActive));
     }
 }
