@@ -308,8 +308,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        boolean w = facing != mMainFacing;
-        return w;
+        return facing != mMainFacing;
     }
 
     @Override
