@@ -62,7 +62,7 @@ public class CompositeParameter extends Parameter<@UnmodifiableView List<Paramet
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
+    public SyncHandler<?> createSyncHandler() {
         throw new UnsupportedOperationException("This parameter type does not have a sync handler!");
     }
 

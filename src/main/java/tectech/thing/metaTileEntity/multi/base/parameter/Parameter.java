@@ -86,7 +86,7 @@ public abstract class Parameter<T> {
         return showInGui;
     }
 
-    public abstract SyncHandler createSyncHandler();
+    public abstract SyncHandler<?> createSyncHandler();
 
     public void registerSyncValue(PanelSyncManager syncManager) {
         syncManager.syncValue(getNbtKey(), createSyncHandler());
