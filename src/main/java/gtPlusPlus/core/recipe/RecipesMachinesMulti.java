@@ -729,8 +729,8 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialCuttingMachine.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitData", 'W',
-                OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
+            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(1), 'C',
+                "circuitData", 'W', OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
     }
 
     private static void multiExtruder() {
