@@ -414,14 +414,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public Packet getDescriptionPacket() {
         issueClientUpdate();
+        sendClientData();
 
         IMetaTileEntity imte = getMetaTileEntity();
 
         if (imte == null) return null;
-
-        if (imte.shouldSendInitialClientData()) {
-            sendClientData();
-        }
 
         NBTTagCompound data = imte.getDescriptionData();
 

@@ -127,7 +127,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
-    public ForgeDirection mMainFacing = ForgeDirection.WEST;
+    public ForgeDirection mMainFacing = ForgeDirection.UNKNOWN;
     public FluidStack mOutputFluid;
     protected final OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
@@ -226,25 +226,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         onFacingChange();
         onMachineBlockUpdate();
         return true;
-    }
-
-    @Override
-    public void onFacingChange() {
-        super.onFacingChange();
-        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
-        // arrives
-        if (mMainFacing == UNKNOWN) {
-            IGregTechTileEntity te = getBaseMetaTileEntity();
-            if (te != null && te.getWorld().isRemote) {
-                mMainFacing = te.getFrontFacing();
-                te.setFrontFacing(te.getBackFacing());
-            }
-        }
-    }
-
-    @Override
-    public boolean shouldSendInitialClientData() {
-        return isFacingValid(mMainFacing);
     }
 
     @Override
@@ -487,7 +468,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
-        mMainFacing = ForgeDirection.UNKNOWN;
+        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
+        if (isValidMainFacing(facing)) {
+            setMainFacing(facing);
+        }
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             final GTClientPreference tPreference = GTMod.proxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
@@ -558,8 +542,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         if (aBaseMetaTileEntity.isServerSide()) {
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
-
-            doDisplayThings();
 
             boolean tSucceeded = false;
             boolean isActive = mMaxProgresstime > 0;
@@ -680,16 +662,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
-    }
-
-    protected void doDisplayThings() {
-        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
-            mMainFacing = getBaseMetaTileEntity().getFrontFacing();
-        }
-        if (isValidMainFacing(mMainFacing) && !mHasBeenUpdated) {
-            mHasBeenUpdated = true;
-            getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
-        }
     }
 
     protected boolean hasEnoughEnergyToCheckRecipe() {
