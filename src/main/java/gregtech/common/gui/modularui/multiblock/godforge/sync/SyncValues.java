@@ -200,7 +200,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<StatColorSyncValue> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_clicked",
-        data -> new StatColorSyncValue(new MutableObject<>(data.getStarColors().newTemplateColor()), data));
+        data -> new StatColorSyncValue(new MutableObject<>(data.getStarColors().newTemplateColor()), data).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_COLOR_EDITING_INDEX = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_editing_index",
