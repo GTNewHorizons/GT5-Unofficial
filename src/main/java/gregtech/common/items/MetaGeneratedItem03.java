@@ -1361,12 +1361,13 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     SubTag.NO_UNIFICATION))
             .setRender(new InfinityMetaItemRenderer());
 
-        ItemList.QuasiStar.set(
-            addItemWithLocalizationKeys(
-                QuasiStar.ID,
-                "gt.item.quasi_star.name",
-                "gt.item.quasi_star.tooltip",
-                SubTag.NO_UNIFICATION))
+        ItemList.PseudoStar
+            .set(
+                addItemWithLocalizationKeys(
+                    PseudoStar.ID,
+                    "gt.item.pseudo_star.name",
+                    "gt.item.pseudo_star.tooltip",
+                    SubTag.NO_UNIFICATION))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
 
         ItemList.Cover_Metrics_Transmitter.set(

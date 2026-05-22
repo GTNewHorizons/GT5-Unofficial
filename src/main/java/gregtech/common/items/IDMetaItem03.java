@@ -206,7 +206,7 @@ public enum IDMetaItem03 {
     Alumina_Support_Ring(253),
     Alumina_Support_Ring_Raw(254),
     Beryllium_Shielding_Plate(255),
-    QuasiStar(256),
+    PseudoStar(256),
     UEV_Coil(259),
     UIV_Coil(260),
     UMV_Coil(261),

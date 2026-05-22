@@ -1835,7 +1835,7 @@ public enum ItemList implements IItemContainer {
     QuantumStar,
     Gravistar,
     NuclearStar,
-    QuasiStar,
+    PseudoStar,
     Block_SSFUEL,
     Block_MSSFUEL,
     SFMixture,
