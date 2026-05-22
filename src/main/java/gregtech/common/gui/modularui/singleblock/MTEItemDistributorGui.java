@@ -105,7 +105,7 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
     private Flow createConfigRow(int index) {
         ByteSyncValue itemsPerSideSyncer = new ByteSyncValue(
             () -> machine.getItemsPerSide(index),
-            val -> machine.setItemsPerSide(index, val));
+            val -> machine.setItemsPerSide(index, val)).allowC2S();
 
         Flow configRow = Flow.row()
             .coverChildren()

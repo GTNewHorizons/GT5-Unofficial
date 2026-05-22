@@ -203,7 +203,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                     new ShortSyncValue(() -> hatch.getMatrixElement(i), val -> hatch.setMatrixElement(val, i))
                         .allowC2S()));
 
-        syncManager.syncValue("selection", new ByteSyncValue(hatch::getSelection, hatch::setSelection));
+        syncManager.syncValue("selection", new ByteSyncValue(hatch::getSelection, hatch::setSelection).allowC2S());
         syncManager.syncValue("mode", new ByteSyncValue(hatch::getMode, hatch::setMode));
         syncManager.syncValue("status", new ByteSyncValue(hatch::getStatus, hatch::setStatus));
     }
