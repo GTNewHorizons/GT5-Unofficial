@@ -80,7 +80,8 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     private IWidget createDynamicTextWidget(PanelSyncManager syncManager) {
 
         DynamicSyncHandler customNameHandler = new DynamicSyncHandler()
-            .widgetProvider((syncManager1, packet) -> createTextArea(syncManager1));
+            .widgetProvider((syncManager1, packet) -> createTextArea(syncManager1))
+            .allowC2S();
 
         droneConnectionListSyncHandler.setChangeListener(() -> customNameHandler.notifyUpdate(packet -> {}));
         // We need to trigger initial build manually

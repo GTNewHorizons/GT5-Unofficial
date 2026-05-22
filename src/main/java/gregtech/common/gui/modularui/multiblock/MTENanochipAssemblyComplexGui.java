@@ -129,7 +129,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 listWidget.child(createModuleRow(modulePair));
             }
             return listWidget;
-        });
+        })
+            .allowC2S();
         moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(($) -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()

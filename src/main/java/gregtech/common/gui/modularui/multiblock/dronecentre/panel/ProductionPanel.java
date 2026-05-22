@@ -68,7 +68,8 @@ public class ProductionPanel extends ModularPanel {
                 return new EmptyWidget();
             }
             return createProductionArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         statsSyncHandler = syncManager.findSyncHandler("productionStats", ProductionStatsSyncHandler.class);
         syncManager.findSyncHandler("selectTime", IntSyncValue.class)

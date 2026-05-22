@@ -50,7 +50,8 @@ public class IndividualUpgradePanel {
             panel.background(upgrade.getBackground());
             panel.disableHoverBackground();
             return buildPanel(upgrade.getPanelSize(), upgrade, hypervisor, manualInsertionPanel);
-        });
+        })
+            .allowC2S();
 
         upgradeSyncer.setChangeListener(() -> {
             if (handler.isValid()) {

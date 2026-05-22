@@ -358,7 +358,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             return columns.setEnabledIf(
                 widget -> multiblock.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
                     && !baseMetaTileEntity.isAllowedToWork());
-        });
+        })
+            .allowC2S();
 
         errors.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
 
@@ -430,7 +431,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .coverChildren(0)
                 .child(createItemRecipeInfo(packet, syncManager))
                 .child(createFluidRecipeInfo(packet, syncManager));
-        });
+        })
+            .allowC2S();
 
         itemOutputSyncer
             .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));

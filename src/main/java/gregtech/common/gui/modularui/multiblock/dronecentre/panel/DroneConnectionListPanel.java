@@ -81,14 +81,16 @@ public class DroneConnectionListPanel extends ModularPanel {
                 return new EmptyWidget();
             }
             return createListArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
         dynamicWidget.syncHandler(droneListHandler);
         groupHandler = new DynamicSyncHandler().widgetProvider((pSyncManager, packet) -> {
             if (packet == null) {
                 return new EmptyWidget();
             }
             return createGroupTab(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         syncManager.findSyncHandler("sortMode", EnumSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));

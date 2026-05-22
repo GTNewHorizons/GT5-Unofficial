@@ -169,7 +169,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        })
+            .allowC2S();
         componentSyncer.setChangeListener(
             () -> componentHandler.notifyUpdate(
                 (packet -> packet.writeNBTTagCompoundToBuffer(

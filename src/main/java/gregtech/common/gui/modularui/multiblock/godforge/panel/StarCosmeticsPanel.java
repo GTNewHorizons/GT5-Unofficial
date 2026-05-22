@@ -122,7 +122,8 @@ public class StarCosmeticsPanel {
             colorList.child(newStarColorRow);
 
             return colorList;
-        });
+        })
+            .allowC2S();
 
         SyncValues.STAR_COLORS.lookupFrom(Panels.STAR_COSMETICS, hypervisor)
             .setChangeListener(() -> handler.notifyUpdate($ -> {}));
