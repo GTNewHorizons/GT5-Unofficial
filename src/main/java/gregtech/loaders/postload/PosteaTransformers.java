@@ -4,9 +4,6 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
-import com.gtnewhorizons.postea.api.BlockReplacementManager;
-import gregtech.api.enums.ItemList;
-import gregtech.common.blocks.rubbertree.BlockRubberLogNatural;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
