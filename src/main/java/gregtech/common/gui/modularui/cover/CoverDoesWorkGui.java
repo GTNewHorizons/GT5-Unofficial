@@ -40,7 +40,7 @@ public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
         BinaryEnumSyncValue<RedstoneMode, ?> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            cover::setRedstoneMode);
+            cover::setRedstoneMode).allowC2S();
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
