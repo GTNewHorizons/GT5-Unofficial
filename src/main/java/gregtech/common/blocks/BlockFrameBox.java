@@ -325,6 +325,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         if (tTileEntity instanceof BaseMetaTileEntity) {
             return true;
         }
+        if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
+            return true;
+        }
         return (tTileEntity instanceof ICoverable coverable) && coverable.hasCoverAtSide(side);
     }
 

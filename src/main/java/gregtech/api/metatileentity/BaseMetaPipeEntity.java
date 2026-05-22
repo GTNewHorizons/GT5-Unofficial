@@ -198,10 +198,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 return;
             }
             if (isServerSide) {
+                if (mTickTimer % 10 == 0) {
+                    sendClientData();
+                }
                 if (mTickTimer > 10) {
-                    if (mTickTimer % 10 == 0) {
-                        sendClientData();
-                    }
                     handleConnectionsChangeServer();
                     handleUpdateDataChangeServer();
                     handleColorChangeServer();
@@ -700,7 +700,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             sideDirection,
             tConnections,
             mColor - 1,
-            tConnections == IConnectable.NO_CONNECTION || (tConnections & sideDirection.flag) != 0,
+            tConnections == 0 || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
     }
 
