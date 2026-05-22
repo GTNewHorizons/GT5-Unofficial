@@ -4,6 +4,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
 /**
@@ -16,12 +17,14 @@ public class BlockCasings14 extends BlockCasingsAbstract {
 
     public BlockCasings14() {
         super(ItemCasings.class, "gt.blockcasings14", MaterialCasings.INSTANCE, 16);
+        register(5, ItemList.CasingNaquadahReinforcedDistillation);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
+            case 5 -> Textures.BlockIcons.CASING_NAQUADAH_REINFORCED_DISTILLATION.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

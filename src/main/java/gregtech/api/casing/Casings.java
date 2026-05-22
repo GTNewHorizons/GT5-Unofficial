@@ -520,6 +520,9 @@ public enum Casings implements ICasing {
 
     // Block Casings 14
 
+
+    NaquadahReinforcedDistillationCasing(()->GregTechAPI.sBlockCasings14,5,gt(16,7,5)),
+
     // Block Reinforced
     NaquadahReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,10,218),
