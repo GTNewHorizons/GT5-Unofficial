@@ -262,7 +262,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
         structureInstanceInfo.validate(errors);
         checkHasAnyEnergy(errors);
-        checkHasMaintenanceHatch(errors);
         checkHasDataInput(errors);
         checkHasDataOutput(errors);
     }
