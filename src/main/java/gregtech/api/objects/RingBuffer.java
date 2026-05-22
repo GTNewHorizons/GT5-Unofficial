@@ -84,11 +84,6 @@ public class RingBuffer implements List<Double>, RandomAccess {
     }
 
     @Override
-    public Iterator<Double> iterator() {
-        return new BufferIterator(this);
-    }
-
-    @Override
     public Object[] toArray() {
         Object[] out = new Object[capacity];
         for (int i = 0; i < capacity; i++) {
@@ -97,6 +92,8 @@ public class RingBuffer implements List<Double>, RandomAccess {
         return out;
     }
 
+    // if this code is bugged, just replace it with a carbon copy of ArrayList.toArray() method
+    // and refer to the license of openJDK, in case it's legal to do so
     @Override
     public <T> T[] toArray(T[] a) {
         if (a == null) throw new NullPointerException();
@@ -110,6 +107,16 @@ public class RingBuffer implements List<Double>, RandomAccess {
             out[i] = buffer[(index + i) % capacity];
         }
         return (T[]) out;
+    }
+
+    /**
+     *
+     * @return a mutable copy of the backing array, containing the current values
+     */
+    public double[] getBuffer() {
+        double[] out = new double[capacity];
+        System.arraycopy(buffer, 0, out, 0, capacity);
+        return out;
     }
 
     /**
@@ -185,6 +192,16 @@ public class RingBuffer implements List<Double>, RandomAccess {
         return -1;
     }
 
+    /**
+     * This method may erase the true type of the returned {@link BufferIterator}, as it's a {@link ListIterator}.
+     * In case you need to iterate backwards, use {@link #listIterator()} instead.
+     * @return an iterator for this ring buffer
+     */
+    @Override
+    public Iterator<Double> iterator() {
+        return new BufferIterator(this);
+    }
+
     @Override
     public ListIterator<Double> listIterator() {
         return new BufferIterator(this);
@@ -192,7 +209,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
 
     @Override
     public ListIterator<Double> listIterator(int index) {
-        return new BufferIterator(this);
+        return new BufferIterator(this, index);
     }
 
     @Override
@@ -291,10 +308,6 @@ public class RingBuffer implements List<Double>, RandomAccess {
         return buffer[(index + this.index) % capacity];
     }
 
-    public double[] getBuffer() {
-        return buffer;
-    }
-
     private class BufferIterator implements ListIterator<Double> {
 
         private final RingBuffer ringRef;
@@ -304,6 +317,11 @@ public class RingBuffer implements List<Double>, RandomAccess {
         private BufferIterator(RingBuffer ringRef) {
             this.ringRef = ringRef;
             this.idx = ringRef.index;
+        }
+
+        private BufferIterator(RingBuffer ringRef, int idx) {
+            this(ringRef);
+            i = idx;
         }
 
         @Override
@@ -320,7 +338,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
 
         @Override
         public boolean hasPrevious() {
-            return idx == ringRef.index && (i == capacity || (capacity + idx + i - 1) % capacity != idx);
+            return idx == ringRef.index && (i == 0 || (capacity + idx + i) % capacity != idx);
         }
 
         @Override
@@ -328,11 +346,21 @@ public class RingBuffer implements List<Double>, RandomAccess {
             return buffer[(capacity + idx + --i) % capacity];
         }
 
+        /**
+         *
+         * @return raw index of the next element in the backing array
+         * @see RingBuffer#getBuffer()
+         */
         @Override
         public int nextIndex() {
             return (idx + i) % capacity;
         }
 
+        /**
+         *
+         * @return raw index of the previous element in the backing array
+         * @see RingBuffer#getBuffer()
+         */
         @Override
         public int previousIndex() {
             return (capacity + idx + i - 1) % capacity;
