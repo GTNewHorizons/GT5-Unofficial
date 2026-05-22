@@ -1704,6 +1704,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Industrial 3D Copying Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPrinter.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialAutoChisel });
+
         // Industrial Extruder Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialExtruder.get(1),
@@ -1753,6 +1758,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Boldarnator.get(1),
             new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
+        // Industrial Cutting Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCuttingMachine.get(1),
+            new Object[] { GregtechItemList.Industrial_CuttingFactoryController });
 
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
