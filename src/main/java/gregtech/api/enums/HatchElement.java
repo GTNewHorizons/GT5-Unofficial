@@ -52,7 +52,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.mInputBusses.size();
+            return t.mInputBusses.size() + t.mDualInputHatches.size();
         }
 
         @Override
@@ -93,7 +93,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.mDynamoHatches.size();
         }
     },
-    ExoticEnergy("GT5U.MBTT.MultiampEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
+    ExoticEnergy("GT5U.MBTT.ExoticEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -134,6 +134,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
     private final String name;
     private final List<Class<? extends IMetaTileEntity>> mteClasses;
     private final IGTHatchAdder<MTEMultiBlockBase> adder;
+    private static final HatchElement[] elements = HatchElement.values();
 
     @SafeVarargs
     HatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
@@ -155,5 +156,9 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
     @Override
     public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
         return adder;
+    }
+
+    public static HatchElement fromOrdinal(int ord) {
+        return elements[ord];
     }
 }

@@ -17,11 +17,11 @@ import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 
 public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWirelessRedstoneBase> extends CoverBaseGui<T> {
 
-    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
-        super((T) cover);
+    public CoverAdvancedWirelessRedstoneBaseGui(T cover) {
+        super(cover);
     }
 
-    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover, boolean buttonRowSpacing) {
+    public CoverAdvancedWirelessRedstoneBaseGui(T cover, boolean buttonRowSpacing) {
         this(cover);
         this.buttonRowSpacing = buttonRowSpacing;
     }

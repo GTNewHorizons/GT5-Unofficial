@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -46,6 +47,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -223,22 +227,27 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        boolean aStructure = checkPiece(
+        if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             getStructureOffsetX(),
             getStructureOffsetY(),
-            getStructureOffsetZ());
-        if (mMaintenanceHatches.size() != 1 || (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty())
-            || (requiresMufflers() && mMufflerHatches.size() != 4)
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()
-            || (requiresOutputHatch() && mOutputHatches.isEmpty())
-            || casingAmount < minCasingAmount()) {
-            return false;
+            getStructureOffsetZ(),
+            errors)) return;
+        checkOneMaintenanceHatch(errors);
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
         }
-        return aStructure;
+        if (requiresMufflers()) {
+            checkHatchExact(errors, HatchElement.Muffler, 4);
+        }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (requiresOutputHatch()) {
+            checkHasOutputHatch(errors);
+        }
+        checkCasingMin(errors, casingAmount, minCasingAmount());
     }
 
     @Override

@@ -7,6 +7,8 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -279,13 +282,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 + EnumChatFormatting.RESET
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.chunks") };
-    }
-
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -970,6 +966,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
     }
 
+    @Override
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+    }
+
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
         ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
         return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
@@ -1118,11 +1122,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 new FakeSyncWidget.BooleanSyncer(() -> replaceWithCobblestone, (val) -> replaceWithCobblestone = val),
                 builder,
                 (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocal(
-                        replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
-                            : "GT5U.gui.button.ore_drill_cobblestone_off")))
+            .dynamicTooltip(() -> {
+                String title = StatCollector.translateToLocal("GT5U.gui.button.ore_drill_cobblestone");
+                String statusKey = replaceWithCobblestone ? BUTTON_FEATURE_ENABLED_TOOLTIP
+                    : BUTTON_FEATURE_DISABLED_TOOLTIP;
+                String statusText = StatCollector.translateToLocal(statusKey);
+                return ImmutableList.of(title, GTUtility.getColoredSecondaryTooltip(statusText));
+
+            })
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16);
     }

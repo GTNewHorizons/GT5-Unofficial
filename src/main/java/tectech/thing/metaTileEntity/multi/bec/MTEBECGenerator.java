@@ -1,9 +1,11 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
-import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
+import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -71,12 +73,14 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
-        structure.addCasing('D', ElectromagneticWaveguide);
-        structure.addCasing('E', AdvancedFusionCoilII);
-        structure.addCasing('O', ElectromagneticallyIsolatedCasing)
-            .withUnlimitedHatches(2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
+        structure.addCasing('F', CondensateTransformativeCoil);
+        structure.addCasing('G', ElectromagneticWaveguide);
         structure.addCasing('1', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 16, Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy));
+        structure.addCasing('2', FineStructureConstantManipulator)
+            .withUnlimitedHatches(2, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
     }
@@ -85,7 +89,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Generator, Condensate Entangler")
+        tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
             .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
 
         tt.beginStructureBlock();
@@ -99,9 +103,12 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         tt.addHatchLocationOverride(BECHatches.Hatch, GTUtility.translate("GT5U.gui.text.bec-generator-bec-hatch-pos"));
         tt.addAllCasingInfo(
             Arrays.asList(
-                ElectromagneticallyIsolatedCasing,
                 SuperconductivePlasmaEnergyConduit,
-                AdvancedFusionCoilII,
+                ElectromagneticallyIsolatedCasing,
+                FineStructureConstantManipulator,
+                ConflictInducementCasing,
+                PeaceEnforcementCasing,
+                CondensateTransformativeCoil,
                 ElectromagneticWaveguide),
             null);
 

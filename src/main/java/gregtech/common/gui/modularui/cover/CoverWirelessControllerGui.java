@@ -39,6 +39,7 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
             RedstoneCondition.class,
             cover::getRedstoneCondition,
             cover::setRedstoneCondition);
+        syncManager.syncValue("condition_mode", conditionModeSyncValue);
         BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
         StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
         UUID uuid = data.getPlayer()

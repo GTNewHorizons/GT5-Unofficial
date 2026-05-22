@@ -609,6 +609,14 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
     FineStructureConstantManipulator
         (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
+    ConflictInducementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 3, gt(17, 0, 3)),
+    PeaceEnforcementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 4, gt(17, 0, 4)),
+    CondensateTransformativeCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 5, gt(17, 0, 5)),
+    CondensateGuidanceCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 6, gt(17, 0, 6)),
 
     // Block Glass 1
     ChemicalGradeGlass
@@ -638,6 +646,10 @@ public enum Casings implements ICasing {
         (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
     ReboltedOsmiridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083),
+    BoltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 32090,32090),
+    ReboltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090,32090),
     BoltedNaquadahAlloyCasing
         (() -> WerkstoffLoader.BWBlockCasings, 32091,32091),
     ReboltedNaquadahAlloyCasing
@@ -710,7 +722,7 @@ public enum Casings implements ICasing {
     CyclotronOuterCasing
         (() -> ModBlocks.blockCasings2Misc, 10, -1),
     ThermalContainmentCasing
-        (() -> ModBlocks.blockCasings2Misc, 11, -1),
+        (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
         (() -> ModBlocks.blockCasings2Misc, 12, -1),
     CuttingFactoryFrame

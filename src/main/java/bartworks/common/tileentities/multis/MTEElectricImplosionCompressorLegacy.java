@@ -80,6 +80,9 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -394,7 +397,8 @@ public class MTEElectricImplosionCompressorLegacy
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         int pistonTier = this.mBlockTier;
         int mMaxHatchTier = 0;
         boolean isOK;
@@ -402,9 +406,9 @@ public class MTEElectricImplosionCompressorLegacy
         this.mBlockTier = -1;
 
         if (this.isSuccessful) {
-            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0);
+            this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0, errors);
         } else {
-            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+            this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors);
         }
 
         List<MTEHatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
@@ -412,15 +416,19 @@ public class MTEElectricImplosionCompressorLegacy
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
-        isOK = isOK && this.mMaintenanceHatches.size() == 1 && !energyHatches.isEmpty();
-        if (isOK) {
+        if (errors.isEmpty()) {
+            checkOneMaintenanceHatch(errors);
+            if (energyHatches.isEmpty()) {
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
+            }
+        }
+        if (errors.isEmpty()) {
             this.activatePiston();
-            return true;
+            return;
         }
 
         this.isSuccessful = false;
         this.resetPiston(pistonTier);
-        return false;
     }
 
     @Override

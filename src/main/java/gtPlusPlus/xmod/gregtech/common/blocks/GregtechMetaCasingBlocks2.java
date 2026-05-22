@@ -24,24 +24,22 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPo
 public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        aList.add(new ItemStack(aItem, 1, 0));
-        aList.add(new ItemStack(aItem, 1, 1));
-        aList.add(new ItemStack(aItem, 1, 2));
-        aList.add(new ItemStack(aItem, 1, 3));
-        aList.add(new ItemStack(aItem, 1, 4));
-        aList.add(new ItemStack(aItem, 1, 5));
-        aList.add(new ItemStack(aItem, 1, 6));
-        aList.add(new ItemStack(aItem, 1, 7));
-        aList.add(new ItemStack(aItem, 1, 8));
-        aList.add(new ItemStack(aItem, 1, 9));
-        aList.add(new ItemStack(aItem, 1, 10));
-        aList.add(new ItemStack(aItem, 1, 11));
-        aList.add(new ItemStack(aItem, 1, 12));
-        aList.add(new ItemStack(aItem, 1, 13));
-
-        aList.add(new ItemStack(aItem, 1, 15));
-
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
+        list.add(new ItemStack(item, 1, 3));
+        list.add(new ItemStack(item, 1, 4));
+        list.add(new ItemStack(item, 1, 5));
+        list.add(new ItemStack(item, 1, 6));
+        list.add(new ItemStack(item, 1, 7));
+        list.add(new ItemStack(item, 1, 8));
+        list.add(new ItemStack(item, 1, 9));
+        list.add(new ItemStack(item, 1, 10));
+        list.add(new ItemStack(item, 1, 11));
+        list.add(new ItemStack(item, 1, 12));
+        list.add(new ItemStack(item, 1, 13));
+        list.add(new ItemStack(item, 1, 15));
     }
 
     public static class GregtechMetaCasingItemBlocks2 extends GregtechMetaCasingItems {
@@ -51,16 +49,16 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int meta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int meta = stack.getItemDamage();
             int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (meta == 7 && tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
-                aList.add(
+                tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 

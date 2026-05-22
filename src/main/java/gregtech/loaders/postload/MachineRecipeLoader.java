@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
@@ -61,9 +60,6 @@ import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
 public class MachineRecipeLoader implements Runnable {
 
     public static final String aTextTCGTPage = "gt.research.page.1.";
-
-    public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-        Materials.Tin };
 
     @Override
     public void run() {

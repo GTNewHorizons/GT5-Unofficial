@@ -2,22 +2,34 @@ package gtPlusPlus.core.util.recipe;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Objects;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gnu.trove.strategy.HashingStrategy;
+import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
+
 import gregtech.api.util.GTRecipe;
+import it.unimi.dsi.fastutil.Hash;
 
 public class RecipeHashStrat {
 
-    public static final HashingStrategy<GTRecipe> RecipeHashingStrategy = new HashingStrategy<>() {
+    public static final Hash.Strategy<GTRecipe> RecipeHashingStrategy = new Hash.Strategy<>() {
 
         @Override
-        public int computeHashCode(GTRecipe recipe) {
-            return com.google.common.base.Objects.hashCode(recipe.mDuration, recipe.mEUt);
+        public int hashCode(GTRecipe recipe) {
+            int hash = Fnv1a32.initialState();
+            if (recipe == null) return hash;
+
+            // let's call it fastest effort to distinguish obviously different recipes
+            hash = Fnv1a32.hashStep(hash, recipe.mDuration);
+            hash = Fnv1a32.hashStep(hash, recipe.mEUt);
+            hash = Fnv1a32.hashStep(hash, recipe.mInputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mOutputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mFluidInputs.length);
+            hash = Fnv1a32.hashStep(hash, recipe.mFluidOutputs.length);
+
+            return hash;
         }
 
         @Override
@@ -26,85 +38,83 @@ public class RecipeHashStrat {
         }
     };
 
+    private static final Comparator<ItemStack> itemStackComparator = Comparator
+        .comparing((ItemStack itemStack) -> Item.getIdFromItem(itemStack.getItem()))
+        .thenComparing(ItemStack::getItemDamage)
+        .thenComparing(itemStack -> itemStack.stackSize);
+
+    private static final Comparator<FluidStack> fluidStackComparator = Comparator.comparing(FluidStack::getFluidID)
+        .thenComparing(fluidStack -> fluidStack.amount);
+
     public static boolean areRecipesEqual(GTRecipe recipe1, GTRecipe recipe2) {
-        // both item outputs use a copy to prevent interfering with chance based output orders
-        // sort all the arrays for recipe1
-        RecipeHashStrat.sortItemStackArray(recipe1.mInputs);
-        ItemStack[] recipe1OutputCopy = recipe1.mOutputs.clone();
-        RecipeHashStrat.sortItemStackArray(recipe1OutputCopy);
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidInputs);
-        RecipeHashStrat.sortFluidStackArray(recipe1.mFluidOutputs);
-        // sort all the arrays for recipe2
+        if (recipe1 == null || recipe2 == null) {
+            return false;
+        }
 
-        RecipeHashStrat.sortItemStackArray(recipe2.mInputs);
-        ItemStack[] recipe2OutputCopy = recipe2.mOutputs.clone();
-        RecipeHashStrat.sortItemStackArray(recipe2OutputCopy);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidInputs);
-        RecipeHashStrat.sortFluidStackArray(recipe2.mFluidOutputs);
-
-        // checks if the recipe EUt, Duration, inputs and outputs for both items and fluids are equal
         if (recipe1.mEUt != recipe2.mEUt) {
             return false;
         }
+
         if (recipe1.mDuration != recipe2.mDuration) {
             return false;
         }
+
         if (!areItemsStackArraysEqual(recipe1.mInputs, recipe2.mInputs)) {
             return false;
         }
-        if (!areItemsStackArraysEqual(recipe1OutputCopy, recipe2OutputCopy)) {
+
+        if (!areItemsStackArraysEqual(recipe1.mOutputs, recipe2.mOutputs)) {
             return false;
         }
+
         if (!areFluidStackArraysEqual(recipe1.mFluidInputs, recipe2.mFluidInputs)) {
             return false;
         }
+
         return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
-
     }
 
-    public static void sortItemStackArray(ItemStack[] itemStackArray) {
-        Arrays.sort(
-            itemStackArray,
-            Comparator.<ItemStack, Integer>comparing(itemStack -> Item.getIdFromItem(itemStack.getItem()))
-                .thenComparing(ItemStack::getItemDamage)
-                .thenComparing(itemStack -> itemStack.stackSize));
-    }
-
-    public static void sortFluidStackArray(FluidStack[] fluidStackArray) {
-        Arrays.sort(
-            fluidStackArray,
-            Comparator.comparing(FluidStack::getFluidID)
-                .thenComparing(fluidStack -> fluidStack.amount));
-    }
-
-    public static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {
+    private static boolean areItemsStackArraysEqual(ItemStack[] array1, ItemStack[] array2) {
         if (array1.length != array2.length) {
             return false;
         }
-        for (int i = 0; i < array1.length; i++) {
-            if (!Objects.equals(array1[i].getItem(), array2[i].getItem())) {
+
+        ItemStack[] sortedCopy1 = Arrays.copyOf(array1, array1.length);
+        ItemStack[] sortedCopy2 = Arrays.copyOf(array2, array2.length);
+
+        Arrays.sort(sortedCopy1, itemStackComparator);
+        Arrays.sort(sortedCopy2, itemStackComparator);
+
+        for (int i = 0; i < sortedCopy1.length; i++) {
+            if (sortedCopy1[i].stackSize != sortedCopy2[i].stackSize) {
                 return false;
             }
-            if (!Objects.equals(array1[i].getItemDamage(), array2[i].getItemDamage())) {
+            if (sortedCopy1[i].getItem() != sortedCopy2[i].getItem()) {
                 return false;
             }
-            if (!Objects.equals(array1[i].stackSize, array2[i].stackSize)) {
+            if (sortedCopy1[i].getItemDamage() != sortedCopy2[i].getItemDamage()) {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean areFluidStackArraysEqual(FluidStack[] array1, FluidStack[] array2) {
+    private static boolean areFluidStackArraysEqual(FluidStack[] array1, FluidStack[] array2) {
         if (array1.length != array2.length) {
             return false;
         }
-        for (int i = 0; i < array1.length; i++) {
-            // check if the string representation of both FluidStacks are not equal
-            if (!Objects.equals(array1[i].getFluid(), array2[i].getFluid())) {
+
+        FluidStack[] sortedCopy1 = Arrays.copyOf(array1, array1.length);
+        FluidStack[] sortedCopy2 = Arrays.copyOf(array2, array2.length);
+
+        Arrays.sort(sortedCopy1, fluidStackComparator);
+        Arrays.sort(sortedCopy2, fluidStackComparator);
+
+        for (int i = 0; i < sortedCopy1.length; i++) {
+            if (sortedCopy1[i].amount != sortedCopy2[i].amount) {
                 return false;
             }
-            if (!Objects.equals(array1[i].amount, array2[i].amount)) {
+            if (sortedCopy1[i].getFluid() != sortedCopy2[i].getFluid()) {
                 return false;
             }
         }

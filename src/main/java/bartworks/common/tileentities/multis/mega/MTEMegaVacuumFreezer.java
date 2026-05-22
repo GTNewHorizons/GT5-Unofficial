@@ -26,6 +26,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -57,6 +58,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -420,20 +423,27 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mCasingFrostProof = 0;
-        this.mTier = 1;
-        // If check for T1 fails, also do a check for T2 structure
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) {
-            // Reset mCasing in between checks, so they don't count again
-            this.mCasingFrostProof = 0;
-            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0)) {
-                return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        mCasingFrostProof = 0;
+        mTier = -1;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0, null)) {
+            mTier = 1;
+        } else {
+            mCasingFrostProof = 0;
+            clearHatches();
+            if (checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0, null)) {
+                mTier = 2;
+            } else {
+                // Cannot recognize structure, but emitting errors for either could be confusing
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
             }
-            // Structure is Tier 2
-            this.mTier = 2;
         }
-        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 700;
+        checkCasingMin(errors, mCasingFrostProof, 700);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

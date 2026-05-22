@@ -1272,10 +1272,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
         ItemList.Spray_Color_Infinite.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Spray_Color_Infinite.ID,
-                "gt.item.spray_can.infinite.name",
-                "gt.item.spray_can.infinite.tooltip",
+                BehaviourSprayColorInfinite::getNameWithColor,
+                $ -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -3625,32 +3625,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electromagnet_Iron.set(
             addItem(
                 Electromagnet_Iron.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.iron.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
+                $ -> GTUtility.translate("gt.item.electromagnet.iron.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.steel.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
+                $ -> GTUtility.translate("gt.item.electromagnet.steel.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
+                $ -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
+                $ -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
+                $ -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 
         ItemList.Black_Hole_Opener.set(

@@ -187,6 +187,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
+
         DoubleSyncValue playerTargetBeamEnergyeV = syncManager
             .findSyncHandler("playerTargetBeamEnergyeV", DoubleSyncValue.class);
         DoubleSyncValue cachedOutputBeamEnergy = syncManager
@@ -204,11 +206,9 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         IKey accelCycleTextKey = IKey.dynamic(() -> formatAccelCycleTextKey(accelerationCycleCounter));
         IKey statusTextKey = IKey.dynamic(() -> formatStatusTextKey(cachedOutputBeamEnergy, machineMode));
 
-        return new ListWidget<>().fullWidth()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+        outputWidget.child(
+            new TextWidget<>(beamEnergyTextKey).marginBottom(9)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
@@ -219,6 +219,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
             .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+
+        return outputWidget;
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {

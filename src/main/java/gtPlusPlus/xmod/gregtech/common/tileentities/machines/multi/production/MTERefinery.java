@@ -13,6 +13,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -28,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -172,20 +175,20 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
-            if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                && !this.mOutputHatches.isEmpty()
-                && this.mOutputHatches.size() <= 2
-                && this.mMufflerHatches.size() == 1
-                && this.mMaintenanceHatches.size() == 1
-                && this.mEnergyHatches.size() == 1) {
-                this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
-                return true;
-            }
+        if (!checkPiece(mName, 1, 7, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 7);
+        checkHatchMin(errors, InputHatch, 2);
+        checkHatchMax(errors, InputHatch, 4);
+        checkHasOutputHatch(errors);
+        checkHatchMax(errors, OutputHatch, 2);
+        checkOneMufflerHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneEnergyHatch(errors);
+        if (errors.isEmpty()) {
+            this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
         }
-        return false;
     }
 
     @Override
