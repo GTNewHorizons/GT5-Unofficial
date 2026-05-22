@@ -43,8 +43,10 @@ public class RingBuffer implements List<Double>, RandomAccess {
                 newBuf[i] = buffer[(capacity + index + i - newCapacity) % capacity];
             }
         } else {
-            // place all elements aligned with the end of the new buffer
-            System.arraycopy(buffer, 0, newBuf, newCapacity - capacity, capacity);
+            // place all elements ordered by age aligned with the end of the new buffer
+            System.arraycopy(buffer, index, newBuf, newCapacity - capacity, capacity - index);
+            System.arraycopy(buffer, 0, newBuf, newCapacity - capacity + index, index);
+            //this.index = capacity;
         }
         this.capacity = newCapacity;
         this.buffer = newBuf;
@@ -288,6 +290,10 @@ public class RingBuffer implements List<Double>, RandomAccess {
     public Double get(int index) {
         if (index < 0 || index >= capacity) throw new IndexOutOfBoundsException();
         return buffer[(index + this.index) % capacity];
+    }
+
+    public double[] getBuffer() {
+        return buffer;
     }
 
     private class BufferIterator implements ListIterator<Double> {
