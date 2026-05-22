@@ -1,13 +1,14 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_ADVANCED_BEAMLINE_OUTPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_OUTPUT;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -15,7 +16,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import gtnhlanth.common.register.LanthItemList;
 
 public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
@@ -111,35 +111,29 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineInputHatch(Class<T> clazz,
         int casingIndex, int hint) {
-        return lazy(
-            t -> buildHatchAdder(clazz).hatchClass(MTEHatchInputBeamline.class)
-                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
-                .casingIndex(casingIndex)
-                .hint(hint)
-                .adder(MTEBeamMultiBase::addBeamLineInputHatch)
-                .build());
+        return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_INPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder(MTEBeamMultiBase::addBeamLineInputHatch)
+            .build();
     }
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineOutputHatch(Class<T> clazz,
         int casingIndex, int hint) {
-        return lazy(
-            t -> buildHatchAdder(clazz).hatchClass(MTEHatchOutputBeamline.class)
-                .descriptionFromStacks(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
-                .casingIndex(casingIndex)
-                .hint(hint)
-                .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
-                .build());
+        return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_OUTPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
+            .build();
     }
 
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildAdvancedBeamlineOutputHatch(
         Class<T> clazz, int casingIndex, int hint, FundamentalForce force) {
-        return lazy(
-            t -> buildHatchAdder(clazz).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .descriptionFromStacks(ItemList.AdvancedBeamlineOutputHatch)
-                .casingIndex(casingIndex)
-                .hint(hint)
-                .adder((multi, te, ci) -> multi.addAdvancedBeamlineOutputHatch(te, ci, force))
-                .build());
+        return buildHatchAdder(clazz).hatchId(HATCH_ADVANCED_BEAMLINE_OUTPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder((multi, te, ci) -> multi.addAdvancedBeamlineOutputHatch(te, ci, force))
+            .build();
     }
 
 }
