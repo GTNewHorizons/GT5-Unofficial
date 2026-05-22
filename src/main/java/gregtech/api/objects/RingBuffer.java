@@ -195,6 +195,7 @@ public class RingBuffer implements List<Double>, RandomAccess {
     /**
      * This method may erase the true type of the returned {@link BufferIterator}, as it's a {@link ListIterator}.
      * In case you need to iterate backwards, use {@link #listIterator()} instead.
+     * 
      * @return an iterator for this ring buffer
      */
     @Override
