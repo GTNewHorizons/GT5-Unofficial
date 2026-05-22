@@ -465,7 +465,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setSpeedBonus(1 / speedBoost * speedMultiplier);
+            .setSpeedBonus(1 / (speedBoost * speedMultiplier));
     }
 
     @Override
