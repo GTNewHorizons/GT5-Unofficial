@@ -122,7 +122,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
-        mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
+        mStuttering = false, mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
@@ -487,7 +487,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mFluidTransfer", mFluidTransfer);
         aNBT.setBoolean("mItemTransfer", mItemTransfer);
-        aNBT.setBoolean("mHasBeenUpdated", mHasBeenUpdated);
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
@@ -507,7 +506,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         super.loadNBTData(aNBT);
         mFluidTransfer = aNBT.getBoolean("mFluidTransfer");
         mItemTransfer = aNBT.getBoolean("mItemTransfer");
-        mHasBeenUpdated = aNBT.getBoolean("mHasBeenUpdated");
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
