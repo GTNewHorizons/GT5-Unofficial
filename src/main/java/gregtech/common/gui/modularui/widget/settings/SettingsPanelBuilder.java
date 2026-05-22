@@ -97,7 +97,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new LongSyncValue(getter, setter));
+            textField.value(new LongSyncValue(getter, setter).allowC2S());
             textField.setFormatAsInteger(true);
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);

@@ -279,7 +279,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<LongSyncValue, MTEBaseModule> MODULE_PROCESSING_VOLTAGE = new ModuleSyncValue<>(
         "fog.sync.module_processing_voltage",
-        module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage));
+        module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_VOLTAGE_CONFIG = new ModuleSyncValue<>(
         "fog.sync.module_voltage_config",

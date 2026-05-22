@@ -75,7 +75,8 @@ public class MTEHatchOutputBusCompressedGui extends MTEHatchBaseGui<MTEHatchOutp
     }
 
     private ModularPanel createSettingsPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        LongSyncValue capacitySyncer = new LongSyncValue(hatch::getStackLimitOverride, hatch::setStackLimitOverride);
+        LongSyncValue capacitySyncer = new LongSyncValue(hatch::getStackLimitOverride, hatch::setStackLimitOverride)
+            .allowC2S();
 
         // spotless:off
         return new ModularPanel("busSettings")
