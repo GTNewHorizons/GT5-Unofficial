@@ -120,9 +120,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     public final ArrayList<BeeSimulator> mStorage = new ArrayList<>();
 
-    protected static final int MODE_PRIMARY_INPUT = 0;
-    protected static final int MODE_PRIMARY_OUTPUT = 1;
-    protected static final int MODE_PRIMARY_OPERATING = 2;
+    public static final int MODE_PRIMARY_INPUT = 0;
+    public static final int MODE_PRIMARY_OUTPUT = 1;
+    public static final int MODE_PRIMARY_OPERATING = 2;
 
     protected static final int MODE_SECONDARY_NORMAL = 0;
     protected static final int MODE_SECONDARY_SWARMER = 1;
@@ -388,7 +388,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 2)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addEnergyHatch(GTValues.VN[VoltageIndex.LuV] + "+, Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
         return tt;
@@ -634,6 +634,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
 
+        if (mMaxSlots > 0 && mStorage.size() >= mMaxSlots) {
+            info.add(
+                EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kubatech.infodata.mia.inventory_full"));
+        }
+        if (mPrimaryMode == MODE_PRIMARY_OPERATING && mMaxProgresstime > 0) {
+            info.add(
+                EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("kubatech.infodata.mia.gui_locked_while_running"));
+        }
+
         return info.toArray(new String[0]);
     }
 
@@ -654,6 +664,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         checkHasEnergyHatch(errors);
         checkHasOutputBus(errors);
         checkCasingMin(errors, this.mCasing, 190);
+        for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+            if (hatchEnergy.mTier < VoltageIndex.LuV) {
+                errors.add(StructureErrors.energyHatchTierTooLow(VoltageIndex.LuV));
+                break;
+            }
+        }
         if (errors.isEmpty()) {
             updateMaxSlots();
         }

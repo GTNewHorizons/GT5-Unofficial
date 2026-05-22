@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
@@ -33,6 +34,7 @@ import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.CrossAxis;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -40,6 +42,7 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -63,12 +66,17 @@ import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary.BeeSimula
 public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndustrialApiary> {
 
     private static final int SLOTS_PER_ROW = 9;
+    private static final int WARNING_ANIM_FRAMES = 63;
+    private static final int WARNING_ANIM_TICK_MS = 50;
+    private static final UITexture OVERLAY_INVENTORY_FULL_WARNING_SHEET = UITexture
+        .fullImage("kubatech", "gui/icons/inventory_full_warning");
     private static final UITexture OVERLAY_BEE_LIST = UITexture.fullImage("kubatech", "gui/overlay_button/bee_list");
 
     private boolean isInInventory = true;
     private List<GTHelper.StackableItemSlot> beeSlots = new ArrayList<>();
     private int maxSlots = 0;
     private int usedSlots = 0;
+    private boolean machineRunning = false;
     private IntSyncValue beeClickSyncer;
     private DynamicSyncHandler beeInventoryHandler;
     private PanelSyncManager mainSyncManager;
@@ -121,6 +129,13 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
             usedSlotsSyncer.setChangeListener(this::notifyBeeInventoryUpdate);
         }
 
+        syncManager.syncValue(
+            "apiaryRunning",
+            new BooleanSyncValue(
+                () -> multiblock.mPrimaryMode == MTEMegaIndustrialApiary.MODE_PRIMARY_OPERATING
+                    && multiblock.mMaxProgresstime > 0,
+                val -> machineRunning = val));
+
         registerQueenBufferSlot(syncManager);
     }
 
@@ -162,8 +177,9 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private boolean canAcceptQueen(ItemStack stack) {
-        return beeRoot.getType(stack) == EnumBeeType.QUEEN && multiblock.mMaxProgresstime == 0
-            && multiblock.mStorage.size() < multiblock.mMaxSlots;
+        if (multiblock.mPrimaryMode == MTEMegaIndustrialApiary.MODE_PRIMARY_OPERATING
+            && multiblock.mMaxProgresstime > 0) return false;
+        return beeRoot.getType(stack) == EnumBeeType.QUEEN && multiblock.mStorage.size() < multiblock.mMaxSlots;
     }
 
     private void tryAddBeeToStorage(ItemStack queenStack) {
@@ -228,6 +244,43 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
                 () -> createTerminalRightCornerColumn(panel, syncManager));
     }
 
+    @Override
+    protected Flow createTerminalRightCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.column()
+            .coverChildren()
+            .rightRel(0, 6, 0)
+            .bottomRel(0, 6, 0)
+            .child(createInventoryFullWarning())
+            .childIf(
+                multiblock.supportsShutdownReasonHoverable(),
+                () -> createShutdownReasonHoverableTerminal(syncManager))
+            .childIf(
+                multiblock.supportsMaintenanceIssueHoverable(),
+                () -> createMaintIssueHoverableTerminal(syncManager))
+            .childIf(multiblock.supportsLogo(), () -> makeLogoWidget(syncManager, panel));
+    }
+
+    protected IWidget createInventoryFullWarning() {
+        return new DynamicDrawable(() -> {
+            if (maxSlots <= 0 || usedSlots < maxSlots) return IDrawable.EMPTY;
+            int frame = (int) ((System.currentTimeMillis() / WARNING_ANIM_TICK_MS) % WARNING_ANIM_FRAMES);
+            float v0 = (float) frame / WARNING_ANIM_FRAMES;
+            float v1 = (float) (frame + 1) / WARNING_ANIM_FRAMES;
+            return OVERLAY_INVENTORY_FULL_WARNING_SHEET.getSubArea(0f, v0, 1f, v1);
+        }).asWidget()
+            .size(18, 18)
+            .marginBottom(4)
+            .tooltipBuilder(t -> t.addLine(IKey.lang("kubatech.gui.text.mia.inventory_full_warning")))
+            .tooltipAutoUpdate(true)
+            .setEnabledIf(w -> maxSlots > 0 && usedSlots >= maxSlots);
+    }
+
+    @Override
+    protected IWidget createMaintIssueHoverableTerminal(PanelSyncManager syncManager) {
+        return ((Widget<?>) super.createMaintIssueHoverableTerminal(syncManager))
+            .marginTop(1);
+    }
+
     private IWidget createBeeInventoryWidget() {
         return new DynamicSyncedWidget<>().widthRel(1f)
             .heightRel(1f)
@@ -261,15 +314,20 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
             public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetThemeEntry) {
                 super.draw(context, widgetThemeEntry);
                 int count = getBeeSlotCount(idx);
-                if (count > 1) {
+                boolean isEmptySlot = idx >= beeSlots.size();
+                if (count > 1 || isEmptySlot) {
                     String format = isNEIFilteredOut(getBeeStack(idx)) ? EnumChatFormatting.GRAY.toString() : null;
                     GuiDraw.drawStandardSlotAmountText(count, format, getArea());
+                }
+                if (machineRunning) {
+                    GuiDraw.drawRect(0, 0, 18, 18, 0x80000000);
                 }
             }
         };
         slb.size(18, 18);
 
         slb.onMousePressed(mouseButton -> {
+            if (machineRunning) return true;
             boolean shift = Interactable.hasShiftDown();
             int encoded = ((idx + 1) << 3) | (mouseButton << 1) | (shift ? 1 : 0);
             beeClickSyncer.setIntValue(encoded, true, true);
@@ -289,6 +347,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void buildBeeSlotTooltip(com.cleanroommc.modularui.screen.RichTooltip tooltip, int idx) {
+        if (machineRunning) {
+            tooltip.addLine(
+                EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.gui.text.mia.locked_while_running"));
+            return;
+        }
         if (idx < beeSlots.size()) {
             GTHelper.StackableItemSlot slot = beeSlots.get(idx);
             tooltip.addLine(slot.stack.getDisplayName());
@@ -329,7 +392,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private void handleBeeClick(int encoded) {
         if (encoded == 0) return;
         if (mainSyncManager == null || mainSyncManager.isClient()) return;
-        if (multiblock.mMaxProgresstime > 0) return;
+        if (multiblock.mPrimaryMode == MTEMegaIndustrialApiary.MODE_PRIMARY_OPERATING
+            && multiblock.mMaxProgresstime > 0) return;
 
         int slotIdx = (encoded >>> 3) - 1;
         int mouseButton = (encoded >>> 1) & 0x3;
@@ -468,6 +532,17 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createRightPanelGapRow(parent, syncManager).child(createInventoryToggleButton())
             .child(createConfigurationButton(syncManager, parent));
+    }
+
+    @Override
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.column()
+            .width(18)
+            .leftRel(1, -2, 1)
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .reverseLayout(true)
+            .child(createPowerSwitchButton())
+            .child(createStructureUpdateButton(syncManager));
     }
 
     private IWidget createInventoryToggleButton() {
