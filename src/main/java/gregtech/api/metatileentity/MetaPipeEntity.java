@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -164,7 +165,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         switch (aConnections) {
-            case NO_CONNECTION, INVALID_CONNECTION -> {
+            case NO_CONNECTION -> {
                 renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
 
                 ctx.renderNegativeYFacing(textureDown);
@@ -509,6 +510,14 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
+    @Override
+    public void initDefaultModes(NBTTagCompound nbt) {
+        super.initDefaultModes(nbt);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            pipe.mConnections = mConnections;
+        }
+    }
+
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
         ForgeDirection side = ForgeDirection.UNKNOWN;
         double difference = aEntity.posY - (double) aPipe.yCoord;
@@ -607,13 +616,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         // Do nothing apparently
     }
 
-    public void updateClientConnections() {
-        checkConnections();
-        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
-            pipe.mConnections = mConnections;
-        }
-    }
-
     public void setCheckConnections() {
         mCheckConnections = true;
     }
@@ -655,15 +657,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         }
 
         return true;
-    }
-
-    @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {
-        if (getBaseMetaTileEntity().isClientSide()) {
-            if (aEventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
-                mConnections = aValue;
-            }
-        }
     }
 
     @Override

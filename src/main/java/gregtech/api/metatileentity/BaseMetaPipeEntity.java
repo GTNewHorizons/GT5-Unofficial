@@ -60,7 +60,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     implements IPipeRenderedTileEntity, IDebugableTileEntity {
 
-    public byte mConnections = IConnectable.INVALID_CONNECTION;
+    public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte oldConnections = 0;
@@ -308,16 +308,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
         CoverRegistry.cover(this, aCover0, aCover1, aCover2, aCover3, aCover4, aCover5);
 
-        boolean hasInvalidConnection = aConnections == IConnectable.INVALID_CONNECTION;
-        if (!hasInvalidConnection) {
-            receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aConnections);
-        }
+
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aConnections);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
-        if (hasInvalidConnection && hasValidMetaTileEntity()) {
-            mMetaTileEntity.updateClientConnections();
-        }
     }
 
     @Override
@@ -706,7 +701,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             sideDirection,
             tConnections,
             mColor - 1,
-            tConnections == IConnectable.NO_CONNECTION || tConnections == IConnectable.INVALID_CONNECTION
+            tConnections == IConnectable.NO_CONNECTION
                 || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
     }

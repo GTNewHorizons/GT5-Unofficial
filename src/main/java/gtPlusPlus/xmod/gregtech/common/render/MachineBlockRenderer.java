@@ -6,7 +6,6 @@ import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_NORT
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_SOUTH;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_UP;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_WEST;
-import static gregtech.api.interfaces.metatileentity.IConnectable.INVALID_CONNECTION;
 import static gregtech.api.interfaces.metatileentity.IConnectable.NO_CONNECTION;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -194,7 +193,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 }
 
                 switch (connexionSidesBits) {
-                    case NO_CONNECTION, INVALID_CONNECTION -> {
+                    case NO_CONNECTION -> {
                         ctx.getBlock().setBlockBounds(sp, sp, sp, sp + tThickness, sp + tThickness, sp + tThickness);
                         ctx.setRenderBoundsFromBlock();
                         ctx.renderNegativeYFacing(textureUncovered.get(DOWN));
