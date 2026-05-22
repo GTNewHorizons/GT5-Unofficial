@@ -394,7 +394,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)
     // with cryotheum, it takes 1 minute.
     private static final int CRYOTHEUM_DRAIN_BASE = 250;
-    private static final float INCREMENT_BASE = 1F / 60;
+    private static final float INCREMENT_BASE = 1F / 120;
     private static final float INCREMENT_CRYO = INCREMENT_BASE * 5;
 
     private int casingAmount;
