@@ -13,7 +13,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
  * sync handlers for the same data, resulting in issues with sync value ID collisions.
  * Also is just a lot cleaner to use, especially when many are used in multiple panels.
  */
-public abstract class SyncValue<T extends ValueSyncHandler<?>> {
+public abstract class SyncValue<T extends ValueSyncHandler<?, ?>> {
 
     protected final String syncId;
     protected final boolean inherited;
@@ -50,7 +50,7 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     }
 
     /** Sync values exclusive to the main Godforge controller. */
-    public static class ForgeOfGodsSyncValue<T extends ValueSyncHandler<?>> extends SyncValue<T> {
+    public static class ForgeOfGodsSyncValue<T extends ValueSyncHandler<?, ?>> extends SyncValue<T> {
 
         private final Function<ForgeOfGodsData, T> syncValueSupplier;
 
@@ -92,7 +92,8 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
     }
 
     /** Sync values exclusive to a Godforge module. */
-    public static class ModuleSyncValue<T extends ValueSyncHandler<?>, U extends MTEBaseModule> extends SyncValue<T> {
+    public static class ModuleSyncValue<T extends ValueSyncHandler<?, ?>, U extends MTEBaseModule>
+        extends SyncValue<T> {
 
         private final Function<U, T> syncValueSupplier;
 
@@ -121,7 +122,7 @@ public abstract class SyncValue<T extends ValueSyncHandler<?>> {
      * Sync values that could be from the main Godforge or a module depending on hypervisor state.
      * Will prioritize the main Godforge if both are available.
      */
-    public static class HybridSyncValue<T extends ValueSyncHandler<?>> extends SyncValue<T> {
+    public static class HybridSyncValue<T extends ValueSyncHandler<?, ?>> extends SyncValue<T> {
 
         private final Function<ForgeOfGodsData, T> dataSupplier;
         private final Function<MTEBaseModule, T> moduleSupplier;
