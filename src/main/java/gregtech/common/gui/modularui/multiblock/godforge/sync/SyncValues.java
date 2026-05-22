@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -199,7 +198,7 @@ public class SyncValues {
     // Star Color //
     // ---------- //
 
-    public static final ForgeOfGodsSyncValue<GenericSyncValue<ForgeOfGodsStarColor, ?>> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<StatColorSyncValue> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_clicked",
         data -> new StatColorSyncValue(new MutableObject<>(data.getStarColors().newTemplateColor()), data));
 
