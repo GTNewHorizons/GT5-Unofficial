@@ -355,7 +355,7 @@ public class BeamCrafterRecipes implements Runnable {
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
-          GTValues.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(ItemList.EnergisedTesseract.get(1))
             .metadata(
@@ -369,7 +369,7 @@ public class BeamCrafterRecipes implements Runnable {
             .eut(TierEU.RECIPE_UIV)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
-      
+
         GTValues.RA.stdBuilder()
             .fluidInputs(GGMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000))
             .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1000))
@@ -384,8 +384,8 @@ public class BeamCrafterRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
-      
-              GTValues.RA.stdBuilder()
+
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.PseudoStar.get(64L), Materials.TranscendentMetal.getNanite(2))
             .fluidInputs(Materials.InactiveCosmicSolder.getFluid(160_000L), Materials.SpaceTime.getFluid(16 * INGOTS))
             .itemOutputs(Materials.TranscendentMetal.getNanite(2))
@@ -402,6 +402,7 @@ public class BeamCrafterRecipes implements Runnable {
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
+
     }
 
 }
