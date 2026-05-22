@@ -331,8 +331,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        runningTickCounter++;
         // every 5 seconds, increment the parallel modifier.
+        runningTickCounter++;
         if (runningTickCounter % 20 == 0) { // drain pyrotheum and crash machine if enough isnt supplied
             if (isPyroSupplied) {
                 final FluidStack pyrotheum = new FluidStack(
@@ -478,14 +478,13 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.heatingCapacity = 0;
         this.glassTier = -1;
+        this.casingAmount = 0;
 
         this.setCoilLevel(HeatingCoilLevel.None);
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) return false;
 
         if (this.getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
@@ -508,7 +507,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         }
 
         this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
-        return this.casingAmount > 1800;
+        return this.casingAmount >= 1800;
     }
 
     @Override
