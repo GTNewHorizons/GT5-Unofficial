@@ -88,6 +88,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private int casingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
+    private boolean usingLegacyStructure = true;
 
     private int selectedTime = 10;
     private int activeGroup = 0;
@@ -269,6 +270,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, null)) {
+            usingLegacyStructure = true;
             checkCasingMin(errors, casingAmount, 85);
             checkHasInputBus(errors);
             return;
@@ -276,6 +278,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         clearHatches();
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        usingLegacyStructure = false;
         checkCasingMin(errors, casingAmount, CASINGS_MIN);
         checkHasInputBus(errors);
     }
@@ -499,28 +502,34 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void createRenderBlock() {
         if (!useRender) return;
-        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        World world = base.getWorld();
+        ForgeDirection back = getExtendedFacing().getRelativeBackInWorld();
+        int offset = usingLegacyStructure ? 2 : 5;
+        int x = base.getXCoord() + offset * back.offsetX;
+        int y = base.getYCoord() + (usingLegacyStructure ? 0 : 3);
+        int z = base.getZCoord() + offset * back.offsetZ;
 
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
         if (world.isAirBlock(x, y, z)) {
             world.setBlock(x, y, z, GregTechAPI.sDroneRender);
         }
     }
 
     private void destroyRenderBlock() {
-        int x = getBaseMetaTileEntity().getXCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        int y = getBaseMetaTileEntity().getYCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-        int z = getBaseMetaTileEntity().getZCoord() + 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        World world = base.getWorld();
+        ForgeDirection back = getExtendedFacing().getRelativeBackInWorld();
+        int x = base.getXCoord() + 2 * back.offsetX;
+        int y = base.getYCoord();
+        int z = base.getZCoord() + 2 * back.offsetZ;
         if (world.getBlock(x, y, z)
-            .equals(GregTechAPI.sDroneRender)) {
-            world.setBlock(x, y, z, Blocks.air);
-        }
+            .equals(GregTechAPI.sDroneRender)) world.setBlock(x, y, z, Blocks.air);
+
+        x = base.getXCoord() + 5 * back.offsetX;
+        y = base.getYCoord() + 3;
+        z = base.getZCoord() + 5 * back.offsetZ;
+        if (world.getBlock(x, y, z)
+            .equals(GregTechAPI.sDroneRender)) world.setBlock(x, y, z, Blocks.air);
     }
 
     public void turnOnAll() {
