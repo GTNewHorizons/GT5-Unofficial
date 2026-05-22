@@ -83,7 +83,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     private Flow createSlotRow(PanelSyncManager syncManager) {
         IItemHandler inventoryHandler = getInventoryHandler();
         IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
-        GenericSyncValue<ItemStack> displayItemSyncer = GenericSyncValue
+        GenericSyncValue<ItemStack, ?> displayItemSyncer = GenericSyncValue
             .forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null);
 
         return Flow.row()
@@ -135,7 +135,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
         };
     }
 
-    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack> stackSyncer) {
+    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack, ?> stackSyncer) {
         return new ItemDisplayWidget().item(stackSyncer)
             .displayAmount(false)
             .tooltipDynamic(getItemDisplayTooltip(slotSyncer));

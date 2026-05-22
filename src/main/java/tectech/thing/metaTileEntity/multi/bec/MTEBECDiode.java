@@ -250,7 +250,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> contents = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
                 .getter(() -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECDiode.this))
                 .adapter(new CondensateListAdapter())
                 .build();

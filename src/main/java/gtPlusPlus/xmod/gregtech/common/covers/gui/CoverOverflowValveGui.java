@@ -54,12 +54,12 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     }
 
     private Flow makeIoRow(PanelSyncManager syncManager) {
-        EnumSyncValue<BlockMode> outputModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> outputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidOutputMode,
             cover::setFluidOutputMode);
         syncManager.syncValue("output_mode", outputModeSyncValue);
-        EnumSyncValue<BlockMode> inputModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> inputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidInputMode,
             cover::setFluidInputMode);

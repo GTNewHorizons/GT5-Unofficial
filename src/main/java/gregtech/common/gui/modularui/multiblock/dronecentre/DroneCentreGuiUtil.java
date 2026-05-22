@@ -210,7 +210,7 @@ public class DroneCentreGuiUtil {
 
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
             multiblock::getConnectionList);
-        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+        EnumSyncValue<SortMode, ?> sortModeSyncHandler = new EnumSyncValue<>(
             DroneCentreGuiUtil.SortMode.class,
             multiblock::getSortMode,
             multiblock::setSortMode);

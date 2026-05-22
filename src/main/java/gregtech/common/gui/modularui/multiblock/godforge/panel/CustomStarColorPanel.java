@@ -145,7 +145,7 @@ public class CustomStarColorPanel {
     }
 
     private static ForgeOfGodsStarColor getClickedStarColor(SyncHypervisor hypervisor) {
-        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+        GenericSyncValue<ForgeOfGodsStarColor, ?> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         return starColorClickedSyncer.getValue();
     }

@@ -415,7 +415,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> contents = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
                 .getter(() -> storedCondensate)
                 .adapter(new CondensateListAdapter())
                 .build();

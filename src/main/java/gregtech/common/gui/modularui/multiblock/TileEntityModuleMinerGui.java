@@ -219,7 +219,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createFilterSlotGroup(PanelSyncManager syncManager) {
-        GenericSyncValue<ItemStackHandler> filterSyncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("filter");
 
         // Update cache if parametrizer card was used to paste config
@@ -1296,7 +1296,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        GenericSyncValue<ItemStackHandler> filterSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.filterInventory,
             handler -> multiblock.filterInventory = handler,

@@ -29,7 +29,7 @@ public class CoverWirelessMaintenenceDetectorGui
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<MaintenanceMode> maintenanceModeSync = new EnumSyncValue<>(
+        EnumSyncValue<MaintenanceMode, ?> maintenanceModeSync = new EnumSyncValue<>(
             MaintenanceMode.class,
             cover::getMode,
             cover::setMode);
@@ -42,7 +42,7 @@ public class CoverWirelessMaintenenceDetectorGui
         // column contains 4 other rows, each has 2 enum values
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
         @SuppressWarnings("unchecked")
-        EnumSyncValue<MaintenanceMode> maintenanceSync = syncManager
+        EnumSyncValue<MaintenanceMode, ?> maintenanceSync = syncManager
             .findSyncHandler("maintenanceMode", EnumSyncValue.class);
         final ICoverable tile = data.getCoverable();
         boolean usesTurbines = false;
@@ -64,7 +64,7 @@ public class CoverWirelessMaintenenceDetectorGui
             .child(physicalRow(physicalSyncer));
     }
 
-    protected Flow makeSyncedBoolRow(EnumSyncValue<MaintenanceMode> syncValue, MaintenanceMode value1,
+    protected Flow makeSyncedBoolRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value1,
         MaintenanceMode value2) {
         return Flow.row()
             .coverChildren()
@@ -73,7 +73,7 @@ public class CoverWirelessMaintenenceDetectorGui
             .marginBottom(4);
     }
 
-    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode> syncValue, MaintenanceMode value) {
+    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value) {
         return Flow.row()
             .size(90, 18)
             .child(

@@ -68,7 +68,7 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     }
 
     public Flow createThresholdTypeButtonRow() {
-        EnumSyncValue<MTEToxicResidueSensor.ThresholdType> thresholdTypeSyncer = new EnumSyncValue<>(
+        EnumSyncValue<MTEToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
             MTEToxicResidueSensor.ThresholdType.class,
             hatch::getThresholdType,
             hatch::setThresholdType);

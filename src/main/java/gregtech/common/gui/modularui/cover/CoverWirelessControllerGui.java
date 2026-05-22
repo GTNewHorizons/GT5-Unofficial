@@ -35,7 +35,7 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
             cover::setRedstoneCondition);

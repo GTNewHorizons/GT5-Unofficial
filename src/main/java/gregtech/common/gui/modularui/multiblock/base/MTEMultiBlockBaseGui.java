@@ -1304,7 +1304,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             () -> (multiblock.getTotalRunTime() - multiblock.getLastWorkingTick()) / 20);
         syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
 
-        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = GenericSyncValue.builder(ShutDownReason.class)
+        GenericSyncValue<ShutDownReason, ?> shutdownReasonSyncer = GenericSyncValue.builder(ShutDownReason.class)
             .getter(baseMetaTileEntity::getLastShutDownReason)
             .setter(baseMetaTileEntity::setShutDownReason)
             .adapter(new ShutdownReasonAdapter())

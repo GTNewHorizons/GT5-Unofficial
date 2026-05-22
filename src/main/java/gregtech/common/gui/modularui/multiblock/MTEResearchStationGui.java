@@ -29,7 +29,7 @@ public class MTEResearchStationGui extends MTEMultiBlockBaseGui<MTEResearchStati
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        GenericSyncValue<ItemStack> outputSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStack, ?> outputSyncer = new GenericSyncValue<>(
             ItemStack.class,
             () -> multiblock.researchOutputForGUI,
             val -> multiblock.researchOutputForGUI = val,

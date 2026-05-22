@@ -88,7 +88,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = GenericSyncValue
+        GenericSyncValue<CircuitComponentPacket, ?> contentsSyncHandler = GenericSyncValue
             .<CircuitComponentPacket>notNullBuilder()
             .getter(() -> hatch.contents != null ? hatch.contents : new CircuitComponentPacket())
             .setter(val -> hatch.contents = val)
@@ -100,7 +100,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .build();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
-            GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+            GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
                 .findSyncHandler("contents", GenericSyncValue.class);
 
             ItemStack stack = hatch.inventoryHandler.getStackInSlot(0);
@@ -143,7 +143,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
         final String[] matrix = new String[hatch.getRowCount()];
         Arrays.fill(matrix, StringUtils.getRepetitionOf('c', hatch.getColumnCount()));
 
-        GenericSyncValue<CircuitComponentPacket> componentSyncer = syncManager
+        GenericSyncValue<CircuitComponentPacket, ?> componentSyncer = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
         DynamicSyncHandler componentHandler = new DynamicSyncHandler().widgetProvider((syncManager1, buffer) -> {
@@ -207,7 +207,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     @SuppressWarnings("unchecked")
     protected IWidget createVoidButton(PanelSyncManager syncManager) {
 
-        GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+        GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
         return new ButtonWidget<>().overlay(GuiTextures.CODE)

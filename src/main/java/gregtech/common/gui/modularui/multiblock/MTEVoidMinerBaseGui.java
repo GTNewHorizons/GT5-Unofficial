@@ -60,7 +60,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     public ModularPanel createFilterPopup(PanelSyncManager syncManager, IPanelHandler panelHandler) {
-        GenericSyncValue<ItemStackHandler> listSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> listSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.selected,
             handler -> multiblock.selected = handler,
@@ -94,7 +94,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private ListWidget<IWidget, ?> createOreToggleButtonGrid(PanelSyncManager syncManager, GTUtility.ItemId[] ores) {
-        GenericSyncValue<ItemStackHandler> syncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> syncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("selected");
         int buttonsPerRow = 10;
         int rowCount = (int) Math.ceil((double) ores.length / buttonsPerRow);
@@ -128,7 +128,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .height(18 * Math.min(rowCount, 8));
     }
 
-    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
+    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler, ?> syncer, GTUtility.ItemId[] ores) {
         return Flow.column()
             .child(
                 new ToggleButton()

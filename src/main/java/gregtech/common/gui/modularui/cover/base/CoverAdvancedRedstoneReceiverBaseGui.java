@@ -21,7 +21,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateModeSync = new EnumSyncValue<>(
+        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?> gateModeSync = new EnumSyncValue<>(
             CoverAdvancedRedstoneReceiverBase.GateMode.class,
             cover::getGateMode,
             cover::setMode);
@@ -31,7 +31,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode>) syncManager
+        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?>) syncManager
             .getSyncHandlerFromMapKey("gateMode:0");
         return Flow.row()
             .size(140, 18)

@@ -39,12 +39,12 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
             cover::setIOMode);
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
             cover::setMachineProcessingCondition);
@@ -56,7 +56,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                 .child(positionRow(makeAverageSpeedRow()).marginTop(ROW_PADDING)));
     }
 
-    private static Flow makeTransferModeRow(EnumSyncValue<TransferMode> ioModeSyncValue) {
+    private static Flow makeTransferModeRow(EnumSyncValue<TransferMode, ?> ioModeSyncValue) {
         return Flow.row()
             .child(
                 new ParentWidget<>().child(
@@ -69,7 +69,8 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                     .asWidget());
     }
 
-    private static Flow makeMachineConditionModeRow(EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue) {
+    private static Flow makeMachineConditionModeRow(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue) {
         return Flow.row()
             .child(
                 new ParentWidget<>()

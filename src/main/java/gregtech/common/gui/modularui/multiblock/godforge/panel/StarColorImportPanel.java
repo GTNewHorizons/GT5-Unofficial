@@ -190,7 +190,7 @@ public class StarColorImportPanel {
             new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     if (color.getValue() != null) {
-                        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+                        GenericSyncValue<ForgeOfGodsStarColor, ?> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
                             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
                         starColorClickedSyncer.setValue(color.getValue());
                         hypervisor.getModularPanel(Panels.STAR_COLOR_IMPORT)

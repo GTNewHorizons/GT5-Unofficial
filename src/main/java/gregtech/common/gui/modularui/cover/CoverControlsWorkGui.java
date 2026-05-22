@@ -30,7 +30,7 @@ public class CoverControlsWorkGui extends CoverBaseGui<CoverControlsWork> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
             cover::setRedstoneCondition);

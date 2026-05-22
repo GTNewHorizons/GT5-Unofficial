@@ -30,7 +30,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     }
 
     private Flow makeEnergyTypeRow() {
-        EnumSyncValue<CoverEUMeter.EnergyType> energyTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<CoverEUMeter.EnergyType, ?> energyTypeSyncValue = new EnumSyncValue<>(
             CoverEUMeter.EnergyType.class,
             cover::getType,
             cover::setType);

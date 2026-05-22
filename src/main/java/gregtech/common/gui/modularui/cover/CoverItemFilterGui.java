@@ -28,7 +28,7 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
             cover::setFilterType);

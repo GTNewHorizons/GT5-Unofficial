@@ -35,7 +35,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
             cover::setIOMode);
@@ -46,7 +46,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
-        EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
             cover::setMachineProcessingCondition);
@@ -60,7 +60,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
-        EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
             cover::setBlockMode);

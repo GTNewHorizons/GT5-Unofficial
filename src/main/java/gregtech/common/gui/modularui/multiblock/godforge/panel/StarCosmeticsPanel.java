@@ -198,7 +198,7 @@ public class StarCosmeticsPanel {
     }
 
     private static void setEditingStarColor(ForgeOfGodsStarColor starColor, int index, SyncHypervisor hypervisor) {
-        GenericSyncValue<ForgeOfGodsStarColor> starColorClicked = SyncValues.STAR_COLOR_CLICKED
+        GenericSyncValue<ForgeOfGodsStarColor, ?> starColorClicked = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         IntSyncValue editingColorIndex = SyncValues.STAR_COLOR_EDITING_INDEX
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);

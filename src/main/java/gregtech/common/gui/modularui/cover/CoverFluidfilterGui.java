@@ -40,17 +40,17 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<FilterDirectionMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterDirectionMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,
             cover::setFilterDirection);
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
             cover::setFilterType);
         syncManager.syncValue("filter_type", filterTypeSyncValue);
-        EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
             cover::setBlockMode);

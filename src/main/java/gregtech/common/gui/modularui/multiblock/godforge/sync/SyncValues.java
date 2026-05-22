@@ -40,7 +40,7 @@ public class SyncValues {
     // General Syncers //
     // --------------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters>> FORMATTER = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters, ?>> FORMATTER = new ForgeOfGodsSyncValue<>(
         "fog.sync.formatter",
         data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
 
@@ -57,7 +57,7 @@ public class SyncValues {
     // Fuel //
     // ---- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels, ?>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_fuel",
         data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
 
@@ -109,7 +109,7 @@ public class SyncValues {
     // Upgrades //
     // -------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<ForgeOfGodsUpgrade, ?>> UPGRADE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.upgrade_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -132,7 +132,7 @@ public class SyncValues {
     // Milestones //
     // ---------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Milestones, ?>> MILESTONE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -199,26 +199,9 @@ public class SyncValues {
     // Star Color //
     // ---------- //
 
-    public static final ForgeOfGodsSyncValue<GenericSyncValue<ForgeOfGodsStarColor>> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<GenericSyncValue<ForgeOfGodsStarColor, ?>> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_clicked",
-        data -> {
-            MutableObject<ForgeOfGodsStarColor> mut = new MutableObject<>(data.getStarColors().newTemplateColor());
-
-            return new GenericSyncValue<>(ForgeOfGodsStarColor.class,
-                mut::getValue,
-                mut::setValue,
-                ForgeOfGodsStarColor::readFromBuffer,
-                ForgeOfGodsStarColor::writeToBuffer, null, null, false) {
-
-                @Override
-                public void setValue(ForgeOfGodsStarColor value, boolean setSource, boolean sync) {
-                    if (value == null) {
-                        value = data.getStarColors().newTemplateColor();
-                    }
-                    super.setValue(value, setSource, sync);
-                }
-            };
-        });
+        data -> new StatColorSyncValue(new MutableObject<>(data.getStarColors().newTemplateColor()), data));
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_COLOR_EDITING_INDEX = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_editing_index",
