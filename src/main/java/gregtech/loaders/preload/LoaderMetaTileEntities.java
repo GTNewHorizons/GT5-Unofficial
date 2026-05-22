@@ -153,6 +153,7 @@ import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
+import gregtech.common.tileentities.machines.multi.MTEExothermicHearth;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
@@ -168,6 +169,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialChemicalBath;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialChisel;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCokeOven;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
@@ -959,6 +961,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
 
+        ItemList.IndustrialCuttingMachine.set(
+            new MTEIndustrialCuttingMachine(
+                IndustrialCuttingMachine.ID,
+                "industrialcuttingmachine.controller.tier.01",
+                "Industrial Cutting Factory").getStackForm(1L));
+
         ItemList.IndustrialFormingPress.set(
             new MTEIndustrialFormingPress(
                 IndustrialFormingPress.ID,
@@ -1075,6 +1083,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCokeOven.ID,
                 "industrialcokeoven.controller.tier.single",
                 "Industrial Coke Oven").getStackForm(1L));
+
+        ItemList.ExothermicHearth.set(
+            new MTEExothermicHearth(ExothermicHearth.ID, "multimachine.exothermichearth", "Exothermic Hearth")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
