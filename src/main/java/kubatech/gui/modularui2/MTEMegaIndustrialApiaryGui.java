@@ -3,7 +3,6 @@ package kubatech.gui.modularui2;
 import static forestry.api.apiculture.BeeManager.beeRoot;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,19 +139,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private GenericListSyncHandler<GTHelper.StackableItemSlot> createBeeListSyncer() {
-        return new GenericListSyncHandler<>(this::buildAggregatedBeeList, val -> beeSlots = val, buffer -> {
-            try {
-                return GTHelper.StackableItemSlot.read(buffer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }, (buffer, slot) -> {
-            try {
-                slot.write(buffer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        },
+        return new GenericListSyncHandler<>(
+            this::buildAggregatedBeeList,
+            val -> beeSlots = val,
+            GTHelper.StackableItemSlot::read,
+            (buffer, slot) -> slot.write(buffer),
             (a, b) -> a.count == b.count && a.stack.isItemEqual(b.stack) && a.stack.stackSize == b.stack.stackSize,
             null);
     }
@@ -195,7 +186,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private void notifyBeeInventoryUpdate() {
         int beeTypeCount = buildAggregatedBeeList().size();
-        int activeCount = beeTypeCount + 1;
+        boolean hasEmptySlot = multiblock.mStorage.size() < multiblock.mMaxSlots;
+        int activeCount = beeTypeCount + (hasEmptySlot ? 1 : 0);
         beeInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
     }
 
