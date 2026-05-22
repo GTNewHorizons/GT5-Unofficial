@@ -236,6 +236,7 @@ gt.blockmachines.multimachine.ig.elevator.gui.ready=Ready for Operation.
 gt.blockmachines.multimachine.ig.elevator.gui.noRecipe=No Operation started.
 gt.blockmachines.multimachine.ig.elevator.gui.recipe=Operating.
 gt.blockmachines.multimachine.ig.elevator.gui.config=Configuration:
+gt.blockmachines.multimachine.ig.elevator.gui.notConnected=Not connected to Space Elevator.
 
 # Module Base
 gt.blockmachines.module.name=Space Elevator Module
@@ -360,6 +361,7 @@ ig.elevator.structure.ProjectModule=Project Modules
 ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
+ig.elevator.structure.DataInputHatch=Data Input Hatch
 ig.elevator.structure.OpticalConnector=Optical Connector
 ig.elevator.structure.AnyBaseCasingWithHintNumber1=Any Space Elevator Base Casing With Hint Number 1
 ig.elevator.structure.AnyBaseCasingWithHintNumber2=Any Space Elevator Base Casing With Hint Number 2

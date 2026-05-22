@@ -35,6 +35,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -64,7 +65,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 7, 12, 1, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, 7, 12, 1);
     }
 
     @Override
@@ -188,9 +189,9 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
-        return structureCheck_EM(mName, 7, 12, 1);
+        checkPiece(mName, 7, 12, 1, errors);
     }
 
     @Override

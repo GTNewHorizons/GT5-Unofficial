@@ -68,6 +68,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -114,14 +115,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     public MTEOilDrillBase(String aName) {
         super(aName);
-    }
-
-    /********************************************************
-     * Parent overrides
-     *******************************************************/
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
 
     @Override
@@ -190,6 +183,13 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         if (aNBT.hasKey(NBT_SHOW_WORK_AREA)) {
             showWorkArea = aNBT.getBoolean(NBT_SHOW_WORK_AREA);
         }
+    }
+
+    @Override
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkOneEnergyHatch(errors);
     }
 
     @Override

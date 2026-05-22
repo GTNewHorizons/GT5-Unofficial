@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -59,6 +60,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -161,9 +163,11 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 2, 1, 0) && mCasing >= 40 && checkHatch();
+        if (!checkPiece(mName, 2, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 40);
+        checkHatch(errors);
     }
 
     @Override

@@ -17,6 +17,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -46,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -189,19 +192,19 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Collision Chamber")
-            .addInfo("Engraves Wafers with " + EnumChatFormatting.LIGHT_PURPLE + "Particle Beams" + EnumChatFormatting.GRAY + " and " + createMaskText("Masks"))
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info1"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
-            .addInfo(createMaskText("Masks") + " have limited durability, degrading by 1 with each engraving")
-            .addInfo("NEI shows the required " + EnumChatFormatting.LIGHT_PURPLE + "particle type" + EnumChatFormatting.GRAY + ", minimum " + EnumChatFormatting.AQUA + "EU/t")
-            .addInfo("minimum " + createFocusText("Beam Focus") + ", minimum " + EnumChatFormatting.GOLD + "Beam Rate" + EnumChatFormatting.GRAY + "(Amount), and required " + EnumChatFormatting.BLUE + "Beam Energy Range")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info2"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info3"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info4"))
             .addSeparator()
-            .addInfo("The incoming " + EnumChatFormatting.LIGHT_PURPLE + "Beam" + EnumChatFormatting.GRAY + " must be within the required " + EnumChatFormatting.BLUE + "Energy Range" + EnumChatFormatting.GRAY + ", be the correct " + EnumChatFormatting.LIGHT_PURPLE + "particle type")
-            .addInfo("and have sufficient " + createFocusText("Focus") + " and " + EnumChatFormatting.GOLD+"Rate")
-            .addInfo(EnumChatFormatting.WHITE + "Processing Time" + EnumChatFormatting.GRAY + " is determined solely by the " + createRateText("Beam Rate"))
-            .addInfo(EnumChatFormatting.WHITE + "Processing Time = 5 seconds * " + EnumChatFormatting.GOLD + "Minimum Required Rate" + EnumChatFormatting.WHITE + " / " + createRateText("Input Beam Rate"))
-            .addInfo("Can process up to the durability of all " + createMaskText("Mask's") + " in the Focus Input Bus of one type per game tick")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info8"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info9"))
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
@@ -212,12 +215,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
             .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
             .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart("Focus Input Bus", addHintNumber(1))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.focusinputbus"), addHintNumber(1))
             .addMaintenanceHatch(addHintNumber(2))
             .addEnergyHatch(addHintNumber(2))
             .addInputBus(addHintNumber(3))
             .addOutputBus(addHintNumber(4))
-            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(5))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.beamlineinputhatch"), addHintNumber(5))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -397,17 +400,18 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity arg0, ItemStack arg1) {
+    public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
         mInputBeamline.clear();
         mInputFocus.clear();
         this.lastRecipe = null;
-
-        if (!checkPiece("base", 2, 4, 0)) return false;
-
-        return this.mInputBeamline.size() == 1 && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() == 1
-            && this.mOutputBusses.size() == 1
-            && this.mInputFocus.size() == 1;
+        if (!checkPiece("base", 2, 4, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputBus, 1);
+        if (this.mInputFocus.size() != 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_focus_input"));
+        }
     }
 
     @Override

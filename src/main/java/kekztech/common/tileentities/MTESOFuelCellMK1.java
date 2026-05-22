@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -41,6 +42,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -192,12 +196,17 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+    public void checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem, List<StructureError> errors) {
         this.mCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
-
-        return (this.mCasing >= 12 && this.mMaintenanceHatches.size() == 1 && this.mInputHatches.size() >= 2);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, this.mCasing, 12);
+        checkHasMaintenanceHatch(errors);
+        if (mInputHatches.size() < 2) {
+            errors.add(
+                StructureErrors
+                    .of("GT5U.gui.text.sofc_missing_input_hatches", TranslatableText.literal(mInputHatches.size())));
+        }
+        checkHasOutputHatch(errors);
     }
 
     @Override

@@ -25,7 +25,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
-import bartworks.API.BioVatLogicAdder;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
@@ -210,7 +209,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()

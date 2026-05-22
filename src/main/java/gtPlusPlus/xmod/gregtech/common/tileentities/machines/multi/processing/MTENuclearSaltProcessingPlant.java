@@ -35,6 +35,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -161,11 +162,11 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                         .hint(5)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
-                    'F',
+                    'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .hint(6)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .build())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -183,14 +184,19 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 4, 2, 0) && checkHatch();
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+        checkHatch(errors);
+        checkCasingMin(errors, casing, 1);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
-    public boolean checkHatch() {
-        return mEnergyHatches.size() == 2 && mMufflerHatches.size() == 2 && super.checkHatch();
+    public void checkHatch(List<StructureError> errors) {
+        checkHatchExact(errors, Energy, 2);
+        checkHatchExact(errors, Muffler, 2);
     }
 
     @Override

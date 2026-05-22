@@ -711,14 +711,14 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_CuttingFactoryFrame.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
-                MaterialsAlloy.STELLITE.getPlate(1), 'F', MaterialsAlloy.TALONITE.getFrameBox(1) });
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(1), 'S',
+                MaterialsAlloy.STELLITE.getPlate(1), 'F', MaterialsAlloy.TANTALUM_CARBIDE.getFrameBox(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.MARAGING300.getPlate(4),
+                MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(4),
                 MaterialsAlloy.STELLITE.getPlate(2),
-                MaterialsAlloy.TALONITE.getFrameBox(1))
+                MaterialsAlloy.TANTALUM_CARBIDE.getFrameBox(1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CuttingFactoryFrame.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -727,10 +727,10 @@ public class RecipesMachinesMulti {
 
         // Industrial Cutting Factory
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_CuttingFactoryController.get(1),
+            ItemList.IndustrialCuttingMachine.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitData", 'W',
-                OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
+            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(1), 'C',
+                "circuitData", 'W', OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
     }
 
     private static void multiExtruder() {
@@ -952,7 +952,7 @@ public class RecipesMachinesMulti {
                 ItemList.Conveyor_Module_EV.get(8),
                 ItemList.Robot_Arm_EV.get(4))
             .circuit(14)
-            .itemOutputs(GregtechItemList.Controller_IndustrialAutoChisel.get(1))
+            .itemOutputs(ItemList.IndustrialPrinter.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)

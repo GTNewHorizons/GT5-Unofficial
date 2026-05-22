@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -166,7 +167,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
                         { "C         C", " DEEEEEEED ", "  D     D  ", "ABBBBBBBBBA" },
                         { "C         C", "  DEEEEED  ", " DD     DD ", "ABBBBBBBBBA" },
-                        { " C       C ", "  DEEEEED  ", "       D   ", " ABBBBBBBA " },
+                        { " C       C ", "  DEEEEED  ", "   D   D   ", " ABBBBBBBA " },
                         { " C       C ", "   DDEDD   ", "  D DDD D  ", " ABBBBBBBA " },
                         { "  CC   CC  ", "     D     ", "    D D    ", "  AABBBAA  " },
                         { "    CCC    ", "           ", "           ", "    AAA    " } })
@@ -227,7 +228,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", CASINGS_MIN, false)
             .addCasingInfoExactly("Iron Frame Box", 28, false)
-            .addCasingInfoExactly("Steel Frame Box", 47, false)
+            .addCasingInfoExactly("Steel Frame Box", 48, false)
             .addCasingInfoExactly("Steel Pipe Casing", 61, false)
             .addCasingInfoExactly("Hempcrete", 29, false)
             .addInputBus("Any Solid Steel Machine Casing", 1)
@@ -265,16 +266,18 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0)) {
-            return casingAmount >= 85 && !mInputBusses.isEmpty();
+        if (checkPiece(STRUCTURE_PIECE_MAIN_LEGACY, 2, 1, 0, null)) {
+            checkCasingMin(errors, casingAmount, 85);
+            checkHasInputBus(errors);
+            return;
         }
-
         clearHatches();
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= CASINGS_MIN
-            && !mInputBusses.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, CASINGS_MIN);
+        checkHasInputBus(errors);
     }
 
     @Override

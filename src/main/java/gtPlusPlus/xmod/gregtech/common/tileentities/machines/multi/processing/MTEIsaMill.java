@@ -6,11 +6,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -44,6 +42,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -120,8 +121,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEIsaMill.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                        buildHatchAdder(MTEIsaMill.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),
@@ -145,15 +145,28 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mMillingBallBuses.clear();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 48 - 8);
+        checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
-    public boolean checkHatch() {
-        return super.checkHatch() && mMillingBallBuses.size() == 1;
+    public void checkHatch(List<StructureError> errors) {
+        super.checkHatch(errors);
+        if (mMillingBallBuses.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Bus_Milling_Balls.get(1),
+                    mMillingBallBuses.size(),
+                    1));
+        }
     }
 
     @Override

@@ -76,23 +76,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Hull_ULV.get(1), ItemList.Cover_SolarPanel.get(1))
                 .itemOutputs(ItemList.Machine_ULV_SolarPanel.get(1))
-                .fluidInputs(Materials.Lead.getMolten(INGOTS))
-                .duration(30 * SECONDS)
-                .eut(60)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), ItemList.Cover_SolarPanel.get(1))
-                .itemOutputs(ItemList.Machine_ULV_SolarPanel.get(1))
-                .fluidInputs(Materials.Tin.getMolten(HALF_INGOTS))
-                .duration(30 * SECONDS)
-                .eut(60)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), ItemList.Cover_SolarPanel.get(1))
-                .itemOutputs(ItemList.Machine_ULV_SolarPanel.get(1))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(QUARTER_INGOTS))
+                .fluidInputs(SubstituteFluidStack.soldering(QUARTER_INGOTS))
                 .duration(30 * SECONDS)
                 .eut(60)
                 .addTo(assemblerRecipes);
