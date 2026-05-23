@@ -174,7 +174,6 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         if (laserSource == null) {
             errors.add(StructureErrors.of("GT5U.tooltip.nac.module.etching_array.no_laser"));
         }
-        checkHasInputHatch(errors);
     }
 
     @Override
