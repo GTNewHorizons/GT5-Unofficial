@@ -44,9 +44,11 @@ import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStackWatcher;
 import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
@@ -104,6 +106,31 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
      */
     protected boolean cachedActivity = false;
 
+    /** Whether the AE2 item storage has changed since the last {@link #refreshItemList()} call. */
+    private boolean itemListDirty = true;
+    /** The monitor we are currently subscribed to, or null if not subscribed. */
+    private @Nullable IMEMonitor<IAEItemStack> subscribedMonitor = null;
+    /** Listener that marks {@link #itemListDirty} whenever the AE2 network item storage changes. */
+    private final IMEMonitorHandlerReceiver<IAEItemStack> networkChangeListener =
+        new IMEMonitorHandlerReceiver<IAEItemStack>() {
+
+            @Override
+            public boolean isValid(Object verificationToken) {
+                return verificationToken == MTEHatchInputBusME.this;
+            }
+
+            @Override
+            public void postChange(IBaseMonitor<IAEItemStack> monitor, Iterable<IAEItemStack> change,
+                BaseActionSource actionSource) {
+                itemListDirty = true;
+            }
+
+            @Override
+            public void onListUpdate() {
+                itemListDirty = true;
+            }
+        };
+
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, null);
         this.autoPullAvailable = autoPullAvailable;
@@ -136,7 +163,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
-                refreshItemList();
+                if (itemListDirty) {
+                    refreshItemList();
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -274,6 +303,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());
         }
+        if (autoPullItemList) updateMonitorSubscription();
     }
 
     @MENetworkEventSubscribe
@@ -281,6 +311,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());
         }
+        if (autoPullItemList) updateMonitorSubscription();
     }
 
     @Override
@@ -353,7 +384,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             clearSlotConfigs();
 
             if (autoPullItemList) {
+                updateMonitorSubscription();
                 refreshItemList();
+            } else {
+                unsubscribeFromMonitor();
             }
 
             updateAllInformationSlots();
@@ -732,6 +766,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
         Arrays.fill(slots, index, slots.length, null);
         if (configChanged) configureWatchers();
+        itemListDirty = false;
     }
 
     protected void updateAllInformationSlots() {
@@ -1107,6 +1142,35 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     private IStackWatcher watcher;
+
+    private void updateMonitorSubscription() {
+        if (autoPullItemList && getProxy().isActive()) {
+            subscribeToMonitor();
+        } else {
+            unsubscribeFromMonitor();
+        }
+    }
+
+    private void subscribeToMonitor() {
+        try {
+            IMEMonitor<IAEItemStack> monitor = getProxy().getStorage()
+                .getItemInventory();
+            if (subscribedMonitor != monitor) {
+                unsubscribeFromMonitor();
+                monitor.addListener(networkChangeListener, this);
+                subscribedMonitor = monitor;
+                itemListDirty = true;
+            }
+        } catch (GridAccessException ignored) {}
+    }
+
+    private void unsubscribeFromMonitor() {
+        if (subscribedMonitor != null) {
+            subscribedMonitor.removeListener(networkChangeListener);
+            subscribedMonitor = null;
+            itemListDirty = true;
+        }
+    }
 
     private void configureWatchers() {
         if (this.watcher != null) {
