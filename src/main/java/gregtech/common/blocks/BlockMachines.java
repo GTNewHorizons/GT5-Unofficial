@@ -676,19 +676,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         }
     }
 
-    /**
-     * It's unclear whether this can be removed. In an earlier PR the front facing is also set directly
-     * during {@link ItemMachines#placeBlockAt}. If you figure this is not needed,
-     * this entire override method can be removed.
-     */
-    @Override
-    public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
-        iGregTechTileEntity.setFrontFacing(
-            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
-    }
-
     @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);

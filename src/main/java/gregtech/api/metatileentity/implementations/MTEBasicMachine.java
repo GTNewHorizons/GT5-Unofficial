@@ -204,6 +204,19 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
         overclockDescriber = createOverclockDescriber();
+        // In world basic machine have mMainFacing UNKNOWN for rotation fixes.
+        // During placement, mFacing initially mean main facing.
+        // This is then written to mMainFacing when the block is initialized.
+        // and mFacing become the output facing, initialized to the opposite side.
+        // This quirk is due to historical reasons, and it is mostly to support
+        // block saved with the old nbt to keep working. The ideal logic should be
+        // mFacing -> main facing and a new field mOutputFacing, and with wrenchRightClick
+        // overridden so that normal right click rotate the output face and sneak rotate
+        // the main face.
+
+        // The current logic is that the block is set to UNKNOWN before loading of NBT or rotation, and the
+        // very first rotation will cause mMainFacing and mFacing to be swapped and initialized.
+        mMainFacing = UNKNOWN;
     }
 
     /**
@@ -308,6 +321,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
+        // Due to initialization quirks.
+        if (mMainFacing == UNKNOWN) return isValidMainFacing(facing);
         return facing != mMainFacing;
     }
 
@@ -470,6 +485,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         if (isValidMainFacing(facing)) {
             setMainFacing(facing);
+        } else {
+            // Just in case someone set the facing wrongly, we still initialize main facing.
+            setMainFacing(ForgeDirection.WEST);
         }
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             final GTClientPreference tPreference = GTMod.proxy
