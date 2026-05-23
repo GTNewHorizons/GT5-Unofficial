@@ -4,7 +4,9 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.BeamlineInput;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.FocusInput;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -57,7 +59,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEBusInputFocus;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
@@ -66,10 +67,6 @@ import gtnhlanth.util.DescTextLocalization;
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
-
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-
-    private final ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int GrateMachineCasingTextureID = Casings.GrateMachineCasing.getTextureId();
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
@@ -95,10 +92,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(ShieldedAccCasingTextureID).hint(5).adder(MTETargetChamber::addBeamLineInputHatch).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).hatchClass(MTEBusInputFocus.class).casingIndex(ShieldedAccCasingTextureID).hint(1).adder(MTETargetChamber::addFocusInputHatch).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(FocusInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
 
     			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -113,32 +110,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private boolean addGlass(Block block, int meta) {
         return block == ItemRegistry.bw_glasses[0];
-    }
-
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
-
-    private boolean addFocusInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEBusInputFocus) {
-            return this.mInputFocus.add((MTEBusInputFocus) mte);
-        }
-
-        return false;
     }
 
     public MTETargetChamber(int id, String name, String nameRegional) {
@@ -382,7 +353,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -391,25 +362,23 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     @Nullable
     private ArrayList<ItemStack> getFocusItemStack() {
-        if (this.mInputFocus.isEmpty()) return null;
-        if (this.mInputFocus.get(0)
+        if (this.mFocusInputBuses.isEmpty()) return null;
+        if (this.mFocusInputBuses.get(0)
             .getContentUsageSlots()
             .isEmpty()) return null;
-        return this.mInputFocus.get(0)
+        return this.mFocusInputBuses.get(0)
             .getContentUsageSlots();
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
-        mInputBeamline.clear();
-        mInputFocus.clear();
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
         checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         checkHatchExact(errors, InputBus, 1);
         checkHatchExact(errors, OutputBus, 1);
-        if (this.mInputFocus.size() != 1) {
+        if (this.mFocusInputBuses.size() != 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_focus_input"));
         }
     }

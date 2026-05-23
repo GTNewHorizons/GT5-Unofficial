@@ -604,7 +604,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     protected enum SteamHatchElement implements IHatchElement<MTESteamMultiBlockBase<?>> {
 
-        InputBus_Steam {
+        InputBus_Steam("hatch.input_bus.tier.steam") {
 
             @Override
             public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -622,7 +622,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             }
 
         },
-        OutputBus_Steam {
+        OutputBus_Steam("hatch.output_bus.tier.steam") {
 
             @Override
             public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -640,5 +640,21 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             }
 
         };
+
+        private final String langKey;
+
+        SteamHatchElement(String mName) {
+            this.langKey = "gt.blockmachines." + mName + ".name";
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return langKey;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(langKey);
+        }
     }
 }
