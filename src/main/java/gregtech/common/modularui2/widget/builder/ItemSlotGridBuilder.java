@@ -194,6 +194,9 @@ public class ItemSlotGridBuilder {
      * @return A fully populated and configured {@link Grid} widget.
      */
     public Grid build() {
+        if (width <= 0 || height <= 0)
+            throw new IllegalStateException("ItemSlotGridBuilder was built with 0 width or height!");
+
         if (hasSlotGroup) syncManager.registerSlotGroup(slotGroupKey, height);
 
         return new Grid().coverChildren()
