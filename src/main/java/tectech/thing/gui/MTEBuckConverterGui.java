@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
@@ -156,18 +155,18 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
 
         syncManager.syncValue("isUsingTiers", isUsingTiersSyncer);
 
-        Flow numberInputColumn = Flow.column();
-        numberInputColumn.sizeRel(1)
-            .paddingTop(4)
-            .paddingLeft(4)
+        Flow numberInputColumn = Flow.column()
+            .coverChildren()
             .childPadding(4)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        ParentWidget<?> voltageRow = new ParentWidget<>().size(152, 18);
+        Flow voltageRow = Flow.row()
+            .width(8 * SLOT_SIZE)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         Flow voltageTextRow = Flow.row()
             .coverChildren()
-            .verticalCenter()
             .childPadding(2)
             .collapseDisabledChild();
 
@@ -187,7 +186,6 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
                     + getColoredTierNameFromTier(voltageTierSyncer.getByteValue())
                     + ")")
                 .asWidget()
-                .height(14)
                 .setEnabledIf(t -> isUsingTiersSyncer.getBoolValue()));
 
         // add a number input field to determine voltage
@@ -206,9 +204,8 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
 
         // text widget for voltage, is static
         voltageTextRow.child(
-            IKey.str("Voltage")
+            IKey.lang("GT5U.gui.text.voltage")
                 .asWidget()
-                .height(14)
                 .setEnabledIf(t -> !isUsingTiersSyncer.getBoolValue()));
 
         voltageRow.child(voltageTextRow);
@@ -216,8 +213,6 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
         // add a button to increment/decrement voltage tier up to MAX_TIER, or double/halve voltage up to MAX_VOLTAGE
         voltageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.GRAPH)
-                .size(18)
-                .rightRel(0)
                 .onMousePressed(
                     mouseButton -> this.onVoltageModifierButtonPressed(
                         mouseButton,
@@ -227,11 +222,13 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
                         isUsingTiersSyncer))
                 .tooltip(t -> createVoltageModifierButtonTooltip(t, isUsingTiersSyncer)));
 
-        ParentWidget<?> amperageRow = new ParentWidget<>().size(152, 18);
+        Flow amperageRow = Flow.row()
+            .width(8 * SLOT_SIZE)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         Flow amperageTextRow = Flow.row()
             .coverChildren()
-            .verticalCenter()
             .childPadding(2);
 
         // number field for amperage
@@ -246,15 +243,15 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
                 .setDefaultNumber(2));
 
         // text widget for amperage, is static
-        amperageTextRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).height(14));
+        amperageTextRow.child(
+            IKey.lang("GT5U.gui.text.amperage")
+                .asWidget());
 
         amperageRow.child(amperageTextRow);
 
         // button to double / halve amperage, up to MAX_AMPERAGE
         amperageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.MAZE)
-                .size(18)
-                .rightRel(0)
                 .onMousePressed(
                     mouseButton -> onAmperageModifierButtonPressed(
                         mouseButton,

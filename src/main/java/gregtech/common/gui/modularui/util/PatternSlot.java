@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.hatch;
+package gregtech.common.gui.modularui.util;
 
 import net.minecraft.item.ItemStack;
 
@@ -16,8 +16,6 @@ import appeng.items.misc.ItemEncodedPattern;
 import gregtech.api.modularui2.GTGuiTextures;
 
 public class PatternSlot extends ItemSlot {
-
-    PatternSlot() {}
 
     @Override
     public @Nullable IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {

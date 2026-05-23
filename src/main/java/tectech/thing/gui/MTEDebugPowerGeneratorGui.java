@@ -1,6 +1,7 @@
 package tectech.thing.gui;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.getTier;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -19,7 +20,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -142,24 +142,20 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage);
         IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
         BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers);
-        BooleanSyncValue isProducingSyncer = new BooleanSyncValue(machine::isProducing, (machine::setProducing));
-        BooleanSyncValue isLaserSyncer = new BooleanSyncValue(machine::isLASER, machine::setLASER);
-
         syncManager.syncValue("isUsingTiers", isUsingTiersSyncer);
-        syncManager.syncValue("isProducing", isProducingSyncer);
 
-        Flow numberInputColumn = Flow.column();
-        numberInputColumn.sizeRel(1)
-            .paddingTop(4)
-            .paddingLeft(4)
+        Flow numberInputColumn = Flow.column()
+            .coverChildren()
             .childPadding(4)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        ParentWidget<?> voltageRow = new ParentWidget<>().size(152, 18);
+        Flow voltageRow = Flow.row()
+            .width(8 * SLOT_SIZE)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         Flow voltageTextRow = Flow.row()
             .coverChildren()
-            .verticalCenter()
             .childPadding(2)
             .collapseDisabledChild();
 
@@ -179,7 +175,6 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
                     + getColoredTierNameFromTier(voltageTierSyncer.getByteValue())
                     + ")")
                 .asWidget()
-                .height(14)
                 .setEnabledIf(t -> isUsingTiersSyncer.getBoolValue()));
 
         // add a number input field to determine voltage
@@ -193,14 +188,13 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
                     byte tier = getTier(voltageSyncer.getIntValue());
                     return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
                 })))
-                .tooltipShowUpTimer(5)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .setEnabledIf(t -> !isUsingTiersSyncer.getBoolValue()));
 
         // text widget for voltage, is static
         voltageTextRow.child(
-            IKey.str("Voltage")
+            IKey.lang("GT5U.gui.text.voltage")
                 .asWidget()
-                .height(14)
                 .setEnabledIf(t -> !isUsingTiersSyncer.getBoolValue()));
 
         voltageRow.child(voltageTextRow);
@@ -208,8 +202,6 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         // add a button to increment/decrement voltage tier up to MAX_TIER, or double/halve voltage up to MAX_VOLTAGE
         voltageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.GRAPH)
-                .size(18)
-                .rightRel(0)
                 .onMousePressed(
                     mouseButton -> this.onVoltageModifierButtonPressed(
                         mouseButton,
@@ -218,11 +210,13 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
                         isUsingTiersSyncer))
                 .tooltip(t -> createVoltageModifierButtonTooltip(t, isUsingTiersSyncer)));
 
-        ParentWidget<?> amperageRow = new ParentWidget<>().size(152, 18);
+        Flow amperageRow = Flow.row()
+            .width(8 * SLOT_SIZE)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         Flow amperageTextRow = Flow.row()
             .coverChildren()
-            .verticalCenter()
             .childPadding(2);
 
         // number field for amperage
@@ -234,40 +228,45 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
                 .setDefaultNumber(2));
 
         // text widget for amperage, is static
-        amperageTextRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).height(18));
+        amperageTextRow.child(
+            IKey.lang("GT5U.gui.text.amperage")
+                .asWidget());
 
         amperageRow.child(amperageTextRow);
 
         // button to double / halve amperage, up to MAX_AMPERAGE
         amperageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.MAZE)
-                .size(18)
-                .rightRel(0)
                 .onMousePressed(mouseButton -> onAmperageModifierButtonPressed(mouseButton, amperageSyncer))
                 .tooltip(this::createAmperageModifierButtonTooltip));
 
-        Flow statusRow = Flow.row()
-            .coverChildren()
-            .childPadding(2);
+        numberInputColumn.child(voltageRow);
+        numberInputColumn.child(amperageRow);
+        return super.createContentSection(panel, syncManager).child(numberInputColumn);
+    }
 
-        statusRow.child(getModeSetterButton(true, isProducingSyncer));
-        statusRow.child(getModeSetterButton(false, isProducingSyncer));
+    @Override
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue isProducingSyncer = new BooleanSyncValue(machine::isProducing, (machine::setProducing));
+        BooleanSyncValue isLaserSyncer = new BooleanSyncValue(machine::isLASER, machine::setLASER);
+        syncManager.syncValue("isProducing", isProducingSyncer);
+
+        Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
+
+        row.child(getModeSetterButton(true, isProducingSyncer));
+        row.child(getModeSetterButton(false, isProducingSyncer));
 
         // button to toggle laser mode
-        statusRow.child(
+        row.child(
             new ToggleButton().value(isLaserSyncer)
                 .overlay(GuiTextures.MAIN_HANDLE)
                 .tooltip(t -> t.addLine(translateToLocal("tt.gui.text.debug_power.toggle_laser"))));
 
-        numberInputColumn.child(voltageRow);
-        numberInputColumn.child(amperageRow);
-        numberInputColumn.child(statusRow);
-        return super.createContentSection(panel, syncManager).child(numberInputColumn);
+        return row;
     }
 
     private ToggleButton getModeSetterButton(boolean isProduceButton, BooleanSyncValue isProducingSyncer) {
-        return new SelectButton().size(18)
-            .value(LinkedBoolValue.of(isProducingSyncer, isProduceButton))
+        return new SelectButton().value(LinkedBoolValue.of(isProducingSyncer, isProduceButton))
             .overlay(isProduceButton ? GuiTextures.MAXIMIZE : GuiTextures.MINIMIZE)
             .tooltip(
                 t -> t.addLine(

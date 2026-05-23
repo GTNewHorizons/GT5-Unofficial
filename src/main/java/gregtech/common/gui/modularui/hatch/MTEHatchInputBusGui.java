@@ -1,23 +1,18 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
+import net.minecraft.item.ItemStack;
 
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.StringUtils;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 
@@ -25,80 +20,63 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
         super(hatch);
     }
 
-    @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
-    }
-
     // just in case any subclasses want to override this
     // value corresponds to the size of any side of the slot group grid
     protected int getDimension() {
-        return Math.max(1, hatch.mTier + 1);
+        return Math.max(1, machine.mTier + 1);
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !hatch.disableSort, val -> hatch.disableSort = !val);
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue stackSync = new BooleanSyncValue(
+            () -> !machine.disableSort,
+            val -> machine.disableSort = !val);
         BooleanSyncValue insertionSync = new BooleanSyncValue(
-            () -> !hatch.disableLimited,
-            val -> hatch.disableLimited = !val);
-        return super.createLeftCornerFlow(panel, syncManager)
+            () -> !machine.disableLimited,
+            val -> machine.disableLimited = !val);
+        return super.createBottomLeftCornerFlow(panel, syncManager)
             .child(
-                createToggleButton(
+                CommonButtons.createToggleButton(
                     stackSync,
                     GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE,
                     "GT5U.machines.sorting_mode.tooltip"))
             .child(
-                createToggleButton(
+                CommonButtons.createToggleButton(
                     insertionSync,
                     GTGuiTextures.OVERLAY_BUTTON_ONE_STACK_LIMIT,
                     "GT5U.machines.one_stack_limit.tooltip"));
     }
 
-    private final int BUTTON_SIZE = 18;
-
     @Override
     protected int getBasePanelHeight() {
-        // we subtract 4 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
+        // we subtract 3 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
         // default panel
-        return super.getBasePanelHeight() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 4) + 18);
+        int dimension = getDimension();
+        return super.getBasePanelHeight() + (dimension > 4 ? (dimension - 3) * SLOT_SIZE : 0);
     }
 
     @Override
     protected int getBasePanelWidth() {
         // we subtract 9 from the dimension before adding this value as a 9x9 slot grid is the maximum that fits on the
         // default width panel
-        return super.getBasePanelWidth() + Math.max(0, BUTTON_SIZE * (this.getDimension() - 9));
+        return super.getBasePanelWidth() + Math.max(0, SLOT_SIZE * (this.getDimension() - 9));
     }
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-
-        return super.createContentSection(panel, syncManager).child(createSlots(syncManager));
+        return super.createContentSection(panel, syncManager).child(
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(getDimension())
+                .filter(this::isValidStack)
+                .build()
+                .center());
     }
 
-    protected SlotGroupWidget createSlots(PanelSyncManager syncManager) {
-
-        final int dimension = this.getDimension();
-        syncManager.registerSlotGroup("item_inv", dimension);
-
-        String[] matrix = new String[dimension];
-        String repeat = StringUtils.getRepetitionOf('s', dimension);
-        Arrays.fill(matrix, repeat);
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                's',
-                index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")))
-            .build()
-            .coverChildren()
-            .marginTop((BUTTON_SIZE / 2) * (4 - this.getDimension()))
-            .horizontalCenter();
+    protected boolean isValidStack(ItemStack itemStack) {
+        return true;
     }
 
-    private ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture texture, String key) {
-        return new ToggleButton().value(syncValue)
-            .overlay(texture)
-            .addTooltipLine(GTUtility.translate(key));
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return getDimension() <= 4;
     }
 }

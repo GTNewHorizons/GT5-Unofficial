@@ -143,7 +143,6 @@ public class FuelConfigPanel {
                     .disableThemeBackground(true)
                     .disableHoverThemeBackground(true)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {
                         if (hypervisor.isClient()) {

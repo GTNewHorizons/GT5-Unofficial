@@ -25,8 +25,8 @@ public class MTEHatchWirelessComputationInputGui extends MTEHatchBaseGui<MTEHatc
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         LongSyncValue computationSyncer = new LongSyncValue(
-            hatch::getRequiredComputation,
-            hatch::setRequiredComputation).allowC2S();
+            machine::getRequiredComputation,
+            machine::setRequiredComputation).allowC2S();
 
         Flow mainColumn = Flow.column()
             .horizontalCenter()
