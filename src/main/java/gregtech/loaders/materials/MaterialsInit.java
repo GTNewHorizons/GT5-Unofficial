@@ -16575,7 +16575,7 @@ public class MaterialsInit {
             .setChemicalFormula(
                 "(" + Materials.NetherStar.getChemicalFormula()
                     + ")₈Tb₇Tc₄("
-                    + Materials.Dilithium.getChemicalFormula()
+                    + CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C⌋"
                     + ")₄Fl₃If")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
