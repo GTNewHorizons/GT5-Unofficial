@@ -103,7 +103,7 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         super.registerSyncValues(syncManager);
 
         syncManager.syncValue("isActive", new BooleanSyncValue(baseMetaTileEntity::isActive));
-        syncManager.syncValue("heat", new IntSyncValue(machine::getHeat, machine::setHeat));
+        syncManager.syncValue("heat", new IntSyncValue(machine::getHeat));
     }
 
     @Override
