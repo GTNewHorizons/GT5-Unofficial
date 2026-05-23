@@ -231,7 +231,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 148, false)
             .addCasingInfoExactly("Callisto Ice Frame Box", 146, false)
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 135, false)
-            .addCasingInfoExactly("Coolant Duct", 50, false)
+            .addCasingInfoExactly("Coolant Duct", 51, false)
             .addCasingInfoExactly("Ledox Sheetmetal", 40, false)
             .addCasingInfoExactly("Any Tiered Glass", 18, false)
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier 1 Structure:")
