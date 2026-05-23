@@ -93,6 +93,8 @@ kubatech.gui.text.mia.primary_mode=Primary mode
 kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
 kubatech.gui.text.mia.secondary_mode=Secondary mode
+kubatech.gui.text.mia.show_bee_inventory=Show Bee Inventory
+kubatech.gui.text.mia.show_machine_status=Show Machine Status
 
 kubatech.gui.tooltip.contributors.added=Added by %s
 kubatech.gui.tooltip.contributors.design=Designed by %s
@@ -162,6 +164,10 @@ kubatech.infodata.mia.running_mode.output=Output mode
 kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
+kubatech.infodata.mia.inventory_full=No more slots for bees!
+kubatech.gui.text.mia.inventory_full_warning=No more bee slots available!
+kubatech.gui.text.mia.locked_while_running=Bee inventory locked while machine is running
+kubatech.infodata.mia.gui_locked_while_running=Cannot modify bee inventory via GUI while running
 
 #HTGR
 kubatech.infodata.htgr.stored_fuel=Stored Fuel:
