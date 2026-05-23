@@ -122,25 +122,24 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     /** The monitor we are currently subscribed to, or null if not subscribed. */
     private @Nullable IMEMonitor<IAEFluidStack> subscribedMonitor = null;
     /** Listener that marks {@link #fluidListDirty} whenever the AE2 network fluid storage changes. */
-    private final IMEMonitorHandlerReceiver<IAEFluidStack> networkChangeListener =
-        new IMEMonitorHandlerReceiver<IAEFluidStack>() {
+    private final IMEMonitorHandlerReceiver<IAEFluidStack> networkChangeListener = new IMEMonitorHandlerReceiver<IAEFluidStack>() {
 
-            @Override
-            public boolean isValid(Object verificationToken) {
-                return verificationToken == MTEHatchInputME.this;
-            }
+        @Override
+        public boolean isValid(Object verificationToken) {
+            return verificationToken == MTEHatchInputME.this;
+        }
 
-            @Override
-            public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change,
-                BaseActionSource actionSource) {
-                fluidListDirty = true;
-            }
+        @Override
+        public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change,
+            BaseActionSource actionSource) {
+            fluidListDirty = true;
+        }
 
-            @Override
-            public void onListUpdate() {
-                fluidListDirty = true;
-            }
-        };
+        @Override
+        public void onListUpdate() {
+            fluidListDirty = true;
+        }
+    };
 
     protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
 
