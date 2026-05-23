@@ -30,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -224,7 +225,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         "     ggggggggggggggggggggg     ", } }))
                 .addElement('g', lazy(t -> {
                     IStructureElement<MTESolarTower> delegate = buildHatchAdder(MTESolarTower.class)
-                        .hatchClass(MTESolarHeater.class)
+                        .hatchId(MetaTileEntityIDs.Solar_Tower_Reflector.ID)
                         .adder(MTESolarTower::addSolarHeater)
                         // Use a positive casing index to make adder builder happy
                         .casingIndex(1)
