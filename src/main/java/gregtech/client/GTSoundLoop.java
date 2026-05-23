@@ -54,7 +54,6 @@ public class GTSoundLoop extends MovingSound {
         zPosF = soundZ;
         worldID = base.getWorld().provider.dimensionId;
         repeat = true;
-        targetVolume = VOLUME_RAMP;
         volume = VOLUME_RAMP;
     }
 
