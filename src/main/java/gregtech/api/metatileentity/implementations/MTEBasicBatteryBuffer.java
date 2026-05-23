@@ -16,6 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -422,28 +424,28 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
             case 2 -> gridTemplate2by2(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
 
                 @Override
-                public int getSlotStackLimit() {
+                public int getItemStackLimit(@NotNull ItemStack itemStack) {
                     return 1;
                 }
             }.slotGroup("battery_inv")));
             case 3 -> gridTemplate3by3(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
 
                 @Override
-                public int getSlotStackLimit() {
+                public int getItemStackLimit(@NotNull ItemStack itemStack) {
                     return 1;
                 }
             }.slotGroup("battery_inv")));
             case 4 -> gridTemplate4by4(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
 
                 @Override
-                public int getSlotStackLimit() {
+                public int getItemStackLimit(@NotNull ItemStack itemStack) {
                     return 1;
                 }
             }.slotGroup("battery_inv")));
             default -> gridTemplate1by1(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
 
                 @Override
-                public int getSlotStackLimit() {
+                public int getItemStackLimit(@NotNull ItemStack itemStack) {
                     return 1;
                 }
             }.slotGroup("battery_inv")));

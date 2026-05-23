@@ -110,7 +110,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 12) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
                 Materials.Neutronium.getMolten(4 * INGOTS) },
-            ItemList.OilDrillInfinite.get(1),
+            ItemList.InfiniteFluidDrillingRig.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);
 
@@ -610,8 +610,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 4096,
                 (int) TierEU.RECIPE_UIV,
                 1,
-                new Object[] { ItemList.Casing_Dim_Bridge.get(4),
-                    GTUtility.copyAmount(16, ItemRegistry.megaMachines[0]), ItemList.Hatch_Energy_UEV.get(4L),
+                new Object[] { ItemList.Casing_Dim_Bridge.get(4), ItemList.ExothermicHearth.get(16),
+                    ItemList.Hatch_Energy_UEV.get(4L),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -2233,7 +2233,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(64),
                     ItemList.Quantum_Chest_IV.get(64),
                     // Void miner III.
-                    GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.OilDrillInfinite.get(64),
+                    GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.InfiniteFluidDrillingRig.get(64),
 
                     ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
@@ -3107,17 +3107,15 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
-        ItemStack megaEBF = GTUtility.copyAmount(64, ItemRegistry.megaMachines[0]);
-
         // Smelting Module Controller
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             // mega ebf controller
-            ItemRegistry.megaMachines[0],
+            ItemList.ExothermicHearth.get(1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), ItemList.ExothermicHearth.get(64),
                 ItemList.Machine_Multi_Furnace.get(64), ItemList.ZPM4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
                 ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
@@ -3139,7 +3137,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), ItemList.ExothermicHearth.get(64),
                 GregtechItemList.Mega_AlloyBlastSmelter.get(64), ItemList.ZPM4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
                 ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),

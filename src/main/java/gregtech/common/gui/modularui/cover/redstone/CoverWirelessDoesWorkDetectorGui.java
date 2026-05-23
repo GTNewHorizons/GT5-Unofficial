@@ -43,8 +43,8 @@ public class CoverWirelessDoesWorkDetectorGui
             .child(
                 Flow.row()
                     .marginBottom(4)
-                    .size(140, 18)
-
+                    .coverChildren(0, 18)
+                    .leftRel(0)
                     .child(
                         new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
                             .overlay(
@@ -52,7 +52,6 @@ public class CoverWirelessDoesWorkDetectorGui
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                             .build()
-                            .width(120)
                             .marginRight(2)
                             .child(
                                 new TextWidget<>(

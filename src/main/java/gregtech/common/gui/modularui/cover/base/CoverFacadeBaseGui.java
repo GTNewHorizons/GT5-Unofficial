@@ -67,7 +67,7 @@ public class CoverFacadeBaseGui extends CoverBaseGui<CoverFacadeBase> {
     }
 
     @Override
-    protected void addTitleToUI(Flow column) {
+    protected void addTitleToUI(Flow column, CoverGuiData data) {
         ItemStack coverItem = cover.getStack();
         if (coverItem == null) return;
         column.child(

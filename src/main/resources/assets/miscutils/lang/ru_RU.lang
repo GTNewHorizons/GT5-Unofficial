@@ -1761,8 +1761,8 @@ item.SteelMultispade.name=Стальная мульти лопата
 item.TinAlloyMultispade.name=Мульти лопата из оловянного сплава
 item.UltimetMultipick.name=Ультимет мульти кирка
 item.UltimetMultispade.name=Ультимет мульти лопата
-item.WroughtIronMultipick.name=Мульти кирка из кованого железа
-item.WroughtIronMultispade.name=Мульти лопата из кованого железа
+item.CastIronMultipick.name=Мульти кирка из кованого железа
+item.CastIronMultispade.name=Мульти лопата из кованого железа
 item.SterlingSilverMultipick.name=Мульти кирка из стерлингового серебра
 item.SterlingSilverMultispade.name=Мульти лопата из стерлингового серебра
 item.RoseGoldMultipick.name=Мульти кирка из розового золота
@@ -1843,7 +1843,7 @@ item.itemPlateLithium.name=Литиевая пластина
 item.itemPlateDoubleEuropium.name=2x Европиевая пластина
 
 # Gears
-item.itemSmallGearWroughtIron.name=Маленькая шестерня из кованого железа
+item.itemSmallGearCastIron.name=Маленькая шестерня из кованого железа
 
 # Misc
 item.itemFoilUranium235.name=Фольга из урана-235

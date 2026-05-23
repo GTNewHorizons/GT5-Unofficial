@@ -63,8 +63,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
-    private byte mColor = 0, oldColor = 0, oldRedstoneData = 63, oldConnections = 0, oldUpdateData = 0;
-    private int oldX = 0, oldY = 0, oldZ = 0;
+    private byte oldConnections = 0;
     protected Node node;
     protected NodePath nodePath;
 
@@ -164,95 +163,54 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             if (mMetaTileEntity == null) return;
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
-
-        boolean isServerSide = isServerSide();
+        final boolean isServerSide = isServerSide();
         if (hasValidMetaTileEntity()) {
             if (mTickTimer++ == 0) {
-                oldX = xCoord;
-                oldY = yCoord;
-                oldZ = zCoord;
-                if (isServerSide) checkDropCover();
-                else {
-                    requestCoverDataIfNeeded();
-                }
-                worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-                mMetaTileEntity.onFirstTick(this);
-                if (!hasValidMetaTileEntity()) return;
-            }
-
-            if (isClientSide()) {
-                if (mColor != oldColor) {
-                    mMetaTileEntity.onColorChangeClient(oldColor = mColor);
-                    issueTextureUpdate();
-                }
-
-                if (mNeedsUpdate) {
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    mMetaTileEntity.onTextureUpdate();
-                    mNeedsUpdate = false;
+                handleFirstTick(isServerSide);
+                if (!hasValidMetaTileEntity()) {
+                    return;
                 }
             }
-            if (isServerSide && mTickTimer > 10) {
-                if (!doCoverThings()) return;
-
-                if (mTickTimer > 12 && mConnections != mMetaTileEntity.mConnections) {
-                    mConnections = mMetaTileEntity.mConnections;
-                    GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+            if (!isServerSide) {
+                handleColorChangeClient();
+                handleBlockUpdateClient();
+            } else {
+                if (mTickTimer > 10) {
+                    if (!doCoverThings()) {
+                        return;
+                    }
+                    updateConnections();
                 }
             }
             mMetaTileEntity.onPreTick(this, mTickTimer);
-            if (!hasValidMetaTileEntity()) return;
+            if (!hasValidMetaTileEntity()) {
+                return;
+            }
             if (isServerSide) {
                 if (mTickTimer == 10) {
                     issueBlockUpdate();
                     joinEnet();
                 }
-
-                if (xCoord != oldX || yCoord != oldY || zCoord != oldZ) {
-                    oldX = xCoord;
-                    oldY = yCoord;
-                    oldZ = zCoord;
-                    issueClientUpdate();
-                    clearTileEntityBuffer();
-                }
+                handlePositionChange();
             }
-
             mMetaTileEntity.onPostTick(this, mTickTimer);
-            if (!hasValidMetaTileEntity()) return;
-
+            if (!hasValidMetaTileEntity()) {
+                return;
+            }
             if (isServerSide) {
                 if (mTickTimer % 10 == 0) {
                     sendClientData();
                 }
 
                 if (mTickTimer > 10) {
-                    if (mConnections != oldConnections) {
-                        oldConnections = mConnections;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldConnections);
-                    }
-
-                    byte updateData = mMetaTileEntity.getUpdateData();
-
-                    if (updateData != oldUpdateData) {
-                        oldUpdateData = updateData;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
-                    }
-
-                    if (mColor != oldColor) {
-                        oldColor = mColor;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
-                    }
-
-                    byte redstone = getSidedRedstoneMask();
-
-                    if (redstone != oldRedstoneData) {
-                        oldRedstoneData = redstone;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
-                    }
+                    handleConnectionsChangeServer();
+                    handleUpdateDataChangeServer();
+                    handleColorChangeServer();
+                    handleSidedRedstoneChangeServer();
                 }
 
                 if (mNeedsBlockUpdate) {
-                    doBlockUpdate();
+                    doBlockUpdateServer();
                 }
 
                 if (mNeedsTileUpdate) {
@@ -261,8 +219,26 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
             }
         }
-
         mWorkUpdate = mInventoryChanged = false;
+    }
+
+    private void updateConnections() {
+        if (mTickTimer <= 12) {
+            return;
+        }
+        if (mConnections == mMetaTileEntity.mConnections) {
+            return;
+        }
+        mConnections = mMetaTileEntity.mConnections;
+        GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+    }
+
+    private void handleConnectionsChangeServer() {
+        if (mConnections == oldConnections) {
+            return;
+        }
+        oldConnections = mConnections;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldConnections);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class StockingSlot extends PhantomItemSlot {
             if (isLocked.getBoolValue())
                 tooltip.addLine(IKey.dynamic(() -> translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot")));
         });
-        background(
+        backgroundOverlay(
             new DynamicDrawable(() -> isLocked.getBoolValue() ? GTGuiTextures.SLOT_ITEM_DARK : GuiTextures.SLOT_ITEM),
             GTGuiTextures.OVERLAY_SLOT_ARROW_ME);
     }

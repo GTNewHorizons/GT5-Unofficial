@@ -34,6 +34,7 @@ public class CoverLiquidMeterGui extends CoverBaseGui<CoverLiquidMeter> {
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.Fluid_Meter.FluidThreshold")
-                    .asWidget());
+                    .asWidget())
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 }

@@ -7,23 +7,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEFilterGui;
 
 public class MTEFilter extends MTEFilterBase {
 
     private static final int NUM_FILTER_SLOTS = 9;
-    private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
     private boolean ignoreNbt = false;
 
     public MTEFilter(int aID, String aName, String aNameRegional, int aTier) {
@@ -38,6 +37,14 @@ public class MTEFilter extends MTEFilterBase {
 
     public MTEFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public boolean isIgnoreNbt() {
+        return ignoreNbt;
+    }
+
+    public void setIgnoreNbt(boolean ignoreNbt) {
+        this.ignoreNbt = ignoreNbt;
     }
 
     @Override
@@ -85,49 +92,7 @@ public class MTEFilter extends MTEFilterBase {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addAllowNbtButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
-                .setPos(6, 19)
-                .setSize(9, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
-                    .setPos(71, 19)
-                    .setSize(24, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_24_RED.apply(19, true))
-                    .setPos(152, 19)
-                    .setSize(19, 24))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(16, 4)
-                    .setSize(54, 54))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(FILTER_SLOT_INDEX)
-                    .endAtSlot(FILTER_SLOT_INDEX + NUM_FILTER_SLOTS - 1)
-                    .phantom(true)
-                    .applyForWidget(
-                        widget -> widget.disableShiftInsert()
-                            .setBackground(GTUITextures.TRANSPARENT))
-                    .build()
-                    .setPos(16, 4))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(NUM_INVENTORY_SLOTS - 1)
-                    .build()
-                    .setPos(97, 4));
-    }
-
-    private void addAllowNbtButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> ignoreNbt,
-                val -> ignoreNbt = val,
-                GTUITextures.OVERLAY_BUTTON_NBT,
-                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEFilterGui(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -7,6 +7,7 @@ import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NITINOL;
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
+import static gtnhlanth.common.beamline.Particle.ELECTRONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.ETA;
 import static gtnhlanth.common.beamline.Particle.GRAVITON;
 import static gtnhlanth.common.beamline.Particle.HIGGS;
@@ -18,12 +19,14 @@ import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
 import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
+import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -116,8 +119,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(TAU.getId())
                     .particleID_B(TAU.getId())
-                    .amount_A(1200)
-                    .amount_B(1200)
+                    .amount_A(900)
+                    .amount_B(900)
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -264,8 +267,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(UPSILON.getId())
                     .particleID_B(UPSILON.getId())
-                    .amount_A(1000)
-                    .amount_B(1000)
+                    .amount_A(700)
+                    .amount_B(700)
                     .build())
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
@@ -280,8 +283,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(HIGGS.getId())
                     .particleID_B(HIGGS.getId())
-                    .amount_A(125)
-                    .amount_B(125)
+                    .amount_A(85)
+                    .amount_B(85)
                     .build())
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
@@ -348,6 +351,36 @@ public class BeamCrafterRecipes implements Runnable {
                     .amount_B(20)
                     .build())
             .eut(TierEU.RECIPE_UHV)
+            .duration(2 * SECONDS)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1))
+            .itemOutputs(ItemList.EnergisedTesseract.get(1))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(ELECTRONNEUTRINO.getId())
+                    .particleID_B(TAUNEUTRINO.getId())
+                    .amount_A(50)
+                    .amount_B(30)
+                    .build())
+            .eut(TierEU.RECIPE_UIV)
+            .duration(2 * SECONDS)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(GGMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000))
+            .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1000))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(ETA.getId())
+                    .particleID_B(UPSILON.getId())
+                    .amount_A(2)
+                    .amount_B(2)
+                    .build())
+            .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 

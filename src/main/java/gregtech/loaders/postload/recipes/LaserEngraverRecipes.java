@@ -92,7 +92,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
                 new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -151,7 +151,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
                 new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -238,7 +238,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
                 new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -409,7 +409,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
                 new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
             .duration(1 * MINUTES + 40 * SECONDS)

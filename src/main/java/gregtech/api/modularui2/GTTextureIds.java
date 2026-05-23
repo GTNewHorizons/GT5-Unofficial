@@ -85,6 +85,13 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_OUT_BRONZE = "gregtech:overlay_slot_out_bronze";
     public static final String OVERLAY_SLOT_OUT_STEEL = "gregtech:overlay_slot_out_steel";
 
+    public static final String OVERLAY_SLOT_DRAWER_STANDARD = "gregtech:overlay_slot_drawer_standard";
+    public static final String OVERLAY_SLOT_DRAWER_SIDE_STANDARD = "gregtech:overlay_slot_drawer_side_standard";
+    public static final String OVERLAY_SLOT_DRAWER_FRONT_STANDARD = "gregtech:overlay_slot_drawer_front_standard";
+    public static final String OVERLAY_SLOT_DRAWER_TRIM_STANDARD = "gregtech:overlay_slot_drawer_trim_standard";
+
+    public static final String OVERLAY_SLOT_MINING_PIPE_STANDARD = "gregtech:overlay_slot_mining_pipe_standard";
+
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
     public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";
@@ -163,4 +170,7 @@ public final class GTTextureIds {
     public static final String PICTURE_WATER_PURIFICATION_ONLINE = "gregtech:picture_water_purification_online";
     public static final String PICTURE_WATER_PURIFICATION_IDLE = "gregtech:picture_water_purification_idle";
     public static final String PICTURE_WATER_PURIFICATION_OFFLINE = "gregtech:picture_water_purification_offline";
+    public static final String PICTURE_STEAM_GAUGE = "gregtech:steam_dial";
+    public static final String PICTURE_STEAM_GAUGE_STEEL = "gregtech:steam_dial_steel";
+
 }

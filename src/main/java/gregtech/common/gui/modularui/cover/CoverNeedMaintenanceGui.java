@@ -45,11 +45,11 @@ public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance>
         column.child(
             Flow.row()
                 .marginLeft(WIDGET_MARGIN)
-                .coverChildrenHeight()
-                .width(getGUIWidth() - WIDGET_MARGIN * 4)
+                .coverChildren()
                 .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
                 .child(
                     new Grid().coverChildren()
+                        .marginRight(4)
                         .minElementMargin(1, 1)
                         .alignment(Alignment.CenterLeft)
                         .row(

@@ -48,6 +48,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
@@ -266,37 +268,51 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         tier = -1;
         width = 0;
         setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN)) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN, errors)) {
+            return;
         }
 
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            while (checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
+            while (checkPiece(
+                STRUCTURE_PIECE_NEXT,
+                OFFSET_X_SLICE - (width + 1) * 2,
+                OFFSET_Y_SLICE,
+                OFFSET_Z_SLICE,
+                errors)) {
                 width++;
             }
         } else {
-            while (width < MAX_LENGTH - 1
-                && checkPiece(STRUCTURE_PIECE_NEXT, OFFSET_X_SLICE - (width + 1) * 2, OFFSET_Y_SLICE, OFFSET_Z_SLICE)) {
+            while (width < MAX_LENGTH - 1 && checkPiece(
+                STRUCTURE_PIECE_NEXT,
+                OFFSET_X_SLICE - (width + 1) * 2,
+                OFFSET_Y_SLICE,
+                OFFSET_Z_SLICE,
+                errors)) {
                 width++;
             }
         }
+        errors.clear();
 
+        checkCasingMin(errors, casingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            return mExoticEnergyHatches.size() == 1 && getCoilTier() >= HeatingCoilLevel.UMV.getTier() + 1;
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (getCoilTier() < HeatingCoilLevel.UMV.getTier() + 1) {
+                errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+            }
+        } else {
+            checkHasEnergyHatch(errors);
         }
-
-        return casingAmount >= 35 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty();
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

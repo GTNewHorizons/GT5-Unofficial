@@ -27,6 +27,7 @@ import xyz.wagyourtail.jvmdg.util.Pair;
 public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlockBaseGui<T> {
 
     public static final int TOOLTIP_DELAY = 0;
+    protected static final int EMIT_REDSTONE_BUTTON_INDEX = 2;
 
     public MTEBufferBaseGui(T machine) {
         super(machine);
@@ -114,6 +115,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     configureTooltip("GT5U.machines.sorting_mode.tooltip"))));
 
         // emit redstone button
+        // this button needs to be at index EMIT_REDSTONE_BUTTON_INDEX in the list
         buttons.add(
             new Pair<>(
                 supportsEmitRedstone(),

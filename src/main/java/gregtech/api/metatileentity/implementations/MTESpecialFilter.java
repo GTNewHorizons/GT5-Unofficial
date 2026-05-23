@@ -34,6 +34,14 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public boolean isAllowNbt() {
+        return allowNbt;
+    }
+
+    public void setAllowNbt(boolean allowNbt) {
+        this.allowNbt = allowNbt;
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -124,5 +132,10 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
         public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
             return getItemStackReplacementTooltip();
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

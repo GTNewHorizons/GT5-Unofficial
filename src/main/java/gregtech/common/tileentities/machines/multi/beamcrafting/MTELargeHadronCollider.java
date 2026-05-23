@@ -14,6 +14,9 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,6 +50,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -71,7 +77,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static final float RATE_SCALE_FACTOR = 1.1F;
+    public static final float RATE_SCALE_FACTOR = 1.3F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -426,19 +432,24 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
 
-        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113);
-        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9);
-        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59);
-        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59);
+        // Ignore the structure error during module checks
+        List<StructureError> tmp = new ArrayList<>();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
-            && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113, tmp);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9, tmp);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59, tmp);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59, tmp);
 
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
+        int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
+        if (energyCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
+        }
     }
 
     @Override
@@ -639,8 +650,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
 
-            // filter module-incompatible particles
-            if (acceptedInputMap == null || !acceptedInputMap.getOrDefault(p, false)) {
+            // filter module-incompatible particles -- keep blacklisted particles in the pool but output nothing if
+            // rolled
+            if (acceptedInputMap == null || !acceptedInputMap.containsKey(p)) {
                 weights[i] = 0.0;
                 continue;
             }
@@ -687,6 +699,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 o.dataPacket = null;
                 continue;
             }
+
+            // void blacklisted particles
+            Particle rolled = Particle.getParticleFromId(rolledId);
+            if (!o.acceptedInputMap.getOrDefault(rolled, false)) {
+                o.dataPacket = null;
+                continue;
+            }
+
             o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }

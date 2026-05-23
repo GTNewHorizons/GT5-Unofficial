@@ -98,7 +98,8 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
             .child(
                 IKey.lang("gt.interact.desc.arm.Adjacent_Slot")
                     .asWidget()
-                    .tooltipBuilder(t -> t.addLine("-1 means 'Any' sorry for the inconvenience :(")));
+                    .tooltipBuilder(t -> t.addLine("-1 means 'Any' sorry for the inconvenience :(")))
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
 
     }
 

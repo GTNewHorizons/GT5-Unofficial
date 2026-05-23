@@ -149,6 +149,9 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
             final int inputSlot = getInputSlot();
 
+            // Early exit if no item in input slot - nothing to fill or empty
+            if (inputSlot >= mInventory.length || mInventory[inputSlot] == null) return;
+
             if (doesEmptyContainers()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(mInventory[inputSlot], true);
                 if (tFluid != null && isFluidInputAllowed(tFluid)) {

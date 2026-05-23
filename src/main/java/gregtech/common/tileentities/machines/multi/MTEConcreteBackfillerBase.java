@@ -7,6 +7,8 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
@@ -39,6 +41,7 @@ import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -122,8 +125,10 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     protected abstract int getRadius();
 
     @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkOneEnergyHatch(errors);
     }
 
     @Override
@@ -257,11 +262,12 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),
                     builder,
                     (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
-                                : "GT5U.gui.button.liquid_filling_OFF")))
+                .dynamicTooltip(() -> {
+                    String title = StatCollector.translateToLocal("GT5U.gui.button.liquid_filling");
+                    String stateKey = mLiquidEnabled ? BUTTON_FEATURE_ENABLED_TOOLTIP : BUTTON_FEATURE_DISABLED_TOOLTIP;
+                    String stateText = StatCollector.translateToLocal(stateKey);
+                    return ImmutableList.of(title, GTUtility.getColoredSecondaryTooltip(stateText));
+                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(100, BUTTON_Y_LEVEL))
                 .setSize(16, 16));

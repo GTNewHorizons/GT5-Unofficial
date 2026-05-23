@@ -37,7 +37,7 @@ public class MTEHatchOutputBatteryGui extends MTEHatchBaseGui<MTEHatchOutputBatt
             .key(
                 'x',
                 i -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, i).slotGroup("battery_inv"))
-                    .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                    .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
             .build()
             .coverChildren()
             .center();

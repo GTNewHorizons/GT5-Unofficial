@@ -42,7 +42,7 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
 
 public class MTEHatchTurbine extends MTEHatch {
 
@@ -106,7 +106,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean hasTurbine() {
         if (getBaseMetaTileEntity().isServerSide()) {
             ItemStack aStack = this.mInventory[0];
-            return MTELargerTurbineBase.isValidTurbine(aStack);
+            return MTELargerTurbineBaseLegacy.isValidTurbine(aStack);
         }
         return mHasTurbine;
     }
@@ -119,7 +119,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean insertTurbine(ItemStack aTurbine) {
-        if (MTELargerTurbineBase.isValidTurbine(aTurbine)) {
+        if (MTELargerTurbineBaseLegacy.isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
             sendUpdate();
             return true;
@@ -207,19 +207,19 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean isControllerActive() {
-        MTELargerTurbineBase x = getController();
+        MTELargerTurbineBaseLegacy x = getController();
         if (x != null) {
             return x.lEUt > 0;
         }
         return false;
     }
 
-    public MTELargerTurbineBase getController() {
+    public MTELargerTurbineBaseLegacy getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
-                return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
+            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBaseLegacy turbine) {
+                return turbine;
             }
         }
         return null;
@@ -342,8 +342,8 @@ public class MTEHatchTurbine extends MTEHatch {
             GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
-                String aSize = MTELargerTurbineBase
-                    .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
+                String aSize = MTELargerTurbineBaseLegacy
+                    .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
                 GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
             }
         } else {
@@ -427,7 +427,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine);
+        SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBaseLegacy::isValidTurbine);
         if (getBaseMetaTileEntity().isServerSide()) slot.setChangeListener(this::sendUpdate);
         builder.widget(
             slot.setAccess(false, true)
@@ -446,18 +446,19 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public void receiveUpdate(PacketTurbineHatchUpdate message) {
         mHasTurbine = message.isHasTurbine();
-        if (message.getController() != null) clearController();
-        else setController(message.getController());
+        if (message.getController() != null) setController(message.getController());
+        else clearController();
         getBaseMetaTileEntity().issueTextureUpdate();
         setTurbineOverlay();
     }
 
     public void sendUpdate() {
         PacketTurbineHatchUpdate message = new PacketTurbineHatchUpdate();
+        MTELargerTurbineBaseLegacy controller = getController();
         message.setX(getBaseMetaTileEntity().getXCoord());
         message.setY(getBaseMetaTileEntity().getYCoord());
         message.setZ(getBaseMetaTileEntity().getZCoord());
-        message.setFormed(mHasController && getController().mMachine);
+        message.setFormed(mHasController && controller != null && controller.mMachine);
         message.setHasTurbine(hasTurbine());
         message.setController(mControllerLocation);
         PacketHandler.sendToAllAround(

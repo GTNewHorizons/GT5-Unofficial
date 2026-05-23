@@ -20,12 +20,13 @@ import net.minecraftforge.common.util.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.recipe.RecipeCatalysts;
@@ -38,6 +39,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.gui.modularui.singleblock.MTERecipeFilterGui;
 
 public class MTERecipeFilter extends MTESpecialFilter {
 
@@ -60,6 +62,30 @@ public class MTERecipeFilter extends MTESpecialFilter {
     public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public String getRecipeMapName() {
+        return mRecipeMap != null ? mRecipeMap.unlocalizedName : "";
+    }
+
+    public void setRecipeMap(String recipeMapName) {
+        mRecipeMap = !recipeMapName.isEmpty() ? RecipeMap.ALL_RECIPE_MAPS.get(recipeMapName) : null;
+    }
+
+    public List<ItemStack> getFilteredMachines() {
+        return filteredMachines;
+    }
+
+    public void setFilteredMachines(List<ItemStack> filteredMachines) {
+        this.filteredMachines = filteredMachines;
+    }
+
+    public int getRotationIndex() {
+        return mRotationIndex;
+    }
+
+    public void setRotationIndex(int rotationIndex) {
+        this.mRotationIndex = rotationIndex;
     }
 
     private static RecipeMap<?> getItemStackMachineRecipeMap(ItemStack stack) {
@@ -151,15 +177,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         return mRecipeMap != null && mRecipeMap.containsInput(aStack);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new FakeSyncWidget.StringSyncer(
-                () -> this.mRecipeMap == null ? "" : this.mRecipeMap.unlocalizedName,
-                id -> this.mRecipeMap = RecipeMap.ALL_RECIPE_MAPS.get(id)));
     }
 
     @Override
@@ -304,5 +321,10 @@ public class MTERecipeFilter extends MTESpecialFilter {
         }
 
         // endregion
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTERecipeFilterGui(this).build(guiData, syncManager, uiSettings);
     }
 }

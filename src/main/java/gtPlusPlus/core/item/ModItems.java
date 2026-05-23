@@ -346,16 +346,8 @@ public final class ModItems {
         // Custom Tokens
         ItemGenericToken genericToken = new ItemGenericToken();
         genericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
-        genericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
-        genericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
-        genericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
-        genericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
-        GregtechItemList.HandPumpToken_I.set(new ItemStack(genericToken, 1, 1));
-        GregtechItemList.HandPumpToken_II.set(new ItemStack(genericToken, 1, 2));
-        GregtechItemList.HandPumpToken_III.set(new ItemStack(genericToken, 1, 3));
-        GregtechItemList.HandPumpToken_IV.set(new ItemStack(genericToken, 1, 4));
     }
 
     private static Item registerChargePack(int tier) {

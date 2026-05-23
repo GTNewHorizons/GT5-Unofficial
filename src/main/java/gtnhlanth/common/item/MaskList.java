@@ -102,6 +102,8 @@ public enum MaskList {
                                                                                                     // Crystal CPUs
                                                                                                     // from
                                                                                                     // Engraved CCs
+    ELC("elc", "Engraved Lapotron Chip", 120, "", CBLANK, Dyes.dyeCyan, 10_000, 1, 3, 50, 3,
+        ItemList.Circuit_Parts_Crystal_Chip_Master.get(4), ItemList.IC2_LapotronCrystal.getWildcard(1)),
     CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8,
         ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),
     ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 55, 12,

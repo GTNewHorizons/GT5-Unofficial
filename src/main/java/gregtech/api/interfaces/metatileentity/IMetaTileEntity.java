@@ -474,6 +474,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     }
 
+    default boolean shouldSendInitialClientData() {
+        return true;
+    }
+
     /**
      * @return Actual color shown on GUI
      */

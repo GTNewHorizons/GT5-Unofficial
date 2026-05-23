@@ -1551,8 +1551,8 @@ item.SteelMultispade.name=钢复合铲
 item.TinAlloyMultispade.name=锡铁合金复合铲
 item.UltimetMultipick.name=哈氏合金复合镐
 item.UltimetMultispade.name=哈氏合金复合铲
-item.WroughtIronMultipick.name=锻铁复合镐
-item.WroughtIronMultispade.name=锻铁复合铲
+item.CastIronMultipick.name=锻铁复合镐
+item.CastIronMultispade.name=锻铁复合铲
 item.SterlingSilverMultipick.name=标准纯银复合镐
 item.SterlingSilverMultispade.name=标准纯银复合铲
 item.RoseGoldMultipick.name=玫瑰金复合镐
@@ -1633,7 +1633,7 @@ item.itemPlateLithium.name=锂板
 item.itemPlateDoubleEuropium.name=双重铕板
 
 //Gears
-item.itemSmallGearWroughtIron.name=小型锻铁齿轮
+item.itemSmallGearCastIron.name=小型锻铁齿轮
 
 //Misc
 item.itemFoilUranium235.name=铀235箔

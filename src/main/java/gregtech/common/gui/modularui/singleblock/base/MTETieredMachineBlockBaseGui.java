@@ -238,7 +238,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                         if (!client && !init) machine.getBaseMetaTileEntity()
                             .markInventoryBeenModified();
                     }))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
