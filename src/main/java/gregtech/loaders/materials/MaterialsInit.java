@@ -15821,7 +15821,7 @@ public class MaterialsInit {
             .addOrePrefix(OrePrefixes.nanite)
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadBlackDwarfMatter() {
@@ -15841,7 +15841,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addOrePrefix(OrePrefixes.nanite)
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadTime() {
@@ -15886,7 +15886,7 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.frameGt) // disabled but shows up and is used in game
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadEternity() {

@@ -2433,6 +2433,8 @@ GT5U.gui.text.nanites_missing=§7Missing nanites
 GT5U.gui.text.electromagnet_missing=§7Needs an Electromagnet to run
 GT5U.gui.text.electromagnet_insufficient=§7Electromagnet too weak to handle multi-amp energy hatches
 GT5U.gui.text.laser_insufficient=§7Laser source is too weak to run this recipe
+GT5U.gui.text.sawblade_missing=§7Needs a sawblade in the controller slot
+GT5U.gui.text.sawblade_tier_not_high_enough=§7Sawblade tier is not high enough for the installed energy hatches
 GT5U.gui.text.cleanroom_running=§aCleanroom running
 GT5U.gui.text.no_machine=§7No valid processing machine
 GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
@@ -2556,7 +2558,7 @@ GT5U.gui.text.cleanroom_size=Unable to identify ceiling size
 GT5U.gui.text.cleanroom_ceiling=Ceiling is not complete
 GT5U.gui.text.cleanroom_plascrete=Not enough plascrete blocks
 GT5U.gui.text.defc_fusion_machine_casing=Tiers 3-5 require Mk-II fusion machine casings
-GT5U.gui.text.exo_foundry_too_many_hatch=Too many hatch
+GT5U.gui.text.exo_foundry_too_many_hatch=Too many hatches
 GT5U.gui.text.exo_foundry_hypercooler_hatch=Missing coolant hatch for hypercooler
 GT5U.gui.text.laser_need_uev=Need UEV-tiered laser for Multi-Amp support
 GT5U.gui.text.lesu_error=Unable to identify LESU structure
@@ -2578,6 +2580,10 @@ GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.text.crib_not_allowed=Crafting Inputs are not allowed
 GT5U.gui.text.stocking_input_bus_not_allowed=Stocking Input Buses are not allowed
 GT5U.gui.text.unknown_structure_error=Unknown structure error
+GT5U.gui.text.glass_tier_not_enough=Glass tier too low for energy hatch tier
+GT5U.gui.text.missing_energy_hatch=Missing Energy Hatch
+GT5U.gui.text.missing_output_bus=Missing Output Bus
+GT5U.gui.text.dt_missing_output_hatch=Missing Output Hatch on layer %s
 GT5U.gui.text.energy_hatch_tier_mismatch=Energy hatches must be of the same tier
 GT5U.gui.text.need_exactly_one_coil=Needs exactly 1 Heating Coil
 GT5U.gui.text.missing_pipe_casing=Missing Pipe Casing
@@ -2633,7 +2639,7 @@ GT5U.gui.text.cluster=Cluster Decay
 GT5U.gui.text.alpha-transfer=Alpha Transfer
 GT5U.gui.text.beta-minus=Beta Minus Decay
 GT5U.gui.text.beta-plus=Beta Plus Decay
-GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
+GT5U.gui.text.invalidfluidsup=Missing Fluid Required For Operation
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
@@ -2644,12 +2650,19 @@ GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
+GT5U.gui.text.button.pyrotheum.enabled=Pyrotheum Heating: §2Enabled
+GT5U.gui.text.button.pyrotheum.disabled=Pyrotheum Heating: §4Disabled
+
 GT5U.gui.text.nil=None
 GT5U.gui.text.turbine_title=Turbines
 
 GT5U.gui.text.hatch.output.cycle=Click to cycle modes
 GT5U.gui.text.hatch.output.filter.none.0=None
 GT5U.gui.text.hatch.output.filter.none.1=Will be locked to the next fluid that is put in (or use fluid cell to lock)
+
+GT5U.gui.text.button.cryotheum.enabled=Cryotheum Cooling: §2Enabled
+GT5U.gui.text.button.cryotheum.disabled=Cryotheum Cooling: §4Disabled
+
 
 # NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
@@ -4362,6 +4375,10 @@ gt.item.giga_chad_token.tooltip=You are worthy
 gt.item.tesseract.energised.name=Energised Tesseract
 gt.item.tesseract.energised.tooltip=Higher dimensional engineering
 gt.item.component.sawblade.diamond.name=Diamond Sawblade
+gt.item.t1sawblade.name=Tungsten Titanium Carbide Sawblade
+gt.item.t2sawblade.name=Mysterious Crystal Sawblade
+gt.item.t3sawblade.name=Neutronium Sawblade
+gt.item.t4sawblade.name=Transcendent Metal Sawblade
 gt.item.component.grinder.diamond.name=Diamond Grinding Head
 gt.item.component.grinder.tungsten.name=Tungsten Grinding Head
 gt.item.upgrade.lock.name=Lock Upgrade
@@ -5001,6 +5018,10 @@ gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
 gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n%sSpeed: +%d%%\n%sEU Usage: %d%%\n%sParallel: %d
 gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n%sLimit to one energy hatch if using Multi-Amp
+gt.sawblade.tooltip.base=Used in Industrial Cutting Factory\nAllows a §dCutting Factory§7 to use %s\n§6%d §7Parallels per §fVoltage Tier§7\n§a%d%% §7Speed\n§b%d%% §7EU usage
+gt.sawblade.tooltip.hatch_tier_limit=Energy Hatches up to %s§7
+gt.sawblade.tooltip.hatch_tier_unlimited=Energy Hatches of any tier
+gt.sawblade.tooltip.exotic=§l§aCan Use Multi-Amp Hatches\n§cLimit to one energy hatch if using Multi-Amp
 gt.Item_Redstone_Sniffer.name=Redstone Sniffer
 gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
@@ -5670,6 +5691,12 @@ GT5U.waila.digital_chest.count=Item Count: %s
 GT5U.waila.digital_chest.type=Item Type: %s
 GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
+GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
+GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
+
+
+GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
+GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
@@ -8050,7 +8077,12 @@ gt.blockcasings13.11.name=Charged Matter Sensor Casing
 gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
 gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
 gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
+
+gt.blockcasings14.3.name=Hearth Casing
+
 gt.blockcasings13.15.name=Naquadah Reactor Casing
+
+gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
