@@ -113,7 +113,7 @@ public class MTEHatchDataAccess extends MTEHatch {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
 
         cachedRecipes = null;

@@ -137,7 +137,6 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.registerSlotGroup("item_inv", 3);
 
         syncManager.syncValue(
             "filteredMachines",

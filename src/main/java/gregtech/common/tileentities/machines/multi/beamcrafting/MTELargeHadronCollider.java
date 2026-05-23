@@ -61,7 +61,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
@@ -196,49 +195,35 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return ofBlockAnyMeta(Blocks.air);
             }
         }))
-        .addElement(
-            'F',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             '1',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .build()) // EM beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
         .addElement(
             '2',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(4)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .build()) // Weak beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
         .addElement(
             '3',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(5)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .build()) // Strong beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
         .addElement(
             '4',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(6)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .build()) // Grav beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())

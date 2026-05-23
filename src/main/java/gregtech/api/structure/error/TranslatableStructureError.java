@@ -28,9 +28,12 @@ public record TranslatableStructureError(TranslatableText message) implements St
         return new TranslatableStructureError(TranslatableText.deserialize(buffer));
     }
 
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return message.toIKey()
+            .color(TEXT_COLOR)
             .asWidget();
     }
 
