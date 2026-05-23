@@ -244,7 +244,8 @@ public class DroneCentreGuiUtil {
 
         IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
         ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
-            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L));
+            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L))
+                .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
     }
