@@ -3,14 +3,15 @@ package gregtech.common.gui.modularui.hatch;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor.componentBinds;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.util.LimitedExtractionSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.util.TTUtility;
 
@@ -22,31 +23,29 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("capacitor_inventory", 4);
-        String[] matrix = { "xxxx", "xxxx", "xxxx", "xxxx" };
+        BooleanSyncValue isActiveSyncer = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
 
         return super.createContentSection(panel, syncManager).child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'x',
-                    i -> new ItemSlot().slot(
-                        new ModularSlot(hatch.inventoryHandler, i).slotGroup("capacitor_inventory")
-                            .filter(a -> {
-                                MTEHatchCapacitor.CapacitorComponent cap = componentBinds
-                                    .get(TTUtility.getUniqueIdentifier(a));
-                                return cap != null;
-                            })
-                            // accessibility does not refresh while gui is open!
-                            // this should probably be fixed
-                            .accessibility(
-                                !hatch.getBaseMetaTileEntity()
-                                    .isActive(),
-                                !hatch.getBaseMetaTileEntity()
-                                    .isActive()))
-                        .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(4)
+                .slotGroupKey("capacitor_inventory")
+                .filter(
+                    itemStack -> !isActiveSyncer.getBoolValue()
+                        && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack)))
+                .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                .modularSlotSupplier(LimitedExtractionSlot.supplier(() -> !isActiveSyncer.getBoolValue()))
                 .build()
-                .coverChildren()
                 .center());
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+
+        syncManager.syncValue("isActive", new BooleanSyncValue(baseMetaTileEntity::isActive));
     }
 }

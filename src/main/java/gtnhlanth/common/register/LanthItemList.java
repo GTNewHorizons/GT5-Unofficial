@@ -1,5 +1,8 @@
 package gtnhlanth.common.register;
 
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_OUTPUT;
+
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -95,12 +98,12 @@ public final class LanthItemList {
 
         BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
         LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
-            10503,
+            HATCH_BEAMLINE_INPUT.ID,
             "LuV Beamline Input Hatch",
             "LuV Beamline Input Hatch",
             6).getStackForm(1L);
         LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
-            10504,
+            HATCH_BEAMLINE_OUTPUT.ID,
             "LuV Beamline Output Hatch",
             "LuV Beamline Output Hatch",
             6).getStackForm(1L);

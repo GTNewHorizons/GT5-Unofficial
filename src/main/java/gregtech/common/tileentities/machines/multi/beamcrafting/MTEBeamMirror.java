@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_MIRROR;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
@@ -30,7 +29,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
@@ -78,20 +76,8 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(1)
-                .adder(MTEBeamMirror::addBeamLineInputHatch)
-                .build()) // beamline input hatch
-        .addElement(
-            'D',
-            buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamMirror::addBeamLineOutputHatch)
-                .build()) // beamline output hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamMirror.class, ShieldedAccCasingTextureID, 1))
+        .addElement('D', buildBeamlineOutputHatch(MTEBeamMirror.class, ShieldedAccCasingTextureID, 2))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
