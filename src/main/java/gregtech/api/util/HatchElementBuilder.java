@@ -84,17 +84,21 @@ public class HatchElementBuilder<T> {
                 e -> e.getDescriptionLangKeys()
                     .stream())
             .collect(Collectors.toList());
+        List<? extends Class<? extends IMetaTileEntity>> mteClasses = Arrays.stream(elements)
+            .map(IHatchElement::mteClasses)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
         return adder(
             Arrays.stream(elements)
                 .map(
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .get()).hatchClasses(
-                    Arrays.stream(elements)
-                        .map(IHatchElement::mteClasses)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList()))
+                .get()).hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(mteClasses))
+                    .shouldSkip(
+                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
+                            t) -> t != null && mteClasses.stream()
+                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> Arrays.stream(elements)
                             .map(IHatchElement::getDisplayName)
