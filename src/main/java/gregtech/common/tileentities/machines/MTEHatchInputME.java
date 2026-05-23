@@ -46,9 +46,11 @@ import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStackWatcher;
 import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEStack;
@@ -115,6 +117,31 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
      */
     protected boolean cachedActivity = false;
 
+    /** Whether the AE2 fluid storage has changed since the last {@link #refreshFluidList()} call. */
+    private boolean fluidListDirty = true;
+    /** The monitor we are currently subscribed to, or null if not subscribed. */
+    private @Nullable IMEMonitor<IAEFluidStack> subscribedMonitor = null;
+    /** Listener that marks {@link #fluidListDirty} whenever the AE2 network fluid storage changes. */
+    private final IMEMonitorHandlerReceiver<IAEFluidStack> networkChangeListener =
+        new IMEMonitorHandlerReceiver<IAEFluidStack>() {
+
+            @Override
+            public boolean isValid(Object verificationToken) {
+                return verificationToken == MTEHatchInputME.this;
+            }
+
+            @Override
+            public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change,
+                BaseActionSource actionSource) {
+                fluidListDirty = true;
+            }
+
+            @Override
+            public void onListUpdate() {
+                fluidListDirty = true;
+            }
+        };
+
     protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
@@ -147,7 +174,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
-                refreshFluidList();
+                if (fluidListDirty) {
+                    refreshFluidList();
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -264,6 +293,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
         Arrays.fill(slots, index, slots.length, null);
         if (configChanged) configureWatchers();
+        fluidListDirty = false;
     }
 
     public FluidStack[] getStoredFluids() {
@@ -547,6 +577,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());
         }
+        if (autoPullFluidList) updateMonitorSubscription();
     }
 
     @MENetworkEventSubscribe
@@ -554,6 +585,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().setActive(isActive());
         }
+        if (autoPullFluidList) updateMonitorSubscription();
     }
 
     @Override
@@ -598,7 +630,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             clearSlotConfigs();
 
             if (autoPullFluidList) {
+                updateMonitorSubscription();
                 refreshFluidList();
+            } else {
+                unsubscribeFromMonitor();
             }
         }
     }
@@ -1060,6 +1095,35 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     private IStackWatcher watcher;
+
+    private void updateMonitorSubscription() {
+        if (autoPullFluidList && getProxy().isActive()) {
+            subscribeToMonitor();
+        } else {
+            unsubscribeFromMonitor();
+        }
+    }
+
+    private void subscribeToMonitor() {
+        try {
+            IMEMonitor<IAEFluidStack> monitor = getProxy().getStorage()
+                .getFluidInventory();
+            if (subscribedMonitor != monitor) {
+                unsubscribeFromMonitor();
+                monitor.addListener(networkChangeListener, this);
+                subscribedMonitor = monitor;
+                fluidListDirty = true;
+            }
+        } catch (GridAccessException ignored) {}
+    }
+
+    private void unsubscribeFromMonitor() {
+        if (subscribedMonitor != null) {
+            subscribedMonitor.removeListener(networkChangeListener);
+            subscribedMonitor = null;
+            fluidListDirty = true;
+        }
+    }
 
     private void configureWatchers() {
         if (this.watcher != null) {
