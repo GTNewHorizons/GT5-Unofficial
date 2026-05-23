@@ -135,8 +135,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler contribPanel = syncManager
             .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(parent));
-        return new ButtonWidget<>().size(18)
-            .marginTop(4)
+        return new ButtonWidget<>().marginTop(4)
             .overlay(IDrawable.EMPTY)
             .tooltip(
                 t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
@@ -524,10 +523,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .row(" I I ")
                             .key(
                                 'I',
-                                i -> new ButtonWidget<>().size(18)
-                                    .overlay(
-                                        new ItemDrawable(
-                                            Objects.requireNonNull(FoundryModule.values()[i].getItemIcon())))
+                                i -> new ButtonWidget<>().overlay(
+                                    new ItemDrawable(Objects.requireNonNull(FoundryModule.values()[i].getItemIcon())))
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);

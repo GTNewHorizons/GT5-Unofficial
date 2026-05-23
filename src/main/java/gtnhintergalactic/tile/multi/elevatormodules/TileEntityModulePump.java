@@ -149,19 +149,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             planetTypeParameters[i] = new IntegerParameter(
                 1,
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.0",
-                "planetType" + i,
+                "planetType",
                 () -> 0,
                 () -> 100);
             gasTypeParameters[i] = new IntegerParameter(
                 1,
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.1",
-                "gasType" + i,
+                "gasType",
                 () -> 0,
                 () -> 100);
             parallelParameters[i] = new IntegerParameter(
                 getParallels(),
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.2",
-                "parallel" + i,
+                "parallel",
                 () -> 0,
                 this::getParallels);
 
