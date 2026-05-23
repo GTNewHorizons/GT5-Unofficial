@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
+import java.nio.DoubleBuffer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,8 +26,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.nio.DoubleBuffer;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.BufferUtils;
@@ -469,7 +469,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         double clipD = BLADE_HEIGHT / 2.0 - BLADE_CLIP_BOTTOM;
         CLIP_PLANE_BUFFER.clear();
-        CLIP_PLANE_BUFFER.put(0.0).put(1.0).put(0.0).put(clipD);
+        CLIP_PLANE_BUFFER.put(0.0)
+            .put(1.0)
+            .put(0.0)
+            .put(clipD);
         CLIP_PLANE_BUFFER.flip();
         GL11.glClipPlane(GL11.GL_CLIP_PLANE0, CLIP_PLANE_BUFFER);
         GL11.glEnable(GL11.GL_CLIP_PLANE0);
@@ -503,9 +506,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
         addBladeVertex(tessellator, context, -halfWidth, -halfHeight, 0.0D, 1.0D);
-        addBladeVertex(tessellator, context, -halfWidth,  halfHeight, 0.0D, 0.0D);
-        addBladeVertex(tessellator, context,  halfWidth,  halfHeight, 1.0D, 0.0D);
-        addBladeVertex(tessellator, context,  halfWidth, -halfHeight, 1.0D, 1.0D);
+        addBladeVertex(tessellator, context, -halfWidth, halfHeight, 0.0D, 0.0D);
+        addBladeVertex(tessellator, context, halfWidth, halfHeight, 1.0D, 0.0D);
+        addBladeVertex(tessellator, context, halfWidth, -halfHeight, 1.0D, 1.0D);
         tessellator.draw();
     }
 
