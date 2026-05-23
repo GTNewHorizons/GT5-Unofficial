@@ -3,7 +3,9 @@ package gregtech.common.tileentities.machines.basic;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
@@ -54,6 +57,8 @@ public class MTEModificationTable extends MetaTileEntity {
     private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * AUGMENT_CATEGORY_COUNT;
 
     private int installedAugments = 0;
+    private ItemStack pendingArmorDrop = null;
+    private EntityPlayer pendingDropPlayer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -212,6 +217,18 @@ public class MTEModificationTable extends MetaTileEntity {
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build();
+
+        syncManager.addCloseListener(player -> {
+            if (!NetworkUtils.isClient(player)) {
+                ItemStack armor = armorSlotHandler.getStackInSlot(0);
+                if (armor != null) {
+                    armorSlotHandler.setStackInSlot(0, null);
+                    mInventory[0] = null;
+                    pendingArmorDrop = armor;
+                    pendingDropPlayer = player;
+                }
+            }
+        });
 
         syncManager.registerSlotGroup("armor", 1, 130);
         syncManager.registerSlotGroup("augment" + AugmentCategory.Protection.name(), LARGEST_FRAME, 140);
@@ -463,6 +480,26 @@ public class MTEModificationTable extends MetaTileEntity {
         @Override
         public boolean canTakeStack(EntityPlayer playerIn) {
             return canTake.getAsBoolean();
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if (!aBaseMetaTileEntity.isClientSide() && pendingArmorDrop != null) {
+            aBaseMetaTileEntity.getWorld()
+                .spawnEntityInWorld(
+                    new EntityItem(
+                        aBaseMetaTileEntity.getWorld(),
+                        aBaseMetaTileEntity.getXCoord() + 0.5,
+                        aBaseMetaTileEntity.getYCoord() + 1,
+                        aBaseMetaTileEntity.getZCoord() + 0.5,
+                        pendingArmorDrop));
+            if (pendingDropPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.sendContainerToPlayer(playerMP.inventoryContainer);
+            }
+            pendingArmorDrop = null;
+            pendingDropPlayer = null;
         }
     }
 }
