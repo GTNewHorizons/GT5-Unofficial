@@ -15,6 +15,7 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.OutputBusType;
@@ -23,6 +24,7 @@ import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -30,7 +32,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchVoidBus extends MTEHatchOutputBus {
+public class MTEHatchVoidBus extends MTEHatchOutputBus implements IAddGregtechLogo {
 
     private static final String DATA_STICK_DATA_TYPE = "voidBusFilter";
     private static final String LOCKED_ITEMS_NBT_KEY = "lockedItems";
@@ -149,6 +151,14 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
                 lockedItems[slot] = ItemStack.loadItemStackFromNBT(itemTag);
             }
         }
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(
+            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(18, 18)
+                .setPos(152 + getOffsetX(), 60 + getOffsetY()));
     }
 
     @Override

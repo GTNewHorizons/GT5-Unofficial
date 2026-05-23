@@ -15,13 +15,12 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTERegulator;
 
 public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
@@ -51,16 +50,15 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow corner = super.createLeftCornerFlow(panel, syncManager);
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow corner = super.createBottomLeftCornerFlow(panel, syncManager);
 
-        corner.child(createChargerSlot().marginLeft(18));
+        corner.child(createChargerSlot().marginLeft(SLOT_SIZE));
 
         // arrow
         corner.child(
             GTGuiTextures.PICTURE_ARROW_22_RED.asWidget()
                 .size(86, 22)
-                .marginBottom(1)
                 .marginLeft(1));
 
         return corner;
@@ -73,27 +71,22 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
             .toArray(IntSyncValue[]::new);
 
         Flow mainRow = Flow.row()
-            .marginLeft(4)
             .coverChildren();
 
         // main inventory grid
         mainRow.child(
-            new Grid().coverChildren()
-                .gridOfWidthHeight(
-                    3,
-                    3,
-                    ($x, $y, index) -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv"))));
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
+                .build());
 
         // filter inventory grid
         mainRow.child(
-            new Grid().coverChildren()
-                .gridOfWidthHeight(
-                    3,
-                    3,
-                    ($x, $y, index) -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 9))
-                        .disableThemeBackground(true)
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
+                .indexOffset(9)
+                .hasSlotGroup(false)
+                .itemSlotSupplier(
+                    () -> new PhantomItemSlot().disableThemeBackground(true)
                         .disableHoverThemeBackground(true))
+                .build()
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
 
         // target slot selector grid
@@ -130,13 +123,16 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        syncManager.registerSlotGroup("item_inv", 3);
-
         IntStream.range(0, 9)
             .forEach(
                 i -> syncManager.syncValue(
                     "targetSlot",
                     i,
                     new IntSyncValue(() -> machine.getTargetSlot(i), val -> machine.setTargetSlots(val, i))));
+    }
+
+    @Override
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 4;
     }
 }

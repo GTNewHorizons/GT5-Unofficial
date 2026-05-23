@@ -140,7 +140,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         })
                     .build(panel, syncManager)
                     .widthRel(1)
-                    .height(getContentRowHeight()));
+                    .coverChildrenHeight());
             // spotless:on
         }
     }

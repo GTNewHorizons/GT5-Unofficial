@@ -1,27 +1,21 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
-import java.util.Arrays;
-
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.StringUtils;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.synchandler.NBTSerializableSyncHandler;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
@@ -34,13 +28,12 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        StringSyncValue channelSyncer = new StringSyncValue(hatch::getChannel, hatch::setChannel);
-        BooleanSyncValue isPrivateSyncer = new BooleanSyncValue(hatch::isPrivate, hatch::setPrivate);
+        StringSyncValue channelSyncer = new StringSyncValue(machine::getChannel, machine::setChannel);
+        BooleanSyncValue isPrivateSyncer = new BooleanSyncValue(machine::isPrivate, machine::setPrivate);
 
         Flow mainColumn = Flow.column()
             .coverChildren()
-            .childPadding(3)
-            .paddingLeft(3);
+            .childPadding(3);
 
         Flow inputRow = Flow.row()
             .coverChildren()
@@ -55,7 +48,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
         inputRow.child(
             new TextFieldWidget().value(channelSyncer)
                 .width(60)
-                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_bus.change_freq_warn"))));
+                .addTooltipLine(GTUtility.translate("ggfab.tooltip.linked_input_bus.change_freq_warn")));
 
         // private label
         inputRow.child(
@@ -65,42 +58,32 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
         // private toggle button
         inputRow.child(
             new ToggleButton().value(isPrivateSyncer)
-                .size(18)
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                .tooltip(t -> t.addLine(translateToLocal("ggfab.tooltip.linked_input_bus.private"))));
+                .addTooltipLine(GTUtility.translate("ggfab.tooltip.linked_input_bus.private")));
 
         mainColumn.child(inputRow);
 
         // inventory slots
-        mainColumn.child(createSlots(syncManager, channelSyncer));
+        mainColumn.child(
+            new ItemSlotGridBuilder(machine.getHandler(), syncManager).size(SLOT_PER_ROW, SLOT_ROW)
+                .filter(
+                    $ -> !channelSyncer.getStringValue()
+                        .isEmpty())
+                .build());
 
         return super.createContentSection(panel, syncManager).child(mainColumn);
-    }
-
-    private SlotGroupWidget createSlots(PanelSyncManager syncManager, StringSyncValue channelSyncer) {
-        syncManager.registerSlotGroup("item_inv", SLOT_ROW);
-
-        String[] matrix = new String[SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                's',
-                index -> new ItemSlot().slot(
-                    new ModularSlot(hatch.getHandler(), index).slotGroup("item_inv")
-                        .filter(
-                            s -> !channelSyncer.getStringValue()
-                                .isEmpty())))
-            .build();
     }
 
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        syncManager.syncValue("handler", new NBTSerializableSyncHandler<>(hatch::getHandler));
+        syncManager.syncValue("handler", new NBTSerializableSyncHandler<>(machine::getHandler));
+    }
+
+    @Override
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 3;
     }
 }
