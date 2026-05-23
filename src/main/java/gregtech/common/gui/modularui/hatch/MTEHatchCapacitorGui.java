@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.util.CapacitorSlot;
+import gregtech.common.gui.modularui.util.LimitedExtractionSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.util.TTUtility;
@@ -23,16 +23,16 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isActive = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
+        BooleanSyncValue isActiveSyncer = syncManager.findSyncHandler("isActive", BooleanSyncValue.class);
 
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(4)
                 .slotGroupKey("capacitor_inventory")
                 .filter(
-                    itemStack -> !isActive.getBoolValue()
+                    itemStack -> !isActiveSyncer.getBoolValue()
                         && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack)))
                 .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
-                .modularSlotSupplier(CapacitorSlot.supplier(isActive))
+                .modularSlotSupplier(LimitedExtractionSlot.supplier(() -> !isActiveSyncer.getBoolValue()))
                 .build()
                 .center());
     }
