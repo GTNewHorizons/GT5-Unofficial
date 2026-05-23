@@ -78,12 +78,12 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
             if (bool) baseMetaTileEntity.enableWorking();
             else baseMetaTileEntity.disableWorking();
-        });
+        }).allowC2S();
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
             baseMetaTileEntity::isMuffled,
-            baseMetaTileEntity::setMuffler);
+            baseMetaTileEntity::setMuffler).allowC2S();
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
     }
 

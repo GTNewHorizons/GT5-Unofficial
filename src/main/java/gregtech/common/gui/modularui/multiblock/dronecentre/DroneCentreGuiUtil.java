@@ -219,9 +219,11 @@ public class DroneCentreGuiUtil {
         IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,
-            multiblock::setSearchOriginalName);
-        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
-        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate);
+            multiblock::setSearchOriginalName).allowC2S();
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode)
+            .allowC2S();
+        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate)
+            .allowC2S();
 
         GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
             () -> multiblock.group,

@@ -222,10 +222,11 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose);
+        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose)
+            .allowC2S();
         BooleanSyncValue showHighlightBoxSyncer = new BooleanSyncValue(
             machine::getShowHighlightBox,
-            machine::setShowHighlightBox);
+            machine::setShowHighlightBox).allowC2S();
 
         Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
 

@@ -35,7 +35,7 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
     }
 
     private Flow createTransferModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue isExportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport);
+        BooleanSyncValue isExportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport).allowC2S();
         syncManager.syncValue("isExport", isExportSyncer);
         return Flow.row()
             .child(createExportButton(isExportSyncer))

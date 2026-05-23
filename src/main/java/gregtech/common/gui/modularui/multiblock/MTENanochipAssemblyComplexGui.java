@@ -556,7 +556,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("talk", 0, new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b));
+        syncManager
+            .syncValue("talk", 0, new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b).allowC2S());
         syncManager
             .syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.PRIMITIVE)));
         syncManager

@@ -82,7 +82,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             "Tier",
             new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
 
-        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val)
+            .allowC2S();
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
             calculatorData.setModule(0, val);

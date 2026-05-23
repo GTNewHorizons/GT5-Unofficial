@@ -265,12 +265,15 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         LongSyncValue avgEuOut = new LongSyncValue(
             () -> multiblock.getEnergyOutputValues()
                 .avgLong());
-        BooleanSyncValue wirelessMode = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode);
-        BooleanSyncValue warningSync = new BooleanSyncValue(multiblock::getShowWarning, multiblock::setShowWarning);
-        BooleanSyncValue canRebalance = new BooleanSyncValue(multiblock::getCanRebalance, multiblock::setCanRebalance);
+        BooleanSyncValue wirelessMode = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode)
+            .allowC2S();
+        BooleanSyncValue warningSync = new BooleanSyncValue(multiblock::getShowWarning, multiblock::setShowWarning)
+            .allowC2S();
+        BooleanSyncValue canRebalance = new BooleanSyncValue(multiblock::getCanRebalance, multiblock::setCanRebalance)
+            .allowC2S();
         BooleanSyncValue hasRebalanced = new BooleanSyncValue(
             multiblock::getHasRebalanced,
-            multiblock::setHasRebalanced);
+            multiblock::setHasRebalanced).allowC2S();
         BigIntSyncValue wirelessValueSync = new BigIntSyncValue(
             multiblock::getWirelessValue,
             multiblock::setWirelessValue);

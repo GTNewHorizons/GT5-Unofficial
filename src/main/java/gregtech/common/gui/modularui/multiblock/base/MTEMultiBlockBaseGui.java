@@ -819,7 +819,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 if (multiblock.supportsInputSeparation()) {
                     inputSeparationSyncer.setValue(bool);
                 }
-            });
+            }).allowC2S();
     }
 
     private IDrawable getForcedInputSeparationOverlay() {
@@ -930,7 +930,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (multiblock.supportsBatchMode()) {
                 batchModeSyncer.setValue(bool);
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable getBatchModeOverlay(BooleanSyncValue batchModeSyncer) {
@@ -978,7 +978,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 if (multiblock.supportsSingleRecipeLocking()) {
                     recipeLockSyncer.setValue(bool);
                 }
-            });
+            }).allowC2S();
     }
 
     private IDrawable getForcedRecipeLockOverlay() {
@@ -1056,7 +1056,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private IWidget makePowerfailEventsToggleRow() {
         BooleanSyncValue powerfailSyncer = new BooleanSyncValue(
             multiblock::makesPowerfailEvents,
-            multiblock::setPowerfailEventCreationStatus);
+            multiblock::setPowerfailEventCreationStatus).allowC2S();
         return Flow.row()
             .fullWidth()
             .height(18)
@@ -1079,7 +1079,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::setMaxParallelForPanel);
         BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
             multiblock::isAlwaysMaxParallel,
-            multiblock::setAlwaysMaxParallel);
+            multiblock::setAlwaysMaxParallel).allowC2S();
         syncManager.syncValue("maxParallel", maxParallelSyncer);
         syncManager.syncValue("alwaysMaxParallel", alwaysMaxParallelSyncer);
 
@@ -1299,7 +1299,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             new LongSyncValue(multiblock::getLastWorkingTick, multiblock::setLastWorkingTick));
         BooleanSyncValue wasShutDown = new BooleanSyncValue(
             baseMetaTileEntity::wasShutdown,
-            baseMetaTileEntity::setShutdownStatus);
+            baseMetaTileEntity::setShutdownStatus).allowC2S();
         syncManager.syncValue("wasShutdown", wasShutDown);
 
         LongSyncValue shutdownDurationSyncer = new LongSyncValue(
@@ -1385,7 +1385,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     shutdownReasonSyncer.setValue(ShutDownReasonRegistry.NONE);
                 } else multiblock.stopMachine(ShutDownReasonRegistry.NONE);
             }
-        });
+        }).allowC2S();
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
         IntSyncValue structureUpdateSyncer = new IntSyncValue(
@@ -1393,18 +1393,18 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::setStructureUpdateTime);
         BooleanSyncValue structureUpdateButtonSyncer = new BooleanSyncValue(
             () -> structureUpdateSyncer.getValue() > -20,
-            val -> { if (val) structureUpdateSyncer.setValue(1); });
+            val -> { if (val) structureUpdateSyncer.setValue(1); }).allowC2S();
         syncManager.syncValue("structureUpdate", structureUpdateSyncer);
         syncManager.syncValue("structureUpdateButton", structureUpdateButtonSyncer);
 
         BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(
             multiblock::isRecipeLockingEnabled,
-            multiblock::setRecipeLocking);
+            multiblock::setRecipeLocking).allowC2S();
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
         BooleanSyncValue batchModeSyncer = new BooleanSyncValue(
             multiblock::isBatchModeEnabled,
-            multiblock::setBatchMode);
+            multiblock::setBatchMode).allowC2S();
         syncManager.syncValue("batchMode", batchModeSyncer);
 
         IntSyncValue machineModeSyncer = new IntSyncValue(multiblock::getMachineMode, multiblock::setMachineMode);
@@ -1412,7 +1412,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
             multiblock::isInputSeparationEnabled,
-            multiblock::setInputSeparation);
+            multiblock::setInputSeparation).allowC2S();
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
 
         IntSyncValue voidExcessSyncer = new IntSyncValue(
@@ -1436,7 +1436,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         syncManager.syncValue("maintCount", maintSyncer);
 
-        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(multiblock::isMuffled, multiblock::setMuffled);
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(multiblock::isMuffled, multiblock::setMuffled).allowC2S();
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
     }
 

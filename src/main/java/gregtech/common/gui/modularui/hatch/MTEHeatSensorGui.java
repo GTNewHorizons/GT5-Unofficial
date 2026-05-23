@@ -23,7 +23,9 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
-            .child(CommonWidgets.createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted)))
+            .child(
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .child(createThresholdFieldRow())
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)

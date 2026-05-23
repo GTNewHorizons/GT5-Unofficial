@@ -130,8 +130,8 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler, ?> syncer, GTUtility.ItemId[] ores) {
         return Flow.column()
             .child(
-                new ToggleButton()
-                    .value(new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool))
+                new ToggleButton().value(
+                    new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool).allowC2S())
                     .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.button.vm.whitelist")))
                     .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.button.vm.blacklist")))
                     .overlay(

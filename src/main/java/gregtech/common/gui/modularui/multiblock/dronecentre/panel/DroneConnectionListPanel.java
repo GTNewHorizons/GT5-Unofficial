@@ -316,7 +316,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .stream()
                     .filter(c -> c.uuid.equals(conn.uuid))
                     .findFirst()
-                    .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))));
+                    .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))).allowC2S());
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
             .disableThemeBackground(true)
@@ -345,7 +345,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .ifPresent(con -> {
                         con.setSelect(bool);
                         droneConnectionListSyncHandler.notifyUpdate();
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).size(16)
             .value(selectSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
@@ -380,7 +380,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                                     .setShutDownReason(ShutDownReasonRegistry.NONE);
                             } else mte.stopMachine(ShutDownReasonRegistry.NONE);
                         }
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).value(powerSwitchSyncer)
             .size(16)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)

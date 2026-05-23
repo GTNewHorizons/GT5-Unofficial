@@ -28,7 +28,9 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
             .child(createThresholdTypeButtonRow())
-            .child(CommonWidgets.createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted)))
+            .child(
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .child(
                 IKey.lang("GT5U.gui.text.toxic_residue_sensor")
                     .asWidget())

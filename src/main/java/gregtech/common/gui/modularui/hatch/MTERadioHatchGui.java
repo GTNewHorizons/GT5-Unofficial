@@ -65,7 +65,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         LongSyncValue decayTimeSyncHandler = new LongSyncValue(machine::getDecayTime, machine::setDecayTime);
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
             baseMetaTileEntity::isMuffled,
-            baseMetaTileEntity::setMuffler);
+            baseMetaTileEntity::setMuffler).allowC2S();
 
         syncManager.syncValue("decayTime", decayTimeSyncHandler);
         syncManager.syncValue("timer", timeSyncHandler);

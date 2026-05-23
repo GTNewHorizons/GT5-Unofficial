@@ -35,7 +35,7 @@ public class CoverControlsWorkGui extends CoverBaseGui<CoverControlsWork> {
             cover::getRedstoneCondition,
             cover::setRedstoneCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
+        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode).allowC2S();
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

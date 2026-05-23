@@ -82,7 +82,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> BATTERY_CHARGING = new ForgeOfGodsSyncValue<>(
         "fog.sync.battery_charging",
-        data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
+        data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> INTERNAL_BATTERY = new ForgeOfGodsSyncValue<>(
         "fog.sync.internal_battery",
@@ -98,7 +98,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> SHARD_EJECTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.shard_ejection",
-        data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
+        data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new ForgeOfGodsSyncValue<>(
         "fog.sync.available_graviton_shards",
@@ -125,7 +125,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> SECRET_UPGRADE = new ForgeOfGodsSyncValue<>(
         "fog.sync.secret_upgrade",
-        data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade));
+        data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade).allowC2S());
 
     // ---------- //
     // Milestones //
@@ -239,7 +239,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(
         "fog.sync.smelting_mode",
-        module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
+        module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode).allowC2S());
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.debug_plasma_parallel",
@@ -251,7 +251,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEPlasmaModule> DEBUG_MULTI_STEP = new ModuleSyncValue<>(
         "fog.sync.debug_multi_step",
-        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma));
+        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_CAPABLE = new ModuleSyncValue<>(
         "fog.sync.magmatter_capable",
@@ -259,7 +259,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_MODE = new ModuleSyncValue<>(
         "fog.sync.magmatter_mode",
-        module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode));
+        module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode).allowC2S());
 
     public static final ModuleSyncValue<LongSyncValue, MTEExoticModule> EXOTIC_INPUTS_TICKER = new ModuleSyncValue<>(
         "fog.sync.exotic_inputs_ticker",
@@ -275,7 +275,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_ALWAYS_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_always_max_parallel",
-        module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel));
+        module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel).allowC2S());
 
     public static final ModuleSyncValue<LongSyncValue, MTEBaseModule> MODULE_PROCESSING_VOLTAGE = new ModuleSyncValue<>(
         "fog.sync.module_processing_voltage",

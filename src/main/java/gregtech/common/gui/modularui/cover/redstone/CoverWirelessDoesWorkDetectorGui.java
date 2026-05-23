@@ -37,7 +37,7 @@ public class CoverWirelessDoesWorkDetectorGui
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?>) syncManager
             .getSyncHandlerFromMapKey("activityMode:0");
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()
             .child(

@@ -77,7 +77,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private Flow createChannelModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel);
+        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel)
+            .allowC2S();
         syncManager.syncValue("privateChannel", privateChannelSyncer);
 
         return Flow.row()
@@ -100,7 +101,7 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private Flow createTransferModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport);
+        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport).allowC2S();
         syncManager.syncValue("export", exportSyncer);
 
         return Flow.row()

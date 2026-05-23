@@ -36,8 +36,8 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> provider = machine.getProvider();
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority);
-        BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode);
-        BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode);
+        BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
+        BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()

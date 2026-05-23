@@ -31,7 +31,7 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
         final ICoverable tile = data.getCoverable();
         IItemHandler inventoryHandler;

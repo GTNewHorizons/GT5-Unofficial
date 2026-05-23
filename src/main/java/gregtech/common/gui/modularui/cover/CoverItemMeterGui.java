@@ -51,7 +51,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private IWidget createRedstoneModeButton() {
-        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
+        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
 
         return new ToggleButton().value(isInvertedSyncer)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)

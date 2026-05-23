@@ -1308,7 +1308,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         BooleanSyncValue isWhiteListedSyncer = new BooleanSyncValue(
             () -> multiblock.isWhitelisted,
-            val -> multiblock.isWhitelisted = val);
+            val -> multiblock.isWhitelisted = val).allowC2S();
         syncManager.syncValue("isWhiteListed", isWhiteListedSyncer);
 
         IntSyncValue droneTierSyncer = new IntSyncValue(
