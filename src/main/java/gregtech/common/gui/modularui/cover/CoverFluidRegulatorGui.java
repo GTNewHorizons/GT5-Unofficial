@@ -90,14 +90,14 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     private Flow makeSpeedConfigRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed))
+                makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed).allowC2S())
                     .setNumbers(cover::getMinSpeed, cover::getMaxSpeed)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.L")
                     .asWidget())
             .child(
-                makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi))
+                makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi).allowC2S())
                     .setValidator(this::validateTickRateText))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Ticks")

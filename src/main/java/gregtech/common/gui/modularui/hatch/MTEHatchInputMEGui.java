@@ -195,10 +195,10 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
             .allowC2S();
         IntSyncValue minAutoPullAmountSyncer = new IntSyncValue(
             machine::getMinAutoPullAmount,
-            machine::setMinAutoPullAmount);
+            machine::setMinAutoPullAmount).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
             machine::getAutoPullRefreshTime,
-            machine::setAutoPullRefreshTime);
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
             .coverChildren()

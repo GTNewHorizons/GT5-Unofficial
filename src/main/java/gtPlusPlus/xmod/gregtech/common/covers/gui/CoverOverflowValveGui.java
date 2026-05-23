@@ -35,7 +35,7 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     private Flow makeOverflowPointRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getOverflowPoint, cover::setOverflowPoint))
+                makeNumberField().value(new IntSyncValue(cover::getOverflowPoint, cover::setOverflowPoint).allowC2S())
                     .setNumbers(cover::getMinOverflowPoint, cover::getMaxOverflowPoint))
             .child(
                 IKey.lang("GTPP.gui.text.cover_overflow_valve_liter")
@@ -45,7 +45,7 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     private Flow makeVoidingRateRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getVoidingRate, cover::setVoidingRate))
+                makeNumberField().value(new IntSyncValue(cover::getVoidingRate, cover::setVoidingRate).allowC2S())
                     .setNumbers(cover::getMinOverflowPoint, cover::getMaxOverflowPoint)
                     .setFocusOnGuiOpen(true))
             .child(

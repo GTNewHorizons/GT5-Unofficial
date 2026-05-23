@@ -39,7 +39,7 @@ public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 1200000000)
                     .size(77, 12)
-                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold))
+                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gui.NeutronSensor.4")

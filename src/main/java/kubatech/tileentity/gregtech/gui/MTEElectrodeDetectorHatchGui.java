@@ -39,7 +39,7 @@ public class MTEElectrodeDetectorHatchGui extends MTEHatchBaseGui<MTEElectrodeDe
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 10000)
                     .size(77, 12)
-                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold))
+                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("kubatech.gui.text.electrode_detector")

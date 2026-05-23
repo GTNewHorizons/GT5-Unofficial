@@ -1088,7 +1088,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         // This PanelSyncManager has no panel and the widget tries to get a syncHandler from "powerPanel"
         IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
             multiblock::getPowerPanelMaxParallel,
-            multiblock::setPowerPanelMaxParallel);
+            multiblock::setPowerPanelMaxParallel).allowC2S();
         return Flow.row()
             .fullWidth()
             .marginBottom(4)
@@ -1390,7 +1390,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         IntSyncValue structureUpdateSyncer = new IntSyncValue(
             multiblock::getStructureUpdateTime,
-            multiblock::setStructureUpdateTime);
+            multiblock::setStructureUpdateTime).allowC2S();
         BooleanSyncValue structureUpdateButtonSyncer = new BooleanSyncValue(
             () -> structureUpdateSyncer.getValue() > -20,
             val -> { if (val) structureUpdateSyncer.setValue(1); }).allowC2S();
@@ -1407,7 +1407,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::setBatchMode).allowC2S();
         syncManager.syncValue("batchMode", batchModeSyncer);
 
-        IntSyncValue machineModeSyncer = new IntSyncValue(multiblock::getMachineMode, multiblock::setMachineMode);
+        IntSyncValue machineModeSyncer = new IntSyncValue(multiblock::getMachineMode, multiblock::setMachineMode)
+            .allowC2S();
         syncManager.syncValue("machineMode", machineModeSyncer);
 
         BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
@@ -1420,7 +1421,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .ordinal(),
             val -> {
                 if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val));
-            });
+            }).allowC2S();
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {

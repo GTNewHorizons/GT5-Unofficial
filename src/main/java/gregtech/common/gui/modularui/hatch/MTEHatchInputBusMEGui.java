@@ -214,10 +214,10 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .allowC2S();
         IntSyncValue minAutoPullStackSizeSyncer = new IntSyncValue(
             machine::getMinAutoPullStackSize,
-            machine::setMinAutoPullStackSize);
+            machine::setMinAutoPullStackSize).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
             machine::getAutoPullRefreshTime,
-            machine::setAutoPullRefreshTime);
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
             .coverChildren()

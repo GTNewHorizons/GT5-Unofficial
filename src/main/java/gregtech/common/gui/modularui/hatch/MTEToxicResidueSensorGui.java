@@ -35,7 +35,7 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
                 IKey.lang("GT5U.gui.text.toxic_residue_sensor")
                     .asWidget())
             .child(
-                new TextFieldWidget().value(new IntSyncValue(machine::getThreshold, machine::setThreshold))
+                new TextFieldWidget().value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setNumbers(
                         0,
                         machine.getThresholdType()

@@ -79,7 +79,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new IntSyncValue(getter, setter));
+            textField.value(new IntSyncValue(getter, setter).allowC2S());
             textField.setFormatAsInteger(true);
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);

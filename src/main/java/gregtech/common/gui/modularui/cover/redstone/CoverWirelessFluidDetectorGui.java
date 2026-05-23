@@ -21,7 +21,7 @@ public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmit
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
         BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()

@@ -216,7 +216,8 @@ public class DroneCentreGuiUtil {
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
             multiblock::setSearchBarText).allowC2S();
-        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup)
+            .allowC2S();
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,
             multiblock::setSearchOriginalName).allowC2S();
@@ -242,7 +243,8 @@ public class DroneCentreGuiUtil {
         syncManager.syncValue("editMode", editModeSyncHandler);
         syncManager.syncValue("update", updateSyncHandler);
 
-        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
+            .allowC2S();
         ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
             () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L))
                 .allowC2S();

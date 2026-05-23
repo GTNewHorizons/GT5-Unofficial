@@ -139,8 +139,8 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ByteSyncValue voltageTierSyncer = new ByteSyncValue(machine::getVoltageTier, machine::setVoltageTier)
             .allowC2S();
-        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage);
-        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
+        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
         BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers)
             .allowC2S();
         syncManager.syncValue("isUsingTiers", isUsingTiersSyncer);

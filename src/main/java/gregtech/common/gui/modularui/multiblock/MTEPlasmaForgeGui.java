@@ -38,7 +38,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
         syncManager.syncValue("convergence", convergenceSyncer);
         IntSyncValue catalystTypeSyncer = new IntSyncValue(
             multiblock::getCatalystTypeForRecipesWithoutCatalyst,
-            multiblock::setCatalystTypeForRecipesWithoutCatalyst);
+            multiblock::setCatalystTypeForRecipesWithoutCatalyst).allowC2S();
         syncManager.syncValue("catalystType", catalystTypeSyncer);
     }
 

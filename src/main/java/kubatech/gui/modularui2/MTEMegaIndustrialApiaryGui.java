@@ -100,10 +100,10 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
         syncManager.syncValue(
             "apiaryPrimaryMode",
-            new IntSyncValue(() -> multiblock.mPrimaryMode, val -> multiblock.mPrimaryMode = val));
+            new IntSyncValue(() -> multiblock.mPrimaryMode, val -> multiblock.mPrimaryMode = val).allowC2S());
         syncManager.syncValue(
             "apiarySecondaryMode",
-            new IntSyncValue(() -> multiblock.mSecondaryMode, val -> multiblock.mSecondaryMode = val));
+            new IntSyncValue(() -> multiblock.mSecondaryMode, val -> multiblock.mSecondaryMode = val).allowC2S());
 
         IntSyncValue maxSlotsSyncer = new IntSyncValue(() -> multiblock.mMaxSlots, val -> maxSlots = val);
         syncManager.syncValue("apiaryMaxSlots", maxSlotsSyncer);
@@ -111,7 +111,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         IntSyncValue usedSlotsSyncer = new IntSyncValue(() -> multiblock.mStorage.size(), val -> usedSlots = val);
         syncManager.syncValue("apiaryUsedSlots", usedSlotsSyncer);
 
-        beeClickSyncer = new IntSyncValue(() -> 0, this::handleBeeClick);
+        beeClickSyncer = new IntSyncValue(() -> 0, this::handleBeeClick).allowC2S();
         syncManager.syncValue("beeClick", beeClickSyncer);
 
         GenericListSyncHandler<GTHelper.StackableItemSlot> beeListSyncer = createBeeListSyncer();

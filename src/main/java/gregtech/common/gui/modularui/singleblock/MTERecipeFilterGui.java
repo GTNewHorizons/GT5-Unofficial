@@ -149,6 +149,8 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
 
         syncManager
             .syncValue("recipeMap", new StringSyncValue(machine::getRecipeMapName, machine::setRecipeMap).allowC2S());
-        syncManager.syncValue("rotationIndex", new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex));
+        syncManager.syncValue(
+            "rotationIndex",
+            new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex).allowC2S());
     }
 }

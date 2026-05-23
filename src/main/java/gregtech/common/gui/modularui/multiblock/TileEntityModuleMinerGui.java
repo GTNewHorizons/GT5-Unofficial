@@ -1091,10 +1091,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         ModularPanel parent) {
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
         AtomicInteger distance = new AtomicInteger(0);
-        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set);
+        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set).allowC2S();
 
         AtomicInteger moduleTier = new AtomicInteger(0);
-        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set);
+        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set).allowC2S();
 
         IntSyncValue droneSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         droneSelectorButtonCalculator = new SlotLikeButtonWidget(
@@ -1317,7 +1317,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTier", droneTierSyncer);
 
         AtomicInteger droneFilter = new AtomicInteger(-1);
-        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set);
+        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set).allowC2S();
         syncManager.syncValue("droneFilter", droneFilterSyncer);
 
         AtomicInteger targetDroneTier = new AtomicInteger(-1);
@@ -1325,7 +1325,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTarget", targetDroneTierSyncer);
 
         AtomicInteger selectedAsteroid = new AtomicInteger(0);
-        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set);
+        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set).allowC2S();
         syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
 
         AtomicReference<String> oreFilter = new AtomicReference<>("");
@@ -1333,11 +1333,11 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("oreFilter", oreFilterSyncer);
 
         AtomicInteger distanceFilter = new AtomicInteger(0);
-        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set);
+        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set).allowC2S();
         syncManager.syncValue("distanceFilter", distanceFilterSyncer);
 
         AtomicInteger moduleTierFilter = new AtomicInteger(0);
-        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
+        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set).allowC2S();
         syncManager.syncValue("moduleTierFilter", moduleTierFilterSyncer);
 
     }

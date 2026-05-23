@@ -66,7 +66,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private Flow createItemThresholdRow() {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -82,7 +82,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
 
     private Flow createSlotRow(PanelSyncManager syncManager) {
         IItemHandler inventoryHandler = getInventoryHandler();
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot).allowC2S();
         GenericSyncValue<ItemStack, ?> displayItemSyncer = GenericSyncValue
             .forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null);
 

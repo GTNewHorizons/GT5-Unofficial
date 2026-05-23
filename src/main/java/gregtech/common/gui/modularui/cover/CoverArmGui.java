@@ -72,7 +72,8 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
                 // number field with 'Any' goes here
                 makeNumberField(50)
                     .value(
-                        new IntSyncValue(() -> cover.getInternalSlotId() - 1, val -> cover.setInternalSlotId(val + 1)))
+                        new IntSyncValue(() -> cover.getInternalSlotId() - 1, val -> cover.setInternalSlotId(val + 1))
+                            .allowC2S())
                     .setDefaultNumber(-1)
                     .setNumbers(
                         -1,
@@ -91,7 +92,8 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
                 // number field with 'Any' goes here
                 makeNumberField(50)
                     .value(
-                        new IntSyncValue(() -> cover.getExternalSlotId() - 1, val -> cover.setExternalSlotId(val + 1)))
+                        new IntSyncValue(() -> cover.getExternalSlotId() - 1, val -> cover.setExternalSlotId(val + 1))
+                            .allowC2S())
                     .setDefaultNumber(-1)
                     .setValidator(this::validateExternalSlotId)
                     .marginRight(2))

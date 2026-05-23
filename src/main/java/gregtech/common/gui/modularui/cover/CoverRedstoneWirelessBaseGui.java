@@ -26,7 +26,7 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     private Flow createFrequencyRow() {
-        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::setFrequency);
+        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
 
         return Flow.row()
             .marginBottom(4)

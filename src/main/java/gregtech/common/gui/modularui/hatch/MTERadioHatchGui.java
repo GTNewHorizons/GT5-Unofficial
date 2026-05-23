@@ -60,7 +60,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
             c -> machine.setColorForGuiAtIndex((short) c, 2));
         IntSyncValue coverageSyncer = new IntSyncValue(
             machine::getCoverage,
-            value -> machine.setCoverage((short) value));
+            value -> machine.setCoverage((short) value)).allowC2S();
         LongSyncValue timeSyncHandler = new LongSyncValue(machine::getTimer, machine::setTimer);
         LongSyncValue decayTimeSyncHandler = new LongSyncValue(machine::getDecayTime, machine::setDecayTime);
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
