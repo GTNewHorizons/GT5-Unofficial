@@ -2525,7 +2525,6 @@ GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.gui.text.toxic_residue_sensor=Toxic Residue threshold
-GT5U.gui.text.exo_foundry_too_many_hatch=Too many hatches
 GT5U.gui.text.structure_error.too_few_hatch=%1$s: needs at least %2$s, found %3$s
 GT5U.gui.text.structure_error.not_match_hatch=Needs exactly %s %s
 GT5U.gui.text.structure_error.too_many_hatch=%1$s: needs at most %2$s, found %3$s
