@@ -135,6 +135,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
                             .hatchId(MetaTileEntityIDs.AntimatterHatch.ID)
+                            .exclusive()
+                            .continueIfSuccess()
                             .casingIndex(x.textureIndex(1))
                             .hint(3)
                             .build()))
@@ -142,7 +144,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
+                            .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)

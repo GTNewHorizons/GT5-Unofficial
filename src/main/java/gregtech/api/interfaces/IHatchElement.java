@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.function.ToLongFunction;
 
 import net.minecraft.block.Block;
@@ -85,6 +86,20 @@ public interface IHatchElement<T> {
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .hint(aHintNumber)
+            .continueIfSuccess()
+            .exclusive()
+            .build();
+    }
+
+    default <T2 extends T> IStructureElement<T2> newAnyWithDescription(int aCasingIndex, int aHintNumber,
+        Supplier<String> description) {
+        if (aCasingIndex < 0 || aHintNumber < 0) throw new IllegalArgumentException();
+        return GTStructureUtility.<T2>buildHatchAdder()
+            .anyOf(this)
+            .casingIndex(aCasingIndex)
+            .hint(aHintNumber)
+            .description(description)
+            .cacheHint(() -> StatCollector.translateToLocal(description.get()))
             .continueIfSuccess()
             .exclusive()
             .build();

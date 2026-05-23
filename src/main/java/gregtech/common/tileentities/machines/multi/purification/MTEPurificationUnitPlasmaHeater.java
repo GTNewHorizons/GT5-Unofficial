@@ -171,12 +171,12 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         .addElement(
             'K',
             InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                .newAny(CASING_INDEX_TOWER, 2))
+                .newAnyWithDescription(CASING_INDEX_TOWER, 2, () -> "GT5U.tooltip.structure.input_hatch_coolant"))
         // Plasma input hatch
         .addElement(
             'P',
             InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                .newAny(CASING_INDEX_HEATER, 3))
+                .newAnyWithDescription(CASING_INDEX_HEATER, 3, () -> "GT5U.tooltip.structure.input_hatch_plasma"))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {

@@ -357,6 +357,16 @@ public class HatchElementBuilder<T> {
     }
     // endregion
 
+    public HatchElementBuilder<T> description(Supplier<String> description) {
+        mDescriptionNames = () -> Collections.singletonList(description.get());
+        return this;
+    }
+
+    public HatchElementBuilder<T> descriptions(Supplier<List<String>> descriptions) {
+        mDescriptionNames = descriptions;
+        return this;
+    }
+
     /**
      * Sets the description from one or more ItemStacks. Uses each stack's unlocalized name as the lang key. This
      * overrides any description auto-detected by {@link #hatchClass}, {@link #hatchClasses}, {@link #anyOf}, or
