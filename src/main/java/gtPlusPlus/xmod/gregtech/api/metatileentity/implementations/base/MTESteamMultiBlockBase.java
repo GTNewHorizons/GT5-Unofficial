@@ -491,33 +491,33 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     protected final void checkHasSteamInput(List<StructureError> errors) {
         if (mSteamInputFluids.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_steam_input"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_steam_input"));
         }
     }
 
     @Override
     protected final void checkHasAnyInput(List<StructureError> errors) {
         if (mSteamInputs.isEmpty() && mInputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.no_input"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.no_input"));
         }
     }
 
     @Override
     protected final void checkHasAnyOutput(List<StructureError> errors) {
         if (mSteamOutputs.isEmpty() && mOutputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.no_output"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.no_output"));
         }
     }
 
     protected final void checkHasSteamInputBus(List<StructureError> errors) {
         if (mSteamInputs.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_steam_input_bus"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_steam_input_bus"));
         }
     }
 
     protected final void checkHasSteamOutputBus(List<StructureError> errors) {
         if (mSteamOutputs.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_steam_output_bus"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_steam_output_bus"));
         }
     }
 

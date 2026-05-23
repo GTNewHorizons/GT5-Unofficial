@@ -538,7 +538,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 return i;
             }
         }
-        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
+        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
         return 16;
     }
 

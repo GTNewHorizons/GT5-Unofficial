@@ -347,7 +347,7 @@ batch_mode.cfgi.0=Batch Size
 gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 gg.gui.text.large_essentia_smeltery.requires=Requires %s total §bAqua§f and §cIgnis §fcentivis to function.
-gg.gui.text.missing_neutron_accelerator=Missing Neutron Accelerator
+
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=Large Naquadah Reactor

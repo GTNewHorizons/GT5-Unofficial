@@ -550,7 +550,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
         if (ElevatorUtil.getModuleSlotsUnlocked(motorTier) < mProjectModuleHatches.size()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.spelv_module_exceed"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.spelv_module_exceed"));
         }
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(errors.isEmpty());

@@ -258,12 +258,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 checkHasAnyEnergy(errors);
                 checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
-                    errors.add(StructureErrors.of("GT5U.gui.text.al_too_many_data_access_hatch"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
                 return i;
             }
         }
-        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
+        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
         return 16;
     }
 

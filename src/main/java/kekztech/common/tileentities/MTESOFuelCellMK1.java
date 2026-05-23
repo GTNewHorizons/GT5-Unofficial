@@ -203,8 +203,9 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         checkHasMaintenanceHatch(errors);
         if (mInputHatches.size() < 2) {
             errors.add(
-                StructureErrors
-                    .of("GT5U.gui.text.sofc_missing_input_hatches", TranslatableText.literal(mInputHatches.size())));
+                StructureErrors.of(
+                    "GT5U.gui.text.structure_error.sofc_missing_input_hatches",
+                    TranslatableText.literal(mInputHatches.size())));
         }
         checkHasOutputHatch(errors);
     }
