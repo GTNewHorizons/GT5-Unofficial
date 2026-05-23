@@ -58,7 +58,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                             + EnumChatFormatting.BLUE
                             + numberFormat.format(containedSync.getLongValue())
                             + EnumChatFormatting.WHITE
-                            + " L")))
+                            + " L")).setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -67,7 +67,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                             + EnumChatFormatting.RED
                             + standardFormat.format(passiveConsSync.getLongValue())
                             + EnumChatFormatting.WHITE
-                            + " EU/t")))
+                            + " EU/t")).setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -76,7 +76,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                             + EnumChatFormatting.LIGHT_PURPLE
                             + standardFormat.format(activeConsSync.getLongValue())
                             + EnumChatFormatting.WHITE
-                            + " EU/t")))
+                            + " EU/t")).setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -85,7 +85,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                             + EnumChatFormatting.AQUA
                             + numberFormat.format(amChangeSync.getLongValue())
                             + EnumChatFormatting.WHITE
-                            + " L")));
+                            + " L")).setEnabledIf(w -> multiblock.mMachine));
 
     }
 }

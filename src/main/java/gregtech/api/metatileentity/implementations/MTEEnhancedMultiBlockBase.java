@@ -610,12 +610,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    protected final boolean checkCasingMin(List<StructureError> errors, int current, int required) {
+    protected final void checkCasingMin(List<StructureError> errors, int current, int required) {
         if (current < required) {
             errors.add(StructureErrors.missingCasings(current, required));
-            return true;
         }
-        return false;
     }
 
     protected final void checkHasInputBus(List<StructureError> errors) {
