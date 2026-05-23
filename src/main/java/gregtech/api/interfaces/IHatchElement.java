@@ -1,9 +1,11 @@
 package gregtech.api.interfaces;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.function.ToLongFunction;
 
 import net.minecraft.block.Block;
@@ -30,6 +32,14 @@ public interface IHatchElement<T> {
     default String getDisplayName() {
         GTLanguageManager.addStringLocalization("hatch_type_" + name().toLowerCase(), name());
         return StatCollector.translateToLocal("hatch_type_" + name().toLowerCase());
+    }
+
+    default String getDescriptionLangKey() {
+        return "hatch_type_" + name().toLowerCase();
+    }
+
+    default List<String> getDescriptionLangKeys() {
+        return Collections.singletonList(getDescriptionLangKey());
     }
 
     long count(T t);
@@ -76,6 +86,20 @@ public interface IHatchElement<T> {
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .hint(aHintNumber)
+            .continueIfSuccess()
+            .exclusive()
+            .build();
+    }
+
+    default <T2 extends T> IStructureElement<T2> newAnyWithDescription(int aCasingIndex, int aHintNumber,
+        Supplier<String> description) {
+        if (aCasingIndex < 0 || aHintNumber < 0) throw new IllegalArgumentException();
+        return GTStructureUtility.<T2>buildHatchAdder()
+            .anyOf(this)
+            .casingIndex(aCasingIndex)
+            .hint(aHintNumber)
+            .description(description)
+            .cacheHint(() -> StatCollector.translateToLocal(description.get()))
             .continueIfSuccess()
             .exclusive()
             .build();
@@ -172,6 +196,13 @@ class HatchElementEither<T> implements IHatchElement<T> {
     }
 
     @Override
+    public List<String> getDescriptionLangKeys() {
+        List<String> result = new ArrayList<>(first.getDescriptionLangKeys());
+        result.addAll(second.getDescriptionLangKeys());
+        return result;
+    }
+
+    @Override
     public long count(T t) {
         return first.count(t) + second.count(t);
     }
@@ -213,6 +244,11 @@ class HatchElement<T> implements IHatchElement<T> {
     @Override
     public String getDisplayName() {
         return mDisplayName == null ? mBacking.getDisplayName() : mDisplayName;
+    }
+
+    @Override
+    public List<String> getDescriptionLangKeys() {
+        return mBacking.getDescriptionLangKeys();
     }
 
     @Override

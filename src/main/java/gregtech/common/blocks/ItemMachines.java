@@ -267,8 +267,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
-                tTileEntity.getMetaTileEntity()
-                    .initDefaultModes(aStack.getTagCompound());
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
@@ -280,6 +278,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         connectable.connect(side);
                     }
                 }
+                tTileEntity.getMetaTileEntity()
+                    .initDefaultModes(aStack.getTagCompound());
             }
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
             return false;

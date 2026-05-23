@@ -560,8 +560,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
 
-            doDisplayThings();
-
             if (!aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.isAllowedToWork()
                     && (aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0
