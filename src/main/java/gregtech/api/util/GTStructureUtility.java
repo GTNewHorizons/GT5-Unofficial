@@ -49,7 +49,6 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
-import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
@@ -149,26 +148,6 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
         return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
-    }
-
-    /**
-     * Like {@link StructureUtility#ofBlocksTiered(ITierConverter, List, Object, BiConsumer, Function)} but
-     * auto-generates descriptions from the tier block list, so casing names appear in structure diagnostics.
-     */
-    public static <T, TIER> IStructureElement<T> ofBlocksTieredDescribed(ITierConverter<TIER> tierExtractor,
-        @Nullable List<Pair<Block, Integer>> allKnownTiers, @Nullable TIER notSet, BiConsumer<T, TIER> setter,
-        Function<T, TIER> getter) {
-        List<String> descriptions = null;
-        if (allKnownTiers != null) {
-            descriptions = new ArrayList<>();
-            for (var tier : allKnownTiers) {
-                Item item = Item.getItemFromBlock(tier.getLeft());
-                if (item != null) {
-                    descriptions.add(new ItemStack(item, 1, tier.getRight()).getUnlocalizedName() + ".name");
-                }
-            }
-        }
-        return StructureUtility.ofBlocksTiered(tierExtractor, allKnownTiers, notSet, setter, getter, descriptions);
     }
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
