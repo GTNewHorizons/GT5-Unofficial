@@ -917,7 +917,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot) {
+            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
             return SettingsPanel.builder()
                 .setDividerPosition(75)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
