@@ -111,25 +111,24 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     /** The monitor we are currently subscribed to, or null if not subscribed. */
     private @Nullable IMEMonitor<IAEItemStack> subscribedMonitor = null;
     /** Listener that marks {@link #itemListDirty} whenever the AE2 network item storage changes. */
-    private final IMEMonitorHandlerReceiver<IAEItemStack> networkChangeListener =
-        new IMEMonitorHandlerReceiver<IAEItemStack>() {
+    private final IMEMonitorHandlerReceiver<IAEItemStack> networkChangeListener = new IMEMonitorHandlerReceiver<IAEItemStack>() {
 
-            @Override
-            public boolean isValid(Object verificationToken) {
-                return verificationToken == MTEHatchInputBusME.this;
-            }
+        @Override
+        public boolean isValid(Object verificationToken) {
+            return verificationToken == MTEHatchInputBusME.this;
+        }
 
-            @Override
-            public void postChange(IBaseMonitor<IAEItemStack> monitor, Iterable<IAEItemStack> change,
-                BaseActionSource actionSource) {
-                itemListDirty = true;
-            }
+        @Override
+        public void postChange(IBaseMonitor<IAEItemStack> monitor, Iterable<IAEItemStack> change,
+            BaseActionSource actionSource) {
+            itemListDirty = true;
+        }
 
-            @Override
-            public void onListUpdate() {
-                itemListDirty = true;
-            }
-        };
+        @Override
+        public void onListUpdate() {
+            itemListDirty = true;
+        }
+    };
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, null);
