@@ -491,9 +491,8 @@ public class HatchElementBuilder<T> {
     public final IStructureElementChain<T> buildAndChain(IStructureElement<T>... elements) {
         // just in case
         mExclusive = false;
-        List<IStructureElement<T>> l = new ArrayList<>();
+        List<IStructureElement<T>> l = new ArrayList<>(Arrays.asList(elements));
         l.add(build());
-        l.addAll(Arrays.asList(elements));
         IStructureElement<T>[] array = l.toArray(new IStructureElement[0]);
         return () -> array;
     }
