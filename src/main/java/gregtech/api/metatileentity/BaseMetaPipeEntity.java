@@ -201,7 +201,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (mTickTimer % 10 == 0) {
                     sendClientData();
                 }
-
                 if (mTickTimer > 10) {
                     handleConnectionsChangeServer();
                     handleUpdateDataChangeServer();
@@ -222,10 +221,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mWorkUpdate = mInventoryChanged = false;
     }
 
-    private void updateConnections() {
-        if (mTickTimer <= 12) {
-            return;
-        }
+    public void updateConnections() {
         if (mConnections == mMetaTileEntity.mConnections) {
             return;
         }

@@ -1,6 +1,5 @@
 package kubatech.tileentity.gregtech.hatch;
 
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
 import net.minecraft.item.ItemStack;
@@ -9,15 +8,13 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.MTEElectrodeHatchGui;
 
 public class MTEElectrodeHatch extends MTEHatchInputBus {
 
@@ -58,7 +55,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         hasBeenUpdated = true;
     }
 
@@ -72,12 +69,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
-                gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
+        return new MTEElectrodeHatchGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
