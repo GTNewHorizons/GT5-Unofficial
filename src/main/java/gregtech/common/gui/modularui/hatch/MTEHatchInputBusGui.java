@@ -51,8 +51,8 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
     protected int getBasePanelHeight() {
         // we subtract 3 from the dimension before adding this value as a 4x4 slot grid is the maximum that fits on the
         // default panel
-        int dimention = getDimension();
-        return super.getBasePanelHeight() + (dimention > 4 ? (dimention - 3) * SLOT_SIZE : 0);
+        int dimension = getDimension();
+        return super.getBasePanelHeight() + (dimension > 4 ? (dimension - 3) * SLOT_SIZE : 0);
     }
 
     @Override
