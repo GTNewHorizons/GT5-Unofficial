@@ -1,5 +1,6 @@
 package gregtech.common.modularui2.widget.builder;
 
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -40,7 +41,8 @@ public class ItemSlotGridBuilder {
     private Predicate<ItemStack> filter = $ -> true;
     @NotNull
     private Supplier<? extends ItemSlot> itemSlotSupplier = ItemSlot::new;
-    private Object[] overrideParameters;
+    @NotNull
+    private BiFunction<IItemHandler, Integer, ? extends ModularSlot> modularSlotSupplier = ModularSlot::new;
 
     /**
      * Constructs a new ItemSlotGridBuilder.
@@ -155,8 +157,34 @@ public class ItemSlotGridBuilder {
         return this;
     }
 
+    /**
+     * Sets the item slot supplier. Useful for modifying the item slot (setting the background
+     * or the tooltip for example), or replacing it with sublclass of {@link ItemSlot}.
+     *
+     * @param itemSlotSupplier An item slot supplier. Defaults to {@link ItemSlot#ItemSlot()}
+     * @return This builder instance for method chaining.
+     */
     public ItemSlotGridBuilder itemSlotSupplier(@NotNull Supplier<? extends ItemSlot> itemSlotSupplier) {
         this.itemSlotSupplier = itemSlotSupplier;
+        return this;
+    }
+
+    /**
+     * Sets the modular slot supplier. The result of this supplier will be used as a parameter in
+     * {@link ItemSlot#slot(ModularSlot)}
+     * <p>
+     * It is important pass the two parameters of this function to the constructor of
+     * the modular slot <b>without modification</b> such that it can act like a supplier.
+     * <p>
+     * Useful for replacing the modular slot with sublclass of {@link ModularSlot}.
+     *
+     * @param modularSlotSupplier A modular slot supplier. Defaults to
+     *                            {@link ModularSlot#ModularSlot(IItemHandler, int)}
+     * @return This builder instance for method chaining.
+     */
+    public ItemSlotGridBuilder modularSlotSupplier(
+        @NotNull BiFunction<IItemHandler, Integer, ? extends ModularSlot> modularSlotSupplier) {
+        this.modularSlotSupplier = modularSlotSupplier;
         return this;
     }
 
@@ -164,19 +192,17 @@ public class ItemSlotGridBuilder {
      * Finalizes the configuration and constructs the {@link Grid} of item slots.
      *
      * @return A fully populated and configured {@link Grid} widget.
-     * @throws RuntimeException If dynamically instantiating a custom overridden item slot via reflection fails.
      */
     public Grid build() {
+        if (hasSlotGroup) syncManager.registerSlotGroup(slotGroupKey, height);
+
         return new Grid().coverChildren()
             .gridOfWidthHeight(width, height, ($x, $y, index) -> {
-                ModularSlot modularSlot = new ModularSlot(itemHandler, index + indexOffset)
+                ModularSlot modularSlot = modularSlotSupplier.apply(itemHandler, index + indexOffset)
                     .accessibility(canPut, canTake)
                     .filter(filter);
 
-                if (hasSlotGroup) {
-                    syncManager.registerSlotGroup(slotGroupKey, height);
-                    modularSlot.slotGroup(slotGroupKey);
-                }
+                if (hasSlotGroup) modularSlot.slotGroup(slotGroupKey);
 
                 return itemSlotSupplier.get()
                     .slot(modularSlot);

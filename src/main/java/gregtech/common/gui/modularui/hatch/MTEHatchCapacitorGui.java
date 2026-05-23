@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
@@ -30,8 +31,8 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
                 .filter(
                     itemStack -> !isActive.getBoolValue()
                         && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack)))
-                .itemSlotSupplier(
-                    () -> new CapacitorSlot(isActive).backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                .modularSlotSupplier(CapacitorSlot.supplier(isActive))
                 .build()
                 .center());
     }

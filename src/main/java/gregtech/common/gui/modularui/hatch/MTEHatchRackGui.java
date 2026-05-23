@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
@@ -78,12 +79,11 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         // input slots
         parent.child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
-                .itemSlotSupplier(
-                    () -> new RackSlot(isActiveSyncer, heatSyncer)
-                        .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
+                .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
                 .filter(
                     itemStack -> machine.isValidItem(itemStack) && !isActiveSyncer.getBoolValue()
                         && heatSyncer.getIntValue() <= 0)
+                .modularSlotSupplier(RackSlot.supplier(isActiveSyncer, heatSyncer))
                 .build()
                 .center()
                 .minElementMargin(2));
