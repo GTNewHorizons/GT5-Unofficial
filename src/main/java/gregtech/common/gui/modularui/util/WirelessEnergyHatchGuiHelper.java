@@ -22,7 +22,7 @@ public final class WirelessEnergyHatchGuiHelper {
         // amperage text field
         mainColumn.child(
             new TextFieldWidget().value(amperageSyncer)
-                .setNumbers(1, maxAmperage)
+                .setNumbers(0, maxAmperage)
                 .setFormatAsInteger(true)
                 .setTextAlignment(Alignment.Center)
                 .setMaxLength((int) Math.ceil(Math.log10(maxAmperage)))
