@@ -15,11 +15,14 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 public record SingletonStructureError(StructureErrorId id, String langKey, Supplier<IWidget> widgetSupplier)
     implements StructureError {
 
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
     SingletonStructureError(StructureErrorId id, String langKey) {
         this(
             id,
             langKey,
             () -> IKey.lang(langKey)
+                .color(TEXT_COLOR)
                 .asWidget());
     }
 

@@ -396,7 +396,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineType() {
-        return "Distillery, Distillation Tower";
+        return "Distillery, DT";
     }
 
     @Override

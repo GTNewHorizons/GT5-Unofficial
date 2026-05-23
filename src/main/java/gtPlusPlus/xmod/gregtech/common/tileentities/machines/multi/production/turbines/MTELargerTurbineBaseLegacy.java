@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -91,7 +92,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                     lazy(
                         t -> buildHatchAdder(MTELargerTurbineBaseLegacy.class)
                             .adder(MTELargerTurbineBaseLegacy::addTurbineHatch)
-                            .hatchClass(MTEHatchTurbine.class)
+                            .hatchId(MetaTileEntityIDs.Hatch_Turbine_Rotor.ID)
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(1)
                             .build()))

@@ -170,25 +170,13 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         // Coolant input hatch
         .addElement(
             'K',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .hint(2)
-                    .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
-                    .casingIndex(CASING_INDEX_TOWER)
-                    .build()))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_TOWER, 2, () -> "GT5U.tooltip.structure.input_hatch_coolant"))
         // Plasma input hatch
         .addElement(
             'P',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .hint(3)
-                    .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
-                    .casingIndex(CASING_INDEX_HEATER)
-                    .build()))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_HEATER, 3, () -> "GT5U.tooltip.structure.input_hatch_plasma"))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
