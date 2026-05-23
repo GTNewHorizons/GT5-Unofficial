@@ -3476,8 +3476,8 @@ GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
 GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
 GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
 
-GT5U.armor.part.name.Nano=Armor Core (Energy)
-GT5U.armor.part.name.Quantum=Armor Core (Nano)
+GT5U.armor.part.name.Nano=Armor Core (Nano)
+GT5U.armor.part.name.Quantum=Armor Core (Quantum)
 GT5U.armor.part.name.Living=Armor Core (Living)
 GT5U.armor.part.name.Singularity=Armor Core (Singularity)
 
