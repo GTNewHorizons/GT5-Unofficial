@@ -69,12 +69,12 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -169,7 +169,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected ToggleButton createMuffleButton() {
-        return CommonWidgets.createMuffleButton("mufflerSyncer")
+        return CommonButtons.createMuffleButton("mufflerSyncer")
             .top(getMufflerPosFromTop())
             .right(-getMufflerPosFromRightOutwards());
     }
@@ -1258,7 +1258,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected ToggleButton createPowerSwitchButton() {
-        return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity);
+        return CommonButtons.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity);
     }
 
     protected boolean isPowerSwitchDisabled() {

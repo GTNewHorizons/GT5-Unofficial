@@ -90,7 +90,7 @@ public class ProductionPanel extends ModularPanel {
                             .height(18)
                             .childPadding(4)
                             .child(
-                                new UpdatableToggleButton(productionHandler).size(18)
+                                new UpdatableToggleButton(productionHandler)
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                                     .value(
@@ -319,7 +319,8 @@ public class ProductionPanel extends ModularPanel {
         machineStack.forEach((key, itemStack) -> {
             Flow cell = Flow.row()
                 .childPadding(4)
-                .align(Alignment.CenterLeft)
+                .leftRel(0)
+                .verticalCenter()
                 .coverChildren()
                 .paddingRight(2)
                 .child(

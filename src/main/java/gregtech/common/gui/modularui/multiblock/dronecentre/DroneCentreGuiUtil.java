@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -54,7 +53,7 @@ public class DroneCentreGuiUtil {
         DroneCentreGuiUtil.TIME_OPTIONS.put(-1, "All");
     }
 
-    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+    public static ButtonWidget<?> createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
         return new ButtonWidget<>().syncHandler(
             dynamicSyncManager.getOrCreateSyncHandler(
                 "teleportPlayer" + conn.uuid.toString(),

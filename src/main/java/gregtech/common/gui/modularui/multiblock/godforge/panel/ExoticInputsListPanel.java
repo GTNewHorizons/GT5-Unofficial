@@ -106,8 +106,7 @@ public class ExoticInputsListPanel {
 
         // Refresh button
         row.child(
-            new ButtonWidget<>().size(18)
-                .marginRight(1)
+            new ButtonWidget<>().marginRight(1)
                 .overlay(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .disableThemeBackground(true)
                 .disableHoverThemeBackground(true)
@@ -142,8 +141,7 @@ public class ExoticInputsListPanel {
 
         // All possible inputs panel button
         row.child(
-            new ButtonWidget<>().size(18)
-                .marginLeft(1)
+            new ButtonWidget<>().marginLeft(1)
                 .overlay(
                     GTGuiTextures.PICTURE_INFO.asIcon()
                         .size(16)
