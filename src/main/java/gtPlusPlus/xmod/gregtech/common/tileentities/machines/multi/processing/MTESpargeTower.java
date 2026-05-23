@@ -276,7 +276,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
         checkCasingMin(errors, mCasing, 45);
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);

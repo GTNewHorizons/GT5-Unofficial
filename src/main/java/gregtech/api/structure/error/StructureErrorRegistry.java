@@ -16,31 +16,35 @@ public class StructureErrorRegistry {
 
     public static final StructureError BLOCK_NOT_LOADED = registerSingleton(
         StructureErrorId.BLOCK_NOT_LOADED,
-        "GT5U.gui.not_loaded");
+        "GT5U.gui.text.structure_error.block_not_loaded");
     public static final StructureError ONE_ENERGY_HATCH_ON_MULTI_OR_LASER = registerSingleton(
         StructureErrorId.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER,
-        "GT5U.gui.text.one_energy_hatch_on_laser");
+        "GT5U.gui.text.structure_error.one_energy_hatch_on_laser");
     public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
         StructureErrorId.UNNEEDED_MUFFLER,
-        "GT5U.gui.text.unneeded_muffler");
+        "GT5U.gui.text.structure_error.unneeded_muffler");
     public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
         StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
-        "GT5U.gui.text.unknown_structure_error");
+        "GT5U.gui.text.structure_error.unknown");
 
     public static final StructureError NO_ENERGY_HATCH_NEEDED = StructureErrors
-        .of("GT5U.gui.text.energy_hatch_not_needed");
-    public static final StructureError TOO_SHORT_HEIGHT = StructureErrors.of("GT5U.gui.text.too_short_height");
-    public static final StructureError TOO_SHORT_LENGTH = StructureErrors.of("GT5U.gui.text.too_short_length");
-    public static final StructureError TOO_LONG = StructureErrors.of("GT5U.gui.text.too_long");
-    public static final StructureError TOO_TALL = StructureErrors.of("GT5U.gui.text.too_tall");
+        .of("GT5U.gui.text.structure_error.energy_hatch_not_needed");
+    public static final StructureError TOO_SHORT_HEIGHT = StructureErrors
+        .of("GT5U.gui.text.structure_error.too_short_height");
+    public static final StructureError TOO_SHORT_LENGTH = StructureErrors
+        .of("GT5U.gui.text.structure_error.too_short_length");
+    public static final StructureError TOO_LONG = StructureErrors.of("GT5U.gui.text.structure_error.too_long");
+    public static final StructureError TOO_TALL = StructureErrors.of("GT5U.gui.text.structure_error.too_tall");
     public static final StructureError ONE_UNCERTAINTY_HATCH = StructureErrors
-        .of("GT5U.gui.text.one_uncertainty_hatch");
-    public static final StructureError MISSING_DATA_HATCH = StructureErrors.of("GT5U.gui.text.missing_data_hatch");
+        .of("GT5U.gui.text.structure_error.one_uncertainty_hatch");
+    public static final StructureError MISSING_DATA_HATCH = StructureErrors
+        .of("GT5U.gui.text.structure_error.missing_data_hatch");
     public static final StructureError COIL_LEVEL_NOT_ENOUGH = StructureErrors
-        .of("GT5U.gui.text.coil_level_not_enough");
+        .of("GT5U.gui.text.structure_error.coil_level_not_enough");
     public static final StructureError ENERGY_TIER_EXCEED_GLASS = StructureErrors
-        .of("GT5U.gui.text.energy_hatch_exceed_glass");
-    public static final StructureError UNKNOWN_TIER = StructureErrors.of("GT5U.gui.text.unknown_multiblock_tier");
+        .of("GT5U.gui.text.structure_error.energy_hatch_exceed_glass");
+    public static final StructureError UNKNOWN_TIER = StructureErrors
+        .of("GT5U.gui.text.structure_error.unknown_multiblock_tier");
 
     static {
         register(new PositionedStructureError(0, 0, 0));
