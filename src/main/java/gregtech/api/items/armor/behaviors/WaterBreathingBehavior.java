@@ -27,6 +27,8 @@ public class WaterBreathingBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorTick(@NotNull ArmorContext context) {
+        if (context.isRemote()) return;
+
         EntityPlayer player = context.getPlayer();
 
         if (player.isInWater()) {

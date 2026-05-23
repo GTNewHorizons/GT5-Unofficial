@@ -68,8 +68,18 @@ public class MTEModificationTable extends MetaTileEntity {
         if (aNBT.hasKey("armor")) {
             NBTBase armorNbt = aNBT.getTag("armor");
             if (armorNbt instanceof NBTTagCompound armorTag) {
-                armorSlotHandler.setStackInSlot(0, ItemStack.loadItemStackFromNBT(armorTag));
+                ItemStack loaded = ItemStack.loadItemStackFromNBT(armorTag);
+                armorSlotHandler.setStackInSlot(0, loaded);
+                mInventory[0] = loaded;
             }
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        ItemStack armorStack = getArmorStack();
+        if (armorStack != null) {
+            aNBT.setTag("armor", armorStack.writeToNBT(new NBTTagCompound()));
         }
     }
 
@@ -283,6 +293,7 @@ public class MTEModificationTable extends MetaTileEntity {
         ArmorState.save(context);
 
         armorSlotHandler.setStackInSlot(0, context.armorStack);
+        mInventory[0] = context.armorStack;
     }
 
     private ItemSlot buildAugmentSlot(AugmentCategory category, int column) {
@@ -368,6 +379,7 @@ public class MTEModificationTable extends MetaTileEntity {
 
     private void displayInstalledAugments() {
         installedAugments = 0;
+        mInventory[0] = armorSlotHandler.getStackInSlot(0);
         ArmorState state = getArmorState();
 
         for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {

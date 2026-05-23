@@ -29,7 +29,7 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        boolean hasEnergy = context.drainEnergy(75);
+        boolean hasEnergy = !player.capabilities.isFlying || context.drainEnergy(75);
 
         if (hasEnergy) {
             player.fallDistance = 0;

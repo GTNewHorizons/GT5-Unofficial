@@ -74,9 +74,7 @@ public class ArmorState {
                 tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.energycorelabel", core.getLocalizedName()));
                 tooltip.add("");
             }
-        }
 
-        if (showAllInfo) {
             boolean printedHeader = false;
 
             for (IArmorBehavior behavior : sortBehaviors(behaviors.values())) {
@@ -186,6 +184,10 @@ public class ArmorState {
             activate(context, name);
             return true;
         }
+    }
+
+    public boolean canDrainEnergy(double amount) {
+        return hasBehavior(BehaviorName.InfiniteEnergy) || charge >= amount;
     }
 
     public boolean drainEnergy(double amount) {

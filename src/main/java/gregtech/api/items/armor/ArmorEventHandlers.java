@@ -148,7 +148,8 @@ public class ArmorEventHandlers {
             ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
             if (chest != null && chest.getItem() instanceof MechArmorBase) {
                 ArmorContext chestContext = MechArmorBase.load(player, chest);
-                if (chestContext.hasBehavior(BehaviorName.CreativeFlight)) {
+                if (chestContext.hasBehavior(BehaviorName.CreativeFlight) && chestContext.getArmorState()
+                    .canDrainEnergy(1)) {
                     event.setCanceled(true);
                     return;
                 }

@@ -26,7 +26,8 @@ public class SwimSpeedBehavior implements IArmorBehavior {
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        return new SwimSpeedBehavior(swimSpeed + ((SwimSpeedBehavior) other).swimSpeed);
+        if (!(other instanceof SwimSpeedBehavior o)) return this;
+        return new SwimSpeedBehavior(swimSpeed + o.swimSpeed);
     }
 
     @Override

@@ -1065,17 +1065,17 @@ public class GTProxy implements IFuelHandler {
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
         if (!this.enableUndergroundDirtGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
-        ArmorEventHandlers ArmorEvents = new ArmorEventHandlers();
+        ArmorEventHandlers armorEvents = new ArmorEventHandlers();
 
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesWorldSavedData());
-        MinecraftForge.EVENT_BUS.register(ArmorEvents);
+        MinecraftForge.EVENT_BUS.register(armorEvents);
         FMLCommonHandler.instance()
             .bus()
-            .register(ArmorEvents);
+            .register(armorEvents);
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));

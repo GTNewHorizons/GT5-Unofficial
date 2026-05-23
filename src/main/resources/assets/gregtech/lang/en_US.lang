@@ -3546,6 +3546,7 @@ GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
+GT5U.armor.message.speed_set=New speed: %s%%
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s

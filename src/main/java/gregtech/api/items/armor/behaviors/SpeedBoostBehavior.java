@@ -50,7 +50,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         state.speedBoost = MathUtils.clamp(state.speedBoost, 0, 1);
 
-        GTUtility.sendChatToPlayer(context.getPlayer(), "New speed: " + Math.round(state.speedBoost * 100F) + "%");
+        GTUtility.sendChatToPlayer(
+            context.getPlayer(),
+            GTUtility.translate("GT5U.armor.message.speed_set", Math.round(state.speedBoost * 100F)));
     }
 
     @Override
@@ -65,7 +67,8 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        return new SpeedBoostBehavior(this.speedup + ((SpeedBoostBehavior) other).speedup);
+        if (!(other instanceof SpeedBoostBehavior o)) return this;
+        return new SpeedBoostBehavior(this.speedup + o.speedup);
     }
 
     @Override
