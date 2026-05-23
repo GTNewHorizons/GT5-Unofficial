@@ -120,7 +120,7 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                             .map(DroneConnection::getCustomName)
                             .orElse(""),
                         var -> machine.findConnection(conn.uuid)
-                            .ifPresent(c -> c.setCustomName(var))));
+                            .ifPresent(c -> c.setCustomName(var))).allowC2S());
                 column.child(
                     Flow.row()
                         .coverChildren()
