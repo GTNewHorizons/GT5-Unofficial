@@ -11,6 +11,8 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -55,7 +57,6 @@ import codechicken.nei.SearchField;
 import forestry.api.apiculture.EnumBeeType;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import kubatech.api.helpers.GTHelper;
@@ -65,6 +66,7 @@ import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary.BeeSimula
 public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndustrialApiary> {
 
     private static final int SLOTS_PER_ROW = 9;
+    private static final int BEE_ENTRIES_PER_PAGE = 36;
     private static final int WARNING_ANIM_FRAMES = 63;
     private static final int WARNING_ANIM_TICK_MS = 50;
     private static final UITexture OVERLAY_INVENTORY_FULL_WARNING_SHEET = UITexture
@@ -79,6 +81,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private IntSyncValue beeClickSyncer;
     private DynamicSyncHandler beeInventoryHandler;
     private PanelSyncManager mainSyncManager;
+    private int beePage = 0;
+    private int beePageCount = 1;
+    private IntSyncValue beePageSyncer;
+    private List<GTHelper.StackableItemSlot> cachedFullBeeList;
+    private long cachedBeeListTick = -1;
 
     public MTEMegaIndustrialApiaryGui(MTEMegaIndustrialApiary multiblock) {
         super(multiblock);
@@ -114,6 +121,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         beeClickSyncer = new IntSyncValue(() -> 0, this::handleBeeClick).allowC2S();
         syncManager.syncValue("beeClick", beeClickSyncer);
 
+        beePageSyncer = new IntSyncValue(() -> beePage, val -> beePage = val).allowC2S();
+        syncManager.syncValue("apiaryBeePage", beePageSyncer);
+
+        syncManager.syncValue("apiaryBeePageCount", new IntSyncValue(() -> beePageCount, val -> beePageCount = val));
+
         GenericListSyncHandler<GTHelper.StackableItemSlot> beeListSyncer = createBeeListSyncer();
         syncManager.syncValue("apiaryBeeList", beeListSyncer);
 
@@ -140,11 +152,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private GenericListSyncHandler<GTHelper.StackableItemSlot> createBeeListSyncer() {
         return new GenericListSyncHandler<>(
-            this::buildAggregatedBeeList,
+            this::buildPagedAggregatedBeeList,
             val -> beeSlots = val,
             GTHelper.StackableItemSlot::read,
             (buffer, slot) -> slot.write(buffer),
-            (a, b) -> a.count == b.count && a.stack.isItemEqual(b.stack) && a.stack.stackSize == b.stack.stackSize,
+            (a, b) -> a.count == b.count && ItemStack.areItemStacksEqual(a.stack, b.stack),
             null);
     }
 
@@ -181,37 +193,101 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         if (bee.isValid) {
             multiblock.mStorage.add(bee);
             multiblock.onStorageContentChanged(false);
+            invalidateBeeListCache();
         }
     }
 
     private void notifyBeeInventoryUpdate() {
-        int beeTypeCount = buildAggregatedBeeList().size();
+        invalidateBeeListCache();
+        List<GTHelper.StackableItemSlot> pagedList = buildPagedAggregatedBeeList();
         boolean hasEmptySlot = multiblock.mStorage.size() < multiblock.mMaxSlots;
-        int activeCount = beeTypeCount + (hasEmptySlot ? 1 : 0);
+        boolean isLastPage = (beePage >= beePageCount - 1);
+        int activeCount = pagedList.size() + (hasEmptySlot && isLastPage ? 1 : 0);
         beeInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
     }
 
-    private List<GTHelper.StackableItemSlot> buildAggregatedBeeList() {
-        HashMap<ItemId, Integer> countMap = new HashMap<>();
-        HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
-        HashMap<ItemId, ArrayList<Integer>> realSlotMap = new HashMap<>();
-        for (int i = 0; i < multiblock.mStorage.size(); i++) {
-            ItemStack stack = multiblock.mStorage.get(i).queenStack;
-            ItemId id = ItemId.createNoCopyWithStackSize(stack);
-            countMap.merge(id, 1, Integer::sum);
-            stackMap.putIfAbsent(id, stack);
-            realSlotMap.computeIfAbsent(id, unused -> new ArrayList<>())
-                .add(i);
+    private static ItemStack createDisplayStack(ItemStack original) {
+        ItemStack display = new ItemStack(original.getItem(), 1, original.getItemDamage());
+        if (original.getTagCompound() == null) return display;
+
+        NBTTagCompound originalTag = original.getTagCompound();
+        NBTTagCompound newTag = new NBTTagCompound();
+
+        NBTTagCompound genomeTag = originalTag.getCompoundTag("Genome");
+        if (!genomeTag.hasNoTags()) {
+            NBTTagList oldChromosomes = genomeTag.getTagList("Chromosomes", 10);
+            if (oldChromosomes.tagCount() > 1) {
+                NBTTagList newChromosomes = new NBTTagList();
+                // Chromosome 0 = species, chromosome 1 = speed
+                newChromosomes.appendTag(
+                    oldChromosomes.getCompoundTagAt(0)
+                        .copy());
+                newChromosomes.appendTag(
+                    oldChromosomes.getCompoundTagAt(1)
+                        .copy());
+                NBTTagCompound newGenome = new NBTTagCompound();
+                newGenome.setTag("Chromosomes", newChromosomes);
+                newTag.setTag("Genome", newGenome);
+            }
         }
-        List<GTHelper.StackableItemSlot> result = new ArrayList<>();
-        for (Map.Entry<ItemId, Integer> entry : countMap.entrySet()) {
-            result.add(
-                new GTHelper.StackableItemSlot(
-                    entry.getValue(),
-                    stackMap.get(entry.getKey()),
-                    realSlotMap.get(entry.getKey())));
+
+        if (originalTag.hasKey("IsAnalyzed")) {
+            newTag.setBoolean("IsAnalyzed", originalTag.getBoolean("IsAnalyzed"));
+        }
+
+        display.setTagCompound(newTag);
+        return display;
+    }
+
+    private List<GTHelper.StackableItemSlot> buildAggregatedBeeList() {
+        HashMap<String, Integer> countMap = new HashMap<>();
+        HashMap<String, ItemStack> stackMap = new HashMap<>();
+        HashMap<String, Integer> firstSlotMap = new HashMap<>();
+        for (int i = 0; i < multiblock.mStorage.size(); i++) {
+            BeeSimulator bee = multiblock.mStorage.get(i);
+            String key = bee.speciesKey;
+            countMap.merge(key, 1, Integer::sum);
+            stackMap.computeIfAbsent(key, unused -> createDisplayStack(bee.queenStack));
+            firstSlotMap.putIfAbsent(key, i);
+        }
+        List<GTHelper.StackableItemSlot> result = new ArrayList<>(countMap.size());
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            ArrayList<Integer> slots = new ArrayList<>(1);
+            slots.add(firstSlotMap.get(entry.getKey()));
+            result.add(new GTHelper.StackableItemSlot(entry.getValue(), stackMap.get(entry.getKey()), slots));
         }
         return result;
+    }
+
+    private List<GTHelper.StackableItemSlot> getFullAggregatedBeeList() {
+        if (mainSyncManager == null || mainSyncManager.isClient()) {
+            return cachedFullBeeList != null ? cachedFullBeeList : buildAggregatedBeeList();
+        }
+        World world = multiblock.getBaseMetaTileEntity()
+            .getWorld();
+        long currentTick = world != null ? world.getTotalWorldTime() : -1;
+        if (cachedFullBeeList == null || cachedBeeListTick != currentTick) {
+            cachedFullBeeList = buildAggregatedBeeList();
+            cachedBeeListTick = currentTick;
+        }
+        return cachedFullBeeList;
+    }
+
+    private List<GTHelper.StackableItemSlot> buildPagedAggregatedBeeList() {
+        List<GTHelper.StackableItemSlot> full = getFullAggregatedBeeList();
+        int totalPages = Math.max(1, (full.size() + BEE_ENTRIES_PER_PAGE - 1) / BEE_ENTRIES_PER_PAGE);
+        beePageCount = totalPages;
+        if (beePage >= totalPages) beePage = totalPages - 1;
+        if (beePage < 0) beePage = 0;
+        int start = beePage * BEE_ENTRIES_PER_PAGE;
+        int end = Math.min(start + BEE_ENTRIES_PER_PAGE, full.size());
+        if (start >= full.size()) return new ArrayList<>();
+        return new ArrayList<>(full.subList(start, end));
+    }
+
+    private void invalidateBeeListCache() {
+        cachedFullBeeList = null;
+        cachedBeeListTick = -1;
     }
 
     @Override
@@ -228,9 +304,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
                     .collapseDisabledChild()
                     .setEnabledIf(w -> !isInInventory))
             .child(
-                new ParentWidget<>().size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
+                Flow.column()
+                    .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
                     .setEnabledIf(w -> isInInventory)
-                    .child(createBeeInventoryWidget()))
+                    .child(createBeeInventoryWidget())
+                    .child(createPageNavigationRow()))
             .childIf(
                 multiblock.supportsTerminalRightCornerColumn(),
                 () -> createTerminalRightCornerColumn(panel, syncManager));
@@ -274,8 +352,41 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private IWidget createBeeInventoryWidget() {
         return new DynamicSyncedWidget<>().widthRel(1f)
-            .heightRel(1f)
+            .expanded()
             .syncHandler(beeInventoryHandler);
+    }
+
+    private IWidget createPageNavigationRow() {
+        return Flow.row()
+            .widthRel(1f)
+            .height(14)
+            .mainAxisAlignment(Alignment.MainAxis.CENTER)
+            .crossAxisAlignment(CrossAxis.CENTER)
+            .setEnabledIf(w -> beePageCount > 1)
+            .child(
+                new ButtonWidget<>().size(14, 14)
+                    .overlay(IKey.str("<"))
+                    .onMousePressed(btn -> {
+                        if (beePage > 0) {
+                            beePage--;
+                            beePageSyncer.setIntValue(beePage, true, true);
+                        }
+                        return true;
+                    }))
+            .child(
+                new TextWidget<>(IKey.dynamic(() -> (beePage + 1) + " / " + beePageCount)).alignment(Alignment.Center)
+                    .width(50)
+                    .height(14))
+            .child(
+                new ButtonWidget<>().size(14, 14)
+                    .overlay(IKey.str(">"))
+                    .onMousePressed(btn -> {
+                        if (beePage < beePageCount - 1) {
+                            beePage++;
+                            beePageSyncer.setIntValue(beePage, true, true);
+                        }
+                        return true;
+                    }));
     }
 
     private IWidget createBeeSlotGrid(int activeCount) {
@@ -386,20 +497,22 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         if (multiblock.mPrimaryMode == MTEMegaIndustrialApiary.MODE_PRIMARY_OPERATING
             && multiblock.mMaxProgresstime > 0) return;
 
-        int slotIdx = (encoded >>> 3) - 1;
+        int visibleSlotIdx = (encoded >>> 3) - 1;
         int mouseButton = (encoded >>> 1) & 0x3;
         boolean shift = (encoded & 1) != 0;
 
         EntityPlayer player = mainSyncManager.getPlayer();
         if (!(player instanceof EntityPlayerMP playerMP)) return;
 
-        List<GTHelper.StackableItemSlot> serverSlots = buildAggregatedBeeList();
+        List<GTHelper.StackableItemSlot> serverSlots = getFullAggregatedBeeList();
+        int slotIdx = beePage * BEE_ENTRIES_PER_PAGE + visibleSlotIdx;
 
         if (slotIdx >= 0 && slotIdx < serverSlots.size()) {
             handleOccupiedSlotClick(serverSlots.get(slotIdx), mouseButton, shift, player, playerMP);
         } else {
             handleEmptySlotClick(mouseButton, player, playerMP);
         }
+        invalidateBeeListCache();
     }
 
     private void handleOccupiedSlotClick(GTHelper.StackableItemSlot serverSlot, int mouseButton, boolean shift,

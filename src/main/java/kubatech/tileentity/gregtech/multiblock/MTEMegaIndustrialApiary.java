@@ -303,10 +303,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      * @see #flowerCheckingMap
      */
     public void onStorageContentChanged(boolean ignoreFlowerCheck) {
-        flowerRequiredMap = mStorage.stream()
-            .collect(
-                Collectors.toMap(BeeSimulator::getFlowerType, BeeSimulator::getFlowerTypeDescription, (k1, k2) -> k1));
-        flowerRequiredMap.remove("");
+        flowerRequiredMap = new HashMap<>();
+        for (int i = 0, size = mStorage.size(); i < size; i++) {
+            BeeSimulator bee = mStorage.get(i);
+            String type = bee.getFlowerType();
+            if (!type.isEmpty()) {
+                flowerRequiredMap.putIfAbsent(type, bee.getFlowerTypeDescription());
+            }
+        }
 
         if (!ignoreFlowerCheck) {
             checkRequiredFlowers();
@@ -575,7 +579,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = 100;
-                    this.mOutputItems = stacks.toArray(new ItemStack[0]);
+                    this.mOutputItems = mergeOutputStacks(stacks);
                 } else { // SWARMER mode
                     if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
                         || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
@@ -595,6 +599,25 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
 
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    private static ItemStack[] mergeOutputStacks(List<ItemStack> stacks) {
+        HashMap<ItemId, Integer> countMap = new HashMap<>();
+        HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
+        for (ItemStack stack : stacks) {
+            ItemId id = ItemId.createNoCopyWithStackSize(stack);
+            countMap.merge(id, stack.stackSize, Integer::sum);
+            stackMap.putIfAbsent(id, stack);
+        }
+        ItemStack[] result = new ItemStack[countMap.size()];
+        int i = 0;
+        for (Map.Entry<ItemId, Integer> entry : countMap.entrySet()) {
+            ItemStack merged = stackMap.get(entry.getKey())
+                .copy();
+            merged.stackSize = entry.getValue();
+            result[i++] = merged;
+        }
+        return result;
     }
 
     @Override
@@ -746,6 +769,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         float maxBeeCycles;
         String flowerType;
         String flowerTypeDescription;
+        public String speciesKey;
         private static IBeekeepingMode mode;
 
         public BeeSimulator(ItemStack queenStack, World world, float t) {
@@ -774,6 +798,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .getDescription();
             IAlleleBeeSpecies primary = genome.getPrimary();
             beeSpeed = genome.getSpeed();
+            speciesKey = primary.getUID() + "\0"
+                + genome.getSecondary()
+                    .getUID()
+                + "\0"
+                + beeSpeed;
             genome.getPrimary()
                 .getProductChances()
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
@@ -795,12 +824,18 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
             beeSpeed = tag.getFloat("beeSpeed");
             maxBeeCycles = tag.getFloat("maxBeeCycles");
+            IBee queen = beeRoot.getMember(this.queenStack);
+            IBeeGenome genome = queen.getGenome();
+            speciesKey = genome.getPrimary()
+                .getUID() + "\0"
+                + genome.getSecondary()
+                    .getUID()
+                + "\0"
+                + beeSpeed;
             if (tag.hasKey("flowerType") && tag.hasKey("flowerTypeDescription")) {
                 flowerType = tag.getString("flowerType");
                 flowerTypeDescription = tag.getString("flowerTypeDescription");
             } else {
-                IBee queen = beeRoot.getMember(this.queenStack);
-                IBeeGenome genome = queen.getGenome();
                 this.flowerType = genome.getFlowerProvider()
                     .getFlowerType();
                 this.flowerTypeDescription = genome.getFlowerProvider()
