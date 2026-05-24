@@ -370,7 +370,7 @@ public class MechArmorBase extends ItemArmor
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         ArmorContext context = load(entity, stack);
 
-        context.drainEnergy(damage * 100);
+        if (context.drainEnergy(damage * 100)) context.save();
     }
 
     @Override

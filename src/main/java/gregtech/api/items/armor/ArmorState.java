@@ -236,30 +236,23 @@ public class ArmorState {
 
         NBTTagCompound augmentTag = tag.getCompoundTag("augments");
 
-        if (augmentTag != null) {
-            for (AugmentCategory category : AugmentCategory.values()) {
-                NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category.ordinal()));
+        for (AugmentCategory category : AugmentCategory.values()) {
+            NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category.ordinal()));
 
-                if (categoryTag == null) continue;
+            for (Map.Entry<String, NBTBase> e : ((Map<String, NBTBase>) categoryTag.tagMap).entrySet()) {
+                int slot;
 
-                // noinspection unchecked
-                for (var e : ((Map<String, NBTTagString>) categoryTag.tagMap).entrySet()) {
-                    int slot;
-
-                    try {
-                        slot = Integer.parseInt(e.getKey());
-                    } catch (NumberFormatException ex) {
-                        continue;
-                    }
-
-                    Augments augment = MechArmorAugmentRegistries.augmentsMap.get(
-                        e.getValue()
-                            .func_150285_a_());
-
-                    if (augment == null) continue;
-
-                    state.augments.put(ObjectIntPair.of(category, slot), augment);
+                try {
+                    slot = Integer.parseInt(e.getKey());
+                } catch (NumberFormatException ex) {
+                    continue;
                 }
+
+                Augments augment = MechArmorAugmentRegistries.augmentsMap.get(categoryTag.getString(e.getKey()));
+
+                if (augment == null) continue;
+
+                state.augments.put(ObjectIntPair.of(category, slot), augment);
             }
         }
 

@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.basic;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -57,8 +56,6 @@ public class MTEModificationTable extends MetaTileEntity {
     private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * AUGMENT_CATEGORY_COUNT;
 
     private int installedAugments = 0;
-    private ItemStack pendingArmorDrop = null;
-    private EntityPlayer pendingDropPlayer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -224,8 +221,12 @@ public class MTEModificationTable extends MetaTileEntity {
                 if (armor != null) {
                     armorSlotHandler.setStackInSlot(0, null);
                     mInventory[0] = null;
-                    pendingArmorDrop = armor;
-                    pendingDropPlayer = player;
+                    if (!player.inventory.addItemStackToInventory(armor)) {
+                        player.dropPlayerItemWithRandomChoice(armor, false);
+                    }
+                    if (player instanceof EntityPlayerMP playerMP) {
+                        playerMP.sendContainerToPlayer(playerMP.inventoryContainer);
+                    }
                 }
             }
         });
@@ -480,26 +481,6 @@ public class MTEModificationTable extends MetaTileEntity {
         @Override
         public boolean canTakeStack(EntityPlayer playerIn) {
             return canTake.getAsBoolean();
-        }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (!aBaseMetaTileEntity.isClientSide() && pendingArmorDrop != null) {
-            aBaseMetaTileEntity.getWorld()
-                .spawnEntityInWorld(
-                    new EntityItem(
-                        aBaseMetaTileEntity.getWorld(),
-                        aBaseMetaTileEntity.getXCoord() + 0.5,
-                        aBaseMetaTileEntity.getYCoord() + 1,
-                        aBaseMetaTileEntity.getZCoord() + 0.5,
-                        pendingArmorDrop));
-            if (pendingDropPlayer instanceof EntityPlayerMP playerMP) {
-                playerMP.sendContainerToPlayer(playerMP.inventoryContainer);
-            }
-            pendingArmorDrop = null;
-            pendingDropPlayer = null;
         }
     }
 }
