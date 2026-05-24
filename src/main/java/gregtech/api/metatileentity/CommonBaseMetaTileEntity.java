@@ -46,8 +46,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
         mInventoryChanged = false, mTickDisabled = false;
 
-    protected NBTTagCompound pendingDescriptionPacket;
-
     private boolean mIgnoreNextUnload = false;
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
@@ -68,11 +66,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
                 .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
-            // If we have a pending description packet that was received before the MTE was created, load it
-            if (pendingDescriptionPacket != null) {
-                getMetaTileEntity().onDescriptionPacket(pendingDescriptionPacket);
-                pendingDescriptionPacket = null;
-            }
             return true;
         }
         return false;
@@ -411,35 +404,52 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
+    /**
+     * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
+     */
+    abstract byte[] getInitialDataForClient();
+
+    /**
+     * Runs on the client to receive full resync data from the server.
+     */
+    abstract void receiveInitialDataOnClient(byte[] data);
+
     @Override
     public Packet getDescriptionPacket() {
-        issueClientUpdate();
-        sendClientData();
+        byte[] base = getInitialDataForClient();
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setByteArray("base", base);
+        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
 
         IMetaTileEntity imte = getMetaTileEntity();
 
-        if (imte == null) return null;
+        if (imte == null) return pkt;
 
         NBTTagCompound data = imte.getDescriptionData();
 
-        if (data == null) return null;
+        if (data == null) return pkt;
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, data);
+        // Yeah we delay a bit of modification after packet construction
+        // it's fine... it's clear this won't cause problems
+        nbt.setTag("mte", data);
+
+        return pkt;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        IMetaTileEntity imte = getMetaTileEntity();
 
-        if (imte == null) {
-            // If we don't have a meta tile yet, it's likely because it hasn't been created on the client yet
-            // Let's just store a reference to the data and process it once the meta tile has been created
-            // If this tile entity is about to be destroyed then we won't be causing a memory leak here so this is safe
-            pendingDescriptionPacket = pkt.func_148857_g();
-            return;
-        }
+        NBTTagCompound nbt = pkt.func_148857_g();
+        // Receive and create the mte if it doesn't exist
+        receiveInitialDataOnClient(nbt.getByteArray("base"));
 
-        imte.onDescriptionPacket(pkt.func_148857_g());
+        NBTTagCompound data = nbt.getCompoundTag("mte");
+        IMetaTileEntity mte = getMetaTileEntity();
+
+        // The mte sent from server is invalid
+        if (mte == null) return;
+
+        mte.onDescriptionPacket(data);
     }
 
     @Override

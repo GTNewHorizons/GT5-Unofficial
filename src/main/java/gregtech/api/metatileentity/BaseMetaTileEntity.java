@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -654,21 +655,60 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
     }
 
+    private byte getTextureData() {
+        return (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
+            | (mRedstone ? 16 : 0)
+            | (mLockUpgrade ? 32 : 0)
+            | (mWorks ? 64 : 0)
+            | (mMuffler ? 128 : 0));
+    }
+
+    private byte getUpdateData() {
+        IMetaTileEntity mte = getMetaTileEntity();
+        return mte == null ? 0 : mte.getUpdateData();
+    }
+
+    @Override
+    public final byte[] getInitialDataForClient() {
+        return ByteBuffer.allocate(2 + 24 + 4)
+            .putShort(mID)
+            .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.UP).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.WEST).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.EAST).getCoverID())
+            .put(getTextureData())
+            .put(getUpdateData())
+            .put(getSidedRedstoneMask())
+            .put(mColor)
+            .array();
+    }
+
+    @Override
+    public final void receiveInitialDataOnClient(byte[] data) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        receiveMetaTileEntityData(
+            buffer.getShort(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get());
+    }
+
     @Override
     protected final void sendClientData() {
         if (mSendClientData) {
-            oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-                | (getGenericRedstoneOutput() ? 16 : 0)
-                | (mLockUpgrade ? 32 : 0)
-                | (mWorks ? 64 : 0)
-                | (mMuffler ? 128 : 0));
-
-            oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
-
+            oldTextureData = getTextureData();
+            oldUpdateData = getUpdateData();
             oldRedstoneData = getSidedRedstoneMask();
-
             oldColor = mColor;
-
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
                 new GTPacketTileEntity(
@@ -729,7 +769,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> {
                     mFacing = ForgeDirection.getOrientation((byte) (aValue & 7));
                     mActive = ((aValue & 8) != 0);
-                    setGenericRedstoneOutput(((aValue & 16) != 0));
+                    mRedstone = ((aValue & 16) != 0);
                     // mLockUpgrade = ((aValue&32) != 0);
                     mWorks = ((aValue & 64) != 0);
                     mMuffler = ((aValue & 128) != 0);

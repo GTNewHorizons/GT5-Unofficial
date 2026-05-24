@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -242,11 +243,50 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mMetaTileEntity.onTickFail(this, mTickTimer);
     }
 
+    private byte getUpdateData() {
+        IMetaTileEntity mte = getMetaTileEntity();
+        return mte == null ? 0 : mte.getUpdateData();
+    }
+
+    @Override
+    public final byte[] getInitialDataForClient() {
+        return ByteBuffer.allocate(2 + 24 + 4)
+            .putShort(mID)
+            .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.UP).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.WEST).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.EAST).getCoverID())
+            .put(mConnections)
+            .put(getUpdateData())
+            .put(getSidedRedstoneMask())
+            .put(mColor)
+            .array();
+    }
+
+    @Override
+    public final void receiveInitialDataOnClient(byte[] data) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        receiveMetaTileEntityData(
+            buffer.getShort(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get());
+    }
+
     @Override
     protected void sendClientData() {
         if (mSendClientData) {
             oldConnections = mConnections;
-            oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
+            oldUpdateData = getUpdateData();
             oldRedstoneData = getSidedRedstoneMask();
             oldColor = mColor;
 
