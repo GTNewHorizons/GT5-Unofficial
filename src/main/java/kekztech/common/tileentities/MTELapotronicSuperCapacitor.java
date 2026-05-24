@@ -600,7 +600,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             + getUEVCapacitorCount()
             + getUIVCapacitorCount()
             + getUMVCapacitorCount()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.lsc_cap"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.lsc_cap"));
             return;
         }
 

@@ -21,12 +21,7 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 
@@ -40,9 +35,7 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
         Flow mainColumn = Flow.column()
             .coverChildren()
             .childPadding(2)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginTop(4)
-            .marginLeft(4);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         mainColumn.child(createInputRow("x", xSyncer, false));
         mainColumn.child(createInputRow("y", ySyncer, false));

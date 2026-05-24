@@ -613,7 +613,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         }
 
         if (aStack == null) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_nanite"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_nanite"));
             return;
         }
 

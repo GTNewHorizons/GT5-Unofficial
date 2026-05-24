@@ -298,7 +298,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         checkHasAnyOutput(errors);
         checkHasMaintenanceHatch(errors);
         if (mNeutronAccelerator.isEmpty()) {
-            errors.add(StructureErrors.of("gg.gui.text.missing_neutron_accelerator"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_neutron_accelerator"));
         }
     }
 

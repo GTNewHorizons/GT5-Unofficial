@@ -3,10 +3,6 @@ package gregtech.common.gui.modularui.singleblock;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,12 +11,13 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTEFilter;
 import xyz.wagyourtail.jvmdg.util.Pair;
 
@@ -34,13 +31,12 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
             .childPadding(1)
-            .coverChildren()
-            .marginLeft(3);
+            .coverChildren();
 
         // white arrow shaft
         mainRow.child(
             new Rectangle().asWidget()
-                .size(9, 6));
+                .size(8, 6));
 
         // filter grid
         mainRow.child(
@@ -48,19 +44,7 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
                 .gridOfWidthHeight(
                     3,
                     3,
-                    ($x, $y, index) -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 9) {
-
-                        // both of these are needed
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-
-                        @Override
-                        public int getItemStackLimit(@NotNull ItemStack stack) {
-                            return 1;
-                        }
-                    })
+                    ($x, $y, index) -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 9))
                         .disableThemeBackground(true)
                         .disableHoverThemeBackground(true))
                 .background(GTGuiTextures.PICTURE_SLOTS_HOLO_3BY3));
@@ -72,17 +56,13 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
         // inventory grid
         mainRow.child(
-            new Grid().coverChildren()
-                .gridOfWidthHeight(
-                    3,
-                    3,
-                    ($x, $y, index) -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv"))));
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
+                .build());
 
         // red arrow
         mainRow.child(
             GTGuiTextures.PICTURE_ARROW_24_RED.asWidget()
-                .size(19, 24));
+                .size(17, 24));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
@@ -101,18 +81,11 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
         buttons.add(
             new Pair<>(
                 true,
-                () -> createButton(
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isIgnoreNbt, machine::setIgnoreNbt),
                     GTGuiTextures.OVERLAY_BUTTON_NBT,
                     configureTooltip("GT5U.machines.ignore_nbt.tooltip"))));
 
         return buttons;
-    }
-
-    @Override
-    protected void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("item_inv", 3);
     }
 }

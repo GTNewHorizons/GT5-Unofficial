@@ -41,8 +41,7 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
             true,
             (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent));
 
-        return new ButtonWidget<>().size(18)
-            .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+        return new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
                 if (!parallelSelectPanel.isPanelOpen()) {

@@ -428,7 +428,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                 if (level == 0) {
                     level = i + 4;
                 } else {
-                    errors.add(StructureErrors.of("GT5U.gui.text.pss_cell"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.structure_error.pss_cell"));
                     return;
                 }
             }
@@ -437,14 +437,14 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         long volSum = 0;
         for (MTEHatch hatch : mAllDynamoHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
-                errors.add(StructureErrors.of("GT5U.gui.text.pss_dynamo"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.pss_dynamo"));
                 return;
             }
             volSum += (8L << (hatch.mTier * 2));
         }
         for (MTEHatch hatch : mAllEnergyHatches) {
             if (hatch.mTier > tier || hatch.mTier < 3) {
-                errors.add(StructureErrors.of("GT5U.gui.text.pss_energy"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.pss_energy"));
                 return;
             }
             volSum += (8L << (hatch.mTier * 2));
