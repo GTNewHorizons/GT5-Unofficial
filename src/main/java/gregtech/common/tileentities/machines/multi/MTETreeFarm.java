@@ -144,7 +144,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
             .addController("Front bottom center")
             .addCasingInfoMin("Sterile Farm Casing", 45, false)
             .addCasingInfoExactly("Steel Frame Box", 60, false)
-            .addCasingInfoExactly("Any tiered glass", 57, false)
+            .addCasingInfoExactly("Any Tiered Glass", 57, false)
             .addCasingInfoExactly("Dirt/Grass", 25, false)
             .addStructureInfo("Oak Wood and Leaves can be placed manually. If not, they will be placed automatically.")
             .addInputBus("Any Sterile Farm Casing", 1)

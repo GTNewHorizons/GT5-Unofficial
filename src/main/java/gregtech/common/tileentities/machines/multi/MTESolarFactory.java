@@ -436,7 +436,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
             .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
+            .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
             .addInputHatch("Any Machine Casing")
             .addInputBus("Any Machine Casing")
             .addOutputBus("Any Machine Casing")

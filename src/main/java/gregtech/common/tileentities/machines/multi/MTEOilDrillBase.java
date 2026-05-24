@@ -362,11 +362,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch("Any base casing", 1)
+            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
+            .addMaintenanceHatch("Any base Casing", 1)
+            .addInputBus("Mining Pipes or Circuits, optional, any base Casing", 1)
+            .addOutputHatch("Any base Casing", 1)
             .toolTipFinisher();
         return tt;
     }

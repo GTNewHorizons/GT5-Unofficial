@@ -478,11 +478,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addStructureInfo(
                 "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
             .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any casing")
-            .addDynamoHatch("Any casing")
+            .addEnergyHatch("Any Casing")
+            .addDynamoHatch("Any Casing")
             .addOtherStructurePart(
                 "Laser Target/Source Hatches",
-                "Any casing, must be using " + GTValues.TIER_COLORS[8]
+                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
                     + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
@@ -492,7 +492,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 GTStructureChannels.LSC_CAPACITOR,
                 "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any casing")
+            .addMaintenanceHatch("Any Casing")
             .toolTipFinisher();
         return tt;
     }
