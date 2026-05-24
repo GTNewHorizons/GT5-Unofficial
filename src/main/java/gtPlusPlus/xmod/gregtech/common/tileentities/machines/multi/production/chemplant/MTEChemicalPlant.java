@@ -382,7 +382,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (checkCasing[i] == mCasing) {
                 mSolidCasingTier = i;
             } else if (checkCasing[i] > 0) {
-                errors.add(StructureErrors.of("GT5U.gui.text.chemplant_casing_problem"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_casing_problem"));
                 return;
             }
         }
@@ -391,10 +391,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         mPipeCasingTier = checkPipe - 12;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_hatch_problem"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
         }
         if (mCatalystBuses.size() > 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_too_many_catalyst_hatch"));
         }
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
