@@ -519,12 +519,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, coverItem);
     }
 
-    @Override
-    public void issueCoverUpdate(ForgeDirection side) {
-        super.issueCoverUpdate(side);
-        issueClientUpdate();
-    }
-
     /*
      * IC2 Energy Compat
      */

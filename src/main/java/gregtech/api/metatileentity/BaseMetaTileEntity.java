@@ -670,6 +670,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public final byte[] getInitialDataForClient() {
+        // Mark all covers to send the data... many cover does not actually need syncing but override their methods.
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            issueCoverUpdate(side);
+        }
         return ByteBuffer.allocate(2 + 24 + 4)
             .putShort(mID)
             .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
