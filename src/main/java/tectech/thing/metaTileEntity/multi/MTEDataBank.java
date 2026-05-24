@@ -172,10 +172,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         if (eDataAccessHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.databank_missing_data_access"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_access"));
         }
         if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.databank_missing_data_output"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_output"));
         }
     }
 

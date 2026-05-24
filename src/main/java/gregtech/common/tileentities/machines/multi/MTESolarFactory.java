@@ -233,13 +233,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             mTier = 2;
             checkCasingMin(errors, casingAmount, 35);
             if (casingTier < -1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.solar_factory_precise"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
             }
         } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, null)) {
             mTier = 3;
             checkCasingMin(errors, casingAmount, 50);
             if (casingTier < -1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.solar_factory_precise"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
             }
         } else {
             errors.add(UNKNOWN_TIER);

@@ -563,7 +563,7 @@ public class GTStructureUtility {
         return new IStructureElement<>() {
 
             @Override
-            public @Nullable List<String> getDescription() {
+            public @Nullable List<String> getDescription(T context) {
                 return Collections.singletonList("GT5U.structure.heating_coil");
             }
 
@@ -1164,8 +1164,8 @@ public class GTStructureUtility {
         }
 
         @Override
-        public @Nullable List<String> getDescription() {
-            return proxiedElement.getDescription();
+        public @Nullable List<String> getDescription(T context) {
+            return proxiedElement.getDescription(context);
         }
     }
 

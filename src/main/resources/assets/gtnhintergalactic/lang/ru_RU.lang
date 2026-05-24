@@ -160,13 +160,13 @@ tile.DysonSwarmFloor.name=Сверхвысокопрочный бетонный 
 tile.GasSiphonCasing.name=Корпус планетарного сифона
 
 # GUI
-GT5U.gui.text.no_space_station=§7Не на космической станции
-GT5U.gui.text.invalid_depth=§7Неверная глубина
-GT5U.gui.text.siphoning=§aИзвлечение из планеты
+GT5U.gui.text.recipe_result.no_space_station=§7Не на космической станции
+GT5U.gui.text.recipe_result.invalid_depth=§7Неверная глубина
+GT5U.gui.text.recipe_result.siphoning=§aИзвлечение из планеты
 GT5U.gui.text.missing_project=§7Отсутствует §b%s §7в §b%s
-GT5U.gui.text.no_plasma=§7Недостаточно плазмы
-GT5U.gui.text.invalid_overdrive=§7Неверные настройки перегрузки
-GT5U.gui.text.no_project_selected=§7Не работает ни над одним проектом
+GT5U.gui.text.recipe_result.no_plasma=§7Недостаточно плазмы
+GT5U.gui.text.recipe_result.invalid_overdrive=§7Неверные настройки перегрузки
+GT5U.gui.text.recipe_result.no_project_selected=§7Не работает ни над одним проектом
 ig.text.project=Проект
 ig.text.upgrades=Улучшение
 ig.text.start=Старт
