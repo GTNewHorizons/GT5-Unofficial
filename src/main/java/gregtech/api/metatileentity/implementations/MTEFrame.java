@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -35,6 +36,17 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalized
     public MTEFrame(String aName, Materials aMaterial) {
         super(aName, 0);
         mMaterial = aMaterial;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity igte) {
+        int x = igte.getXCoord();
+        int y = igte.getYCoord();
+        int z = igte.getZCoord();
+        World world = igte.getWorld();
+        int meta = world.getBlockMetadata(x, y, z);
+        if ((meta & BlockFrameBox.MTE_BIT) != 0) return;
+        world.setBlockMetadataWithNotify(x, y, z, meta | BlockFrameBox.MTE_BIT, 2);
     }
 
     @Override
