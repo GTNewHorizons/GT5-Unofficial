@@ -23,6 +23,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
+import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
@@ -69,7 +72,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -400,6 +402,110 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         return (int) Math.floor(parallelModifier * Configuration.Multiblocks.megaMachinesMax);
     }
 
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (MTEHatch hatch : this.getExoticAndNormalEnergyHatchList()) {
+            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
+            if (base != null) {
+                storedEnergy += base.getStoredEU();
+                maxEnergy += base.getEUCapacity();
+            }
+        }
+
+        long nominalV = this.getMaxInputEu();
+        String tierName = BWUtil.getTierNameFromVoltage(nominalV);
+        if ("MAX+".equals(tierName)) tierName = EnumChatFormatting.OBFUSCATED + "MAX+";
+
+        List<String> info = new ArrayList<>();
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(this.mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(this.mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + formatNumber(-this.lEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(this.getMaxInputVoltage())
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + formatNumber(this.getMaxInputAmps())
+                + "A) = "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(nominalV)
+                + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + tierName
+                + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (this.getIdealStatus() - this.getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + this.mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + getAveragePollutionPercentage()
+                + EnumChatFormatting.RESET
+                + " %");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal(
+                this.isPyroSupplied ? "GT5U.gui.text.button.pyrotheum.enabled"
+                    : "GT5U.gui.text.button.pyrotheum.disabled"));
+        info.add(
+            StatCollector.translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(this.parallelModifier)));
+        if (this.isPyroSupplied) {
+            info.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.mebf.pyrotheum",
+                    formatFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * this.parallelModifier))));
+        }
+        info.add(
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(this.heatingCapacity)
+                + EnumChatFormatting.RESET
+                + " K");
+
+        return info.toArray(new String[0]);
+    }
+
     private static final int pollutionPerSecond = 400 * 256;
 
     @Override
@@ -525,7 +631,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
+            this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
         }
     }
 
