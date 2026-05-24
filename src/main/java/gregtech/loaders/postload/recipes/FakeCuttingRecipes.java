@@ -66,7 +66,7 @@ public class FakeCuttingRecipes implements Runnable {
                 .itemOutputs(template.mOutputs)
                 .eut(template.mEUt)
                 .duration(template.mDuration)
-                .setNEIDesc(StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", durationInfo))
+                .setNEIDesc(StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds", durationInfo))
                 .fake();
 
             if (!fluids.isEmpty()) {
