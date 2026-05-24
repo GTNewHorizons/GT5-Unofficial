@@ -179,7 +179,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 8);
         if (mCoilAmount != 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_coil"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_coil"));
         }
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
