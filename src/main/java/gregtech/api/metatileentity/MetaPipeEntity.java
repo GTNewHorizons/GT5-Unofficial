@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -505,8 +506,24 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public void receiveClientEvent(byte eventID, byte value) {
+        super.receiveClientEvent(eventID, value);
+        if (eventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
+            mConnections = value;
+        }
+    }
+
+    @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound nbt) {
+        super.initDefaultModes(nbt);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+        }
     }
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
@@ -656,7 +673,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
+        if (baseMetaTile == null) return 0;
 
         final Cover cover = baseMetaTile.getCoverAtSide(side);
 
@@ -710,6 +727,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private void connectAtSide(ForgeDirection side) {
         mConnections |= side.flag;
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe && pipe.isClientSide()) {
+            pipe.mConnections = mConnections;
+        }
     }
 
     @Override

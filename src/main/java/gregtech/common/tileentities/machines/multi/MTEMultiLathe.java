@@ -265,7 +265,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         if (!checkBodyPiece(errors)) return;
         checkHasMaintenanceHatch(errors);
         if (pipeTier <= 0) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_pipe_casing"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_pipe_casing"));
         }
         checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasingAmount, 42);

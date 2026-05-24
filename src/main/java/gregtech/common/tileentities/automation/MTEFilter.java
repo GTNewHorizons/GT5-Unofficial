@@ -92,6 +92,12 @@ public class MTEFilter extends MTEFilterBase {
     }
 
     @Override
+    public int getSlotLimit(int slot) {
+        // limit the filter slots
+        return slot >= FILTER_SLOT_INDEX ? 1 : super.getSlotLimit(slot);
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEFilterGui(this).build(guiData, syncManager, uiSettings);
     }

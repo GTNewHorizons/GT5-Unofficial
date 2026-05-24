@@ -332,7 +332,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         checkHasOutputBus(errors);
         checkHasAnyEnergy(errors);
         if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
-            errors.add(StructureErrors.of("GT5U.gui.text.latex_singularity"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
         checkCasingMin(errors, mCasingAmount, 14);
     }

@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -225,7 +226,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .casingIndex(getCasingTextureID())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
+                        buildHatchAdder(MTEChemicalPlant.class).hatchId(MetaTileEntityIDs.Bus_Catalysts.ID)
                             .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
@@ -381,7 +382,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (checkCasing[i] == mCasing) {
                 mSolidCasingTier = i;
             } else if (checkCasing[i] > 0) {
-                errors.add(StructureErrors.of("GT5U.gui.text.chemplant_casing_problem"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_casing_problem"));
                 return;
             }
         }
@@ -390,10 +391,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         mPipeCasingTier = checkPipe - 12;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_hatch_problem"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
         }
         if (mCatalystBuses.size() > 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_too_many_catalyst_hatch"));
         }
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);

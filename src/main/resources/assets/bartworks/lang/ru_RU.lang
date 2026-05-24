@@ -15,8 +15,8 @@ bw.werkstoffblocks.01.name=Блок
 bw.werkstoffblockscasing.01.name=Заклепочный корпус
 bw.werkstoffblockscasingadvanced.01.name=Переболтованный корпус
 
-GT5U.gui.text.no_imprint=Отсутствует слепок
-GT5U.gui.text.not_enough_length=Мультиблок слишком короткий
+GT5U.gui.text.recipe_result.no_imprint=Отсутствует слепок
+GT5U.gui.text.recipe_result.not_enough_length=Мультиблок слишком короткий
 GT5U.gui.text.wrong_sievert_exactly=§7Неправильный зиверт. Требуется ровно: %s §7Sv
 GT5U.gui.text.wrong_sievert_min=§7Неправильный зиверт. Требуется не менее: %s §7Sv
 GT5U.gui.config.general.mixins=Mixins

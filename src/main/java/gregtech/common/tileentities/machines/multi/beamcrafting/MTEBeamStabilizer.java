@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZER_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
@@ -34,7 +33,6 @@ import gregtech.common.gui.modularui.multiblock.MTEBeamStabilizerGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> implements ISurvivalConstructable {
@@ -170,20 +168,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamStabilizer::addBeamLineInputHatch)
-                .build()) // beamline input hatch
-        .addElement(
-            'D',
-            buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
-                .build()) // beamline output hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 2))
+        .addElement('D', buildBeamlineOutputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 3))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 

@@ -116,8 +116,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         .background(false, GTGuiTextures.BUTTON_STANDARD)
                         .tooltipBuilder(false, t -> getOreButtonTooltip(t, stack, false))
                         .tooltipBuilder(true, t -> getOreButtonTooltip(t, stack, true))
-                        .setEnabledIf($ -> matchesSearch(stack))
-                        .size(18);
+                        .setEnabledIf($ -> matchesSearch(stack));
                 })
                 .wrap()
                 .crossAxisAlignment(Alignment.CrossAxis.START)

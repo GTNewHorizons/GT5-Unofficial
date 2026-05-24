@@ -270,6 +270,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
                 width++;
             } else {
                 errors.clear();
+                break;
             }
         }
         if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {

@@ -438,10 +438,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         this.mHardenedClay = 0;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
         if (this.tileEntityDispensers.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_dispenser"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
         }
         if (this.mDoor > 2) {
-            errors.add(StructureErrors.of("GT5U.gui.text.too_many_doors"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
         }
         checkCasingMin(errors, this.mHardenedClay, 40);
     }
