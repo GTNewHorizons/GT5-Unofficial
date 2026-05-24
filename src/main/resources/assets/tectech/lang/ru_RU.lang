@@ -1335,7 +1335,7 @@ GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Неверная нас
 GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Недостаточно энергии
 GT5U.gui.text.recipe_result.missing_upgrades=§7Отсутствует улучшения
 GT5U.gui.text.recipe_result.waiting_for_inputs=§7Waiting for inputs
-GT5U.gui.text.computation_loss=§4Выключен из-за потери вычислительных данных.
+GT5U.gui.text.shutdown_reason.computation_loss=§4Выключен из-за потери вычислительных данных.
 GT5U.gui.text.researching_item=§fИсследование: §b%s
 GT5U.gui.text.research_progress=§fВычислительной мощности: %d/%d (%s%%)
 
