@@ -135,7 +135,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setLong("mStoredSteam", mStoredSteam);
             nbt.setLong("mStoredEnergy", mStoredEnergy);
             writeCoverNBT(nbt, false);
-            nbt.setBoolean("mRedstone", mRedstone);
             nbt.setByte("mColor", mColor);
             nbt.setByte("mLightValue", mLightValue);
             nbt.setByte("mOtherUpgrades", mOtherUpgrades);
@@ -146,6 +145,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setBoolean("mMuffler", mMuffler);
             nbt.setBoolean("mActive", mActive);
             nbt.setBoolean("mWorks", !mWorks);
+            nbt.setBoolean("mRedstone", mRedstone);
             nbt.setBoolean("mInputDisabled", mInputDisabled);
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
             nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
@@ -194,6 +194,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mMuffler = aNBT.getBoolean("mMuffler");
             mActive = aNBT.getBoolean("mActive");
             mWorks = !aNBT.getBoolean("mWorks");
+            mRedstone = aNBT.getBoolean("mRedstone");
             mInputDisabled = aNBT.getBoolean("mInputDisabled");
             mOutputDisabled = aNBT.getBoolean("mOutputDisabled");
             mOtherUpgrades = (byte) (aNBT.getByte("mOtherUpgrades") + aNBT.getByte("mBatteries")
@@ -201,7 +202,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
             final int nbtVersion = aNBT.getInteger("nbtVersion");
             readCoverNBT(aNBT);
-            mRedstone = aNBT.getBoolean("mRedstone");
             loadMetaTileNBT(aNBT);
         }
     }
