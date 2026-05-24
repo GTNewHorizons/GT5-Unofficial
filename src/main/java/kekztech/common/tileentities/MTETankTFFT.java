@@ -439,7 +439,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             checkHasOutputHatch(errors);
         }
         if (mInputHatches.size() + mOutputHatches.size() > MAX_DISTINCT_FLUIDS * 2) {
-            errors.add(StructureErrors.of("GT5U.gui.text.tfft_too_many_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.tfft_too_many_hatch"));
         }
         if (!errors.isEmpty()) return;
         BigInteger tempCap = BigInteger.ZERO;
