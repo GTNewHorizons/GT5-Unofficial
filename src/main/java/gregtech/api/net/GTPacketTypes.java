@@ -17,7 +17,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
  */
 public enum GTPacketTypes {
 
-    TILE_ENTITY(0, new GTPacketTileEntity()),
+    // ID 0 unused
     SOUND(1, new GTPacketSound()),
     BLOCK_EVENT(2, new GTPacketBlockEvent()),
     POLLUTION(4, new GTPacketPollution()),
