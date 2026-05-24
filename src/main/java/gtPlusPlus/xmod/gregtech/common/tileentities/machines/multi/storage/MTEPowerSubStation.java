@@ -131,7 +131,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
             .addInfo("Supports voltages >= UHV using MAX tier components")
             .addController("Front bottom center")
-            .addCasingInfoMin("Sub-Station External Casings", 10, false)
+            .addCasingInfoMin("Sub-Station External Casing", 10, false)
             .addDynamoHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.PSS_CELL)

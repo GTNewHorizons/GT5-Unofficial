@@ -72,7 +72,7 @@ public class MTEIndustrialCuttingMachineLegacy extends GTPPMultiBlockBase<MTEInd
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front center")
-            .addCasingInfoMin("Cutting Factory Frames", 14, false)
+            .addCasingInfoMin("Cutting Factory Frame", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
