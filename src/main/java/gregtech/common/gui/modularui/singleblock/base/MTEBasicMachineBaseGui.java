@@ -55,10 +55,10 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
         super.registerSyncValues(syncManager);
         BooleanSyncValue itemSync = new BooleanSyncValue(
             () -> machine.mItemTransfer,
-            value -> machine.mItemTransfer = value);
+            value -> machine.mItemTransfer = value).allowC2S();
         BooleanSyncValue fluidSync = new BooleanSyncValue(
             () -> machine.mFluidTransfer,
-            value -> machine.mFluidTransfer = value);
+            value -> machine.mFluidTransfer = value).allowC2S();
         syncManager.syncValue("itemAutoOutput", itemSync);
         syncManager.syncValue("fluidAutoOutput", fluidSync);
 

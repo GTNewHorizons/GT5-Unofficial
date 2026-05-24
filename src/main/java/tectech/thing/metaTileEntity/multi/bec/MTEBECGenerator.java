@@ -93,7 +93,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
 
         tt.beginStructureBlock();
-        tt.addController("Front Center");
+        tt.addController("Front center");
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addHatchLocationOverride(
             Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),

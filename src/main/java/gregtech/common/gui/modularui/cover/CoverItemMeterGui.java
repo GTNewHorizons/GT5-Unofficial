@@ -51,7 +51,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private IWidget createRedstoneModeButton() {
-        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
+        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
 
         return new ToggleButton().value(isInvertedSyncer)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
@@ -66,7 +66,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private Flow createItemThresholdRow() {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -82,8 +82,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
 
     private Flow createSlotRow(PanelSyncManager syncManager) {
         IItemHandler inventoryHandler = getInventoryHandler();
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
-        GenericSyncValue<ItemStack> displayItemSyncer = GenericSyncValue
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot).allowC2S();
+        GenericSyncValue<ItemStack, ?> displayItemSyncer = GenericSyncValue
             .forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null);
 
         return Flow.row()
@@ -135,7 +135,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
         };
     }
 
-    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack> stackSyncer) {
+    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack, ?> stackSyncer) {
         return new ItemDisplayWidget().item(stackSyncer)
             .displayAmount(false)
             .tooltipDynamic(getItemDisplayTooltip(slotSyncer));

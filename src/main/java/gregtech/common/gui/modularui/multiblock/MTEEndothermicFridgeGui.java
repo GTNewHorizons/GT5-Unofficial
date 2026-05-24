@@ -23,7 +23,7 @@ public class MTEEndothermicFridgeGui extends MTEMultiBlockBaseGui<MTEEndothermic
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "cryotheum",
-            new BooleanSyncValue(() -> multiblock.isCryoEnabled, val -> multiblock.isCryoEnabled = val));
+            new BooleanSyncValue(() -> multiblock.isCryoEnabled, val -> multiblock.isCryoEnabled = val).allowC2S());
     }
 
     @Override

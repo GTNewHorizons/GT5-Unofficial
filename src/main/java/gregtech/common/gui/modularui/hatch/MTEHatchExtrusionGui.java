@@ -90,11 +90,12 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
         }.singletonSlotGroup()
             .filter(this::isShape));
 
-        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v);
+        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v)
+            .allowC2S();
 
         BooleanSyncValue insertionSync = new BooleanSyncValue(
             () -> !machine.disableLimited,
-            v -> machine.disableLimited = !v);
+            v -> machine.disableLimited = !v).allowC2S();
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(shapeSlot)
             .child(

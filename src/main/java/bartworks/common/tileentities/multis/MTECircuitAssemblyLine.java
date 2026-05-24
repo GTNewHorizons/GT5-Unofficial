@@ -192,7 +192,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + "+ Tier Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing")
             .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
-            .addController("Layer 3 first slice front")
+            .addController("Front of the first slice, 3rd layer")
             .addOtherStructurePart(
                 "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
                 "Any layer 3 casing",

@@ -34,11 +34,11 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
         super.registerSyncValues(syncManager);
         BooleanSyncValue convergenceSyncer = new BooleanSyncValue(
             multiblock::getConvergenceStatus,
-            multiblock::setConvergenceStatus);
+            multiblock::setConvergenceStatus).allowC2S();
         syncManager.syncValue("convergence", convergenceSyncer);
         IntSyncValue catalystTypeSyncer = new IntSyncValue(
             multiblock::getCatalystTypeForRecipesWithoutCatalyst,
-            multiblock::setCatalystTypeForRecipesWithoutCatalyst);
+            multiblock::setCatalystTypeForRecipesWithoutCatalyst).allowC2S();
         syncManager.syncValue("catalystType", catalystTypeSyncer);
     }
 

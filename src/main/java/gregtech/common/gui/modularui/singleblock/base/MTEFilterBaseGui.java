@@ -34,7 +34,7 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
             new Pair<>(
                 supportsEmitRedstone(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
+                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
                     configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_gradually.tooltip",
@@ -46,7 +46,7 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
             new Pair<>(
                 supportsInvertFilter(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter),
+                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_INVERT_FILTER,
                     configureTooltip("GT5U.machines.invert_filter.tooltip"))));
 

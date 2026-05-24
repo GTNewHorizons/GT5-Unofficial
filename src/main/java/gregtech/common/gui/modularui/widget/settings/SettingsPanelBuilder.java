@@ -79,7 +79,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new IntSyncValue(getter, setter));
+            textField.value(new IntSyncValue(getter, setter).allowC2S());
             textField.setFormatAsInteger(true);
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);
@@ -97,7 +97,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new LongSyncValue(getter, setter));
+            textField.value(new LongSyncValue(getter, setter).allowC2S());
             textField.setFormatAsInteger(true);
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);
@@ -121,7 +121,7 @@ public class SettingsPanelBuilder {
                 public String getStringValue() {
                     return NumberFormatUtil.formatNumber(this.getValue());
                 }
-            });
+            }.allowC2S());
             textField.setNumbers();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
@@ -138,7 +138,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new StringSyncValue(getter, setter));
+            textField.value(new StringSyncValue(getter, setter).allowC2S());
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
