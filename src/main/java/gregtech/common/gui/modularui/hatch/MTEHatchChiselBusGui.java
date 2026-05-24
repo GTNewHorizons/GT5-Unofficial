@@ -79,7 +79,9 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
         var inputWidget = SlotGroupWidget.builder()
             .matrix(inputMatrix)
-            .key('x', index -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("inputs")))
+            .key(
+                'x',
+                index -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("inputs")))
             .build();
 
         return super.createContentSection(panel, syncManager).child(
