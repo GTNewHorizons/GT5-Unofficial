@@ -13,6 +13,7 @@ import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -556,6 +557,11 @@ public class GTStructureUtility {
         return new IStructureElement<>() {
 
             @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList("GT5U.structure.heating_coil");
+            }
+
+            @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
 
@@ -804,7 +810,14 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
-            lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+            lazy(
+                t -> ofBlocksTiered(
+                    GlassTier::getGlassBlockTier,
+                    GlassTier.getGlassList(),
+                    notSet,
+                    setter,
+                    getter,
+                    Collections.singletonList("GT5U.structure.tiered_glass"))));
     }
 
     private static Integer getItemPipeCasingTier(Block block, int meta) {
@@ -1118,6 +1131,11 @@ public class GTStructureUtility {
         @Override
         public boolean isNavigating() {
             return proxiedElement.isNavigating();
+        }
+
+        @Override
+        public @Nullable List<String> getDescription(T context) {
+            return proxiedElement.getDescription(context);
         }
     }
 

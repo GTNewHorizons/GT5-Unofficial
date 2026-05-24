@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -142,7 +143,7 @@ public class MTEIndustrialElectromagneticSeparator
             'E',
             buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
-                .hatchClass(MTEHatchMagnet.class)
+                .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
                 .build())
@@ -215,7 +216,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
+            .addCasingInfoMin("MagTech Casing", MIN_CASING, false)
             .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart(

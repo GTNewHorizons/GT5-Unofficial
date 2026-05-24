@@ -35,7 +35,8 @@ public class MTEPCBUpgradeBaseGui extends MTEMultiBlockBaseGui<MTEPCBUpgradeBase
                 columns.child(error.createWidget(this));
             }
             return columns.setEnabledIf(widget -> !baseMetaTileEntity.isActive());
-        });
+        })
+            .allowC2S();
 
         errors.setChangeListener(() -> errorSyncer.notifyUpdate(packet -> {}));
 

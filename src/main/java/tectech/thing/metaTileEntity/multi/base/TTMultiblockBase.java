@@ -1873,13 +1873,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected final void checkHasDataInput(List<StructureError> errors) {
         if (eInputData.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_data_input_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_data_input_hatch"));
         }
     }
 
     protected final void checkHasDataOutput(List<StructureError> errors) {
         if (eOutputData.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_data_output_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_data_output_hatch"));
         }
     }
 
@@ -1983,6 +1983,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         @Override
         public String getDisplayName() {
             return GTUtility.translate(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

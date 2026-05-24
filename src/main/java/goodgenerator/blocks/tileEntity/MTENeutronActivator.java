@@ -210,13 +210,13 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 2")
-            .addOutputBus("Hint Block Number 2")
-            .addMaintenanceHatch("Hint Block Number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+            .addInputHatch("Hint block number 1")
+            .addInputBus("Hint block number 1")
+            .addOutputHatch("Hint block number 2")
+            .addOutputBus("Hint block number 2")
+            .addMaintenanceHatch("Hint block number 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint block number 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint block number 2")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -298,7 +298,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         checkHasAnyOutput(errors);
         checkHasMaintenanceHatch(errors);
         if (mNeutronAccelerator.isEmpty()) {
-            errors.add(StructureErrors.of("gg.gui.text.missing_neutron_accelerator"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_neutron_accelerator"));
         }
     }
 

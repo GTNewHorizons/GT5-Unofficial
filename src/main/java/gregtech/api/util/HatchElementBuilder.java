@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +39,9 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.blocks.ItemMachines;
@@ -56,6 +59,7 @@ public class HatchElementBuilder<T> {
     private BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> mHatchItemFilter;
     private Supplier<String> mHatchItemType;
     private Predicate<? super T> mReject;
+    private Supplier<List<String>> mDescriptionNames;
     private boolean mCacheHint;
     private boolean mNoStop;
     private boolean mExclusive;
@@ -75,17 +79,26 @@ public class HatchElementBuilder<T> {
     @SafeVarargs
     public final HatchElementBuilder<T> anyOf(IHatchElement<? super T>... elements) {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
+        mDescriptionNames = () -> Arrays.stream(elements)
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
+            .collect(Collectors.toList());
+        List<? extends Class<? extends IMetaTileEntity>> mteClasses = Arrays.stream(elements)
+            .map(IHatchElement::mteClasses)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
         return adder(
             Arrays.stream(elements)
                 .map(
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .get()).hatchClasses(
-                    Arrays.stream(elements)
-                        .map(IHatchElement::mteClasses)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList()))
+                .get()).hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(mteClasses))
+                    .shouldSkip(
+                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
+                            t) -> t != null && mteClasses.stream()
+                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> Arrays.stream(elements)
                             .map(IHatchElement::getDisplayName)
@@ -131,6 +144,13 @@ public class HatchElementBuilder<T> {
     public final HatchElementBuilder<T> atLeast(Map<IHatchElement<? super T>, ? extends Number> elements) {
         if (elements == null || elements.isEmpty() || elements.containsKey(null) || elements.containsValue(null))
             throw new IllegalArgumentException();
+
+        mDescriptionNames = () -> elements.keySet()
+            .stream()
+            .flatMap(
+                e -> e.getDescriptionLangKeys()
+                    .stream())
+            .collect(Collectors.toList());
 
         List<Class<? extends IMetaTileEntity>> blacklist = elements.keySet()
             .stream()
@@ -337,8 +357,50 @@ public class HatchElementBuilder<T> {
     }
     // endregion
 
+    public HatchElementBuilder<T> description(Supplier<String> description) {
+        mDescriptionNames = () -> Collections.singletonList(description.get());
+        return this;
+    }
+
+    public HatchElementBuilder<T> descriptions(Supplier<List<String>> descriptions) {
+        mDescriptionNames = descriptions;
+        return this;
+    }
+
+    /**
+     * Sets the description from one or more ItemStacks. Uses each stack's unlocalized name as the lang key. This
+     * overrides any description auto-detected by {@link #hatchClass}, {@link #hatchClasses}, {@link #anyOf}, or
+     * {@link #atLeast}. Can be chained after any of those methods.
+     */
+    public HatchElementBuilder<T> descriptionFromStacks(IItemContainer... items) {
+        IItemContainer[] copy = items.clone();
+        mDescriptionNames = () -> {
+            List<String> keys = new ArrayList<>(copy.length);
+            for (IItemContainer item : copy) {
+                keys.add(
+                    item.get(1)
+                        .getUnlocalizedName() + ".name");
+            }
+            return keys;
+        };
+        return this;
+    }
+
+    public HatchElementBuilder<T> descriptionFromStacks(ItemStack... stacks) {
+        ItemStack[] copy = stacks.clone();
+        mDescriptionNames = () -> {
+            List<String> keys = new ArrayList<>(copy.length);
+            for (ItemStack stack : copy) {
+                keys.add(stack.getUnlocalizedName() + ".name");
+            }
+            return keys;
+        };
+        return this;
+    }
+
     // region intermediate
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
+        mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
             .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_class") + clazz.getSimpleName())
             .shouldSkip(
@@ -353,6 +415,13 @@ public class HatchElementBuilder<T> {
 
     public final HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
+        mDescriptionNames = () -> {
+            List<String> classNames = new ArrayList<>(list.size());
+            for (var clazz : list) {
+                classNames.add(clazz.getSimpleName());
+            }
+            return classNames;
+        };
         return hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
                 .map(Class::getSimpleName)
@@ -368,6 +437,13 @@ public class HatchElementBuilder<T> {
     }
 
     public HatchElementBuilder<T> hatchId(int aId) {
+        mDescriptionNames = () -> {
+            IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[aId];
+            if (mte != null) {
+                return Collections.singletonList("gt.blockmachines." + mte.getMetaName() + ".name");
+            }
+            return Collections.singletonList("Unknown MTE #" + aId);
+        };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines && is.getItemDamage() == aId)
                 .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_id") + aId)
@@ -380,6 +456,18 @@ public class HatchElementBuilder<T> {
         if (aIds == null || aIds.length == 0) throw new IllegalArgumentException();
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
+        int[] sortedIds = coll.toArray();
+        Arrays.sort(sortedIds);
+        mDescriptionNames = () -> {
+            List<String> names = new ArrayList<>(sortedIds.length);
+            for (int id : sortedIds) {
+                IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[id];
+                if (mte != null) {
+                    names.add("gt.blockmachines." + mte.getMetaName() + ".name");
+                }
+            }
+            return names;
+        };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines
                 && coll.contains(is.getItemDamage())).cacheHint(
@@ -403,9 +491,8 @@ public class HatchElementBuilder<T> {
     public final IStructureElementChain<T> buildAndChain(IStructureElement<T>... elements) {
         // just in case
         mExclusive = false;
-        List<IStructureElement<T>> l = new ArrayList<>();
+        List<IStructureElement<T>> l = new ArrayList<>(Arrays.asList(elements));
         l.add(build());
-        l.addAll(Arrays.asList(elements));
         IStructureElement<T>[] array = l.toArray(new IStructureElement[0]);
         return () -> array;
     }
@@ -497,6 +584,14 @@ public class HatchElementBuilder<T> {
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(mHatchItemFilter.apply(t, trigger));
+            }
+
+            @Override
+            public List<String> getDescription(T context) {
+                if (mDescriptionNames != null) {
+                    return mDescriptionNames.get();
+                }
+                return Collections.singletonList(getHint());
             }
 
             @Deprecated

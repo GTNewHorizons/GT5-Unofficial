@@ -640,10 +640,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch")
-            .addInputHatch("Any casing")
-            .addOutputHatch("Any casing")
-            .addInputBus("Any casing")
-            .addOutputBus("Any casing")
+            .addInputHatch("Any Casing")
+            .addOutputHatch("Any Casing")
+            .addInputBus("Any Casing")
+            .addOutputBus("Any Casing")
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addTecTechHatchInfo()
@@ -833,7 +833,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 byte tier_of_hatch = mEnergyHatches.get(0).mTier;
                 for (MTEHatchEnergy energyHatch : mEnergyHatches) {
                     if (energyHatch.mTier != tier_of_hatch) {
-                        errors.add(StructureErrors.of("GT5U.gui.text.energy_hatch_tier_mismatch"));
+                        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.energy_hatch_tier_mismatch"));
                         break;
                     }
                 }
