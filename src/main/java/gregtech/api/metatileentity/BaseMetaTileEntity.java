@@ -110,7 +110,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     private boolean mActive = false;
     private boolean mWorkUpdate = false;
     private boolean mWorks = true;
-    private boolean oRedstone = false;
+    private boolean mRedstone = false;
     private byte oldTextureData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
@@ -135,6 +135,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setLong("mStoredSteam", mStoredSteam);
             nbt.setLong("mStoredEnergy", mStoredEnergy);
             writeCoverNBT(nbt, false);
+            nbt.setBoolean("mRedstone", mRedstone);
             nbt.setByte("mColor", mColor);
             nbt.setByte("mLightValue", mLightValue);
             nbt.setByte("mOtherUpgrades", mOtherUpgrades);
@@ -200,6 +201,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
             final int nbtVersion = aNBT.getInteger("nbtVersion");
             readCoverNBT(aNBT);
+            mRedstone = aNBT.getBoolean("mRedstone");
             loadMetaTileNBT(aNBT);
         }
     }
@@ -636,6 +638,19 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         if (hasValidMetaTileEntity()) {
             getMetaTileEntity().getWailaNBTData(player, tile, tag, world, x, y, z);
+        }
+    }
+
+    public final boolean getGenericRedstoneOutput() {
+        return mRedstone;
+    }
+
+    @Override
+    public void setGenericRedstoneOutput(boolean aOnOff) {
+        mRedstone = aOnOff;
+        issueTextureUpdate();
+        if (isServerSide()) {
+            issueBlockUpdate();
         }
     }
 

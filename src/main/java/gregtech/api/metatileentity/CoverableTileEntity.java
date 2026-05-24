@@ -75,7 +75,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private byte validCoversMask;
 
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    private boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
     protected byte oldStrongRedstone = 0;
 
@@ -92,7 +91,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (!isDrop) {
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setBoolean("mRedstone", mRedstone);
         }
     }
 
@@ -112,7 +110,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
-        mRedstone = aNBT.getBoolean("mRedstone");
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
         if (aNBT.hasKey("mRedstoneSided")) {
@@ -419,19 +416,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return side != ForgeDirection.UNKNOWN && (mStrongRedstone & (1 << ordinalSide)) != 0
             ? (byte) (mSidedRedstone[ordinalSide] & 15)
             : 0;
-    }
-
-    public final boolean getGenericRedstoneOutput() {
-        return mRedstone;
-    }
-
-    @Override
-    public void setGenericRedstoneOutput(boolean aOnOff) {
-        mRedstone = aOnOff;
-        issueClientUpdate();
-        if (isServerSide()) {
-            issueBlockUpdate();
-        }
     }
 
     @Override
