@@ -503,7 +503,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
-            if (tag.getFloat("blackHoleStability") >= 0) {
+            if (tag.getFloat("blackHoleStability") > 0) {
                 currentTip.add(
                     EnumChatFormatting.DARK_PURPLE
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
@@ -688,7 +688,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         boolean didDrain = false;
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
-        if (blackHoleStability >= 0) {
+        if (blackHoleStability > 0) {
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
@@ -720,7 +720,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         blackHoleStability -= stabilityDecrease;
 
-        if (blackHoleStability < 0) blackHoleStatus = 3;
+        if (blackHoleStability <= 0) blackHoleStatus = 3;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
         if (blackHoleStability <= -900) closeBlackHole();
