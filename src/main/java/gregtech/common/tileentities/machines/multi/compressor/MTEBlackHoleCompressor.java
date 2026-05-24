@@ -503,7 +503,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
-            if (tag.getFloat("blackHoleStability") > 0) {
+            if (tag.getFloat("blackHoleStability") >= 0) {
                 currentTip.add(
                     EnumChatFormatting.DARK_PURPLE
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
@@ -709,7 +709,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     break;
                 }
             }
-        } else blackHoleStatus = 3;
+        }
 
         if (shouldRender) {
             if (rendererTileEntity != null || createRenderBlock()) {
@@ -719,6 +719,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         blackHoleStability -= stabilityDecrease;
+
+        if (blackHoleStability < 0) blackHoleStatus = 3;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
         if (blackHoleStability <= -900) closeBlackHole();
