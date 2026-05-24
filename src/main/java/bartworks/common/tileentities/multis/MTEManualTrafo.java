@@ -285,7 +285,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         byte intier = this.mEnergyHatches.get(0).mTier;
         for (MTEHatchEnergy in : this.mEnergyHatches) {
             if (in.mTier != intier) {
-                errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_energy"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_energy"));
                 break;
             }
         }
@@ -293,7 +293,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) {
-                errors.add(StructureErrors.of("GT5U.gui.text.manual_transformer_dynamo"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_dynamo"));
                 return;
             }
         }

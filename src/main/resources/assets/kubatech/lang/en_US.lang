@@ -28,19 +28,19 @@ kubatech.command.tea.success_add=Player %s now has %d Tea
 kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
 #GUI
-GT5U.gui.text.EEC_nospawner=No powered spawner!
-GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
-GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
-GT5U.gui.text.MegaApiary_slotoverflow=Too many bees inside!
+GT5U.gui.text.recipe_result.EEC_nospawner=No powered spawner!
+GT5U.gui.text.recipe_result.EEC_invalidspawner=Invalid spawner!
+GT5U.gui.text.recipe_result.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
+GT5U.gui.text.recipe_result.MegaApiary_slotoverflow=Too many bees inside!
 GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
-GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
-GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
-GT5U.gui.text.EIG_missingwater=No water!
+GT5U.gui.text.recipe_result.EIG_slotoverflow=Too many seed types inside!
+GT5U.gui.text.recipe_result.EIG_seedOverflow=Too many seeds inside!
+GT5U.gui.text.recipe_result.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
-GT5U.gui.text.arc_shutdown=Arc Furnace is shutting down!
-GT5U.gui.text.arc_ignition=Arc Furnace is starting up!
-GT5U.gui.text.no_electrode=No electrode inserted!
+GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
+GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
+GT5U.gui.text.recipe_result.no_electrode=No electrode inserted!
 GT5U.gui.text.electrode_changed=Electrode changed while running!
 
 ## General

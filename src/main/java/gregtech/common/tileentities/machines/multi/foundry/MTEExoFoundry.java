@@ -650,7 +650,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             checkCasingMin(errors, casingAmount, MIN_CASINGS);
             if (casingAmount >= MIN_CASINGS) { // Only check for extra error when casing check pass
                 if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
-                    errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_too_many_hatch"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.structure_error.exo_foundry_too_many_hatch"));
                 }
             }
             checkModules(errors);
@@ -686,7 +686,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 return false;
             }
             if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.exo_foundry_hypercooler_hatch"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.exo_foundry_hypercooler_hatch"));
                 return false;
             }
         }
