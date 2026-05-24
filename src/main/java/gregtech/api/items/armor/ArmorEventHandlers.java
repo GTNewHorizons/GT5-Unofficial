@@ -137,6 +137,7 @@ public class ArmorEventHandlers {
             if (jumpBoost > 0 && context.drainEnergy(50)) {
                 player.motionY += jumpBoost;
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
+                context.save();
             }
         }
     }
@@ -169,6 +170,7 @@ public class ArmorEventHandlers {
                 && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
                 player.fallDistance = 0;
                 event.setCanceled(true);
+                context.save();
             }
         }
     }
