@@ -52,12 +52,12 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             .addInfo("Performs 4/4 overclocks")
             .beginStructureBlock(15, 3, 15, false)
             .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
+            .addCasingInfoMin("Fusion Machine Casing MK IV", 79, false)
             .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
+            .addOtherStructurePart("Advanced Fusion Coil II", "Center part of the ring")
+            .addEnergyHatch("1-16, Specified Casing", 2)
+            .addInputHatch("2-16, Specified Casing", 1)
+            .addOutputHatch("1-16, Specified Casing", 3)
             .addStructureInfo("ALL Hatches must be UEV or better")
             .toolTipFinisher();
         return tt;

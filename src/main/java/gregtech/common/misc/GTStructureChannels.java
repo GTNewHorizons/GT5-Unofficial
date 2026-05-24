@@ -24,7 +24,7 @@ public enum GTStructureChannels implements IStructureChannels {
     // Order of enum constants does not matter
     QFT_MANIPULATOR("manipulator", "Manipulator Tier"),
     QFT_SHIELDING("shielding", "Shielding Tier"),
-    HEATING_COIL("coil", "Heating Coils Tier"),
+    HEATING_COIL("coil", "Heating Coil Tier"),
     BOROGLASS("glass", "Glass Tier"),
     PRASS_UNIT_CASING("unit_casing", "Precise Electronic Unit Casing Tier"),
     METAL_MACHINE_CASING("casing", "Metal Machine Casing Tier"),

@@ -109,11 +109,11 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
             .addController("Front center")
             .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
             .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
