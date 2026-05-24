@@ -198,6 +198,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     public abstract void issueTileUpdate();
+
     public abstract void scheduleTexturePacket();
 
     @Override
