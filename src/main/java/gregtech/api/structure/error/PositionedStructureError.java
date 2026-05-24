@@ -91,20 +91,21 @@ public class PositionedStructureError implements StructureError {
 
     private String buildDisplayText() {
         if (expectedBlocks.isEmpty()) {
-            return StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block", x, y, z);
+            return StatCollector.translateToLocalFormatted("GT5U.gui.text.structure_error.wrong_block", x, y, z);
         }
         if (expectedBlocks.size() == 1) {
             return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.wrong_block_expected_single",
+                "GT5U.gui.text.structure_error.wrong_block_expected_single",
                 StatCollector.translateToLocal(expectedBlocks.get(0)),
                 x,
                 y,
                 z);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(StatCollector.translateToLocalFormatted("GT5U.gui.wrong_block_expected", x, y, z));
+        sb.append(
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.structure_error.wrong_block_expected", x, y, z));
         sb.append('\n')
-            .append(StatCollector.translateToLocal("GT5U.gui.any_of"));
+            .append(StatCollector.translateToLocal("GT5U.gui.text.structure_error.any_of"));
         for (String block : expectedBlocks) {
             sb.append('\n')
                 .append("- ")
