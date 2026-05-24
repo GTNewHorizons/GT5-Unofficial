@@ -17,7 +17,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChise
 
 public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
-    private static final int SLOT_SIZE = 18;
     private static final int INPUT_COLS = 8;
 
     public MTEHatchChiselBusGui(MTEHatchChiselBus hatch) {
@@ -25,16 +24,16 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
     }
 
     private int getInputRows() {
-        return MTEHatchChiselBus.getSlots(hatch.mTier) / INPUT_COLS;
+        return MTEHatchChiselBus.getSlots(machine.mTier) / INPUT_COLS;
     }
 
     private int getGhostCols() {
-        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(hatch.mTier);
+        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
         return (int) Math.ceil(Math.sqrt(ghostCount));
     }
 
     private int getGhostRows() {
-        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(hatch.mTier);
+        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
         int cols = getGhostCols();
         return (int) Math.ceil((double) ghostCount / cols);
     }
@@ -54,8 +53,8 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        int totalSlots = MTEHatchChiselBus.getSlots(hatch.mTier);
-        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(hatch.mTier);
+        int totalSlots = MTEHatchChiselBus.getSlots(machine.mTier);
+        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
         int inputRows = getInputRows();
         int ghostCols = getGhostCols();
         int ghostRows = getGhostRows();
@@ -71,7 +70,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
             .key(
                 't',
                 index -> new PhantomItemSlot()
-                    .slot(new ModularSlot(hatch.ghostTargets, index).accessibility(true, false)))
+                    .slot(new ModularSlot(machine.ghostTargets, index).accessibility(true, false)))
             .build();
 
         // Input slots grid
@@ -80,7 +79,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
         var inputWidget = SlotGroupWidget.builder()
             .matrix(inputMatrix)
-            .key('x', index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("inputs")))
+            .key('x', index -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("inputs")))
             .build();
 
         return super.createContentSection(panel, syncManager).child(
@@ -90,5 +89,10 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
                 .horizontalCenter()
                 .child(ghostWidget)
                 .child(inputWidget.marginLeft(3)));
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

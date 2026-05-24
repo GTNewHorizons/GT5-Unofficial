@@ -153,11 +153,11 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addController("Front center, 4th layer")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
             .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center casing", 2)
-            .addInputHatch("Distilled water, any bottom layer casing", 1)
-            .addOutputHatch("Cold fluid, top center casing", 3)
-            .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Hot fluid, bottom center Casing", 2)
+            .addInputHatch("Distilled water, any bottom layer Casing", 1)
+            .addOutputHatch("Cold fluid, top center Casing", 3)
+            .addOutputHatch("Steam/SH Steam, any bottom layer Casing", 1)
             .toolTipFinisher();
         return tt;
     }

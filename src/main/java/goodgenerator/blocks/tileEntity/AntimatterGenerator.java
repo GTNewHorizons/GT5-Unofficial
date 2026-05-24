@@ -385,10 +385,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint Block Number 1", 1)
+            .addInputHatch("2, Hint block number 1", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint Block Number 2",
+                "1-64, Hint block number 2",
                 2)
             .toolTipFinisher();
         return tt;

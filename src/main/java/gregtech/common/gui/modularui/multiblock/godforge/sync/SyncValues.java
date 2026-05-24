@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -40,9 +39,9 @@ public class SyncValues {
     // General Syncers //
     // --------------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters>> FORMATTER = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Formatters, ?>> FORMATTER = new ForgeOfGodsSyncValue<>(
         "fog.sync.formatter",
-        data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter));
+        data -> new EnumSyncValue<>(Formatters.class, data::getFormatter, data::setFormatter).allowC2S());
 
     public static final HybridSyncValue<BooleanSyncValue> INVERSION = new HybridSyncValue<>(
         "fog.sync.inversion",
@@ -57,9 +56,9 @@ public class SyncValues {
     // Fuel //
     // ---- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Fuels, ?>> SELECTED_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_fuel",
-        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)));
+        data -> new EnumSyncValue<>(Fuels.class, () -> Fuels.getFromData(data), fuel -> fuel.select(data)).allowC2S());
 
     public static final ForgeOfGodsSyncValue<LongSyncValue> FUEL_CONSUMPTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_consumption",
@@ -67,7 +66,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> FUEL_FACTOR = new ForgeOfGodsSyncValue<>(
         "fog.sync.fuel_factor",
-        data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor));
+        data -> new IntSyncValue(data::getFuelConsumptionFactor, data::setFuelConsumptionFactor).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> NEEDED_STARTUP_FUEL = new ForgeOfGodsSyncValue<>(
         "fog.sync.needed_startup_fuel",
@@ -83,7 +82,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> BATTERY_CHARGING = new ForgeOfGodsSyncValue<>(
         "fog.sync.battery_charging",
-        data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging));
+        data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> INTERNAL_BATTERY = new ForgeOfGodsSyncValue<>(
         "fog.sync.internal_battery",
@@ -91,7 +90,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> MAX_BATTERY_CHARGE = new ForgeOfGodsSyncValue<>(
         "fog.sync.max_battery_charge",
-        data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge));
+        data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge).allowC2S());
 
     // --------------- //
     // Graviton Shards //
@@ -99,17 +98,17 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> SHARD_EJECTION = new ForgeOfGodsSyncValue<>(
         "fog.sync.shard_ejection",
-        data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection));
+        data -> new BooleanSyncValue(data::isGravitonShardEjection, data::setGravitonShardEjection).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new ForgeOfGodsSyncValue<>(
         "fog.sync.available_graviton_shards",
-        data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable));
+        data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable).allowC2S());
 
     // -------- //
     // Upgrades //
     // -------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<ForgeOfGodsUpgrade>> UPGRADE_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<ForgeOfGodsUpgrade, ?>> UPGRADE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.upgrade_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -117,7 +116,7 @@ public class SyncValues {
             return new EnumSyncValue<>(
                 ForgeOfGodsUpgrade.class,
                 () -> ForgeOfGodsUpgrade.VALUES[i.intValue()],
-                val -> i.setValue(val.ordinal()));
+                val -> i.setValue(val.ordinal())).allowC2S();
         });
 
     public static final ForgeOfGodsSyncValue<GenericListSyncHandler<?>> UPGRADES_LIST = new ForgeOfGodsSyncValue<>(
@@ -126,13 +125,13 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> SECRET_UPGRADE = new ForgeOfGodsSyncValue<>(
         "fog.sync.secret_upgrade",
-        data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade));
+        data -> new BooleanSyncValue(data::isSecretUpgrade, data::setSecretUpgrade).allowC2S());
 
     // ---------- //
     // Milestones //
     // ---------- //
 
-    public static final ForgeOfGodsSyncValue<EnumSyncValue<Milestones>> MILESTONE_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<EnumSyncValue<Milestones, ?>> MILESTONE_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.milestone_clicked",
         data -> {
             // Integer for 0 value instead of null value at init. Sync values crash if you try to sync a null
@@ -140,7 +139,7 @@ public class SyncValues {
             return new EnumSyncValue<>(
                 Milestones.class,
                 () -> Milestones.VALUES[i.intValue()],
-                val -> i.setValue(val.ordinal()));
+                val -> i.setValue(val.ordinal())).allowC2S();
         });
 
     public static final ForgeOfGodsSyncValue<BigIntSyncValue> TOTAL_POWER_CONSUMED = new ForgeOfGodsSyncValue<>(
@@ -199,37 +198,20 @@ public class SyncValues {
     // Star Color //
     // ---------- //
 
-    public static final ForgeOfGodsSyncValue<GenericSyncValue<ForgeOfGodsStarColor>> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<StatColorSyncValue> STAR_COLOR_CLICKED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_clicked",
-        data -> {
-            MutableObject<ForgeOfGodsStarColor> mut = new MutableObject<>(data.getStarColors().newTemplateColor());
-
-            return new GenericSyncValue<>(ForgeOfGodsStarColor.class,
-                mut::getValue,
-                mut::setValue,
-                ForgeOfGodsStarColor::readFromBuffer,
-                ForgeOfGodsStarColor::writeToBuffer, null, null, false) {
-
-                @Override
-                public void setValue(ForgeOfGodsStarColor value, boolean setSource, boolean sync) {
-                    if (value == null) {
-                        value = data.getStarColors().newTemplateColor();
-                    }
-                    super.setValue(value, setSource, sync);
-                }
-            };
-        });
+        data -> new StatColorSyncValue(new MutableObject<>(data.getStarColors().newTemplateColor()), data).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_COLOR_EDITING_INDEX = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_color_editing_index",
         data -> {
             MutableInt i = new MutableInt(-1);
-            return new IntSyncValue(i::intValue, i::setValue);
+            return new IntSyncValue(i::intValue, i::setValue).allowC2S();
         });
 
     public static final ForgeOfGodsSyncValue<StringSyncValue> SELECTED_STAR_COLOR = new ForgeOfGodsSyncValue<>(
         "fog.sync.selected_star_color",
-        data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor));
+        data -> new StringSyncValue(data::getSelectedStarColor, data::setSelectedStarColor).allowC2S());
 
     public static final ForgeOfGodsSyncValue<GenericListSyncHandler<ForgeOfGodsStarColor>> STAR_COLORS = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_colors",
@@ -237,11 +219,11 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_ROTATION_SPEED = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_rotation_speed",
-        data -> new IntSyncValue(data::getRotationSpeed, data::setRotationSpeed));
+        data -> new IntSyncValue(data::getRotationSpeed, data::setRotationSpeed).allowC2S());
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> STAR_SIZE = new ForgeOfGodsSyncValue<>(
         "fog.sync.star_size",
-        data -> new IntSyncValue(data::getStarSize, data::setStarSize));
+        data -> new IntSyncValue(data::getStarSize, data::setStarSize).allowC2S());
 
     public static final ForgeOfGodsSyncValue<BooleanSyncValue> RENDERER_DISABLED = new ForgeOfGodsSyncValue<>(
         "fog.sync.renderer_disabled",
@@ -257,19 +239,19 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(
         "fog.sync.smelting_mode",
-        module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
+        module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode).allowC2S());
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.debug_plasma_parallel",
-        module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallel));
+        module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallel).allowC2S());
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_FUSION_TIER = new ModuleSyncValue<>(
         "fog.sync.debug_fusion_tier",
-        module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTier));
+        module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTier).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEPlasmaModule> DEBUG_MULTI_STEP = new ModuleSyncValue<>(
         "fog.sync.debug_multi_step",
-        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma));
+        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_CAPABLE = new ModuleSyncValue<>(
         "fog.sync.magmatter_capable",
@@ -277,7 +259,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_MODE = new ModuleSyncValue<>(
         "fog.sync.magmatter_mode",
-        module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode));
+        module -> new BooleanSyncValue(module::isMagmatterModeOn, module::setMagmatterMode).allowC2S());
 
     public static final ModuleSyncValue<LongSyncValue, MTEExoticModule> EXOTIC_INPUTS_TICKER = new ModuleSyncValue<>(
         "fog.sync.exotic_inputs_ticker",
@@ -289,15 +271,15 @@ public class SyncValues {
 
     public static final ModuleSyncValue<IntSyncValue, MTEBaseModule> MODULE_SET_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_set_max_parallel",
-        module -> new IntSyncValue(module::getPowerPanelMaxParallel, module::setPowerPanelMaxParallel));
+        module -> new IntSyncValue(module::getPowerPanelMaxParallel, module::setPowerPanelMaxParallel).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_ALWAYS_MAX_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.module_always_max_parallel",
-        module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel));
+        module -> new BooleanSyncValue(module::isAlwaysMaxParallel, module::setAlwaysMaxParallel).allowC2S());
 
     public static final ModuleSyncValue<LongSyncValue, MTEBaseModule> MODULE_PROCESSING_VOLTAGE = new ModuleSyncValue<>(
         "fog.sync.module_processing_voltage",
-        module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage));
+        module -> new LongSyncValue(module::getProcessingVoltage, module::setProcessingVoltage).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEBaseModule> MODULE_VOLTAGE_CONFIG = new ModuleSyncValue<>(
         "fog.sync.module_voltage_config",

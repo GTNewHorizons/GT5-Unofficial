@@ -112,7 +112,7 @@ public class ManualInsertionPanel {
         panel.child(mainRow);
 
         // Consume inputs button
-        EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
+        EnumSyncValue<ForgeOfGodsUpgrade, ?> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
         panel.child(
@@ -146,7 +146,7 @@ public class ManualInsertionPanel {
     }
 
     private static Flow createCostRow(SyncHypervisor hypervisor, int index) {
-        EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
+        EnumSyncValue<ForgeOfGodsUpgrade, ?> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
         return Flow.row()
@@ -180,8 +180,7 @@ public class ManualInsertionPanel {
                                 }
                             })
                             .tooltipAutoUpdate(true)
-                            .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index))
-                            .size(18))
+                            .setEnabledIf($ -> hasExtraCost(upgradeSyncer, index)))
             .child(IKey.dynamic(() -> {
                 ForgeOfGodsUpgrade upgrade = upgradeSyncer.getValue();
                 ItemStack costStack = upgrade.getExtraCost()[index];
@@ -212,12 +211,13 @@ public class ManualInsertionPanel {
                     .setEnabledIf($ -> isExtraCostPaid(upgradeSyncer, hypervisor.getData(), index)));
     }
 
-    private static boolean hasExtraCost(EnumSyncValue<ForgeOfGodsUpgrade> syncer, int index) {
+    private static boolean hasExtraCost(EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer, int index) {
         return syncer.getValue()
             .getExtraCost()[index] != null;
     }
 
-    private static boolean isExtraCostPaid(EnumSyncValue<ForgeOfGodsUpgrade> syncer, ForgeOfGodsData data, int index) {
+    private static boolean isExtraCostPaid(EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer, ForgeOfGodsData data,
+        int index) {
         ForgeOfGodsUpgrade upgrade = syncer.getValue();
         ItemStack costStack = upgrade.getExtraCost()[index];
         short amountPaid = data.getUpgrades()

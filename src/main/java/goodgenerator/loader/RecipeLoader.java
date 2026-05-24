@@ -54,9 +54,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class RecipeLoader {
 
@@ -1349,6 +1351,40 @@ public class RecipeLoader {
                 Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Fridge Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_FrostProof.get(4),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 64),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Ledox, 2L),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CallistoIce, 2L))
+            .itemOutputs(ItemList.CasingFridge.get(4))
+            .fluidInputs(
+                Materials.SuperCoolant.getFluid(4000),
+                new FluidStack(TFFluids.fluidCryotheum, 1_000),
+                Materials.TungstenSteel.getMolten(2 * INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Hearth Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_HeatProof.get(4),
+                Materials.AshDark.getDust(64),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Netherite, 1L),
+                GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1))
+            .itemOutputs(ItemList.CasingHearth.get(4))
+            .fluidInputs(
+                new FluidStack(GTPPFluids.Pyrotheum, 1_000),
+                Materials.TungstenCarbide.getMolten(2 * INGOTS),
+                Materials.PrismaticNaquadah.getMolten(72))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }

@@ -289,7 +289,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         }
 
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.dangote_missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.dangote_missing_top"));
         }
         if (mHeight == 1) {
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
@@ -396,7 +396,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineType() {
-        return "Distillery, Distillation Tower";
+        return "Distillery, DT";
     }
 
     @Override

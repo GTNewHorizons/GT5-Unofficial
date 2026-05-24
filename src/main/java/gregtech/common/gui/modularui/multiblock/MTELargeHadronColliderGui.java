@@ -208,17 +208,23 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         outputWidget.child(
             new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
-            .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
+            .child(
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine));
 
         return outputWidget;
     }

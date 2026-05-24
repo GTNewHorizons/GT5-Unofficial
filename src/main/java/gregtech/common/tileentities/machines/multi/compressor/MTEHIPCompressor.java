@@ -281,9 +281,9 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
                 "Any Electric Compressor Casing",
                 1)
-            .addInputBus("Pipe Casings on Side", 2)
-            .addInputHatch("Pipe Casings on Side", 2)
-            .addOutputBus("Pipe Casings on Side", 2)
+            .addInputBus("Pipe Casing on Side", 2)
+            .addInputHatch("Pipe Casing on Side", 2)
+            .addOutputBus("Pipe Casing on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)

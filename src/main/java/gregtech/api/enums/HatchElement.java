@@ -23,6 +23,10 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
@@ -129,6 +133,43 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.getCryotheumHatches()
                 .size();
         }
+    },
+    LaserSource("GT5U.MBTT.LaserSourceHatch", MTEMultiBlockBase::addLaserSourceToMachineList,
+        MTEHatchDynamoTunnel.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getExoticDynamoHatches()
+                .stream()
+                .filter(MTEHatchDynamoTunnel.class::isInstance)
+                .count();
+        }
+    },
+    BeamlineInput("GT5U.MBTT.BeamlineInputHatch", MTEMultiBlockBase::addBeamlineInputToMachineList,
+        MTEHatchInputBeamline.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getBeamlineInputHatches()
+                .size();
+        }
+    },
+    BeamlineOutput("GT5U.MBTT.BeamlineOutputHatch", MTEMultiBlockBase::addBeamlineOutputToMachineList,
+        MTEHatchOutputBeamline.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getBeamlineOutputHatches()
+                .size();
+        }
+    },
+    FocusInput("GT5U.MBTT.FocusInputBus", MTEMultiBlockBase::addFocusInputToMachineList, MTEBusInputFocus.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getFocusInputBuses()
+                .size();
+        }
     };
 
     private final String name;
@@ -151,6 +192,11 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
     @Override
     public String getDisplayName() {
         return GTUtility.translate(name);
+    }
+
+    @Override
+    public String getDescriptionLangKey() {
+        return name;
     }
 
     @Override

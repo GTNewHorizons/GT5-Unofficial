@@ -116,7 +116,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 7, true)
             .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casings", 40, false)
+            .addCasingInfoMin("Wash Plant Casing", 40, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
