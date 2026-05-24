@@ -669,7 +669,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         // Mark all covers to send the data... many cover does not actually need syncing,
         // but they override their methods to require it.
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            issueCoverUpdate(side);
+            if (covers[side.ordinal()].isDataNeededOnClient()) issueCoverUpdate(side);
         }
         return ByteBuffer.allocate(2 + 24 + 4)
             .putShort(mID)
