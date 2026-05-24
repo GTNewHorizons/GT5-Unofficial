@@ -76,6 +76,11 @@ public class MechArmorBase extends ItemArmor
 
     protected String type;
 
+    @SideOnly(Side.CLIENT)
+    private ModelMechArmor modelLegs;
+    @SideOnly(Side.CLIENT)
+    private ModelMechArmor modelOther;
+
     public static final String MECH_FRAME_KEY = "frame";
     public static final String MECH_CORE_KEY = "core";
 
@@ -132,7 +137,7 @@ public class MechArmorBase extends ItemArmor
             behavior.onArmorTick(context);
         }
 
-        context.save();
+        if (context.isDirty()) context.save();
     }
 
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
@@ -153,12 +158,18 @@ public class MechArmorBase extends ItemArmor
         ArmorContext context = load(world, player, stack);
 
         if (player instanceof EntityPlayerMP playerMP) {
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+                for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
+                    keyBind.registerPlayerListener(playerMP, this);
+                }
+            }
+        }
+
+        if (world.isRemote) {
             boolean initMessage = false;
 
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
-                    keyBind.registerPlayerListener(playerMP, this);
-
                     if (!initMessage) {
                         GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
                         initMessage = true;
@@ -166,7 +177,7 @@ public class MechArmorBase extends ItemArmor
 
                     if (keyBind.getKeybinding() != null) {
                         GTUtility.sendChatToPlayer(
-                            playerMP,
+                            player,
                             GTUtility.translate(
                                 keyBind.getKeybinding()
                                     .getKeyDescription())
@@ -254,9 +265,11 @@ public class MechArmorBase extends ItemArmor
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        ModelMechArmor model;
-        if (armorSlot == SLOT_LEGS) model = new ModelMechArmor(0.25F);
-        else model = new ModelMechArmor(0.5F);
+        if (modelLegs == null) modelLegs = new ModelMechArmor(0.25F);
+        if (modelOther == null) modelOther = new ModelMechArmor(0.5F);
+
+        ModelMechArmor model = (armorSlot == SLOT_LEGS) ? modelLegs : modelOther;
+
         model.bipedHead.showModel = (armorType == 0);
         model.bipedHeadwear.showModel = (armorType == 0);
         model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
@@ -269,6 +282,10 @@ public class MechArmorBase extends ItemArmor
 
         model.jettank1.showModel = (armorSlot == SLOT_CHEST && state.hasBehavior(BehaviorName.Jetpack));
 
+        model.core1.showModel = false;
+        model.core2.showModel = false;
+        model.core3.showModel = false;
+        model.core4.showModel = false;
         if (state.core != null) {
             switch (state.core.getTier()) {
                 case 1 -> model.core1.showModel = true;
