@@ -68,38 +68,43 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         syncManager.syncValue(
             "Module1",
-            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module2",
-            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module3",
-            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module4",
-            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Tier",
             new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
 
-        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val)
+            .allowC2S();
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
             calculatorData.setModule(0, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
             calculatorData.setModule(1, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
             calculatorData.setModule(2, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
             calculatorData.setModule(3, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
     }
 
     @Override

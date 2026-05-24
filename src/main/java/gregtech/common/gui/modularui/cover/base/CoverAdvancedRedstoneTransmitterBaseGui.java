@@ -23,7 +23,7 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
 
     @Override
     protected Flow makeButtonRow(UUID uuid) {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
         String textNormal = translateToLocal("gt.interact.desc.normal");
         String textInverted = translateToLocal("gt.interact.desc.inverted");
         IKey.renderer.setAlignment(Alignment.TopLeft, -1, -1);

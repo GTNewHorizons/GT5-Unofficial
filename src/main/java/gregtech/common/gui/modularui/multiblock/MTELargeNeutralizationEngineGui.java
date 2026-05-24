@@ -136,7 +136,8 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     }
 
     private IWidget makeMaxFluidConfigurator() {
-        IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse);
+        IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse)
+            .allowC2S();
         return Flow.row()
             .widthRel(1)
             .marginBottom(4)
