@@ -165,7 +165,7 @@ particle.photon=Фотон
 particle.alpha=Альфа частица
 particle.neutron=Нейтрон
 particle.proton=Протон
-GT5U.gui.text.dissolution_ratio=§7Неверное соотношение исходных жидкостей
+GT5U.gui.text.recipe_result.dissolution_ratio=§7Неверное соотношение исходных жидкостей
 
 tooltip.gtnhlanth.particle.rest_mass=Масса покоя: %f MeV
 tooltip.gtnhlanth.particle.charge=Заряд: %s e

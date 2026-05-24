@@ -271,7 +271,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             return;
         }
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
             return;
         }
         checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);

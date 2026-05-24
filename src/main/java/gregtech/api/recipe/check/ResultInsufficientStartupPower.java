@@ -35,8 +35,9 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.insufficient_startup_power", formatNumber(required)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.recipe_result.insufficient_startup_power",
+                formatNumber(required)));
     }
 
     @Override

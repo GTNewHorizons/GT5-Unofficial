@@ -587,7 +587,7 @@ public class HatchElementBuilder<T> {
             }
 
             @Override
-            public List<String> getDescription() {
+            public List<String> getDescription(T context) {
                 if (mDescriptionNames != null) {
                     return mDescriptionNames.get();
                 }
