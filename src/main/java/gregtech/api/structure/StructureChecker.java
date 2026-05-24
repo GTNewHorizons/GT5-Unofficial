@@ -34,7 +34,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
         if (!result) {
             this.success = false;
             if (errors != null) {
-                List<String> description = element.getDescription();
+                List<String> description = element.getDescription(instance);
                 if (description == null) {
                     description = Collections.emptyList();
                 }

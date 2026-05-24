@@ -38,8 +38,8 @@ public class DoubleParameter extends NumericParameter<Double> {
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
-        return new DoubleSyncValue(this::getValue, this::setValue);
+    public SyncHandler<?> createSyncHandler() {
+        return new DoubleSyncValue(this::getValue, this::setValue).allowC2S();
     }
 
     public double validateValue(double num) {

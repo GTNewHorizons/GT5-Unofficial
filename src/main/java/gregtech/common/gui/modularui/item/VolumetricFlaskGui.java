@@ -33,7 +33,7 @@ public class VolumetricFlaskGui {
     public ModularPanel build() {
         IntSyncValue cap = new IntSyncValue(
             () -> VolumetricFlaskHelper.getFlaskCapacity(data.getUsedItemStack()),
-            val -> VolumetricFlaskHelper.setFlaskCapacity(data.getUsedItemStack(), val));
+            val -> VolumetricFlaskHelper.setFlaskCapacity(data.getUsedItemStack(), val)).allowC2S();
 
         ModularPanel panel = new ModularPanel("volumetricFlask").size(150, 50)
             .child(ButtonWidget.panelCloseButton());

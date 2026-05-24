@@ -239,7 +239,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             .addCasingInfoMin(GTUtility.translate("ig.siphon.structure.SiphonCasing"), 175, false)
             .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), 6, false)
             .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.FrameTungstensteel"), 93, false)
-            .addCasingInfoExactly("Heating Coils", 12, true)
+            .addCasingInfoExactly("Heating Coil", 12, true)
             .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)

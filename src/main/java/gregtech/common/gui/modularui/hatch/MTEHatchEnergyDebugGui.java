@@ -103,8 +103,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue voltageTierSyncer = new IntSyncValue(machine::getVoltageTier, machine::setVoltageTier);
-        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
+        IntSyncValue voltageTierSyncer = new IntSyncValue(machine::getVoltageTier, machine::setVoltageTier).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
 
         Flow numberInputColumn = Flow.column()
             .coverChildren()
@@ -182,7 +182,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue intervalSyncer = new IntSyncValue(machine::getRefillInterval, machine::setRefillInterval);
+        IntSyncValue intervalSyncer = new IntSyncValue(machine::getRefillInterval, machine::setRefillInterval)
+            .allowC2S();
 
         // row to allow setting of 'refill interval'
         Flow intervalRow = Flow.row()
