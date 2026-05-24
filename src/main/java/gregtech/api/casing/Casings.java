@@ -519,8 +519,12 @@ public enum Casings implements ICasing {
 
 
     // Block Casings 14
+    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
 
+    FridgeCasing(()->GregTechAPI.sBlockCasings14,4,gt(16,7,4)),
     // Block Reinforced
+    TungstenSteelReinforcedBlock
+        (() -> GregTechAPI.sBlockReinforced,3,211),
     NaquadahReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,10,218),
 
@@ -609,6 +613,14 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
     FineStructureConstantManipulator
         (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
+    ConflictInducementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 3, gt(17, 0, 3)),
+    PeaceEnforcementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 4, gt(17, 0, 4)),
+    CondensateTransformativeCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 5, gt(17, 0, 5)),
+    CondensateGuidanceCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 6, gt(17, 0, 6)),
 
     // Block Glass 1
     ChemicalGradeGlass

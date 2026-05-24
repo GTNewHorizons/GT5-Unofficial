@@ -1,49 +1,23 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
-
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 
 public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsumable> {
 
-    public MTEHatchNbtConsumableGui(MTEHatchNbtConsumable hatch) {
-        super(hatch);
-        dimension = switch (hatch.getInputSlotCount()) {
-            case 4 -> {
-                yield 2;
-            }
-            case 9 -> {
-                yield 3;
-            }
-            case 16 -> {
-                yield 4;
-            }
-            default -> {
-                yield 1;
-            }
-        };
+    public MTEHatchNbtConsumableGui(MTEHatchNbtConsumable machine) {
+        super(machine);
+        dimension = (int) Math.floor(Math.sqrt(machine.getInputSlotCount()));
     }
 
-    private int dimension = 1;
-
-    @Override
-    public void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("input", dimension);
-        syncManager.registerSlotGroup("output", dimension);
-    }
+    private final int dimension;
 
     @Override
     protected boolean doesAddGregTechLogo() {
@@ -54,73 +28,52 @@ public class MTEHatchNbtConsumableGui extends MTEHatchBaseGui<MTEHatchNbtConsuma
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow slotRow = Flow.row()
             .coverChildren()
-            .topRel(0.4f)
-            .horizontalCenter();
-        final int amountPerSlotGroup = hatch.getInputSlotCount();
+            .center();
 
         // < 4x4 slot groups have logo in the corner, otherwise its in the center
         boolean logoOverride = !this.doesAddGregTechLogo();
 
-        slotRow.child(createInputColumn(amountPerSlotGroup).marginRight(logoOverride ? 0 : 54));
+        slotRow.child(createInputColumn(syncManager).marginRight(logoOverride ? 0 : ((4 - dimension) * SLOT_SIZE)));
         slotRow.childIf(logoOverride, this::createLogo);
-        slotRow.child(createOutputColumn(amountPerSlotGroup));
+        slotRow.child(createOutputColumn(syncManager));
 
         return super.createContentSection(panel, syncManager).child(slotRow);
     }
 
-    protected Flow createInputColumn(int amountPerSlotGroup) {
-        Flow inputColumn = Flow.column()
-            .coverChildren();
-        if (amountPerSlotGroup < 16) {
-            inputColumn.child(
-                IKey.lang("gtpp.gui.text.stock")
-                    .asWidget());
-        }
-        String[] matrix = new String[dimension];
-        String row = "";
-        for (int i = 0; i < dimension; i++) {
-            row += "c";
-        }
-        Arrays.fill(matrix, row);
-        inputColumn.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'c',
-                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("input")))
-                .build());
-        return inputColumn;
+    protected Flow createInputColumn(PanelSyncManager syncManager) {
+        return Flow.column()
+            .coverChildren()
+            .childIf(
+                machine.getInputSlotCount() < 16,
+                () -> IKey.lang("gtpp.gui.text.stock")
+                    .asWidget()
+                    .decoration())
+            .child(
+                new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(dimension)
+                    .slotGroupKey("input")
+                    .build());
+    }
+
+    protected Flow createOutputColumn(PanelSyncManager syncManager) {
+        int inputSlotCount = machine.getInputSlotCount();
+
+        return Flow.column()
+            .coverChildren()
+            .childIf(
+                inputSlotCount < 16,
+                () -> IKey.lang("gtpp.gui.text.active")
+                    .asWidget()
+                    .decoration())
+            .child(
+                new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(dimension)
+                    .slotGroupKey("output")
+                    .canPut(false)
+                    .indexOffset(inputSlotCount)
+                    .build());
     }
 
     @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo().margin(0);
-    }
-
-    protected Flow createOutputColumn(int amountPerSlotGroup) {
-        Flow outputColumn = Flow.column()
-            .coverChildren();
-        if (amountPerSlotGroup < 16) {
-            outputColumn.child(
-                IKey.lang("gtpp.gui.text.active")
-                    .asWidget());
-        }
-
-        String[] matrix = new String[dimension];
-        String row = "";
-        for (int i = 0; i < dimension; i++) {
-            row += "c";
-        }
-        Arrays.fill(matrix, row);
-        outputColumn.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'c',
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(hatch.inventoryHandler, index + amountPerSlotGroup).accessibility(false, true)
-                            .slotGroup("output")))
-                .build());
-        return outputColumn;
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

@@ -43,6 +43,11 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
     }
 
     @Override
+    public int getSlotLimit(int slot) {
+        return slot == FILTER_SLOT_INDEX ? 1 : super.getSlotLimit(slot);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("bNBTAllowed", this.allowNbt);
@@ -132,10 +137,5 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
         public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
             return getItemStackReplacementTooltip();
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 }

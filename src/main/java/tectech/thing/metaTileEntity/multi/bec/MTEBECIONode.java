@@ -2,10 +2,13 @@ package tectech.thing.metaTileEntity.multi.bec;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
-import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
+import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
+import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -164,8 +167,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 64, Arrays.asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
-        structure.addCasing('D', AdvancedFusionCoilII);
-        structure.addCasing('E', ElectromagneticWaveguide);
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
+        structure.addCasing('F', CondensateTransformativeCoil);
+        structure.addCasing('G', CondensateGuidanceCoil);
+        structure.addCasing('H', ElectromagneticWaveguide);
 
         return structure.buildStructure(definition);
     }
@@ -182,7 +188,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC I/O Node, Input bus, Output bus")
+        tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
 
         tt.beginStructureBlock();
@@ -911,7 +917,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot) {
+            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
             return SettingsPanel.builder()
                 .setDividerPosition(75)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))

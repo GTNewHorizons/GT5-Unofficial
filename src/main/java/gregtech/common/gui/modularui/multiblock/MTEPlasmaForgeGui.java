@@ -53,8 +53,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
             .syncedPanel("catalystPanel", true, (p_syncManager, syncHandler) -> openCatalystPanel(syncManager, parent));
 
         BooleanSyncValue convergenceSyncer = syncManager.findSyncHandler("convergence", BooleanSyncValue.class);
-        return new ButtonWidget<>().size(18)
-            .marginBottom(2)
+        return new ButtonWidget<>().marginBottom(2)
             .tooltip(
                 t -> t.addLine(translateToLocal("GT5U.DTPF.convergencebutton"))
                     .addLine(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))

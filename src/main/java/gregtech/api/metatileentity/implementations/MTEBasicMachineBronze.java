@@ -128,11 +128,6 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return super.isFacingValid(facing) && facing != mMainFacing;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 1000;
     }
