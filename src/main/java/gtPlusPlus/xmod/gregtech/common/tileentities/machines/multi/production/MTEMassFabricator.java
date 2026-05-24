@@ -181,7 +181,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         checkHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasOutputHatch(errors);
-        checkHasAnyInput(errors);
     }
 
     @Override

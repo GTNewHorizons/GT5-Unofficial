@@ -150,6 +150,6 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode));
+        syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode).allowC2S());
     }
 }
