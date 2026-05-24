@@ -134,9 +134,9 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .beginStructureBlock(3, 8, 3, true)
             .addController("Front bottom center")
             .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
+            .addEnergyHatch("Any Casing", 1, 2)
+            .addMaintenanceHatch("Any Casing", 1, 2, 3)
+            .addInputHatch("2x Input Hatches, any bottom layer Casing", 1)
             .addOutputHatch("Output Hatches on any layer except bottom (each hatch enables that layer's output)", 2, 3)
             .toolTipFinisher();
         return tt;
@@ -276,7 +276,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
         checkCasingMin(errors, mCasing, 45);
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);

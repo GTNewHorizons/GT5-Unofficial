@@ -672,13 +672,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         if (mInputBusses.isEmpty() && mInputHatches.isEmpty()
             && mDualInputHatches.isEmpty()
             && mSmartInputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_any_input"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_input"));
         }
     }
 
     protected void checkHasAnyOutput(List<StructureError> errors) {
         if (mOutputBusses.isEmpty() && mOutputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_any_output"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_output"));
         }
     }
 

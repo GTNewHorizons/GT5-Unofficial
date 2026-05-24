@@ -140,7 +140,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
+            .addStructureInfo("If width or length is even, it can be in either of the two middle positions")
             .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
             .addOtherStructurePart(
                 "Plascrete Blocks",
@@ -611,7 +611,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
         if (dyMin == 0 || !checkCeiling(aBaseMetaTileEntity, errors)) {
             errors.clear();
             if (!checkSize(aBaseMetaTileEntity)) {
-                errors.add(StructureErrors.of("GT5U.gui.text.cleanroom_size"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cleanroom_size"));
                 return;
             }
             if (!checkCeiling(aBaseMetaTileEntity, errors)) return;
@@ -662,7 +662,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
             errors.add(StructureErrors.missingCasings(casingCount, MachineStats.cleanroom.minCasingCount));
         } else if ((otherCount * 100) / (casingCount + otherCount) > MachineStats.cleanroom.maxReplacementPercentage) {
             if (debugCleanroom) GTLog.out.println("Cleanroom: Too many non-plascrete blocks.");
-            errors.add(StructureErrors.of("GT5U.gui.text.cleanroom_plascrete"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cleanroom_plascrete"));
         }
 
         if (!errors.isEmpty()) return;

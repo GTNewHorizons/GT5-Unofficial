@@ -58,7 +58,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             column.child(
                 IKey.str(
                     GTUtility.translate(
-                        "GT5U.gui.missing_casings_specific",
+                        "GT5U.gui.text.structure_error.missing_casings_specific",
                         stack.getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
@@ -80,7 +80,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             if (sb.length() > 0) sb.append('\n');
             sb.append(
                 GTUtility.translate(
-                    "GT5U.gui.missing_casings_specific",
+                    "GT5U.gui.text.structure_error.missing_casings_specific",
                     stack.getDisplayName(),
                     tag.getInteger("req"),
                     tag.getInteger("pres")));

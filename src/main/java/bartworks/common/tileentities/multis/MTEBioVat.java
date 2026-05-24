@@ -200,20 +200,20 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
+            .addCasingInfoMin("Clean Stainless Steel Casing", 19, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("tooltip.bw.structure.glass"),
                 "Hollow two middle layers",
                 2)
             .addCasingInfoExactly("Any Tiered Glass", 32, true)
             .addStructureInfo("Some Recipes need more advanced Glass Types")
-            .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -362,7 +362,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         checkCasingMin(errors, mCasing, 19);
 
         if (mRadHatches.size() > 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.too_many_radiation_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_radiation_hatch"));
         }
 
         checkHasEnergyHatch(errors);

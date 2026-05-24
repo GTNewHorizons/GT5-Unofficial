@@ -44,7 +44,9 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
         syncManager.syncValue("Parallels", new IntSyncValue(multiblock::getTrueParallel));
         syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
         syncManager.syncValue("modeString", new StringSyncValue(multiblock::modeToString));
-        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub));
+        syncManager.syncValue(
+            "modeValue",
+            new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub).allowC2S());
     }
 
     @Override
@@ -207,7 +209,7 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
                                     .value(
                                         new BooleanSyncValue(
                                             () -> multiblock.tier2Fluid,
-                                            bool -> multiblock.tier2Fluid = bool))
+                                            bool -> multiblock.tier2Fluid = bool).allowC2S())
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 

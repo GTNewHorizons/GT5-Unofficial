@@ -47,7 +47,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
         syncManager.syncValue("canUseWireless", new BooleanSyncValue(multiblock::canUseWireless));
         syncManager.syncValue(
             "wirelessMode",
-            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled));
+            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled).allowC2S());
         syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
         syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
         syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));

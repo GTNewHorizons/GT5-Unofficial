@@ -23,7 +23,9 @@ public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
-            .child(CommonWidgets.createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted)))
+            .child(
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .child(createThresholdFieldRow())
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -37,7 +39,7 @@ public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 1200000000)
                     .size(77, 12)
-                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold))
+                    .value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gui.NeutronSensor.4")
