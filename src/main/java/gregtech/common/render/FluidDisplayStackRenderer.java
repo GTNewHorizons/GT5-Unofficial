@@ -51,7 +51,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
             int tint;
-            if (baseMaterial instanceof Material gtppMaterial) {
+            if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
                 tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
             } else {
                 Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());

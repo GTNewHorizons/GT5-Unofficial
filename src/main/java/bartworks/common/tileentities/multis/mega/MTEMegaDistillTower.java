@@ -326,7 +326,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);

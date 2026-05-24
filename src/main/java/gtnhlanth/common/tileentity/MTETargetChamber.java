@@ -379,7 +379,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         checkHatchExact(errors, InputBus, 1);
         checkHatchExact(errors, OutputBus, 1);
         if (this.mFocusInputBuses.size() != 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_focus_input"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_focus_input"));
         }
     }
 

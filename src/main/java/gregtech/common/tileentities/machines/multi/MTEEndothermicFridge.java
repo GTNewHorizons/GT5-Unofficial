@@ -65,6 +65,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -231,7 +232,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 148, false)
             .addCasingInfoExactly("Callisto Ice Frame Box", 146, false)
             .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 135, false)
-            .addCasingInfoExactly("Coolant Duct", 50, false)
+            .addCasingInfoExactly("Coolant Duct", 51, false)
             .addCasingInfoExactly("Ledox Sheetmetal", 40, false)
             .addCasingInfoExactly("Any Tiered Glass", 18, false)
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier 1 Structure:")
@@ -363,11 +364,15 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         machineTier = -1;
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)
-            && casingAmount >= 750;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+        checkCasingMin(errors, casingAmount, 750);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
     }
 
     public BoosterFluid findBoosterFluid() {

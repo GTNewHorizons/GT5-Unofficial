@@ -2769,17 +2769,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) {
-                errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
                 return;
             }
 
             if (mExoticEnergyHatches.size() != 1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
                 return;
             }
         }
         if (mEnergyHatches.size() > 2) {
-            errors.add(StructureErrors.of("GT5U.gui.text.one_tt_or_two_energy"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
         }
     }
 

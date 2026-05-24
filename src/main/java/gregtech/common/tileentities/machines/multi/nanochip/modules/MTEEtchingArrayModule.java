@@ -172,9 +172,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         if (!errors.isEmpty()) return;
         if (laserSource == null) {
-            errors.add(StructureErrors.of("GT5U.tooltip.nac.module.etching_array.no_laser"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.etching_array_no_laser"));
         }
-        checkHasInputHatch(errors);
     }
 
     @Override
