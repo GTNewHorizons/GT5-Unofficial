@@ -95,7 +95,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     baseMetaTileEntity.disableWorking();
                 }
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable createPowerPassOverlay() {

@@ -30,10 +30,10 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     }
 
     private Flow makeEnergyTypeRow() {
-        EnumSyncValue<CoverEUMeter.EnergyType> energyTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<CoverEUMeter.EnergyType, ?> energyTypeSyncValue = new EnumSyncValue<>(
             CoverEUMeter.EnergyType.class,
             cover::getType,
-            cover::setType);
+            cover::setType).allowC2S();
         return Flow.row()
             .child(
                 addEnergyTypeTooltips(
@@ -57,7 +57,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     private @NotNull Flow makeEnergyThresholdRow() {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
-                makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold))
+                makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
                     .setNumbersLong(
                         () -> 0L,
                         () -> cover.getType()

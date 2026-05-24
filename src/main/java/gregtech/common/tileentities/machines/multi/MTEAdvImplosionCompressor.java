@@ -102,7 +102,7 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 50, false)
             .addCasingInfoExactly("Refined Graphite Block", 80, false)
-            .addCasingInfoExactly("Gold Frame Boxes", 4, false)
+            .addCasingInfoExactly("Gold Frame Box", 4, false)
             .addCasingInfoExactly("Gold Sheetmetal", 4, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 24, false)
             .addInputBus("Any Robust Tungstensteel Machine Casing", 1)

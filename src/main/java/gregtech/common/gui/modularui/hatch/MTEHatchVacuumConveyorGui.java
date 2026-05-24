@@ -86,7 +86,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = GenericSyncValue
+        GenericSyncValue<CircuitComponentPacket, ?> contentsSyncHandler = GenericSyncValue
             .<CircuitComponentPacket>notNullBuilder()
             .getter(() -> machine.contents != null ? machine.contents : new CircuitComponentPacket())
             .setter(val -> machine.contents = val)
@@ -98,7 +98,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .build();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
-            GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+            GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
                 .findSyncHandler("contents", GenericSyncValue.class);
 
             ItemStack stack = machine.inventoryHandler.getStackInSlot(0);
@@ -137,7 +137,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
 
     private IWidget createCCSlotGroup(ModularPanel panel, PanelSyncManager syncManager) {
         @SuppressWarnings("unchecked")
-        GenericSyncValue<CircuitComponentPacket> componentSyncer = syncManager
+        GenericSyncValue<CircuitComponentPacket, ?> componentSyncer = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
         final String[] matrix = new String[machine.getRowCount()];
@@ -166,7 +166,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        })
+            .allowC2S();
         componentSyncer.setChangeListener(
             () -> componentHandler.notifyUpdate(
                 (packet -> packet.writeNBTTagCompoundToBuffer(
@@ -202,7 +203,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
 
     protected ButtonWidget<?> createVoidButton(PanelSyncManager syncManager) {
         @SuppressWarnings("unchecked")
-        GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+        GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
         return new ButtonWidget<>().overlay(GuiTextures.CODE)

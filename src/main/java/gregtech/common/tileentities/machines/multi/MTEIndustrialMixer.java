@@ -193,7 +193,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Second Layer Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Mixer Containment Casing", 5, false)
             .addCasingInfoExactly("Titanium Turbine Casing", 5, false)
             .addCasingInfoExactly("Any Tiered Glass", 30, true)

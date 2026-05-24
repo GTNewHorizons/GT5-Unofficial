@@ -152,7 +152,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addMaintenanceHatch("Any layer 1 casing", 3)
             .addInputBus("As specified on layer 1", 4)
             .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
+            .addOutputBus("Replaces Input Bus or Solid Steel Machine Casing on layer 1 of last slice", 3)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
                 "Any Grate Machine Casing NOT on the first slice",

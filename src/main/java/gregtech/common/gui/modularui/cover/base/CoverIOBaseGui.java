@@ -35,10 +35,10 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            cover::setIOMode);
+            cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
@@ -46,10 +46,10 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
-        EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
-            cover::setMachineProcessingCondition);
+            cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         IWidget conditionButtons = new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
             .overlay(
@@ -60,10 +60,10 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
-        EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
-            cover::setBlockMode);
+            cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
         IWidget blockingButtons = new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
             .overlay(

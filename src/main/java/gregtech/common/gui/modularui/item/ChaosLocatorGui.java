@@ -39,7 +39,7 @@ public class ChaosLocatorGui {
                 NBTTagCompound tag = guiData.getMainHandItem()
                     .getTagCompound();
                 tag.setInteger("xCoordinate", x);
-            });
+            }).allowC2S();
 
         IntSyncValue zSyncer = new IntSyncValue(
             () -> guiData.getMainHandItem()
@@ -54,7 +54,7 @@ public class ChaosLocatorGui {
                 NBTTagCompound tag = guiData.getMainHandItem()
                     .getTagCompound();
                 tag.setInteger("zCoordinate", z);
-            });
+            }).allowC2S();
 
         panel.resizer()
             .size(100, 100);
