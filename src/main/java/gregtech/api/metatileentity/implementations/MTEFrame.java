@@ -9,7 +9,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,7 +20,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEFrame extends MetaPipeEntity implements ITemporaryTE, ILocalizedMetaPipeEntity {
+public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 
     public static final String LOCALIZED_DESC_FORMAT = "gt.blockmachines.gt_frame.desc.format";
     public final Materials mMaterial;

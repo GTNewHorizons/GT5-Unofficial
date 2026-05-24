@@ -36,7 +36,7 @@ public enum GTPacketTypes {
     ORE_DICT_CACHE(25, new PacketOreDictCache()),
     SERVER_JOINED(26, new PacketServerJoined()),
     EIC(27, new PacketEIC()),
-    CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
+    // ID 28 unused
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
     PLAYER_TELEPORT(31, new PacketTeleportPlayer()),

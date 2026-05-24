@@ -38,13 +38,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
-import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
-import gregtech.api.net.GTPacketCreateTE;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -289,50 +287,26 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             oldUpdateData = getUpdateData();
             oldRedstoneData = getSidedRedstoneMask();
             oldColor = mColor;
-
-            if (mMetaTileEntity instanceof ITemporaryTE) {
-                NW.sendPacketToAllPlayersInRange(
-                    worldObj,
-                    new GTPacketCreateTE(
-                        xCoord,
-                        (short) yCoord,
-                        zCoord,
-                        mID,
-                        getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                        getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                        getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                        getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oldConnections,
-                        oldUpdateData,
-                        oldRedstoneData,
-                        oldColor,
-                        GTPacketCreateTE.TYPE_META_PIPE),
+            NW.sendPacketToAllPlayersInRange(
+                worldObj,
+                new GTPacketTileEntity(
                     xCoord,
-                    zCoord);
-            } else {
-                NW.sendPacketToAllPlayersInRange(
-                    worldObj,
-                    new GTPacketTileEntity(
-                        xCoord,
-                        (short) yCoord,
-                        zCoord,
-                        mID,
-                        getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                        getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                        getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                        getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                        getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oldConnections,
-                        oldUpdateData,
-                        oldRedstoneData,
-                        oldColor),
-                    xCoord,
-                    zCoord);
-                mSendClientData = false;
-            }
+                    (short) yCoord,
+                    zCoord,
+                    mID,
+                    getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
+                    getCoverAtSide(ForgeDirection.UP).getCoverID(),
+                    getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
+                    getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
+                    getCoverAtSide(ForgeDirection.WEST).getCoverID(),
+                    getCoverAtSide(ForgeDirection.EAST).getCoverID(),
+                    oldConnections,
+                    oldUpdateData,
+                    oldRedstoneData,
+                    oldColor),
+                xCoord,
+                zCoord);
+            mSendClientData = false;
         }
 
         sendCoverDataIfNeeded();
