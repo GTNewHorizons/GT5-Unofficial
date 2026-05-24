@@ -61,6 +61,7 @@ import gregtech.api.recipe.maps.CauldronFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.EFRBlastingBackend;
 import gregtech.api.recipe.maps.EFRSmokingBackend;
+import gregtech.api.recipe.maps.FakeCuttingFrontend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -1300,6 +1301,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CUT)
+        .frontend(FakeCuttingFrontend::new)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.cutter_fluids_warning"))
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Cutter.get(1)))
         .build();

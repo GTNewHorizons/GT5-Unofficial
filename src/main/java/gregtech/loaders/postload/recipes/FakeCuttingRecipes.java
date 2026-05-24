@@ -2,14 +2,18 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.cutterFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
@@ -42,20 +46,27 @@ public class FakeCuttingRecipes implements Runnable {
         for (List<GTRecipe> group : groups.values()) {
             if (group.isEmpty()) continue;
 
-            int maxDuration = 0;
             GTRecipe template = group.get(0);
+            List<Integer> durations = new ArrayList<>();
             List<FluidStack> fluids = new ArrayList<>();
 
             for (GTRecipe recipe : group) {
                 mergeFluidVariants(recipe, fluids);
-                maxDuration = Math.max(maxDuration, recipe.mDuration);
+                durations.add(recipe.mDuration);
             }
+
+            String durationInfo = durations.stream()
+                .map(
+                    t -> new BigDecimal(String.format("%.3f", (double) t / SECONDS)).stripTrailingZeros()
+                        .toPlainString())
+                .collect(Collectors.joining("/"));
 
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(template.mInputs)
                 .itemOutputs(template.mOutputs)
                 .eut(template.mEUt)
-                .duration(maxDuration)
+                .duration(template.mDuration)
+                .setNEIDesc(StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", durationInfo))
                 .fake();
 
             if (!fluids.isEmpty()) {
