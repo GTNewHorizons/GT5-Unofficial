@@ -309,7 +309,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 return;
             }
             if (isServerSide) {
-                handleRedstoneChange();
                 if (mTickTimer == 10) {
                     joinEnet();
                 }
@@ -395,17 +394,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         mAverageEUInput[mAverageEUInputIndex] = 0;
         mAverageEUOutput[mAverageEUOutputIndex] = 0;
-    }
-
-    /**
-     * Handles generic Redstone changing
-     */
-    private void handleRedstoneChange() {
-        if (mRedstone == oRedstone && mTickTimer != 10) {
-            return;
-        }
-        oRedstone = mRedstone;
-        issueBlockUpdate();
     }
 
     /**
@@ -652,10 +640,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    protected void sendClientData() {
+    protected final void sendClientData() {
         if (mSendClientData) {
             oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-                | (mRedstone ? 16 : 0)
+                | (getGenericRedstoneOutput() ? 16 : 0)
                 | (mLockUpgrade ? 32 : 0)
                 | (mWorks ? 64 : 0)
                 | (mMuffler ? 128 : 0));
@@ -726,7 +714,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> {
                     mFacing = ForgeDirection.getOrientation((byte) (aValue & 7));
                     mActive = ((aValue & 8) != 0);
-                    mRedstone = ((aValue & 16) != 0);
+                    setGenericRedstoneOutput(((aValue & 16) != 0));
                     // mLockUpgrade = ((aValue&32) != 0);
                     mWorks = ((aValue & 64) != 0);
                     mMuffler = ((aValue & 128) != 0);
@@ -1050,7 +1038,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     private void maybeSendTextureData() {
         byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-            | (mRedstone ? 16 : 0)
+            | (getGenericRedstoneOutput() ? 16 : 0)
             | (mLockUpgrade ? 32 : 0)
             | (mWorks ? 64 : 0)
             | (mMuffler ? 128 : 0));

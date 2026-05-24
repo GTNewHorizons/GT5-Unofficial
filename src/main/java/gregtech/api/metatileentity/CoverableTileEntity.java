@@ -75,7 +75,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private byte validCoversMask;
 
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    protected boolean mRedstone = false;
+    private boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
     protected byte oldStrongRedstone = 0;
 
@@ -249,7 +249,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      */
     private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
-        issueCoverUpdate(side);
+        issueClientUpdate();
         issueBlockUpdate();
     }
 
@@ -421,10 +421,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             : 0;
     }
 
+    public final boolean getGenericRedstoneOutput() {
+        return mRedstone;
+    }
+
     @Override
     public void setGenericRedstoneOutput(boolean aOnOff) {
         mRedstone = aOnOff;
         issueClientUpdate();
+        if (isServerSide()) {
+            issueBlockUpdate();
+        }
     }
 
     @Override
