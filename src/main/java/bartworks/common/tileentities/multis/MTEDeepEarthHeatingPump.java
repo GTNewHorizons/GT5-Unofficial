@@ -119,9 +119,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(
-                this.getFrameMaterial().mName + " Frame Box",
-                "Each pillar's side and 1x3x1 on top")
+            .addOtherStructurePart(this.getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
             .addMaintenanceHatch("Any base Casing")
             .addInputBus("Mining Pipes, optional, any base Casing")
