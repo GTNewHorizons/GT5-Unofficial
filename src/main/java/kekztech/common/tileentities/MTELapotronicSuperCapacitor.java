@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
+import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -300,7 +301,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     public void setStored(BigInteger stored) {
-        this.stored = stored;
+        // need to check server side if we have permission
+        if (GTUtility.isClient()
+            || GTUtility.isServer() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            this.stored = stored;
     }
 
     public long getPassiveDischargeAmount() {
@@ -1155,7 +1159,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTELapotronicSuperCapacitorgui(this);
+        return new MTELapotronicSuperCapacitorGui(this);
     }
 
     @Override

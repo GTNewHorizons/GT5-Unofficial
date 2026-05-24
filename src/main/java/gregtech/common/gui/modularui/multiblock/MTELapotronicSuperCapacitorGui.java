@@ -29,9 +29,9 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import kekztech.util.Util;
 
-public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapotronicSuperCapacitor> {
+public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapotronicSuperCapacitor> {
 
-    public MTELapotronicSuperCapacitorgui(MTELapotronicSuperCapacitor multiblock) {
+    public MTELapotronicSuperCapacitorGui(MTELapotronicSuperCapacitor multiblock) {
         super(multiblock);
     }
 
