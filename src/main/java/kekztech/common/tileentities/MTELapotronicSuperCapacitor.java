@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -301,10 +300,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     public void setStored(BigInteger stored) {
-        // need to check server side if we have permission
-        if (GTUtility.isClient()
-            || GTUtility.isServer() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-            this.stored = stored;
+        this.stored = stored;
     }
 
     public long getPassiveDischargeAmount() {
