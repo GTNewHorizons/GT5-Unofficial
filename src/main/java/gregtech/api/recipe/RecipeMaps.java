@@ -1309,7 +1309,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CUT)
         .frontend(FakeCuttingFrontend::new)
-        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.cutter_fluids_warning"))
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Cutter.get(1)))
         .build();
 

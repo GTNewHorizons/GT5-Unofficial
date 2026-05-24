@@ -3570,7 +3570,6 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.cutter_fluids_warning=§cRecipe time depends on fluid
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
