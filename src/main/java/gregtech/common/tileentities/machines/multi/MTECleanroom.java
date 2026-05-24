@@ -140,7 +140,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
+            .addStructureInfo("If width or length is even, it can be in either of the two middle positions")
             .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
             .addOtherStructurePart(
                 "Plascrete Blocks",

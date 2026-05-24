@@ -160,13 +160,13 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
             .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
             .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addStructureInfo("To use tier 3 + you have to use Fusion Casing MK II")
+            .addInputBus("Any bottom Casing", 1)
+            .addInputHatch("Any bottom Casing", 1)
+            .addOutputBus("Any bottom Casing", 1)
+            .addOutputHatch("Any bottom Casing", 1)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

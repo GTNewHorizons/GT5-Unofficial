@@ -127,7 +127,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInputHatch("Side center line", 1)
             .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
             .addDynamoHatch("Top center line", 2)
-            .addMufflerHatch("Back Center", 3)
+            .addMufflerHatch("Back center", 3)
             .toolTipFinisher();
         return tt;
     }
