@@ -387,7 +387,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             slice.reset();
         }
         mMaxProgresstime = 0;
-        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     @Override
