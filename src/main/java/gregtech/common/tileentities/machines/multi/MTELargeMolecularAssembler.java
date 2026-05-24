@@ -328,9 +328,9 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                     .getLocalizedName(),
                 54,
                 false)
-            .addInputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher();
     }
 

@@ -96,7 +96,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
-    private boolean mEnergyConnectionsDirty = true;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
@@ -419,7 +418,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         oldFacing = mFacing;
         checkDropCover();
         issueBlockUpdate();
-        mEnergyConnectionsDirty = true;
     }
 
     /**
@@ -442,10 +440,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Updates which faces are active for EU I/O
      */
     private void updateActiveEUIOFaces() {
-        if (!mEnergyConnectionsDirty) {
-            return;
-        }
-        mEnergyConnectionsDirty = false;
         if (!mMetaTileEntity.isEnetOutput() && !mMetaTileEntity.isEnetInput()) {
             return;
         }
@@ -1196,11 +1190,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getStoredEU() {
-        if (canAccessData()) {
-            final long cap = mMetaTileEntity.maxEUStore();
-            final long stored = mMetaTileEntity.getEUVar();
-            return stored > cap ? cap : stored;
-        }
+        if (canAccessData()) return Math.min(mMetaTileEntity.getEUVar(), getEUCapacity());
         return 0;
     }
 
@@ -1257,12 +1247,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 return mMetaTileEntity.isOutputFacing(side);
         }
         return false;
-    }
-
-    @Override
-    public void issueCoverUpdate(ForgeDirection side) {
-        super.issueCoverUpdate(side);
-        mEnergyConnectionsDirty = true;
     }
 
     @Override
@@ -1852,24 +1836,21 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             || !inputEnergyFrom(side)
             || aAmperage <= 0
             || aVoltage <= 0
+            || getStoredEU() >= getEUCapacity()
             || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
-        final long euCapacity = mMetaTileEntity.maxEUStore();
-        final long storedEU = mMetaTileEntity.getEUVar();
-        if (storedEU >= euCapacity) return 0;
-        if (aVoltage > mMetaTileEntity.maxEUInput()) {
+        if (aVoltage > getInputVoltage()) {
             GTLog.writeExplosionLog(
                 this.mMetaTileEntity,
-                "Energy Explosion, injected " + aVoltage
-                    + "EU/t in a "
-                    + mMetaTileEntity.maxEUInput()
-                    + "EU/t Machine!");
+                "Energy Explosion, injected " + aVoltage + "EU/t in a " + getInputVoltage() + "EU/t Machine!");
             doExplosion(aVoltage);
             return 0;
         }
         if (increaseStoredEnergyUnits(
             aVoltage * (aAmperage = Math.min(
                 aAmperage,
-                Math.min(mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes, 1 + ((euCapacity - storedEU) / aVoltage)))),
+                Math.min(
+                    mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
+                    1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))),
             true)) {
             mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;

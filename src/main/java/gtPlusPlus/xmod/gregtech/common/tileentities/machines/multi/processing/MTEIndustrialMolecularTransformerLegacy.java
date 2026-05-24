@@ -72,7 +72,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
-            .addCasingInfoMin("TPV-Alloy Coils", 16, false)
+            .addCasingInfoMin("TPV-Alloy Coil", 16, false)
             .addCasingInfoMin("Molecular Containment Casing", 52, false)
             .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
             .addCasingInfoMin("Particle Containment Casing", 4, false)

@@ -258,7 +258,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, MDT")
+        tt.addMachineType("MDT")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addInfo("Fluids are only put out at the correct height")
@@ -269,10 +269,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing")
-            .addMaintenanceHatch("Any casing")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputBus("Any bottom layer casing")
+            .addEnergyHatch("Any Casing")
+            .addMaintenanceHatch("Any Casing")
+            .addInputHatch("Any bottom layer Casing")
+            .addOutputBus("Any bottom layer Casing")
             .addOutputHatch("2-11x Output Hatches (One per Output Layer except bottom layer)")
             .addStructureInfo("An \"Output Layer\" consists of 5 layers!")
             .addStructureHint("The interior of this Mega Multiblock's hologram is empty, it should be all air.")
@@ -326,7 +326,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);

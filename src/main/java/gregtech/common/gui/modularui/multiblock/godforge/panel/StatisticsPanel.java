@@ -88,7 +88,7 @@ public class StatisticsPanel {
                 .horizontalCenter());
 
         // Format mode button
-        EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
+        EnumSyncValue<Formatters, ?> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         panel.child(
             new ButtonWidget<>().background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .disableHoverBackground()

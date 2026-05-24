@@ -137,7 +137,6 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.registerSlotGroup("item_inv", 3);
 
         syncManager.syncValue(
             "filteredMachines",
@@ -148,7 +147,10 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
                 .serializer(NetworkUtils::writeItemStack)
                 .build());
 
-        syncManager.syncValue("recipeMap", new StringSyncValue(machine::getRecipeMapName, machine::setRecipeMap));
-        syncManager.syncValue("rotationIndex", new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex));
+        syncManager
+            .syncValue("recipeMap", new StringSyncValue(machine::getRecipeMapName, machine::setRecipeMap).allowC2S());
+        syncManager.syncValue(
+            "rotationIndex",
+            new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex).allowC2S());
     }
 }

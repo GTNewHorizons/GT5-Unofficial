@@ -28,10 +28,10 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
-            cover::setFilterType);
+            cover::setFilterType).allowC2S();
         syncManager.syncValue("filter_type", filterTypeSyncValue);
 
         column.child(
