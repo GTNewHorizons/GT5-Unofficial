@@ -197,9 +197,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 return;
             }
             if (isServerSide) {
-                if (mTickTimer % 10 == 0) {
-                    sendClientData();
-                }
                 if (mTickTimer > 10) {
                     handleConnectionsChangeServer();
                     handleUpdateDataChangeServer();
@@ -278,38 +275,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             buffer.get(),
             buffer.get(),
             buffer.get());
-    }
-
-    @Override
-    protected void sendClientData() {
-        if (mSendClientData) {
-            oldConnections = mConnections;
-            oldUpdateData = getUpdateData();
-            oldRedstoneData = getSidedRedstoneMask();
-            oldColor = mColor;
-            NW.sendPacketToAllPlayersInRange(
-                worldObj,
-                new GTPacketTileEntity(
-                    xCoord,
-                    (short) yCoord,
-                    zCoord,
-                    mID,
-                    getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                    oldConnections,
-                    oldUpdateData,
-                    oldRedstoneData,
-                    oldColor),
-                xCoord,
-                zCoord);
-            mSendClientData = false;
-        }
-
-        sendCoverDataIfNeeded();
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
@@ -575,6 +540,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public int setMetaTileID(short aID) {
         return mID = aID;
     }
+
+    @Override
+    public void scheduleTexturePacket() {}
 
     @Nullable
     @Override
@@ -857,7 +825,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                             sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                            sendClientData();
                         }
                         return true;
                     }

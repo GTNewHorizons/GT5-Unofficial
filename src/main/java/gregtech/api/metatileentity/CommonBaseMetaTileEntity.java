@@ -43,7 +43,7 @@ import gregtech.common.config.Gregtech;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
+    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false,
         mInventoryChanged = false, mTickDisabled = false;
 
     private boolean mIgnoreNextUnload = false;
@@ -225,7 +225,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         oldX = xCoord;
         oldY = yCoord;
         oldZ = zCoord;
-        issueClientUpdate();
+        issueTileUpdate();
         clearTileEntityBuffer();
     }
 
@@ -456,16 +456,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
     }
-
-    @Override
-    public void issueClientUpdate() {
-        mSendClientData = true;
-        if (mTickDisabled) {
-            sendClientData();
-        }
-    }
-
-    abstract protected void sendClientData();
 
     @Override
     public void issueBlockUpdate() {

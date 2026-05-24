@@ -106,12 +106,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     protected boolean mReleaseEnergy = false;
     protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    private boolean mTexturePacketScheduled = false;
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
-        mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false;
+        mOutputDisabled = false;
     private boolean mWorkUpdate = false;
-    private boolean mWorks = true;
-    private boolean mRedstone = false;
     private byte oldTextureData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
@@ -120,6 +118,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     private String mOwnerName = "";
     private UUID mOwnerUuid = GTUtility.defaultUuid;
     private int cableUpdateDelay = 30;
+
+    // Texture data, must call scheduleTexturePacket when changed.
+    private boolean mActive = false, mRedstone = false, mLockUpgrade = false, mWorks = true, mMuffler = false;
 
     public BaseMetaTileEntity() {}
 
@@ -344,10 +345,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             if (isServerSide) {
                 handleCableUpdates();
-
-                if (mTickTimer % 10 == 0) {
-                    sendClientData();
-                }
 
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
@@ -642,8 +639,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
     }
 
-    public final boolean getGenericRedstoneOutput() {
-        return mRedstone;
+    @Override
+    public void scheduleTexturePacket() {
+        mTexturePacketScheduled = true;
+        if (mTickDisabled) {
+            maybeSendTextureData();
+        }
     }
 
     @Override
@@ -704,37 +705,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             buffer.get(),
             buffer.get(),
             buffer.get());
-    }
-
-    @Override
-    protected final void sendClientData() {
-        if (mSendClientData) {
-            oldTextureData = getTextureData();
-            oldUpdateData = getUpdateData();
-            oldRedstoneData = getSidedRedstoneMask();
-            oldColor = mColor;
-            NW.sendPacketToAllPlayersInRange(
-                worldObj,
-                new GTPacketTileEntity(
-                    xCoord,
-                    (short) yCoord,
-                    zCoord,
-                    mID,
-                    getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                    oldTextureData,
-                    oldUpdateData,
-                    oldRedstoneData,
-                    oldColor),
-                xCoord,
-                zCoord);
-            mSendClientData = false;
-        }
-        sendCoverDataIfNeeded();
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
@@ -880,7 +850,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void setFrontFacing(ForgeDirection aFacing) {
         if (isValidFacing(aFacing)) {
             mFacing = aFacing;
-            issueClientUpdate();
+            scheduleTexturePacket();
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
@@ -1036,7 +1006,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
-        issueClientUpdate();
+        scheduleTexturePacket();
         setShutdownStatus(false);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
@@ -1046,7 +1016,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void disableWorking() {
         mWorks = false;
-        issueClientUpdate();
+        scheduleTexturePacket();
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onDisableWorking();
         }
@@ -1089,22 +1059,19 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void setActive(boolean aActive) {
         mActive = aActive;
+        scheduleTexturePacket();
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onSetActive(aActive);
-            maybeSendTextureData();
         }
     }
 
     private void maybeSendTextureData() {
-        byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-            | (getGenericRedstoneOutput() ? 16 : 0)
-            | (mLockUpgrade ? 32 : 0)
-            | (mWorks ? 64 : 0)
-            | (mMuffler ? 128 : 0));
-
-        if (textureData != oldTextureData) {
-            oldTextureData = textureData;
-            sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
+        if (mTexturePacketScheduled) {
+            byte textureData = getTextureData();
+            if (textureData != oldTextureData) {
+                oldTextureData = textureData;
+                sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
+            }
         }
     }
 
@@ -1522,7 +1489,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                issueClientUpdate();
+                                scheduleTexturePacket();
                                 GTUtility.sendChatTrans(
                                     aPlayer,
                                     mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
@@ -1615,7 +1582,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                sendClientData();
+                                issueTileUpdate();
                             }
                             return true;
                         }
@@ -1659,7 +1626,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (isUpgradable() && !mLockUpgrade) {
                             mLockUpgrade = true;
-                            issueClientUpdate();
+                            scheduleTexturePacket();
                             setOwnerName(aPlayer.getDisplayName());
                             setOwnerUuid(aPlayer.getUniqueID());
                             sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
@@ -1784,7 +1751,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public boolean addMufflerUpgrade() {
         if (isMufflerUpgradable()) {
             mMuffler = true;
-            issueClientUpdate();
+            scheduleTexturePacket();
             return true;
         }
         return false;
@@ -1793,7 +1760,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void setMuffler(boolean value) {
         mMuffler = value;
-        issueClientUpdate();
+        scheduleTexturePacket();
     }
 
     @Override
@@ -2119,7 +2086,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
         mColor = (byte) (aColor + 1);
-        issueClientUpdate();
+        scheduleTexturePacket();
         if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
         return mColor;
     }
