@@ -156,15 +156,15 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom center")
             .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
-            .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-            .addMaintenanceHatch("Any firebox", 1)
-            .addMufflerHatch("Any firebox", 1)
-            .addInputBus("Solid fuel, Any firebox", 1)
-            .addInputHatch("Liquid fuel, Any firebox", 1)
+            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 3 minimum")
+            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Block", "Inner 3 blocks")
+            .addMaintenanceHatch("Any Firebox Casing", 1)
+            .addMufflerHatch("Any Firebox Casing", 1)
+            .addInputBus("Solid fuel, any Firebox Casing", 1)
+            .addInputHatch("Liquid fuel, any Firebox Casing", 1)
             .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, Any firebox", 1)
-            .addOutputHatch("Steam, any casing", 2)
+            .addInputHatch("Water, any Firebox Casing", 1)
+            .addOutputHatch("Steam, any Casing", 2)
             .toolTipFinisher();
 
         return tt;
