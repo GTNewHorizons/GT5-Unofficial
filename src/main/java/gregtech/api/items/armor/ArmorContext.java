@@ -38,7 +38,7 @@ public interface ArmorContext {
 
     default boolean drainEnergy(double amount) {
         if (getArmorState().drainEnergy(amount)) {
-            save();
+            markDirty();
             return true;
         } else {
             return false;
@@ -55,11 +55,13 @@ public interface ArmorContext {
 
     default boolean toggleBehavior(BehaviorName name) {
         boolean enabled = getArmorState().toggle(this, name);
-
-        save();
-
+        markDirty();
         return enabled;
     }
+
+    void markDirty();
+
+    boolean isDirty();
 
     default void save() {
         ArmorState.save(this);
@@ -71,6 +73,7 @@ public interface ArmorContext {
         public EntityPlayer player;
         public ItemStack armorStack;
         public ArmorState armorState;
+        private boolean dirty = false;
 
         public ArmorContextImpl(World world, EntityPlayer player, ItemStack armorStack, ArmorState armorState) {
             this.world = world;
@@ -114,6 +117,16 @@ public interface ArmorContext {
         @Override
         public void setArmorState(ArmorState armorState) {
             this.armorState = armorState;
+        }
+
+        @Override
+        public void markDirty() {
+            dirty = true;
+        }
+
+        @Override
+        public boolean isDirty() {
+            return dirty;
         }
     }
 }

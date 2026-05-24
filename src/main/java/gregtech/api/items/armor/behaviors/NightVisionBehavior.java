@@ -55,14 +55,22 @@ public class NightVisionBehavior implements IArmorBehavior {
             context.getPlayer()
                 .addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
         } else {
-            context.getPlayer()
-                .removePotionEffect(Potion.nightVision.id);
+            removeArmorNightVision(context);
         }
     }
 
     @Override
     public void onArmorUnequip(@NotNull ArmorContext context) {
-        context.getPlayer()
-            .removePotionEffect(Potion.nightVision.id);
+        removeArmorNightVision(context);
+    }
+
+    // Only removes NV if it was applied by the armor (ambient=true); leaves potion NV untouched.
+    private static void removeArmorNightVision(ArmorContext context) {
+        PotionEffect effect = context.getPlayer()
+            .getActivePotionEffect(Potion.nightVision);
+        if (effect != null && effect.getIsAmbient()) {
+            context.getPlayer()
+                .removePotionEffect(Potion.nightVision.id);
+        }
     }
 }

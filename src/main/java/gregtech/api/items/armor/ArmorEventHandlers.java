@@ -52,7 +52,7 @@ public class ArmorEventHandlers {
                 toTag.removeTag("charge");
                 fromTag.removeTag("charge");
 
-                if (GTUtility.areStacksEqual(from, toCopy)) return;
+                if (GTUtility.areStacksEqual(fromCopy, toCopy)) return;
             }
         }
 
