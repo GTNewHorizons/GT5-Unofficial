@@ -76,7 +76,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     private ToggleButton createOptimizerButton() {
         BooleanSyncValue optimizerSync = new BooleanSyncValue(
             () -> !machine.disablePatternOptimization,
-            val -> machine.disablePatternOptimization = !val);
+            val -> machine.disablePatternOptimization = !val).allowC2S();
 
         return new ToggleButton().value(optimizerSync)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
@@ -88,7 +88,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     private ToggleButton createShowPatternButton() {
         BooleanSyncValue showPatternSync = new BooleanSyncValue(
             () -> machine.showPattern,
-            val -> machine.showPattern = val);
+            val -> machine.showPattern = val).allowC2S();
 
         return new ToggleButton().value(showPatternSync)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)

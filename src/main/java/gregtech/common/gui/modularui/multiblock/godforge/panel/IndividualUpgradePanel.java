@@ -36,7 +36,7 @@ public class IndividualUpgradePanel {
         registerSyncValues(hypervisor);
 
         // registered on the Upgrade Tree panel, look up from there
-        EnumSyncValue<ForgeOfGodsUpgrade> upgradeSyncer = SyncValues.UPGRADE_CLICKED
+        EnumSyncValue<ForgeOfGodsUpgrade, ?> upgradeSyncer = SyncValues.UPGRADE_CLICKED
             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
 
         // Do this here since doing it inside the dynamic sync handler crashes on panel close.
@@ -50,7 +50,8 @@ public class IndividualUpgradePanel {
             panel.background(upgrade.getBackground());
             panel.disableHoverBackground();
             return buildPanel(upgrade.getPanelSize(), upgrade, hypervisor, manualInsertionPanel);
-        });
+        })
+            .allowC2S();
 
         upgradeSyncer.setChangeListener(() -> {
             if (handler.isValid()) {

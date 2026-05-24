@@ -32,13 +32,13 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
 
         // auto output
         row.child(
-            new ToggleButton().value(new BooleanSyncValue(machine::isOutputFluid, machine::setOutputFluid))
+            new ToggleButton().value(new BooleanSyncValue(machine::isOutputFluid, machine::setOutputFluid).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.autooutput.tooltip"))));
 
         // lock
         row.child(
-            new ToggleButton().value(new BooleanSyncValue(machine::isFluidLocked, machine::lockFluid))
+            new ToggleButton().value(new BooleanSyncValue(machine::isFluidLocked, machine::lockFluid).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
@@ -49,7 +49,9 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         // allow input
         row.child(
             new ToggleButton()
-                .value(new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide))
+                .value(
+                    new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide)
+                        .allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.inputfromoutput.tooltip"))));
 
@@ -75,7 +77,8 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
 
         // overflow
         buttonRow.child(
-            new ToggleButton().value(new BooleanSyncValue(machine::isVoidFluidPart, machine::setVoidFluidPart))
+            new ToggleButton()
+                .value(new BooleanSyncValue(machine::isVoidFluidPart, machine::setVoidFluidPart).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
@@ -84,7 +87,8 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
 
         // void
         buttonRow.child(
-            new ToggleButton().value(new BooleanSyncValue(machine::isVoidFluidFull, machine::setVoidFluidFull))
+            new ToggleButton()
+                .value(new BooleanSyncValue(machine::isVoidFluidFull, machine::setVoidFluidFull).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));

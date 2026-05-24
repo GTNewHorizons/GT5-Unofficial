@@ -242,12 +242,12 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addInputHatch("Hint Block Number 1")
-            .addEnergyHatch("Hint Block Number 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 2")
+            .addMaintenanceHatch("Hint block number 1")
+            .addInputBus("Hint block number 1")
+            .addInputHatch("Hint block number 1")
+            .addEnergyHatch("Hint block number 1")
+            .addOtherStructurePart("Essentia Output Hatch", "Hint block number 1")
+            .addMufflerHatch("Hint block number 2")
             .toolTipFinisher();
         return tt;
     }

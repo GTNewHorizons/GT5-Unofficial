@@ -143,14 +143,14 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " Any casing")
+                    + " Any Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")

@@ -32,15 +32,15 @@ public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<DetectionMode> detectionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<DetectionMode, ?> detectionModeSyncValue = new EnumSyncValue<>(
             DetectionMode.class,
             cover::getDetectionMode,
-            cover::setDetectionMode);
+            cover::setDetectionMode).allowC2S();
         syncManager.syncValue("detection_mode", detectionModeSyncValue);
-        BinaryEnumSyncValue<RedstoneMode> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
+        BinaryEnumSyncValue<RedstoneMode, ?> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            cover::setRedstoneMode);
+            cover::setRedstoneMode).allowC2S();
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

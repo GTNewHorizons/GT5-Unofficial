@@ -108,7 +108,7 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Aquatic Casings", 64, false)
+            .addCasingInfoMin("Aquatic Casing", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

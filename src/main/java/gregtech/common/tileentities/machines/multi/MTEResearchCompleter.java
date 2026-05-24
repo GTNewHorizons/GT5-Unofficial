@@ -367,12 +367,12 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addInfo("Place nodes in the center row")
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center")
-            .addOtherStructurePart("Magical machine casing", "Top and bottom layers outside. 3 x L minimum")
-            .addOtherStructurePart("Warded glass", "Middle layer outside")
-            .addEnergyHatch("Any casing")
-            .addMaintenanceHatch("Any casing")
-            .addInputBus("Any casing")
-            .addOutputBus("Any casing")
+            .addOtherStructurePart("Magical Machine Casing", "Top and bottom layers outside. 3 x L minimum")
+            .addOtherStructurePart("Warded Glass", "Middle layer outside")
+            .addEnergyHatch("Any Casing")
+            .addMaintenanceHatch("Any Casing")
+            .addInputBus("Any Casing")
+            .addOutputBus("Any Casing")
             .toolTipFinisher();
         return tt;
     }
