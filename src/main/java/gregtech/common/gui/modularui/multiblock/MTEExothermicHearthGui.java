@@ -23,7 +23,7 @@ public class MTEExothermicHearthGui extends MTEMultiBlockBaseGui<MTEExothermicHe
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "pyrotheum",
-            new BooleanSyncValue(() -> multiblock.isPyroSupplied, val -> multiblock.isPyroSupplied = val));
+            new BooleanSyncValue(() -> multiblock.isPyroSupplied, val -> multiblock.isPyroSupplied = val).allowC2S());
     }
 
     @Override

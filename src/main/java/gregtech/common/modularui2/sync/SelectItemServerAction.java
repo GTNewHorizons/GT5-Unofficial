@@ -11,7 +11,7 @@ import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
  * Specifies action executed on server when item gets selected on item selection screen created via
  * {@link SelectItemGuiBuilder}.
  */
-public class SelectItemServerAction extends SyncHandler {
+public class SelectItemServerAction extends SyncHandler<SelectItemServerAction> {
 
     private final SelectItemGuiBuilder.OnSelectedAction onSelected;
 

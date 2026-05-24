@@ -207,7 +207,7 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
                                     .value(
                                         new BooleanSyncValue(
                                             () -> multiblock.tier2Fluid,
-                                            bool -> multiblock.tier2Fluid = bool))
+                                            bool -> multiblock.tier2Fluid = bool).allowC2S())
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 

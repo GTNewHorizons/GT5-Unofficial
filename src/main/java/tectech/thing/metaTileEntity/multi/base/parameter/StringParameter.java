@@ -35,7 +35,7 @@ public class StringParameter extends Parameter<String> {
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
-        return new StringSyncValue(this::getValue, this::setValue);
+    public SyncHandler<?> createSyncHandler() {
+        return new StringSyncValue(this::getValue, this::setValue).allowC2S();
     }
 }

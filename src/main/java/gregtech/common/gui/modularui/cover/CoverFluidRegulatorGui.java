@@ -39,15 +39,15 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<TransferMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            cover::setIOMode);
+            cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             MachineProcessingCondition.class,
             cover::getMachineProcessingCondition,
-            cover::setMachineProcessingCondition);
+            cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
         column.child(
             makeRowLayout().child(positionRow(makeTransferModeRow(ioModeSyncValue)))
@@ -56,7 +56,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                 .child(positionRow(makeAverageSpeedRow()).marginTop(ROW_PADDING)));
     }
 
-    private static Flow makeTransferModeRow(EnumSyncValue<TransferMode> ioModeSyncValue) {
+    private static Flow makeTransferModeRow(EnumSyncValue<TransferMode, ?> ioModeSyncValue) {
         return Flow.row()
             .child(
                 new ParentWidget<>().child(
@@ -69,7 +69,8 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                     .asWidget());
     }
 
-    private static Flow makeMachineConditionModeRow(EnumSyncValue<MachineProcessingCondition> conditionModeSyncValue) {
+    private static Flow makeMachineConditionModeRow(
+        EnumSyncValue<MachineProcessingCondition, ?> conditionModeSyncValue) {
         return Flow.row()
             .child(
                 new ParentWidget<>()
@@ -89,14 +90,14 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     private Flow makeSpeedConfigRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed))
+                makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed).allowC2S())
                     .setNumbers(cover::getMinSpeed, cover::getMaxSpeed)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.L")
                     .asWidget())
             .child(
-                makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi))
+                makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi).allowC2S())
                     .setValidator(this::validateTickRateText))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Ticks")
