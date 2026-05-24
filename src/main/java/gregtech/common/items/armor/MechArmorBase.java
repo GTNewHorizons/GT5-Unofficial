@@ -158,12 +158,18 @@ public class MechArmorBase extends ItemArmor
         ArmorContext context = load(world, player, stack);
 
         if (player instanceof EntityPlayerMP playerMP) {
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
+                for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
+                    keyBind.registerPlayerListener(playerMP, this);
+                }
+            }
+        }
+
+        if (world.isRemote) {
             boolean initMessage = false;
 
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
-                    keyBind.registerPlayerListener(playerMP, this);
-
                     if (!initMessage) {
                         GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
                         initMessage = true;
@@ -171,7 +177,7 @@ public class MechArmorBase extends ItemArmor
 
                     if (keyBind.getKeybinding() != null) {
                         GTUtility.sendChatToPlayer(
-                            playerMP,
+                            player,
                             GTUtility.translate(
                                 keyBind.getKeybinding()
                                     .getKeyDescription())
