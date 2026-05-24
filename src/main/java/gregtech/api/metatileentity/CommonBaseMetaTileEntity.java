@@ -49,7 +49,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     private boolean mIgnoreNextUnload = false;
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
-    protected byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+    protected byte oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+
+    private byte mColor = 0;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -111,6 +113,14 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     public void onUnload() {
         super.onChunkUnload();
+    }
+
+    protected final void writeCommonNBT(NBTTagCompound nbt) {
+        nbt.setByte("mColor", mColor);
+    }
+
+    protected final void readCommonNBT(NBTTagCompound nbt) {
+        mColor = nbt.getByte("mColor");
     }
 
     @Override
@@ -188,15 +198,26 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     /**
-     * Handles the color changing on the client side
+     * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
+     * @return color from 0 to 16, 0 means colorless.
      */
-    protected final void handleColorChangeClient() {
-        if (mColor == oldColor) {
-            return;
+    protected final byte getColorRaw() {
+        return mColor;
+    }
+
+    /**
+     * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
+     */
+    protected final void setColorRaw(byte color) {
+        if (mColor == color) return;
+        mColor = color;
+        if (isClientSide()) {
+            getMetaTileEntity().onColorChangeClient(mColor);
+            issueTextureUpdate();
+        } else {
+            getMetaTileEntity().onColorChangeServer(mColor);
+            sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, mColor);
         }
-        oldColor = mColor;
-        getMetaTileEntity().onColorChangeClient(mColor);
-        issueTextureUpdate();
     }
 
     /**
@@ -239,17 +260,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
         oldUpdateData = updateData;
         sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
-    }
-
-    /**
-     * Handles the color changing on the server side
-     */
-    protected final void handleColorChangeServer() {
-        if (mColor == oldColor) {
-            return;
-        }
-        oldColor = mColor;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
     }
 
     /**

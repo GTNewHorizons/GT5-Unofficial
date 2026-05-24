@@ -2,7 +2,6 @@ package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -70,7 +69,6 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -137,7 +135,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setLong("mStoredSteam", mStoredSteam);
             nbt.setLong("mStoredEnergy", mStoredEnergy);
             writeCoverNBT(nbt, false);
-            nbt.setByte("mColor", mColor);
+            writeCommonNBT(nbt);
             nbt.setByte("mLightValue", mLightValue);
             nbt.setByte("mOtherUpgrades", mOtherUpgrades);
             nbt.setShort("mFacing", (short) mFacing.ordinal());
@@ -175,7 +173,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             else mID = aID;
             mStoredSteam = aNBT.getLong("mStoredSteam");
             mStoredEnergy = aNBT.getLong("mStoredEnergy");
-            mColor = aNBT.getByte("mColor");
             mLightValue = aNBT.getByte("mLightValue");
             mFacing = oldFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
@@ -203,6 +200,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 + aNBT.getByte("mLiBatteries"));
 
             final int nbtVersion = aNBT.getInteger("nbtVersion");
+            readCommonNBT(aNBT);
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
@@ -289,8 +287,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             if (!isServerSide) {
-                handleColorChangeClient();
-
                 if (mLightValue != oldLightValueClient) {
                     updateLightValue();
                     oldLightValueClient = mLightValue;
@@ -349,7 +345,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
                     handleUpdateDataChangeServer();
-                    handleColorChangeServer();
                     handleSidedRedstoneChangeServer();
 
                     if (mLightValue != oldLightValue) {
@@ -686,7 +681,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             .put(getTextureData())
             .put(getUpdateData())
             .put(getSidedRedstoneMask())
-            .put(mColor)
+            .put(getColorRaw())
             .array();
     }
 
@@ -755,7 +750,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
                 case GregTechTileClientEvents.CHANGE_COLOR -> {
                     if (aValue > 16 || aValue < 0) aValue = 0;
-                    mColor = (byte) aValue;
+                    setColorRaw((byte) aValue);
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
@@ -1231,7 +1226,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ITexture coverTexture = getCoverTexture(side);
         final ITexture[] textureUncovered = hasValidMetaTileEntity()
             ? mMetaTileEntity
-                .getTexture(this, side, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(side) > 0)
+                .getTexture(this, side, mFacing, getColorization(), mActive, getOutputRedstoneSignal(side) > 0)
             : Textures.BlockIcons.ERROR_RENDERING;
         final ITexture[] textureCovered;
         if (coverTexture != null) {
@@ -1400,7 +1395,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
         if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
-        if (mColor > 0) tNBT.setByte("mColor", mColor);
+        if (getColorRaw() > 0) tNBT.setByte("mColor", getColorRaw());
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 
         writeCoverNBT(tNBT, true);
@@ -2079,16 +2074,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public byte getColorization() {
-        return (byte) (mColor - 1);
+        return (byte) (getColorRaw() - 1);
     }
 
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
-        mColor = (byte) (aColor + 1);
-        scheduleTexturePacket();
-        if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
-        return mColor;
+        byte colorRaw = (byte) (aColor + 1);
+        setColorRaw(colorRaw);
+        return colorRaw;
     }
 
     @Override

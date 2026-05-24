@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.enums.GTValues.NW;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
-import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -123,8 +121,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         try {
             nbt.setInteger("mID", mID);
             writeCoverNBT(nbt, false);
+            writeCommonNBT(nbt);
             nbt.setByte("mConnections", mConnections);
-            nbt.setByte("mColor", mColor);
             nbt.setBoolean("mWorks", !mWorks);
         } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
@@ -148,9 +146,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             if (aID <= 0) mID = (short) aNBT.getInteger("mID");
             else mID = aID;
             mConnections = aNBT.getByte("mConnections");
-            mColor = aNBT.getByte("mColor");
             mWorks = !aNBT.getBoolean("mWorks");
 
+            readCommonNBT(aNBT);
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
@@ -171,7 +169,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
             }
             if (!isServerSide) {
-                handleColorChangeClient();
                 handleBlockUpdateClient();
             } else {
                 if (mTickTimer > 10) {
@@ -200,7 +197,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (mTickTimer > 10) {
                     handleConnectionsChangeServer();
                     handleUpdateDataChangeServer();
-                    handleColorChangeServer();
                     handleSidedRedstoneChangeServer();
                 }
 
@@ -256,7 +252,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             .put(mConnections)
             .put(getUpdateData())
             .put(getSidedRedstoneMask())
-            .put(mColor)
+            .put(getColorRaw())
             .array();
     }
 
@@ -314,7 +310,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
                 case GregTechTileClientEvents.CHANGE_COLOR -> {
                     if (aValue > 16 || aValue < 0) aValue = 0;
-                    mColor = (byte) aValue;
+                    setColorRaw((byte) aValue);
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
@@ -681,7 +677,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             this,
             sideDirection,
             tConnections,
-            mColor - 1,
+            getColorization(),
             tConnections == 0 || (tConnections & sideDirection.flag) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
     }
@@ -1097,15 +1093,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public byte getColorization() {
-        return (byte) (mColor - 1);
+        return (byte) (getColorRaw() - 1);
     }
 
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
-        mColor = (byte) (aColor + 1);
-        if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
-        return mColor;
+        byte rawColor = (byte) (aColor + 1);
+        setColorRaw(rawColor);
+        return rawColor;
     }
 
     @Override
