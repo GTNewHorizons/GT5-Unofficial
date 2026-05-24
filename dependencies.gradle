@@ -134,6 +134,7 @@ dependencies {
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.4.2:dev")
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.27:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:HoloInventory:2.5.13-GTNH:dev')
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')
