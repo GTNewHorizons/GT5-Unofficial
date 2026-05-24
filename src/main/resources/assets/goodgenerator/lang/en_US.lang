@@ -320,7 +320,7 @@ gg.scanner.info.neutron_activator.input=Current Neutron Kinetic Energy Input: %s
 gg.scanner.info.fusion_reactor_mk=Fusion Reactor MK
 
 #GUI Info
-GT5U.gui.text.node_too_small=§7Node too small
+GT5U.gui.text.recipe_result.node_too_small=§7Node too small
 
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
 gui.NeutronSensor.1=e.g. >5000KeV, <=30MeV . . .
