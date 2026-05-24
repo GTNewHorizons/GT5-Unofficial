@@ -45,7 +45,7 @@ public class ResultMissingApiaryFlowers implements CheckRecipeResult {
     @Override
     public String getDisplayString() {
         String flowers = String.join(", ", missingFlowerTypes);
-        return StatCollector.translateToLocalFormatted("GT5U.gui.text.apiary_missing_flowers", flowers);
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.recipe_result.apiary_missing_flowers", flowers);
     }
 
     @Override
