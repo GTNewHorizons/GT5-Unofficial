@@ -945,7 +945,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 }
             }
         }
-        checkHasInputBus(errors);
         checkHasAnyOutput(errors);
         if (!errors.isEmpty()) return;
         checkRitualConnection();
