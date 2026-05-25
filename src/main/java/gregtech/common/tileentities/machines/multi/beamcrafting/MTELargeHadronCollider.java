@@ -77,6 +77,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.3F;
+    public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -93,6 +94,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public int calcInputBeamRate = 1;
     public double calcTargetBeamEnergyeV = 0;
     public int calcNumCycles = 1;
+
+    public double probTableCollisionEnergyeV = 0;
 
     public BeamInformation initialParticleInfo = null;
     public BeamInformation cachedOutputParticle = null;
@@ -125,6 +128,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         aNBT.setInteger("calcInputBeamRate", calcInputBeamRate);
         aNBT.setDouble("calcTargetBeamEnergyeV", calcTargetBeamEnergyeV);
         aNBT.setInteger("calcNumCycles", calcNumCycles);
+        aNBT.setDouble("probTableCollisionEnergyeV", probTableCollisionEnergyeV);
         aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
     }
 
@@ -154,6 +158,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         calcInputBeamRate = aNBT.getInteger("calcInputBeamRate");
         calcTargetBeamEnergyeV = aNBT.getDouble("calcTargetBeamEnergyeV");
         calcNumCycles = aNBT.getInteger("calcNumCycles");
+        probTableCollisionEnergyeV = aNBT.getDouble("probTableCollisionEnergyeV");
         accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
     }
 
@@ -688,11 +693,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 continue;
             }
 
-            double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
+            double thresholdMeV = max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
             // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
 
-            if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
+            if (w < 0 || Double.isInfinite(w)) w = 0.0;
 
             weights[i] = w;
             totalWeight += w;
@@ -714,6 +719,31 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         return idx;
 
+    }
+
+    public static double particleProbability(Particle target, LHCModule module, double collisionEnergyKeV) {
+        if (!module.acceptedParticles.contains(target)) return 0.0;
+
+        double collisionEnergyMeV = collisionEnergyKeV / 1000.0; // restmass is in MeV
+
+        double targetThresholdMeV = Math.max(target.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+        if (collisionEnergyMeV < targetThresholdMeV) return 0.0;
+
+        double targetWeight = target.getLHCWeight();
+        if (targetWeight <= 0 || Double.isInfinite(targetWeight)) return 0.0;
+
+        double totalWeight = 0.0;
+        for (Particle p : module.acceptedParticles) {
+            double thresholdMeV = Math.max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+            if (collisionEnergyMeV < thresholdMeV) continue;
+            double w = p.getLHCWeight();
+            if (w > 0 && !Double.isInfinite(w)) {
+                totalWeight += w;
+            }
+        }
+
+        if (totalWeight <= 0.0) return 0.0;
+        return targetWeight / totalWeight;
     }
 
     private void outputPacketAfterRecipe(int rate) {

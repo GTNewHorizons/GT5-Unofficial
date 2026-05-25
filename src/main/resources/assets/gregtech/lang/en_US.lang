@@ -2403,7 +2403,8 @@ GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.button.compressed_bus_settings=Open Bus Settings
-GT5U.gui.button.calculator=Display Machine Calculator
+GT5U.gui.button.calculator=Open Machine Calculator
+GT5U.gui.button.probtable=Open Probabilities
 
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
@@ -3188,6 +3189,8 @@ GT5U.gui.text.LHC.calc.inputbeamenergyeV=Input Beam Energy (eV)
 GT5U.gui.text.LHC.calc.inputbeamrate=Input Beam Rate
 GT5U.gui.text.LHC.setparams=Set Operating Parameters
 GT5U.gui.text.LHC.calc.resultheader=Collision Energy | Rate | Power Draw
+GT5U.gui.text.LHC.probtable.title=Particle Probabilities
+GT5U.gui.text.LHC.probtable.collisionenergyeV=Collision Energy (eV)
 GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
 GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 

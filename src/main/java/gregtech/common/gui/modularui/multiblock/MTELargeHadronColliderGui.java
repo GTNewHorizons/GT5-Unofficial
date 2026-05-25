@@ -34,7 +34,9 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.beamcrafting.LHCModule;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
+import gtnhlanth.common.beamline.Particle;
 
 public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadronCollider> {
 
@@ -72,6 +74,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         syncManager.syncValue(
             "calcNumCycles",
             new IntSyncValue(() -> multiblock.calcNumCycles, i -> multiblock.calcNumCycles = i).allowC2S());
+        syncManager.syncValue(
+            "probTableCollisionEnergyeV",
+            new DoubleSyncValue(
+                () -> multiblock.probTableCollisionEnergyeV,
+                d -> multiblock.probTableCollisionEnergyeV = d).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
         syncManager.syncValue(
@@ -90,7 +97,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(panel, syncManager).child(createCalculatorButton(syncManager, panel));
+        return super.createRightPanelGapRow(panel, syncManager).child(createCalculatorButton(syncManager, panel))
+            .child(createProbTableButton(syncManager, panel));
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -288,6 +296,25 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    protected IWidget createProbTableButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler probTablePanel = syncManager.syncedPanel(
+            "probTablePanel",
+            true,
+            (p_syncManager, syncHandler) -> openProbTablePanel(p_syncManager, parent, syncManager));
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/lhc_probtable"))
+            .onMousePressed(d -> {
+                if (!probTablePanel.isPanelOpen()) {
+                    probTablePanel.openPanel();
+                } else {
+                    probTablePanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.probtable")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
         DoubleSyncValue playerTargetBeamEnergyeVSync = (DoubleSyncValue) syncManager
@@ -431,5 +458,102 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             + EnumChatFormatting.GOLD
             + format(finalEUt)
             + "EU/t";
+    }
+
+    private ModularPanel openProbTablePanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+
+        DoubleSyncValue probTableCollisionEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("probTableCollisionEnergyeV:0");
+
+        // one row per particle
+        ListWidget<IWidget, ?> tableBody = new ListWidget<>();
+
+        final LHCModule[] columns = new LHCModule[] { LHCModule.EM, LHCModule.Weak, LHCModule.Strong, LHCModule.Grav };
+
+        for (final Particle p : Particle.VALUES) {
+            Flow row = Flow.row()
+                .coverChildren();
+
+            row.child(
+                new ButtonWidget<>().size(18, 18)
+                    .overlay(p.getTexture())
+                    .tooltipBuilder(t -> t.addLine(IKey.str(p.getLocalisedName())))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+            // one column per lhc module
+            for (final LHCModule module : columns) {
+                row.child(
+                    new TextWidget<>(
+                        IKey.dynamic(
+                            () -> formatProbability(
+                                p,
+                                module,
+                                probTableCollisionEnergyeVSync != null ? probTableCollisionEnergyeVSync.getDoubleValue()
+                                    : multiblock.probTableCollisionEnergyeV))).width(40)
+                                        .height(18)
+                                        .textAlign(Alignment.CENTER));
+            }
+
+            tableBody.child(row);
+        }
+
+        // headers
+        Flow headerRow = Flow.row()
+            .coverChildren()
+            .child(
+                new TextWidget<>(IKey.str("")).width(18)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("E")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("W")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("S")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("G")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER));
+
+        return new ModularPanel("probTablePanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
+            .coverChildren()
+            .padding(6)
+            .widgetTheme("backgroundPopup")
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(4)
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.probtable.title")).textAlign(Alignment.CENTER))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.probtable.collisionenergyeV"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(probTableCollisionEnergyeVSync)
+                            .setDefaultNumber(0))
+
+                    .child(headerRow)
+                    .child(tableBody.size(196, 200)));
+    }
+
+    private String formatProbability(Particle particle, LHCModule module, double collisionEnergyeV) {
+        if (!module.acceptedParticles.contains(particle)) {
+            return "--";
+        }
+        double collisionEnergyKeV = collisionEnergyeV / 1000.0;
+        double prob = MTELargeHadronCollider.particleProbability(particle, module, collisionEnergyKeV);
+        return String.format(Locale.US, "%.2f%%", prob * 100.0);
     }
 }
