@@ -34,7 +34,9 @@ import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     public static final ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
+    // Pair of (minY, maxY) this vein generates at
     public final ShortShortPair veinHeight;
+    // Map for dim -> (minY, maxY) height overrides
     public Map<String, ShortShortPair> dimVeinHeights = new HashMap<>();
     public final short mWeight;
     public final short mDensity;
