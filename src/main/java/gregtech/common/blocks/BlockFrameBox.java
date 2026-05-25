@@ -125,7 +125,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     // Get the material that this frame box is made of
     public static Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[meta % 1000];
+        return GregTechAPI.sGeneratedMaterials[meta & TEXTURE_MASK];
     }
 
     @Override
@@ -480,12 +480,12 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public ITexture[][] getTextures(int meta) {
-        meta = meta & TEXTURE_MASK;
-        return meta >= 1000 ? null : textures[meta];
+        int texture = meta & TEXTURE_MASK;
+        return texture >= 1000 ? null : textures[texture];
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return meta < 1000 ? null : new BaseMetaPipeEntity();
+        return (meta & MTE_BIT) == 0 ? null : new BaseMetaPipeEntity();
     }
 }
