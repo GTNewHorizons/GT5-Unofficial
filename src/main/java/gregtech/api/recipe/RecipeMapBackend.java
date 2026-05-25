@@ -22,8 +22,8 @@ import java.util.Set;
 import java.util.Spliterators;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -558,18 +558,21 @@ public class RecipeMapBackend {
         if (profile != null) {
             cacheMapCandidates = cacheMapCandidates.peek(recipe -> profile.recordCacheMapCandidate());
         }
-
-        Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile)
-            .filter(this::isRecipeRegistered);
-        if (profile != null) {
-            trieCandidates = trieCandidates.peek(recipe -> profile.recordTrieCandidate());
-        }
-        trieCandidates = trieCandidates.sorted(
-            (first, second) -> Integer.compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)));
+        final Stream<GTRecipe> cachedRecipeCandidateStream = cachedRecipeCandidates;
+        final Stream<GTRecipe> cacheMapCandidateStream = cacheMapCandidates;
 
         Stream<GTRecipe> candidates = Stream
-            .<Stream<GTRecipe>>of(cachedRecipeCandidates, cacheMapCandidates, trieCandidates)
-            .flatMap(Function.identity())
+            .<Supplier<Stream<GTRecipe>>>of(() -> cachedRecipeCandidateStream, () -> cacheMapCandidateStream, () -> {
+                Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile)
+                    .filter(this::isRecipeRegistered);
+                if (profile != null) {
+                    trieCandidates = trieCandidates.peek(recipe -> profile.recordTrieCandidate());
+                }
+                return trieCandidates.sorted(
+                    (first, second) -> Integer
+                        .compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)));
+            })
+            .flatMap(Supplier::get)
             .filter(distinctByIdentity())
             .filter(
                 recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
