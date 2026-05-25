@@ -302,7 +302,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 updateAvgEUIO();
             }
 
-            mMetaTileEntity.onPreTick(this, mTickTimer);
+            doPreTick();
 
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
@@ -334,7 +334,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 mRunningThroughTick = false;
                 return;
             }
-            mMetaTileEntity.onPostTick(this, mTickTimer);
+            doPostTick();
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
@@ -361,6 +361,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
         }
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+    }
+
+    public final void doPreTick() {
+        mMetaTileEntity.onPreTick(this, mTickTimer);
+    }
+
+    public final void doPostTick() {
+        mMetaTileEntity.onPostTick(this, mTickTimer);
     }
 
     /**
