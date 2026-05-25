@@ -116,12 +116,12 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
                 "Adjacent to the PTFE Pipe Machine Casing",
                 1)
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2)
-            .addInputBus("Any casing", 1, 2)
-            .addInputHatch("Any casing", 1, 2)
-            .addOutputBus("Any casing", 1, 2)
-            .addOutputHatch("Any casing", 1, 2)
+            .addEnergyHatch("Any Casing", 1, 2)
+            .addMaintenanceHatch("Any Casing", 1, 2)
+            .addInputBus("Any Casing", 1, 2)
+            .addInputHatch("Any Casing", 1, 2)
+            .addOutputBus("Any Casing", 1, 2)
+            .addOutputHatch("Any Casing", 1, 2)
             .addStructureInfo("You can have multiple hatches/buses")
             .toolTipFinisher();
         return tt;
@@ -179,7 +179,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 8);
         if (mCoilAmount != 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.need_exactly_one_coil"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_coil"));
         }
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);

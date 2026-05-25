@@ -521,7 +521,7 @@ public final class MaterialsElements {
             MaterialState.SOLID,
             TextureSet.SET_HYPOGEN,
             new short[] { 255, 255, 255 },
-            11255,
+            10255,
             19377,
             240,
             251,
@@ -573,22 +573,6 @@ public final class MaterialsElements {
                                                           // GT
                                                           // Inherited
                                                           // Material
-        public static final Material WHITE_METAL = new Material(
-            "White Metal",
-            MaterialState.SOLID,
-            TextureSet.SET_METALLIC,
-            new short[] { 255, 255, 255 },
-            4560,
-            7580,
-            35,
-            41,
-            false,
-            "҉",
-            0,
-            new MaterialStack(getInstance().COPPER, 5),
-            new MaterialStack(getInstance().ANTIMONY, 10),
-            new MaterialStack(getInstance().PLATINUM, 10),
-            new MaterialStack(getInstance().TIN, 75)); // Not a GT Inherited Material
 
         public static final Material GRANITE = new Material(
             "Ancient Granite",

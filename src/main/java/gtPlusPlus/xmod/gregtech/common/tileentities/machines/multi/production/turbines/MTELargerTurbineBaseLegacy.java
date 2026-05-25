@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -91,7 +92,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                     lazy(
                         t -> buildHatchAdder(MTELargerTurbineBaseLegacy.class)
                             .adder(MTELargerTurbineBaseLegacy::addTurbineHatch)
-                            .hatchClass(MTEHatchTurbine.class)
+                            .hatchId(MetaTileEntityIDs.Hatch_Turbine_Rotor.ID)
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(1)
                             .build()))
@@ -165,17 +166,17 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Hint Block Number 1",
+                "Hint block number 1",
                 1)
-            .addInputBus("Hint Block Number 4 (Min 1)", 4)
-            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
+            .addInputBus("Hint block number 4 (Min 1)", 4)
+            .addInputHatch("Hint block number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
+            tt.addOutputHatch("Hint block number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
-            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
+        tt.addDynamoHatch("Hint block number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint block number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
+            tt.addMufflerHatch("Hint block number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;

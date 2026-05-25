@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -102,14 +103,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Hint Block Number 1 (x1)",
+                "Hint block number 1 (x1)",
                 1)
-            .addInputHatch("Hint Block Number 1", 1)
-            .addOutputBus("Hint Block Number 1", 1)
-            .addOutputHatch("Hint Block Number 1", 1)
-            .addEnergyHatch("Hint Block Number 1", 1)
-            .addMaintenanceHatch("Hint Block Number 1", 1)
-            .addMufflerHatch("Hint Block Number 1", 1)
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputBus("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1", 1)
+            .addEnergyHatch("Hint block number 1", 1)
+            .addMaintenanceHatch("Hint block number 1", 1)
+            .addMufflerHatch("Hint block number 1", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -165,7 +166,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                                 .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
-                                .hatchClass(MTEHatchElementalDataOrbHolder.class)
+                                .hatchId(MetaTileEntityIDs.Hatch_Input_Elemental_Duplicator.ID)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())

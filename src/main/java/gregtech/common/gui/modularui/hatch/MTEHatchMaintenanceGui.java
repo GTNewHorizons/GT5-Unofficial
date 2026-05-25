@@ -1,8 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,6 @@ import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -24,6 +22,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance> {
 
@@ -44,16 +43,19 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                 .background(GTGuiTextures.BUTTON_STANDARD)
                 .topRel(0)
                 .rightRel(0)
-                .marginTop(3)
-                .marginRight(3)
-                .tooltip(
-                    t -> t.addStringLines(
-                        Arrays.asList(
-                            GTUtility.breakLines(
-                                translateToLocal(
-                                    mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))))));
+                .addTooltipStringLines(
+                    Arrays
+                        .stream(
+                            GTUtility.translateMultiline(
+                                mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))
+                        .collect(Collectors.toList())));
 
-        parent.childIf(mAuto, this::createAutoMaintenanceSlots);
+        parent.childIf(
+            mAuto,
+            () -> new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
+                .filter(machine::IsAutoMaintenanceInput)
+                .build()
+                .center());
 
         // maintenance slot background
         parent.childIf(
@@ -65,18 +67,6 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
         parent.childIf(!mAuto, () -> createSimpleMaintenanceSlot(syncManager));
 
         return parent;
-    }
-
-    private SlotGroupWidget createAutoMaintenanceSlots() {
-        return SlotGroupWidget.builder()
-            .matrix(new String[] { "ss", "ss" })
-            .key(
-                's',
-                index -> new ItemSlot().slot(
-                    new ModularSlot(hatch.inventoryHandler, index).slotGroup("item_inv")
-                        .filter(this::isRepairItem)))
-            .build()
-            .center();
     }
 
     private ItemSlot createSimpleMaintenanceSlot(PanelSyncManager syncManager) {
@@ -98,28 +88,22 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
 
                         if (player == null) return;
 
-                        hatch.onToolClick(cursorStack, player);
+                        machine.onToolClick(cursorStack, player);
                         // refresh held stack
                         if (cursorStack.stackSize < 1) syncManager.setCursorItem(null);
                         else syncManager.setCursorItem(cursorStack);
                     }
                 });
             }
-        }.slot(new ModularSlot(hatch.inventoryHandler, 0))
+        }.slot(new ModularSlot(machine.inventoryHandler, 0))
             .size(25)
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
             .center();
     }
 
-    private boolean isRepairItem(ItemStack itemStack) {
-        return hatch.IsAutoMaintenanceInput(itemStack);
-    }
-
     @Override
-    public void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("item_inv", 2);
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

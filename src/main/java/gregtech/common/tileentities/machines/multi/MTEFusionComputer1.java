@@ -86,9 +86,9 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
             .addCasingInfoRange("LuV Machine Casing", 79, 123, false)
             .addStructureInfo("Cover the coils with casing")
             .addOtherStructurePart("Superconducting Coil Block", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
+            .addEnergyHatch("1-16, Specified Casing", 2)
+            .addInputHatch("2-16, Specified Casing", 1)
+            .addOutputHatch("1-16, Specified Casing", 3)
             .addStructureInfo("ALL Hatches must be LuV or better")
             .toolTipFinisher();
         return tt;

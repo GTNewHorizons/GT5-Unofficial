@@ -51,7 +51,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
                     () -> multiblock.getBufferMap()
                         .get(key),
                     i -> multiblock.getBufferMap()
-                        .put(key, i)));
+                        .put(key, i)).allowC2S());
         }
 
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));

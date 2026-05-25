@@ -11,11 +11,20 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,16 +41,22 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
@@ -76,9 +91,10 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
         tt.addMachineType("Chisel")
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
-            .addInfo(
-                "Without a circuit, chisels architecture and chisel blocks depending on reference block in CRIB or Controller")
-            .addInfo("Use a programmed circuit to select a specific chiseled output - check NEI for the order")
+            .addInfo("Chisel Bus: Set ghost targets to define the desired output variants")
+            .addInfo("CRIB: Uses the pattern output as the target block")
+            .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
+            .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front left, 3rd layer")
@@ -149,10 +165,15 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 40
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 40);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
@@ -211,6 +232,175 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     }
 
     @Override
+    @Nonnull
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        result = checkCRIBs(result);
+        if (result.wasSuccessful()) return result;
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) return result;
+
+        result = checkChiselBuses(result);
+        if (result.wasSuccessful()) return result;
+
+        result = checkRegularBuses(result);
+        return result;
+    }
+
+    @Nonnull
+    private CheckRecipeResult checkCRIBs(@Nonnull CheckRecipeResult currentResult) {
+        CheckRecipeResult result = currentResult;
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                if (slot.isEmpty()) continue;
+
+                ItemStack target = extractPatternTarget(slot);
+
+                if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                    if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                        continue;
+                    }
+                }
+
+                processingLogic.setSpecialSlotItem(target);
+                processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                processingLogic.setInputFluids(slot.getFluidInputs());
+
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    @Nullable
+    private static ItemStack extractPatternTarget(IDualInputInventory slot) {
+        if (slot instanceof MTEHatchCraftingInputME.PatternSlot<?>patternSlot) {
+            var details = patternSlot.getPatternDetails();
+            if (details != null) {
+                var outputs = details.getCondensedOutputs();
+                if (outputs.length > 0) {
+                    return outputs[0].getItemStack();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nonnull
+    private CheckRecipeResult checkChiselBuses(@Nonnull CheckRecipeResult currentResult) {
+        CheckRecipeResult result = currentResult;
+        for (MTEHatchInputBus bus : mInputBusses) {
+            if (!(bus instanceof MTEHatchChiselBus chiselBus)) continue;
+
+            List<ItemStack> busItems = collectBusItems(bus);
+            if (busItems.isEmpty()) continue;
+
+            ItemStack[] inputArray = busItems.toArray(new ItemStack[busItems.size() + 1]);
+            int targetIndex = busItems.size();
+
+            for (int g = 0; g < chiselBus.ghostTargets.getSlots(); g++) {
+                ItemStack ghostTarget = chiselBus.ghostTargets.getStackInSlot(g);
+                if (ghostTarget == null) continue;
+
+                inputArray[targetIndex] = ghostTarget;
+                processingLogic.setInputItems(inputArray);
+                processingLogic.setSpecialSlotItem(ghostTarget);
+
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    @Nonnull
+    private CheckRecipeResult checkRegularBuses(@Nonnull CheckRecipeResult currentResult) {
+        CheckRecipeResult result = currentResult;
+
+        short hatchColors = 0;
+        for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
+        for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
+
+        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
+            if ((hatchColors & (1 << color)) == 0) continue;
+            processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
+
+            if (isInputSeparationEnabled()) {
+                result = checkRegularBusesSeparated(result, color);
+            } else {
+                result = checkRegularBusesCombined(result, color);
+            }
+            if (result.wasSuccessful()) return result;
+        }
+        return result;
+    }
+
+    @Nonnull
+    private CheckRecipeResult checkRegularBusesSeparated(@Nonnull CheckRecipeResult currentResult, byte color) {
+        CheckRecipeResult result = currentResult;
+        if (mInputBusses.isEmpty()) {
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) return foundResult;
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+        } else {
+            for (MTEHatchInputBus bus : mInputBusses) {
+                if (bus instanceof MTEHatchCraftingInputME) continue;
+                if (bus instanceof MTEHatchChiselBus) continue;
+                byte busColor = bus.getColor();
+                if (busColor != -1 && busColor != color) continue;
+
+                List<ItemStack> inputItems = collectBusItems(bus);
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    @Nonnull
+    private CheckRecipeResult checkRegularBusesCombined(@Nonnull CheckRecipeResult currentResult, byte color) {
+        List<ItemStack> inputItems = new ArrayList<>();
+        for (MTEHatchInputBus bus : mInputBusses) {
+            if (bus instanceof MTEHatchCraftingInputME) continue;
+            if (bus instanceof MTEHatchChiselBus) continue;
+            byte busColor = bus.getColor();
+            if (busColor != -1 && busColor != color) continue;
+            inputItems.addAll(collectBusItems(bus));
+        }
+        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+            inputItems.add(getControllerSlot());
+        }
+        processingLogic.setInputItems(inputItems);
+        CheckRecipeResult foundResult = processingLogic.process();
+        if (foundResult.wasSuccessful()) return foundResult;
+        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) return foundResult;
+        return currentResult;
+    }
+
+    private static List<ItemStack> collectBusItems(MTEHatchInputBus bus) {
+        List<ItemStack> items = new ArrayList<>(bus.getSizeInventory());
+        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+            ItemStack stored = bus.getStackInSlot(i);
+            if (stored != null) items.add(stored);
+        }
+        return items;
+    }
+
+    @Override
     protected void sendStartMultiBlockSoundLoop() {
         sendLoopStart(PROCESS_START_SOUND_INDEX);
     }
@@ -240,6 +430,16 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialChisel;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex > 1;
+    }
+
+    @Override
+    protected boolean canUseControllerSlotForRecipe() {
+        return false;
     }
 
     @Override

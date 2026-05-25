@@ -28,20 +28,20 @@ kubatech.command.tea.success_add=Player %s now has %d Tea
 kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
 #GUI
-GT5U.gui.text.EEC_nospawner=No powered spawner!
-GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
-GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
-GT5U.gui.text.MegaApiary_slotoverflow=Too many bees inside!
+GT5U.gui.text.recipe_result.EEC_nospawner=No powered spawner!
+GT5U.gui.text.recipe_result.EEC_invalidspawner=Invalid spawner!
+GT5U.gui.text.recipe_result.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
+GT5U.gui.text.recipe_result.MegaApiary_slotoverflow=Too many bees inside!
 GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
-GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
-GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
-GT5U.gui.text.EIG_missingwater=No water!
+GT5U.gui.text.recipe_result.EIG_slotoverflow=Too many seed types inside!
+GT5U.gui.text.recipe_result.EIG_seedOverflow=Too many seeds inside!
+GT5U.gui.text.recipe_result.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
-GT5U.gui.text.arc_shutdown=Arc Furnace is shutting down!
-GT5U.gui.text.arc_ignition=Arc Furnace is starting up!
-GT5U.gui.text.no_electrode=No electrode inserted!
-GT5U.gui.text.electrode_changed=Electrode changed while running!
+GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
+GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
+GT5U.gui.text.recipe_result.no_electrode=No electrode inserted!
+GT5U.gui.text.shutdown_reason.electrode_changed=Electrode changed while running!
 
 ## General
 kubatech.gui.text.configuration=Configuration
@@ -93,6 +93,8 @@ kubatech.gui.text.mia.primary_mode=Primary mode
 kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
 kubatech.gui.text.mia.secondary_mode=Secondary mode
+kubatech.gui.text.mia.show_bee_inventory=Show Bee Inventory
+kubatech.gui.text.mia.show_machine_status=Show Machine Status
 
 kubatech.gui.tooltip.contributors.added=Added by %s
 kubatech.gui.tooltip.contributors.design=Designed by %s
@@ -162,6 +164,10 @@ kubatech.infodata.mia.running_mode.output=Output mode
 kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
+kubatech.infodata.mia.inventory_full=No more slots for bees!
+kubatech.gui.text.mia.inventory_full_warning=No more bee slots available!
+kubatech.gui.text.mia.locked_while_running=Bee inventory locked while machine is running
+kubatech.infodata.mia.gui_locked_while_running=Cannot modify bee inventory via GUI while running
 
 #HTGR
 kubatech.infodata.htgr.stored_fuel=Stored Fuel:

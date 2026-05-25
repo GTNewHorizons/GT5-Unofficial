@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -147,7 +148,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("Any catalyst must be placed in the catalyst housing")
-            .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
+            .addInfo("Awakened Draconium Coils combined with Tungstensteel Pipe Casings makes catalyst unbreakable")
             .beginStructureBlock(7, 7, 7, false)
             .addController("Front bottom center")
             .addOtherStructurePart("Catalyst Housing", "Any Casing")
@@ -158,7 +159,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "metal machine casing (minimum 70)")
+            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "Metal Machine Casing (minimum 70)")
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
@@ -225,7 +226,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .casingIndex(getCasingTextureID())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
+                        buildHatchAdder(MTEChemicalPlant.class).hatchId(MetaTileEntityIDs.Bus_Catalysts.ID)
                             .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
@@ -381,7 +382,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (checkCasing[i] == mCasing) {
                 mSolidCasingTier = i;
             } else if (checkCasing[i] > 0) {
-                errors.add(StructureErrors.of("GT5U.gui.text.chemplant_casing_problem"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_casing_problem"));
                 return;
             }
         }
@@ -390,10 +391,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         mPipeCasingTier = checkPipe - 12;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_hatch_problem"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
         }
         if (mCatalystBuses.size() > 1) {
-            errors.add(StructureErrors.of("GT5U.gui.text.chemplant_too_many_catalyst_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_too_many_catalyst_hatch"));
         }
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);

@@ -135,14 +135,14 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
-            .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-            .addEnergyHatch("Any casing", 1, 2, 3)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
-            .addInputHatch("Any left/right side casing", 2, 3)
-            .addOutputHatch("Any right/left side casing", 2, 3)
+            .addOtherStructurePart("Heating Coil", "2 rings of 8, each side of the controller")
+            .addEnergyHatch("Any Casing", 1, 2, 3)
+            .addMaintenanceHatch("Any Casing", 1, 2, 3)
+            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, any middle ring Casing", 1)
+            .addInputHatch("Any left/right side Casing", 2, 3)
+            .addOutputHatch("Any right/left side Casing", 2, 3)
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")
-            .addInputBus("Any middle ring casing, optional for programmed circuit automation")
+            .addInputBus("Any middle ring Casing, optional for programmed circuit automation")
             .addStructureHint("GT5U.cracker.io_side")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
@@ -280,7 +280,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         if (mMiddleInputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.cracker.missing_middle_input_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch"));
         }
     }
 
