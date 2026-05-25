@@ -15,10 +15,13 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterators;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -47,6 +50,7 @@ import gregtech.api.recipe.lookup.GTOreDictLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupBuilder;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
@@ -452,11 +456,21 @@ public class RecipeMapBackend {
     Stream<GTRecipe> matchRecipeStream(@Nullable ItemStack @NotNull [] rawItems,
         @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
         boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        RecipeLookupProfile profile = RecipeLookupProfile.start(recipeMap, forCollisionCheck);
+        long setupStart = profile == null ? 0L : System.nanoTime();
         if (doesOverwriteFindRecipe()) {
+            if (profile != null) {
+                profile.recordOverwrite();
+                profile.addSetupNanos(System.nanoTime() - setupStart);
+            }
             return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
 
         if (recipesByCategory.isEmpty()) {
+            if (profile != null) {
+                profile.recordEmptyMapReject();
+                profile.addSetupNanos(System.nanoTime() - setupStart);
+            }
             return Stream.empty();
         }
 
@@ -470,6 +484,10 @@ public class RecipeMapBackend {
                 int count = 0;
                 for (FluidStack fluid : fluids) if (fluid != null) count++;
                 if (count < properties.minFluidInputs) {
+                    if (profile != null) {
+                        profile.recordMinInputReject();
+                        profile.addSetupNanos(System.nanoTime() - setupStart);
+                    }
                     return Stream.empty();
                 }
             }
@@ -477,6 +495,10 @@ public class RecipeMapBackend {
                 int count = 0;
                 for (ItemStack item : rawItems) if (item != null) count++;
                 if (count < properties.minItemInputs) {
+                    if (profile != null) {
+                        profile.recordMinInputReject();
+                        profile.addSetupNanos(System.nanoTime() - setupStart);
+                    }
                     return Stream.empty();
                 }
             }
@@ -485,49 +507,119 @@ public class RecipeMapBackend {
         ItemStack[] items;
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
-            items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
+            if (profile == null) {
+                items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
+            } else {
+                long unificationStart = System.nanoTime();
+                items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
+                profile.addUnificationNanos(System.nanoTime() - unificationStart);
+            }
         } else {
             items = rawItems;
         }
 
-        ensureLookupCurrent();
+        if (profile == null) {
+            ensureLookupCurrent();
+        } else {
+            long ensureStart = System.nanoTime();
+            ensureLookupCurrent();
+            profile.addEnsureLookupNanos(System.nanoTime() - ensureStart);
+        }
 
         if (forCollisionCheck) {
-            return collisionCandidateStream(items, fluids, specialSlot, dontCheckStackSizes);
+            Stream<GTRecipe> stream = collisionCandidateStream(
+                items,
+                fluids,
+                specialSlot,
+                dontCheckStackSizes,
+                profile);
+            if (profile != null) {
+                profile.addSetupNanos(System.nanoTime() - setupStart);
+            }
+            return stream;
         }
 
         // The trie is the only default recipe candidate lookup path. The item/fluid indexes are containsInput-only.
-        Stream<GTRecipe> candidates = Stream.<Stream<GTRecipe>>of(
-            // Check the recipe which has been used last time in order to not have to search for it again, if
-            // possible.
-            GTStreamUtil.ofNullable(cachedRecipe)
-                .filter(recipe -> recipe.mCanBeBuffered)
-                .filter(this::isRecipeRegistered),
-            GTStreamUtil.ofSupplier(() -> cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE])
-                .filter(Objects::nonNull)
-                .filter(this::isRecipeRegistered),
-            lookupCandidateStream(items, fluids).filter(this::isRecipeRegistered)
-                .sorted(
-                    (first, second) -> Integer
-                        .compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second))))
+        Stream<GTRecipe> cachedRecipeCandidates = GTStreamUtil.ofNullable(cachedRecipe)
+            .filter(recipe -> recipe.mCanBeBuffered)
+            .filter(this::isRecipeRegistered);
+        if (profile != null) {
+            cachedRecipeCandidates = cachedRecipeCandidates.peek(recipe -> profile.recordCachedRecipeCandidate());
+        }
+
+        Stream<GTRecipe> cacheMapCandidates = GTStreamUtil.ofSupplier(() -> {
+            if (profile != null) {
+                profile.recordCacheMapProbe();
+            }
+            return cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE];
+        })
+            .filter(Objects::nonNull)
+            .filter(this::isRecipeRegistered);
+        if (profile != null) {
+            cacheMapCandidates = cacheMapCandidates.peek(recipe -> profile.recordCacheMapCandidate());
+        }
+
+        Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile)
+            .filter(this::isRecipeRegistered);
+        if (profile != null) {
+            trieCandidates = trieCandidates.peek(recipe -> profile.recordTrieCandidate());
+        }
+        trieCandidates = trieCandidates.sorted(
+            (first, second) -> Integer.compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)));
+
+        Stream<GTRecipe> candidates = Stream
+            .<Stream<GTRecipe>>of(cachedRecipeCandidates, cacheMapCandidates, trieCandidates)
             .flatMap(Function.identity())
             .filter(distinctByIdentity())
-            .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-            .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+            .filter(
+                recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
+            .map(recipe -> profiledModifyFoundRecipe(recipe, items, fluids, specialSlot, profile))
             .filter(Objects::nonNull);
+        if (profile != null) {
+            candidates = candidates.peek(recipe -> profile.recordMatchedCandidate());
+        }
 
-        return Stream.concat(
-            candidates,
-            GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
-                .filter(Objects::nonNull));
+        Stream<GTRecipe> stream = Stream.concat(candidates, GTStreamUtil.ofSupplier(() -> {
+            if (profile != null) {
+                profile.recordFallbackProbe();
+            }
+            GTRecipe fallback = findFallback(items, fluids, specialSlot);
+            if (profile != null && fallback != null) {
+                profile.recordFallbackHit();
+            }
+            return fallback;
+        })
+            .filter(Objects::nonNull));
+        if (profile != null) {
+            profile.addSetupNanos(System.nanoTime() - setupStart);
+        }
+        return stream;
     }
 
     private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,
-        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
-        return lookupCandidateStream(items, fluids).filter(this::isRecipeRegistered)
-            .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-            .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
+        @Nullable RecipeLookupProfile profile) {
+        Stream<GTRecipe> candidates = lookupCandidateStream(items, fluids, profile).filter(this::isRecipeRegistered);
+        if (profile != null) {
+            candidates = candidates.peek(recipe -> profile.recordTrieCandidate());
+        }
+        return candidates
+            .filter(
+                recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
+            .map(recipe -> profiledModifyFoundRecipe(recipe, items, fluids, specialSlot, profile))
             .filter(Objects::nonNull);
+    }
+
+    private Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable RecipeLookupProfile profile) {
+        if (profile == null) {
+            return lookupCandidateStream(items, fluids);
+        }
+        profile.recordTrieBuild();
+        long start = System.nanoTime();
+        Stream<GTRecipe> stream = lookupCandidateStream(items, fluids);
+        profile.addTrieBuildNanos(System.nanoTime() - start);
+        return stream;
     }
 
     protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
@@ -635,7 +727,303 @@ public class RecipeMapBackend {
         return false;
     }
 
+    private boolean profiledFilterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
+        @Nullable RecipeLookupProfile profile) {
+        if (profile == null) {
+            return filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes);
+        }
+        long start = System.nanoTime();
+        boolean result = filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes);
+        profile.addFilterNanos(System.nanoTime() - start, result);
+        return result;
+    }
+
+    @Nullable
+    private GTRecipe profiledModifyFoundRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot,
+        @Nullable RecipeLookupProfile profile) {
+        if (profile == null) {
+            return modifyFoundRecipe(recipe, items, fluids, specialSlot);
+        }
+        long start = System.nanoTime();
+        GTRecipe result = modifyFoundRecipe(recipe, items, fluids, specialSlot);
+        profile.addModifyNanos(System.nanoTime() - start, result != null);
+        return result;
+    }
+
     // endregion
+
+    private static final class RecipeLookupProfile {
+
+        private static final boolean ENABLED = Boolean.getBoolean("gt.recipe.lookup.profile");
+        private static final long REPORT_INTERVAL_CALLS = Long
+            .getLong("gt.recipe.lookup.profile.interval_calls", 5_000L);
+        private static final long REPORT_INTERVAL_NANOS = Math
+            .max(1L, Long.getLong("gt.recipe.lookup.profile.interval_seconds", 15L)) * 1_000_000_000L;
+        private static final ConcurrentMap<String, RecipeLookupProfileStats> STATS = new ConcurrentHashMap<>();
+
+        private final RecipeLookupProfileStats stats;
+
+        private RecipeLookupProfile(RecipeLookupProfileStats stats) {
+            this.stats = stats;
+        }
+
+        @Nullable
+        private static RecipeLookupProfile start(@Nullable RecipeMap<?> recipeMap, boolean collisionCheck) {
+            if (!ENABLED) {
+                return null;
+            }
+            String mapName = recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
+            RecipeLookupProfileStats stats = STATS.computeIfAbsent(mapName, RecipeLookupProfileStats::new);
+            stats.recordCall(collisionCheck);
+            return new RecipeLookupProfile(stats);
+        }
+
+        private void recordOverwrite() {
+            stats.recordOverwrite();
+        }
+
+        private void recordEmptyMapReject() {
+            stats.recordEmptyMapReject();
+        }
+
+        private void recordMinInputReject() {
+            stats.recordMinInputReject();
+        }
+
+        private void addSetupNanos(long nanos) {
+            stats.addSetupNanos(nanos);
+        }
+
+        private void addUnificationNanos(long nanos) {
+            stats.addUnificationNanos(nanos);
+        }
+
+        private void addEnsureLookupNanos(long nanos) {
+            stats.addEnsureLookupNanos(nanos);
+        }
+
+        private void recordCachedRecipeCandidate() {
+            stats.recordCachedRecipeCandidate();
+        }
+
+        private void recordCacheMapProbe() {
+            stats.recordCacheMapProbe();
+        }
+
+        private void recordCacheMapCandidate() {
+            stats.recordCacheMapCandidate();
+        }
+
+        private void recordTrieBuild() {
+            stats.recordTrieBuild();
+        }
+
+        private void addTrieBuildNanos(long nanos) {
+            stats.addTrieBuildNanos(nanos);
+        }
+
+        private void recordTrieCandidate() {
+            stats.recordTrieCandidate();
+        }
+
+        private void recordMatchedCandidate() {
+            stats.recordMatchedCandidate();
+        }
+
+        private void recordFallbackProbe() {
+            stats.recordFallbackProbe();
+        }
+
+        private void recordFallbackHit() {
+            stats.recordFallbackHit();
+        }
+
+        private void addFilterNanos(long nanos, boolean matched) {
+            stats.addFilterNanos(nanos, matched);
+        }
+
+        private void addModifyNanos(long nanos, boolean returnedRecipe) {
+            stats.addModifyNanos(nanos, returnedRecipe);
+        }
+    }
+
+    private static final class RecipeLookupProfileStats {
+
+        private final String mapName;
+        private long lastReportNanos = System.nanoTime();
+        private long lastReportCalls;
+        private long calls;
+        private long collisionCalls;
+        private long overwriteCalls;
+        private long emptyMapRejects;
+        private long minInputRejects;
+        private long setupNanos;
+        private long unificationNanos;
+        private long ensureLookupNanos;
+        private long cachedRecipeCandidates;
+        private long cacheMapProbes;
+        private long cacheMapCandidates;
+        private long trieBuilds;
+        private long trieBuildNanos;
+        private long trieCandidates;
+        private long matchedCandidates;
+        private long fallbackProbes;
+        private long fallbackHits;
+        private long filterCalls;
+        private long filterMatches;
+        private long filterNanos;
+        private long modifyCalls;
+        private long modifyHits;
+        private long modifyNanos;
+
+        private RecipeLookupProfileStats(String mapName) {
+            this.mapName = mapName;
+        }
+
+        private synchronized void recordCall(boolean collisionCheck) {
+            calls++;
+            if (collisionCheck) {
+                collisionCalls++;
+            }
+            maybeReport();
+        }
+
+        private synchronized void recordOverwrite() {
+            overwriteCalls++;
+        }
+
+        private synchronized void recordEmptyMapReject() {
+            emptyMapRejects++;
+        }
+
+        private synchronized void recordMinInputReject() {
+            minInputRejects++;
+        }
+
+        private synchronized void addSetupNanos(long nanos) {
+            setupNanos += nanos;
+        }
+
+        private synchronized void addUnificationNanos(long nanos) {
+            unificationNanos += nanos;
+        }
+
+        private synchronized void addEnsureLookupNanos(long nanos) {
+            ensureLookupNanos += nanos;
+        }
+
+        private synchronized void recordCachedRecipeCandidate() {
+            cachedRecipeCandidates++;
+        }
+
+        private synchronized void recordCacheMapProbe() {
+            cacheMapProbes++;
+        }
+
+        private synchronized void recordCacheMapCandidate() {
+            cacheMapCandidates++;
+        }
+
+        private synchronized void recordTrieBuild() {
+            trieBuilds++;
+        }
+
+        private synchronized void addTrieBuildNanos(long nanos) {
+            trieBuildNanos += nanos;
+        }
+
+        private synchronized void recordTrieCandidate() {
+            trieCandidates++;
+        }
+
+        private synchronized void recordMatchedCandidate() {
+            matchedCandidates++;
+        }
+
+        private synchronized void recordFallbackProbe() {
+            fallbackProbes++;
+        }
+
+        private synchronized void recordFallbackHit() {
+            fallbackHits++;
+        }
+
+        private synchronized void addFilterNanos(long nanos, boolean matched) {
+            filterCalls++;
+            if (matched) {
+                filterMatches++;
+            }
+            filterNanos += nanos;
+        }
+
+        private synchronized void addModifyNanos(long nanos, boolean returnedRecipe) {
+            modifyCalls++;
+            if (returnedRecipe) {
+                modifyHits++;
+            }
+            modifyNanos += nanos;
+        }
+
+        private void maybeReport() {
+            long now = System.nanoTime();
+            boolean enoughCalls = RecipeLookupProfile.REPORT_INTERVAL_CALLS > 0
+                && calls - lastReportCalls >= RecipeLookupProfile.REPORT_INTERVAL_CALLS;
+            boolean enoughTime = now - lastReportNanos >= RecipeLookupProfile.REPORT_INTERVAL_NANOS;
+            if (!enoughCalls && !enoughTime) {
+                return;
+            }
+
+            GTLog.out.println(
+                String.format(
+                    Locale.ROOT,
+                    "[GTRecipeLookupProfile] map=%s calls=%d collision=%d overwrite=%d empty=%d minReject=%d "
+                        + "setupAvgUs=%.3f ensureAvgUs=%.3f unifyMs=%.3f cachedCandidates=%d "
+                        + "cacheMapProbes=%d cacheMapCandidates=%d trieBuilds=%d trieBuildMs=%.3f "
+                        + "trieCandidates=%d trieCandidatesPerBuild=%.3f matched=%d fallbackProbes=%d fallbackHits=%d "
+                        + "filterCalls=%d filterMatches=%d filterMs=%.3f modifyCalls=%d modifyHits=%d modifyMs=%.3f",
+                    mapName,
+                    calls,
+                    collisionCalls,
+                    overwriteCalls,
+                    emptyMapRejects,
+                    minInputRejects,
+                    averageMicros(setupNanos, calls),
+                    averageMicros(ensureLookupNanos, calls),
+                    nanosToMillis(unificationNanos),
+                    cachedRecipeCandidates,
+                    cacheMapProbes,
+                    cacheMapCandidates,
+                    trieBuilds,
+                    nanosToMillis(trieBuildNanos),
+                    trieCandidates,
+                    average(trieCandidates, trieBuilds),
+                    matchedCandidates,
+                    fallbackProbes,
+                    fallbackHits,
+                    filterCalls,
+                    filterMatches,
+                    nanosToMillis(filterNanos),
+                    modifyCalls,
+                    modifyHits,
+                    nanosToMillis(modifyNanos)));
+            lastReportCalls = calls;
+            lastReportNanos = now;
+        }
+
+        private static double average(long value, long count) {
+            return count == 0 ? 0.0D : (double) value / count;
+        }
+
+        private static double averageMicros(long nanos, long count) {
+            return count == 0 ? 0.0D : (double) nanos / count / 1_000.0D;
+        }
+
+        private static double nanosToMillis(long nanos) {
+            return (double) nanos / 1_000_000.0D;
+        }
+    }
 
     @FunctionalInterface
     public interface BackendCreator<B extends RecipeMapBackend> {
