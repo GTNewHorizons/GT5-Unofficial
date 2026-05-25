@@ -20,8 +20,6 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.List;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;

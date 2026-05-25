@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -56,28 +55,28 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.0.s",
                             standardFormat.format(containedSync.getLongValue()))))
-                    .setEnabledIf(w -> multiblock.mMachine))
+                                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.1.s",
                             standardFormat.format(passiveConsSync.getLongValue()))))
-                    .setEnabledIf(w -> multiblock.mMachine))
+                                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.2.s",
                             standardFormat.format(activeConsSync.getLongValue()))))
-                    .setEnabledIf(w -> multiblock.mMachine))
+                                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.3.s",
                             standardFormat.format(amChangeSync.getLongValue()))))
-                    .setEnabledIf(w -> multiblock.mMachine));
+                                .setEnabledIf(w -> multiblock.mMachine));
 
     }
 }
