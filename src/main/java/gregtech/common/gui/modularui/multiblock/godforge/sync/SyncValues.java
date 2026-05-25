@@ -102,7 +102,7 @@ public class SyncValues {
 
     public static final ForgeOfGodsSyncValue<IntSyncValue> AVAILABLE_GRAVITON_SHARDS = new ForgeOfGodsSyncValue<>(
         "fog.sync.available_graviton_shards",
-        data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailable).allowC2S());
+        data -> new IntSyncValue(data::getGravitonShardsAvailable, data::setGravitonShardsAvailableDebug).allowC2S());
 
     // -------- //
     // Upgrades //
