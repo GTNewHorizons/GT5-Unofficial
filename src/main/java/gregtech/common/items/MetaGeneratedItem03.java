@@ -242,6 +242,7 @@ import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Planck_Manifold;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
+import static gregtech.common.items.IDMetaItem03.PseudoStar;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
