@@ -3226,7 +3226,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.3§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §cBeam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §d(N+1)§7^2
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=Automatically switches to Collider mode when the §9maximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§f§nCollider mode§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
