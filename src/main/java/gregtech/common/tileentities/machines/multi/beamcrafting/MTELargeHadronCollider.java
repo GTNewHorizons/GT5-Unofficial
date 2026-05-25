@@ -472,11 +472,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         float outEnergy = inputEnergy;
         int outRate = inputRate;
 
-        long machineVoltage = getAverageInputVoltage();
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
-                * machineVoltage
+                * GTValues.V[8]
                 * keV_EU_RATIO);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
