@@ -53,8 +53,6 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        int totalSlots = MTEHatchChiselBus.getSlots(machine.mTier);
-        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
         int inputRows = getInputRows();
         int ghostCols = getGhostCols();
         int ghostRows = getGhostRows();
