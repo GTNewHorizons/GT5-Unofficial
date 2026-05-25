@@ -2813,24 +2813,7 @@ item.itemCellBlackMetal.name=黑物质单元
 tile.Block of Black Metal.name=黑物质块
 tile.Black Metal Frame Box.name=黑物质框架
 
-item.itemIngotWhiteMetal.name=白物质锭
-item.itemHotIngotWhiteMetal.name=热白物质锭
-item.itemDustWhiteMetal.name=白物质粉
-item.itemDustTinyWhiteMetal.name=小撮白物质粉
-item.itemDustSmallWhiteMetal.name=小堆白物质粉
-item.itemNuggetWhiteMetal.name=白物质粒
-item.itemPlateWhiteMetal.name=白物质板
-item.itemPlateDoubleWhiteMetal.name=双重白物质板
-item.itemBoltWhiteMetal.name=白物质螺栓
-item.itemRodWhiteMetal.name=白物质杆
-item.itemRodLongWhiteMetal.name=长白物质杆
-item.itemRingWhiteMetal.name=白物质环
-item.itemScrewWhiteMetal.name=白物质螺丝
-item.itemRotorWhiteMetal.name=白物质转子
-item.itemGearWhiteMetal.name=白物质齿轮
-item.itemCellWhiteMetal.name=白物质单元
-tile.Block of White Metal.name=白物质块
-tile.White Metal Frame Box.name=白物质框架
+
 
 //Added 29/04/2019
 tile.OreRunite.name=虚恩矿
@@ -2870,7 +2853,6 @@ item.GTPP.BattPack.05.name=充电工具包[IV]
 item.IndustrialDiamondExquisite.name=精致的工业钻石
 
 item.itemSpringCelestialTungsten.name=天体钨弹簧
-item.itemSpringWhiteMetal.name=白物质弹簧
 item.itemSpringNitinol60.name=镍钛诺60弹簧
 item.itemSpringWatertightSteel.name=防水钢弹簧
 item.itemSpringEglinSteel.name=埃格林钢弹簧
@@ -2881,7 +2863,6 @@ item.itemSmallSpringStaballoy.name=小型贫铀合金弹簧
 item.itemSmallSpringBlackSteel.name=小型黑钢弹簧
 item.itemSmallSpringBlackTitanium.name=小型黑钛弹簧
 
-item.itemFineWireWhiteMetal.name=精致白物质导线
 item.itemFineWirePalladium.name=精致钯导线
 item.itemFineWireZirconium.name=精致锆导线
 item.itemFineWireGrisium.name=精致灰钛合金导线
@@ -2905,7 +2886,6 @@ item.itemHeavyPlateRhugnor.name=重型鲁格诺板
 item.itemHeavyPlateAdvancedNitinol.name=重型高级镍钛诺板
 item.itemHeavyPlateAstralTitanium.name=重型星体钛板
 item.itemHeavyPlateCelestialTungsten.name=重型天体钨板
-item.itemHeavyPlateWhiteMetal.name=重型白物质板
 item.itemHeavyPlateBlackMetal.name=重型黑物质板
 item.itemHeavyPlateAncientGranite.name=重型古花岗岩板
 

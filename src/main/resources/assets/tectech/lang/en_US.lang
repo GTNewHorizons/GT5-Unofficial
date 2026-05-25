@@ -686,8 +686,8 @@ gt.blockmachines.multimachine.em.switch.adv.desc.5=For weighted computation dist
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
-gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
-gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
+gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer Casing
+gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced Computer Casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
 gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
@@ -699,8 +699,8 @@ gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wirel
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
-gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
-gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
+gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or Computer Casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
 gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembly Lines with more Data Sticks
 gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembly Lines access to the same Data Stick
@@ -751,7 +751,7 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches o
 gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
 
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
-gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer Casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
 gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
@@ -1359,7 +1359,7 @@ GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Invalid overdrive setti
 GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Insufficient power
 GT5U.gui.text.recipe_result.missing_upgrades=§7Missing upgrades
 GT5U.gui.text.recipe_result.waiting_for_inputs=§7Waiting for inputs
-GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.shutdown_reason.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.researching_item=§fResearching: §b%s
 GT5U.gui.text.research_progress=§fComputation: %d/%d (%s%%)
 GT5U.gui.text.at_eu_transferred=§8EU Transferred:
@@ -1414,14 +1414,14 @@ tt.keyword.Structure.AnyMolecularCasing4D=Any Molecular Casing with 4 dots
 tt.keyword.Structure.AnyOuterMolecularCasing3rd=Any outer Molecular Casing on the 3rd slice
 tt.keyword.Structure.AnyOuterMolecularCasing4th=Any outer Molecular Casing on the 4th slice
 tt.keyword.Structure.AnyOuterMolecularCasing3rd4th=Any outer Molecular Casing on the 3rd or 4th slice
-tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
+tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer Casing on the bottom layer
 # Optional
 tt.keyword.Structure.Optional=(optional)
 # Placement specification
 tt.keyword.Structure.FrontCenter=Front center
 tt.keyword.Structure.BackCenter=Back center
 tt.keyword.Structure.SideCenter=Side center
-tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
+tt.keyword.Structure.FrontCenter3rd=Front center, 3rd layer
 tt.keyword.Structure.CenterPillar=Center of the front pillar
 tt.keyword.Structure.Center=Center
 # Additional structure components
