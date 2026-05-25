@@ -72,6 +72,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -631,7 +632,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+            this.heatingCapacity = (int) getCoilLevel().getHeat()
+                + 100 * (GTUtility.getTierExtended(this.getMaxInputEu()) - 2);
         }
     }
 
