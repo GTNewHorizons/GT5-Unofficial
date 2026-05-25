@@ -135,9 +135,12 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         });
 
         if (!syncManager.isClient()) {
-            beeListSyncer.setChangeListener(this::notifyBeeInventoryUpdate);
-            maxSlotsSyncer.setChangeListener(this::notifyBeeInventoryUpdate);
-            usedSlotsSyncer.setChangeListener(this::notifyBeeInventoryUpdate);
+            beeListSyncer.setChangeListener(
+                () -> notifyBeeInventoryUpdate(
+                    beeListSyncer.getValue()
+                        .size()));
+            maxSlotsSyncer.setChangeListener(() -> notifyBeeInventoryUpdate(buildPagedAggregatedBeeList().size()));
+            usedSlotsSyncer.setChangeListener(() -> notifyBeeInventoryUpdate(buildPagedAggregatedBeeList().size()));
         }
 
         syncManager.syncValue(
@@ -197,12 +200,10 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         }
     }
 
-    private void notifyBeeInventoryUpdate() {
-        invalidateBeeListCache();
-        List<GTHelper.StackableItemSlot> pagedList = buildPagedAggregatedBeeList();
+    private void notifyBeeInventoryUpdate(int pagedListSize) {
         boolean hasEmptySlot = multiblock.mStorage.size() < multiblock.mMaxSlots;
         boolean isLastPage = (beePage >= beePageCount - 1);
-        int activeCount = pagedList.size() + (hasEmptySlot && isLastPage ? 1 : 0);
+        int activeCount = pagedListSize + (hasEmptySlot && isLastPage ? 1 : 0);
         beeInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
     }
 
