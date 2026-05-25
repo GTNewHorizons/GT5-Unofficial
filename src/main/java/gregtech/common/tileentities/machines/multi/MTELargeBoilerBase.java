@@ -231,7 +231,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     + formatNumber(getEUt() * 40L)
                     + "L/s")
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
+                .addInfo("Solid Fuels with a burn value that is too high or too low will not work")
+                .addInfo("Has an added formula for long time burn fuels in form of 1+log(BurnTime/16000)*0.025");
         }
         tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -447,8 +448,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private double getLongBurntimeRatio(long fuelValue) {
-        double logScale = Math.log((float) fuelValue / 1600) / Math.log(9);
-        return 1 + logScale * 0.025;
+        return Math.max(1, 1 + Math.log((float) fuelValue / 16000) * 0.025);
     }
 
     abstract int runtimeBoost(int mTime);

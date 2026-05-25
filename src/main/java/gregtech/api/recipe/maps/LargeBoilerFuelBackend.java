@@ -1,5 +1,7 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,6 +72,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public GTRecipe addDieselRecipe(GTRecipe recipe) {
+        if (recipe.mSpecialValue > 500) return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20, true, true);
         return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20, true, false);
     }
 
@@ -125,14 +128,18 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
+    private double getBurntimeRatio(double fuelValue) {
+        return fuelValue * Math.max(1, 1 + Math.log((float) fuelValue / 10) * 0.025);
+    }
+
     private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
         boolean isHighTierAllowed) {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 
-        double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
+        double bronzeBurnTime = getBurntimeRatio(baseBurnTime) * 2 + floatErrorCorrection;
         bronzeBurnTime -= bronzeBurnTime % 0.05;
-        double steelBurnTime = baseBurnTime + floatErrorCorrection;
+        double steelBurnTime = getBurntimeRatio(baseBurnTime) + floatErrorCorrection;
         steelBurnTime -= steelBurnTime % 0.05;
         double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
         titaniumBurnTime -= titaniumBurnTime % 0.05;
@@ -141,16 +148,20 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
-            StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.bronze_boiler", bronzeBurnTime),
+            StatCollector
+                .translateToLocalFormatted("GT5U.nei.large_boiler.bronze_boiler", formatNumber(bronzeBurnTime)),
             isAllowedInSteelBoiler
-                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.steel_boiler", steelBurnTime)
+                ? StatCollector
+                    .translateToLocalFormatted("GT5U.nei.large_boiler.steel_boiler", formatNumber(steelBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.steel_boiler.ban"),
             isHighTierAllowed
-                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.titanium_boiler", titaniumBurnTime)
+                ? StatCollector
+                    .translateToLocalFormatted("GT5U.nei.large_boiler.titanium_boiler", formatNumber(titaniumBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.titanium_boiler.ban"),
             isHighTierAllowed
-                ? StatCollector
-                    .translateToLocalFormatted("GT5U.nei.large_boiler.tungstensteel_boiler", tungstensteelBurnTime)
+                ? StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.large_boiler.tungstensteel_boiler",
+                    formatNumber(tungstensteelBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.tungstensteel_boiler.ban"));
 
         return compileRecipe(recipe);
