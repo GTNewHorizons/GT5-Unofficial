@@ -313,7 +313,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.NuclearStar.get(64L))
-            .fluidInputs(Materials.CosmicNeutronium.getPlasma(8 * INGOTS))
+            .fluidInputs(Materials.CosmicNeutronium.getPlasma(64 * INGOTS))
             .itemOutputs(ItemList.PseudoStar.get(4L))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
