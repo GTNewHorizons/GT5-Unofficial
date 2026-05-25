@@ -343,7 +343,7 @@ gg.scanner.info.neutron_activator.input=Текущая кинетическая 
 gg.scanner.info.fusion_reactor_mk=Термоядерный реактор MK
 
 #GUI Info
-GT5U.gui.text.node_too_small=§7Узел слишком маленький
+GT5U.gui.text.recipe_result.node_too_small=§7Узел слишком маленький
 
 gui.NeutronSensor.0=Введите значение кинетической энергии нейтрона.
 gui.NeutronSensor.1=пример >5000KeV, <=30MeV . . .

@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -47,9 +45,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -136,14 +135,14 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
-            .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-            .addEnergyHatch("Any casing", 1, 2, 3)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
-            .addInputHatch("Any left/right side casing", 2, 3)
-            .addOutputHatch("Any right/left side casing", 2, 3)
+            .addOtherStructurePart("Heating Coil", "2 rings of 8, each side of the controller")
+            .addEnergyHatch("Any Casing", 1, 2, 3)
+            .addMaintenanceHatch("Any Casing", 1, 2, 3)
+            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, any middle ring Casing", 1)
+            .addInputHatch("Any left/right side Casing", 2, 3)
+            .addOutputHatch("Any right/left side Casing", 2, 3)
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")
-            .addInputBus("Any middle ring casing, optional for programmed circuit automation")
+            .addInputBus("Any middle ring Casing, optional for programmed circuit automation")
             .addStructureHint("GT5U.cracker.io_side")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
@@ -183,15 +182,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
-                return super.process();
-            }
-        };
+        return new ProcessingLogic().setEuModifierSupplier(this::getEuModifier);
     }
 
     @Override
@@ -205,6 +196,10 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         heatLevel = aCoilLevel;
+    }
+
+    public double getEuModifier() {
+        return 1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F);
     }
 
     private boolean addMiddleInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -268,17 +263,25 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
         mMiddleInputHatches.clear();
         mInputOnSide = -1;
         mOutputOnSide = -1;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0) && mInputOnSide != -1
-            && mOutputOnSide != -1
-            && mCasingAmount >= 18
-            && mMaintenanceHatches.size() == 1
-            && !mMiddleInputHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0, errors)) return;
+        if (mInputOnSide == -1) {
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
+        }
+        if (mOutputOnSide == -1) {
+            errors.add(StructureErrors.missingHatch(HatchElement.OutputHatch));
+        }
+        checkCasingMin(errors, mCasingAmount, 18);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        if (mMiddleInputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch"));
+        }
     }
 
     @Override

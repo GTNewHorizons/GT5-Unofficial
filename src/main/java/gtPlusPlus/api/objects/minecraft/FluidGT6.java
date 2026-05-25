@@ -2,25 +2,21 @@ package gtPlusPlus.api.objects.minecraft;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.function.Supplier;
-
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class FluidGT6 extends Fluid implements Runnable {
 
     private final short[] mRGBa;
     public final String mTextureName;
-    private String materialName;
     private String oreprefixKey;
-    private Supplier<String> localizedName;
+    private Material material;
 
     public FluidGT6(final @NotNull String aName, final String aTextureName, final short[] aRGBa, String aLocalName) {
         super(aName);
@@ -44,10 +40,9 @@ public class FluidGT6 extends Fluid implements Runnable {
     }
 
     private void generateLocalizedName(String aLocalName) {
-        String materialKey = MaterialUtils.getMaterialLocalizedNameKey(aLocalName);
-        if (StatCollector.translateToFallback(materialKey)
-            .equals(aLocalName)) {
-            materialName = aLocalName;
+        Material material = Material.mMaterialCache.get(aLocalName.toLowerCase());
+        if (material != null) {
+            this.material = material;
             return;
         }
         if (generateLocalizedNameHasOreprefix(aLocalName, "Molten %s")) return;
@@ -59,10 +54,10 @@ public class FluidGT6 extends Fluid implements Runnable {
         String oreprefixFormatRemoved = oreprefixFormat.replace("%s", "");
         if (aLocalName.contains(oreprefixFormatRemoved)) {
             String materialName = aLocalName.replace(oreprefixFormatRemoved, "");
-            String materialKey = MaterialUtils.getMaterialLocalizedNameKey(materialName);
-            if (aLocalName.equals(String.format(oreprefixFormat, StatCollector.translateToFallback(materialKey)))) {
-                this.materialName = materialName;
-                this.oreprefixKey = materialKey;
+            Material material = Material.mMaterialCache.get(materialName.toLowerCase());
+            if (material != null) {
+                this.material = material;
+                this.oreprefixKey = oreprefixFormat;
                 return true;
             }
         }
@@ -71,16 +66,14 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     @Override
     public String getLocalizedName() {
-        if (materialName != null) {
-            final String materialLocalizedName = MaterialUtils.getMaterialLocalizedName(materialName);
-            return oreprefixKey == null ? materialLocalizedName
-                : StatCollector.translateToLocalFormatted(oreprefixKey, materialLocalizedName);
+        if (material != null) {
+            return oreprefixKey == null ? material.getLocalizedName()
+                : OrePrefixes.getLocalizedNameForItem(oreprefixKey, "%s", material);
         }
         return super.getLocalizedName();
     }
 
     public Material getMaterial() {
-        if (materialName == null) return null;
-        return Material.mMaterialCache.get(materialName.toLowerCase());
+        return material;
     }
 }

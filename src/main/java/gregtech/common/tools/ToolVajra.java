@@ -14,13 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -41,12 +42,10 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public int baseCost = 3333;
     public int tier = 5;
     public double transferLimit = V[tier];
-    private final String tooltip;
 
     public ToolVajra(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
         boolean aSwingIfUsed) {
         super(aUnlocalized, aEnglish, aTooltip, aMaxDamage, aEntityDamage, aSwingIfUsed);
-        this.tooltip = aTooltip;
     }
 
     @Override
@@ -147,10 +146,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
-        if (player.isSneaking()) return this.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+        // When sneaking, skip block activation so onItemUse is called directly by the pipeline.
+        // This prevents the wrong C08 packet format (air-click) that would occur if we mined
+        // the block inside onItemUseFirst (which sends face=255 to the server when returning true).
+        return false;
     }
 
     @Override
@@ -181,7 +181,10 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        // Return true so Forge sends C08 with real block coordinates (not the air-click face=255
+        // format that would be used if we returned true from onItemUseFirst). This ensures the
+        // server processes the packet via activateBlockOrUseItem → onItemUse, not onItemRightClick.
+        return true;
     }
 
     private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
@@ -211,27 +214,21 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
-        NBTTagCompound tag = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : new NBTTagCompound();
-        if (!worldIn.isRemote && !itemStackIn.hasTagCompound()) {
-            itemStackIn.setTagCompound(tag);
+    public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
+        if (ItemStackNBT.getBoolean(stack, "harvested")) {
+            ItemStackNBT.removeTag(stack, "harvested");
+            return super.onItemRightClick(stack, worldIn, player);
         }
-        if (tag.getBoolean("harvested")) {
-            tag.removeTag("harvested");
-            return super.onItemRightClick(itemStackIn, worldIn, player);
-        }
-
         if (!worldIn.isRemote && player.isSneaking()) {
-            if (itemStackIn.getTagCompound()
-                .hasKey("ench")) {
-                tag.removeTag("ench");
+            if (ItemStackNBT.hasKey(stack, "ench")) {
+                ItemStackNBT.removeTag(stack, "ench");
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
             } else {
                 // Adds the "ench" tag to the tool
-                itemStackIn.addEnchantment(Enchantment.silkTouch, 1);
+                stack.addEnchantment(Enchantment.silkTouch, 1);
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled silk touch"));
             }
         }
-        return super.onItemRightClick(itemStackIn, worldIn, player);
+        return super.onItemRightClick(stack, worldIn, player);
     }
 }

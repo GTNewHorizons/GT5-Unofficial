@@ -22,7 +22,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -316,20 +315,16 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 TTUtility.setTier(mTier2, this);
                 this.mNewTier = mTier2;
             } catch (Exception e) {
-                Logger.WARNING("Failed setting mTier.");
                 e.printStackTrace();
             }
 
             this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
             if (mTicksToBurnFor >= Integer.MAX_VALUE) {
                 mTicksToBurnFor = Integer.MAX_VALUE;
-                Logger.WARNING("Fuel went over Int limit, setting to MAX_VALUE.");
             }
             this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor / 20 / 60 / 3);
-            Logger.WARNING("step | " + (int) (mTicksToBurnFor * getEfficiency() / 100L));
             return (int) (mTicksToBurnFor * getEfficiency() / 100L);
         }
-        Logger.WARNING("Not sure");
         return 0;
     }
 

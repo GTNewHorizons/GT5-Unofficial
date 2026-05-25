@@ -46,7 +46,7 @@ public enum DimensionDef {
         ChunkProviderModded.class,
         DimensionType.Planet)
         .setOreVeinChance(66)
-        .disableEoHRecipe()),
+        ),
 
 
     Moon(new ModDimensionDef(
@@ -66,12 +66,12 @@ public enum DimensionDef {
         DimNames.ROSS128B,
         "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
         DimensionType.Planet)
-        .disableEoHRecipe()),
+        ),
     Ross128ba(new ModDimensionDef(
         DimNames.ROSS128BA,
         "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
         DimensionType.Planet)
-        .disableEoHRecipe()),
+        ),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",

@@ -2,6 +2,7 @@ package gregtech.api.recipe;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -55,9 +56,11 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.EFRBlastingBackend;
 import gregtech.api.recipe.maps.EFRSmokingBackend;
@@ -97,10 +100,13 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -110,7 +116,6 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.register.LanthItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
-import tectech.thing.CustomItemList;
 
 @SuppressWarnings("SimplifyOptionalCallChains")
 public final class RecipeMaps {
@@ -342,9 +347,7 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .dontUseProgressBar()
         .frontend(QuantumComputerFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setMaxRecipesPerPage(4)
-                .setDisplayStack(CustomItemList.Machine_Multi_Computer.get(1)))
+        .neiHandlerInfo(builder -> builder.setHeight(110))
         .build();
     public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
         .of("gt.recipe.replicator", ReplicatorBackend::new)
@@ -389,18 +392,9 @@ public final class RecipeMaps {
     /**
      * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
      */
-    public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
-        .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(2, 9, 1, 1)
-        .minInputs(1, 1)
-        .build();
-    /**
-     * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
-     */
     public static final RecipeMap<RecipeMapBackend> arcFurnaceRecipes = RecipeMapBuilder.of("gt.recipe.arcfurnace")
-        .maxIO(1, 9, 1, 0)
-        .minInputs(1, 1)
-        .amperage(3)
+        .maxIO(2, 9, 2, 1)
+        .minInputs(1, 0)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
@@ -432,6 +426,11 @@ public final class RecipeMaps {
             return GTGuiTextures.OVERLAY_SLOT_PAGE_BLANK;
         })
         .build();
+    public static final RecipeMap<? extends RecipeMapBackend> industrialChiselRecipes = (Chisel.isModLoaded()
+        ? RecipeMapBuilder.of("gt.recipe.industrialchisel", ChiselBackend::new)
+        : RecipeMapBuilder.of("gt.recipe.industrialchisel")).maxIO(2, 1, 0, 0)
+            .minInputs(2, 0)
+            .build();
     public static final RecipeMap<RecipeMapBackend> sifterRecipes = RecipeMapBuilder.of("gt.recipe.sifter")
         .maxIO(1, 9, 1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
@@ -810,8 +809,8 @@ public final class RecipeMaps {
         .maxIO(9, 9, 9, 9)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_PlasmaForge.get(1))
-                .setMaxRecipesPerPage(1))
+            builder -> builder.setShiftY(8)
+                .setHeight(156))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder
@@ -821,8 +820,8 @@ public final class RecipeMaps {
         .logoPos(87, 99)
         .neiRecipeBackgroundSize(170, 118)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1))
-                .setMaxRecipesPerPage(1))
+            builder -> builder.setShiftY(8)
+                .setHeight(146))
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
@@ -836,6 +835,7 @@ public final class RecipeMaps {
         .neiTransferRect(70, 28, 18, 72)
         .neiTransferRect(106, 28, 18, 72)
         .frontend(SpaceProjectFrontend::new)
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .disableRenderRealStackSizes()
         .build();
     public static final RecipeMap<RecipeMapBackend> cokeOvenRecipes = RecipeMapBuilder.of("gt.recipe.cokeoven")
@@ -1316,14 +1316,12 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
+                .fluidInputs(
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
                 .duration(aDuration * 2)
-                .build()
-                .ifPresent(ret::add);
-            b.copy()
-                .fluidInputs(GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)))
-                .duration(aDuration * 2)
-                .build()
+                .buildWithAlt()
                 .ifPresent(ret::add);
             b.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
@@ -1552,10 +1550,7 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(PurificationUnitOzonationFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setMaxRecipesPerPage(1)
-                // When setting a builder, apparently setting a display stack is also necessary
-                .setDisplayStack(ItemList.Machine_Multi_PurificationUnitOzonation.get(1)))
+        .neiHandlerInfo(builder -> builder.setMultipleWidgetsAllowed(false))
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantflocculation")
@@ -1644,6 +1639,30 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
         .build();
 
+    public static final RecipeMetadataKey<LargeHadronColliderMetadata> LARGE_HADRON_COLLIDER_METADATA = SimpleRecipeMetadataKey
+        .create(LargeHadronColliderMetadata.class, "large_hadron_collider_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> largeHadronColliderRecipes = RecipeMapBuilder
+        .of("gt.recipe.large_hadron_collider")
+        .maxIO(1, 8, 0, 0)
+        .minInputs(1, 0)
+        .neiItemOutputsGetter(recipe -> {
+            LargeHadronColliderMetadata metadata = recipe.getMetadata(LARGE_HADRON_COLLIDER_METADATA);
+            if (metadata == null) return GTValues.emptyItemStackArray;
+
+            List<ItemStack> ret = new ArrayList<>();
+            ret.addAll(Arrays.asList(recipe.mOutputs));
+            for (Particle p : metadata.particleList) {
+                ret.add(new ItemStack(LanthItemList.PARTICLE_ITEM, 1, p.getId()));
+            }
+
+            return ret.toArray(new ItemStack[0]);
+        })
+        .neiTransferRect(70, 41, 101, 22)
+        .neiHandlerInfo(builder -> builder.setHeight(107))
+        .frontend(LargeHadronColliderFrontend::new)
+        .build();
+
     public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
         .create(BeamCrafterMetadata.class, "beamcrafter_metadata");
 
@@ -1655,24 +1674,12 @@ public final class RecipeMaps {
             BeamCrafterMetadata metadata = recipeInfo.recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return Collections.emptyList();
 
-            float minEnergy_A = metadata.minEnergy_A;
-            float minEnergy_B = metadata.minEnergy_B;
-
             float amount_A = metadata.amount_A;
             float amount_B = metadata.amount_B;
 
-            Particle particle_A = Particle.getParticleFromId(metadata.particleID_A);
-            Particle particle_B = Particle.getParticleFromId(metadata.particleID_B);
-
             return Arrays.asList(
-                StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
-
-                StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
-
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
-                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
-
-        );
+                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B));
         }))
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
@@ -1688,7 +1695,7 @@ public final class RecipeMaps {
             return ret.toArray(new ItemStack[0]);
         })
         .progressBarPos(70, 22)
-        .neiTransferRect(100, 22, 28, 18)
+        .neiTransferRect(70, 22, 50, 30)
         .maxIO(4, 2, 2, 2)
         .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
         .progressBarSize(50, 30)
@@ -1719,9 +1726,7 @@ public final class RecipeMaps {
         .dontUseProgressBar()
         .neiTransferRect(87, 38, 30, 13)
         .frontend(FoundryModuleFrontend::new)
-        .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
-                .setHeight(100))
+        .neiHandlerInfo(builder -> builder.setHeight(100))
         .build();
 
     public static final ScannerHandlerRegistry scannerHandlers = new ScannerHandlerRegistry();

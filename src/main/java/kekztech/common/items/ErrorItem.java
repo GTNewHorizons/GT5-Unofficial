@@ -34,9 +34,8 @@ public class ErrorItem extends Item {
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
 
-    @SuppressWarnings({ "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         Collections.addAll(list, GTUtility.breakLines(StatCollector.translateToLocal("tooltip.kekztech.wrong")));
     }
 

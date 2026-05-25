@@ -141,7 +141,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
-            return ORE_PLACED;
+            return NO_OVERLAP_AIR_BLOCK;
         }
 
         if (!mAllowedDimensions.contains(DimensionDef.getDimensionName(world))) {
@@ -297,6 +297,11 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         generator.generateLayer(false, false, true); // layer 6
         generator.generateLayer(false, false, true); // layer 7
 
+        if (!generator.placed) {
+            // no ores have been generated (probably due to wrong y level), try again
+            return NO_OVERLAP_AIR_BLOCK;
+        }
+
         // Place small ores for the vein
         if (oreveinPlacerOres) {
             int smallOresToGenerate = (limitEastX - limitWestX) * (limitSouthZ - limitNorthZ)
@@ -369,6 +374,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int veinWestX, veinEastX, veinSouthZ, veinNorthZ;
         int localDensity, level;
         int[] placeCount;
+        boolean placed = false;
 
         private void generateLayer(boolean secondary, boolean between, boolean primary) {
             for (int tX = limitWestX; tX < limitEastX; tX++) {
@@ -382,6 +388,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mPrimary != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mPrimary, false)) {
                                 placeCount[0]++;
+                                placed = true;
                             }
                             continue;
                         }
@@ -391,6 +398,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mBetween != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mBetween, false)) {
                                 placeCount[2]++;
+                                placed = true;
                             }
                             continue;
                         }
@@ -400,6 +408,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mSecondary != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSecondary, false)) {
                                 placeCount[1]++;
+                                placed = true;
                             }
                             continue;
                         }
@@ -409,6 +418,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                         && mSporadic != null) { // Sporadics are reduced by 1/7 to compensate
                         if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSporadic, false)) {
                             placeCount[3]++;
+                            placed = true;
                         }
                         continue;
                     }

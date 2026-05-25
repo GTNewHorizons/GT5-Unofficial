@@ -31,7 +31,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
-    public int Amperes;
+    protected int Amperes;
 
     public MTEHatchEnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, (String) null);

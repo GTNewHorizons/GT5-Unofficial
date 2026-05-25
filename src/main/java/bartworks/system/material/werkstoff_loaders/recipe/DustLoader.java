@@ -306,15 +306,19 @@ public class DustLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "TT ", "TT ", 'T', WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff) });
             GTModHandler.addCraftingRecipe(
                 WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " T ", 'T', werkstoff.get(dust) });
             GTModHandler.addCraftingRecipe(
                 WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "T  ", 'T', werkstoff.get(dust) });
 
             GTValues.RA.stdBuilder()

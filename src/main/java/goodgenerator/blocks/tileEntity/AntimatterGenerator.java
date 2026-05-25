@@ -43,6 +43,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -50,7 +53,8 @@ import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implements ISurvivalConstructable {
+public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator>
+    implements ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
     protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
@@ -66,7 +70,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
-        protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
+        protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
                 .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
@@ -109,7 +113,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         List<FluidStack> inputFluids = getStoredFluids();
         long containedAntimatter = 0;
         FluidStack catalystFluid = null;
@@ -192,8 +196,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 17, 41, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(MAIN_NAME, 17, 41, 0, errors)) return;
+        if (mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.ExoticDynamo, 0, 1));
+        }
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -368,6 +376,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -375,10 +384,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
             .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint Block Number 1", 1)
+            .addInputHatch("2, Hint block number 1", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint Block Number 2",
+                "1-64, Hint block number 2",
                 2)
             .toolTipFinisher();
         return tt;
@@ -390,16 +399,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.euLastCycle)));
+        info.add(StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
 
         info.add(
             StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.1",
+                "gui.AntimatterGenerator.1.s",
                 formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
 
         info.add(
             StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.2",
+                "gui.AntimatterGenerator.2.s",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));
 
     }
@@ -449,14 +458,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
         super.getWailaBody(itemStack, currentTip, accessor, config);
         currentTip.add(
             StatCollector
-                .translateToLocalFormatted("gui.AntimatterGenerator.0", formatNumber(this.energyProducedCache)));
+                .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.energyProducedCache)));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.1",
+                "gui.AntimatterGenerator.1.s",
                 formatNumber(Math.ceil(this.efficiencyCache * 100))));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.2",
+                "gui.AntimatterGenerator.2.s",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
@@ -559,6 +568,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase implemen
 
     @Override
     public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

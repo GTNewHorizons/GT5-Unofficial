@@ -46,7 +46,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
         syncManager.syncValue("canUseWireless", new BooleanSyncValue(multiblock::canUseWireless));
         syncManager.syncValue(
             "wirelessMode",
-            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled));
+            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled).allowC2S());
         syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
         syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
         syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));
@@ -62,19 +62,19 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterGenerator.0",
+                            "gui.AntimatterGenerator.0.s",
                             standardFormat.format(energyProducedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterGenerator.1",
+                            "gui.AntimatterGenerator.1.s",
                             numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
-                            "gui.AntimatterGenerator.2",
+                            "gui.AntimatterGenerator.2.s",
                             numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))))));
     }
 

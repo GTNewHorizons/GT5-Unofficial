@@ -174,6 +174,14 @@ public class RunnableMachineUpdate implements Runnable {
                 final TileEntity tTileEntity;
                 final boolean isMachineBlock;
 
+                // Check chunk availability WITHOUT holding TICK_LOCK. blockExists() only checks the
+                // chunk hash map (snapshot for off-thread callers) and never triggers chunk loading.
+                // This prevents provideChunk() from calling loadChunk() on this background thread,
+                // which would corrupt shared data structures and fire events from the wrong thread.
+                if (!world.blockExists(posX, posY, posZ)) {
+                    continue;
+                }
+
                 // This might load a chunk... which might load a TileEntity... which might get added to
                 // `loadedTileEntityList`... which might be in the process
                 // of being iterated over during `UpdateEntities()`... which might cause a

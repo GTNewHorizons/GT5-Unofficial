@@ -13,8 +13,6 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.OrePrefixes.capsule;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -44,7 +42,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
@@ -233,13 +230,6 @@ public class CellLoader implements IWerkstoffRunnable {
                 .getFluid(),
             werkstoff.get(cell),
             Materials.Empty.getCells(1));
-
-        if (Forestry.isModLoaded()) {
-            FluidContainerRegistry.registerFluidContainer(
-                werkstoff.getFluidOrGas(1_000),
-                werkstoff.get(capsule),
-                GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1));
-        }
 
         if (werkstoff.hasItemType(dust)) {
 

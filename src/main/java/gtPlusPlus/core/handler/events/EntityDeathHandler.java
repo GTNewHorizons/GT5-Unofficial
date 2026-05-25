@@ -19,7 +19,6 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -45,11 +44,6 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         }
         aDataMap.add(aData);
         mMobDropMap.put(aMobClass, aDataMap);
-
-        Logger.INFO(
-            "[Loot] Registered " + aStack
-                .getDisplayName() + " (1-" + aMaxAmount + ") as a valid drop for " + aMobClass.getCanonicalName());
-
         mInternalClassKeyCache.add(aMobClass);
     }
 

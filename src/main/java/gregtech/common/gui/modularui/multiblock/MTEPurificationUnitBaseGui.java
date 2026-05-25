@@ -26,7 +26,8 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel);
+        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel)
+            .allowC2S();
         syncManager.syncValue("maximumParallels", parallelSyncer);
     }
 
@@ -41,8 +42,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
             true,
             (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent));
 
-        return new ButtonWidget<>().size(18)
-            .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+        return new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
                 if (!parallelSelectPanel.isPanelOpen()) {
@@ -66,8 +66,8 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
 
         IntSyncValue parallelSyncer = syncManager.findSyncHandler("maximumParallels", IntSyncValue.class);
         Flow holdingColumn = Flow.column()
-            .sizeRel(1)
-            .paddingTop(12);
+            .full()
+            .paddingTop(4);
         holdingColumn.child(
             IKey.lang("GTPP.CC.parallel")
                 .asWidget()
@@ -78,8 +78,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
                 .setTextAlignment(Alignment.CENTER)
                 .setDefaultNumber(1)
                 .value(parallelSyncer)
-                .size(WIDTH - PADDING_SIDES * 2, 18)
-                .align(Alignment.Center));
+                .size(WIDTH - PADDING_SIDES * 2, 18));
 
         returnPanel.child(holdingColumn);
 

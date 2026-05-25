@@ -13,14 +13,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelStaballoyConstruct extends ModelIronGolem {
 
     public ModelStaballoyConstruct() {
-        this(0.0F);
-    }
-
-    public ModelStaballoyConstruct(float p_i1161_1_) {
-        this(p_i1161_1_, -7.0F);
-    }
-
-    public ModelStaballoyConstruct(float p_i1162_1_, float p_i1162_2_) {
+        final float p_i1162_1_ = 0.0F;
+        final float p_i1162_2_ = -7.0F;
         short short1 = 128;
         short short2 = 128;
         this.ironGolemHead = (new ModelRenderer(this)).setTextureSize(short1, short2);

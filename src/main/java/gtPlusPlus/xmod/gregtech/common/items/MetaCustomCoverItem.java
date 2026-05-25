@@ -20,7 +20,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
@@ -28,7 +27,6 @@ import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 public class MetaCustomCoverItem extends Item {
 
     protected final IIcon[] icons;
-    private final String mModID;
     private final String mTextureSetName;
     protected final IIconContainer[] mTextures;
     private final short[][] mRGB;
@@ -37,25 +35,17 @@ public class MetaCustomCoverItem extends Item {
         short[][] aRGB) {
         super();
         icons = new IIcon[aTextureCount];
-        mModID = aModId;
         mTextureSetName = StringUtils.sanitizeString(aTextureSetName);
         mTextures = aTextures;
         mRGB = aRGB;
         this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
         this.setHasSubtypes(true);
-        String unlocalizedName = "itemCustomMetaCover." + mModID + "." + mTextureSetName;
+        String unlocalizedName = "itemCustomMetaCover." + aModId + "." + mTextureSetName;
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setMaxStackSize(1);
         GameRegistry.registerItem(this, unlocalizedName);
         registerCover();
-        Logger.INFO(
-            "[Covers] Generated Custom covers for " + mModID
-                + " using "
-                + aTextureCount
-                + " textures from "
-                + mTextureSetName
-                + ".");
     }
 
     public boolean hide() {
@@ -73,7 +63,7 @@ public class MetaCustomCoverItem extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < icons.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -110,18 +100,6 @@ public class MetaCustomCoverItem extends Item {
             createNBT(aStack);
         }
         return 0L;
-    }
-
-    public static boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("CustomCoverMeta");
-            if (aNBT != null) {
-                aNBT.setLong("Damage", aDamage);
-                return true;
-            }
-        }
-        return false;
     }
 
     public static boolean getCoverConnections(final ItemStack aStack) {
@@ -169,30 +147,18 @@ public class MetaCustomCoverItem extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(
             EnumChatFormatting.GRAY + (getCoverConnections(stack)
                 ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
                 : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.cover_item.change_state"));
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public Item setFull3D() {
-        // TODO Auto-generated method stub
-        return super.setFull3D();
-    }
-
-    @Override
-    public boolean isFull3D() {
-        // TODO Auto-generated method stub
-        return super.isFull3D();
     }
 
     @Override

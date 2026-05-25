@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -146,18 +147,33 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         }
 
         private static Optional<Integer> getToolboxSlot(EntityPlayer player) {
-            for (int slot : new Integer[] { player.inventory.currentItem, Backhand.getOffhandSlot(player) }) {
-                if (slot == -1) {
-                    continue;
-                }
+            if (checkIfSlotIsToolbox(player, player.inventory.currentItem)) {
+                return Optional.of(player.inventory.currentItem);
+            } else if (checkIfSlotIsToolbox(player, Backhand.getOffhandSlot(player))) {
+                return Optional.of(Backhand.getOffhandSlot(player));
+            } else {
+                // Included for players with slippery scroll wheels. Check the entire hotbar if the current item or
+                // offhand both lack a toolbox and use the first one we find.
+                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+                    if (i == player.inventory.currentItem) {
+                        continue;
+                    }
 
-                final ItemStack stack = player.inventory.getStackInSlot(slot);
-                if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
-                    return Optional.of(slot);
+                    if (checkIfSlotIsToolbox(player, i)) {
+                        return Optional.of(i);
+                    }
                 }
             }
 
             return Optional.empty();
+        }
+
+        private static boolean checkIfSlotIsToolbox(final EntityPlayer player, final int slot) {
+            if (slot == -1) {
+                return false;
+            }
+            return player.inventory.getStackInSlot(slot) != null && player.inventory.getStackInSlot(slot)
+                .getItem() instanceof ItemGTToolbox;
         }
 
         static BooleanSupplier onClick(final int inventorySlot, final int selection) {

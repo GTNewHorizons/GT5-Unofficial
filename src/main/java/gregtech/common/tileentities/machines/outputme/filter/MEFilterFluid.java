@@ -29,12 +29,6 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
     }
 
     @Override
-    protected String getDisplayName(IAEFluidStack stack) {
-        return stack.getFluidStack()
-            .getLocalizedName();
-    }
-
-    @Override
     public void onLoadNBTData(NBTTagCompound aNBT) {
         NBTBase lockedFluidsTag = aNBT.getTag("lockedFluids");
 
@@ -61,12 +55,12 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
 
     @Override
     public String getEnableKey() {
-        return "GT5U.hatch.item.filter.enable";
+        return "GT5U.hatch.fluid.filter.enable";
     }
 
     @Override
     public String getDisableKey() {
-        return "GT5U.hatch.item.filter.disable";
+        return "GT5U.hatch.fluid.filter.disable";
     }
 
     @Override

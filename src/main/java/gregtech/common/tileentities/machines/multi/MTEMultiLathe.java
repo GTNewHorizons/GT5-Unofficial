@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -53,6 +54,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -194,18 +197,15 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
             .beginStructureBlock(7, 5, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 32, false)
+            .addCasingInfoExactly("Item Pipe Casing", 4, true)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
-                "Center of the glass",
-                4)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher(AuthorVolence);
@@ -241,16 +241,33 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         mCasingAmount++;
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    private void resetStructureState() {
         pipeTier = -1;
-        mEnergyHatches.clear();
         mCasingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+        clearHatches();
+    }
+
+    private boolean checkBodyPiece(List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1, new ArrayList<>())) return true;
+        resetStructureState();
+        checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, new ArrayList<>());
+        return checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1, errors);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        resetStructureState();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
-            return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
+        if (!checkBodyPiece(errors)) return;
+        checkHasMaintenanceHatch(errors);
+        if (pipeTier <= 0) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_pipe_casing"));
+        }
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasingAmount, 42);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -309,11 +326,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

@@ -36,7 +36,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(6, ItemList.Spinmatron_Chamber_Grate);
         register(7, ItemList.Glass_ExoFoundry);
         register(8, ItemList.ComplexNanochipGlass);
-
+        register(9, ItemList.ElectromagneticWaveguide);
     }
 
     @Override
@@ -79,6 +79,8 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 6 -> Textures.BlockIcons.SPINMATRON_GRATE.getIcon();
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_GLASS.getIcon();
             case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
+            case 9 -> Textures.BlockIcons.BEC_GLASS.getIcon();
+
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

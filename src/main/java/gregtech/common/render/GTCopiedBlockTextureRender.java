@@ -35,7 +35,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         else return ctx instanceof ISBRWorldContext ctxW
             ? CTMUtils
                 .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
-            : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
+            : icon;
     }
 
     @Override

@@ -70,6 +70,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.loaders.postload.chains.AcidRecipes;
 import gregtech.loaders.postload.chains.NetheriteRecipes;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -123,6 +124,7 @@ public class RecipesGregTech {
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
         NetheriteRecipes.run();
+        AcidRecipes.run();
 
         addFuels();
 
@@ -438,100 +440,7 @@ public class RecipesGregTech {
             .addTo(AssemblyLine);
 
         /*
-         * Old Gem Battery Recipes
-         * todo: deprecated, remove after 2.9
-         */
-
-        // Proton Cell
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.PROTON))
-            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_ZPM))
-            .itemInputs(
-                GregtechItemList.Battery_Casing_Gem_1.get(1),
-                Particle.getBaseParticle(Particle.PROTON, 16),
-                MaterialsAlloy.ZERON_100.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(8),
-                MaterialsAlloy.INCONEL_625.getScrew(8))
-            .fluidInputs(
-                MaterialsAlloy.ZERON_100.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.HASTELLOY_N.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.LAFIUM.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(16 * INGOTS))
-            .itemOutputs(GregtechItemList.Battery_Gem_1.get(1))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(AssemblyLine);
-
-        // Electron Cell
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.ELECTRON))
-            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UV))
-            .itemInputs(
-                GregtechItemList.Battery_Casing_Gem_2.get(1),
-                Particle.getBaseParticle(Particle.ELECTRON, 16),
-                MaterialsAlloy.PIKYONIUM.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
-                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(8),
-                MaterialsAlloy.ZERON_100.getScrew(8))
-            .fluidInputs(
-                MaterialsAlloy.PIKYONIUM.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.CINOBITE.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(16 * INGOTS))
-            .itemOutputs(GregtechItemList.Battery_Gem_2.get(1))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(AssemblyLine);
-
-        // Quark Entanglement
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.CHARM))
-            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UHV))
-            .itemInputs(
-                GregtechItemList.Battery_Casing_Gem_3.get(1),
-                Particle.getBaseParticle(Particle.CHARM, 16),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
-                MaterialsAlloy.TITANSTEEL.getBolt(8),
-                MaterialsAlloy.PIKYONIUM.getScrew(8))
-            .fluidInputs(
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.TITANSTEEL.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getFluidStack(16 * INGOTS))
-            .itemOutputs(GregtechItemList.Battery_Gem_3.get(1))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(AssemblyLine);
-
-        // Graviton Anomaly
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.GRAVITON))
-            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UEV))
-            .itemInputs(
-                GregtechItemList.Battery_Casing_Gem_4.get(1),
-                Particle.getBaseParticle(Particle.GRAVITON, 16),
-                MaterialsAlloy.ABYSSAL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
-                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(8),
-                MaterialsAlloy.TITANSTEEL.getScrew(8))
-            .fluidInputs(
-                MaterialsAlloy.ABYSSAL.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.OCTIRON.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TITANSTEEL.getFluidStack(16 * INGOTS))
-            .itemOutputs(GregtechItemList.Battery_Gem_4.get(1))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(AssemblyLine);
-
-        /*
-         * Gem Battery Recipes (post LHC/beamcrafting)
+         * Gem Battery Recipes
          */
 
         // Proton Cell
@@ -649,15 +558,15 @@ public class RecipesGregTech {
 
         // Expandable Hand Pump
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, GregtechItemList.HandPumpToken_IV.get(1))
+            .metadata(RESEARCH_ITEM, GregtechItemList.UltimateHandPump.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(4),
                 ItemList.Electric_Motor_LuV.get(4),
                 GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
                 MaterialsAlloy.LAFIUM.getScrew(16),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.ring, 8),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.ring, 8),
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.stick, 16),
                 Materials.Osmiridium.getPlates(32))
             .fluidInputs(
                 MaterialsAlloy.HELICOPTER.getFluidStack(32 * INGOTS),
@@ -1223,8 +1132,8 @@ public class RecipesGregTech {
                 Materials.Aluminium.getDust(1))
             .circuit(6)
             .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
-            .eut(TierEU.RECIPE_IV)
-            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
 
@@ -1364,7 +1273,7 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        // Hand Pump Trade Token I
+        // Simple Hand Pump
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.FluidRegulator_LV.get(1),
@@ -1373,12 +1282,12 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Brass, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2))
-            .itemOutputs(GregtechItemList.HandPumpToken_I.get(1))
+            .itemOutputs(GregtechItemList.SimpleHandPump.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
-        // Hand Pump Trade Token II
+        // Advanced Hand Pump
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.FluidRegulator_MV.get(1),
@@ -1387,12 +1296,12 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Invar, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2))
-            .itemOutputs(GregtechItemList.HandPumpToken_II.get(1))
+            .itemOutputs(GregtechItemList.AdvancedHandPump.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        // Hand Pump Trade Token III
+        // Super Hand Pump
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.FluidRegulator_HV.get(1),
@@ -1401,12 +1310,12 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Chrome, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
-            .itemOutputs(GregtechItemList.HandPumpToken_III.get(1))
+            .itemOutputs(GregtechItemList.SuperHandPump.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        // Hand Pump Trade Token IV
+        // Ultimate Hand Pump
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.FluidRegulator_EV.get(1),
@@ -1415,44 +1324,8 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2))
-            .itemOutputs(GregtechItemList.HandPumpToken_IV.get(1))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        // Simple Hand Pump
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.HandPumpToken_I.get(1))
-            .circuit(20)
-            .itemOutputs(GregtechItemList.SimpleHandPump.get(1))
-            .duration(1 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        // Advanced Hand Pump
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.HandPumpToken_II.get(1))
-            .circuit(20)
-            .itemOutputs(GregtechItemList.AdvancedHandPump.get(1))
-            .duration(6 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        // Super Hand Pump
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.HandPumpToken_III.get(1))
-            .circuit(20)
-            .itemOutputs(GregtechItemList.SuperHandPump.get(1))
-            .duration(24 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        // Ultimate Hand Pump
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.HandPumpToken_IV.get(1))
-            .circuit(20)
             .itemOutputs(GregtechItemList.UltimateHandPump.get(1))
-            .duration(1 * MINUTES + 36 * SECONDS)
+            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
@@ -1665,6 +1538,22 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(Ic2Items.pahoehoelavaCell.copy())
             .metadata(FUEL_VALUE, 24)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1))
+            .metadata(FUEL_VALUE, 62)
+            .metadata(FUEL_TYPE, 2)
+            .duration(0)
+            .eut(0)
+            .addTo(GTRecipeConstants.Fuel);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
+            .metadata(FUEL_VALUE, 62)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)

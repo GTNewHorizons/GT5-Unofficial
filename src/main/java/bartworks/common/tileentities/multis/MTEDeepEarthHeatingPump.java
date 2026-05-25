@@ -16,6 +16,7 @@ package bartworks.common.tileentities.multis;
 import static gregtech.api.enums.GTValues.VN;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,6 +39,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -114,17 +116,15 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Base cycle time: 1 tick");
 
         tt.beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(
-                this.getFrameMaterial().mName + " Frame Boxes",
-                "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
-            .addMaintenanceHatch("Any base casing")
-            .addInputBus("Mining Pipes, optional, any base casing")
-            .addInputHatch("Any base casing")
-            .addOutputHatch("Any base casing")
+            .addOtherStructurePart(this.getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
+            .addMaintenanceHatch("Any base Casing")
+            .addInputBus("Mining Pipes, optional, any base Casing")
+            .addInputHatch("Any base Casing")
+            .addOutputHatch("Any base Casing")
             .toolTipFinisher(
                 EnumChatFormatting.GREEN + "bartimaeusnek"
                     + EnumChatFormatting.GRAY
@@ -176,8 +176,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected boolean checkHatches() {
-        return !this.mMaintenanceHatches.isEmpty() && !this.mOutputHatches.isEmpty() && !this.mInputHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
     }
 
     private long getFluidFromHatches(Fluid f) {

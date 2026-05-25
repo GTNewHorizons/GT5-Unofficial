@@ -18,6 +18,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
@@ -44,8 +45,9 @@ public class MTEHatchMuffler extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return GTSplit
+        String[] description = GTSplit
             .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(calculatePollutionReduction(100)));
+        return mTier > 1 ? TooltipHelper.pollutionDisabledTooltip(description) : description;
     }
 
     @Override
@@ -89,6 +91,9 @@ public class MTEHatchMuffler extends MTEHatch {
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
         }
     }
 

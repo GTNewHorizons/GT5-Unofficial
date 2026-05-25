@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -38,11 +40,10 @@ public class FormingPressBackend extends RecipeMapBackend {
         }
         if (isCreditRecipe) for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
-                NBTTagCompound nbt = mold.getTagCompound();
-                if (nbt == null) nbt = new NBTTagCompound();
-                if (!nbt.hasKey("credit_security_id")) nbt.setLong("credit_security_id", System.nanoTime());
-                mold.setTagCompound(nbt);
-
+                final NBTTagCompound nbt = ItemStackNBT.get(mold);
+                if (!nbt.hasKey("credit_security_id")) {
+                    nbt.setLong("credit_security_id", System.nanoTime());
+                }
                 recipe = recipe.copy();
                 recipe.mCanBeBuffered = false;
                 recipe.mOutputs[0].setTagCompound(nbt);

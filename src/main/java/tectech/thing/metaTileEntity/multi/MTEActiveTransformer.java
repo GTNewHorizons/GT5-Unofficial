@@ -35,6 +35,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
@@ -71,16 +72,20 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_60SECS = 1d / 60d;
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         casingCount = 0;
-        if (structureCheck_EM("main", 1, 1, 0) && casingCount >= 5) {
+        checkPiece("main", 1, 1, 0, errors);
+
+        checkCasingMin(errors, casingCount, 5);
+        checkHasAnyEnergy(errors);
+
+        if (errors.isEmpty()) {
             grace = true;
-            return true;
         } else if (grace) {
             grace = false;
-            return true;
+            errors.clear();
         }
-        return false;
     }
 
     @Override
@@ -370,7 +375,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 1, 0);
     }
 
     @Override
@@ -391,6 +396,11 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

@@ -10,20 +10,19 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 
 public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessFluidDetector> {
 
-    public CoverWirelessFluidDetectorGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverWirelessFluidDetectorGui(CoverWirelessFluidDetector cover) {
         super(cover);
     }
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()
 
@@ -35,7 +34,7 @@ public class CoverWirelessFluidDetectorGui extends CoverAdvancedRedstoneTransmit
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
                             .marginRight(2))
-                    .child(new TextWidget(IKey.lang(translateToLocal("gt.interact.desc.fluidthreshold")))))
+                    .child(new TextWidget<>(IKey.lang(translateToLocal("gt.interact.desc.fluidthreshold")))))
             .child(physicalRow(physicalSyncer));
     }
 

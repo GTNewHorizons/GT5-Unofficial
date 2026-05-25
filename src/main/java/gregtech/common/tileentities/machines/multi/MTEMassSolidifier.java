@@ -32,8 +32,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -55,6 +53,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -181,7 +181,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
-            .addController("Front Center Bottom")
+            .addController("Front bottom center")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
             .addCasingInfoExactly("Solidifier Radiator", 34, false)
@@ -194,6 +194,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInputHatch("Any Solidifier Casing", 1)
             .addEnergyHatch("Any Solidifier Casing", 1)
             .addMaintenanceHatch("Any Solidifier Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -258,19 +259,21 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         glassTier = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UEV & mEnergyHatch.mTier > glassTier) {
-                return false;
+            if (glassTier < VoltageIndex.UEV && mEnergyHatch.mTier > glassTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
-        return casingAmount >= MIN_CASINGS;
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -300,14 +303,9 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 }
                 return false;
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(0.8F)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Nonnull
@@ -340,6 +338,10 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public int getMaxParallelRecipes() {
         return 10 * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    public double getSpeedBonus() {
+        return 1F / speedup;
     }
 
     @Override

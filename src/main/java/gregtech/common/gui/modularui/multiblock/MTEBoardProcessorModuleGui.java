@@ -24,9 +24,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
@@ -50,7 +48,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
-            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage));
+            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());
 
         syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.fillTank());
         syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.flushTank());
@@ -108,7 +106,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             .background(IDrawable.EMPTY)
             .pos(151, 0);
 
-        return new Row().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
+        return Flow.row()
+            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
             .paddingTop(4)
             .paddingBottom(4)
             .paddingLeft(4)
@@ -159,8 +158,9 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         IntSyncValue automationPercentage = syncManager.findSyncHandler("automationPercentage", IntSyncValue.class);
 
-        return new Column().coverChildrenHeight()
-            .align(Alignment.CENTER)
+        return Flow.column()
+            .coverChildrenHeight()
+            .center()
             .childPadding(4)
             .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto") + ":"))
             .child(

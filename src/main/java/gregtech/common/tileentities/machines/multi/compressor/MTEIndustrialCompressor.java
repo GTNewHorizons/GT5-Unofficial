@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,6 +35,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -140,13 +143,13 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         tt.addMachineType("Compressor, LEC")
             .addBulkMachineInfo(2, 2f, 0.9f)
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
             .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addInputBus("Pipe Casings on Side", 2)
-            .addInputHatch("Pipe Casings on Side", 2)
-            .addOutputBus("Pipe Casings on Side", 2)
+            .addInputBus("Pipe Casing on Side", 2)
+            .addInputHatch("Pipe Casing on Side", 2)
+            .addOutputBus("Pipe Casing on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
@@ -172,9 +175,14 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 0) && mCasingAmount >= 95;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 95);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -216,11 +224,6 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

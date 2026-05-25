@@ -2,17 +2,22 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTTooltipDataCache;
+import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
 
 public abstract class MTEFilterBase extends MTEBuffer {
 
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
-    protected static final int FILTER_SLOT_INDEX = 9;
+    public static final int FILTER_SLOT_INDEX = 9;
     protected static final int NUM_INVENTORY_SLOTS = 9;
     private static final String EMIT_REDSTONE_GRADUALLY_TOOLTIP = "GT5U" + ".machines.emit_redstone_gradually.tooltip";
     protected boolean invertFilter = false;
@@ -26,9 +31,22 @@ public abstract class MTEFilterBase extends MTEBuffer {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public boolean isInvertFilter() {
+        return invertFilter;
+    }
+
+    public void setInvertFilter(boolean invertFilter) {
+        this.invertFilter = invertFilter;
+    }
+
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < NUM_INVENTORY_SLOTS;
+    }
+
+    @Override
+    protected int getMovableInventoryEnd() {
+        return NUM_INVENTORY_SLOTS;
     }
 
     @Override
@@ -44,7 +62,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
     }
 
     @Override
-    protected int getRedstoneOutput() {
+    public int getRedstoneOutput() {
         if (!bRedstoneIfFull) {
             return 0;
         }
@@ -53,7 +71,7 @@ public abstract class MTEFilterBase extends MTEBuffer {
         return redstoneOutput;
     }
 
-    private int getEmptySlots() {
+    public int getEmptySlots() {
         int emptySlots = 0;
         for (int i = 0; i < NUM_INVENTORY_SLOTS; i++) {
             if (mInventory[i] == null) ++emptySlots;
@@ -91,5 +109,10 @@ public abstract class MTEFilterBase extends MTEBuffer {
                 val -> invertFilter = val,
                 GTUITextures.OVERLAY_BUTTON_INVERT_FILTER,
                 () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEFilterBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -22,6 +22,8 @@ package kubatech.loaders;
 
 import static gregtech.api.enums.ItemList.FluidExtractorUHV;
 import static gregtech.api.enums.MetaTileEntityIDs.DraconicEvolutionFusionCrafterController;
+import static gregtech.api.enums.MetaTileEntityIDs.ELECTRODE_DETECTOR_HATCH;
+import static gregtech.api.enums.MetaTileEntityIDs.ELECTRODE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeEntityCrusherController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeIndustrialApiaryController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeIndustrialGreenhouseController;
@@ -53,6 +55,8 @@ import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.api.enums.ItemList.EarlGrayTea;
+import static kubatech.api.enums.ItemList.ElectrodeDetectorHatch;
+import static kubatech.api.enums.ItemList.ElectrodeHatch;
 import static kubatech.api.enums.ItemList.ExtremeEntityCrusher;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialApiary;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialGreenhouse;
@@ -94,6 +98,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
+import kubatech.tileentity.gregtech.hatch.MTEElectrodeDetectorHatch;
+import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -101,10 +107,6 @@ import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
 
 public class RecipeLoader {
-
-    protected static final long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-        | GTModHandler.RecipeBits.BUFFERED
-        | GTModHandler.RecipeBits.DISMANTLEABLE;
 
     public static void registerMTEs() {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
@@ -142,6 +144,13 @@ public class RecipeLoader {
                 HighTemperatureGasCooledReactorController.ID,
                 "HTGR",
                 "High Temperature Gas-cooled Reactor").getStackForm(1L));
+        ElectrodeHatch
+            .set(new MTEElectrodeHatch(ELECTRODE_HATCH.ID, "electrodehatch", "Electrode Hatch").getStackForm(1L));
+        ElectrodeDetectorHatch.set(
+            new MTEElectrodeDetectorHatch(
+                ELECTRODE_DETECTOR_HATCH.ID,
+                "electrodedetectorhatch",
+                "Electrode Detector Hatch").getStackForm(1L));
     }
 
     public static void addRecipes() {
@@ -149,7 +158,7 @@ public class RecipeLoader {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             GTModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
-                bitsd,
+                GTModHandler.RecipeBits.BITS,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
                     OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
                     GTModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
@@ -179,7 +188,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ExtremeIndustrialGreenhouse.get(1),
-            bitsd,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                 GTModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
                 gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
@@ -194,7 +203,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             HighTemperatureGasCooledReactor.get(1),
-            bitsd,
+            GTModHandler.RecipeBits.BITS,
             new Object[] { "BZB", "ZRZ", "BZB", 'B', gregtech.api.enums.ItemList.Casing_IV.get(1), 'R',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitUltimate" });
 

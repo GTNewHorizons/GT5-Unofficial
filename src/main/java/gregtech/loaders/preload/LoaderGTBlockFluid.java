@@ -57,6 +57,7 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings14;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -64,6 +65,7 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsBEC;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
@@ -97,6 +99,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
@@ -116,47 +119,47 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTUtility.getWrittenBook(
             "Manual_Printer",
-            "Printer Manual V2.0",
+            "gt.book.printer_manual.name",
             "Gregorius Techneticies",
-            "This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.",
-            "1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.",
-            "The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?",
-            "2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.",
-            "Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!",
-            "You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.",
-            "3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.",
-            "4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.");
+            "gt.book.printer_manual.page00",
+            "gt.book.printer_manual.page01",
+            "gt.book.printer_manual.page02",
+            "gt.book.printer_manual.page03",
+            "gt.book.printer_manual.page04",
+            "gt.book.printer_manual.page05",
+            "gt.book.printer_manual.page06",
+            "gt.book.printer_manual.page07");
 
         GTUtility.getWrittenBook(
             "Manual_Punch_Cards",
-            "Punch Card Manual V0.0",
+            "gt.book.punch_card_manual_v0.name",
             "Gregorius Techneticies",
-            "This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.",
-            "(i1&&i2)?o1=15:o1=0;=10",
-            "ignore all Whitespace Characters, use Long for saving the Numbers",
-            "&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F",
-            "'0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'",
-            "',' is just a separator for multiple executed Codes in a row.",
-            "';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.",
-            "If the '=' Operator is used within Brackets, it returns the value the variable has been set to.",
-            "The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.",
-            "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.",
-            "For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.",
-            "A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.",
-            "Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.");
+            "gt.book.punch_card_manual_v0.page00",
+            "gt.book.punch_card_manual_v0.page01",
+            "gt.book.punch_card_manual_v0.page02",
+            "gt.book.punch_card_manual_v0.page03",
+            "gt.book.punch_card_manual_v0.page04",
+            "gt.book.punch_card_manual_v0.page05",
+            "gt.book.punch_card_manual_v0.page06",
+            "gt.book.punch_card_manual_v0.page07",
+            "gt.book.punch_card_manual_v0.page08",
+            "gt.book.punch_card_manual_v0.page09",
+            "gt.book.punch_card_manual_v0.page10",
+            "gt.book.punch_card_manual_v0.page11",
+            "gt.book.punch_card_manual_v0.page12");
 
         GTUtility.getWrittenBook(
             "Manual_Microwave",
-            "Microwave Oven Manual",
+            "gt.book.microwave_oven_manual.name",
             "Kitchen Industries",
-            "Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.",
-            "You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!",
-            "This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).",
-            "Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.",
-            "Do not insert any Metals. It might result in an Explosion.",
-            "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.",
-            "Do not insert inflammable Objects. The Oven will catch on Fire.",
-            "Do not insert Explosives such as Eggs. Just don't.");
+            "gt.book.microwave_oven_manual.page00",
+            "gt.book.microwave_oven_manual.page01",
+            "gt.book.microwave_oven_manual.page02",
+            "gt.book.microwave_oven_manual.page03",
+            "gt.book.microwave_oven_manual.page04",
+            "gt.book.microwave_oven_manual.page05",
+            "gt.book.microwave_oven_manual.page06",
+            "gt.book.microwave_oven_manual.page07");
 
         GTLog.out.println("GTMod: Register Items.");
 
@@ -174,6 +177,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        MechArmorLoader.run();
         new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
@@ -736,8 +740,10 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasings13 = new BlockCasings13();
+        GregTechAPI.sBlockCasings14 = new BlockCasings14();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
+        GregTechAPI.sBlockCasingsBEC = new BlockCasingsBEC();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
@@ -823,7 +829,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
+            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
                 Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
                 Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
                 Materials.Ichorium, Materials.Firestone, Materials.Shadow },
@@ -860,9 +866,15 @@ public class LoaderGTBlockFluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
                 Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
                 Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM },
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
+
+        GregTechAPI.sBlockMetal10 = new BlockMetal(
+            "gt.blockmetal10",
+            new Materials[] { Materials.Shijima, Materials.Churitsu },
+            OrePrefixes.block,
+            gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
@@ -1456,6 +1468,51 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        // region NewHorizonsCoreMod fluids
+        // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
+        // new MetaGeneratedItem01 fluid cells.
+        GTFluidFactory.builder("SodiumPotassium")
+            .withDefaultLocalName("Sodium Potassium")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.SodiumPotassium)
+            .addLocalizedName(Materials.SodiumPotassium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("Pollution")
+            .withDefaultLocalName("Pollution")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.Pollution)
+            .addLocalizedName(Materials.Pollution)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("EnrichedBacterialSludge")
+            .withDefaultLocalName("Enriched Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials.EnrichedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.EnrichedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(15);
+        GTFluidFactory.builder("FermentedBacterialSludge")
+            .withDefaultLocalName("Fermented Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials.FermentedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FermentedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(8);
+        // endregion
+
         GTFluidFactory.builder("DimensionallyTranscendentResidue")
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
@@ -1668,7 +1725,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")

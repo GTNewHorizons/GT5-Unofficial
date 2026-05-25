@@ -1,0 +1,80 @@
+package gregtech.api.structure.error;
+
+import java.io.IOException;
+import java.util.function.Supplier;
+
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
+
+import com.cleanroommc.modularui.api.widget.IWidget;
+
+import gregtech.api.enums.StructureErrorId;
+
+public class StructureErrorRegistry {
+
+    private static final StructureError[] registry = new StructureError[StructureErrorId.values().length];
+
+    public static final StructureError BLOCK_NOT_LOADED = registerSingleton(
+        StructureErrorId.BLOCK_NOT_LOADED,
+        "GT5U.gui.text.structure_error.block_not_loaded");
+    public static final StructureError ONE_ENERGY_HATCH_ON_MULTI_OR_LASER = registerSingleton(
+        StructureErrorId.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER,
+        "GT5U.gui.text.structure_error.one_energy_hatch_on_laser");
+    public static final StructureError UNNEEDED_MUFFLER = registerSingleton(
+        StructureErrorId.UNNEEDED_MUFFLER,
+        "GT5U.gui.text.structure_error.unneeded_muffler");
+    public static final StructureError UNKNOWN_STRUCTURE_ERROR = registerSingleton(
+        StructureErrorId.UNKNOWN_STRUCTURE_ERROR,
+        "GT5U.gui.text.structure_error.unknown");
+
+    public static final StructureError NO_ENERGY_HATCH_NEEDED = StructureErrors
+        .of("GT5U.gui.text.structure_error.energy_hatch_not_needed");
+    public static final StructureError TOO_SHORT_HEIGHT = StructureErrors
+        .of("GT5U.gui.text.structure_error.too_short_height");
+    public static final StructureError TOO_SHORT_LENGTH = StructureErrors
+        .of("GT5U.gui.text.structure_error.too_short_length");
+    public static final StructureError TOO_LONG = StructureErrors.of("GT5U.gui.text.structure_error.too_long");
+    public static final StructureError TOO_TALL = StructureErrors.of("GT5U.gui.text.structure_error.too_tall");
+    public static final StructureError ONE_UNCERTAINTY_HATCH = StructureErrors
+        .of("GT5U.gui.text.structure_error.one_uncertainty_hatch");
+    public static final StructureError MISSING_DATA_HATCH = StructureErrors
+        .of("GT5U.gui.text.structure_error.missing_data_hatch");
+    public static final StructureError COIL_LEVEL_NOT_ENOUGH = StructureErrors
+        .of("GT5U.gui.text.structure_error.coil_level_not_enough");
+    public static final StructureError ENERGY_TIER_EXCEED_GLASS = StructureErrors
+        .of("GT5U.gui.text.structure_error.energy_hatch_exceed_glass");
+    public static final StructureError UNKNOWN_TIER = StructureErrors
+        .of("GT5U.gui.text.structure_error.unknown_multiblock_tier");
+
+    static {
+        register(new PositionedStructureError(0, 0, 0));
+        register(new MissingStructureWrapperCasings(new NBTTagList()));
+        register(new TranslatableStructureError(TranslatableText.literal("")));
+    }
+
+    public static StructureError registerSingleton(StructureErrorId id, String lang_key) {
+        return register(new SingletonStructureError(id, lang_key));
+    }
+
+    public static StructureError registerSingleton(StructureErrorId id, Supplier<IWidget> widget) {
+        return register(new SingletonStructureError(id, widget));
+    }
+
+    public static StructureError register(StructureError error) {
+        registry[error.getId()
+            .ordinal()] = error;
+        return error;
+    }
+
+    public static void serialize(PacketBuffer buffer, StructureError error) throws IOException {
+        buffer.writeInt(
+            error.getId()
+                .ordinal());
+        error.serialize(buffer);
+    }
+
+    public static StructureError deserialize(PacketBuffer buffer) throws IOException {
+        int id = buffer.readInt();
+        return registry[id].deserialize(buffer);
+    }
+}

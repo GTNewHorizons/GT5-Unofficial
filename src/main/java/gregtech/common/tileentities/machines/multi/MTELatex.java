@@ -4,10 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATEX;
@@ -23,6 +23,7 @@ import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -55,6 +56,8 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -139,7 +142,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         .addElement(
             'C',
             buildHatchAdder(MTELatex.class)
-                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
@@ -275,12 +278,12 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addInfo(
                 TooltipHelper.parallelText("2x") + " parallels, +"
                     + TooltipHelper.coloredText("25%", DARK_GREEN)
-                    + " rubber discount, and the use of a singular "
-                    + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
+                    + " rubber discount, and the use of "
+                    + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
             .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
@@ -290,6 +293,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -312,21 +316,25 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         itemPipeTier = -1;
         mCasingAmount = 0;
         clearHatches();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
         ItemStack controllerStack = this.getControllerSlot();
-        boolean singularity_present = (controllerStack != null && controllerStack.isItemEqual(
+        boolean singularityPresent = controllerStack != null && controllerStack.isItemEqual(
             UniversalSingularities.isModLoaded()
                 ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                : ItemList.Tool_DataStick.get(1)));
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!singularity_present) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+                : ItemList.Tool_DataStick.get(1));
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasAnyEnergy(errors);
+        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
-        return mCasingAmount >= 14;
+        checkCasingMin(errors, mCasingAmount, 14);
     }
 
     @Override

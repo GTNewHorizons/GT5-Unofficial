@@ -38,6 +38,7 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,6 +52,8 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.HatchElementBuilder;
@@ -131,7 +134,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'E',
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
-                            .hatchClass(AntimatterOutputHatch.class)
+                            .hatchId(MetaTileEntityIDs.AntimatterHatch.ID)
+                            .exclusive()
+                            .continueIfSuccess()
                             .casingIndex(x.textureIndex(1))
                             .hint(3)
                             .build()))
@@ -139,7 +144,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
+                            .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
@@ -311,15 +316,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
             .beginStructureBlock(53, 53, 47, false)
+            .addController("Front center")
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint Block Number 1", 1)
-            .addEnergyHatch("1-9, Hint Block Number 2", 2)
+            .addInputHatch("1-6, Hint block number 1", 1)
+            .addEnergyHatch("1-9, Hint block number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block Number 3",
+                "16, Hint block number 3",
                 3)
             .toolTipFinisher();
         return tt;
@@ -370,8 +376,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 26, 26, 4);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(MAIN_NAME, 26, 26, 4, errors)) return;
+        checkHasInputHatch(errors);
+        if (amOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.missingHatch(Loaders.AMHatch));
+        }
+        checkHatchMin(errors, HatchElement.ExoticEnergy, 1);
     }
 
     @Override
@@ -536,11 +547,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Drain upgrade fluids
         for (int i = 0; i < upgradeFluids.length; i++) {
             FluidStack upgradeFluid = upgradeFluids[i];
-            if (upgradeFluid != null) {
-                for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
-                    if (inputFluid.isFluidEqual(upgradeFluid)) {
-                        inputFluid.amount -= fluidConsumptions[i];
-                    }
+            if (upgradeFluid == null) {
+                continue;
+            }
+            for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
+                if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
+                    inputFluid.amount -= fluidConsumptions[i];
+                    break;
                 }
             }
         }
@@ -769,6 +782,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         destroyAntimatterRender();
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

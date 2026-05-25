@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -124,12 +125,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     protected MTEPurificationUnitBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean doRandomMaintenanceDamage() {
-        // The individual purification unit structures cannot have maintenance issues, so do nothing.
-        return true;
     }
 
     @Override
@@ -479,18 +474,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // The individual purification unit structures cannot have maintenance issues, so fix them all.
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftMallet = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-        return true;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         // If a linked controller was found, load its coordinates.
@@ -578,7 +561,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PurificationPlant")) {
             return false;
         }
@@ -743,11 +726,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean supportsMaintenanceIssueHoverable() {
-        return false;
-    }
-
-    @Override
     public boolean supportsLogo() {
         return false;
     }
@@ -759,6 +737,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,10 +42,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -88,7 +93,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top Center")
+            .addController("Top center")
             .addCasingInfoMin("Elemental Confinement Shell", 120, false)
             .addCasingInfoMin("Matter Fabricator Casing", 24, false)
             .addCasingInfoMin("Particle Containment Casing", 24, false)
@@ -98,14 +103,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Hint Block Number 1 (x1)",
+                "Hint block number 1 (x1)",
                 1)
-            .addInputHatch("Hint Block Number 1", 1)
-            .addOutputBus("Hint Block Number 1", 1)
-            .addOutputHatch("Hint Block Number 1", 1)
-            .addEnergyHatch("Hint Block Number 1", 1)
-            .addMaintenanceHatch("Hint Block Number 1", 1)
-            .addMufflerHatch("Hint Block Number 1", 1)
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputBus("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1", 1)
+            .addEnergyHatch("Hint block number 1", 1)
+            .addMaintenanceHatch("Hint block number 1", 1)
+            .addMufflerHatch("Hint block number 1", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -161,7 +166,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                                 .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
-                                .hatchClass(MTEHatchElementalDataOrbHolder.class)
+                                .hatchId(MetaTileEntityIDs.Hatch_Input_Elemental_Duplicator.ID)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
@@ -179,14 +184,23 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mReplicatorDataOrbHatches.size() != 1) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
+        int hatchCount = this.mReplicatorDataOrbHatches.size();
+        if (hatchCount != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
-        log("Casings: " + mCasing);
-        return aDidBuild && mCasing >= 120 && checkHatch();
+        checkCasingMin(errors, mCasing, 120);
+        checkHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
@@ -251,9 +265,9 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder) {
+            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder hatch) {
                 try {
-                    return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);
+                    return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
                 } catch (Exception t) {
                     t.printStackTrace();
                 }

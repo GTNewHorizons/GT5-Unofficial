@@ -34,6 +34,19 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public boolean isAllowNbt() {
+        return allowNbt;
+    }
+
+    public void setAllowNbt(boolean allowNbt) {
+        this.allowNbt = allowNbt;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return slot == FILTER_SLOT_INDEX ? 1 : super.getSlotLimit(slot);
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);

@@ -46,17 +46,15 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
         GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
         GTRecipe recipe = neiCachedRecipe.mRecipe;
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
-            if (stack == pStack.item) {
-                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                    currentTip = handleNEIItemInputTooltip(
-                        currentTip,
-                        (GTNEIDefaultHandler.FixedPositionedStack) pStack);
+            if (pStack.containsWithNBT(stack)) {
+                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
+                    currentTip = handleNEIItemInputTooltip(currentTip, fixed);
                 }
                 break;
             }
         }
         for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
-            if (stack == pStack.item) {
+            if (pStack.containsWithNBT(stack)) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                     currentTip = handleNEIByproductTooltip(stack, currentTip, recipe);
                 }

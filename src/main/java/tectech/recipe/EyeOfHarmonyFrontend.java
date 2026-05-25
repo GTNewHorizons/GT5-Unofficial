@@ -1,9 +1,7 @@
 package tectech.recipe;
 
-import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static tectech.util.TTUtility.toExponentForm;
@@ -42,7 +40,6 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
     public static final int maxItemInputs = 1, maxItemOutputs = xDirMaxCount * itemRows, maxFluidInputs = 0,
         maxFluidOutputs = xDirMaxCount * fluidRows;
     private static final int yOrigin = 8;
-    private static final long TRILLION = pow(10, 12);
 
     public EyeOfHarmonyFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -106,15 +103,22 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        final EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
+
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
-                if (stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
-                    drawNEIOverlayText(translateToLocal("NC"), stack);
-                }
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
+                fixed.setMaxSize(0);
             }
         }
+
+    }
+
+    @Override
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        final EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
+
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
             if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack) {
                 if (EOHRecipe.getItemStackToTrueStackSizeMap()

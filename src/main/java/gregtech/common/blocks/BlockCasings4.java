@@ -55,8 +55,11 @@ public class BlockCasings4 extends BlockCasingsAbstract {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 3 -> ordinalSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon()
-                : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+            case 3 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    yield Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM_TOP.getIcon();
+                yield Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon();
+            }
             case 4 ->
                 // Do not overwrite!
                 Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW.getIcon();

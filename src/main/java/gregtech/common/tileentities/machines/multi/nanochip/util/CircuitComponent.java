@@ -54,6 +54,14 @@ public enum CircuitComponent {
         6,
         "gt.circuitcomponent.wireinfinity",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1)),
+    WireHypogen(
+        7,
+        "gt.circuitcomponent.wirehypogen",
+        () -> MaterialsElements.STANDALONE.HYPOGEN.getFineWire(1)),
+    WireMagMatter(
+        8,
+        "gt.circuitcomponent.wiremagmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -62,6 +70,8 @@ public enum CircuitComponent {
     ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", () -> WireSpacetime, true),
     ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", () -> CableOpticalFiber, true),
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
+    ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
+    ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -188,10 +198,22 @@ public enum CircuitComponent {
         606,
         "gt.circuitcomponent.chipquantumpic",
         () -> ItemList.Circuit_Chip_QPIC.get(1)),
-    WaferPico(
+    ChipAttoPIC(
         607,
-        "gt.circuitcomponent.waferpico",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
+        "gt.circuitcomponent.chipattopic",
+        () -> ItemList.Circuit_Chip_APIC.get(1)),
+    ChipZeptoPIC(
+        608,
+        "gt.circuitcomponent.chipzeptopic",
+        () -> ItemList.Circuit_Chip_ZPIC.get(1)),
+    ChipYoctoPIC(
+        609,
+        "gt.circuitcomponent.chipyoctopic",
+        () -> ItemList.Circuit_Chip_YPIC.get(1)),
+    ChipPlanckPIC(
+        610,
+        "gt.circuitcomponent.chipplanckpic",
+        () -> ItemList.Circuit_Chip_PlPIC.get(1)),
 
     ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", () -> ChipNanoCPU, true),
     ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", () -> ChipRAM, true),
@@ -200,7 +222,10 @@ public enum CircuitComponent {
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
     ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
     ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
-    ProcessedChipPico(707, "gt.circuitcomponent.processed.chippico", () -> WaferPico, true),
+    ProcessedChipAttoPIC(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
+    ProcessedChipZeptoPIC(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
+    ProcessedChipYoctoPIC(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
+    ProcessedChipPlanckPIC(710, "gt.circuitcomponent.processed.chipplanckpic", () -> ChipPlanckPIC, true),
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC
@@ -297,11 +322,16 @@ public enum CircuitComponent {
         1403,
         "gt.circuitcomponent.frame.hypogen",
         () -> MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)),
+    FrameboxMagMatter(
+        1404,
+        "gt.circuitcomponent.frame.magmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
     ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
     ProcessedFrameboxCelestialTungsten(1502, "gt.circuitcomponent.processed.frame.celestialtungsten", () -> FrameboxCelestialTungsten, true),
     ProcessedFrameboxHypogen(1503, "gt.circuitcomponent.processed.frame.hypogen", () -> FrameboxHypogen, true),
+    ProcessedFrameboxMagMatter(1504,"gt.circuitcomponent.processed.frame.magmatter", () -> FrameboxMagMatter, true),
 
     // Foils
     // IDs: 1600-1699 CC, 1700-1799 PC
@@ -325,18 +355,25 @@ public enum CircuitComponent {
         1604,
         "gt.circuitcomponent.sheet.styrenebutadienerubber",
         () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 1)),
+    FoilEternity(
+        1605,
+        "gt.circuitcomponent.sheet.eternity",
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.Eternity, 1)),
 
     ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", () -> FoilSiliconeRubber, true),
     ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", () -> FoilPolybenzimidazole, true),
     ProcessedFoilRadoxPolymer(1702, "gt.circuitcomponent.sheet.processed.radoxpolymer", () -> FoilRadoxPolymer, true),
     ProcessedFoilShirabon(1703, "gt.circuitcomponent.sheet.processed.shirabon", () -> FoilShirabon, true),
     ProcessedFoilStyreneRubber(1704, "gt.circuitcomponent.sheet.processed.styrenerubber", () -> FoilStyreneRubber, true),
-    // Circuit encasement
+    ProcessedFoilEternity(1705, "gt.circuitcomponent.sheet.processed.eternity", () -> FoilEternity, true),
+    // Circuit encasement and item combinations
     // IDs: 1800-1899
     ProcessedBasicMainframeCasing(1800, "gt.circuitcomponent.casing.processed.basicmainframe", null, true),
     ProcessedAdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.processed.advancedmainframe", null, true),
     ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
+    ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
+    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.other.processed.coiledthermalsuperconductor", null, true),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -384,6 +421,34 @@ public enum CircuitComponent {
         1910,
         "gt.circuitcomponent.casing.creon",
         () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Creon, 1)),
+    PlateRhugnor(
+        1911,
+        "gt.circuitcomponent.plate.rhugnor",
+        () -> MaterialsElements.STANDALONE.RHUGNOR.getPlate(1)),
+    BoltWhiteDwarfMatter(
+        1912,
+        "gt.circuitcomponent.bolt.whitedwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 1)),
+    PlateHexanite(
+        1913,
+        "gt.circuitcomponent.plate.hexanite",
+        () -> GTOreDictUnificator.get(OrePrefixes.plate, Materials.Hexanite, 1)),
+    CasingBlackDwarfMatter(
+        1914,
+        "gt.circuitcomponent.casing.blackdwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BlackDwarfMatter, 1)),
+    CasingEternity(
+        1915,
+        "gt.circuitcomponent.casing.eternity",
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Eternity, 1)),
+    ScrewUniversium(
+        1916,
+        "gt.circuitcomponent.casing.universium",
+        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Universium, 1)),
+    ThermalSuperconductor(
+        1917,
+        "gt.circuitcomponent.thermalsuperconductor",
+        () -> ItemList.Thermal_Superconductor.get(1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -392,6 +457,9 @@ public enum CircuitComponent {
     ProcessedBoltChromaticGlass(2004, "gt.circuitcomponent.bolt.processed.chromaticglass", () -> BoltChromaticGlass, true),
     ProcessedBoltUMVSuperconductor(2005, "gt.circuitcomponent.bolt.processed.umvsuperconductor", () -> BoltUMVSuperconductor, true),
     ProcessedPlateMetastableOganesson(2006, "gt.circuitcomponent.plate.processed.metastableoganesson", () -> PlateMetastableOganesson, true),
+    ProcessedPlateRhugnor(2007, "gt.circuitcomponent.plate.processed.rhugnor", () -> PlateRhugnor, true),
+    ProcessedBoltWhiteDwarfMatter(2008, "gt.circuitcomponent.bolt.processed.whitedwarfmatter", () -> BoltWhiteDwarfMatter, true),
+    ProcessedPlateHexanite(2009, "gt.circuitcomponent.plate.processed.hexanite", () -> PlateHexanite, true),
 
     // Circuits
     // IDs: 2100-2199
@@ -469,7 +537,14 @@ public enum CircuitComponent {
         2117,
         "gt.circuitcomponent.quantumcircuit",
         () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
-
+    PlanckCircuit(
+        2118,
+        "gt.circuitcomponent.planckcircuit",
+        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+    PlanckManifold(
+        2119,
+        "gt.circuitcomponent.planckmanifold",
+        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
     ;
 
     // spotless:on
