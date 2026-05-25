@@ -41,7 +41,7 @@ GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
 GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
 GT5U.gui.text.recipe_result.no_electrode=No electrode inserted!
-GT5U.gui.text.electrode_changed=Electrode changed while running!
+GT5U.gui.text.shutdown_reason.electrode_changed=Electrode changed while running!
 
 ## General
 kubatech.gui.text.configuration=Configuration

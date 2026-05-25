@@ -368,10 +368,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
                 "On dirt/grass",
                 2)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch(GTValues.VN[VoltageIndex.LuV] + "+, Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch(GTValues.VN[VoltageIndex.LuV] + "+, any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
         return tt;
     }

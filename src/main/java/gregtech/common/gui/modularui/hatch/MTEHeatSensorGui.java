@@ -23,7 +23,9 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
-            .child(CommonWidgets.createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted)))
+            .child(
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .child(createThresholdFieldRow())
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -38,7 +40,7 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 100)
                     .size(77, 12)
-                    .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold))
+                    .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.heat_sensor")

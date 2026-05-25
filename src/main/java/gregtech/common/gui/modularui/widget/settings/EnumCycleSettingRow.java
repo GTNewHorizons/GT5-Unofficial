@@ -36,7 +36,7 @@ record EnumCycleSettingRow<E extends Enum<E>> (IKey label, Class<E> clazz, Suppl
         EnumCycleWidgets<E> w = new EnumCycleWidgets<>(
             label.asWidget()
                 .textAlign(Alignment.CenterRight),
-            new EnumCycleButtonWidget<>(clazz).value(new EnumSyncValue<>(clazz, getter, setter)));
+            new EnumCycleButtonWidget<>(clazz).value(new EnumSyncValue<>(clazz, getter, setter).allowC2S()));
 
         w.button.marginLeft(6);
 

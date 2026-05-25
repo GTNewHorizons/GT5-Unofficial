@@ -49,7 +49,7 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
 
     @Override
     public String getCasingBlockType() {
-        return "Machine Casings";
+        return "Machine Casing";
     }
 
     @Override

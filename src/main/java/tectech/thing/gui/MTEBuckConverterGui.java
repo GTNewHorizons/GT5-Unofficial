@@ -147,10 +147,12 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        ByteSyncValue voltageTierSyncer = new ByteSyncValue(machine::getVoltageTier, machine::setVoltageTier);
-        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage);
-        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
-        BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers);
+        ByteSyncValue voltageTierSyncer = new ByteSyncValue(machine::getVoltageTier, machine::setVoltageTier)
+            .allowC2S();
+        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
+        BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers)
+            .allowC2S();
 
         syncManager.syncValue("isUsingTiers", isUsingTiersSyncer);
 

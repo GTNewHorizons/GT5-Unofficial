@@ -68,7 +68,8 @@ public class ProductionPanel extends ModularPanel {
                 return new EmptyWidget();
             }
             return createProductionArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         statsSyncHandler = syncManager.findSyncHandler("productionStats", ProductionStatsSyncHandler.class);
         syncManager.findSyncHandler("selectTime", IntSyncValue.class)
@@ -95,7 +96,7 @@ public class ProductionPanel extends ModularPanel {
                                     .value(
                                         new BooleanSyncValue(
                                             () -> this.centre.productionDataRecorder.isActive(),
-                                            var -> this.centre.productionDataRecorder.setActive(var))))
+                                            var -> this.centre.productionDataRecorder.setActive(var)).allowC2S()))
                             .child(
                                 IKey.lang("GT5U.gui.text.drone_active_production")
                                     .asWidget()

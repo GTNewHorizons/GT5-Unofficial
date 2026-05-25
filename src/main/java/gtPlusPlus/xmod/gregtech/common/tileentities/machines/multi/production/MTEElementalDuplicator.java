@@ -103,14 +103,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Hint Block Number 1 (x1)",
+                "Hint block number 1 (x1)",
                 1)
-            .addInputHatch("Hint Block Number 1", 1)
-            .addOutputBus("Hint Block Number 1", 1)
-            .addOutputHatch("Hint Block Number 1", 1)
-            .addEnergyHatch("Hint Block Number 1", 1)
-            .addMaintenanceHatch("Hint Block Number 1", 1)
-            .addMufflerHatch("Hint Block Number 1", 1)
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputBus("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1", 1)
+            .addEnergyHatch("Hint block number 1", 1)
+            .addMaintenanceHatch("Hint block number 1", 1)
+            .addMufflerHatch("Hint block number 1", 1)
             .toolTipFinisher();
         return tt;
     }

@@ -32,7 +32,7 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
             } else {
                 hatch.setShape(null);
             }
-        });
+        }).allowC2S();
 
         syncHandler.syncValue(key, indexSync);
     }
