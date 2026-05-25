@@ -312,12 +312,12 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.NuclearStar.get(16L))
-            .fluidInputs(Materials.CosmicNeutronium.getPlasma(2 * INGOTS))
-            .itemOutputs(ItemList.PseudoStar.get(1L))
+            .itemInputs(ItemList.NuclearStar.get(64L))
+            .fluidInputs(Materials.CosmicNeutronium.getPlasma(8 * INGOTS))
+            .itemOutputs(ItemList.PseudoStar.get(4L))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
-            .duration(96 * SECONDS)
+            .duration(48 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(compressorRecipes);
 
