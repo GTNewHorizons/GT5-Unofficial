@@ -1,0 +1,222 @@
+package gregtech.api.recipe.lookup;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.util.GTRecipe;
+
+public final class GTRecipeLookupBuilder {
+
+    private final List<RecipeEntry> entries = new ArrayList<>();
+
+    public GTRecipeLookupBuilder add(GTRecipe recipe) {
+        Objects.requireNonNull(recipe, "recipe");
+        if (!recipe.mFakeRecipe) {
+            List<List<GTRecipeLookupIngredient>> ingredients = flatten(recipe);
+            if (!ingredients.isEmpty()) {
+                entries.add(new RecipeEntry(recipe, ingredients));
+            }
+        }
+        return this;
+    }
+
+    public GTRecipeLookup build() {
+        Map<GTRecipeLookupIngredient, Integer> frequencies = computeFrequencies();
+        Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool = new HashMap<>();
+        GTRecipeLookup lookup = new GTRecipeLookup();
+
+        for (RecipeEntry entry : entries) {
+            List<List<GTRecipeLookupIngredient>> pooled = poolAndSort(entry.ingredients, frequencies, pool);
+            if (!lookup.add(entry.recipe, pooled)) {
+                throw new IllegalStateException("Could not add recipe to lookup");
+            }
+        }
+
+        lookup.freeze();
+        return lookup;
+    }
+
+    private Map<GTRecipeLookupIngredient, Integer> computeFrequencies() {
+        Map<GTRecipeLookupIngredient, Integer> frequencies = new HashMap<>();
+        for (RecipeEntry entry : entries) {
+            for (List<GTRecipeLookupIngredient> group : entry.ingredients) {
+                for (GTRecipeLookupIngredient ingredient : group) {
+                    frequencies.put(ingredient, frequencies.getOrDefault(ingredient, 0) + 1);
+                }
+            }
+        }
+        return frequencies;
+    }
+
+    private static List<List<GTRecipeLookupIngredient>> poolAndSort(List<List<GTRecipeLookupIngredient>> ingredients,
+        Map<GTRecipeLookupIngredient, Integer> frequencies,
+        Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool) {
+        List<IngredientGroup> groups = new ArrayList<>(ingredients.size());
+        for (int i = 0; i < ingredients.size(); i++) {
+            List<GTRecipeLookupIngredient> pooledGroup = new ArrayList<>(
+                ingredients.get(i)
+                    .size());
+            for (GTRecipeLookupIngredient ingredient : ingredients.get(i)) {
+                GTRecipeLookupIngredient pooled = pool.get(ingredient);
+                if (pooled == null) {
+                    pooled = ingredient;
+                    pool.put(ingredient, ingredient);
+                }
+                addIfAbsent(pooledGroup, pooled);
+            }
+            groups.add(new IngredientGroup(pooledGroup, minFrequency(pooledGroup, frequencies), i));
+        }
+
+        groups.sort((first, second) -> {
+            int frequencyCompare = Integer.compare(first.frequency, second.frequency);
+            if (frequencyCompare != 0) return frequencyCompare;
+            return Integer.compare(first.originalIndex, second.originalIndex);
+        });
+
+        List<List<GTRecipeLookupIngredient>> sorted = new ArrayList<>(groups.size());
+        for (IngredientGroup group : groups) {
+            sorted.add(group.ingredients);
+        }
+        return sorted;
+    }
+
+    private static int minFrequency(List<GTRecipeLookupIngredient> group,
+        Map<GTRecipeLookupIngredient, Integer> frequencies) {
+        int result = Integer.MAX_VALUE;
+        for (GTRecipeLookupIngredient ingredient : group) {
+            result = Math.min(result, frequencies.getOrDefault(ingredient, 0));
+        }
+        return result == Integer.MAX_VALUE ? 0 : result;
+    }
+
+    private static List<List<GTRecipeLookupIngredient>> flatten(GTRecipe recipe) {
+        List<List<GTRecipeLookupIngredient>> ingredients = new ArrayList<>();
+        flattenItemInputs(recipe, ingredients);
+        flattenFluidInputs(recipe, ingredients);
+        return ingredients;
+    }
+
+    private static void flattenItemInputs(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
+        ItemStack[] inputs = recipe.mInputs;
+        if (inputs == null) {
+            return;
+        }
+
+        GTRecipe.GTRecipe_WithAlt recipeWithAlt = recipe instanceof GTRecipe.GTRecipe_WithAlt
+            ? (GTRecipe.GTRecipe_WithAlt) recipe
+            : null;
+
+        for (int i = 0; i < inputs.length; i++) {
+            List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
+            int oreDictId = oreDictIdFor(recipeWithAlt, i);
+            if (oreDictId >= 0) {
+                group.add(new GTOreDictLookupIngredient(oreDictId));
+            } else {
+                addItemAlternatives(recipe, recipeWithAlt, i, group);
+            }
+            if (!group.isEmpty()) {
+                ingredients.add(group);
+            }
+        }
+    }
+
+    private static int oreDictIdFor(GTRecipe.GTRecipe_WithAlt recipeWithAlt, int index) {
+        if (recipeWithAlt == null || recipeWithAlt.mOreDictIds == null || index >= recipeWithAlt.mOreDictIds.length) {
+            return -1;
+        }
+        return recipeWithAlt.mOreDictIds[index];
+    }
+
+    private static void addItemAlternatives(GTRecipe recipe, GTRecipe.GTRecipe_WithAlt recipeWithAlt, int index,
+        List<GTRecipeLookupIngredient> group) {
+        if (recipeWithAlt != null && recipeWithAlt.mOreDictAlt != null && index < recipeWithAlt.mOreDictAlt.length) {
+            ItemStack[] alternatives = recipeWithAlt.mOreDictAlt[index];
+            if (alternatives != null && alternatives.length > 0) {
+                for (ItemStack alternative : alternatives) {
+                    addItemIngredient(recipe, alternative, group);
+                }
+                return;
+            }
+        }
+
+        if (recipe.mInputs != null && index < recipe.mInputs.length) {
+            addItemIngredient(recipe, recipe.mInputs[index], group);
+        }
+    }
+
+    private static void addItemIngredient(GTRecipe recipe, ItemStack stack, List<GTRecipeLookupIngredient> group) {
+        if (stack == null) {
+            return;
+        }
+        GTRecipeLookupIngredient ingredient = recipe.isNBTSensitive && stack.hasTagCompound()
+            ? GTItemStackLookupIngredient.fromSpecialRecipe(stack)
+            : GTItemStackLookupIngredient.fromRecipe(stack);
+        addIfAbsent(group, ingredient);
+    }
+
+    private static void flattenFluidInputs(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
+        FluidStack[] inputs = recipe.mFluidInputs;
+        if (inputs == null) {
+            return;
+        }
+
+        for (int i = 0; i < inputs.length; i++) {
+            List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
+            addFluidIngredient(inputs[i], group);
+            if (recipe.mAltFluidInputs != null && i < recipe.mAltFluidInputs.length) {
+                FluidStack[] alternatives = recipe.mAltFluidInputs[i];
+                if (alternatives != null) {
+                    for (FluidStack alternative : alternatives) {
+                        addFluidIngredient(alternative, group);
+                    }
+                }
+            }
+            if (!group.isEmpty()) {
+                ingredients.add(group);
+            }
+        }
+    }
+
+    private static void addFluidIngredient(FluidStack stack, List<GTRecipeLookupIngredient> group) {
+        if (stack == null || stack.getFluid() == null) {
+            return;
+        }
+        addIfAbsent(group, new GTFluidLookupIngredient(stack));
+    }
+
+    private static void addIfAbsent(List<GTRecipeLookupIngredient> ingredients, GTRecipeLookupIngredient ingredient) {
+        if (!ingredients.contains(ingredient)) {
+            ingredients.add(ingredient);
+        }
+    }
+
+    private static final class RecipeEntry {
+
+        private final GTRecipe recipe;
+        private final List<List<GTRecipeLookupIngredient>> ingredients;
+
+        private RecipeEntry(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
+            this.recipe = recipe;
+            this.ingredients = ingredients;
+        }
+    }
+
+    private static final class IngredientGroup {
+
+        private final List<GTRecipeLookupIngredient> ingredients;
+        private final int frequency;
+        private final int originalIndex;
+
+        private IngredientGroup(List<GTRecipeLookupIngredient> ingredients, int frequency, int originalIndex) {
+            this.ingredients = ingredients;
+            this.frequency = frequency;
+            this.originalIndex = originalIndex;
+        }
+    }
+}
