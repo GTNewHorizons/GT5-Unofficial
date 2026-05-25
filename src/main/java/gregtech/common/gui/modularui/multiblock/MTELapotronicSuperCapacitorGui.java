@@ -25,13 +25,14 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import kekztech.util.Util;
 
-public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapotronicSuperCapacitor> {
+public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapotronicSuperCapacitor> {
 
-    public MTELapotronicSuperCapacitorgui(MTELapotronicSuperCapacitor multiblock) {
+    public MTELapotronicSuperCapacitorGui(MTELapotronicSuperCapacitor multiblock) {
         super(multiblock);
     }
 
@@ -257,7 +258,11 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             () -> multiblock.getBaseMetaTileEntity()
                 .isActive());
         BigIntSyncValue capacity = new BigIntSyncValue(multiblock::getEnergyCapacity, multiblock::setCapacity);
-        BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored).allowC2S();
+        BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, val -> {
+            // need to check server side if we have permission
+            if (GTUtility.isClient() || GTUtility.isServer() && syncManager.getPlayer().capabilities.isCreativeMode)
+                multiblock.setStored(val);
+        }).allowC2S();
         LongSyncValue passiveDischargeSync = new LongSyncValue(multiblock::getPassiveDischargeAmount);
         LongSyncValue avgEuIn = new LongSyncValue(
             () -> multiblock.getEnergyInputValues()
