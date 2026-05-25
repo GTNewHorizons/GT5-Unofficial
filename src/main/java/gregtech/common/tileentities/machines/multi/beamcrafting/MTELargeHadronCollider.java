@@ -85,8 +85,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
+
+    public double calcInputBeamEnergyeV = 0;
+    public int calcInputBeamRate = 1;
+    public double calcTargetBeamEnergyeV = 0;
+    public int calcNumCycles = 1;
 
     public BeamInformation initialParticleInfo = null;
     public BeamInformation cachedOutputParticle = null;
@@ -115,6 +121,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
         aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
+        aNBT.setDouble("calcInputBeamEnergyeV", calcInputBeamEnergyeV);
+        aNBT.setInteger("calcInputBeamRate", calcInputBeamRate);
+        aNBT.setDouble("calcTargetBeamEnergyeV", calcTargetBeamEnergyeV);
+        aNBT.setInteger("calcNumCycles", calcNumCycles);
         aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
     }
 
@@ -140,6 +150,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
         playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
+        calcInputBeamEnergyeV = aNBT.getDouble("calcInputBeamEnergyeV");
+        calcInputBeamRate = aNBT.getInteger("calcInputBeamRate");
+        calcTargetBeamEnergyeV = aNBT.getDouble("calcTargetBeamEnergyeV");
+        calcNumCycles = aNBT.getInteger("calcNumCycles");
         accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
     }
 
