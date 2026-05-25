@@ -126,34 +126,39 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent).child(IKey.dynamic(() -> {
-            if (data.getInternalBattery() == 0) {
-                return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
-            }
-            return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
-        })
-            .color(Color.WHITE.main)
-            .alignment(Alignment.CENTER)
-            .asWidget()
-            .setEnabledIf(w -> multiblock.mMachine)
-            .marginTop(10)
-            .fullWidth())
-            .child(IKey.dynamic(() -> {
-                Formatters formatter = data.getFormatter();
-                if (data.getInternalBattery() == 0) {
-                    return formatter.format(data.getStellarFuelAmount()) + "/"
-                        + formatter.format(data.getNeededStartupFuel());
-                }
-                return formatter.format(data.getInternalBattery()) + "/" + formatter.format(data.getMaxBatteryCharge());
-            })
-                .color(Color.WHITE.main)
-                .alignment(Alignment.CENTER)
-                .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+        return super.createTerminalTextWidget(syncManager, parent).child(
+            Flow.column()
+                .mainAxisAlignment(Alignment.MainAxis.START)
+                .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+                .paddingTop(4)
+                .expanded()
+                .fullWidth()
                 .setEnabledIf(w -> multiblock.mMachine)
-                .marginTop(2)
-                .horizontalCenter()
-                .fullWidth());
+                .child(IKey.dynamic(() -> {
+                    if (data.getInternalBattery() == 0) {
+                        return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
+                    }
+                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
+                })
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CENTER)
+                    .asWidget()
+                    .fullWidth())
+                .child(IKey.dynamic(() -> {
+                    Formatters formatter = data.getFormatter();
+                    if (data.getInternalBattery() == 0) {
+                        return formatter.format(data.getStellarFuelAmount()) + "/"
+                            + formatter.format(data.getNeededStartupFuel());
+                    }
+                    return formatter.format(data.getInternalBattery()) + "/"
+                        + formatter.format(data.getMaxBatteryCharge());
+                })
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CENTER)
+                    .asWidget()
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .marginTop(4)
+                    .fullWidth()));
     }
 
     @Override
