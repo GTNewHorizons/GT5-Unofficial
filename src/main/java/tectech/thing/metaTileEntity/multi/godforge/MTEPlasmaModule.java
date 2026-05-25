@@ -119,17 +119,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
         if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) inputMaxParallel = val;
     }
 
-    @Override
-    public void setPlasmaTier(int tier) {
+    public void setPlasmaTierDebug(int tier) {
         // need to check server side if we have permission
-        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) super.setPlasmaTier(tier);
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) setPlasmaTier(tier);
     }
 
-    @Override
-    public void setMultiStepPlasma(boolean isCapable) {
+    public void setMultiStepPlasmaDebug(boolean isCapable) {
         // need to check server side if we have permission
         if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
-            super.setMultiStepPlasma(isCapable);
+            setMultiStepPlasma(isCapable);
     }
 
     @Override

@@ -247,11 +247,11 @@ public class SyncValues {
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_FUSION_TIER = new ModuleSyncValue<>(
         "fog.sync.debug_fusion_tier",
-        module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTier).allowC2S());
+        module -> new IntSyncValue(module::getPlasmaTier, module::setPlasmaTierDebug).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEPlasmaModule> DEBUG_MULTI_STEP = new ModuleSyncValue<>(
         "fog.sync.debug_multi_step",
-        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasma).allowC2S());
+        module -> new BooleanSyncValue(module::isMultiStepPlasma, module::setMultiStepPlasmaDebug).allowC2S());
 
     public static final ModuleSyncValue<BooleanSyncValue, MTEExoticModule> MAGMATTER_CAPABLE = new ModuleSyncValue<>(
         "fog.sync.magmatter_capable",
