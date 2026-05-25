@@ -109,6 +109,49 @@ class RecipeMapBackendLookupTest {
         assertEquals(Arrays.asList(secondRegistered, firstRegistered), collisionMatches);
     }
 
+    @Test
+    void cachedRecipeHitDoesNotBuildTrieCandidates() {
+        Item input = item("lookup.cached.input");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(input, item("lookup.cached.output"), category);
+        CountingLookupBackend backend = new CountingLookupBackend(recipe);
+        backend.compileRecipe(recipe);
+
+        assertSame(
+            recipe,
+            backend
+                .matchRecipeStream(
+                    new ItemStack[] { new ItemStack(input, 1, 0) },
+                    new FluidStack[0],
+                    null,
+                    recipe,
+                    false,
+                    false,
+                    false)
+                .findFirst()
+                .orElse(null));
+        assertEquals(0, backend.lookupCandidateStreamCalls);
+    }
+
+    @Test
+    void cacheMapHitDoesNotBuildTrieCandidates() {
+        Item input = item("lookup.cachemap.input");
+        ItemStack[] items = { new ItemStack(input, 1, 0) };
+        FluidStack[] fluids = new FluidStack[0];
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(input, item("lookup.cachemap.output"), category);
+        CountingLookupBackend backend = new CountingLookupBackend(recipe);
+        backend.compileRecipe(recipe);
+        backend.cache(items, fluids, recipe);
+
+        assertSame(
+            recipe,
+            backend.matchRecipeStream(items, fluids, null, null, false, false, false)
+                .findFirst()
+                .orElse(null));
+        assertEquals(0, backend.lookupCandidateStreamCalls);
+    }
+
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
         GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
         recipe.mInputs = new ItemStack[] { new ItemStack(input, 1, 0) };
@@ -189,6 +232,35 @@ class RecipeMapBackendLookupTest {
         @Override
         protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
+            return Stream.of(candidates);
+        }
+    }
+
+    private static final class CountingLookupBackend extends RecipeMapBackend {
+
+        private final GTRecipe[] candidates;
+        private int lookupCandidateStreamCalls;
+
+        private CountingLookupBackend(GTRecipe... candidates) {
+            super(new RecipeMapBackendPropertiesBuilder());
+            this.candidates = candidates;
+        }
+
+        @Override
+        protected GTRecipe addToItemMap(GTRecipe recipe) {
+            return recipe;
+        }
+
+        @Override
+        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+            return true;
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            lookupCandidateStreamCalls++;
             return Stream.of(candidates);
         }
     }
