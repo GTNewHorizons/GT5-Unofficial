@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -54,7 +53,7 @@ public class DroneCentreGuiUtil {
         DroneCentreGuiUtil.TIME_OPTIONS.put(-1, "All");
     }
 
-    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+    public static ButtonWidget<?> createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
         return new ButtonWidget<>().syncHandler(
             dynamicSyncManager.getOrCreateSyncHandler(
                 "teleportPlayer" + conn.uuid.toString(),
@@ -210,19 +209,22 @@ public class DroneCentreGuiUtil {
 
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
             multiblock::getConnectionList);
-        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+        EnumSyncValue<SortMode, ?> sortModeSyncHandler = new EnumSyncValue<>(
             DroneCentreGuiUtil.SortMode.class,
             multiblock::getSortMode,
-            multiblock::setSortMode);
+            multiblock::setSortMode).allowC2S();
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
-            multiblock::setSearchBarText);
-        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
+            multiblock::setSearchBarText).allowC2S();
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup)
+            .allowC2S();
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,
-            multiblock::setSearchOriginalName);
-        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
-        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate);
+            multiblock::setSearchOriginalName).allowC2S();
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode)
+            .allowC2S();
+        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate)
+            .allowC2S();
 
         GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
             () -> multiblock.group,
@@ -241,9 +243,11 @@ public class DroneCentreGuiUtil {
         syncManager.syncValue("editMode", editModeSyncHandler);
         syncManager.syncValue("update", updateSyncHandler);
 
-        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
+            .allowC2S();
         ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
-            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L));
+            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L))
+                .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
     }

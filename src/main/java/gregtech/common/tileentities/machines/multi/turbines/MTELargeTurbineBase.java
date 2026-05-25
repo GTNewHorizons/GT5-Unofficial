@@ -44,6 +44,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.RenderOverlay;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
@@ -160,14 +161,16 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         maxPower = 0;
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1) && mMaintenanceHatches.size() == 1
-            && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0)) {
-            maxPower = getMaximumOutput();
-            return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        if (getPollutionPerTick(null) != 0) {
+            checkHasMufflerHatch(errors);
         }
-        return false;
+        if (!errors.isEmpty()) return;
+        maxPower = getMaximumOutput();
     }
 
     @Override

@@ -1791,12 +1791,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
+    /**
+     * @deprecated Always returns false, apparently.
+     */
+    @Deprecated
     public boolean isRadioactive() {
-        if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
-
-        return mMaterialList.stream()
-            .map(stack -> stack.mMaterial)
-            .anyMatch(Materials::isRadioactive);
+        return false;
     }
 
     public long getProtons() {

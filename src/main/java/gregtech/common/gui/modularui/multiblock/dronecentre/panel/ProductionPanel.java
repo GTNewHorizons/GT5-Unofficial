@@ -68,7 +68,8 @@ public class ProductionPanel extends ModularPanel {
                 return new EmptyWidget();
             }
             return createProductionArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         statsSyncHandler = syncManager.findSyncHandler("productionStats", ProductionStatsSyncHandler.class);
         syncManager.findSyncHandler("selectTime", IntSyncValue.class)
@@ -89,13 +90,13 @@ public class ProductionPanel extends ModularPanel {
                             .height(18)
                             .childPadding(4)
                             .child(
-                                new UpdatableToggleButton(productionHandler).size(18)
+                                new UpdatableToggleButton(productionHandler)
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                                     .value(
                                         new BooleanSyncValue(
                                             () -> this.centre.productionDataRecorder.isActive(),
-                                            var -> this.centre.productionDataRecorder.setActive(var))))
+                                            var -> this.centre.productionDataRecorder.setActive(var)).allowC2S()))
                             .child(
                                 IKey.lang("GT5U.gui.text.drone_active_production")
                                     .asWidget()
@@ -318,7 +319,8 @@ public class ProductionPanel extends ModularPanel {
         machineStack.forEach((key, itemStack) -> {
             Flow cell = Flow.row()
                 .childPadding(4)
-                .align(Alignment.CenterLeft)
+                .leftRel(0)
+                .verticalCenter()
                 .coverChildren()
                 .paddingRight(2)
                 .child(

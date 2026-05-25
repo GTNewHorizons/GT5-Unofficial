@@ -51,7 +51,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
                     () -> multiblock.getBufferMap()
                         .get(key),
                     i -> multiblock.getBufferMap()
-                        .put(key, i)));
+                        .put(key, i)).allowC2S());
         }
 
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
@@ -60,9 +60,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-
-        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
 
         IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
         IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);

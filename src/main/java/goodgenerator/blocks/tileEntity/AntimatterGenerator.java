@@ -44,7 +44,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -196,7 +198,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        checkPiece(MAIN_NAME, 17, 41, 0, errors);
+        if (!checkPiece(MAIN_NAME, 17, 41, 0, errors)) return;
+        if (mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.ExoticDynamo, 0, 1));
+        }
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -379,10 +385,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint Block Number 1", 1)
+            .addInputHatch("2, Hint block number 1", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint Block Number 2",
+                "1-64, Hint block number 2",
                 2)
             .toolTipFinisher();
         return tt;

@@ -31,6 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -148,19 +149,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             planetTypeParameters[i] = new IntegerParameter(
                 1,
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.0",
-                "planetType" + i,
+                "planetType",
                 () -> 0,
                 () -> 100);
             gasTypeParameters[i] = new IntegerParameter(
                 1,
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.1",
-                "gasType" + i,
+                "gasType",
                 () -> 0,
                 () -> 100);
             parallelParameters[i] = new IntegerParameter(
                 getParallels(),
                 "gt.blockmachines.multimachine.project.ig.pump.cfgi.2",
-                "parallel" + i,
+                "parallel",
                 () -> 0,
                 this::getParallels);
 
@@ -271,18 +272,17 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean state = super.checkMachine_EM(aBaseMetaTileEntity, aStack);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        checkHasOutputHatch(errors);
         hasMeOutputHatch = false;
-        if (state) {
-            for (MTEHatchOutput output : mOutputHatches) {
-                if (output instanceof MTEHatchOutputME) {
-                    hasMeOutputHatch = true;
-                    break;
-                }
+        if (!errors.isEmpty()) return;
+        for (MTEHatchOutput output : mOutputHatches) {
+            if (output instanceof MTEHatchOutputME) {
+                hasMeOutputHatch = true;
+                break;
             }
         }
-        return state;
     }
 
     /**

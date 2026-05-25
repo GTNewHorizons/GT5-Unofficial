@@ -91,7 +91,7 @@ public class FuelConfigPanel {
                 .marginTop(5));
 
         // Fuel selector
-        EnumSyncValue<Fuels> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
+        EnumSyncValue<Fuels, ?> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         Flow fuelRow = Flow.row()
             .coverChildren()
             .marginTop(5)
@@ -127,7 +127,7 @@ public class FuelConfigPanel {
         SyncValues.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
-    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels> syncer,
+    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels, ?> syncer,
         Fuels option) {
         return new ParentWidget<>().coverChildrenWidth()
             .size(18)
@@ -143,7 +143,6 @@ public class FuelConfigPanel {
                     .disableThemeBackground(true)
                     .disableHoverThemeBackground(true)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {
                         if (hypervisor.isClient()) {

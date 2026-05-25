@@ -14,6 +14,9 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,6 +50,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -55,7 +61,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
@@ -190,49 +195,35 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return ofBlockAnyMeta(Blocks.air);
             }
         }))
-        .addElement(
-            'F',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             '1',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .build()) // EM beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
         .addElement(
             '2',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(4)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .build()) // Weak beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
         .addElement(
             '3',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(5)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .build()) // Strong beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
         .addElement(
             '4',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(6)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .build()) // Grav beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())
@@ -426,19 +417,24 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
 
-        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113);
-        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9);
-        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59);
-        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59);
+        // Ignore the structure error during module checks
+        List<StructureError> tmp = new ArrayList<>();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
-            && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113, tmp);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9, tmp);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59, tmp);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59, tmp);
 
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
+        int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
+        if (energyCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
+        }
     }
 
     @Override

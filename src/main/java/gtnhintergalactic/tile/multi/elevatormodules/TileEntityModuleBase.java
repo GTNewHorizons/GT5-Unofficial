@@ -1,5 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -268,6 +271,13 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
+     * @return True if the module is connected to a Space Elevator, else false
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This
@@ -322,7 +332,12 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 1, 0);
+    }
+
+    @Override
+    protected boolean cyclicUpdate_EM() {
+        return !mMachine ? mUpdate <= -20 : super.cyclicUpdate_EM();
     }
 
     @Override
@@ -338,9 +353,9 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fixAllIssues();
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0);
+        checkPiece(STRUCTURE_PIECE_MAIN, 0, 1, 0, errors);
     }
 
     /**

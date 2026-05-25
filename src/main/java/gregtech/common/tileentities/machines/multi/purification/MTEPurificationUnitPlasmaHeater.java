@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -169,25 +170,13 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         // Coolant input hatch
         .addElement(
             'K',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .hint(2)
-                    .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"))
-                    .casingIndex(CASING_INDEX_TOWER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_TOWER, 2, () -> "GT5U.tooltip.structure.input_hatch_coolant"))
         // Plasma input hatch
         .addElement(
             'P',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .hint(3)
-                    .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                    .cacheHint(() -> StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"))
-                    .casingIndex(CASING_INDEX_HEATER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_HEATER, 3, () -> "GT5U.tooltip.structure.input_hatch_plasma"))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
@@ -558,13 +547,17 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        if (casingCount < MIN_CASING) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkCasingMin(errors, casingCount, MIN_CASING);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
-        if (plasmaInputHatch == null || coolantInputHatch == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (plasmaInputHatch == null || coolantInputHatch == null) {
+            throw new IllegalArgumentException("This should not happen because structure def include mandatory hatch");
+        }
     }
 
     @Override

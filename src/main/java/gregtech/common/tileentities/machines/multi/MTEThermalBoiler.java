@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -43,6 +44,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
@@ -131,10 +133,11 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 GTRecipe adjustedRecipe = recipe.copy();
 
-                for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
+                for (int i = 0; i < adjustedRecipe.mFluidInputs.length; i++) {
+                    FluidStack inputFluid = adjustedRecipe.mFluidInputs[i];
                     if (inputFluid != null
                         && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
-                        inputFluid.amount = 0;
+                        adjustedRecipe.mFluidInputs[i] = null;
                     }
                 }
 
@@ -384,19 +387,22 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmountThermalContainment = 0;
         casingAmountThermalProcessing = 0;
         casingAmountRobust = 0;
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmountRobust >= 10
-            && casingAmountThermalProcessing >= 10
-            && casingAmountThermalContainment >= 20
-            && checkHatch();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmountRobust, 10);
+        checkCasingMin(errors, casingAmountThermalProcessing, 10);
+        checkCasingMin(errors, casingAmountThermalContainment, 20);
+        checkHatch(errors);
     }
 
-    public boolean checkHatch() {
-        return mMufflerHatches.size() == 1 && mInputHatches.size() >= 1 && mOutputHatches.size() >= 1;
+    public void checkHatch(List<StructureError> errors) {
+        checkOneMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

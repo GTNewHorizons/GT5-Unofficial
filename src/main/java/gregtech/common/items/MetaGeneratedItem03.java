@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
+import static gregtech.api.enums.Textures.ItemIcons.MASK_VOLTAGE_COIL;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.Tier.HV;
 import static gregtech.client.GTTooltipHandler.Tier.IV;
@@ -25,6 +26,9 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
@@ -298,6 +302,7 @@ import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
+import gregtech.common.render.items.UniversiumMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -1190,12 +1195,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.circuit_board.cosmic.name",
                 "gt.item.circuit_board.cosmic.tooltip",
                 o));
-        ItemList.Circuit_Board_Transcendent.set(
-            addItemWithLocalizationKeys(
-                Circuit_Board_Transcendent.ID,
-                "gt.item.circuit_board.transcendent.name",
-                "gt.item.circuit_board.transcendent.tooltip",
-                o));
+        ItemList.Circuit_Board_Transcendent
+            .set(
+                addItemWithLocalizationKeys(
+                    Circuit_Board_Transcendent.ID,
+                    "gt.item.circuit_board.transcendent.name",
+                    "gt.item.circuit_board.transcendent.tooltip",
+                    o))
+            .setRender(new InfinityMetaItemRenderer());
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
@@ -1372,9 +1379,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.UMV_Coil
             .set(addItemWithLocalizationKeys(UMV_Coil.ID, "gt.item.coil.umv.name", "gt.item.coil.umv.tooltip", o));
         ItemList.UXV_Coil
-            .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o));
+            .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o))
+            .setRender(new UniversiumMetaItemRenderer(MASK_VOLTAGE_COIL));
         ItemList.MAX_Coil
-            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o));
+            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o))
+            .setRender(new InfinityMetaItemRenderer());
 
         ItemList.GalliumArsenideCrystal.set(
             addItemWithLocalizationKeys(
@@ -1802,6 +1811,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
 
+        ItemList.Armor_Chip_T1.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T1.ID,
+                "gt.item.armor_chip_t1.name",
+                "gt.item.armor_chip_t1.tooltip"));
+        ItemList.Armor_Chip_T2.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T2.ID,
+                "gt.item.armor_chip_t2.name",
+                "gt.item.armor_chip_t2.tooltip"));
+        ItemList.Armor_Chip_T3.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T3.ID,
+                "gt.item.armor_chip_t3.name",
+                "gt.item.armor_chip_t3.tooltip"));
         ItemList.StableBaryonContainmentUnit.set(
             addItemWithLocalizationKeys(
                 StableBaryonContainmentUnit.ID,

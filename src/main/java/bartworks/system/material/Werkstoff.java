@@ -165,7 +165,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.stats.durOverride = materials.mDurability;
         this.stats.qualityOverride = materials.mToolQuality;
         this.stats.setGas(materials.mHasGas);
-        this.stats.setRadioactive(materials.isRadioactive());
+        this.stats.setRadioactive(false);
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
         this.stats.setMeltingVoltage(120);
         this.stats.isProxy = true;
