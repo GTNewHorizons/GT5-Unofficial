@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -232,10 +233,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(
-            String.format(
-                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease())))
+        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
             .addController("Front center, 2nd layer")
@@ -284,17 +282,30 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
+        boolean noFluid = false, noSolid = false;
         for (ItemStack input : getStoredInputs()) {
-            if (!LargeBoilerFuelBackend.isAllowedSolidFuel(input)
-                && !Circuit_Integrated.isStackEqual(input, true, true)) {
+            if (!LargeBoilerFuelBackend.isAllowedFuel(input) && !Circuit_Integrated.isStackEqual(input, true, true)) {
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
-                this.lEUt = 0;
-                return false;
+                this.mEUt = 0;
+                noSolid = true;
             }
         }
-        return true;
+        for (FluidStack input : getStoredFluids()) {
+            if (!LargeBoilerFuelBackend.isAllowedFuel(input) && !Circuit_Integrated.isStackEqual(input, true, true)
+                && !Objects.equals(
+                    input.getFluid()
+                        .getName(),
+                    "water")) {
+                // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
+                // consumed
+                this.mMaxProgresstime = 0;
+                this.mEUt = 0;
+                noFluid = true;
+            }
+        }
+        return !noFluid && !noSolid;
     }
 
     @Override
@@ -325,28 +336,26 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         if (fluidBurnTime == 0) {
-            if (!isSuperheated()) {
-                for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                    if (tFluid != null && tRecipe.mSpecialValue > 1) {
-                        tFluid.amount = 1000;
-                        if (depleteInput(tFluid)) {
-                            setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease() * 4, true);
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
-                        }
-
+            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
+                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                if (tFluid != null && tRecipe.mSpecialValue > 1) {
+                    tFluid.amount = 1000;
+                    if (depleteInput(tFluid)) {
+                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease() * 4, true);
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
+
                 }
-                for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
-                    FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                    if (tFluid != null) {
-                        tFluid.amount = 1000;
-                        if (depleteInput(tFluid)) {
-                            setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease(), true);
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
-                        }
-
+            }
+            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
+                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                if (tFluid != null) {
+                    tFluid.amount = 1000;
+                    if (depleteInput(tFluid)) {
+                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease(), true);
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
+
                 }
             }
         }
@@ -363,7 +372,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                                 this.excessFuel += (int) (fuelValue % 80);
                                 burnTime += this.excessFuel / 80;
                                 this.excessFuel %= 80;
-                                setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), true);
+                                setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), false);
                                 this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                                 tInput.stackSize -= 1;
                                 updateSlots();

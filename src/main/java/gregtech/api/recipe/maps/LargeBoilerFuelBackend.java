@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -27,19 +28,33 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     private static boolean addedGeneralDesc = false;
 
-    private static final List<String> ALLOWED_SOLID_FUELS = Arrays
-        .asList("gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7");
+    private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
+        "gregtech:gt.blockreinforced:6",
+        "gregtech:gt.blockreinforced:7",
+        "ether",
+        "gasoline",
+        "nitrofuel",
+        "ethanol gasoline",
+        "jet fuel no.3",
+        "get fuel a",
+        "highoctanegasoline");
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
     }
 
-    public static boolean isAllowedSolidFuel(ItemStack stack) {
-        return isAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
+    public static boolean isAllowedFuel(ItemStack stack) {
+        return isAllowedFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
     }
 
-    public static boolean isAllowedSolidFuel(String itemRegistryName, int meta) {
+    public static boolean isAllowedFuel(String itemRegistryName, int meta) {
         return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
+    }
+
+    public static boolean isAllowedFuel(FluidStack stack) {
+        return ALLOWED_SOLID_FUELS.contains(
+            stack.getFluid()
+                .getName());
     }
 
     public static boolean addAllowedSolidFuel(ItemStack stack) {
