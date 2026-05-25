@@ -243,7 +243,7 @@ public class SyncValues {
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.debug_plasma_parallel",
-        module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallel).allowC2S());
+        module -> new IntSyncValue(module::getInputMaxParallel, module::setInputMaxParallelDebug).allowC2S());
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_FUSION_TIER = new ModuleSyncValue<>(
         "fog.sync.debug_fusion_tier",

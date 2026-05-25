@@ -114,7 +114,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return inputMaxParallel;
     }
 
-    public void setInputMaxParallel(int val) {
+    public void setInputMaxParallelDebug(int val) {
         // need to check server side if we have permission
         if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) inputMaxParallel = val;
     }
