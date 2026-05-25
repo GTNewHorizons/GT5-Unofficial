@@ -27,6 +27,12 @@ public final class GTRecipeLookupBuilder {
     }
 
     public GTRecipeLookup build() {
+        GTRecipeLookup lookup = buildMutable();
+        lookup.freeze();
+        return lookup;
+    }
+
+    public GTRecipeLookup buildMutable() {
         Map<GTRecipeLookupIngredient, Integer> frequencies = computeFrequencies();
         Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool = new HashMap<>();
         GTRecipeLookup lookup = new GTRecipeLookup();
@@ -38,8 +44,21 @@ public final class GTRecipeLookupBuilder {
             }
         }
 
-        lookup.freeze();
         return lookup;
+    }
+
+    public static boolean addToLookup(GTRecipeLookup lookup, GTRecipe recipe) {
+        Objects.requireNonNull(lookup, "lookup");
+        Objects.requireNonNull(recipe, "recipe");
+        if (recipe.mFakeRecipe) {
+            return true;
+        }
+
+        List<List<GTRecipeLookupIngredient>> ingredients = flatten(recipe);
+        if (ingredients.isEmpty()) {
+            return true;
+        }
+        return lookup.add(recipe, ingredients);
     }
 
     private Map<GTRecipeLookupIngredient, Integer> computeFrequencies() {

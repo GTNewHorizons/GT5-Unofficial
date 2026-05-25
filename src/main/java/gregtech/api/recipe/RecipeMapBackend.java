@@ -85,9 +85,9 @@ public class RecipeMapBackend {
     /** Cached recipes, by commutative hash of all inputs. */
     private final GTRecipe[] cacheMap = new GTRecipe[CACHE_MAP_SIZE];
 
-    private GTRecipeLookup recipeLookup = new GTRecipeLookupBuilder().build();
+    private GTRecipeLookup recipeLookup = new GTRecipeLookup();
 
-    private boolean recipeLookupDirty = true;
+    private boolean recipeLookupDirty;
 
     private final Map<GTRecipe, Integer> recipeRegistrationOrdinals = new IdentityHashMap<>();
 
@@ -163,7 +163,7 @@ public class RecipeMapBackend {
         ensureRegistrationOrdinal(recipe);
 
         GTRecipe result = addToItemMap(recipe);
-        recipeLookupDirty = true;
+        addRecipeToLookup(recipe);
         return result;
     }
 
@@ -326,7 +326,7 @@ public class RecipeMapBackend {
         itemContainsIndex.clear();
         fluidContainsIndex.clear();
         Arrays.fill(cacheMap, null);
-        recipeLookup = new GTRecipeLookupBuilder().build();
+        recipeLookup = new GTRecipeLookup();
         recipeLookupDirty = false;
         recipeRegistrationOrdinals.clear();
         nextRecipeRegistrationOrdinal = 0;
@@ -347,7 +347,7 @@ public class RecipeMapBackend {
             addToItemMap(recipe);
             lookupBuilder.add(recipe);
         }
-        recipeLookup = lookupBuilder.build();
+        recipeLookup = lookupBuilder.buildMutable();
         recipeLookupDirty = false;
     }
 
@@ -361,8 +361,17 @@ public class RecipeMapBackend {
             ensureRegistrationOrdinal(recipe);
             lookupBuilder.add(recipe);
         }
-        recipeLookup = lookupBuilder.build();
+        recipeLookup = lookupBuilder.buildMutable();
         recipeLookupDirty = false;
+    }
+
+    private void addRecipeToLookup(GTRecipe recipe) {
+        if (recipeLookupDirty) {
+            ensureLookupCurrent();
+        }
+        if (!GTRecipeLookupBuilder.addToLookup(recipeLookup, recipe)) {
+            throw new IllegalStateException("Could not add recipe to lookup");
+        }
     }
 
     /**
@@ -483,6 +492,10 @@ public class RecipeMapBackend {
 
         ensureLookupCurrent();
 
+        if (forCollisionCheck) {
+            return collisionCandidateStream(items, fluids, specialSlot, dontCheckStackSizes);
+        }
+
         // The trie is the only default recipe candidate lookup path. The item/fluid indexes are containsInput-only.
         Stream<GTRecipe> candidates = Stream.<Stream<GTRecipe>>of(
             // Check the recipe which has been used last time in order to not have to search for it again, if
@@ -503,14 +516,18 @@ public class RecipeMapBackend {
             .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
             .filter(Objects::nonNull);
 
-        if (forCollisionCheck) {
-            return candidates;
-        }
-
         return Stream.concat(
             candidates,
             GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
                 .filter(Objects::nonNull));
+    }
+
+    private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+        return lookupCandidateStream(items, fluids).filter(this::isRecipeRegistered)
+            .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+            .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
+            .filter(Objects::nonNull);
     }
 
     protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
