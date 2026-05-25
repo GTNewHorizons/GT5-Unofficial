@@ -48,12 +48,12 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public int getMinY() {
+    public int getMinY(String dim) {
         return mMinY;
     }
 
     @Override
-    public int getMaxY() {
+    public int getMaxY(String dim) {
         return mMaxY;
     }
 
