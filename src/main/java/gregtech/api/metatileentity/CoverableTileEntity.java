@@ -146,6 +146,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         byte validCoversMask = this.validCoversMask;
         if (validCoversMask == 0) return true;
 
+        sendCoverDataIfNeeded();
+
         for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
             if (((validCoversMask >>> i) & 1) == 0) continue;
             if (!tickCoverAtSide(ForgeDirection.VALID_DIRECTIONS[i])) return false;
