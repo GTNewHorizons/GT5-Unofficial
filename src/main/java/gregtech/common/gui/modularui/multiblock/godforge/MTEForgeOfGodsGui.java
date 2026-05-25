@@ -135,7 +135,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .color(Color.WHITE.main)
             .alignment(Alignment.CENTER)
             .asWidget()
-            .marginTop(4)
+            .setEnabledIf(w -> multiblock.mMachine)
+            .marginTop(10)
             .fullWidth())
             .child(IKey.dynamic(() -> {
                 Formatters formatter = data.getFormatter();
@@ -149,9 +150,24 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .setEnabledIf(w -> multiblock.mMachine)
                 .marginTop(2)
                 .horizontalCenter()
                 .fullWidth());
+    }
+
+    @Override
+    protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
+        return IKey.str("")
+            .asWidget()
+            .size(0, 0);
+    }
+
+    @Override
+    protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
+        return IKey.str("")
+            .asWidget()
+            .size(0, 0);
     }
 
     @Override
