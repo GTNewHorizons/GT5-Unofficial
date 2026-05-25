@@ -241,9 +241,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public final byte[] getInitialDataForClient() {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (covers[side.ordinal()].isDataNeededOnClient()) issueCoverUpdate(side);
-        }
         return ByteBuffer.allocate(2 + 24 + 4)
             .putShort(mID)
             .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
