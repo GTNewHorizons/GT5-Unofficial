@@ -488,9 +488,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
-            outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
-                * GTValues.V[8]
-                * keV_EU_RATIO);
+            outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
                     MAXIMUM_PARTICLE_ENERGY_keV,
@@ -507,10 +505,45 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
+        return -perCyclePowerCost(particle.getRate(), accelerationCycleCounter);
+    }
+
+    public static long perCyclePowerCost(int rate, int cycleIndex) {
         // counter starts at 0, so +1
         // start at 1A UV power cost
-        return (long) -(GTValues.V[8] * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
+        return (long) (GTValues.V[8] * Math.pow(cycleIndex + 1, 2) * rate);
+    }
 
+    public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
+        // rate conceptually is parallels, so use rate 1 for this determination
+        return perCyclePowerCost(1, cycleIndex) * progressTime * keV_EU_RATIO;
+    }
+
+    public static double[] simulateAccelerator(double inputEnergyKeV, int inputRate, double targetEnergyKeV,
+        int numCycles, int progressTime) {
+
+        if (numCycles < 0) numCycles = 0;
+        if (inputRate < 1) inputRate = 1;
+
+        // mirrors accelerateParticle
+
+        double outEnergy = inputEnergyKeV;
+        int outRate = inputRate;
+        long EUtCost = 0;
+
+        for (int c = 0; c < numCycles; c++) {
+            if (outEnergy <= targetEnergyKeV) {
+                outEnergy += perCycleEnergyGainKeV(c, progressTime);
+                if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                    outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
+                }
+            } else {
+                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            }
+            EUtCost = perCyclePowerCost(outRate, c + 1);
+        }
+
+        return new double[] { outEnergy, (double) outRate, (double) EUtCost };
     }
 
     private void resetLHCState() {

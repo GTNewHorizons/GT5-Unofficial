@@ -52,16 +52,31 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             "playerTargetBeamEnergyeV",
             new DoubleSyncValue(
                 () -> multiblock.playerTargetBeamEnergyeV,
-                dub -> multiblock.playerTargetBeamEnergyeV = dub));
+                dub -> multiblock.playerTargetBeamEnergyeV = dub).allowC2S());
         syncManager.syncValue(
             "playerTargetAccelerationCycles",
             new IntSyncValue(
                 () -> multiblock.playerTargetAccelerationCycles,
-                i -> multiblock.playerTargetAccelerationCycles = i));
+                i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
+        syncManager.syncValue(
+            "calcInputBeamEnergyeV",
+            new DoubleSyncValue(() -> multiblock.calcInputBeamEnergyeV, d -> multiblock.calcInputBeamEnergyeV = d)
+                .allowC2S());
+        syncManager.syncValue(
+            "calcInputBeamRate",
+            new IntSyncValue(() -> multiblock.calcInputBeamRate, i -> multiblock.calcInputBeamRate = i).allowC2S());
+        syncManager.syncValue(
+            "calcTargetBeamEnergyeV",
+            new DoubleSyncValue(() -> multiblock.calcTargetBeamEnergyeV, d -> multiblock.calcTargetBeamEnergyeV = d)
+                .allowC2S());
+        syncManager.syncValue(
+            "calcNumCycles",
+            new IntSyncValue(() -> multiblock.calcNumCycles, i -> multiblock.calcNumCycles = i).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
-        syncManager
-            .syncValue("machineMode", new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i));
+        syncManager.syncValue(
+            "machineMode",
+            new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
@@ -71,6 +86,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
+    }
+
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createRightPanelGapRow(panel, syncManager).child(createCalculatorButton(syncManager, panel));
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -236,7 +256,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .topRel(0)
-            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/fluid_regulation_panel"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
                     statsPanel.openPanel();
@@ -245,7 +265,26 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.text.LHC.setparams")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    protected IWidget createCalculatorButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler calcPanel = syncManager.syncedPanel(
+            "calculatorPanel",
+            true,
+            (p_syncManager, syncHandler) -> openCalculatorPanel(p_syncManager, parent, syncManager));
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/lhc_calculator"))
+            .onMousePressed(d -> {
+                if (!calcPanel.isPanelOpen()) {
+                    calcPanel.openPanel();
+                } else {
+                    calcPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.calculator")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -293,4 +332,104 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             .setDefaultNumber(10)));
     }
 
+    private ModularPanel openCalculatorPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+
+        DoubleSyncValue calcInputBeamEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("calcInputBeamEnergyeV:0");
+        IntSyncValue calcInputBeamRateSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcInputBeamRate:0");
+        DoubleSyncValue calcTargetBeamEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("calcTargetBeamEnergyeV:0");
+        IntSyncValue calcNumCyclesSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcNumCycles:0");
+
+        IKey resultKey = IKey.dynamic(
+            () -> formatCalcResult(
+                calcInputBeamEnergyeVSync != null ? calcInputBeamEnergyeVSync.getDoubleValue()
+                    : multiblock.calcInputBeamEnergyeV,
+                calcInputBeamRateSync != null ? calcInputBeamRateSync.getIntValue() : multiblock.calcInputBeamRate,
+                calcTargetBeamEnergyeVSync != null ? calcTargetBeamEnergyeVSync.getDoubleValue()
+                    : multiblock.calcTargetBeamEnergyeV,
+                calcNumCyclesSync != null ? calcNumCyclesSync.getIntValue() : multiblock.calcNumCycles));
+
+        IKey resultHeaderKey = IKey.lang("GT5U.gui.text.LHC.calc.resultheader");
+
+        return new ModularPanel("calculatorPanel").relative(parent)
+            .rightRel(1)
+            .topRel(0)
+            .coverChildren()
+            .padding(6)
+            .widgetTheme("backgroundPopup")
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(4)
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.title")).textAlign(Alignment.CENTER))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.inputbeamenergyeV"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(calcInputBeamEnergyeVSync)
+                            .setDefaultNumber(0))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.inputbeamrate")).textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setFormatAsInteger(true)
+                            .size(60, 14)
+                            .value(calcInputBeamRateSync)
+                            .setDefaultNumber(1))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.targetbeamenergyeV")).textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(calcTargetBeamEnergyeVSync)
+                            .setDefaultNumber(1_000_000_000))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.maxaccelerationcycles"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setFormatAsInteger(true)
+                            .size(40, 14)
+                            .value(calcNumCyclesSync)
+                            .setDefaultNumber(1))
+
+                    .child(new TextWidget<>(resultHeaderKey).textAlign(Alignment.CENTER))
+                    .child(new TextWidget<>(resultKey).textAlign(Alignment.CENTER)));
+    }
+
+    private String formatCalcResult(double inputEnergyeV, int inputRate, double targetEnergyeV, int numCycles) {
+        double[] result = MTELargeHadronCollider.simulateAccelerator(
+            inputEnergyeV / 1000.0, // eV -> keV
+            inputRate,
+            targetEnergyeV / 1000.0,
+            numCycles,
+            multiblock.mMaxProgresstime);
+        double finalBeamEnergyKeV = result[0];
+        int finalRate = (int) result[1];
+        long finalEUt = (long) result[2];
+
+        long collisionEnergyeV = (long) (finalBeamEnergyKeV * 2 * 1000); // x2 for collision, and conversion keV->eV
+
+        return EnumChatFormatting.GREEN + format(collisionEnergyeV)
+            + "eV"
+            + EnumChatFormatting.WHITE
+            + " | "
+            + EnumChatFormatting.YELLOW
+            + finalRate
+            + EnumChatFormatting.WHITE
+            + " | "
+            + EnumChatFormatting.GOLD
+            + format(finalEUt)
+            + "EU/t";
+    }
 }
