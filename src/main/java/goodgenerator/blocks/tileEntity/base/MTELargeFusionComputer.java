@@ -180,7 +180,15 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public long maxEUStore() {
-        return capableStartupCanonical() * (Math.min(32, this.mEnergyHatches.size() + this.eEnergyMulti.size())) / 32L;
+        int hatchAmp = 0;
+
+        for (MTEHatchEnergyMulti multiEnergy : this.eEnergyMulti) {
+            hatchAmp += multiEnergy.getAmperes();
+        }
+
+        hatchAmp += this.mEnergyHatches.size();
+
+        return capableStartupCanonical() * (Math.min(32, hatchAmp)) / 32L;
     }
 
     /**
@@ -287,7 +295,13 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     long energyLimit = getSingleHatchPower();
                     List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
                     for (MTEHatch hatch : validMTEList(hatches)) {
-                        long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
+                        int amp = 1;
+
+                        if (hatch instanceof MTEHatchEnergyMulti hatchEnergyMulti) {
+                            amp = hatchEnergyMulti.getAmperes();
+                        }
+
+                        long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit * amp);
                         long receivedEnergy = Math
                             .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
                         if (receivedEnergy > 0) {
