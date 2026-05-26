@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import bartworks.system.material.Werkstoff;
@@ -31,7 +30,6 @@ public class TurbineRotorDumper extends DataDumper {
 
     private static final int[] TOOL_IDS = { TURBINE_SMALL.ID, TURBINE.ID, TURBINE_LARGE.ID, TURBINE_HUGE.ID };
     private static final String[] SIZE_NAMES = { "Small", "Normal", "Large", "Huge" };
-    private static final int[] DUR_MULTS = { 1, 2, 3, 4 };
 
     public TurbineRotorDumper() {
         super("tools.dump.gt5u.rotors");
@@ -53,19 +51,11 @@ public class TurbineRotorDumper extends DataDumper {
             int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
             for (int si = 0; si < TOOL_IDS.length; si++) {
                 ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
-                if (stack == null) {
-                    rows.add(
-                        new String[] { mat.mDefaultLocalName, String.valueOf((int) mat.mToolQuality),
-                            DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
-                            String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(DUR_MULTS[si]), "", "", "", "",
-                            "", "", "", "", "", "", "", "", "", "", "", "", "", "" });
-                    continue;
-                }
                 TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
                 rows.add(
-                    new String[] { mat.mDefaultLocalName, String.valueOf((int) mat.mToolQuality),
+                    new String[] { mat.mDefaultLocalName, String.valueOf(mat.mToolQuality),
                         DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
-                        String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(DUR_MULTS[si]),
+                        String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(si + 1),
                         DumperUtils.formatDouble(c.getSteamEfficiency()),
                         DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
                         DumperUtils.formatDouble(c.getOptimalSteamFlow()),
@@ -138,45 +128,46 @@ public class TurbineRotorDumper extends DataDumper {
         return result;
     }
 
+    private static JsonObject buildSizeJson(TurbineStatCalculator c, int si) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("steam_tight_eff", c.getSteamEfficiency());
+        obj.addProperty("steam_loose_eff", c.getLooseSteamEfficiency());
+        obj.addProperty("steam_opt_flow_tight", c.getOptimalSteamFlow());
+        obj.addProperty("steam_opt_flow_loose", c.getOptimalLooseSteamFlow());
+        obj.addProperty("steam_power_tight", c.getOptimalSteamEUt());
+        obj.addProperty("steam_power_loose", c.getOptimalLooseSteamEUt());
+        obj.addProperty("gas_tight_eff", c.getGasEfficiency());
+        obj.addProperty("gas_loose_eff", c.getLooseGasEfficiency());
+        obj.addProperty("gas_opt_flow_tight", c.getOptimalGasFlow());
+        obj.addProperty("gas_opt_flow_loose", c.getOptimalLooseGasFlow());
+        obj.addProperty("gas_power_tight", c.getOptimalGasEUt());
+        obj.addProperty("gas_power_loose", c.getOptimalLooseGasEUt());
+        obj.addProperty("plasma_tight_eff", c.getPlasmaEfficiency());
+        obj.addProperty("plasma_loose_eff", c.getLoosePlasmaEfficiency());
+        obj.addProperty("plasma_opt_flow_tight", c.getOptimalPlasmaFlow());
+        obj.addProperty("plasma_opt_flow_loose", c.getOptimalLoosePlasmaFlow());
+        obj.addProperty("plasma_power_tight", c.getOptimalPlasmaEUt());
+        obj.addProperty("plasma_power_loose", c.getOptimalLoosePlasmaEUt());
+        obj.addProperty("dur_mult", si + 1);
+        return obj;
+    }
+
     private void dumpJson(File file) throws IOException {
         JsonArray root = new JsonArray();
         for (Materials mat : collectMaterials()) {
             int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
             JsonObject matObj = new JsonObject();
-            matObj.addProperty("name", mat.mDefaultLocalName + " (" + (int) mat.mToolQuality + ")");
-            matObj.addProperty("tier", (int) mat.mToolQuality);
+            matObj.addProperty("name", mat.mDefaultLocalName + " (" + mat.mToolQuality + ")");
+            matObj.addProperty("tier", mat.mToolQuality);
             matObj.addProperty("mining_speed", mat.mToolSpeed);
             matObj.addProperty("base_durability", mat.mDurability * 100.0);
             matObj.addProperty("overflow_tier", overflowTier);
             JsonObject sizes = new JsonObject();
             for (int si = 0; si < TOOL_IDS.length; si++) {
                 ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
-                if (stack == null) {
-                    sizes.add(SIZE_NAMES[si], JsonNull.INSTANCE);
-                    continue;
-                }
-                TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
-                JsonObject sizeObj = new JsonObject();
-                sizeObj.addProperty("steam_tight_eff", c.getSteamEfficiency());
-                sizeObj.addProperty("steam_loose_eff", c.getLooseSteamEfficiency());
-                sizeObj.addProperty("steam_opt_flow_tight", c.getOptimalSteamFlow());
-                sizeObj.addProperty("steam_opt_flow_loose", c.getOptimalLooseSteamFlow());
-                sizeObj.addProperty("steam_power_tight", c.getOptimalSteamEUt());
-                sizeObj.addProperty("steam_power_loose", c.getOptimalLooseSteamEUt());
-                sizeObj.addProperty("gas_tight_eff", c.getGasEfficiency());
-                sizeObj.addProperty("gas_loose_eff", c.getLooseGasEfficiency());
-                sizeObj.addProperty("gas_opt_flow_tight", c.getOptimalGasFlow());
-                sizeObj.addProperty("gas_opt_flow_loose", c.getOptimalLooseGasFlow());
-                sizeObj.addProperty("gas_power_tight", c.getOptimalGasEUt());
-                sizeObj.addProperty("gas_power_loose", c.getOptimalLooseGasEUt());
-                sizeObj.addProperty("plasma_tight_eff", c.getPlasmaEfficiency());
-                sizeObj.addProperty("plasma_loose_eff", c.getLoosePlasmaEfficiency());
-                sizeObj.addProperty("plasma_opt_flow_tight", c.getOptimalPlasmaFlow());
-                sizeObj.addProperty("plasma_opt_flow_loose", c.getOptimalLoosePlasmaFlow());
-                sizeObj.addProperty("plasma_power_tight", c.getOptimalPlasmaEUt());
-                sizeObj.addProperty("plasma_power_loose", c.getOptimalLoosePlasmaEUt());
-                sizeObj.addProperty("dur_mult", DUR_MULTS[si]);
-                sizes.add(SIZE_NAMES[si], sizeObj);
+                sizes.add(
+                    SIZE_NAMES[si],
+                    buildSizeJson(new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack), si));
             }
             matObj.add("sizes", sizes);
             root.add(matObj);
