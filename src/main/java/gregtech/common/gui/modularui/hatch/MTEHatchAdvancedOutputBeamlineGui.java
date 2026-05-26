@@ -42,7 +42,7 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
             .valueAdapter(ByteBufAdapters.BOOL)
             .keyAdapter(new ParticleAdapter())
             .build();
-
+        mapSyncHandler.allowC2S();
         syncManager.syncValue("inputMap", mapSyncHandler);
     }
 
