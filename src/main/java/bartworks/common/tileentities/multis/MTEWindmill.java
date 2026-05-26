@@ -295,9 +295,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             || block == Blocks.log2) {
             return new float[] { 1f, 1.5f };
         }
-        if (item == Items.reeds) {
-            return new float[] { 10f, 10f };
-        }
         final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
         if (prefix == null || association.mMaterial == null
