@@ -727,8 +727,9 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
-    private static final  ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal.withInitial(() -> new Object2ObjectOpenCustomHashMap<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+
     /**
      * Compacts an inventory like this:
      * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
