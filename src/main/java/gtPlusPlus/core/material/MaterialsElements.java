@@ -616,7 +616,7 @@ public final class MaterialsElements {
             "Dragonblood",
             MaterialState.SOLID,
             TextureSet.SET_HYPOGEN,
-            new short[] { 220, 40, 20, 2 },
+            new short[] { 220, 40, 20 },
             10160,
             17850,
             96,
