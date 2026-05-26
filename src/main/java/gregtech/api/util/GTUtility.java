@@ -210,7 +210,6 @@ public class GTUtility {
      * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
     private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
-
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GTPlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
@@ -728,6 +727,9 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+
     /**
      * Compacts an inventory like this:
      * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
@@ -738,8 +740,8 @@ public class GTUtility {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
-        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
-            GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = slotsSupplier.get();
+        slots.clear();
 
         for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
@@ -818,6 +820,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        slots.clear();
 
         return didSomething.booleanValue();
     }
