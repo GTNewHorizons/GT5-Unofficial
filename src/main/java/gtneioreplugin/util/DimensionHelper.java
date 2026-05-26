@@ -249,7 +249,7 @@ public class DimensionHelper {
         throw new IllegalStateException("String: " + abbrDimName + " has no abbreviated name!");
     }
 
-    public static String resolveFullName(String internalName) {
+    public static String getDimFullName(String internalName) {
         String full = INTERNAL_TO_FULL.get(internalName);
         if (full != null) return full;
         throw new IllegalStateException("InternalName: " + internalName + " has no full name!");
@@ -282,7 +282,7 @@ public class DimensionHelper {
      * @return The list of StoneTypes for the dimension.
      */
     public static List<StoneType> getStoneTypes(String dimName) {
-        Dimension dim = REGISTRY.get(resolveFullName(dimName));
+        Dimension dim = REGISTRY.get(getDimFullName(dimName));
         return dim == null ? ImmutableList.of(StoneType.Stone) : dim.stoneTypes();
     }
 }
