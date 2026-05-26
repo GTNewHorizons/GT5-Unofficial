@@ -1,11 +1,14 @@
 package gregtech.api.recipe;
 
+import static gregtech.api.enums.OrePrefixes.circuit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,16 +25,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
 
 class RecipeMapBackendLookupTest {
 
     private static final Constructor<GTRecipe> GT_RECIPE_CONSTRUCTOR = constructorFor(GTRecipe.class);
     private static final Constructor<RecipeCategory> RECIPE_CATEGORY_CONSTRUCTOR = constructorFor(RecipeCategory.class);
+    private static final Unsafe UNSAFE = unsafe();
 
     @Test
     void trieCandidatesAreSortedBackToRegistrationOrder() {
@@ -152,6 +161,43 @@ class RecipeMapBackendLookupTest {
         assertEquals(0, backend.lookupCandidateStreamCalls);
     }
 
+    @Test
+    void runtimeItemStackKeysIncludeGtUnificationTarget() {
+        ensureMinecraftStackComparisonItem();
+        Item representativeItem = item("lookup.unified.representative");
+        Item equivalentItem = item("lookup.unified.equivalent");
+        ItemStack representative = new ItemStack(representativeItem, 1, 0);
+        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
+        String unificationName = circuit.get(Materials.LV)
+            .toString();
+        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
+            .containsKey(unificationName);
+        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
+            .put(unificationName, representative);
+
+        try {
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.resetUnificationEntries();
+
+            List<GTRecipeLookupIngredient> group = new ArrayList<>();
+            RecipeMapBackend.addRuntimeItemStackLookupIngredients(group, equivalent);
+
+            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
+        } finally {
+            if (hadPreviousTarget) {
+                GTOreDictUnificator.getName2StackMap()
+                    .put(unificationName, previousTarget);
+            } else {
+                GTOreDictUnificator.getName2StackMap()
+                    .remove(unificationName);
+            }
+            GTOreDictUnificator.removeItemData(representative);
+            GTOreDictUnificator.removeItemData(equivalent);
+            GTOreDictUnificator.resetUnificationEntries();
+        }
+    }
+
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
         GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
         recipe.mInputs = new ItemStack[] { new ItemStack(input, 1, 0) };
@@ -207,6 +253,30 @@ class RecipeMapBackendLookupTest {
 
     private static Item item(String name) {
         return new Item().setUnlocalizedName(name);
+    }
+
+    private static Unsafe unsafe() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            return (Unsafe) field.get(null);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static void ensureMinecraftStackComparisonItem() {
+        if (Items.feather != null) {
+            return;
+        }
+        try {
+            Field field = Items.class.getDeclaredField("feather");
+            Object base = UNSAFE.staticFieldBase(field);
+            long offset = UNSAFE.staticFieldOffset(field);
+            UNSAFE.putObject(base, offset, new Item());
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
     }
 
     private static final class ReversedCandidateBackend extends RecipeMapBackend {

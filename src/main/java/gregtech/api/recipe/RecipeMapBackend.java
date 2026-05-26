@@ -633,11 +633,7 @@ public class RecipeMapBackend {
             if (item == null) continue;
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
-            if (item.hasTagCompound()) {
-                addLookupIngredient(group, GTItemStackLookupIngredient.fromSpecialRecipe(item));
-            }
+            addRuntimeItemStackLookupIngredients(group, item);
             for (GTOreDictLookupIngredient oreIngredient : GTOreDictLookupIngredient.fromRuntime(item)) {
                 addLookupIngredient(group, oreIngredient);
             }
@@ -660,6 +656,21 @@ public class RecipeMapBackend {
 
         Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
+    }
+
+    static void addRuntimeItemStackLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
+        addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
+        addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
+        if (item.hasTagCompound()) {
+            addLookupIngredient(group, GTItemStackLookupIngredient.fromSpecialRecipe(item));
+        }
+
+        ItemStack unifiedItem = GTOreDictUnificator.get_nocopy(false, item);
+        if (unifiedItem != null
+            && (unifiedItem.getItem() != item.getItem() || unifiedItem.getItemDamage() != item.getItemDamage())) {
+            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(unifiedItem));
+            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(unifiedItem));
+        }
     }
 
     private static void addLookupIngredient(List<GTRecipeLookupIngredient> group, GTRecipeLookupIngredient ingredient) {
