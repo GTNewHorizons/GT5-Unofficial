@@ -44,7 +44,7 @@ import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
 
-    public static final int TEXTURE_MASK = 0xFFF;
+    public static final int MATERIAL_MASK = 0xFFF;
     public static final int MTE_BIT = 0x1000;
 
     protected final String mUnlocalizedName;
@@ -79,7 +79,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     }
 
     public ItemStack getStackForm(int amount, int meta) {
-        return new ItemStack(this, amount, meta & TEXTURE_MASK);
+        return new ItemStack(this, amount, meta & MATERIAL_MASK);
     }
 
     public static String getLocalizedNameFormat(Materials aMaterial) {
@@ -100,12 +100,12 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     }
 
     public static String getLocalizedName(int meta) {
-        return getLocalizedName(getMaterial(meta & TEXTURE_MASK));
+        return getLocalizedName(getMaterial(meta & MATERIAL_MASK));
     }
 
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
         // Obtain metadata to grab proper material identifier
-        int meta = worldIn.getBlockMetadata(x, y, z) & TEXTURE_MASK;
+        int meta = worldIn.getBlockMetadata(x, y, z) & MATERIAL_MASK;
         Materials material = getMaterial(meta);
         MTEFrame frame = new MTEFrame("GT_Frame_" + material, material);
         baseMte.setMetaTileEntity(frame);
@@ -125,7 +125,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     // Get the material that this frame box is made of
     public static Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[meta & TEXTURE_MASK];
+        return GregTechAPI.sGeneratedMaterials[meta & MATERIAL_MASK];
     }
 
     @Override
@@ -221,7 +221,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) & TEXTURE_MASK;
+        return aWorld.getBlockMetadata(aX, aY, aZ) & MATERIAL_MASK;
     }
 
     @Override
@@ -408,7 +408,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         // Find temporary TE if there was one
         final IGregTechTileEntity tempTe = mTemporaryTileEntity.get();
         ArrayList<ItemStack> drops = new ArrayList<>();
-        drops.add(getStackForm(1, metadata & TEXTURE_MASK));
+        drops.add(getStackForm(1, metadata & MATERIAL_MASK));
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
             for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
@@ -456,7 +456,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        Materials material = GregTechAPI.sGeneratedMaterials[meta & TEXTURE_MASK];
+        Materials material = GregTechAPI.sGeneratedMaterials[meta & MATERIAL_MASK];
         if (material == null) return null;
         return material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
@@ -480,7 +480,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public ITexture[][] getTextures(int meta) {
-        int texture = meta & TEXTURE_MASK;
+        int texture = meta & MATERIAL_MASK;
         return texture >= 1000 ? null : textures[texture];
     }
 

@@ -1071,6 +1071,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 oldTextureData = textureData;
                 sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
             }
+            mTexturePacketScheduled = false;
         }
     }
 
