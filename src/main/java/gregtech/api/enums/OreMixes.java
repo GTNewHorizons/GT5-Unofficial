@@ -496,7 +496,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedFire)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedWater, Materials.InfusedFire, Materials.Amber)),
+        .setLocalizedName(Materials.InfusedFire, Materials.Amber)),
 
     TerraAer(new OreMixBuilder().name("ore.mix.terraaer")
         .heightRange(5, 20)
@@ -509,7 +509,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedAir)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedEarth, Materials.InfusedAir)),
+        .setLocalizedName(Materials.InfusedAir)),
 
     PerditioOrdo(new OreMixBuilder().name("ore.mix.perditioordo")
         .heightRange(5, 20)
@@ -522,7 +522,7 @@ public enum OreMixes {
         .secondary(Materials.InfusedOrder)
         .inBetween(Materials.Amber)
         .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedEntropy, Materials.InfusedOrder)),
+        .setLocalizedName(Materials.InfusedOrder)),
 
     CopperTin(new OreMixBuilder().name("ore.mix.coppertin")
         .heightRange(80, 200)

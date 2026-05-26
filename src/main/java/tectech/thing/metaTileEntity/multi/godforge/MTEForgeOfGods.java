@@ -782,6 +782,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     }
 
     @Override
+    public boolean shouldDisplayCheckRecipeResult() {
+        return false;
+    }
+
+    @Override
     public boolean supportsMaintenanceIssueHoverable() {
         return false;
     }
