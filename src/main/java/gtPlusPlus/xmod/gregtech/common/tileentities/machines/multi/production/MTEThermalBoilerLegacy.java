@@ -148,10 +148,11 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
                 GTRecipe adjustedRecipe = recipe.copy();
 
                 // Hack the recipe logic to not consume water, so that we can explode.
-                for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
+                for (int i = 0; i < adjustedRecipe.mFluidInputs.length; i++) {
+                    FluidStack inputFluid = adjustedRecipe.mFluidInputs[i];
                     if (inputFluid != null
                         && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
-                        inputFluid.amount = 0;
+                        adjustedRecipe.mFluidInputs[i] = null;
                     }
                 }
 
@@ -288,7 +289,7 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfoMin("Thermal Containment Casings", 10, false)
+            .addCasingInfoMin("Thermal Containment Casing", 10, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

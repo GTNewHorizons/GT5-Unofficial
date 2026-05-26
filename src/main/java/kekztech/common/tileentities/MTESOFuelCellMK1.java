@@ -120,10 +120,10 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
             .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
             .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Fuel, any casing", 1)
-            .addInputHatch("Oxygen, any casing", 1)
-            .addOutputHatch("Steam, any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Fuel, any Casing", 1)
+            .addInputHatch("Oxygen, any Casing", 1)
+            .addOutputHatch("Steam, any Casing", 1)
             .toolTipFinisher();
         return tt;
     }

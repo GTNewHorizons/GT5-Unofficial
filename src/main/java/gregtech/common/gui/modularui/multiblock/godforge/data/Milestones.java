@@ -90,7 +90,7 @@ public enum Milestones {
     private final String titleLangKey;
     private final String progressLangKey;
 
-    private final ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> totalSyncer;
+    private final ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number, ?>> totalSyncer;
     private final ForgeOfGodsSyncValue<IntSyncValue> levelSyncer;
     private final ForgeOfGodsSyncValue<FloatSyncValue> progressSyncer;
     private final ForgeOfGodsSyncValue<FloatSyncValue> progressInvertedSyncer;
@@ -98,7 +98,7 @@ public enum Milestones {
     Milestones(UITexture mainBackground, int mainWidth, int mainHeight, UITexture symbolBackground, int symbolWidth,
         int symbolHeight, UITexture progressBarMainOverlay, UITexture progressBarInvertedOverlay, Alignment position,
         String titleLangKey, String progressLangKey,
-        ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> totalSyncer,
+        ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number, ?>> totalSyncer,
         ForgeOfGodsSyncValue<IntSyncValue> levelSyncer, ForgeOfGodsSyncValue<FloatSyncValue> progressSyncer,
         ForgeOfGodsSyncValue<FloatSyncValue> progressInvertedSyncer) {
         this.mainBackground = mainBackground;
@@ -166,7 +166,7 @@ public enum Milestones {
         return progressLangKey;
     }
 
-    public ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number>> getTotalSyncer() {
+    public ForgeOfGodsSyncValue<? extends ValueSyncHandler<? extends Number, ?>> getTotalSyncer() {
         return totalSyncer;
     }
 

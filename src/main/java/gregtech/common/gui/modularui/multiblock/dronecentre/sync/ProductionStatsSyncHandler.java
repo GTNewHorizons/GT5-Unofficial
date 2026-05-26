@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 
 import gregtech.common.tileentities.machines.multi.drone.production.StatsBundle;
 
-public class ProductionStatsSyncHandler extends GenericSyncValue<StatsBundle> {
+public class ProductionStatsSyncHandler extends GenericSyncValue<StatsBundle, ProductionStatsSyncHandler> {
 
     private long tick = 0;
 

@@ -26,7 +26,8 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel);
+        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel)
+            .allowC2S();
         syncManager.syncValue("maximumParallels", parallelSyncer);
     }
 

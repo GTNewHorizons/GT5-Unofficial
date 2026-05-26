@@ -245,9 +245,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("Macerates 16 items at a time")
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
+            .addCasingInfoMin("Hardened Clay Block", 40, false)
+            .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
+            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;

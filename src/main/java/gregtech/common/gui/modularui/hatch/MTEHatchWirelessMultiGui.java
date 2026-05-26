@@ -28,6 +28,6 @@ public class MTEHatchWirelessMultiGui extends MTEHatchBaseGui<MTEHatchWirelessMu
                     baseMetaTileEntity.getXCoord(),
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord());
-            }), machine.maxAmperes));
+            }).allowC2S(), machine.maxAmperes));
     }
 }

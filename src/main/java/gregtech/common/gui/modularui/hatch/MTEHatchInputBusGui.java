@@ -28,12 +28,11 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue stackSync = new BooleanSyncValue(
-            () -> !machine.disableSort,
-            val -> machine.disableSort = !val);
+        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, val -> machine.disableSort = !val)
+            .allowC2S();
         BooleanSyncValue insertionSync = new BooleanSyncValue(
             () -> !machine.disableLimited,
-            val -> machine.disableLimited = !val);
+            val -> machine.disableLimited = !val).allowC2S();
         return super.createBottomLeftCornerFlow(panel, syncManager)
             .child(
                 CommonButtons.createToggleButton(

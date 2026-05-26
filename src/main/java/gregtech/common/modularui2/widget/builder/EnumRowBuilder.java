@@ -21,7 +21,7 @@ import gregtech.common.modularui2.widget.SelectButton;
  */
 public class EnumRowBuilder<E extends Enum<E>> {
 
-    private EnumSyncValue<E> syncValue;
+    private EnumSyncValue<E, ?> syncValue;
     private @NotNull final Class<E> enumClass;
     private IDrawable[] overlay;
     private IKey[] tooltip;
@@ -34,7 +34,7 @@ public class EnumRowBuilder<E extends Enum<E>> {
      * This method wraps supplied value with {@link LinkedBoolValue} to be bound to each button, so you still need to
      * manually register it to {@link com.cleanroommc.modularui.value.sync.PanelSyncManager}.
      */
-    public EnumRowBuilder<E> value(EnumSyncValue<E> syncValue) {
+    public EnumRowBuilder<E> value(EnumSyncValue<E, ?> syncValue) {
         this.syncValue = syncValue;
         return this;
     }

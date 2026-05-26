@@ -69,7 +69,7 @@ public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustria
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 14, false)
+            .addCasingInfoMin("Inconel Reinforced Casing", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)

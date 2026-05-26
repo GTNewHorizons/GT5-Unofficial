@@ -75,7 +75,7 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
             .beginStructureBlock(5, 3, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Sieve Grate", 18, false)
-            .addCasingInfoMin("Sieve Casings", 35, false)
+            .addCasingInfoMin("Sieve Casing", 35, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

@@ -128,7 +128,8 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
                 i -> syncManager.syncValue(
                     "targetSlot",
                     i,
-                    new IntSyncValue(() -> machine.getTargetSlot(i), val -> machine.setTargetSlots(val, i))));
+                    new IntSyncValue(() -> machine.getTargetSlot(i), val -> machine.setTargetSlots(val, i))
+                        .allowC2S()));
     }
 
     @Override

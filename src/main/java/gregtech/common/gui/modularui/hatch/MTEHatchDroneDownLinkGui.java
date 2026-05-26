@@ -87,7 +87,8 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     private IWidget createDynamicTextWidget(PanelSyncManager syncManager) {
 
         DynamicSyncHandler customNameHandler = new DynamicSyncHandler()
-            .widgetProvider((syncManager1, packet) -> createTextArea(syncManager1));
+            .widgetProvider((syncManager1, packet) -> createTextArea(syncManager1))
+            .allowC2S();
 
         droneConnectionListSyncHandler.setChangeListener(() -> customNameHandler.notifyUpdate(packet -> {}));
         // We need to trigger initial build manually
@@ -119,7 +120,7 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                             .map(DroneConnection::getCustomName)
                             .orElse(""),
                         var -> machine.findConnection(conn.uuid)
-                            .ifPresent(c -> c.setCustomName(var))));
+                            .ifPresent(c -> c.setCustomName(var))).allowC2S());
                 column.child(
                     Flow.row()
                         .coverChildren()
@@ -138,6 +139,6 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     public void registerSyncValues(PanelSyncManager syncManager) {
         droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(machine::getConnections);
         syncManager.syncValue("droneConnections", droneConnectionListSyncHandler);
-        syncManager.syncValue("setkey", new StringSyncValue(machine::getKey, machine::setKey));
+        syncManager.syncValue("setkey", new StringSyncValue(machine::getKey, machine::setKey).allowC2S());
     }
 }
