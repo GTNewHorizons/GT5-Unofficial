@@ -41,6 +41,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.6", MaterialCasings.INSTANCE);
         TAE.registerTexture(3, 4, TextureFactory.of(this, 0));
         TAE.registerTexture(3, 5, TextureFactory.of(this, 1));
+        TAE.registerTexture(3, 6, TextureFactory.of(this, 2));
         GregtechItemList.Casing_Fusion_External2.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Fusion_Internal2.set(new ItemStack(this, 1, 1));
     }
@@ -51,6 +52,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
             return switch (aMeta) {
                 case 0 -> TexturesGtBlock.TEXTURE_CASING_FUSION_4.getIcon();
                 case 1 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_4.getIcon();
+                case 2 -> TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY.getIcon();
                 default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }

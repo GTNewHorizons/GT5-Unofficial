@@ -2562,7 +2562,6 @@ GT5U.gui.text.structure_error.cleanroom_size=Unable to identify ceiling size
 GT5U.gui.text.structure_error.cleanroom_ceiling=Ceiling is not complete
 GT5U.gui.text.structure_error.cleanroom_plascrete=Not enough plascrete blocks
 GT5U.gui.text.structure_error.defc_fusion_machine_casing=Tiers 3-5 require Mk-II fusion machine casings
-GT5U.gui.text.structure_error.exo_foundry_too_many_hatch=Too many hatches
 GT5U.gui.text.structure_error.exo_foundry_hypercooler_hatch=Missing coolant hatch for hypercooler
 GT5U.gui.text.structure_error.laser_need_uev=Need UEV-tiered laser for Multi-Amp support
 GT5U.gui.text.structure_error.lesu_error=Unable to identify LESU structure
@@ -8087,12 +8086,13 @@ gt.blockcasings13.11.name=Charged Matter Sensor Casing
 gt.blockcasings13.12.name=Advanced Total Lepton Assimilation Snare Casing
 gt.blockcasings13.13.name=Absolute Lattice Integrated Chromodynamic Encapsulator Casing
 gt.blockcasings13.14.name=Localized Horizon Curvature Binder Casing
-
-gt.blockcasings14.3.name=Hearth Casing
-
 gt.blockcasings13.15.name=Naquadah Reactor Casing
 
+gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
+gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
+
+
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing
