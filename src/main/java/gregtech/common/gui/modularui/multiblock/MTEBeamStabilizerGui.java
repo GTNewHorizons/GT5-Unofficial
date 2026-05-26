@@ -32,7 +32,8 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "playerTargetBeamRate",
-            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i).allowC2S());
+            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i)
+                .allowC2S());
         syncManager.syncValue("inputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
     }
 
