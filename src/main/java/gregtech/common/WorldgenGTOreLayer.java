@@ -5,7 +5,10 @@ import static gregtech.api.enums.GTValues.oreveinPlacerOres;
 import static gregtech.api.enums.GTValues.oreveinPlacerOresMultiplier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
@@ -25,12 +28,16 @@ import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
+import it.unimi.dsi.fastutil.shorts.ShortShortImmutablePair;
+import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
 public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     public static final ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
-    public final short mMinY;
-    public final short mMaxY;
+    // Pair of (minY, maxY) this vein generates at
+    public final ShortShortPair veinHeight;
+    // Map for dim -> (minY, maxY) height overrides
+    public Map<String, ShortShortPair> dimVeinHeights = new HashMap<>();
     public final short mWeight;
     public final short mDensity;
     public final short mSize;
@@ -46,13 +53,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     public WorldgenGTOreLayer(OreMixBuilder mix) {
         super(mix.oreMixName, sList, mix.enabledByDefault);
         this.mAllowedDimensions = new HashSet<>(mix.dimsEnabled);
-        this.mMinY = ((short) mix.minY);
-        short mMaxY = ((short) mix.maxY);
-        if (mMaxY < (this.mMinY + 9)) {
-            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
-            mMaxY = (short) (this.mMinY + 9);
+        this.veinHeight = validateHeights((short) mix.minY, (short) mix.maxY);
+        for (Entry<String, ShortShortPair> entry : mix.dimVeinHeights.entrySet()) {
+            ShortShortPair pair = entry.getValue();
+            dimVeinHeights.put(entry.getKey(), validateHeights(pair.leftShort(), pair.rightShort()));
         }
-        this.mMaxY = mMaxY;
+        this.dimVeinHeights = mix.dimVeinHeights;
         this.mWeight = (short) mix.weight;
         this.mDensity = (short) mix.density;
         this.mSize = (short) Math.max(1, mix.size);
@@ -64,14 +70,30 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         this.mRestrictBiome = "None";
     }
 
-    @Override
-    public int getMinY() {
-        return mMinY;
+    private ShortShortPair validateHeights(short min, short max) {
+        if (max < (min + 9)) {
+            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
+            max = (short) (min + 9);
+        }
+        return ShortShortImmutablePair.of(min, max);
     }
 
     @Override
-    public int getMaxY() {
-        return mMaxY;
+    public int getMinY(String dim) {
+        ShortShortPair pair = dimVeinHeights.get(dim);
+        if (pair != null) {
+            return pair.leftShort();
+        }
+        return veinHeight.leftShort();
+    }
+
+    @Override
+    public int getMaxY(String dim) {
+        ShortShortPair pair = dimVeinHeights.get(dim);
+        if (pair != null) {
+            return pair.rightShort();
+        }
+        return veinHeight.rightShort();
     }
 
     @Override
@@ -143,8 +165,8 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             // Return a special empty orevein
             return NO_OVERLAP_AIR_BLOCK;
         }
-
-        if (!mAllowedDimensions.contains(DimensionDef.getDimensionName(world))) {
+        String dimName = DimensionDef.getDimensionName(world);
+        if (!mAllowedDimensions.contains(dimName)) {
             // The following code can be used for debugging, but it spams in logs
             // if (debugOrevein) { GTLog.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
@@ -156,7 +178,11 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
         int[] placeCount = new int[4];
 
-        int veinMinY = mMinY + rng.nextInt(mMaxY - mMinY - 5);
+        ShortShortPair heights = dimVeinHeights.getOrDefault(dimName, veinHeight);
+        short dimMinY = heights.leftShort();
+        short dimMaxY = heights.rightShort();
+
+        int veinMinY = dimMinY + rng.nextInt(dimMaxY - dimMinY - 5);
         // Determine West/East ends of orevein
         int veinWestX = seedX - rng.nextInt(mSize); // West side
         int veinEastX = seedX + 16 + rng.nextInt(mSize);
