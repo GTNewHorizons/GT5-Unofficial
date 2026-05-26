@@ -136,9 +136,8 @@ public final class GTRecipeLookupBuilder {
             int oreDictId = oreDictIdFor(recipeWithAlt, i);
             if (oreDictId >= 0) {
                 group.add(new GTOreDictLookupIngredient(oreDictId));
-            } else {
-                addItemAlternatives(recipe, recipeWithAlt, i, group);
             }
+            addItemAlternatives(recipe, recipeWithAlt, i, group);
             if (!group.isEmpty()) {
                 ingredients.add(group);
             }

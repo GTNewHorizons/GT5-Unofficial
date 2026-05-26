@@ -965,9 +965,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * OreDict ID for this slot, or -1 if not an oredict slot. When >= 0, matching checks
-         * {@link OreDictionary#getOreIDs(ItemStack)} dynamically rather than the static alternatives array.
+         * {@link OreDictionary#getOreIDs(ItemStack)} dynamically before falling back to static alternatives.
          */
         public final int oreDictId;
+        private final ItemStack[] alternativeStacks;
 
         public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
             Objects.requireNonNull(stack);
@@ -976,6 +977,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             // This will be overwritten or accumulated in getCachedCombinedItemInputs.
             this.chanceWeightedAmount = stack.stackSize;
             this.oreDictId = -1;
+            this.alternativeStacks = null;
 
             final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
             this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
@@ -994,11 +996,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * oredict inputs as it dynamically matches items registered after recipe creation.
          */
         public RecipeItemInput(int oreDictId, ItemStack representative, long amount, boolean nbtSensitive) {
+            this(oreDictId, representative, amount, nbtSensitive, null);
+        }
+
+        public RecipeItemInput(int oreDictId, ItemStack representative, long amount, boolean nbtSensitive,
+            ItemStack[] alternativeStacks) {
             this.oreDictId = oreDictId;
             this.unifiedStack = representative != null ? GTOreDictUnificator.get_nocopy(true, representative) : null;
             this.inputAmount = amount;
             this.chanceWeightedAmount = amount;
             this.usesNbtMatching = nbtSensitive;
+            this.alternativeStacks = alternativeStacks == null || alternativeStacks.length == 0 ? null
+                : alternativeStacks;
         }
 
         /**
@@ -1007,8 +1016,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public boolean matchesType(final ItemStack other) {
             if (oreDictId >= 0) {
-                for (int id : OreDictionary.getOreIDs(other)) if (id == oreDictId) return true;
-                return false;
+                return hasOreDictId(other, oreDictId) || matchesAlternativeStack(other);
             }
             return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
         }
@@ -1019,14 +1027,31 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
             if (oreDictId >= 0) {
-                for (int id : OreDictionary.getOreIDs(other)) if (id == oreDictId) return true;
-                return false;
+                return hasOreDictId(other, oreDictId) || matchesAlternativeStack(other);
             }
             if (usesNbtMatching) {
                 return GTUtility.areStacksEqual(this.unifiedStack, other, false);
             } else {
                 return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
             }
+        }
+
+        private boolean matchesAlternativeStack(final ItemStack other) {
+            if (alternativeStacks == null) return false;
+            for (ItemStack alternative : alternativeStacks) {
+                if (GTUtility.areStacksEqual(alternative, other, !usesNbtMatching)) return true;
+            }
+            return false;
+        }
+
+        private static boolean hasOreDictId(final ItemStack stack, final int oreDictId) {
+            if (stack == null) return false;
+            try {
+                for (int id : OreDictionary.getOreIDs(stack)) if (id == oreDictId) return true;
+            } catch (ExceptionInInitializerError | NoClassDefFoundError ignored) {
+                return false;
+            }
+            return false;
         }
     }
 
@@ -1503,12 +1528,15 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 final int slotOreDictId = (mOreDictIds != null && i < mOreDictIds.length) ? mOreDictIds[i] : -1;
                 final ItemStack representative = mInputs[i];
+                final ItemStack[] alternatives = (mOreDictAlt != null && i < mOreDictAlt.length) ? mOreDictAlt[i]
+                    : null;
 
                 RecipeItemInput existing = null;
                 for (int j = 0; j < newCache.size(); j++) {
-                    if (newCache.get(j)
-                        .matchesType(representative)) {
-                        existing = newCache.get(j);
+                    RecipeItemInput cached = newCache.get(j);
+                    if ((slotOreDictId >= 0 && cached.oreDictId == slotOreDictId)
+                        || cached.matchesType(representative)) {
+                        existing = cached;
                         break;
                     }
                 }
@@ -1518,7 +1546,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     existing.chanceWeightedAmount += weighted;
                 } else {
                     RecipeItemInput ri = (slotOreDictId >= 0)
-                        ? new RecipeItemInput(slotOreDictId, mInputs[i], amount, isNBTSensitive)
+                        ? new RecipeItemInput(slotOreDictId, mInputs[i], amount, isNBTSensitive, alternatives)
                         : new RecipeItemInput(mInputs[i], isNBTSensitive);
                     ri.chanceWeightedAmount = weighted;
                     newCache.add(ri);

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.util.GTRecipe;
+import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
 
 class GTRecipeLookupBuilderTest {
@@ -29,6 +31,7 @@ class GTRecipeLookupBuilderTest {
         GTRecipe.GTRecipe_WithAlt.class);
     private static final Constructor<FluidStack> FLUID_STACK_CONSTRUCTOR = constructorFor(FluidStack.class);
     private static final Field FLUID_STACK_DELEGATE = field(FluidStack.class, "fluidDelegate");
+    private static final Unsafe UNSAFE = unsafe();
 
     @Test
     void buildsItemAndFluidLookupIgnoringStackSizesAndFluidAmounts() {
@@ -50,20 +53,34 @@ class GTRecipeLookupBuilderTest {
     }
 
     @Test
-    void prefersOreDictIdsOverAltStacksForAltRecipes() {
+    void indexesOreDictIdsAndAltStacksForAltRecipes() {
         Item representative = item("builder.item.ore.representative");
-        Item ignoredAlt = item("builder.item.ore.ignored");
+        Item alternative = item("builder.item.ore.alternative");
         GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(new ItemStack[] { new ItemStack(representative, 1, 0) }, null);
         recipe.mOreDictIds = new int[] { 7001 };
-        recipe.mOreDictAlt = new ItemStack[][] { { new ItemStack(ignoredAlt, 1, 0) } };
+        recipe.mOreDictAlt = new ItemStack[][] { { new ItemStack(alternative, 1, 0) } };
 
         GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
             .build();
 
         assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTOreDictLookupIngredient(7001))))));
-        assertFalse(
-            lookup.iterator(groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(ignoredAlt, 1, 0)))))
-                .hasNext());
+        assertSame(
+            recipe,
+            onlyResult(
+                lookup.iterator(
+                    groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(alternative, 1, 0)))))));
+    }
+
+    @Test
+    void oreDictAltRecipeInputMatchesAlternativeStackWhenOreIdDoesNot() {
+        ensureMinecraftStackComparisonItem();
+        Item representative = item("builder.item.ore.match.representative");
+        Item alternative = item("builder.item.ore.match.alternative");
+        GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(new ItemStack[] { new ItemStack(representative, 1, 0) }, null);
+        recipe.mOreDictIds = new int[] { 7002 };
+        recipe.mOreDictAlt = new ItemStack[][] { { new ItemStack(alternative, 1, 0) } };
+
+        assertTrue(recipe.isRecipeInputEqual(false, true, null, new ItemStack(alternative, 1, 0)));
     }
 
     @Test
@@ -256,6 +273,30 @@ class GTRecipeLookupBuilderTest {
             Field field = type.getDeclaredField(name);
             field.setAccessible(true);
             return field;
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static Unsafe unsafe() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            return (Unsafe) field.get(null);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static void ensureMinecraftStackComparisonItem() {
+        if (Items.feather != null) {
+            return;
+        }
+        try {
+            Field field = Items.class.getDeclaredField("feather");
+            Object base = UNSAFE.staticFieldBase(field);
+            long offset = UNSAFE.staticFieldOffset(field);
+            UNSAFE.putObject(base, offset, new Item());
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
