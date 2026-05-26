@@ -81,14 +81,16 @@ public class DroneConnectionListPanel extends ModularPanel {
                 return new EmptyWidget();
             }
             return createListArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
         dynamicWidget.syncHandler(droneListHandler);
         groupHandler = new DynamicSyncHandler().widgetProvider((pSyncManager, packet) -> {
             if (packet == null) {
                 return new EmptyWidget();
             }
             return createGroupTab(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         syncManager.findSyncHandler("sortMode", EnumSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
@@ -221,7 +223,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                                 () -> new StringSyncValue(
                                     () -> groupSyncValue.getValue()
                                         .get(finalI),
-                                    var -> centre.group.set(finalI, var)))));
+                                    var -> centre.group.set(finalI, var)).allowC2S())));
                 continue;
             }
             column.child(
@@ -314,7 +316,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .stream()
                     .filter(c -> c.uuid.equals(conn.uuid))
                     .findFirst()
-                    .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))));
+                    .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))).allowC2S());
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
             .disableThemeBackground(true)
@@ -343,7 +345,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .ifPresent(con -> {
                         con.setSelect(bool);
                         droneConnectionListSyncHandler.notifyUpdate();
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).size(16)
             .value(selectSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
@@ -378,7 +380,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                                     .setShutDownReason(ShutDownReasonRegistry.NONE);
                             } else mte.stopMachine(ShutDownReasonRegistry.NONE);
                         }
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).value(powerSwitchSyncer)
             .size(16)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
@@ -404,7 +406,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .stream()
                     .filter(connection -> connection.uuid.equals(conn.uuid))
                     .findFirst()
-                    .ifPresent(c -> c.setCustomName(var))));
+                    .ifPresent(c -> c.setCustomName(var))).allowC2S());
         return new TextFieldWidget().expanded()
             .value(nameSyncValue);
     }

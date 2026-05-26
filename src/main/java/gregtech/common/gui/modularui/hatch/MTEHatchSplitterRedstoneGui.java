@@ -83,7 +83,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
         super.registerSyncValues(syncManager);
 
         syncManager.syncValue("redstone", new IntSyncValue(machine::getRedstoneInput));
-        syncManager.syncValue("channel", new IntSyncValue(machine::getChannel, machine::setChannel));
+        syncManager.syncValue("channel", new IntSyncValue(machine::getChannel, machine::setChannel).allowC2S());
     }
 
     @Override

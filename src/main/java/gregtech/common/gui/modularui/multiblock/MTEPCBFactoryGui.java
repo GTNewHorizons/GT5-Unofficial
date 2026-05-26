@@ -20,7 +20,7 @@ public class MTEPCBFactoryGui extends MTEMultiBlockBaseGui<MTEPCBFactory> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue traceSizeSyncer = new IntSyncValue(multiblock::getTraceSize, multiblock::setTraceSize);
+        IntSyncValue traceSizeSyncer = new IntSyncValue(multiblock::getTraceSize, multiblock::setTraceSize).allowC2S();
         syncManager.syncValue("traceSize", traceSizeSyncer);
     }
 

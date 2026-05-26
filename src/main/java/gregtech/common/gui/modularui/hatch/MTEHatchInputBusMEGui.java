@@ -63,7 +63,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         BooleanSyncValue isAutoPullSyncer = new BooleanSyncValue(
             machine::isAutoPullItemList,
-            machine::setAutoPullItemList);
+            machine::setAutoPullItemList).allowC2S();
 
         IItemHandlerModifiable configItemHandler = new IItemHandlerModifiable() {
 
@@ -210,15 +210,14 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
     }
 
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
-        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(
-            machine::doFastRecipeCheck,
-            machine::setRecipeCheck);
+        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
+            .allowC2S();
         IntSyncValue minAutoPullStackSizeSyncer = new IntSyncValue(
             machine::getMinAutoPullStackSize,
-            machine::setMinAutoPullStackSize);
+            machine::setMinAutoPullStackSize).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
             machine::getAutoPullRefreshTime,
-            machine::setAutoPullRefreshTime);
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
             .coverChildren()

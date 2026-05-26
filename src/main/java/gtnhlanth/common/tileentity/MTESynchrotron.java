@@ -753,7 +753,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (!checkPiece(STRUCTURE_PIECE_ENTRANCE, 16, 3, 1, errors)) return;
         if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0, errors)) return;
         if (this.antennaeTier <= 0) {
-            errors.add(StructureErrors.of("GT5U.gui.text.synchrotron_antenna"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.synchrotron_antenna"));
         }
         if (this.mEnergyHatches.size() != 4 && this.mExoticEnergyHatches.size() != 4) {
             errors.add(

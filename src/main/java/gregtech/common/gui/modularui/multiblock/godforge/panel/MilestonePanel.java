@@ -69,7 +69,7 @@ public class MilestonePanel {
     private static ParentWidget<?> createMilestone(Milestones milestone, SyncHypervisor hypervisor) {
         IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
 
-        EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
+        EnumSyncValue<Milestones, ?> milestoneSyncer = SyncValues.MILESTONE_CLICKED
             .lookupFrom(Panels.MILESTONE, hypervisor);
         FloatSyncValue progressSyncer = milestone.getProgressSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);

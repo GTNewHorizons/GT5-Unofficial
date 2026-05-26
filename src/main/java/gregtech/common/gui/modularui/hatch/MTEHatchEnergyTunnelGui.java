@@ -28,6 +28,6 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
                     baseMetaTileEntity.getXCoord(),
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord());
-            }), machine.maxAmperes));
+            }).allowC2S(), machine.maxAmperes));
     }
 }
