@@ -11,6 +11,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.StackInfo;
@@ -25,6 +26,8 @@ import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreLayerHelper.NormalOreDimensionWrapper;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 import gtneioreplugin.util.OreVeinLayer;
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 
 public class PluginGT5VeinStat extends PluginGT5OreBase {
 
@@ -168,6 +171,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
         public final PositionedStack positionedStackBetween;
         public final PositionedStack positionedStackSporadic;
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
+        private final List<IntIntPair> asteriskPos;
 
         private final List<String> title;
 
@@ -199,6 +203,14 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                 stackPosY + VEIN_LAYER_HEIGHT * 3);
 
             createDimensionDisplayItems(dimAbbr, DIM_HEADER_Y_POS, dimensionDisplayItems);
+
+            asteriskPos = new ArrayList<>(oreVein.dimWorldGenHeightRange.size());
+            for (int i = 0; i < dimAbbr.length; i++) {
+                if (oreVein.dimWorldGenHeightRange.containsKey(dimAbbr[i])) {
+                    PositionedStack stack = dimensionDisplayItems.get(i);
+                    asteriskPos.add(IntIntImmutablePair.of(stack.relx + 10, stack.rely));
+                }
+            }
 
             totalHeight = DIM_HEADER_Y_POS + 10
                 + MathHelper.ceiling_float_int(dimAbbr.length / 9f) * 18
@@ -240,6 +252,12 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                             String percent = format.format(wrapper.oreVeinToProbabilityInDimension.get(oreVein) * 100);
                             currentTip.add(I18n.format("gtnop.gui.nei.orechunkchance.value", percent));
                         }
+                        if (oreVein.dimWorldGenHeightRange.containsKey(dimAbbr)) {
+                            currentTip.add(
+                                I18n.format(
+                                    "gtnop.gui.nei.oredimheight.value",
+                                    oreVein.dimWorldGenHeightRange.get(dimAbbr)));
+                        }
                     }
                 }
             }
@@ -250,6 +268,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             drawVeinLayerNames();
             drawVeinInfo();
             drawDimHeader(DIM_HEADER_Y_POS);
+            drawAsterisks();
         }
 
         private void drawVeinLayerNames() {
@@ -277,6 +296,12 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
                 Short.toString(oreVein.randomWeight),
                 100,
                 VEIN_INFO_Y_POS);
+        }
+
+        private void drawAsterisks() {
+            for (IntIntPair asteriskPos : asteriskPos) {
+                GuiDraw.drawString("*", asteriskPos.leftInt(), asteriskPos.rightInt(), 0xff_ff_ff_ff);
+            }
         }
     }
 }
