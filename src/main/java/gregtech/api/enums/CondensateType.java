@@ -1,10 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
-import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -21,7 +16,6 @@ import gregtech.common.items.GTItemCell;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// Each of these entries maps to a type of condensate used by the BEC multis. Condensate itself is just a fluid, but
@@ -29,9 +23,9 @@ import tectech.recipe.TecTechRecipeMaps;
 /// contaminate the material system with a bunch of BEC-specific code, especially since the logic for this class is so
 /// minimal.
 /// Note that 'entangled' condensate should never be something you can manufacture outside the BEC network system. It's
-/// meant to be a special fluid that you cannot get normally. Prepared condensate is manufactured by a QFT in practice,
-/// but it can be produced by anything if the mechanics warrant it. The entangled condensate cell isn't obtainable, it's
-/// just used to tell the player that the fluid exists. Prepared condensate is a real fluid that can be used in any way.
+/// meant to be a special fluid that you cannot get normally. It's generated in the condensate generator directly from
+/// the source material's molten fluid (or its standard fluid form, for materials that have no molten). The entangled
+/// condensate cell isn't obtainable, it's just used to tell the player that the fluid exists.
 public enum CondensateType {
 
     // spotless:off
@@ -39,118 +33,96 @@ public enum CondensateType {
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
         144,
-        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144)),
-        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
+        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144)).duration(20).eut(TierEU.RECIPE_UEV)),
     CelestialTungsten(
         "celestialtungsten",
         () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
         144,
-        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144)),
-        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
+        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144)).duration(20).eut(TierEU.RECIPE_UEV)),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
         144,
-        prepare -> prepare.fluidInputs(Materials.Infinity.getMolten(144)),
-        generate -> generate.duration(20).eut(TierEU.RECIPE_UEV)),
+        recipe -> recipe.fluidInputs(Materials.Infinity.getMolten(144)).duration(20).eut(TierEU.RECIPE_UEV)),
     Hypogen(
         "hypogen",
         () -> MaterialsElements.STANDALONE.HYPOGEN,
         144,
-        prepare -> prepare.fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144)),
-        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144)).duration(40).eut(TierEU.RECIPE_UIV)),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,
         144,
-        prepare -> prepare.fluidInputs(Materials.TranscendentMetal.getMolten(144)),
-        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+        recipe -> recipe.fluidInputs(Materials.TranscendentMetal.getMolten(144)).duration(40).eut(TierEU.RECIPE_UIV)),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
         () -> Materials.DimensionallyShiftedSuperfluid,
         144,
-        prepare -> prepare.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(144)),
-        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+        recipe -> recipe.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(144)).duration(40).eut(TierEU.RECIPE_UIV)),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        prepare -> prepare.fluidInputs(Materials.SpaceTime.getMolten(144)),
-        generate -> generate.duration(40).eut(TierEU.RECIPE_UIV)),
+        recipe -> recipe.fluidInputs(Materials.SpaceTime.getMolten(144)).duration(40).eut(TierEU.RECIPE_UIV)),
     Time(
         "time",
         () -> Materials.Time,
         144,
-        prepare -> prepare.fluidInputs(Materials.Time.getMolten(144)),
-        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+        recipe -> recipe.fluidInputs(Materials.Time.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     Space(
         "space",
         () -> Materials.Space,
         144,
-        prepare -> prepare.fluidInputs(Materials.Space.getMolten(144)),
-        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+        recipe -> recipe.fluidInputs(Materials.Space.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     Hexanite(
         "hexanite",
         () -> Materials.Hexanite,
         144,
-        prepare -> prepare.fluidInputs(Materials.Hexanite.getMolten(144)),
-        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+        recipe -> recipe.fluidInputs(Materials.Hexanite.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         144,
-        prepare -> prepare.fluidInputs(Materials.BoundlessCosmicSolder.getFluid(144)),
-        generate -> generate.duration(60).eut(TierEU.RECIPE_UMV)),
+        recipe -> recipe.fluidInputs(Materials.BoundlessCosmicSolder.getFluid(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,
         144,
-        prepare -> prepare.fluidInputs(Materials.MHDCSM.getMolten(144)),
-        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+        recipe -> recipe.fluidInputs(Materials.MHDCSM.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
     MagMatter(
         "magmatter",
         () -> Materials.MagMatter,
         144,
-        prepare -> prepare.fluidInputs(Materials.MagMatter.getMolten(144)),
-        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+        recipe -> recipe.fluidInputs(Materials.MagMatter.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
     Universium(
         "universium",
         () -> Materials.Universium,
         144,
-        prepare -> prepare.fluidInputs(Materials.Universium.getMolten(144)),
-        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+        recipe -> recipe.fluidInputs(Materials.Universium.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        prepare -> prepare.fluidInputs(Materials.Eternity.getMolten(144)),
-        generate -> generate.duration(80).eut(TierEU.RECIPE_UXV)),
+        recipe -> recipe.fluidInputs(Materials.Eternity.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
     // spotless:on
     ;
 
     private final String id;
     private final Lazy<IOreMaterial> material;
     private final int unit;
-    private final Consumer<GTRecipeBuilder> preparation;
-    private final Consumer<GTRecipeBuilder> entanglement;
-    private Fluid preparedFluid, entangledFluid;
-    private GTItemCell preparedCell, entangledCell;
+    private final Consumer<GTRecipeBuilder> recipe;
+    private Fluid entangledFluid;
+    private GTItemCell entangledCell;
 
-    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Consumer<GTRecipeBuilder> preparation,
-        Consumer<GTRecipeBuilder> entanglement) {
+    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Consumer<GTRecipeBuilder> recipe) {
         this.id = id;
         this.material = new Lazy<>(mat);
         this.unit = unit;
-        this.preparation = preparation;
-        this.entanglement = entanglement;
+        this.recipe = recipe;
     }
 
     public IOreMaterial getMaterial() {
         return material.get();
-    }
-
-    public FluidStack getPrepared(int amount) {
-        return new FluidStack(preparedFluid, amount);
     }
 
     public FluidStack getEntangled(int amount) {
@@ -163,15 +135,6 @@ public enum CondensateType {
 
     public static void registerFluids() {
         for (CondensateType type : values()) {
-            type.preparedFluid = GTFluidFactory.builder("prepared_" + type.id)
-                .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_prepared"), null)
-                .withColorRGBA(
-                    type.getMaterial()
-                        .getRGBA())
-                .withStateAndTemperature(FluidState.GAS, 1)
-                .buildAndRegister()
-                .asFluid();
-
             type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
                 .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"), null)
                 .withColorRGBA(
@@ -181,29 +144,16 @@ public enum CondensateType {
                 .buildAndRegister()
                 .asFluid();
 
-            type.preparedCell = new GTItemCell("prepared_" + type.id, "prepared_condensate", type.preparedFluid);
             type.entangledCell = new GTItemCell("entangled_" + type.id, "entangled_condensate", type.entangledFluid);
         }
     }
 
     public static void registerRecipes() {
         for (CondensateType type : values()) {
-            GTRecipeBuilder prepare = GTValues.RA.stdBuilder()
-                .fluidOutputs(new FluidStack(type.preparedFluid, type.unit))
-                .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
-                .metadata(QFT_FOCUS_TIER, 2)
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_UIV);
-
-            type.preparation.accept(prepare);
-
-            prepare.addTo(quantumForceTransformerRecipes);
-
             GTRecipeBuilder generate = GTValues.RA.stdBuilder()
-                .fluidInputs(new FluidStack(type.preparedFluid, type.unit))
                 .fluidOutputs(new FluidStack(type.entangledFluid, type.unit));
 
-            type.entanglement.accept(generate);
+            type.recipe.accept(generate);
 
             generate.addTo(TecTechRecipeMaps.condensateGeneratorRecipes);
         }
@@ -211,7 +161,7 @@ public enum CondensateType {
 
     public static CondensateType getCondensateType(Fluid fluid) {
         for (CondensateType type : values()) {
-            if (fluid == type.preparedFluid || fluid == type.entangledFluid) {
+            if (fluid == type.entangledFluid) {
                 return type;
             }
         }
