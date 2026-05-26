@@ -70,7 +70,7 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          * @param stone    the stone types
          */
-        public void addDrop(IOreMaterial material, float weight, List<StoneType> stone) {
+        public void addDrop(IOreMaterial material, List<StoneType> stone, float weight) {
             try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
                 info.material = material;
 
@@ -234,10 +234,10 @@ public class VoidMinerUtility {
                 List<StoneType> stones = DimensionHelper.getStoneTypes(dim);
 
                 if (!stones.isEmpty()) {
-                    map.addDrop(layer.mPrimary, layer.mWeight, stones);
-                    map.addDrop(layer.mSecondary, layer.mWeight, stones);
-                    map.addDrop(layer.mSporadic, layer.mWeight / 8f, stones);
-                    map.addDrop(layer.mBetween, layer.mWeight / 8f, stones);
+                    map.addDrop(layer.mPrimary, stones, layer.mWeight);
+                    map.addDrop(layer.mSecondary, stones, layer.mWeight);
+                    map.addDrop(layer.mSporadic, stones, layer.mWeight / 8f);
+                    map.addDrop(layer.mBetween, stones, layer.mWeight / 8f);
                 } else {
                     map.addDrop(layer.mPrimary, layer.mWeight);
                     map.addDrop(layer.mSecondary, layer.mWeight);
@@ -260,7 +260,7 @@ public class VoidMinerUtility {
                 List<StoneType> stones = DimensionHelper.getStoneTypes(dim);
 
                 if (!stones.isEmpty()) {
-                    map.addDrop(layer.getMaterial(), layer.mAmount, stones);
+                    map.addDrop(layer.getMaterial(), stones, layer.mAmount);
                 } else {
                     map.addDrop(layer.getMaterial(), layer.mAmount);
                 }
