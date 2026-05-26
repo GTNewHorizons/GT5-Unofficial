@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.util.GTRecipe;
 
@@ -136,8 +137,10 @@ public final class GTRecipeLookupBuilder {
             int oreDictId = oreDictIdFor(recipeWithAlt, i);
             if (oreDictId >= 0) {
                 group.add(new GTOreDictLookupIngredient(oreDictId));
+                addItemAlternativesMissingOreDictId(recipe, recipeWithAlt, i, oreDictId, group);
+            } else {
+                addItemAlternatives(recipe, recipeWithAlt, i, group);
             }
-            addItemAlternatives(recipe, recipeWithAlt, i, group);
             if (!group.isEmpty()) {
                 ingredients.add(group);
             }
@@ -166,6 +169,44 @@ public final class GTRecipeLookupBuilder {
         if (recipe.mInputs != null && index < recipe.mInputs.length) {
             addItemIngredient(recipe, recipe.mInputs[index], group);
         }
+    }
+
+    private static void addItemAlternativesMissingOreDictId(GTRecipe recipe, GTRecipe.GTRecipe_WithAlt recipeWithAlt,
+        int index, int oreDictId, List<GTRecipeLookupIngredient> group) {
+        if (recipeWithAlt != null && recipeWithAlt.mOreDictAlt != null && index < recipeWithAlt.mOreDictAlt.length) {
+            ItemStack[] alternatives = recipeWithAlt.mOreDictAlt[index];
+            if (alternatives != null && alternatives.length > 0) {
+                for (ItemStack alternative : alternatives) {
+                    addItemIngredientIfMissingOreDictId(recipe, alternative, oreDictId, group);
+                }
+                return;
+            }
+        }
+
+        if (recipe.mInputs != null && index < recipe.mInputs.length) {
+            addItemIngredientIfMissingOreDictId(recipe, recipe.mInputs[index], oreDictId, group);
+        }
+    }
+
+    private static void addItemIngredientIfMissingOreDictId(GTRecipe recipe, ItemStack stack, int oreDictId,
+        List<GTRecipeLookupIngredient> group) {
+        if (stack == null || hasOreDictId(stack, oreDictId)) {
+            return;
+        }
+        addItemIngredient(recipe, stack, group);
+    }
+
+    private static boolean hasOreDictId(ItemStack stack, int oreDictId) {
+        try {
+            for (int id : OreDictionary.getOreIDs(stack)) {
+                if (id == oreDictId) {
+                    return true;
+                }
+            }
+        } catch (ExceptionInInitializerError | NoClassDefFoundError ignored) {
+            return false;
+        }
+        return false;
     }
 
     private static void addItemIngredient(GTRecipe recipe, ItemStack stack, List<GTRecipeLookupIngredient> group) {
