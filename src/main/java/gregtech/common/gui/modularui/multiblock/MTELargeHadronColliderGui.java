@@ -60,10 +60,9 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
-        syncManager
-            .syncValue(
-                "machineMode",
-                new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
+        syncManager.syncValue(
+            "machineMode",
+            new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
