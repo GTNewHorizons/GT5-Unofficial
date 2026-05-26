@@ -18,6 +18,8 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
 import gregtech.common.items.GTItemCell;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.recipe.TecTechRecipeMaps;
@@ -215,6 +217,18 @@ public enum CondensateType {
         }
 
         return null;
+    }
+
+    /// Resolves the color to render a condensate fluid with. Condensates of a gtPlusPlus material that uses a dynamic
+    /// render mode (the glow or rainbow hue cycle, e.g. Celestial Tungsten and Chromatic Glass) reuse that material's
+    /// animated color, so the condensate matches how the material is drawn on its blocks/items/fluids. This mirrors
+    /// the approach added for those materials in PR #6649. Any other fluid keeps the provided fallback color.
+    public static int getRenderColor(Fluid fluid, int fallbackColor) {
+        CondensateType type = getCondensateType(fluid);
+        if (type != null && type.getMaterial() instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
+            return BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+        }
+        return fallbackColor;
     }
 
     /// Gets the name for a given fluid. This will usually be the condensate name, but non-condensate fluids will

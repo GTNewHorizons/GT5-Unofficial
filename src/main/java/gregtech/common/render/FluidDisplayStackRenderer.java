@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.items.ItemFluidDisplay;
@@ -44,7 +45,8 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(FluidRegistry.getFluid(item.getItemDamage()));
+        Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
+        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(fluid);
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
@@ -54,8 +56,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
                 tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
             } else {
-                Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
-                tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
+                tint = CondensateType.getRenderColor(fluid, fluid != null ? fluid.getColor() : 0xFFFFFF);
             }
             GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;

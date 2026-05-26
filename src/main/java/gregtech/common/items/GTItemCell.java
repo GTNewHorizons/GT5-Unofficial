@@ -18,6 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
 
@@ -58,9 +59,10 @@ public class GTItemCell extends Item implements ItemWithTextures {
 
     @Override
     public IItemTexture[] getTextures(ItemStack stack) {
+        int fluidColor = CondensateType.getRenderColor(fluid, fluid.getColor(new FluidStack(fluid, 1)));
         return new IItemTexture[] { new ItemTexture(
             ItemList.Cell_Empty.get(1)
                 .getIconIndex(),
-            RGBColor.WHITE), new ItemTexture(fluidIcon, RGBColor.fromRGB(fluid.getColor(new FluidStack(fluid, 1)))), };
+            RGBColor.WHITE), new ItemTexture(fluidIcon, RGBColor.fromRGB(fluidColor)), };
     }
 }
