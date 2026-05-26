@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
@@ -132,6 +133,14 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         while (textureCache.size() > 512) textureCache.removeLast();
 
         return cached;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        Materials material = GregTechAPI.sGeneratedMaterials[aMeta];
+        if (material == null) return null;
+        return material.mIconSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
