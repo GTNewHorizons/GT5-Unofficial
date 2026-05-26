@@ -1462,13 +1462,15 @@ public class GTProxy implements IFuelHandler {
             .getCurrentEquippedItem();
         if (item == null) return;
 
-        if (!(item.getItem() instanceof MetaGeneratedTool tool)) return;
+        if (item.getItem() instanceof MetaGeneratedTool tool) {
+            IToolStats stats = tool.getToolStats(item);
+            if (stats == null) return;
 
-        IToolStats stats = tool.getToolStats(item);
-        if (stats == null) return;
-
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+            TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+        } else if (item.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockBreakingEvent(event);
+        }
     }
 
     @SubscribeEvent
