@@ -820,6 +820,8 @@ public class GTUtility {
             insert++;
         }
 
+        slots.clear();
+
         return didSomething.booleanValue();
     }
 
