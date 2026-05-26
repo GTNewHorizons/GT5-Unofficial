@@ -295,6 +295,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             || block == Blocks.log2) {
             return new float[] { 1f, 1.5f };
         }
+        if (item == Items.reeds) {
+            return new float[] { 10f, 10f };
+        }
         final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
         if (prefix == null || association.mMaterial == null
@@ -405,29 +408,25 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             if (GTUtility.isStackInvalid(stack)) continue;
 
             for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
-                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            ItemStack merge = tHatch.getStackInSlot(i)
-                                .copy();
-                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                            tHatch.setInventorySlotContents(i, merge);
-                        } else {
-                            tHatch.setInventorySlotContents(i, stack.copy());
-                        }
+                if (stack.stackSize == 0) break;
 
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            return true;
-                        }
-                        tHatch.setInventorySlotContents(i, null);
-                        return false;
+                for (int i = 0; i < tHatch.getSizeInventory(); i++) {
+                    if (stack.stackSize == 0) break;
+
+                    if (tHatch.getStackInSlot(i) == null) {
+                        tHatch.setInventorySlotContents(i, stack.copy());
+                        break;
+                    }
+                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && (tHatch.getStackInSlot(i).stackSize < stack.getMaxStackSize())) {
+                        int tmp = tHatch.getStackInSlot(i).stackSize + stack.stackSize;
+                        stack.stackSize = Math.max(tmp - stack.getMaxStackSize(), 0);
+                        tHatch.getStackInSlot(i).stackSize = Math.min(tmp, stack.getMaxStackSize());
                     }
                 }
             }
         }
-
-        return false;
+        return true;
     }
 
     @Override
