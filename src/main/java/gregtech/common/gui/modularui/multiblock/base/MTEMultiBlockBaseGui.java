@@ -1310,7 +1310,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .getter(baseMetaTileEntity::getLastShutDownReason)
             .setter(baseMetaTileEntity::setShutDownReason)
             .adapter(new ShutdownReasonAdapter())
-            .build();
+            .build()
+            .allowC2S();
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
         syncManager.syncValue(
