@@ -7,6 +7,10 @@ import static gregtech.api.util.GTRecipeBuilder.handleInvalidRecipeLowItems;
 import static gregtech.api.util.GTRecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +26,7 @@ import java.util.Set;
 import java.util.Spliterators;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -36,6 +41,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -43,6 +50,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
+import cpw.mods.fml.common.ModContainer;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -66,6 +74,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
+
+    private static final Logger DIAGNOSTIC_FALLBACK_LOGGER = LogManager.getLogger("GregTech GTNH");
 
     private RecipeMap<?> recipeMap;
 
@@ -92,6 +102,10 @@ public class RecipeMapBackend {
     private GTRecipeLookup recipeLookup = new GTRecipeLookup();
 
     private boolean recipeLookupDirty;
+
+    private static final String DIAGNOSTIC_FALLBACK_LOG_FILE = "RecipeLookupMisses.log";
+    private static final Set<String> LOGGED_DIAGNOSTIC_FALLBACK_RECIPES = Collections
+        .newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
     private final Map<GTRecipe, Integer> recipeRegistrationOrdinals = new IdentityHashMap<>();
 
@@ -561,6 +575,7 @@ public class RecipeMapBackend {
         final Stream<GTRecipe> cachedRecipeCandidateStream = cachedRecipeCandidates;
         final Stream<GTRecipe> cacheMapCandidateStream = cacheMapCandidates;
 
+        AtomicBoolean matchedBeforeFallback = new AtomicBoolean(false);
         Stream<GTRecipe> candidates = Stream
             .<Supplier<Stream<GTRecipe>>>of(() -> cachedRecipeCandidateStream, () -> cacheMapCandidateStream, () -> {
                 Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile)
@@ -581,8 +596,12 @@ public class RecipeMapBackend {
         if (profile != null) {
             candidates = candidates.peek(recipe -> profile.recordMatchedCandidate());
         }
+        candidates = candidates.peek(recipe -> matchedBeforeFallback.set(true));
 
-        Stream<GTRecipe> stream = Stream.concat(candidates, GTStreamUtil.ofSupplier(() -> {
+        Stream<GTRecipe> dynamicFallback = GTStreamUtil.ofSupplier(() -> {
+            if (matchedBeforeFallback.get()) {
+                return null;
+            }
             if (profile != null) {
                 profile.recordFallbackProbe();
             }
@@ -592,11 +611,244 @@ public class RecipeMapBackend {
             }
             return fallback;
         })
-            .filter(Objects::nonNull));
+            .filter(Objects::nonNull);
+        dynamicFallback = dynamicFallback.peek(recipe -> matchedBeforeFallback.set(true));
+
+        Stream<GTRecipe> stream = Stream.concat(
+            Stream.concat(candidates, dynamicFallback),
+            diagnosticFallbackCandidateStream(
+                items,
+                fluids,
+                specialSlot,
+                dontCheckStackSizes,
+                profile,
+                matchedBeforeFallback));
         if (profile != null) {
             profile.addSetupNanos(System.nanoTime() - setupStart);
         }
         return stream;
+    }
+
+    private Stream<GTRecipe> diagnosticFallbackCandidateStream(@Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
+        @Nullable RecipeLookupProfile profile, AtomicBoolean matchedBeforeFallback) {
+        return GTStreamUtil.ofSupplier(() -> {
+            if (matchedBeforeFallback.get()) {
+                return Collections.<GTRecipe>emptyList();
+            }
+            return findDiagnosticFallbackMatches(items, fluids, specialSlot, dontCheckStackSizes, profile);
+        })
+            .flatMap(Collection::stream);
+    }
+
+    private List<GTRecipe> findDiagnosticFallbackMatches(@Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
+        @Nullable RecipeLookupProfile profile) {
+        List<GTRecipe> foundRecipes = new ArrayList<>();
+        allRecipes().stream()
+            .filter(this::isRecipeRegistered)
+            .sorted(
+                (first, second) -> Integer.compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)))
+            .filter(
+                recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
+            .forEach(recipe -> {
+                GTRecipe foundRecipe = profiledModifyFoundRecipe(recipe, items, fluids, specialSlot, profile);
+                if (foundRecipe != null) {
+                    logDiagnosticFallbackMatch(recipe, items, fluids, specialSlot);
+                    foundRecipes.add(foundRecipe);
+                }
+            });
+        return foundRecipes;
+    }
+
+    private void logDiagnosticFallbackMatch(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot) {
+        String fingerprint = diagnosticFallbackFingerprint(recipe);
+        if (!LOGGED_DIAGNOSTIC_FALLBACK_RECIPES.add(fingerprint)) {
+            return;
+        }
+
+        String message = buildDiagnosticFallbackMessage(recipe, items, fluids, specialSlot, fingerprint);
+        DIAGNOSTIC_FALLBACK_LOGGER.warn(message);
+        writeDiagnosticFallbackLog(message);
+    }
+
+    private String diagnosticFallbackFingerprint(GTRecipe recipe) {
+        return recipeMapName() + "#" + recipeRegistrationOrdinal(recipe) + "#" + System.identityHashCode(recipe);
+    }
+
+    private String buildDiagnosticFallbackMessage(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, String fingerprint) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[GTRecipeLookupDiagnosticFallback] Trie lookup missed a registered recipe matched by the ")
+            .append("all-recipes fallback.\n")
+            .append("fingerprint=")
+            .append(fingerprint)
+            .append('\n')
+            .append("map=")
+            .append(recipeMapName())
+            .append(", ordinal=")
+            .append(recipeRegistrationOrdinal(recipe))
+            .append(", category=")
+            .append(describeRecipeCategory(recipe))
+            .append(", owners=")
+            .append(describeRecipeOwners(recipe))
+            .append('\n')
+            .append("runtimeItems=")
+            .append(describeItemStacks(items))
+            .append('\n')
+            .append("runtimeFluids=")
+            .append(describeFluidStacks(fluids))
+            .append('\n')
+            .append("specialSlot=")
+            .append(describeItemStack(specialSlot))
+            .append('\n')
+            .append("recipeInputs=")
+            .append(describeItemStacks(recipe.mInputs))
+            .append('\n')
+            .append("recipeFluidInputs=")
+            .append(describeFluidStacks(recipe.mFluidInputs))
+            .append('\n')
+            .append("recipeOutputs=")
+            .append(describeItemStacks(recipe.mOutputs))
+            .append('\n')
+            .append("recipeFluidOutputs=")
+            .append(describeFluidStacks(recipe.mFluidOutputs))
+            .append('\n')
+            .append("recipeSpecial=")
+            .append(describeObject(recipe.mSpecialItems))
+            .append('\n')
+            .append("recipeStackTrace=")
+            .append(describeRecipeStackTrace(recipe));
+        return builder.toString();
+    }
+
+    private String recipeMapName() {
+        return recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
+    }
+
+    private static String describeRecipeCategory(GTRecipe recipe) {
+        RecipeCategory category = recipe.getRecipeCategory();
+        return category == null ? "<none>" : String.valueOf(category.unlocalizedName);
+    }
+
+    private static String describeRecipeOwners(GTRecipe recipe) {
+        if (recipe.owners == null) {
+            return "<disabled>";
+        }
+        if (recipe.owners.isEmpty()) {
+            return "[]";
+        }
+        return recipe.owners.stream()
+            .map(RecipeMapBackend::describeModContainer)
+            .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    private static String describeModContainer(@Nullable ModContainer owner) {
+        return owner == null ? "null" : owner.getModId();
+    }
+
+    private static String describeRecipeStackTrace(GTRecipe recipe) {
+        if (recipe.stackTraces == null) {
+            return "<disabled>";
+        }
+        if (recipe.stackTraces.isEmpty()) {
+            return "[]";
+        }
+        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        return stackTrace.stream()
+            .limit(12)
+            .collect(Collectors.joining(" <- ", "[", stackTrace.size() > 12 ? " <- ...]" : "]"));
+    }
+
+    private static String describeItemStacks(@Nullable ItemStack[] stacks) {
+        if (stacks == null) {
+            return "<null>";
+        }
+        return Arrays.stream(stacks)
+            .map(RecipeMapBackend::describeItemStack)
+            .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    private static String describeItemStack(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return "null";
+        }
+        StringBuilder builder = new StringBuilder();
+        Item item = stack.getItem();
+        Object registryName = item == null ? null : Item.itemRegistry.getNameForObject(item);
+        builder.append(registryName == null ? "<unregistered>" : registryName)
+            .append(':')
+            .append(stack.getItemDamage())
+            .append(" x")
+            .append(stack.stackSize)
+            .append(" (")
+            .append(item == null ? "<null item>" : stack.getUnlocalizedName())
+            .append(')');
+        if (stack.hasTagCompound()) {
+            builder.append(" tag=")
+                .append(stack.getTagCompound());
+        }
+        return builder.toString();
+    }
+
+    private static String describeFluidStacks(@Nullable FluidStack[] fluids) {
+        if (fluids == null) {
+            return "<null>";
+        }
+        return Arrays.stream(fluids)
+            .map(RecipeMapBackend::describeFluidStack)
+            .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    private static String describeFluidStack(@Nullable FluidStack fluid) {
+        if (fluid == null) {
+            return "null";
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(
+            fluid.getFluid() == null ? "<null fluid>"
+                : fluid.getFluid()
+                    .getName())
+            .append(" x")
+            .append(fluid.amount);
+        if (fluid.tag != null) {
+            builder.append(" tag=")
+                .append(fluid.tag);
+        }
+        return builder.toString();
+    }
+
+    private static String describeObject(@Nullable Object object) {
+        if (object instanceof ItemStack) {
+            return describeItemStack((ItemStack) object);
+        }
+        return String.valueOf(object);
+    }
+
+    private static synchronized void writeDiagnosticFallbackLog(String message) {
+        File logFile = diagnosticFallbackLogFile();
+        File parentFile = logFile.getParentFile();
+        if (parentFile != null && !parentFile.exists() && !parentFile.mkdirs()) {
+            DIAGNOSTIC_FALLBACK_LOGGER.warn(
+                "[GTRecipeLookupDiagnosticFallback] Could not create log directory: " + parentFile.getAbsolutePath());
+            return;
+        }
+
+        try (PrintStream stream = new PrintStream(new FileOutputStream(logFile, true), true)) {
+            stream.println(message);
+            stream.println();
+        } catch (IOException e) {
+            DIAGNOSTIC_FALLBACK_LOGGER
+                .warn("[GTRecipeLookupDiagnosticFallback] Could not write " + logFile.getAbsolutePath(), e);
+        }
+    }
+
+    private static File diagnosticFallbackLogFile() {
+        if (GTLog.mLogFile != null && GTLog.mLogFile.getParentFile() != null) {
+            return new File(GTLog.mLogFile.getParentFile(), DIAGNOSTIC_FALLBACK_LOG_FILE);
+        }
+        return new File("logs", DIAGNOSTIC_FALLBACK_LOG_FILE);
     }
 
     private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,
