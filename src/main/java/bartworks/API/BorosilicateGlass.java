@@ -67,7 +67,7 @@ public class BorosilicateGlass {
             doRegister((byte) 6, block, 3, ret);
             doRegister((byte) 7, block, 4, ret);
             doRegister((byte) 8, block, 5, ret);
-            for (int i = 6; i < 12; i++) {
+            for (int i = 6; i < 13; i++) {
                 doRegister((byte) 3, block, i, ret);
             }
             doRegister((byte) 9, block, 13, ret);
@@ -75,6 +75,7 @@ public class BorosilicateGlass {
             doRegister((byte) 11, block, 15, ret);
             block = getGlassBlock2();
             doRegister((byte) 12, block, 0, ret);
+            doRegister((byte) 13, block, 1, ret);
             allLevels = ret;
         }
         return allLevels;

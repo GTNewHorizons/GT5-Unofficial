@@ -51,7 +51,7 @@ public class GlassTier {
     private static final HashMap<Pair<Block, Integer>, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
     private static final int minTier = VoltageIndex.HV;
-    private static final int maxTier = VoltageIndex.UMV;
+    private static final int maxTier = VoltageIndex.UXV;
     private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
         Collections.nCopies(maxTier + 1 - minTier, null));
@@ -213,6 +213,9 @@ public class GlassTier {
             addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
             addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
             addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
+
+            // --- UXV ---
+            addCustomGlass(ItemRegistry.bw_realglas2, 1, 13, 0);
         }
 
         private static void registerGlassOreDicts() {

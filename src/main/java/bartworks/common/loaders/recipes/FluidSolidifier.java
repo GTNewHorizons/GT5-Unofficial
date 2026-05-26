@@ -77,7 +77,7 @@ public class FluidSolidifier implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 14))
-            .fluidInputs(Materials.CosmicNeutronium.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.Infinity.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -85,17 +85,19 @@ public class FluidSolidifier implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 15))
-            .fluidInputs(Materials.Infinity.getMolten(8 * INGOTS))
+            .fluidInputs(Materials.TranscendentMetal.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(fluidSolidifierRecipes);
 
+        // Hexanite Borosilicate Glass is in Forming Press Recipes
+
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .fluidInputs(Materials.TranscendentMetal.getMolten(8 * INGOTS))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
+            .fluidInputs(Materials.Universium.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(fluidSolidifierRecipes);
 
     }

@@ -63,23 +63,30 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 14))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.CosmicNeutronium.getDust(8))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Infinity.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 15))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Infinity.getDust(8))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Ash.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Universium.getDust(8))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(maceratorRecipes);
 
         for (int i = 6; i < 11; i++) {

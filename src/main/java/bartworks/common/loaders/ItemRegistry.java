@@ -149,31 +149,59 @@ public class ItemRegistry {
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
-            MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
-        new short[][] { Materials.BorosilicateGlass.getRGBA(), Materials.Titanium.getRGBA(),
-            Materials.TungstenSteel.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(),
-            Materials.Osmium.getRGBA(), new short[] { 0xff, 0, 0 }, new short[] { 0, 0xff, 0 },
-            new short[] { 0x80, 0, 0xff }, new short[] { 0xff, 0xff, 0 }, new short[] { 0, 0xff, 0x80 },
-            new short[] { 0x80, 0x33, 0 }, WerkstoffLoader.YttriumOxide.getRGBA(), Materials.Neutronium.getRGBA(),
-            Materials.CosmicNeutronium.getRGBA(), new short[] { 0xda, 0xeb, 0xff }, },
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
+            MainMod.MOD_ID + ":ThoriumYttriumGlass",
+            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock",
+        },
+        new short[][] {
+            Materials.BorosilicateGlass.getRGBA(),
+            Materials.Titanium.getRGBA(),
+            Materials.TungstenSteel.getRGBA(),
+            WerkstoffLoader.RhodiumPlatedPalladium.getRGBA(),
+            Materials.Iridium.getRGBA(),
+            Materials.Osmium.getRGBA(),
+
+            new short[] { 0xff, 0, 0 },
+            new short[] { 0, 0xff, 0 },
+            new short[] { 0x80, 0, 0xff },
+            new short[] { 0xff, 0xff, 0 },
+            new short[] { 0, 0xff, 0x80 },
+            new short[] { 0x80, 0x33, 0 },
+
+            WerkstoffLoader.YttriumOxide.getRGBA(),
+            Materials.Neutronium.getRGBA(),
+
+            new short[] { 0xda, 0xeb, 0xff },
+            Materials.TranscendentMetal.getRGBA(),},
+
         MainMod.BIO_TAB,
         true,
         false);
+
     public static final Block bw_realglas2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
-        new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
-        new short[][] { new short[] { 50, 50, 50 } },
+        new String[] {
+            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlock", },
+
+        new short[][] {
+            Materials.Hexanite.getRGBA(),
+            Materials.Universium.getRGBA(), },
+
         MainMod.BIO_TAB,
         true,
         false);
+
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
     public static final Block bw_fake_glasses = new BWBlocksGlass(
