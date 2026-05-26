@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,13 +24,16 @@ import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
+import gtneioreplugin.util.DimensionHelper;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
 public class VoidMinerUtility {
@@ -56,6 +60,32 @@ public class VoidMinerUtility {
             totalWeight = 0;
             voidMinerBlacklistedDrops = Collections
                 .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
+        }
+
+        /**
+         * Method used to add an ore to the DropMap
+         * This one allows a stone type to be selected
+         *
+         * @param material the material
+         * @param weight   the non normalised weight
+         * @param stone    the stone types
+         */
+        public void addDrop(IOreMaterial material, float weight, List<StoneType> stone) {
+            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+                info.material = material;
+
+                for (IStoneType stones : stone) {
+                    info.stoneType = stones;
+                    ItemStack stack = OreManager.getStack(info, 1);
+
+                    if (stack == null) {
+                        GTMod.GT_FML_LOGGER.error("Could not add ore " + material + " to void miner drop map!");
+                        return;
+                    }
+
+                    addDrop(stack, weight);
+                }
+            }
         }
 
         /**
@@ -201,10 +231,19 @@ public class VoidMinerUtility {
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
-                map.addDrop(layer.mPrimary, layer.mWeight);
-                map.addDrop(layer.mSecondary, layer.mWeight);
-                map.addDrop(layer.mSporadic, layer.mWeight / 8f);
-                map.addDrop(layer.mBetween, layer.mWeight / 8f);
+                List<StoneType> stones = DimensionHelper.getStoneTypes(dim);
+
+                if (!stones.isEmpty()) {
+                    map.addDrop(layer.mPrimary, layer.mWeight, stones);
+                    map.addDrop(layer.mSecondary, layer.mWeight, stones);
+                    map.addDrop(layer.mSporadic, layer.mWeight / 8f, stones);
+                    map.addDrop(layer.mBetween, layer.mWeight / 8f, stones);
+                } else {
+                    map.addDrop(layer.mPrimary, layer.mWeight);
+                    map.addDrop(layer.mSecondary, layer.mWeight);
+                    map.addDrop(layer.mSporadic, layer.mWeight / 8f);
+                    map.addDrop(layer.mBetween, layer.mWeight / 8f);
+                }
             }
         }
 
@@ -218,7 +257,13 @@ public class VoidMinerUtility {
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
-                map.addDrop(layer.getMaterial(), layer.mAmount);
+                List<StoneType> stones = DimensionHelper.getStoneTypes(dim);
+
+                if (!stones.isEmpty()) {
+                    map.addDrop(layer.getMaterial(), layer.mAmount, stones);
+                } else {
+                    map.addDrop(layer.getMaterial(), layer.mAmount);
+                }
             }
         }
     }

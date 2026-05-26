@@ -82,6 +82,7 @@ public class DimensionHelper {
     public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
     public static final Map<String, String> INTERNAL_TO_ABBR = new HashMap<>();
     public static final Map<String, String> ABBR_TO_INTERNAL = new HashMap<>();
+    public static final Map<String, String> INTERNAL_TO_FULL = new HashMap<>();
 
     public static final List<Dimension> ALL_DIMENSIONS = new ArrayList<>();
     public static final List<String> ALL_DIM_NAMES = new ArrayList<>();
@@ -183,6 +184,7 @@ public class DimensionHelper {
             REGISTRY.put(fullName, dim);
             INTERNAL_TO_ABBR.put(internalName, abbr);
             ABBR_TO_INTERNAL.put(abbr, internalName);
+            INTERNAL_TO_FULL.put(internalName, fullName);
 
             ALL_DIM_NAMES.add(fullName);
             ALL_TRIMMED_NAMES.add(trimmedName);
@@ -247,6 +249,12 @@ public class DimensionHelper {
         throw new IllegalStateException("String: " + abbrDimName + " has no abbreviated name!");
     }
 
+    public static String resolveFullName(String internalName) {
+        String full = INTERNAL_TO_FULL.get(internalName);
+        if (full != null) return full;
+        throw new IllegalStateException("InternalName: " + internalName + " has no full name!");
+    }
+
     public static String getDimTier(String dimName) {
         Dimension record = REGISTRY.get(dimName);
         return record == null ? T0 : record.tierKey;
@@ -263,5 +271,18 @@ public class DimensionHelper {
 
     public static String getDimLocalizedName(String dimName) {
         return StatCollector.translateToLocal(getDimUnlocalizedName(dimName));
+    }
+
+    /**
+     * Returns the StoneTypes associated with the given dimension.
+     * This resolves the dimension name to its index and retrieves the
+     * corresponding record.
+     *
+     * @param dimName The full registry name of the dimension.
+     * @return The list of StoneTypes for the dimension.
+     */
+    public static List<StoneType> getStoneTypes(String dimName) {
+        Dimension dim = REGISTRY.get(resolveFullName(dimName));
+        return dim == null ? ImmutableList.of(StoneType.Stone) : dim.stoneTypes();
     }
 }
