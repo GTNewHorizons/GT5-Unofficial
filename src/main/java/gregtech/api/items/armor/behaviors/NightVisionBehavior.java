@@ -36,8 +36,7 @@ public class NightVisionBehavior implements IArmorBehavior {
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
 
-        context.getArmorState()
-            .toggle(context, BehaviorName.NightVision);
+        context.toggleBehavior(BehaviorName.NightVision);
     }
 
     @Override
