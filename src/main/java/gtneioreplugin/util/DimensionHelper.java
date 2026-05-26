@@ -275,11 +275,12 @@ public class DimensionHelper {
 
     /**
      * Returns the StoneTypes associated with the given dimension.
-     * This resolves the dimension name to its index and retrieves the
-     * corresponding record.
+     * The dimension name is resolved to its full registry key; if no
+     * matching entry exists, this returns a default list containing
+     * only {@code StoneType.Stone}.
      *
-     * @param dimName The full registry name of the dimension.
-     * @return The list of StoneTypes for the dimension.
+     * @param dimName The dimension's name.
+     * @return The list of StoneTypes for the dimension, or a default fallback.
      */
     public static List<StoneType> getStoneTypes(String dimName) {
         Dimension dim = REGISTRY.get(getDimFullName(dimName));
