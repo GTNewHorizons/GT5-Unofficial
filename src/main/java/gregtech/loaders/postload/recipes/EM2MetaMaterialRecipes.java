@@ -417,7 +417,7 @@ public class EM2MetaMaterialRecipes implements Runnable {
             .eut(eut)
             .addTo(AssemblyLine);
     }
-    
+
     /// Builds and registers both the BEC Assembler variant (using entangled condensates + nanite-tier metadata)
     private void addBec(ItemStack output, ItemStack[] inputs, NaniteTier[] nanites, CondensateType[] condensates,
         int[] condensateIngots, int duration, long eut) {
