@@ -78,7 +78,7 @@ public enum CondensateType {
         "hexanite",
         () -> Materials.Hexanite,
         144,
-        recipe -> recipe.fluidInputs(Materials.Hexanite.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
+        recipe -> recipe.fluidInputs(Materials.UnformedHexanite.getFluid(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
