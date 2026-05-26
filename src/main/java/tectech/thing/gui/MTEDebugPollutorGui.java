@@ -30,21 +30,19 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue pollutionSyncer = new IntSyncValue(machine::getPollution, machine::setPollution);
-        BooleanSyncValue isPollutingSyncer = new BooleanSyncValue(machine::isPolluting, machine::setPolluting);
+        IntSyncValue pollutionSyncer = new IntSyncValue(machine::getPollution, machine::setPollution).allowC2S();
+        BooleanSyncValue isPollutingSyncer = new BooleanSyncValue(machine::isPolluting, machine::setPolluting)
+            .allowC2S();
         syncManager.syncValue("isPolluting", isPollutingSyncer); // needed for the label to function
 
         Flow mainColumn = Flow.column()
-            .sizeRel(1)
-            .paddingTop(4)
-            .paddingLeft(4)
+            .coverChildren()
             .childPadding(4)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         Flow pollutionRow = Flow.row()
-            .height(18)
-            .childPadding(2)
-            .coverChildrenWidth();
+            .coverChildren()
+            .childPadding(2);
 
         // number input field for pollution
         pollutionRow.child(
@@ -59,8 +57,7 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
         // text widget for pollution
         pollutionRow.child(
             IKey.lang("tt.gui.text.debug_pollutor.pollution")
-                .asWidget()
-                .height(18));
+                .asWidget());
 
         Flow statusRow = Flow.row()
             .coverChildren()
@@ -73,8 +70,7 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
         statusRow.child(
             IKey.dynamic(
                 () -> translateToLocalFormatted("tt.gui.text.debug_pollutor.status", getStatus(isPollutingSyncer)))
-                .asWidget()
-                .height(18));
+                .asWidget());
 
         mainColumn.child(pollutionRow);
         mainColumn.child(statusRow);
@@ -82,8 +78,7 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
     }
 
     private ToggleButton getModeSetterButton(boolean isPolluteButton, BooleanSyncValue isPollutingSyncer) {
-        return new SelectButton().size(18)
-            .value(LinkedBoolValue.of(isPollutingSyncer, isPolluteButton))
+        return new SelectButton().value(LinkedBoolValue.of(isPollutingSyncer, isPolluteButton))
             .overlay(isPolluteButton ? GuiTextures.MAXIMIZE : GuiTextures.MINIMIZE)
             .tooltip(
                 t -> t.addLine(

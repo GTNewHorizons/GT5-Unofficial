@@ -41,6 +41,8 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
         return new MissingStructureWrapperCasings(compound.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND));
     }
 
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
 
@@ -56,10 +58,11 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             column.child(
                 IKey.str(
                     GTUtility.translate(
-                        "GT5U.gui.missing_casings_specific",
+                        "GT5U.gui.text.structure_error.missing_casings_specific",
                         stack.getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
+                    .color(TEXT_COLOR)
                     .asWidget());
         }
         return column;
@@ -77,7 +80,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             if (sb.length() > 0) sb.append('\n');
             sb.append(
                 GTUtility.translate(
-                    "GT5U.gui.missing_casings_specific",
+                    "GT5U.gui.text.structure_error.missing_casings_specific",
                     stack.getDisplayName(),
                     tag.getInteger("req"),
                     tag.getInteger("pres")));

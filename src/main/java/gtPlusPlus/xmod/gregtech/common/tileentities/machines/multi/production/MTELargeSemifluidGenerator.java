@@ -78,7 +78,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInputHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .addDynamoHatch("Back Center", 2)
+            .addDynamoHatch("Back center", 2)
             .toolTipFinisher();
         return tt;
     }

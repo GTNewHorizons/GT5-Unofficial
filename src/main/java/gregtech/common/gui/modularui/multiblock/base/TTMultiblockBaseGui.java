@@ -82,7 +82,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
             .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18)
             .overlay(createPowerPassOverlay());
     }
 
@@ -96,7 +95,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     baseMetaTileEntity.disableWorking();
                 }
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable createPowerPassOverlay() {
@@ -113,7 +112,6 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
             .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18)
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 
@@ -160,11 +158,11 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
 
         List<Parameter<?>> parameters = new ArrayList<>();
         if (multiblock instanceof IParametrized parametrized) parameters = parametrized.getParameters();
-        return panel.child(getParameterEditor(panel, syncManager, parameters, true));
+        return panel.child(getParameterEditor(panel, syncManager, parameters, true, ""));
     }
 
     protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-        List<Parameter<?>> parameters, boolean isRoot) {
+        List<Parameter<?>> parameters, boolean isRoot, String prefix) {
         ListWidget<IWidget, ?> editButtons = new ListWidget<>().width(110)
             .maxSize((getBasePanelHeight() - 8) / (isRoot ? 1 : 2))
             .scrollDirection(new VerticalScrollData());
@@ -180,9 +178,9 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 .tooltipDynamic(configureParameterEditorButtonTooltip(parameter));
 
             IPanelHandler editParameterPanel = syncManager.syncedPanel(
-                "parameterEditPanel_" + parameter.getNbtKey(),
+                "parameterEditPanel_" + prefix + parameter.getNbtKey(),
                 true,
-                (p_syncManager, $h) -> openParameterEditPanel(parameterEditButton, parameter, p_syncManager));
+                (p_syncManager, $h) -> openParameterEditPanel(parameterEditButton, parameter, p_syncManager, prefix));
 
             editButtons.child(parameterEditButton.onMousePressed(d -> {
                 if (!editParameterPanel.isPanelOpen()) {
@@ -218,8 +216,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     protected @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
-        PanelSyncManager syncManager) {
-        ModularPanel panel = new ModularPanel("parameterEditPanel_" + parameter.getNbtKey()).coverChildren()
+        PanelSyncManager syncManager, String prefix) {
+        ModularPanel panel = new ModularPanel("parameterEditPanel_" + prefix + parameter.getNbtKey()).coverChildren()
             .relative(parameterEditButton)
             .topRel(1)
             .leftRel(0)
@@ -257,7 +255,12 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             return new TextFieldWidget().value((IStringValue<?>) stringParameter.createSyncHandler());
         }
         if (parameter instanceof CompositeParameter compositeParameter) {
-            return getParameterEditor(panel, syncManager, compositeParameter.getValue(), false);
+            return getParameterEditor(
+                panel,
+                syncManager,
+                compositeParameter.getValue(),
+                false,
+                compositeParameter.getNbtKey() + ".");
         }
         throw new IllegalArgumentException(
             "Tried to create an input widget for an unsupported parameter type " + parameter.getClass());
@@ -268,7 +271,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
         super.registerSyncValues(syncManager);
         if (multiblock instanceof IParametrized parametrized) {
             parametrized.getParameters()
-                .forEach(parameter -> parameter.registerSyncValue(syncManager));
+                .forEach(parameter -> parameter.registerSyncValue(syncManager, ""));
         }
     }
 }

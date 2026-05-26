@@ -122,10 +122,10 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
             .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
             .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Fuel, any casing", 1)
-            .addInputHatch("Oxygen, any casing", 1)
-            .addOutputHatch("Superheated Steam, any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Fuel, any Casing", 1)
+            .addInputHatch("Oxygen, any Casing", 1)
+            .addOutputHatch("Superheated Steam, any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -206,8 +206,9 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         checkHasMaintenanceHatch(errors);
         if (mInputHatches.size() < 2) {
             errors.add(
-                StructureErrors
-                    .of("GT5U.gui.text.sofc_missing_input_hatches", TranslatableText.literal(mInputHatches.size())));
+                StructureErrors.of(
+                    "GT5U.gui.text.structure_error.sofc_missing_input_hatches",
+                    TranslatableText.literal(mInputHatches.size())));
         }
         checkHasOutputHatch(errors);
     }

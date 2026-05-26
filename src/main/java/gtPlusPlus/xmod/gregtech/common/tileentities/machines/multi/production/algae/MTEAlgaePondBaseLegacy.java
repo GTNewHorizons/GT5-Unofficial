@@ -108,8 +108,8 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
-            .addCasingInfoExactly("Sterile Farm Casings", 64, false)
+            .addCasingInfoMin("Machine Casing", MINIMUM_CASINGS, true)
+            .addCasingInfoExactly("Sterile Farm Casing", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -178,7 +178,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
         checkCasingMin(errors, mCasing, MINIMUM_CASINGS);
         if (checkMeta <= 0) {
             // Somehow the player manage to provide 0 machine casing for tier identification.
-            errors.add(StructureErrors.of("GT5U.gui.text.unknown_machine_casing_tier"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.unknown_machine_casing_tier"));
         }
 
         checkHasInputHatch(errors);

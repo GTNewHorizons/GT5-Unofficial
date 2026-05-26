@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.GTMod;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -30,7 +29,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
+public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
 
     protected int SLOT_FILTER = 0;
 
