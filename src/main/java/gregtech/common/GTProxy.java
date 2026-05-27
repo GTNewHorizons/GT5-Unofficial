@@ -2292,7 +2292,7 @@ public class GTProxy implements IFuelHandler {
             .withDefaultLocalName("Molten " + aMaterial.mDefaultLocalName)
             .withTextureName(fluidTexture)
             .withColorRGBA(aMaterial.mMoltenRGBa)
-            .withStateAndTemperature(MOLTEN, aMaterial.mMeltingPoint < 0 ? 1000 : aMaterial.mMeltingPoint)
+            .withStateAndTemperature(MOLTEN, aMaterial.mMeltingPoint <= 0 ? 1000 : aMaterial.mMeltingPoint)
             .buildAndRegister()
             .configureMaterials(aMaterial)
             .addLocalizedName(aMaterial)
