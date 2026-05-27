@@ -65,7 +65,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     multiblock.rules.addAll(val);
                 })
                 .adapter(RULE_ADAPTER)
-                .build());
+                .build()
+                .allowC2S());
 
         syncManager.syncValue("scroll", new IntSyncValue(() -> scrollValue, value -> scrollValue = value));
     }
