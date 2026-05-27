@@ -5,9 +5,8 @@ import java.util.function.Supplier;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-public class DoubleParameter extends NumericParameter<Double> {
+public class DoubleParameter extends NumericParameter<Double, DoubleSyncValue> {
 
     public DoubleParameter(Double value, String langKey, String nbtKey, Supplier<Double> min, Supplier<Double> max,
         Object... langArgs) {
@@ -38,11 +37,12 @@ public class DoubleParameter extends NumericParameter<Double> {
     }
 
     @Override
-    public SyncHandler<?> createSyncHandler() {
+    protected DoubleSyncValue createSyncHandler() {
         return new DoubleSyncValue(this::getValue, this::setValue).allowC2S();
     }
 
-    public double validateValue(double num) {
-        return Math.max(this.getMin(), Math.min(num, this.getMax()));
+    @Override
+    public Double validate(Double value) {
+        return Math.clamp(value, this.getMin(), this.getMax());
     }
 }
