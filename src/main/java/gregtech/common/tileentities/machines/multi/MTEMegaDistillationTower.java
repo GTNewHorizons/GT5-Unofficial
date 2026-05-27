@@ -80,7 +80,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .withCount(MTEMegaDistillationTower::getCurrentLayerBottomOutputHatchCount)
             .withAdder(MTEMegaDistillationTower::addLayerBottomOutputHatch);
         IHatchElement<MTEMegaDistillationTower> topLayeredOutputHatch = OutputHatch
-            .withCount(MTEMegaDistillationTower::getCurrentLayerBottomOutputHatchCount)
+            .withCount(MTEMegaDistillationTower::getCurrentLayerTopOutputHatchCount)
             .withAdder(MTEMegaDistillationTower::addLayerTopOutputHatch);
         IHatchElement<MTEMegaDistillationTower> finalLayeredOutputHatch = OutputHatch
             .withCount(MTEMegaDistillationTower::getFinalLayerOutputHatchCount)
@@ -206,28 +206,16 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         List<Integer> missingLayers = new ArrayList<>();
 
         while (this.height <= 5) {
-            if (!checkPiece(
-                STRUCTURE_PIECE_LAYER,
-                HORIZONTAL_OFFSET,
-                LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * height),
-                DEPTH_OFFSET,
-                errors)) {
-                // if this failed, check for top layer instead. if top layer fails, return. otherwise break out of the
-                // loop.
-                if (!checkPiece(
-                    STRUCTURE_PIECE_TOP,
-                    HORIZONTAL_OFFSET,
-                    FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height)),
-                    DEPTH_OFFSET,
-                    errors)) return;
+            if(checkPiece(STRUCTURE_PIECE_TOP, HORIZONTAL_OFFSET, FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height-1)), DEPTH_OFFSET)) {
                 int topHatchIndex = this.height * 2;
                 if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
                     || this.outputHatchesPerLayer.get(topHatchIndex)
-                        .isEmpty()) {
+                    .isEmpty()) {
                     missingLayers.add(height + 1);
                 }
                 break;
             }
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, HORIZONTAL_OFFSET, LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * height), DEPTH_OFFSET)) return;
 
             // there are 5 total middle layers that output hatches may be on, exlcuding the top layer
             int outputHatchLayers = this.height * 2; // this is the amount of output hatches expected
