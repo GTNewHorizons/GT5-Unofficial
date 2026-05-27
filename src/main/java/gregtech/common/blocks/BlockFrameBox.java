@@ -102,7 +102,12 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return getLocalizedName(getMaterial(meta & MATERIAL_MASK));
     }
 
-    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, EntityPlayer player, int x, int y, int z) {
+    // Matter manipulator please fix your mixins.
+    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
+        return spawnFrameEntity(worldIn, null, x, y, z);
+    }
+
+    public BaseMetaPipeEntity spawnFrameEntity(World worldIn, EntityPlayer player, int x, int y, int z) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof BaseMetaPipeEntity base) {
             return base;
