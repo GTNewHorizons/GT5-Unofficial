@@ -126,18 +126,14 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(40)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-mode"),
                         Mode.class,
                         () -> mode,
                         v -> mode = v,
-                        (panel2, sync, button) -> {
-                            button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip()));
-                        })
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .coverChildrenHeight());
+                        (_, _, button) -> button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip())))
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }

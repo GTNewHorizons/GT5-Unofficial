@@ -117,19 +117,16 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(60)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
                         v -> comparison = v)
-                    .addLongEditor(
+                    .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
-                        l -> configuredTier = (int) l,
-                        (panel1, syncManager1, widget) -> {
-                            widget.setNumbers(1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt());
-                        })
+                        i -> configuredTier = i,
+                    i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
@@ -138,9 +135,8 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
                             return IKey.str(tier == null ? GTUtility.translate("GT5U.gui.text.nil") : tier.describe());
                         })
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .coverChildrenHeight());
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }
