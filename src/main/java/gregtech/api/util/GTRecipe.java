@@ -669,6 +669,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             for (int i = 0; i < mFluidInputs.length; i++) {
+                if (mFluidInputs[i].amount == 0) continue; // Needed by DTPF, don't check "NC" for parallel
                 FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
                     && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
                         : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
