@@ -112,8 +112,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private IntegerParameter maxParallelParameter;
     private IntegerParameter speedDivisorParameter;
 
-    public static final String MIN_PARRALEL_PARAMETER = "minParallel";
-    public static final String MAX_PARRALEL_PARAMETER = "maxParallel";
+    public static final String MIN_PARALLEL_PARAMETER = "minParallel";
+    public static final String MAX_PARALLEL_PARAMETER = "maxParallel";
     public static final String SPEED_DIVISOR_PARAMETER = "speedDivisor";
 
     private final List<MTEHatchNaniteDetector> naniteDetectors = new ArrayList<>();
@@ -1110,13 +1110,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         minParallelParameter = new IntegerParameter(
             1,
             "GT5U.gui.text.bec-min-parallels",
-            MIN_PARRALEL_PARAMETER,
+            MIN_PARALLEL_PARAMETER,
             () -> 1,
             () -> Integer.MAX_VALUE);
         maxParallelParameter = new IntegerParameter(
             maxParallel,
             "GT5U.gui.text.bec-max-parallels",
-            MAX_PARRALEL_PARAMETER,
+            MAX_PARALLEL_PARAMETER,
             () -> 1,
             () -> Integer.MAX_VALUE) {
 

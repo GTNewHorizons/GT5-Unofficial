@@ -3,8 +3,8 @@ package tectech.thing.gui.bec;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
 import static gregtech.api.util.GTUtility.translate;
-import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MAX_PARRALEL_PARAMETER;
-import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MIN_PARRALEL_PARAMETER;
+import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MAX_PARALLEL_PARAMETER;
+import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MIN_PARALLEL_PARAMETER;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.SPEED_DIVISOR_PARAMETER;
 
 import java.util.Collections;
@@ -134,12 +134,12 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             TextFieldWidget textFieldWidget = (TextFieldWidget) widget;
 
             switch (parameter.getNbtKey()) {
-                case MIN_PARRALEL_PARAMETER -> textFieldWidget.tooltip(
+                case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                     t -> t.addStringLines(
                         MarkdownTooltipLoader.STANDARD.loadStandardPath(
                             new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
                             Collections.emptyMap())));
-                case MAX_PARRALEL_PARAMETER -> textFieldWidget.tooltip(
+                case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                     t -> t.addStringLines(
                         MarkdownTooltipLoader.STANDARD.loadStandardPath(
                             new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
