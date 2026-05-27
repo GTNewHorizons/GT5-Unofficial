@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -111,6 +113,14 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public MetaPipeEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (this instanceof ILocalizedMetaPipeEntity localizedPipe) {
+            return localizedPipe.getLocalizedName();
+        }
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
     }
 
     @Override

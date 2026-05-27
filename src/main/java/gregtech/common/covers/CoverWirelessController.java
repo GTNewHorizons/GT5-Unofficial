@@ -100,8 +100,6 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                                 GTUtility.sendChatTrans(
                                     player,
                                     "GT5U.chat.cover.wireless_controller.shutdown_at",
-                                    // FIXME: getInventoryName returns a key.
-                                    // For example, the "Vacuum Freezer" returns "multimachine.vacuumfreezer"
                                     coverable.getInventoryName(),
                                     new ChatComponentNumber(coverable.getXCoord()),
                                     new ChatComponentNumber(coverable.getYCoord()),
