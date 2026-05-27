@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -13,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.ArrayList;
@@ -86,107 +88,93 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         STRUCTURE_DEFINITION = StructureDefinition.<MTEMegaDistillationTower>builder()
             // spotless:off
             .addShape(STRUCTURE_PIECE_BASE,transpose(new String[][]{
-                {"        FFF    ","     EAEFDF    ","    E   EFFFFF ","   E  H  EFFBFF","   A HCH AFBDBF","   E  H  EFFBFF","    E   E  FFF ","     EAE       ","               "},
+                {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFBFF","   AFHCHFAFBDBF","   E  H  EFFBFF","    E F E  FFF ","     EAE       ","               "},
                 {"               ","     GGG D     ","    G   G      ","   G  H  G  B  ","   G HCH G BDB ","   G  H  G  B  ","    G   G      ","     GGG       ","               "},
                 {"               ","     EAE D     "," F  E   E    F "," F E  H  E  BF "," FFA HCH A BDB "," F E  H  E  BF "," F  E   E    F ","     EAE       ","               "},
                 {"               ","     EAE DDD   "," F  E   E    F ","H  E  H  E  B B","HHHHHHCH A BDBB","H  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"               ","     GGG   D   "," F  G   G    F ","HHHHHHH  G  BBB","1CCCCCCH G BDD2","HHHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
-                {"               ","     EAE   D   "," F  E   E    F ","H  E  H  E  B B","HHHHHHCH A BDBB","H  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"     AAA   A   ","    AEEEA ADA  "," F AE   EAEA F "," FAE  H  EAEBE "," FAE HCH EABDB "," FAE  H  EAEBE "," F AE   EA   F ","    AEEEA      ","     AAA       "},
-                {"  EEGEEEGEEEE  "," EEEE   EEEEEE ","EEEE     EEEEEE","EEE   H   EEBEE","AAE  HCH  EBDBA","EEE   H   EEBEE","EEEE     EEEEEE"," EEEE   EEEEEE ","  EEEEAEEEEEE  "},
-                {" EEEGAAAGEGGGE "," E           E ","E             E","G     H     B G","G    HCH   BDBG","G     H     B G","E             E"," E           E "," EEEEEAEEEGGGE "},
-                {" AAAGA~AGAGGGA "," A           A ","A             A","G     H     B G","G    HCH   BDBG","G     H     B G","A             A"," A           A "," AAAAAAAAAGGGA "},
-                {" AEEGAAAGEGGGA "," E           E ","E             E","G     H     B G","G    HCH   BDBG","G     H     B G","E             E"," E           E "," AEEEEEEEEGGGA "},
-                {" AEEGEEEGEEEEA "," EEEEEEEEEEEEE ","EEEEEEEEEEEEEEE","EEEEEEEEEEEEEEE","AEEEEEEEEEEEEEA","EEEEEEEEEEEEEEE","EEEEEEEEEEEEEEE"," EEEEEEEEEEEEE "," AEEEEEEEEEEEA "}
+                {"               ","     GGG   D   "," F  G   G    F ","HHHHHHH  G  BBB","3CCCCCCH G BDD2","HHHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
+                {"               ","     EAE   D   "," F  E   E    F ","H  E     E  B B","HHHHHHH  A BDBB","H  E     E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"     GGG   G   ","    GEAEG GDG  "," F GE   EGEGEF "," FGE     EGEBE "," FAA     AGBDB "," FGE     EGEBE "," F GE   EG   F ","    GEAEG      ","     GGG       "},
+                {"  EEG111GE111  "," EEEE   EEEDEE ","EEEE     EEEEEE","1EE       EEBE1","111       1BDB1","1EE       EEBE1","EEEE     EE1EEE"," EEEE   EEE1EE ","  EEG111GE111  "},
+                {" GEEG111GEGGGE "," E         D E ","EE           EE","G             G","G           D G","G             G","EE           EE"," E           E "," GEEG111GEGGGE "},
+                {" G11G1~1G1GGG1 "," 1  CCCCC  D 1 ","11         D 11","G   CCCCC  D  G","G          DD G","G   CCCCC  D  G","11         D 11"," 1  CCCCC    1 "," G11G111G1GGG1 "},
+                {" GEEG111GEGGGE "," E  C   C  D E ","EE           EE","G   C   C     G","G             G","G   C   C     G","EE         D EE"," E  C   C    E "," GEEG111GEGGGE "},
+                {" GEEG111GE111E "," EEEEE1EEEE1EE ","EEEEEE1EEEE1EEE","1EEEEE1EEEE1EE1","111111111111111","1EEEEE1EEEE1EE1","EEEEEE1EEEE1EEE"," EEEEE1EEEE1EE "," GEEG111GE111E "}
             }))
             .addShape(STRUCTURE_PIECE_LAYER,transpose(new String[][]{
-                {"        NNN    ","     MIMNLN    ","    M   MNNNNN ","   M  P  MNNJNN","   I PKP INPLJN","   M  P  MNNJNN","    M   M  NNN ","     MIM       ","               "},
-                {"               ","     OOO L     ","    O   O      ","   O  P  O  P  ","   O PKP O PKPP","   O  P  O  P  ","    O   O      ","     OOO       ","               "},
-                {"               ","     MIM L     ","    M   M      ","   M  P  M  PPP","   I PKP I PKK4","   M  P  M  PPP","    M   M      ","     MIM       ","               "},
-                {"               ","     MIM L     ","    M   M      ","   M  P  M  P  ","   I PKP I PKPP","   M  P  M  P  ","    M   M      ","     MIM       ","               "},
-                {"               ","     OOO L     ","    O   O      ","   O  P  O  PPP","   O PKP O PKK3","   O  P  O  PPP","    O   O      ","     OOO       ","               "},
-                {"               ","     MIM L     ","    M   M      ","   M  P  M  P  ","   I PKP I PKPP","   M  P  M  P  ","    M   M      ","     MIM       ","               "}
+                {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFHFF","   AFHCHFAFHCHF","   E  H  EFFHFF","    E F E  FFF ","     EAE       ","               "},
+                {"               ","     GGG D     ","    G   G      ","   G  H  G  H  ","   G HCH G HCHH","   G  H  G  H  ","    G   G      ","     GGG       ","               "},
+                {"               ","     EAE D     ","    E   E      ","   E  H  E  HHH","   A HCH A HCC5","   E  H  E  HHH","    E   E      ","     EAE       ","               "},
+                {"               ","     EAE D     ","    E   E      ","   E  H  E  H  ","   A HCH A HCHH","   E  H  E  H  ","    E   E      ","     EAE       ","               "},
+                {"               ","     GGG D     ","    G   G      ","   G  H  G  HHH","   G HCH G HCC4","   G  H  G  HHH","    G   G      ","     GGG       ","               "},
+                {"               ","     EAE D     ","    E   E      ","   E  H  E  H  ","   A HCH A HCHH","   E  H  E  H  ","    E   E      ","     EAE       ","               "}
             }) )
             .addShape(
                 STRUCTURE_PIECE_TOP,transpose(new String[][]{
-                {"               ","               ","               ","               ","      WWWWWWW  ","               ","               ","               ","               "},
-                {"               ","               ","               ","      WWWWWWW  ","     WRRRRRRRW ","      WWWWWWW  ","               ","               ","               "},
-                {"               ","               ","               ","      W     W  ","     WRWWWWWRW ","      W     W  ","               ","               ","               "},
-                {"               ","               ","               ","      W     W  ","     WRW   WRW ","      W     W  ","               ","               ","               "},
-                {"               ","               ","      Q        ","     QWQ    W  ","    QWRWQ  WRW ","     QWQ    W  ","      Q        ","               ","               "},
-                {"               ","      Q        ","     TTT       ","    TTWTT   W  ","   QTWRWTQ WRW ","    TTWTT   W  ","     TTT       ","      Q        ","               "},
-                {"               ","     TQT       ","    TTTTT  UUU ","   TT W TTUUWUU","   QTWRWTQUWRWU","   TT W TTUUWUU","    TTTTT  UUU ","     TQT       ","               "},
-                {"               ","     VVV       ","    V   V      ","   V  W  V  W  ","   V WRW V WRW ","   V  W  V  W  ","    V   V      ","     VVV       ","               "},
-                {"               ","     TQT       ","    T   T      ","   T  W  T  W  ","   Q WRW Q WRW ","   T  W  T  W  ","    T   T      ","     TQT       ","               "},
-                {"               ","     TQT       ","    T   T      ","   T  W  T  W  ","   Q WRW Q WRWW","   T  W  T  W  ","    T   T      ","     TQT       ","               "},
-                {"      SSSS     ","     VSV S     ","    V   V      ","   V  W  V  WWW","   V WRW V WRR5","   V  W  V  WWW","    V   V      ","     VVV       ","               "},
-                {"               ","     TQT S     ","    T   T      ","   T  W  T  W  ","   Q WRW Q WRWW","   T  W  T  W  ","    T   T      ","     TQT       ","               "}
-            }))
+                    {"               ","               ","               ","               ","      HHHHHHH  ","               ","               ","               ","               "},
+                    {"               ","               ","               ","      HHHHHHH  ","     HCCCCCCCH ","      HHHHHHH  ","               ","               ","               "},
+                    {"               ","               ","               ","      H     H  ","     HCHHHHHCH ","      H     H  ","               ","               ","               "},
+                    {"               ","               ","               ","      H     H  ","     HCH   HCH ","      H     H  ","               ","               ","               "},
+                    {"               ","               ","      A        ","     AHA    H  ","    AHCHA  HCH ","     AHA    H  ","      A        ","               ","               "},
+                    {"               ","      A        ","     EEE       ","    EEHEE   H  ","   AEHCHEA HCH ","    EEHEE   H  ","     EEE       ","      A        ","               "},
+                    {"               ","     EAE       ","    EEEEE  FFF ","   EE H EEFFHFF","   AEHCHEAFHCHF","   EE H EEFFHFF","    EEEEE  FFF ","     EAE       ","               "},
+                    {"               ","     GGG       ","    G   G      ","   G  H  G  H  ","   G HCH G HCH ","   G  H  G  H  ","    G   G      ","     GGG       ","               "},
+                    {"               ","     EAE       ","    E   E      ","   E  H  E  H  ","   A HCH A HCH ","   E  H  E  H  ","    E   E      ","     EAE       ","               "},
+                    {"               ","     EAE       ","    E   E      ","   E  H  E  H  ","   A HCH A HCHH","   E  H  E  H  ","    E   E      ","     EAE       ","               "},
+                    {"      DDDD     ","     GDG D     ","    G   G      ","   G  H  G  HHH","   G HCH G HCC6","   G  H  G  HHH","    G   G      ","     GGG       ","               "},
+                    {"               ","     EAE D     ","    E   E      ","   E  H  E  H  ","   A HCH A HCHH","   E  H  E  H  ","    E   E      ","     EAE       ","               "}
+                }))
             // spotless:on
             // base structure blocks / elements
             .addElement('A', Casings.NaquadahReinforcedDistillationCasing.asElement())
             .addElement('B', Casings.SolidSteelMachineCasing.asElement())
             .addElement('C', Casings.BronzePipeCasing.asElement())
             .addElement('D', Casings.SteelPipeCasing.asElement())
-            .addElement(
-                'E',
-                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(Maintenance, Energy, InputBus)
-                    .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
+            .addElement('E', Casings.CleanStainlessSteelMachineCasing.asElement())
+            .addElement('F', ofFrame(Materials.StainlessSteel))
+            .addElement('G', ofSheetMetal(Materials.Naquadah))
+            .addElement('H', Casings.StrongBronzeMachineCasing.asElement())
+            //first slice hatches
+            .addElement('1',
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(Maintenance, InputBus, Energy.or(ExoticEnergy))
+                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                     .hint(1)
                     .buildAndChain(
                         onElementPass(
                             MTEMegaDistillationTower::onCasingAdded,
-                            Casings.CleanStainlessSteelMachineCasing.asElement())))
-            .addElement('F', ofSheetMetal(Materials.StainlessSteel))
-            .addElement('G', ofSheetMetal(Materials.Naquadah))
-            .addElement('H', Casings.StrongBronzeMachineCasing.asElement())
-            .addElement(
-                '1',
-                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
-                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                            Casings.NaquadahReinforcedDistillationCasing.asElement())))
             .addElement(
                 '2',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(OutputBus)
-                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
-                    .hint(2)
-                    .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
-            // second layer blocks / elements
-            .addElement('I', Casings.NaquadahReinforcedDistillationCasing.asElement())
-            .addElement('J', Casings.SolidSteelMachineCasing.asElement())
-            .addElement('K', Casings.BronzePipeCasing.asElement())
-            .addElement('L', Casings.SteelPipeCasing.asElement())
-            .addElement('M', Casings.CleanStainlessSteelMachineCasing.asElement())
-            .addElement('N', ofSheetMetal(Materials.StainlessSteel))
-            .addElement('O', ofSheetMetal(Materials.Naquadah))
-            .addElement('P', Casings.StrongBronzeMachineCasing.asElement())
+                    .casingIndex(Casings.SteelPipeCasing.textureId)
+                    .hint(3)
+                    .buildAndChain(Casings.SteelPipeCasing.asElement()))
             .addElement(
                 '3',
-                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(bottomLayeredOutputHatch)
-                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
-                    .hint(3)
-                    .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
+                    .casingIndex(Casings.BronzePipeCasing.textureId)
+                    .hint(2)
+                    .buildAndChain(Casings.BronzePipeCasing.asElement()))
+            //middle slice hatches
             .addElement(
                 '4',
-                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(topLayeredOutputHatch)
-                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(bottomLayeredOutputHatch)
+                    .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(4)
-                    .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
-            // top layer blocks / elements
-            .addElement('Q', Casings.NaquadahReinforcedDistillationCasing.asElement())
-            .addElement('R', Casings.BronzePipeCasing.asElement())
-            .addElement('S', Casings.SteelPipeCasing.asElement())
-            .addElement('T', Casings.CleanStainlessSteelMachineCasing.asElement())
-            .addElement('U', ofSheetMetal(Materials.StainlessSteel))
-            .addElement('V', ofSheetMetal(Materials.Naquadah))
-            .addElement('W', Casings.StrongBronzeMachineCasing.asElement())
+                    .buildAndChain(Casings.BronzePipeCasing.asElement()))
             .addElement(
                 '5',
-                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
-                    .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(topLayeredOutputHatch)
+                    .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(5)
-                    .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                    .buildAndChain(Casings.BronzePipeCasing.asElement()))
+            //top slice hatch
+            .addElement(
+                '6',
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
+                    .casingIndex(Casings.BronzePipeCasing.textureId)
+                    .hint(6)
+                    .buildAndChain(Casings.BronzePipeCasing.asElement()))
             .build();
     }
 
@@ -413,23 +401,36 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addBulkMachineInfo(1, 1, 1)
-            .addInfo("Disable animations with a screwdriver")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center")
-            .addCasingInfoMin("Centrifuge Casing", 6, false)
-            .addCasingInfoExactly("Large Sieve Grate", 18, false)
-            .addCasingInfoExactly("Eglin Steel Frame Box", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
+        tt.addMachineType("Distillery, DT, MDT")
+            .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
+            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
+            .addController("Front off-center, 3rd Layer")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
+            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 20, false)
+            .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
+            .addCasingInfoExactly("Stainless Steel Framebox", 99, false)
+            .addCasingInfoExactly("Bronze Pipe Casing", 84, false)
+            .addCasingInfoExactly("Strong Bronze Machine Casing", 215, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 44, false)
+            .addCasingInfoExactly("Solid Steel Machine Casing", 41, false)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Additional Middle Slices:")
+            .addCasingInfoExactly("Naquadah Reinforced Distillation Machine Casing", 16, false)
+            .addCasingInfoExactly("Naquadah Sheetmetal", 32, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 48, false)
+            .addCasingInfoExactly("Stainless Steel Framebox", 27, false)
+            .addCasingInfoExactly("Bronze Pipe Casing", 16, false)
+            .addCasingInfoExactly("Strong Bronze Machine Casing", 57, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
+            .addInputBus("Any Naquadah Distillation Casing in the first 5 layers", 1)
+            .addEnergyHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
+            .addMaintenanceHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
+            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right ", 2)
+            .addInputHatch("Bottom Slice, Bronze Pipe Casing, 8th layer, furthest left", 3)
+            .addOutputHatch("Middle Slices & Top Slice, Bronze Pipe Casing, furthest right", 4, 5, 6)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
             .toolTipFinisher();
         return tt;
     }
