@@ -9789,7 +9789,6 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .addCentrifugeRecipe()
             .addMaterial(Materials.Zinc, 5)
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.Obsidian, 2)
