@@ -199,7 +199,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     /**
      * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
-     * 
+     *
      * @return color from 0 to 16, 0 means colorless.
      */
     protected final byte getColorRaw() {
@@ -207,7 +207,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     /**
-     * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
+     * Colorless is 0 for this function. Prefer {@link #setColorization(byte)} for usual cases
      */
     protected final void setColorRaw(byte color) {
         if (mColor == color) return;
