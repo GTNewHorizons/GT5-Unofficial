@@ -37,7 +37,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
@@ -103,24 +102,29 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return getLocalizedName(getMaterial(meta & MATERIAL_MASK));
     }
 
-    private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
-        // Obtain metadata to grab proper material identifier
-        int meta = worldIn.getBlockMetadata(x, y, z) & MATERIAL_MASK;
-        Materials material = getMaterial(meta);
-        MTEFrame frame = new MTEFrame("GT_Frame_" + material, material);
-        baseMte.setMetaTileEntity(frame);
-        baseMte.setInitialValuesAsNBT(null, (short) (4096 + meta)); // 4096 is found in LoaderMetaTileEntities for
-                                                                    // frames
-        frame.setBaseMetaTileEntity(baseMte);
-    }
+    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, EntityPlayer player, int x, int y, int z) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof BaseMetaPipeEntity base) {
+            return base;
+        }
+        int newMeta = worldIn.getBlockMetadata(x, y, z) | MTE_BIT;
+        worldIn.setBlockMetadataWithNotify(x, y, z, newMeta, 2);
 
-    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
-        // Spawn a TE frame box at this location, then apply the cover
-        BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
-        createFrame(worldIn, x, y, z, newTileEntity);
-        worldIn.setTileEntity(x, y, z, newTileEntity);
+        // Same logic as ItemMachines#placeBlockAt
+        BaseMetaPipeEntity base = (BaseMetaPipeEntity) worldIn.getTileEntity(x, y, z);
+        base.setInitialValuesAsNBT(null, (short) (4096 + (newMeta & MATERIAL_MASK))); // 4096 is found in
+                                                                                      // LoaderMetaTileEntities for
+                                                                                      // frames
 
-        return newTileEntity;
+        if (player != null) {
+            base.setOwnerName(player.getDisplayName());
+            base.setOwnerUuid(player.getUniqueID());
+        }
+
+        base.getMetaTileEntity()
+            .initDefaultModes(null);
+
+        return base;
     }
 
     // Get the material that this frame box is made of
@@ -137,11 +141,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         TileEntity te = worldIn.getTileEntity(x, y, z);
 
         if (te instanceof BaseMetaPipeEntity baseTileEntity) {
-            // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
-            // This happens on world load for some reason
-            if (baseTileEntity.getMetaTileEntity() == null) {
-                createFrame(worldIn, x, y, z, baseTileEntity);
-            }
             return baseTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
@@ -149,7 +148,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (CoverRegistry.isCover(item)) {
-            BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
+            BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, player, x, y, z);
             return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
@@ -393,7 +392,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public boolean hasTileEntity(int aMeta) {
-        return true;
+        return (aMeta & MTE_BIT) != 0;
     }
 
     @Override

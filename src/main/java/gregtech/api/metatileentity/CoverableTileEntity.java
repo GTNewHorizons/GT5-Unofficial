@@ -250,6 +250,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      */
     private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
+        issueCoverUpdate(side);
         issueTileUpdate();
         issueBlockUpdate();
     }
