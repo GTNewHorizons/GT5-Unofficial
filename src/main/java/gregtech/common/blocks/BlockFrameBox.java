@@ -112,9 +112,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
         // Same logic as ItemMachines#placeBlockAt
         BaseMetaPipeEntity base = (BaseMetaPipeEntity) worldIn.getTileEntity(x, y, z);
-        base.setInitialValuesAsNBT(null, (short) (4096 + (newMeta & MATERIAL_MASK))); // 4096 is found in
-                                                                                      // LoaderMetaTileEntities for
-                                                                                      // frames
+        // 4096 is found in LoaderMetaTileEntities for frames
+        base.setInitialValuesAsNBT(null, (short) (4096 + (newMeta & MATERIAL_MASK)));
 
         if (player != null) {
             base.setOwnerName(player.getDisplayName());
