@@ -56,11 +56,11 @@ public class ResourceUtils {
             return true;
         } catch (IOException ignored) {
             return false;
-        }finally {
+        } finally {
             if (res != null) {
                 try {
                     InputStream stream = res.getInputStream();
-                    if(stream != null){
+                    if (stream != null) {
                         stream.close();
                     }
                 } catch (IOException ignored) {}
