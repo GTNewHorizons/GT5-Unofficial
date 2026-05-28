@@ -55,7 +55,6 @@ import bartworks.common.tileentities.tiered.MTEDiode;
 import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
-import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
@@ -152,72 +151,23 @@ public class ItemRegistry {
             MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
-            MainMod.MOD_ID + ":ThoriumYttriumGlass",
-            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
+            MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock",
-        },
-        new short[][] {
-            Materials.BorosilicateGlass.getRGBA(),
-            Materials.Titanium.getRGBA(),
-            Materials.TungstenSteel.getRGBA(),
-            WerkstoffLoader.RhodiumPlatedPalladium.getRGBA(),
-            Materials.Iridium.getRGBA(),
-            Materials.Osmium.getRGBA(),
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock", },
 
-            new short[] { 0xff, 0, 0 },
-            new short[] { 0, 0xff, 0 },
-            new short[] { 0x80, 0, 0xff },
-            new short[] { 0xff, 0xff, 0 },
-            new short[] { 0, 0xff, 0x80 },
-            new short[] { 0x80, 0x33, 0 },
-
-            WerkstoffLoader.YttriumOxide.getRGBA(),
-            Materials.Neutronium.getRGBA(),
-
-            new short[] { 0xda, 0xeb, 0xff },
-            Materials.TranscendentMetal.getRGBA(),},
-
-        MainMod.BIO_TAB,
-        true,
-        false);
+        MainMod.BIO_TAB);
 
     public static final Block bw_realglas2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
-        new String[] {
-            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
+        new String[] { MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlock", },
 
-        new short[][] {
-            Materials.Hexanite.getRGBA(),
-            Materials.Universium.getRGBA(), },
-
-        MainMod.BIO_TAB,
-        true,
-        false);
-
+        MainMod.BIO_TAB);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
-    public static final Block bw_fake_glasses = new BWBlocksGlass(
-        "BW_GlasBlocks",
-        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
-        null,
-        null,
-        true,
-        true);
-    public static final Block bw_fake_glasses2 = new BWBlocksGlass2(
-        "BW_GlasBlocks2",
-        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
-        null,
-        null,
-        true,
-        true);
     public static final Block[] BW_BLOCKS = {
         new BWBlocks(
             "BW_ItemBlocks",
@@ -252,8 +202,6 @@ public class ItemRegistry {
     public static ItemStack humongousInputHatch;
 
     public static void run() {
-        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
-        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
 
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");

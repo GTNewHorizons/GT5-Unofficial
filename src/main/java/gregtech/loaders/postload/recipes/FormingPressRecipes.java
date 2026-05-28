@@ -286,12 +286,12 @@ public class FormingPressRecipes implements Runnable {
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
 
-        //Hexanite Borosilicate Glass
+        // Hexanite Borosilicate Glass
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 12),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite,1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
             .fluidInputs(Materials.UnformedHexanite.getFluid(8 * INGOTS))
             .duration(40 * SECONDS)
