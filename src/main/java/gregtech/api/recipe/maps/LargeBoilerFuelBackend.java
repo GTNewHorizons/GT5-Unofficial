@@ -41,7 +41,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         "nitrofuel",
         "ethanol gasoline",
         "jet fuel no.3",
-        "get fuel a",
+        "jet fuel a",
         "highoctanegasoline");
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {

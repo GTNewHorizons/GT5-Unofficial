@@ -323,8 +323,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        int burnTime = (int) LargeBoilerFuelBackend.getBurntimeRatio(tRecipe.mSpecialValue, 20);
-                        setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -334,8 +333,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        int burnTime = (int) LargeBoilerFuelBackend.getBurntimeRatio(tRecipe.mSpecialValue * 2, 20);
-                        setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -355,7 +353,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.excessFuel += (int) (fuelValue % 80);
                             burnTime += this.excessFuel / 80;
                             this.excessFuel %= 80;
-                            burnTime = (int) LargeBoilerFuelBackend.getBurntimeRatio(burnTime, 20);
                             setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), false);
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -386,6 +383,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
+        rawBurnTime = (int) LargeBoilerFuelBackend.getBurntimeRatio(rawBurnTime, 20);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
         if (isFluid) {

@@ -103,17 +103,16 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                     currentSteamProductionSync.getValue()
                         .longValue()))).height(DISPLAY_ROW_HEIGHT)
                             .scale(0.75f)
-                            .tooltip(t -> {
-                                t.addLine(
+                            .tooltipBuilder(
+                                t -> t.addLine(
                                     EnumChatFormatting.AQUA + fluidName
                                         + "\n"
                                         + GTUtility.appendRate(
-                                            true,
+                                            false,
                                             currentSteamProductionSync.getValue()
                                                 .longValue(),
                                             false,
-                                            1));
-                            });
+                                            1)));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
@@ -138,9 +137,9 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                 "gt.interact.desc.mb.FluidTextLine",
                 truncatedFluidName,
                 amountShort,
-                showOutputRates() ? "(" : "",
-                showOutputRates() ? rateInner : "",
-                showOutputRates() ? ")" : "");
+                "(",
+                rateInner,
+                ")");
         }
         return EnumChatFormatting.AQUA + truncatedFluidName + amountString;
     }
