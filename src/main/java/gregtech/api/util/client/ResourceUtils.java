@@ -37,16 +37,17 @@ public class ResourceUtils {
             .getResourceManager();
         if (resMan instanceof SimpleReloadableResourceManager simple) {
             FallbackResourceManager fallback = simple.domainResourceManagers.get(resLoc.getResourceDomain());
-            if (fallback == null) return false;
-            for (IResourcePack rp : fallback.resourcePacks) {
-                if (rp != null && rp.resourceExists(resLoc)) {
-                    return true;
+            if (fallback != null) {
+                for (IResourcePack rp : fallback.resourcePacks) {
+                    if (rp != null && rp.resourceExists(resLoc)) {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
         }
 
-        // Fallback
+        // Fallback in case some mod changed how the resource manager stores ResourcePacks
         try {
             resMan.getResource(resLoc);
             return true;
