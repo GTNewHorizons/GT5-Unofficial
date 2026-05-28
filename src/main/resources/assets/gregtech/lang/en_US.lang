@@ -5483,6 +5483,8 @@ gt.item.apiary_upgrade.unlight.tooltip=Night upgrade for Industrial Apiary\nMaxi
 ## Special items
 gt.item.nuclear_star.name=Nuclear Star
 gt.item.nuclear_star.tooltip=By the powers of Greg, I command this star to be really hot.
+gt.item.pseudo_star.name=Pseudo Star
+gt.item.pseudo_star.tooltip=A miniature black hole star. Some could say this is a quasi star.
 gt.item.cover.metrics_transmitter.name=Metrics Transmitter Cover
 gt.item.cover.metrics_transmitter.tooltip=Taking Information Panels to the next level!\nCreates a GregTech Advanced Sensor Card when attached\nWorks across dimensions or if machine is dismantled\nRemoving this cover will destroy the linked card\n- Querns
 
