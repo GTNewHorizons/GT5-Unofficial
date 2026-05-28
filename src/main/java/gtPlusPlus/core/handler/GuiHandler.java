@@ -67,19 +67,13 @@ public class GuiHandler implements IGuiHandler {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te == null) return null;
 
-        // DO NOT replace this switch with enhanced one as that will break server instance of this mod
-        // noinspection EnhancedSwitchMigration
-        switch (ID) {
-            case GUI6:
-                return new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
-            case GUI8:
-                return new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            case GUI18:
-                return new GUIVolumetricFlaskSetter(
-                    new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
-            default:
-                return null;
-        }
+        return switch (ID) {
+            case GUI6 -> new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
+            case GUI8 -> new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+            case GUI18 -> new GUIVolumetricFlaskSetter(
+                new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
+            default -> null;
+        };
     }
 
 }
