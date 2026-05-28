@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
@@ -148,15 +150,18 @@ public class TextureSet {
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (int i = 0; i < 192; i++) {
-            if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                switch (SUFFIXES[i]) {
-                    case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
-                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = Textures.BlockIcons.textureSet(aSetName, SUFFIXES[i]);
+        if (FMLCommonHandler.instance()
+            .getSide() == Side.CLIENT) {
+            for (int i = 0; i < 192; i++) {
+                if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
+                    switch (SUFFIXES[i]) {
+                        case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
+                            .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + SUFFIXES[i]);
+                        default -> mTextures[i] = Textures.BlockIcons.textureSet(aSetName, SUFFIXES[i]);
+                    }
+                } else {
+                    mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
                 }
-            } else {
-                mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
             }
         }
     }
