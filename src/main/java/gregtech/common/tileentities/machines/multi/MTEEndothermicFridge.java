@@ -22,7 +22,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +48,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -62,7 +60,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -504,87 +501,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatch hatch : this.getExoticAndNormalEnergyHatchList()) {
-            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
-            if (base != null) {
-                storedEnergy += base.getStoredEU();
-                maxEnergy += base.getEUCapacity();
-            }
-        }
-
-        long nominalV = this.getMaxInputEu();
-        String tierName = BWUtil.getTierNameFromVoltage(nominalV);
-        if ("MAX+".equals(tierName)) tierName = EnumChatFormatting.OBFUSCATED + "MAX+";
-
-        List<String> info = new ArrayList<>();
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(this.mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(this.mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s");
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU");
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-this.lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t");
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(this.getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + formatNumber(this.getMaxInputAmps())
-                + "A) = "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(nominalV)
-                + EnumChatFormatting.RESET);
-        info.add(
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
-                + EnumChatFormatting.YELLOW
-                + tierName
-                + EnumChatFormatting.RESET);
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (this.getIdealStatus() - this.getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + this.mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %");
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %");
-        info.add(
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET);
+    public void getExtraInfoData(List<String> info) {
         info.add(StatCollector.translateToLocalFormatted("BW.infoData.mega_vacuum_freezer.tier", this.machineTier));
         if (this.machineTier == 2) {
             info.add(
@@ -609,8 +526,6 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     "GT5U.waila.mvf.cryotheum",
                     formatFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * this.speedBoost * this.speedMultiplier))));
         }
-
-        return info.toArray(new String[0]);
     }
 
     @Override
