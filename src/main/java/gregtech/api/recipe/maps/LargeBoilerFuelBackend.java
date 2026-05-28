@@ -29,8 +29,11 @@ import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
 public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     private static boolean addedGeneralDesc = false;
+    // 500 represents mSpecialValue of the fuel, which is energy density of 1L of fuel, or in this case,
+    // 500k EU per 1000L
+    private static final int HIGH_TIER_FLUID_THRESHOLD = 500;
 
-    private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
+    private static final List<String> ALLOWED_FUELS = Arrays.asList(
         "gregtech:gt.blockreinforced:6",
         "gregtech:gt.blockreinforced:7",
         "ether",
@@ -50,21 +53,13 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public static boolean isAllowedFuel(String itemRegistryName, int meta) {
-        return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
+        return ALLOWED_FUELS.contains(itemRegistryName + ":" + meta);
     }
 
     public static boolean isAllowedFuel(FluidStack stack) {
-        return ALLOWED_SOLID_FUELS.contains(
+        return ALLOWED_FUELS.contains(
             stack.getFluid()
                 .getName());
-    }
-
-    public static boolean addAllowedSolidFuel(ItemStack stack) {
-        return addAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
-    }
-
-    public static boolean addAllowedSolidFuel(String itemregistryName, int meta) {
-        return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
     }
 
     public GTRecipe addDenseLiquidRecipe(GTRecipe recipe) {
@@ -72,8 +67,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public GTRecipe addDieselRecipe(GTRecipe recipe) {
-        if (recipe.mSpecialValue > 500) return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20, true, true);
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20, true, false);
+        return addRecipe(
+            recipe,
+            ((double) recipe.mSpecialValue) / 20,
+            true,
+            (recipe.mSpecialValue > HIGH_TIER_FLUID_THRESHOLD));
     }
 
     public void addSolidRecipes(ItemStack... itemStacks) {
@@ -112,7 +110,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         boolean isAllowedInSteelBoiler = GTModHandler.getFuelValue(fuelItemStack) >= MTELargeBoilerSteel.EUT_GENERATED;
 
         String registryName = Item.itemRegistry.getNameForObject(fuelItemStack.getItem());
-        boolean isHighTierAllowed = ALLOWED_SOLID_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
+        boolean isHighTierAllowed = ALLOWED_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
         return GTValues.RA.stdBuilder()
             .itemInputs(fuelItemStack)
             .duration(1)
@@ -128,8 +126,9 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
-    private double getBurntimeRatio(double fuelValue) {
-        return fuelValue * Math.max(1, 1 + Math.log((float) fuelValue / 10) * 0.025);
+    public static double getBurntimeRatio(double fuelValue, int dividerMult) {
+        // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
+        return fuelValue * Math.max(1, 1 + Math.log(fuelValue / 10 / dividerMult) * 0.025);
     }
 
     private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
@@ -137,13 +136,13 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 
-        double bronzeBurnTime = getBurntimeRatio(baseBurnTime) * 2 + floatErrorCorrection;
+        double bronzeBurnTime = getBurntimeRatio(baseBurnTime, 1) * 2 + floatErrorCorrection;
         bronzeBurnTime -= bronzeBurnTime % 0.05;
-        double steelBurnTime = getBurntimeRatio(baseBurnTime) + floatErrorCorrection;
+        double steelBurnTime = getBurntimeRatio(baseBurnTime, 1) + floatErrorCorrection;
         steelBurnTime -= steelBurnTime % 0.05;
-        double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
+        double titaniumBurnTime = getBurntimeRatio(baseBurnTime, 1) * 0.3 + floatErrorCorrection;
         titaniumBurnTime -= titaniumBurnTime % 0.05;
-        double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
+        double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime, 1) * 0.15 + floatErrorCorrection;
         tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
         recipe.setNeiDesc(

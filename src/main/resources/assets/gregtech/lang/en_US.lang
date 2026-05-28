@@ -2319,11 +2319,10 @@ GT5U.machines.antimatter_forge.disableRender=Disable Antimatter Forge Render
 GT5U.machines.coke_oven_hatch.mode.input=Hatch now inputs items
 GT5U.machines.coke_oven_hatch.mode.output=Hatch now outputs items
 GT5U.machines.coke_oven_hatch.mode.output_fluid=Hatch now outputs fluids
-GT5U.machines.large_boiler.gui.production=Produces %s
-GT5U.machines.large_boiler.gui.consumption=Consumes %s
-GT5U.machines.large_boiler.gui.burn=%s fuel burns for §9%s §fseconds
-GT5U.machines.large_boiler.gui.steam=Steam
-GT5U.machines.large_boiler.gui.shsteam=Superheated Steam
+GT5U.machines.large_boiler.gui.production=Produces §7%s§r: §7%s §rL/t
+GT5U.machines.large_boiler.gui.consumption=Consumes §9%s§r: §9%s §rL/t
+GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§r seconds
+GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§r seconds
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
