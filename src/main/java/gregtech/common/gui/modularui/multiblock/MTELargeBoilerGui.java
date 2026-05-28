@@ -46,12 +46,11 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         syncManager.syncValue("burnDecrease", new IntSyncValue(base::getBurnDecrease));
         syncManager.syncValue("currentWaterConsumption", new DoubleSyncValue(base::getCurrentWaterConsumptionPerTick));
         syncManager.syncValue("currentSteamProduction", new DoubleSyncValue(base::getCurrentSteamOutputPerTick));
-    }// FluidRegistry.getFluid() supercriticalsteam ic2superheatedsteam steam water ic2distilledwater
+    }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         BooleanSyncValue isMachineActive = syncManager.findSyncHandler("machineActive", BooleanSyncValue.class);
-
         return super.createTerminalTextWidget(syncManager, parent)
             .childIf(isMachineActive.getBoolValue(), () -> createSteamProductionTextWidget(syncManager))
             .childIf(isMachineActive.getBoolValue(), () -> createFluidTimerTextWidget(syncManager))
@@ -62,7 +61,6 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         BooleanSyncValue superheatedSync = syncManager.findSyncHandler("superheated", BooleanSyncValue.class);
         FluidStack fluidStack = superheatedSync.getBoolValue() ? FluidRegistry.getFluidStack("ic2superheatedsteam", 1)
             : FluidRegistry.getFluidStack("steam", 1);
-
         Flow column = Flow.column()
             .coverChildren(0);
         column.child(
@@ -98,7 +96,6 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
-
         return new TextWidget<>(
             IKey.dynamic(
                 () -> getFluidTextLine(

@@ -366,7 +366,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         if (solidBurnTime > 0 || fluidBurnTime > 0) {
-            this.mMaxProgresstime = 1;
+            setupBoiler();
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
@@ -393,6 +393,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             this.solidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
         }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
+        this.mEfficiencyIncrease = 1;
+        this.lEUt = adjustEUtForConfig(getEUt());
+    }
+
+    private void setupBoiler() {
+        // Is used when boiler is force shut down, which resets values except internal burn time, soft locking the
+        // progress
+        this.mMaxProgresstime = 1;
         this.mEfficiencyIncrease = 1;
         this.lEUt = adjustEUtForConfig(getEUt());
     }
