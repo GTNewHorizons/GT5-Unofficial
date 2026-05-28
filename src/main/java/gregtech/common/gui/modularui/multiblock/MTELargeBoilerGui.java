@@ -2,12 +2,8 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import gregtech.api.modularui2.GTWidgetThemes;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,9 +16,12 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBase;
@@ -54,15 +53,15 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         BooleanSyncValue isMachineActive = syncManager.findSyncHandler("machineActive", BooleanSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent)
-            .childIf(isMachineActive.getBoolValue(),() -> createSteamProductionTextWidget(syncManager))
-            .childIf(isMachineActive.getBoolValue(),() -> createFluidTimerTextWidget(syncManager))
-            .childIf(isMachineActive.getBoolValue(),() -> createSolidTimerTextWidget(syncManager));
+            .childIf(isMachineActive.getBoolValue(), () -> createSteamProductionTextWidget(syncManager))
+            .childIf(isMachineActive.getBoolValue(), () -> createFluidTimerTextWidget(syncManager))
+            .childIf(isMachineActive.getBoolValue(), () -> createSolidTimerTextWidget(syncManager));
     }
 
     private IWidget createSteamProductionTextWidget(PanelSyncManager syncManager) {
         BooleanSyncValue superheatedSync = syncManager.findSyncHandler("superheated", BooleanSyncValue.class);
-        FluidStack fluidStack = superheatedSync.getBoolValue() ? FluidRegistry.getFluidStack("ic2superheatedsteam",1)
-            : FluidRegistry.getFluidStack("steam",1);
+        FluidStack fluidStack = superheatedSync.getBoolValue() ? FluidRegistry.getFluidStack("ic2superheatedsteam", 1)
+            : FluidRegistry.getFluidStack("steam", 1);
 
         Flow column = Flow.column()
             .coverChildren(0);
@@ -95,23 +94,29 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                     String.format("%.2f", solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))));
     }
 
-    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack,
-        PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, PanelSyncManager syncManager) {
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
 
-        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, currentSteamProductionSync.getValue().longValue())))
-            .height(DISPLAY_ROW_HEIGHT)
-            .scale(0.75f)
-            .tooltip(t ->
-                {
-                    t.addLine(
-                        EnumChatFormatting.AQUA + fluidName
-                            + "\n"
-                            + GTUtility.appendRate(true, currentSteamProductionSync.getValue().longValue(), false, 1));
-                }
-            );
+        return new TextWidget<>(
+            IKey.dynamic(
+                () -> getFluidTextLine(
+                    fluidName,
+                    currentSteamProductionSync.getValue()
+                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
+                            .scale(0.75f)
+                            .tooltip(t -> {
+                                t.addLine(
+                                    EnumChatFormatting.AQUA + fluidName
+                                        + "\n"
+                                        + GTUtility.appendRate(
+                                            true,
+                                            currentSteamProductionSync.getValue()
+                                                .longValue(),
+                                            false,
+                                            1));
+                            });
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
@@ -125,8 +130,8 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.FluidTextLine");
         if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
             String amountShort = GTUtility.formatShortenedLong(amount);
-            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
-                GTUtility.appendRate(false, amount, true, 1));
+            String rateText = EnumChatFormatting
+                .getTextWithoutFormattingCodes(GTUtility.appendRate(false, amount, true, 1));
             String trimmedRate = rateText.trim();
             String rateInner = trimmedRate;
             if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
