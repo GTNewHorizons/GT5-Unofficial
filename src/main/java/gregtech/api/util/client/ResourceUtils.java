@@ -19,8 +19,7 @@ import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 
 public class ResourceUtils {
 
-    @SideOnly(Side.CLIENT)
-    private static Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>();
+    private static final Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>();
 
     /**
      * Checks whether a resource exists.
