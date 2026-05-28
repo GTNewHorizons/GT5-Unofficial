@@ -13,6 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import org.junit.jupiter.api.Test;
 
 import gregtech.api.util.GTRecipe;
@@ -28,8 +32,8 @@ class GTRecipeLookupTest {
         GTRecipe first = recipe();
         GTRecipe second = recipe();
 
-        assertTrue(lookup.add(first, groups(group(ore(1)), group(ore(2)))));
-        assertTrue(lookup.add(second, groups(group(ore(1)), group(ore(2)))));
+        lookup.add(first, groups(group(ore(1)), group(ore(2))));
+        lookup.add(second, groups(group(ore(1)), group(ore(2))));
 
         Iterator<GTRecipe> iterator = lookup.iterator(groups(group(ore(1)), group(ore(2))));
 
@@ -45,7 +49,7 @@ class GTRecipeLookupTest {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe recipe = recipe();
 
-        assertTrue(lookup.add(recipe, groups(group(ore(10), ore(11)), group(ore(12)))));
+        lookup.add(recipe, groups(group(ore(10), ore(11)), group(ore(12))));
 
         assertSame(recipe, onlyResult(lookup.iterator(groups(group(ore(10)), group(ore(12))))));
         assertSame(recipe, onlyResult(lookup.iterator(groups(group(ore(11)), group(ore(12))))));
@@ -55,15 +59,21 @@ class GTRecipeLookupTest {
     }
 
     @Test
-    void separatesNormalAndNbtSensitiveIngredientBranches() {
+    void separatesNormalAndNbtSensitiveItemKeysByLookupKeyIdentity() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe normalRecipe = recipe();
         GTRecipe nbtSensitiveRecipe = recipe();
-        TestIngredient normal = new TestIngredient(20, false);
-        TestIngredient nbtSensitive = new TestIngredient(20, true);
+        ItemStack stack = new ItemStack(new Item().setUnlocalizedName("lookup.item.nbt.branch"), 1, 0);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("integer", 123456);
+        stack.setTagCompound(tag);
 
-        assertTrue(lookup.add(normalRecipe, groups(group(normal))));
-        assertTrue(lookup.add(nbtSensitiveRecipe, groups(group(nbtSensitive))));
+        GTRecipeLookupIngredient normal = GTItemStackLookupIngredient.fromRecipe(stack);
+        GTRecipeLookupIngredient nbtSensitive = GTItemStackLookupIngredient.fromNbtSensitiveRecipe(stack);
+
+        assertFalse(normal.equals(nbtSensitive));
+        lookup.add(normalRecipe, groups(group(normal)));
+        lookup.add(nbtSensitiveRecipe, groups(group(nbtSensitive)));
 
         assertSame(normalRecipe, onlyResult(lookup.iterator(groups(group(normal)))));
         assertSame(nbtSensitiveRecipe, onlyResult(lookup.iterator(groups(group(nbtSensitive)))));
@@ -75,8 +85,8 @@ class GTRecipeLookupTest {
         GTRecipe existing = recipe();
         GTRecipe overlapping = recipe();
 
-        assertTrue(lookup.add(existing, groups(group(ore(30)))));
-        assertTrue(lookup.add(overlapping, groups(group(ore(30)), group(ore(32)))));
+        lookup.add(existing, groups(group(ore(30))));
+        lookup.add(overlapping, groups(group(ore(30)), group(ore(32))));
 
         List<GTRecipe> results = results(lookup.iterator(groups(group(ore(30)), group(ore(32)))));
         assertEquals(2, results.size());
@@ -90,8 +100,8 @@ class GTRecipeLookupTest {
         GTRecipe existing = recipe();
         GTRecipe overlapping = recipe();
 
-        assertTrue(lookup.add(existing, groups(group(ore(40)), group(ore(41)))));
-        assertTrue(lookup.add(overlapping, groups(group(ore(40)))));
+        lookup.add(existing, groups(group(ore(40)), group(ore(41))));
+        lookup.add(overlapping, groups(group(ore(40))));
 
         assertSame(overlapping, onlyResult(lookup.iterator(groups(group(ore(40))))));
         List<GTRecipe> results = results(lookup.iterator(groups(group(ore(40)), group(ore(41)))));
@@ -106,8 +116,8 @@ class GTRecipeLookupTest {
         GTRecipe first = recipe();
         GTRecipe second = recipe();
 
-        assertTrue(lookup.add(first, groups(group(ore(50)))));
-        assertTrue(lookup.add(second, groups(group(ore(50)))));
+        lookup.add(first, groups(group(ore(50))));
+        lookup.add(second, groups(group(ore(50))));
 
         Iterator<GTRecipe> iterator = lookup.iterator(groups(group(ore(50))));
 
@@ -132,7 +142,7 @@ class GTRecipeLookupTest {
             GTRecipe recipe = recipe();
             recipes.add(recipe);
             queryKeys.add(ore(100 + i));
-            assertTrue(lookup.add(recipe, groups(group(ore(100 + i)))));
+            lookup.add(recipe, groups(group(ore(100 + i))));
         }
 
         Iterator<GTRecipe> iterator = lookup.iterator(groups(queryKeys));
@@ -190,25 +200,4 @@ class GTRecipeLookupTest {
         return Arrays.asList(ingredients);
     }
 
-    private static final class TestIngredient extends GTRecipeLookupIngredient {
-
-        private final int id;
-        private final boolean nbtSensitive;
-
-        private TestIngredient(int id, boolean nbtSensitive) {
-            super(id);
-            this.id = id;
-            this.nbtSensitive = nbtSensitive;
-        }
-
-        @Override
-        protected boolean equalsSameClass(GTRecipeLookupIngredient other) {
-            return id == ((TestIngredient) other).id;
-        }
-
-        @Override
-        public boolean isNbtSensitive() {
-            return nbtSensitive;
-        }
-    }
 }

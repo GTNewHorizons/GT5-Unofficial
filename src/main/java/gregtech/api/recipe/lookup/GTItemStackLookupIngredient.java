@@ -28,7 +28,11 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
     }
 
     public static GTItemStackLookupIngredient fromRecipe(ItemStack stack) {
-        return new GTItemStackLookupIngredient(stack, isWildcard(stack), false);
+        return fromRecipe(stack, false);
+    }
+
+    public static GTItemStackLookupIngredient fromRecipe(ItemStack stack, boolean recipeNbtSensitive) {
+        return new GTItemStackLookupIngredient(stack, isWildcard(stack), recipeNbtSensitive && stack.hasTagCompound());
     }
 
     public static GTItemStackLookupIngredient fromRuntime(ItemStack stack) {
@@ -40,7 +44,7 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
     }
 
     public static GTItemStackLookupIngredient fromNbtSensitiveRecipe(ItemStack stack) {
-        return new GTItemStackLookupIngredient(stack, isWildcard(stack), true);
+        return fromRecipe(stack, true);
     }
 
     public Item getItem() {
@@ -55,7 +59,6 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
         return damage == OreDictionary.WILDCARD_VALUE;
     }
 
-    @Override
     public boolean isNbtSensitive() {
         return nbtSensitive;
     }

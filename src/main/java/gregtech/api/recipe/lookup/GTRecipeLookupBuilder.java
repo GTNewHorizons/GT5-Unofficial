@@ -40,26 +40,24 @@ public final class GTRecipeLookupBuilder {
 
         for (RecipeEntry entry : entries) {
             List<List<GTRecipeLookupIngredient>> pooled = poolAndSort(entry.ingredients, frequencies, pool);
-            if (!lookup.add(entry.recipe, pooled)) {
-                throw new IllegalStateException("Could not add recipe to lookup");
-            }
+            lookup.add(entry.recipe, pooled);
         }
 
         return lookup;
     }
 
-    public static boolean addToLookup(GTRecipeLookup lookup, GTRecipe recipe) {
+    public static void addToLookup(GTRecipeLookup lookup, GTRecipe recipe) {
         Objects.requireNonNull(lookup, "lookup");
         Objects.requireNonNull(recipe, "recipe");
         if (recipe.mFakeRecipe) {
-            return true;
+            return;
         }
 
         List<List<GTRecipeLookupIngredient>> ingredients = flatten(recipe);
         if (ingredients.isEmpty()) {
-            return true;
+            return;
         }
-        return lookup.add(recipe, ingredients);
+        lookup.add(recipe, ingredients);
     }
 
     private Map<GTRecipeLookupIngredient, Integer> computeFrequencies() {
@@ -213,9 +211,7 @@ public final class GTRecipeLookupBuilder {
         if (stack == null) {
             return;
         }
-        GTRecipeLookupIngredient ingredient = recipe.isNBTSensitive && stack.hasTagCompound()
-            ? GTItemStackLookupIngredient.fromNbtSensitiveRecipe(stack)
-            : GTItemStackLookupIngredient.fromRecipe(stack);
+        GTRecipeLookupIngredient ingredient = GTItemStackLookupIngredient.fromRecipe(stack, recipe.isNBTSensitive);
         addIfAbsent(group, ingredient);
     }
 

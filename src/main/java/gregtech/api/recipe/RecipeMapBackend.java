@@ -40,6 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -387,9 +388,7 @@ public class RecipeMapBackend {
         if (recipeLookupDirty) {
             ensureLookupCurrent();
         }
-        if (!GTRecipeLookupBuilder.addToLookup(recipeLookup, recipe)) {
-            throw new IllegalStateException("Could not add recipe to lookup");
-        }
+        GTRecipeLookupBuilder.addToLookup(recipeLookup, recipe);
     }
 
     /**
@@ -870,10 +869,10 @@ public class RecipeMapBackend {
         if (profile == null) {
             return lookupCandidateStream(items, fluids);
         }
-        profile.recordTrieBuild();
+        profile.recordTrieLookupSetup();
         long start = System.nanoTime();
         Stream<GTRecipe> stream = lookupCandidateStream(items, fluids);
-        profile.addTrieBuildNanos(System.nanoTime() - start);
+        profile.addTrieLookupSetupNanos(System.nanoTime() - start);
         return stream;
     }
 
@@ -886,9 +885,7 @@ public class RecipeMapBackend {
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();
             addRuntimeItemStackLookupIngredients(group, item);
-            for (GTOreDictLookupIngredient oreIngredient : GTOreDictLookupIngredient.fromRuntime(item)) {
-                addLookupIngredient(group, oreIngredient);
-            }
+            addRuntimeOreDictLookupIngredients(group, item);
             if (!group.isEmpty()) {
                 ingredients.add(group);
             }
@@ -922,6 +919,12 @@ public class RecipeMapBackend {
             && (unifiedItem.getItem() != item.getItem() || unifiedItem.getItemDamage() != item.getItemDamage())) {
             addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(unifiedItem));
             addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(unifiedItem));
+        }
+    }
+
+    private static void addRuntimeOreDictLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
+        for (int oreId : OreDictionary.getOreIDs(item)) {
+            addLookupIngredient(group, new GTOreDictLookupIngredient(oreId));
         }
     }
 
@@ -1082,12 +1085,12 @@ public class RecipeMapBackend {
             stats.recordCacheMapCandidate();
         }
 
-        private void recordTrieBuild() {
-            stats.recordTrieBuild();
+        private void recordTrieLookupSetup() {
+            stats.recordTrieLookupSetup();
         }
 
-        private void addTrieBuildNanos(long nanos) {
-            stats.addTrieBuildNanos(nanos);
+        private void addTrieLookupSetupNanos(long nanos) {
+            stats.addTrieLookupSetupNanos(nanos);
         }
 
         private void recordTrieCandidate() {
@@ -1131,8 +1134,8 @@ public class RecipeMapBackend {
         private long cachedRecipeCandidates;
         private long cacheMapProbes;
         private long cacheMapCandidates;
-        private long trieBuilds;
-        private long trieBuildNanos;
+        private long trieLookupSetups;
+        private long trieLookupSetupNanos;
         private long trieCandidates;
         private long matchedCandidates;
         private long fallbackProbes;
@@ -1192,12 +1195,12 @@ public class RecipeMapBackend {
             cacheMapCandidates++;
         }
 
-        private synchronized void recordTrieBuild() {
-            trieBuilds++;
+        private synchronized void recordTrieLookupSetup() {
+            trieLookupSetups++;
         }
 
-        private synchronized void addTrieBuildNanos(long nanos) {
-            trieBuildNanos += nanos;
+        private synchronized void addTrieLookupSetupNanos(long nanos) {
+            trieLookupSetupNanos += nanos;
         }
 
         private synchronized void recordTrieCandidate() {
@@ -1246,8 +1249,8 @@ public class RecipeMapBackend {
                     Locale.ROOT,
                     "[GTRecipeLookupProfile] map=%s calls=%d collision=%d overwrite=%d empty=%d minReject=%d "
                         + "setupAvgUs=%.3f ensureAvgUs=%.3f unifyMs=%.3f cachedCandidates=%d "
-                        + "cacheMapProbes=%d cacheMapCandidates=%d trieBuilds=%d trieBuildMs=%.3f "
-                        + "trieCandidates=%d trieCandidatesPerBuild=%.3f matched=%d fallbackProbes=%d fallbackHits=%d "
+                        + "cacheMapProbes=%d cacheMapCandidates=%d trieLookupSetups=%d trieLookupSetupMs=%.3f "
+                        + "trieCandidates=%d trieCandidatesPerLookupSetup=%.3f matched=%d fallbackProbes=%d fallbackHits=%d "
                         + "filterCalls=%d filterMatches=%d filterMs=%.3f modifyCalls=%d modifyHits=%d modifyMs=%.3f",
                     mapName,
                     calls,
@@ -1261,10 +1264,10 @@ public class RecipeMapBackend {
                     cachedRecipeCandidates,
                     cacheMapProbes,
                     cacheMapCandidates,
-                    trieBuilds,
-                    nanosToMillis(trieBuildNanos),
+                    trieLookupSetups,
+                    nanosToMillis(trieLookupSetupNanos),
                     trieCandidates,
-                    average(trieCandidates, trieBuilds),
+                    average(trieCandidates, trieLookupSetups),
                     matchedCandidates,
                     fallbackProbes,
                     fallbackHits,

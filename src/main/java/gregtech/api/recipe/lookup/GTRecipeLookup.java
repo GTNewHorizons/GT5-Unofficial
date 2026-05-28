@@ -17,23 +17,14 @@ public final class GTRecipeLookup {
     private final GTRecipeLookupBranch rootBranch = new GTRecipeLookupBranch();
     private boolean frozen;
 
-    public boolean add(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
+    public void add(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
         if (frozen) {
             throw new UnsupportedOperationException("built recipe lookup is immutable");
         }
         Objects.requireNonNull(recipe, "recipe");
         validateIngredients(ingredients);
 
-        List<Runnable> rollbackActions = new ArrayList<>();
-        if (addRecursive(recipe, ingredients, rootBranch, 0, rollbackActions)) {
-            return true;
-        }
-
-        for (int i = rollbackActions.size() - 1; i >= 0; i--) {
-            rollbackActions.get(i)
-                .run();
-        }
-        return false;
+        addRecursive(recipe, ingredients, rootBranch, 0);
     }
 
     public Iterator<GTRecipe> iterator(List<List<GTRecipeLookupIngredient>> ingredients) {
@@ -49,8 +40,8 @@ public final class GTRecipeLookup {
         frozen = true;
     }
 
-    private boolean addRecursive(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients,
-        GTRecipeLookupBranch branch, int index, List<Runnable> rollbackActions) {
+    private void addRecursive(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients,
+        GTRecipeLookupBranch branch, int index) {
         boolean lastIngredient = index == ingredients.size() - 1;
         for (GTRecipeLookupIngredient ingredient : ingredients.get(index)) {
             Map<GTRecipeLookupIngredient, Node> nodes = branch.nodesFor(ingredient);
@@ -58,15 +49,11 @@ public final class GTRecipeLookup {
 
             if (lastIngredient) {
                 if (node == null) {
-                    Node newNode = Node.leaf(recipe);
-                    nodes.put(ingredient, newNode);
-                    rollbackActions.add(() -> removeNode(nodes, ingredient, newNode));
+                    nodes.put(ingredient, Node.leaf(recipe));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
-                    int recipeIndex = node.recipeCount();
                     node.addRecipe(recipe);
-                    rollbackActions.add(() -> removeRecipeAt(node, recipeIndex, recipe));
                 }
                 continue;
             }
@@ -74,22 +61,16 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                Node newNode = Node.branch(childBranch);
-                nodes.put(ingredient, newNode);
-                rollbackActions.add(() -> removeNode(nodes, ingredient, newNode));
-            } else if (node.isBranch()) {
+                nodes.put(ingredient, Node.branch(childBranch));
+            } else if (node.hasBranch()) {
                 childBranch = node.branch;
             } else {
                 childBranch = new GTRecipeLookupBranch();
                 node.branch = childBranch;
-                rollbackActions.add(() -> removeBranch(node, childBranch));
             }
 
-            if (!addRecursive(recipe, ingredients, childBranch, index + 1, rollbackActions)) {
-                return false;
-            }
+            addRecursive(recipe, ingredients, childBranch, index + 1);
         }
-        return true;
     }
 
     private static void validateIngredients(List<List<GTRecipeLookupIngredient>> ingredients) {
@@ -104,42 +85,6 @@ public final class GTRecipeLookup {
             }
             for (GTRecipeLookupIngredient ingredient : group) {
                 Objects.requireNonNull(ingredient, "ingredient");
-            }
-        }
-    }
-
-    private static void removeNode(Map<GTRecipeLookupIngredient, Node> nodes, GTRecipeLookupIngredient ingredient,
-        Node expectedNode) {
-        if (nodes.get(ingredient) == expectedNode) {
-            nodes.remove(ingredient);
-        }
-    }
-
-    private static void removeBranch(Node node, GTRecipeLookupBranch expectedBranch) {
-        if (node.branch == expectedBranch && expectedBranch.isEmpty()) {
-            node.branch = null;
-        }
-    }
-
-    private static void removeRecipeAt(Node node, int index, GTRecipe recipe) {
-        List<GTRecipe> recipes = node.recipes;
-        if (recipes == null) {
-            return;
-        }
-        if (index < recipes.size() && recipes.get(index) == recipe) {
-            recipes.remove(index);
-            if (recipes.isEmpty()) {
-                node.recipes = null;
-            }
-            return;
-        }
-        for (int i = recipes.size() - 1; i >= 0; i--) {
-            if (recipes.get(i) == recipe) {
-                recipes.remove(i);
-                if (recipes.isEmpty()) {
-                    node.recipes = null;
-                }
-                return;
             }
         }
     }
@@ -164,7 +109,7 @@ public final class GTRecipeLookup {
             return new Node(null, branch);
         }
 
-        boolean isBranch() {
+        boolean hasBranch() {
             return branch != null;
         }
 
@@ -174,10 +119,6 @@ public final class GTRecipeLookup {
 
         GTRecipeLookupBranch getBranch() {
             return branch;
-        }
-
-        int recipeCount() {
-            return recipes == null ? 0 : recipes.size();
         }
 
         void addRecipe(GTRecipe recipe) {
@@ -204,7 +145,7 @@ public final class GTRecipeLookup {
 
         private final int index;
         private final GTRecipeLookupBranch branch;
-        private int ingredientIndex;
+        private int ingredientIndex = 0;
 
         private SearchFrame(int index, GTRecipeLookupBranch branch) {
             this.index = index;
@@ -271,7 +212,7 @@ public final class GTRecipeLookup {
                     continue;
                 }
 
-                if (result.isBranch()) {
+                if (result.hasBranch()) {
                     for (int i = ingredients.size() - 1; i >= 0; i--) {
                         stack.push(new SearchFrame(i, result.branch));
                     }

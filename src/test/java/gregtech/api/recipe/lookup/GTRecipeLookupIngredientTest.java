@@ -82,6 +82,28 @@ class GTRecipeLookupIngredientTest {
     }
 
     @Test
+    void recipeFactoryOnlyMarksNbtSensitiveWhenRecipeAndStackRequireIt() {
+        Item item = itemWithSubtypes("lookup.item.nbt.explicit");
+        ItemStack tagless = new ItemStack(item, 1, 0);
+        ItemStack tagged = new ItemStack(item, 1, 0);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("mode", "exact");
+        tagged.setTagCompound(tag);
+
+        GTItemStackLookupIngredient taglessNormal = GTItemStackLookupIngredient.fromRecipe(tagless, false);
+        GTItemStackLookupIngredient taglessNbtRecipe = GTItemStackLookupIngredient.fromRecipe(tagless, true);
+        GTItemStackLookupIngredient taggedNormal = GTItemStackLookupIngredient.fromRecipe(tagged, false);
+        GTItemStackLookupIngredient taggedNbtRecipe = GTItemStackLookupIngredient.fromRecipe(tagged, true);
+
+        assertFalse(taglessNormal.isNbtSensitive());
+        assertFalse(taglessNbtRecipe.isNbtSensitive());
+        assertFalse(taggedNormal.isNbtSensitive());
+        assertTrue(taggedNbtRecipe.isNbtSensitive());
+        assertEquals(taglessNormal, taglessNbtRecipe);
+        assertNotEquals(taggedNormal, taggedNbtRecipe);
+    }
+
+    @Test
     void oreDictKeysUseOreId() {
         GTOreDictLookupIngredient recipeKey = new GTOreDictLookupIngredient(1234);
         GTOreDictLookupIngredient runtimeKey = new GTOreDictLookupIngredient(1234);

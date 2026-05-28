@@ -251,7 +251,10 @@ class RecipeMapBackendLookupTest {
             List<GTRecipeLookupIngredient> group = new ArrayList<>();
             RecipeMapBackend.addRuntimeItemStackLookupIngredients(group, equivalent);
 
+            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(equivalent)));
+            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(equivalent)));
             assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
+            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(representative)));
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
