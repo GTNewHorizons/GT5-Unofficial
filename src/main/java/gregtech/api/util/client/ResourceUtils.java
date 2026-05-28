@@ -1,9 +1,11 @@
 package gregtech.api.util.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.FallbackResourceManager;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
@@ -48,17 +50,27 @@ public class ResourceUtils {
         }
 
         // Fallback in case some mod changed how the resource manager stores ResourcePacks
+        IResource res = null;
         try {
-            resMan.getResource(resLoc);
+            res = resMan.getResource(resLoc);
             return true;
         } catch (IOException ignored) {
             return false;
+        }finally {
+            if (res != null) {
+                try {
+                    InputStream stream = res.getInputStream();
+                    if(stream != null){
+                        stream.close();
+                    }
+                } catch (IOException ignored) {}
+            }
         }
     }
 
     @SideOnly(Side.CLIENT)
     public static void clearCache() {
-        EXISTS_CACHE = new Object2BooleanOpenHashMap<>();
+        EXISTS_CACHE.clear();
     }
 
     /**
