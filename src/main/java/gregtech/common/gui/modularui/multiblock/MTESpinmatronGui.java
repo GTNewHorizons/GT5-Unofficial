@@ -44,7 +44,9 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
         syncManager.syncValue("Parallels", new IntSyncValue(multiblock::getTrueParallel));
         syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
         syncManager.syncValue("modeString", new StringSyncValue(multiblock::modeToString));
-        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub));
+        syncManager.syncValue(
+            "modeValue",
+            new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub).allowC2S());
     }
 
     @Override
