@@ -49,13 +49,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
+import gregtech.crossmod.backhand.Backhand;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -271,6 +274,23 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
                     connectable.connect(oppositeSide);
+                    if (aPlayer != null && connectable instanceof MTEFluidPipe
+                        && ItemMachines.getMetaTileEntity(aPlayer.inventory.getCurrentItem()) instanceof MTEFluidPipe) {
+                        ItemStack offHand = Backhand.getOffhandItem(aPlayer);
+                        if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
+                            if (aPlayer.isSneaking()) {
+                                IGregTechTileEntity adjTile = (IGregTechTileEntity) tTileEntity
+                                    .getTileEntityAtSide(oppositeSide);
+                                if (adjTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
+                                    adjPipe.blockPipeOnSide(side, aPlayer, (byte) side.flag);
+                                }
+                            } else {
+                                ((MTEFluidPipe) connectable)
+                                    .blockPipeOnSide(oppositeSide, aPlayer, (byte) oppositeSide.flag);
+                            }
+                            GTModHandler.damageOrDechargeItem(offHand, 1, 1000, aPlayer);
+                        }
+                    }
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
                     final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(oppositeSide);
