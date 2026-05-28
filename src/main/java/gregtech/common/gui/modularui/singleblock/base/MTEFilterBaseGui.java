@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
 import xyz.wagyourtail.jvmdg.util.Pair;
 
 public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<T> {
@@ -32,8 +33,8 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
             EMIT_REDSTONE_BUTTON_INDEX,
             new Pair<>(
                 supportsEmitRedstone(),
-                () -> createButton(
-                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
+                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
                     configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_gradually.tooltip",
@@ -44,8 +45,8 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
         buttons.add(
             new Pair<>(
                 supportsInvertFilter(),
-                () -> createButton(
-                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter),
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
+                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_INVERT_FILTER,
                     configureTooltip("GT5U.machines.invert_filter.tooltip"))));
 

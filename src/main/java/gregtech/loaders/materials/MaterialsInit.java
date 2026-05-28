@@ -9789,7 +9789,6 @@ public class MaterialsInit {
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
-            .addCentrifugeRecipe()
             .addMaterial(Materials.Zinc, 5)
             .addMaterial(Materials.Steel, 2)
             .addMaterial(Materials.Obsidian, 2)
@@ -15554,6 +15553,8 @@ public class MaterialsInit {
         Materials.Protomatter = loadProtomatter();
         Materials.StargateCrystalSlurry = loadStargateCrystalSlurry();
         Materials.LumipodExtract = loadLumipodExtract();
+        Materials.InactiveCosmicSolder = loadInactiveCosmicSolder();
+        Materials.BoundlessCosmicSolder = loadBoundlessCosmicSolder();
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
         Materials.Shijima = loadShijima();
         Materials.Churitsu = loadChuritsu();
@@ -15821,7 +15822,7 @@ public class MaterialsInit {
             .addOrePrefix(OrePrefixes.nanite)
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadBlackDwarfMatter() {
@@ -15841,7 +15842,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .addOrePrefix(OrePrefixes.nanite)
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadTime() {
@@ -15886,7 +15887,7 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.frameGt) // disabled but shows up and is used in game
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
-            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static Materials loadEternity() {
@@ -16324,6 +16325,34 @@ public class MaterialsInit {
             .setLiquidTemperature(298);
     }
 
+    private static Materials loadInactiveCosmicSolder() {
+        return new MaterialBuilder().setName("InactiveCosmicSolder")
+            .setDefaultLocalName("Inactive Cosmic Solder")
+            .setChemicalFormula("✦✦✦✦✦")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00ffffff)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+    }
+
+    private static Materials loadBoundlessCosmicSolder() {
+        return new MaterialBuilder().setName("BoundlessCosmicSolder")
+            .setDefaultLocalName("Boundless Cosmic Solder")
+            .setChemicalFormula("✧✦✧✦✧")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00ffffff)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+    }
+
     private static Materials loadBiocatalyzedPropulsionFluid() {
         return new MaterialBuilder().setName("BiocatalyzedPropulsionFluid")
             .setDefaultLocalName("Biocatalyzed Propulsion Fluid")
@@ -16575,7 +16604,8 @@ public class MaterialsInit {
             .setChemicalFormula(
                 "(" + Materials.NetherStar.getChemicalFormula()
                     + ")₈Tb₇Tc₄("
-                    + Materials.Dilithium.getChemicalFormula()
+                    + CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE
+                    + "Fe/C⌋"
                     + ")₄Fl₃If")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)

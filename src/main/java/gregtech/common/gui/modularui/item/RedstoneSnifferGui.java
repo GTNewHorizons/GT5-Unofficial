@@ -75,7 +75,7 @@ public class RedstoneSnifferGui {
         IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
             lastPage.set(page);
             ItemStackNBT.setInteger(guiData.getMainHandItem(), "last_page", page);
-        });
+        }).allowC2S();
         guiSyncManager.syncValue("last_page", pageSyncer);
 
         PagedWidget.Controller controller = new PagedWidget.Controller() {

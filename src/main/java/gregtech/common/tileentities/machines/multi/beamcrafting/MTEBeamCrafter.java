@@ -49,7 +49,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
@@ -221,13 +220,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .hint(1)
                 .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamCrafter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamCrafter.class, ShieldedAccCasingTextureID, 2))
         .addElement('D', Casings.GrateMachineCasing.asElement())
         .build();
 

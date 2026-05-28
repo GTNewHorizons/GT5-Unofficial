@@ -136,16 +136,16 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT")
+        tt.addMachineType("DT")
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing except top centre", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("Any bottom layer casing", 1)
-            .addOutputBus("Any bottom layer casing", 1)
+            .addEnergyHatch("Any Casing except top centre", 1, 2)
+            .addMaintenanceHatch("Any Casing", 1, 2, 3)
+            .addInputHatch("Any bottom layer Casing", 1)
+            .addOutputBus("Any bottom layer Casing", 1)
             .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
@@ -271,7 +271,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             return;
         }
         if (!mTopLayerFound) {
-            errors.add(StructureErrors.of("GT5U.gui.text.missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
             return;
         }
         checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);

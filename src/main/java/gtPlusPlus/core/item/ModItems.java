@@ -364,7 +364,6 @@ public final class ModItems {
 
         // Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.AQUATIC_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.EGLIN_STEEL);
@@ -375,7 +374,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.LEAGRISIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
@@ -399,7 +397,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.PIKYONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.CINOBITE);
@@ -454,7 +451,6 @@ public final class ModItems {
 
         // Custom Materials that are from Runescape
         MaterialGenerator.generate(MaterialsElements.STANDALONE.BLACK_METAL);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.GRANITE);
         MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.RUNITE);
         MaterialGenerator.generate(MaterialsElements.STANDALONE.DRAGON_METAL);

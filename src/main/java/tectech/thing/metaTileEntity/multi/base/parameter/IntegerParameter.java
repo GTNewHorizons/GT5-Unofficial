@@ -38,7 +38,7 @@ public class IntegerParameter extends Parameter<Integer> {
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
-        return new IntSyncValue(this::getValue, this::setValue);
+    public SyncHandler<?> createSyncHandler() {
+        return new IntSyncValue(this::getValue, this::setValue).allowC2S();
     }
 }

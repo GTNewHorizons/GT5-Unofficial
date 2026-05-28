@@ -29,7 +29,7 @@ public class CoverLiquidMeterGui extends CoverBaseGui<CoverLiquidMeter> {
         return Flow.row()
             .name("fluid_threshold")
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold))
+                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S())
                     .setNumbers(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(

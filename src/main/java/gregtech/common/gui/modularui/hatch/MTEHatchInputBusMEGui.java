@@ -2,10 +2,8 @@ package gregtech.common.gui.modularui.hatch;
 
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.tileentities.machines.MTEHatchInputBusME.SLOT_COUNT;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -25,10 +23,10 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -39,10 +37,10 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.adapter.MTEHatchInputBusMESlotAdapter;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.StockingSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME.Slot;
 
@@ -63,7 +61,9 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isAutoPullSyncer = new BooleanSyncValue(hatch::isAutoPullItemList, hatch::setAutoPullItemList);
+        BooleanSyncValue isAutoPullSyncer = new BooleanSyncValue(
+            machine::isAutoPullItemList,
+            machine::setAutoPullItemList).allowC2S();
 
         IItemHandlerModifiable configItemHandler = new IItemHandlerModifiable() {
 
@@ -103,11 +103,11 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             public void setStackInSlot(int slotIndex, ItemStack stack) {
                 if (slotIndex >= SLOT_COUNT) return;
 
-                hatch.setSlotConfig(slotIndex, GTUtility.copyAmount(1, stack));
+                machine.setSlotConfig(slotIndex, GTUtility.copyAmount(1, stack));
 
                 if (baseMetaTileEntity.isServerSide()) {
                     try {
-                        hatch.updateInformationSlot(slotIndex);
+                        machine.updateInformationSlot(slotIndex);
                     } catch (GridAccessException e) {
                         // :P
                     }
@@ -116,9 +116,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         };
 
         Flow mainRow = Flow.row()
-            .paddingLeft(3)
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.END);
+            .coverChildren();
 
         mainRow.child(createFilterSlots(syncManager, configItemHandler, isAutoPullSyncer));
         mainRow.child(createMiddleColumn(syncManager, panel, isAutoPullSyncer));
@@ -127,24 +125,13 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
-    private SlotGroupWidget createFilterSlots(PanelSyncManager syncManager, IItemHandlerModifiable configItemHandler,
+    private Grid createFilterSlots(PanelSyncManager syncManager, IItemHandlerModifiable configItemHandler,
         BooleanSyncValue isAutoPullSyncer) {
-        syncManager.registerSlotGroup(FILTER_INV_NAME, FILTER_SLOT_ROW);
-
-        String[] matrix = new String[FILTER_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', FILTER_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                's',
-                index -> new StockingSlot(isAutoPullSyncer).slot(
-                    new ModularSlot(configItemHandler, index)
-                        .filter(is -> doesNotContainsSuchStack(is) && !isAutoPullSyncer.getBoolValue())
-                        .slotGroup(FILTER_INV_NAME)))
-            .build()
-            .coverChildren();
+        return new ItemSlotGridBuilder(configItemHandler, syncManager).size(FILTER_SLOT_PER_ROW, FILTER_SLOT_ROW)
+            .slotGroupKey(FILTER_INV_NAME)
+            .filter(is -> doesNotContainsSuchStack(is) && !isAutoPullSyncer.getBoolValue())
+            .itemSlotSupplier(() -> new StockingSlot(isAutoPullSyncer))
+            .build();
     }
 
     private boolean doesNotContainsSuchStack(ItemStack tStack) {
@@ -153,42 +140,34 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .noneMatch(slot -> GTUtility.areStacksEqual(slot.config, tStack));
     }
 
-    private SlotGroupWidget createStockSlots(PanelSyncManager syncManager, IItemHandlerModifiable configItemHandler) {
-        syncManager.registerSlotGroup(STOCK_INV_NAME, STOCK_SLOT_ROW);
-
-        String[] matrix = new String[STOCK_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', STOCK_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                's',
-                index -> new ItemSlot()
-                    .slot(new ModularSlot(configItemHandler, index + SLOT_COUNT).accessibility(false, false))
-                    .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
-            .build()
-            .coverChildren();
+    private Grid createStockSlots(PanelSyncManager syncManager, IItemHandlerModifiable configItemHandler) {
+        return new ItemSlotGridBuilder(configItemHandler, syncManager).size(STOCK_SLOT_PER_ROW, STOCK_SLOT_ROW)
+            .slotGroupKey(STOCK_INV_NAME)
+            .indexOffset(SLOT_COUNT)
+            .accessibility(false, false)
+            .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
+            .build();
     }
 
     private Flow createMiddleColumn(PanelSyncManager syncManager, ModularPanel panel,
         BooleanSyncValue isAutoPullSyncer) {
         Flow mainColumn = Flow.col()
-            .width(18)
+            .coverChildren()
             .reverseLayout()
             .mainAxisAlignment(Alignment.MainAxis.END);
 
         // circuit slot
-        syncManager.registerSlotGroup("item_inv", 1);
         mainColumn.child(createCircuitSlot(syncManager));
 
         // manual slot
         mainColumn.child(
-            new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, hatch.getManualSlot()).slotGroup("item_inv"))
+            new ItemSlot()
+                .slot(new ModularSlot(machine.inventoryHandler, machine.getManualSlot()).slotGroup("item_inv"))
                 .tooltip(t -> {
-                    t.addLine(translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
+                    t.addLine(GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
                     t.addLine(
-                        EnumChatFormatting.GRAY + translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
+                        EnumChatFormatting.GRAY
+                            + GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
                             + EnumChatFormatting.RESET);
                 }));
 
@@ -221,28 +200,28 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         }.value(isAutoPullSyncer)
             .size(16)
             .margin(1)
-            .setEnabledIf(b -> hatch.autoPullAvailable)
+            .setEnabledIf(b -> machine.autoPullAvailable)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED)
-            .tooltip(t -> {
-                t.addLine(translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"));
-                t.addLine(translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2"));
-            }));
+            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.1"))
+            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.2")));
 
         return mainColumn;
     }
 
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
-        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(hatch::doFastRecipeCheck, hatch::setRecipeCheck);
+        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
+            .allowC2S();
         IntSyncValue minAutoPullStackSizeSyncer = new IntSyncValue(
-            hatch::getMinAutoPullStackSize,
-            hatch::setMinAutoPullStackSize);
+            machine::getMinAutoPullStackSize,
+            machine::setMinAutoPullStackSize).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
-            hatch::getAutoPullRefreshTime,
-            hatch::setAutoPullRefreshTime);
+            machine::getAutoPullRefreshTime,
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
-            .padding(3)
+            .coverChildren()
+            .marginTop(15)
             .childPadding(3);
 
         // stack size label
@@ -262,7 +241,9 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         // refresh time label
         mainColumn.child(
             IKey.lang("GT5U.machines.stocking_bus.refresh_time")
-                .asWidget());
+                .asWidget()
+                .maxWidth(72)
+                .textAlign(Alignment.Center));
 
         // refresh time text field
         mainColumn.child(
@@ -274,26 +255,28 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
                 .width(72));
 
         Flow recipeRow = Flow.row()
-            .coverChildren();
+            .coverChildren()
+            .childPadding(4);
 
         // recipe check label
         recipeRow.child(
             IKey.lang("GT5U.machines.stocking_bus.force_check")
                 .asWidget()
-                .width(50));
+                .maxWidth(50));
 
         // recipe check toggle button
         recipeRow.child(
             new ToggleButton().value(isRecipeCheckSyncer)
                 .background(true, GTGuiTextures.BUTTON_STANDARD)
+                .background(false, GTGuiTextures.BUTTON_STANDARD)
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS));
 
         mainColumn.child(recipeRow);
 
-        return createPopUpPanel("configPanel").size(85, 125)
+        return createPopUpPanel("configPanel").coverChildren()
             .relative(parent)
-            .paddingTop(15)
+            .padding(5)
             .child(mainColumn)
             .leftRel(1)
             .topRel(0);
@@ -301,27 +284,26 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
 
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 16;
+        return super.getBasePanelHeight() + SLOT_SIZE;
     }
 
     @Override
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.row()
-            .coverChildren()
+            .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
-            .bottomRel(0)
+            .coverChildren()
+            .verticalCenter()
             .rightRel(0)
-            .paddingBottom(2)
-            .paddingRight(3)
-            .childIf(this.doesAddGregTechLogo(), this::createLogo);
+            .child(createLogo());
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isActiveSyncer = new BooleanSyncValue(hatch::isActive);
-        BooleanSyncValue isPoweredSyncer = new BooleanSyncValue(hatch::isPowered);
-        BooleanSyncValue isBootingSyncer = new BooleanSyncValue(hatch::isBooting);
-        BooleanSyncValue isAllowedToWorkSyncer = new BooleanSyncValue(hatch::isAllowedToWork);
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue isActiveSyncer = new BooleanSyncValue(machine::isActive);
+        BooleanSyncValue isPoweredSyncer = new BooleanSyncValue(machine::isPowered);
+        BooleanSyncValue isBootingSyncer = new BooleanSyncValue(machine::isBooting);
+        BooleanSyncValue isAllowedToWorkSyncer = new BooleanSyncValue(machine::isAllowedToWork);
 
         syncManager.syncValue("isActive", isActiveSyncer);
         syncManager.syncValue("isPowered", isPoweredSyncer);
@@ -340,7 +322,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
                 return MessageFormat.format(
                     "{0} ({1})",
                     EnumChatFormatting.GREEN + state + EnumChatFormatting.RESET,
-                    translateToLocal(
+                    GTUtility.translate(
                         isAllowedToWorkSyncer.getBoolValue() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
             } else {
                 return EnumChatFormatting.DARK_RED + state + EnumChatFormatting.RESET;
@@ -349,17 +331,14 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
 
-        return super.createLeftCornerFlow(panel, syncManager).child(status);
-    }
-
-    @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }
 
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+
+        syncManager.registerSlotGroup("item_inv", 1);
 
         GenericListSyncHandler<Slot> slotSyncHandler = GenericListSyncHandler.<Slot>builder()
             .getter(() -> GTDataUtils.mapToList(slots, slot -> slot == null ? null : slot.copy()))

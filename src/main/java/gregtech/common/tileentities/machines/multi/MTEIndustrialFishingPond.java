@@ -108,7 +108,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center")
-            .addCasingInfoMin("Aquatic Casings", 160, false)
+            .addCasingInfoMin("Aquatic Casing", 160, false)
             .addCasingInfoExactly("Stainless Steel Frame Box", 12, false)
             .addCasingInfoExactly("Stainless Steel Sheetmetal", 12, false)
             .addInputBus("Any Aquatic Casing", 1)

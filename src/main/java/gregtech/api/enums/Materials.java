@@ -1100,6 +1100,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials BiocatalyzedPropulsionFluid;
     public static Materials Shijima;
     public static Materials Churitsu;
+    public static Materials InactiveCosmicSolder;
+    public static Materials BoundlessCosmicSolder;
     // endregion
 
     // region GTNH Materials

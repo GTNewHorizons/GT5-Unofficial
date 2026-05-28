@@ -43,8 +43,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
-import com.glodblock.github.nei.recipes.FluidRecipe;
-import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizons.navigator.api.NavigatorApi;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -83,7 +81,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
-import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -123,6 +120,7 @@ import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
@@ -358,6 +356,13 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+
+        final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), mechanicalArmorRenderer);
+
         metaItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
         metaItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
@@ -401,16 +406,7 @@ public class GTClient extends GTProxy {
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         super.onLoadComplete(event);
-        for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
-            if (category.recipeMap.getFrontend()
-                .getNEIProperties().registerNEI) {
-                FluidRecipe.addRecipeMap(
-                    category.unlocalizedName,
-                    new GregTech5RecipeExtractor(
-                        category.unlocalizedName.equals("gt.recipe.scanner")
-                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
-            }
-        }
+
         Textures.ItemIcons.cleanup();
         Textures.BlockIcons.cleanup();
     }

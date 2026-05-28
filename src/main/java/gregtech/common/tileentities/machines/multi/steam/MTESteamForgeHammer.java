@@ -308,14 +308,14 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(6, 5, 5, false)
             .addController("Front center, 2nd layer")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " Any casing")
+                    + " Any Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")

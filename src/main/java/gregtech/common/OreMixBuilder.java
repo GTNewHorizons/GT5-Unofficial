@@ -2,8 +2,10 @@ package gregtech.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.util.StatCollector;
@@ -14,6 +16,7 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.StringUtils;
+import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
 public class OreMixBuilder {
 
@@ -21,6 +24,7 @@ public class OreMixBuilder {
     public boolean enabledByDefault = true;
     /** {full dim name} */
     public Set<String> dimsEnabled = new HashSet<>();
+    public Map<String, ShortShortPair> dimVeinHeights = new HashMap<>();
     public int minY, maxY, weight, density, size;
     public IOreMaterial primary, secondary, between, sporadic, representative;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
@@ -54,6 +58,12 @@ public class OreMixBuilder {
     public OreMixBuilder heightRange(int minY, int maxY) {
         this.minY = minY;
         this.maxY = maxY;
+        return this;
+    }
+
+    public OreMixBuilder heightRangeOverride(DimensionDef dim, int minY, int maxY) {
+        ShortShortPair pair = ShortShortPair.of((short) minY, (short) maxY);
+        dimVeinHeights.put(dim.modDimensionDef.getDimensionName(), pair);
         return this;
     }
 
