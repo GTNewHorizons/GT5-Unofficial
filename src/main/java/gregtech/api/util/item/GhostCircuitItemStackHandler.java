@@ -52,7 +52,7 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
      * Sets the configuration of the circuit. Accepts {@link #NO_CONFIG}.
      */
     public void setCircuitConfig(int config) {
-        if (config == NO_CONFIG) {
+        if (config == NO_CONFIG || config == 0) {
             inventory.setStackInSlot(circuitSlot, null);
         } else if (config >= 1 && config <= ItemIntegratedCircuit.MAX_CIRCUIT_NUMBER) {
             inventory.setStackInSlot(circuitSlot, GTUtility.getIntegratedCircuit(config));
