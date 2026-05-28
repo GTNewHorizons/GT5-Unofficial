@@ -806,6 +806,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     for (int i = 0; i < c; i++) {
                         NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
                         FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
+                        if (fluidStack == null) continue;
 
                         Slot slot = new Slot(fluidStack);
                         slots[i] = slot;
@@ -866,7 +867,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                slots[i] = new Slot(GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i)));
+                final FluidStack fs = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                if (fs == null) continue;
+                slots[i] = new Slot(fs);
             }
         }
 
@@ -1008,7 +1011,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         public Slot copy() {
-            Slot copy = new Slot(this.config);
+            Slot copy = new Slot(this.config.copy());
 
             copy.extracted = this.extracted;
             copy.extractedAmount = this.extractedAmount;
