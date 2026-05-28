@@ -3,15 +3,22 @@ package gregtech.api.util.client;
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.FallbackResourceManager;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 
 public class ResourceUtils {
+
+    @SideOnly(Side.CLIENT)
+    private static Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>();
 
     /**
      * Checks whether a resource exists.
@@ -21,14 +28,36 @@ public class ResourceUtils {
      */
     @SideOnly(Side.CLIENT)
     public static boolean resourceExists(@NotNull ResourceLocation resLoc) {
+        return EXISTS_CACHE.computeIfAbsent(resLoc, ResourceUtils::checkResource);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static boolean checkResource(@NotNull ResourceLocation resLoc) {
         final IResourceManager resMan = Minecraft.getMinecraft()
             .getResourceManager();
+        if (resMan instanceof SimpleReloadableResourceManager simple) {
+            FallbackResourceManager fallback = simple.domainResourceManagers.get(resLoc.getResourceDomain());
+            if (fallback == null) return false;
+            for (IResourcePack rp : fallback.resourcePacks) {
+                if (rp != null && rp.resourceExists(resLoc)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Fallback
         try {
             resMan.getResource(resLoc);
             return true;
         } catch (IOException ignored) {
             return false;
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void clearCache() {
+        EXISTS_CACHE = new Object2BooleanOpenHashMap<>();
     }
 
     /**
