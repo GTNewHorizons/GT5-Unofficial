@@ -6,7 +6,7 @@ import java.util.Map;
 final class GTRecipeLookupBranch {
 
     private Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> nodes;
-    private Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> specialNodes;
+    private Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> nbtSensitiveNodes;
 
     Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> getNodes() {
         if (nodes == null) {
@@ -15,23 +15,23 @@ final class GTRecipeLookupBranch {
         return nodes;
     }
 
-    Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> getSpecialNodes() {
-        if (specialNodes == null) {
-            specialNodes = new LinkedHashMap<>(2);
+    Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> getNbtSensitiveNodes() {
+        if (nbtSensitiveNodes == null) {
+            nbtSensitiveNodes = new LinkedHashMap<>(2);
         }
-        return specialNodes;
+        return nbtSensitiveNodes;
     }
 
     Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> nodesFor(GTRecipeLookupIngredient ingredient) {
-        if (ingredient.isSpecialIngredient()) {
-            return getSpecialNodes();
+        if (ingredient.isNbtSensitive()) {
+            return getNbtSensitiveNodes();
         }
         return getNodes();
     }
 
     GTRecipeLookup.Node getNode(GTRecipeLookupIngredient ingredient) {
-        Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> selectedNodes = ingredient.isSpecialIngredient()
-            ? specialNodes
+        Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> selectedNodes = ingredient.isNbtSensitive()
+            ? nbtSensitiveNodes
             : nodes;
         if (selectedNodes == null) {
             return null;
@@ -40,11 +40,11 @@ final class GTRecipeLookupBranch {
     }
 
     boolean isEmpty() {
-        return (nodes == null || nodes.isEmpty()) && (specialNodes == null || specialNodes.isEmpty());
+        return (nodes == null || nodes.isEmpty()) && (nbtSensitiveNodes == null || nbtSensitiveNodes.isEmpty());
     }
 
     void clear() {
         nodes = null;
-        specialNodes = null;
+        nbtSensitiveNodes = null;
     }
 }

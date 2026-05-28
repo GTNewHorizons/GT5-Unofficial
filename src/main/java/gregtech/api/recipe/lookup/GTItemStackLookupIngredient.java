@@ -10,21 +10,21 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
 
     private final Item item;
     private final int damage;
-    private final boolean specialIngredient;
+    private final boolean nbtSensitive;
 
-    private GTItemStackLookupIngredient(ItemStack stack, boolean wildcardDamage, boolean specialIngredient) {
+    private GTItemStackLookupIngredient(ItemStack stack, boolean wildcardDamage, boolean nbtSensitive) {
         this(
             Objects.requireNonNull(stack, "stack")
                 .getItem(),
             normalizeDamage(stack, wildcardDamage),
-            specialIngredient);
+            nbtSensitive);
     }
 
-    private GTItemStackLookupIngredient(Item item, int damage, boolean specialIngredient) {
-        super(hash(item, damage, specialIngredient));
+    private GTItemStackLookupIngredient(Item item, int damage, boolean nbtSensitive) {
+        super(hash(item, damage, nbtSensitive));
         this.item = Objects.requireNonNull(item, "item");
         this.damage = damage;
-        this.specialIngredient = specialIngredient;
+        this.nbtSensitive = nbtSensitive;
     }
 
     public static GTItemStackLookupIngredient fromRecipe(ItemStack stack) {
@@ -39,7 +39,7 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
         return new GTItemStackLookupIngredient(stack, true, false);
     }
 
-    public static GTItemStackLookupIngredient fromSpecialRecipe(ItemStack stack) {
+    public static GTItemStackLookupIngredient fromNbtSensitiveRecipe(ItemStack stack) {
         return new GTItemStackLookupIngredient(stack, isWildcard(stack), true);
     }
 
@@ -56,14 +56,14 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
     }
 
     @Override
-    public boolean isSpecialIngredient() {
-        return specialIngredient;
+    public boolean isNbtSensitive() {
+        return nbtSensitive;
     }
 
     @Override
     protected boolean equalsSameClass(GTRecipeLookupIngredient other) {
         GTItemStackLookupIngredient otherItem = (GTItemStackLookupIngredient) other;
-        return item == otherItem.item && damage == otherItem.damage && specialIngredient == otherItem.specialIngredient;
+        return item == otherItem.item && damage == otherItem.damage && nbtSensitive == otherItem.nbtSensitive;
     }
 
     private static boolean isWildcard(ItemStack stack) {
@@ -76,10 +76,10 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
         return stack.getItemDamage();
     }
 
-    private static int hash(Item item, int damage, boolean specialIngredient) {
+    private static int hash(Item item, int damage, boolean nbtSensitive) {
         int result = System.identityHashCode(item);
         result = 31 * result + damage;
-        result = 31 * result + (specialIngredient ? 1 : 0);
+        result = 31 * result + (nbtSensitive ? 1 : 0);
         return result;
     }
 }

@@ -55,18 +55,18 @@ class GTRecipeLookupTest {
     }
 
     @Test
-    void separatesNormalAndSpecialIngredientBranches() {
+    void separatesNormalAndNbtSensitiveIngredientBranches() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe normalRecipe = recipe();
-        GTRecipe specialRecipe = recipe();
+        GTRecipe nbtSensitiveRecipe = recipe();
         TestIngredient normal = new TestIngredient(20, false);
-        TestIngredient special = new TestIngredient(20, true);
+        TestIngredient nbtSensitive = new TestIngredient(20, true);
 
         assertTrue(lookup.add(normalRecipe, groups(group(normal))));
-        assertTrue(lookup.add(specialRecipe, groups(group(special))));
+        assertTrue(lookup.add(nbtSensitiveRecipe, groups(group(nbtSensitive))));
 
         assertSame(normalRecipe, onlyResult(lookup.iterator(groups(group(normal)))));
-        assertSame(specialRecipe, onlyResult(lookup.iterator(groups(group(special)))));
+        assertSame(nbtSensitiveRecipe, onlyResult(lookup.iterator(groups(group(nbtSensitive)))));
     }
 
     @Test
@@ -193,12 +193,12 @@ class GTRecipeLookupTest {
     private static final class TestIngredient extends GTRecipeLookupIngredient {
 
         private final int id;
-        private final boolean special;
+        private final boolean nbtSensitive;
 
-        private TestIngredient(int id, boolean special) {
+        private TestIngredient(int id, boolean nbtSensitive) {
             super(id);
             this.id = id;
-            this.special = special;
+            this.nbtSensitive = nbtSensitive;
         }
 
         @Override
@@ -207,8 +207,8 @@ class GTRecipeLookupTest {
         }
 
         @Override
-        public boolean isSpecialIngredient() {
-            return special;
+        public boolean isNbtSensitive() {
+            return nbtSensitive;
         }
     }
 }

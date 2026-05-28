@@ -28,7 +28,7 @@ public abstract class GTRecipeLookupIngredient {
 
     protected abstract boolean equalsSameClass(GTRecipeLookupIngredient other);
 
-    public boolean isSpecialIngredient() {
+    public boolean isNbtSensitive() {
         return false;
     }
 }

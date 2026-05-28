@@ -914,7 +914,7 @@ public class RecipeMapBackend {
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
         if (item.hasTagCompound()) {
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromSpecialRecipe(item));
+            addLookupIngredient(group, GTItemStackLookupIngredient.fromNbtSensitiveRecipe(item));
         }
 
         ItemStack unifiedItem = GTOreDictUnificator.get_nocopy(false, item);

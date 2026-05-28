@@ -214,7 +214,7 @@ public final class GTRecipeLookupBuilder {
             return;
         }
         GTRecipeLookupIngredient ingredient = recipe.isNBTSensitive && stack.hasTagCompound()
-            ? GTItemStackLookupIngredient.fromSpecialRecipe(stack)
+            ? GTItemStackLookupIngredient.fromNbtSensitiveRecipe(stack)
             : GTItemStackLookupIngredient.fromRecipe(stack);
         addIfAbsent(group, ingredient);
     }
