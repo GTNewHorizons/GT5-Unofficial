@@ -359,6 +359,7 @@ public final class ModItems {
     }
 
     private static void runMaterialGenerator() {
+        Material.registerAllPending();
         // Just an unusual plate needed for some black magic.
         new BaseItemPlate(MaterialsOther.CLAY);
         new BaseItemPlateDouble(MaterialsOther.CLAY);

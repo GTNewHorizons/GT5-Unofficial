@@ -270,6 +270,7 @@ import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Planck_Manifold;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
+import static gregtech.common.items.IDMetaItem03.PseudoStar;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -1642,6 +1643,15 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.nuclear_star.tooltip",
                     SubTag.NO_UNIFICATION))
             .setRender(new InfinityMetaItemRenderer());
+
+        ItemList.PseudoStar
+            .set(
+                addItemWithLocalizationKeys(
+                    PseudoStar.ID,
+                    "gt.item.pseudo_star.name",
+                    "gt.item.pseudo_star.tooltip",
+                    SubTag.NO_UNIFICATION))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
 
         ItemList.Cover_Metrics_Transmitter.set(
             addItemWithLocalizationKeys(
