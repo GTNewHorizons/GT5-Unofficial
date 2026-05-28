@@ -216,24 +216,25 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         tt.addMachineType("Boiler");
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / 3))
-                    + "L of Superheated Steam with 1 Coal at "
-                    + formatNumber((getEUt() * 40L) / 3)
-                    + "L/s")
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
-                .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.machines.large_boiler.info.tooltip.1.sh",
+                    formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / 3)),
+                    formatNumber((getEUt() * 40L) / 3)))
+                .addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.2.sh"));
         } else {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
-                    + "L of Steam with 1 Coal at "
-                    + formatNumber(getEUt() * 40L)
-                    + "L/s")
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Solid Fuels with a burn value that is too high or too low will not work")
-                .addInfo("Has an added formula for long time burn fuels in form of 1+log(BurnTime/16000)*0.025");
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.machines.large_boiler.info.tooltip.1.normal",
+                    formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f)),
+                    formatNumber(getEUt() * 40L)))
+                .addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.2.normal"));
         }
-        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
+        tt.addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.3"))
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.4"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.machines.large_boiler.info.tooltip.5",
+                    formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
             .addController("Front center, 2nd layer")
@@ -650,10 +651,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     public int getBurnDecrease() {
         return burnDecrease;
-    }
-
-    public int getCurrentEfficiency() {
-        return mEfficiency;
     }
 
     @Override
