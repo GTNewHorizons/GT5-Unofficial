@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes.beamcrafter;
 
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.beamcrafterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MaterialsAlloy.ABYSSAL;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
@@ -381,6 +382,24 @@ public class BeamCrafterRecipes implements Runnable {
                     .amount_B(2)
                     .build())
             .eut(TierEU.RECIPE_ZPM)
+            .duration(2 * SECONDS)
+            .addTo(beamcrafterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.PseudoStar.get(64L), Materials.TranscendentMetal.getNanite(2))
+            .fluidInputs(Materials.InactiveCosmicSolder.getFluid(160_000L), Materials.SpaceTime.getFluid(16 * INGOTS))
+            .itemOutputs(Materials.TranscendentMetal.getNanite(2))
+            .outputChances(8000)
+            .fluidOutputs(Materials.BoundlessCosmicSolder.getFluid(160_000L))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(GRAVITON.getId())
+                    .particleID_B(HIGGS.getId())
+                    .amount_A(50)
+                    .amount_B(5)
+                    .build())
+            .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
