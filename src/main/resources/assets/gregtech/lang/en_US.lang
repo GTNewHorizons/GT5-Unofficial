@@ -2562,7 +2562,6 @@ GT5U.gui.text.structure_error.cleanroom_size=Unable to identify ceiling size
 GT5U.gui.text.structure_error.cleanroom_ceiling=Ceiling is not complete
 GT5U.gui.text.structure_error.cleanroom_plascrete=Not enough plascrete blocks
 GT5U.gui.text.structure_error.defc_fusion_machine_casing=Tiers 3-5 require Mk-II fusion machine casings
-GT5U.gui.text.structure_error.exo_foundry_too_many_hatch=Too many hatches
 GT5U.gui.text.structure_error.exo_foundry_hypercooler_hatch=Missing coolant hatch for hypercooler
 GT5U.gui.text.structure_error.laser_need_uev=Need UEV-tiered laser for Multi-Amp support
 GT5U.gui.text.structure_error.lesu_error=Unable to identify LESU structure
@@ -5484,6 +5483,8 @@ gt.item.apiary_upgrade.unlight.tooltip=Night upgrade for Industrial Apiary\nMaxi
 ## Special items
 gt.item.nuclear_star.name=Nuclear Star
 gt.item.nuclear_star.tooltip=By the powers of Greg, I command this star to be really hot.
+gt.item.pseudo_star.name=Pseudo Star
+gt.item.pseudo_star.tooltip=A miniature black hole star. Some could say this is a quasi star.
 gt.item.cover.metrics_transmitter.name=Metrics Transmitter Cover
 gt.item.cover.metrics_transmitter.tooltip=Taking Information Panels to the next level!\nCreates a GregTech Advanced Sensor Card when attached\nWorks across dimensions or if machine is dismantled\nRemoving this cover will destroy the linked card\n- Querns
 
