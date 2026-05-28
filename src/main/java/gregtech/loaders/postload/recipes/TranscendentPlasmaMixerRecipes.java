@@ -20,7 +20,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int STELLAR_EU_PER_HALF_L = 2_138_383_760;
 
     private static final int PRIMORDIAL_MATTER = 2_000_000_000;
-    private static final int INACTIVE_COSMIC_SOLDER = 2_000_000;
+    private static final int INACTIVE_COSMIC_SOLDER = 1_073_007_393;
 
     @Override
     public void run() {
