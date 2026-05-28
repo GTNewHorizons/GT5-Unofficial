@@ -15553,6 +15553,8 @@ public class MaterialsInit {
         Materials.Protomatter = loadProtomatter();
         Materials.StargateCrystalSlurry = loadStargateCrystalSlurry();
         Materials.LumipodExtract = loadLumipodExtract();
+        Materials.InactiveCosmicSolder = loadInactiveCosmicSolder();
+        Materials.BoundlessCosmicSolder = loadBoundlessCosmicSolder();
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
         Materials.Shijima = loadShijima();
         Materials.Churitsu = loadChuritsu();
@@ -16321,6 +16323,34 @@ public class MaterialsInit {
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial()
             .setLiquidTemperature(298);
+    }
+
+    private static Materials loadInactiveCosmicSolder() {
+        return new MaterialBuilder().setName("InactiveCosmicSolder")
+            .setDefaultLocalName("Inactive Cosmic Solder")
+            .setChemicalFormula("✦✦✦✦✦")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00ffffff)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
+    }
+
+    private static Materials loadBoundlessCosmicSolder() {
+        return new MaterialBuilder().setName("BoundlessCosmicSolder")
+            .setDefaultLocalName("Boundless Cosmic Solder")
+            .setChemicalFormula("✧✦✧✦✧")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00ffffff)
+            .addCell()
+            .setMeltingPoint(500)
+            .setBlastFurnaceTemp(1)
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
     }
 
     private static Materials loadBiocatalyzedPropulsionFluid() {
