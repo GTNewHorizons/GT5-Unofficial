@@ -1820,7 +1820,7 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
-GT5U.EBF.heat=Heat capacity
+GT5U.EBF.heat.s=Heat capacity: §a%s §rK
 GT5U.coil.None=None
 GT5U.coil.ULV=None
 GT5U.coil.LV=Cupronickel
@@ -5728,6 +5728,7 @@ GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
+GT5U.waila.mvf.subspace=Current Subspace Cooling: §d%s§r/s of §a%s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
