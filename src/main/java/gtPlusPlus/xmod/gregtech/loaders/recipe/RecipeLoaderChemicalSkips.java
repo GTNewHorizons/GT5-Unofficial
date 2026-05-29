@@ -86,7 +86,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(
                 Materials.Palladium.getDust(64),
                 Materials.Platinum.getDust(64),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
@@ -117,7 +117,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
                 Materials.Palladium.getDust(64),
                 Materials.Platinum.getDust(64),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))

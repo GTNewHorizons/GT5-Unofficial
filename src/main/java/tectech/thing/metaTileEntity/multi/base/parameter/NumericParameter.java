@@ -4,18 +4,19 @@ import java.util.function.Supplier;
 
 public abstract class NumericParameter<T extends Number> extends Parameter<T> {
 
-    public NumericParameter(T value, String langKey, Supplier<T> min, Supplier<T> max) {
-        super(value, langKey, min, max);
+    public NumericParameter(T value, String langKey, String nbtKey, Supplier<T> min, Supplier<T> max,
+        Object... langArgs) {
+        super(value, langKey, nbtKey, min, max, langArgs);
     }
 
     @Override
     public void setValue(T value) {
-        if (value.doubleValue() < min.get()
+        if (value.doubleValue() < this.getMin()
             .doubleValue()) {
-            super.setValue(min.get());
-        } else if (value.doubleValue() > max.get()
+            super.setValue(this.getMin());
+        } else if (value.doubleValue() > this.getMax()
             .doubleValue()) {
-                super.setValue(max.get());
+                super.setValue(this.getMax());
             } else {
                 super.setValue(value);
             }

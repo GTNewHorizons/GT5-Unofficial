@@ -46,6 +46,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -141,14 +143,14 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " Any casing")
+                    + " Any Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
@@ -224,30 +226,22 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCountCasing = 0;
         tierMachineCasing = -1;
         tierPipeCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing == 1 && tierPipeCasing == 1 && mCountCasing >= 25 && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (tierMachineCasing >= 1 && tierMachineCasing == tierPipeCasing) {
+            tierMachine = tierMachineCasing;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
-        if (tierMachineCasing == 2 && tierPipeCasing == 2 && mCountCasing >= 25 && checkHatches()) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        checkCasingMin(errors, mCountCasing, 25);
+        checkHasSteamInput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override
@@ -350,8 +344,4 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
-    }
 }

@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
@@ -404,10 +403,8 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                         SyncHandlers.itemSlot(contents, index)
                             .slotGroup(SLOT_GROUP)))
                 .build()
-                .resizer(
-                    a -> a.anchor(Alignment.TopCenter)
-                        .leftRelAnchor(0.5f, 0.5f)
-                        .topRelAnchor(0.125f, 0f)));
+                .horizontalCenter()
+                .topRel(0.2f));
 
         return panel;
     }

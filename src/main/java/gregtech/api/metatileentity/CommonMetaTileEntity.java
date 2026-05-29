@@ -404,7 +404,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalName();
         }
         return "";
     }
@@ -412,6 +412,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public int getInventoryStackLimit() {
         return 64;
+    }
+
+    public int getSlotLimit(int slot) {
+        return getInventoryStackLimit();
     }
 
     @Override
@@ -487,8 +491,16 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+    }
+
+    /**
+     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
+     * needs to drain a different amount than {@code fluidStack.amount}.
+     */
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, int amount, boolean doDrain) {
         if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
-            return drain(fluidStack.amount, doDrain);
+            return drain(amount, doDrain);
         }
         return null;
     }

@@ -40,6 +40,9 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -148,6 +151,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.tryDisableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -359,6 +365,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
+        return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
@@ -368,7 +379,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, fluid.amount);
+            int toDrain = Math.min(slot.extracted.amount, amount);
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
@@ -383,6 +394,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (slot == null) return null;
 
             IAEFluidStack request = AEFluidStack.create(fluid);
+            request.setStackSize(amount);
 
             IMEMonitor<IAEFluidStack> sg;
             IEnergyGrid energy;
@@ -511,7 +523,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+            var base = getBaseMetaTileEntity();
+            if (base instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
                     this,
                     "proxy",
@@ -519,12 +532,28 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (base.getWorld() != null && base.getOwnerUuid() != null) {
+                    gridProxy.setOwner(
+                        base.getWorld()
+                            .func_152378_a(base.getOwnerUuid()));
+                }
             }
         }
         return this.gridProxy;
+    }
+
+    @MENetworkEventSubscribe
+    public void powerChangeME(MENetworkPowerStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void bootChangeME(MENetworkBootingStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
     }
 
     @Override
@@ -771,6 +800,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     for (int i = 0; i < c; i++) {
                         NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
                         FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
+                        if (fluidStack == null) continue;
 
                         Slot slot = new Slot(fluidStack);
                         slots[i] = slot;
@@ -831,7 +861,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                slots[i] = new Slot(GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i)));
+                final FluidStack fs = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                if (fs == null) continue;
+                slots[i] = new Slot(fs);
             }
         }
 
@@ -973,7 +1005,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         public Slot copy() {
-            Slot copy = new Slot(this.config);
+            Slot copy = new Slot(this.config.copy());
 
             copy.extracted = this.extracted;
             copy.extractedAmount = this.extractedAmount;

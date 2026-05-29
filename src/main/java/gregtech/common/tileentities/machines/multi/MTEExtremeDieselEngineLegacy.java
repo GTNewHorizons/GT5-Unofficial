@@ -55,7 +55,7 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
             .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
             .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
+            .addMaintenanceHatch("Any Casing next to a Gear Box", 1)
             .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
             .addInputHatch("HOG, next to a Gear Box", 1)
             .addInputHatch("Lubricant, next to a Gear Box", 1)

@@ -82,6 +82,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -425,16 +427,16 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        return this.checkPiece("main", 16, 13, 1) && this.mMaintenanceHatches.size() == 1
-            && !this.mInputBusses.isEmpty()
-            && !this.mOutputBusses.isEmpty()
-            && !this.mEnergyHatches.isEmpty()
-            && this.heliumInputHatch != null
-            && this.coolantInputHatch != null
-            && this.coolantOutputHatch != null
-            && this.waterInputHatch != null
-            && this.steamOutputHatch != null;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 16, 13, 1, errors)) return;
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
+        if (heliumInputHatch == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.htgr_missing_helium_hatch"));
+        }
     }
 
     @Override
@@ -1021,13 +1023,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             @Override
-            @SuppressWarnings({ "unchecked", "rawtypes" })
-            public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-                if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
-                    aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                // aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
-                aList.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
-                super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+            public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
+                if (this.tooltip.containsKey(this.getDamage(stack)))
+                    tooltip.add(this.tooltip.get(this.getDamage(stack)));
+                // tooltip.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
+                tooltip.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
+                super.addInformation(stack, player, tooltip, adv);
             }
         }
 

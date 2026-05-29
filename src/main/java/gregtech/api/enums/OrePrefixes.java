@@ -30,6 +30,7 @@ import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -2834,6 +2835,10 @@ public class OrePrefixes {
 
     public static OrePrefixes getOrePrefix(String aOre) {
         for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
+            if (tPrefix == orePluto && aOre.equals("orePlutonium")) return ore;
+            if (tPrefix == orePluto && aOre.equals("orePlutonium241")) return ore;
+            if (tPrefix == oreTitan && aOre.equals("oreTitanium")) return ore;
+            if (tPrefix == oreCallisto && aOre.equals("oreCallistoIce")) return ore;
             if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
             if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
             if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
@@ -3108,7 +3113,7 @@ public class OrePrefixes {
                 if (name.startsWith("foil")) return "Thin " + "%material" + " Sheet";
             }
             case "FierySteel" -> {
-                if (isContainer) return materialPrefix + "Fiery Blood" + materialPostfix;
+                if (isContainer && this != cellMolten) return materialPrefix + "Fiery Blood" + materialPostfix;
             }
             case "Steeleaf" -> {
                 if (name.startsWith("ingot")) return materialPrefix + "%material";
@@ -3224,14 +3229,44 @@ public class OrePrefixes {
     }
 
     public String getLocalizedNameForItem(IOreMaterial materials) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(materials), materials);
     }
 
-    public static String getLocalizedNameForItem(String prefix, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    public static String getLocalizedNameForItem(String prefix, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix), material);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), material);
     }
 
     public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
+    }
+
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialName} if
+     * available; otherwise attempts inflection formatting.
+     */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
+        final String key = prefixKey + "."
+            + material.getInternalName()
+                .toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
+    }
+
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialKey} if
+     * available; otherwise attempts inflection formatting.
+     */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialKey) {
+        final String key = prefixKey + "." + materialKey.toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, materialKey);
     }
 }

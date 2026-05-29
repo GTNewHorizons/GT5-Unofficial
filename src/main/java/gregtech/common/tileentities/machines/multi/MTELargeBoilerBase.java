@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,6 +50,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -226,17 +228,17 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
-            .addController("Front bottom")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, false)
-            .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-            .addMaintenanceHatch("Any firebox", 1)
-            .addMufflerHatch("Any firebox", 1)
-            .addInputBus("Solid fuel, Any firebox", 1)
-            .addInputHatch("Liquid fuel, Any firebox", 1)
+            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 3 minimum")
+            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Block", "Inner 3 blocks")
+            .addMaintenanceHatch("Any Firebox Casing", 1)
+            .addMufflerHatch("Any Firebox Casing", 1)
+            .addInputBus("Solid fuel, any Firebox Casing", 1)
+            .addInputHatch("Liquid fuel, any Firebox Casing", 1)
             .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, Any firebox", 1)
-            .addOutputHatch("Steam, any casing", 2)
+            .addInputHatch("Water, any Firebox Casing", 1)
+            .addOutputHatch("Steam, any Casing", 2)
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
 
@@ -278,7 +280,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
-                this.mEUt = 0;
+                this.lEUt = 0;
                 return false;
             }
         }
@@ -321,7 +323,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
-                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.lEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
                             this.superEfficencyIncrease = 20;
@@ -338,7 +340,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.mMaxProgresstime = adjustBurnTimeForConfig(
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.lEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
                             this.superEfficencyIncrease = 20;
@@ -361,7 +363,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.excessFuel %= 80;
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
+                            this.lEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -387,7 +389,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             int burnTime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(burnTime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
+                            this.lEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -402,7 +404,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             }
         }
         this.mMaxProgresstime = 0;
-        this.mEUt = 0;
+        this.lEUt = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -415,12 +417,12 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        if (this.lEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
             if (this.superEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + superEfficencyIncrease, maxEff));
             }
-            int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
+            int tGeneratedEU = (int) (this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
                 excessWater += amount * STEAM_PER_WATER - tGeneratedEU;
@@ -498,12 +500,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         fireboxAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 24
-            && fireboxAmount >= 3
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 24);
+        checkCasingMin(errors, fireboxAmount, 3);
+        checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {

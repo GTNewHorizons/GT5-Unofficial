@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -20,7 +21,6 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -108,8 +108,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
@@ -130,6 +132,7 @@ import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
+import gregtech.common.gui.mui1.StructureErrorMui1Compat;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -140,15 +143,22 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import gtnhlanth.common.hatch.MTEBusInputFocus;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -156,6 +166,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity
@@ -220,6 +231,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
+    protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
+
+    protected final List<MTEHatchInputBeamline> mBeamlineInputHatches = new ArrayList<>();
+    protected final List<MTEHatchOutputBeamline> mBeamlineOutputHatches = new ArrayList<>();
+    protected final List<MTEBusInputFocus> mFocusInputBuses = new ArrayList<>();
 
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
@@ -233,7 +249,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
      * refactor if needed).
      */
-    private List<StructureError> structureErrors = new ArrayList<>();
+    private final List<StructureError> structureErrors = new ArrayList<>();
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -508,14 +524,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
         mSmartInputHatches.clear();
+        mCryotheumHatches.clear();
+        mBeamlineInputHatches.clear();
+        mBeamlineOutputHatches.clear();
+        mFocusInputBuses.clear();
 
         mCoils.clear();
         deactivateCoilLease();
         debugEnergyPresent = false;
-    }
-
-    public boolean checkStructure(boolean aForceReset) {
-        return checkStructure(aForceReset, getBaseMetaTileEntity());
     }
 
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -527,44 +543,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
             mMachine = structureErrors.isEmpty();
 
-            onStructureCheckFinished();
+            onStructureCheckFinished(aBaseMetaTileEntity);
         }
         mStructureChanged = false;
         return mMachine;
     }
 
-    protected void onStructureCheckFinished() {
-
-        // only run validation when the structure check passes, so that we don't confuse people
-        if (mMachine) {
-            validateStructure(structureErrors);
-
-            if (hasStructureErrors()) mMachine = false;
-        } else {
-            generateStructureErrorDiagnostics(structureErrors);
-        }
+    /**
+     * For TT structure check to retrieve the structure error list, don't use this everywhere else
+     * The error list will be cleared upon calling.
+     * If you want to trigger a structure check, use {@link #checkStructure}
+     */
+    protected final boolean checkMachine_TT(IGregTechTileEntity aBaseMetaTileEntity) {
+        structureErrors.clear();
+        checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
+        return structureErrors.isEmpty();
     }
 
-    /**
-     * Generate error diagnostics when {@link #checkMachine} returns false.
-     *
-     * @param errors Add errors to this.
-     */
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {}
-
-    /**
-     * Validates this multi's structure (hatch/casing counts mainly) for any errors. The multi will not form if any
-     * errors are added to {@code errors}. Only runs when {@link #checkMachine} is successful.
-     *
-     * @param errors Add errors to this.
-     */
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
-    protected void validateStructure(Collection<StructureError> errors) {
-
-    }
+    protected void onStructureCheckFinished(IGregTechTileEntity aBaseMetaTileEntity) {}
 
     /**
      * Controls whether the error message widget is shown. If you have any new structure status fields, make sure to
@@ -1157,6 +1153,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
             if (isInputSeparationEnabled()) {
                 if (mInputBusses.isEmpty()) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems);
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) return foundResult;
                     // Recipe failed in interesting way, so remember that and continue searching
@@ -1273,8 +1274,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
-     * Do not implement this in new multiblock
+     * Implement the other function instead
      */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
@@ -1705,7 +1705,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (simulate) return true;
             fluidCost = aLiquid.amount;
             for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, fluidCost, true);
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, fluidCost, true);
                 if (tLiquid == null) continue;
                 fluidCost -= tLiquid.amount;
                 if (fluidCost == 0) return true;
@@ -2173,6 +2173,70 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mteHatchDynamoMulti.updateTexture(aBaseCasingIndex);
             mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon());
             return mExoticDynamoHatches.add(mteHatchDynamoMulti);
+        }
+        return false;
+    }
+
+    public boolean addLaserSourceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchDynamoTunnel mteHatchDynamoTunnel) {
+            mteHatchDynamoTunnel.updateTexture(aBaseCasingIndex);
+            mteHatchDynamoTunnel.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticDynamoHatches.add(mteHatchDynamoTunnel);
+        }
+        return false;
+    }
+
+    public boolean addCryotheumHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase mteHatchCryotheum
+            && mteHatchCryotheum.mLockedFluid == TFFluids.fluidCryotheum) {
+            mteHatchCryotheum.updateTexture(aBaseCasingIndex);
+            mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mCryotheumHatches.add(mteHatchCryotheum);
+        }
+        return false;
+    }
+
+    public boolean addBeamlineInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchInputBeamline mteHatchInputBeamline) {
+            mteHatchInputBeamline.updateTexture(aBaseCasingIndex);
+            mteHatchInputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mBeamlineInputHatches.add(mteHatchInputBeamline);
+        }
+        return false;
+    }
+
+    public boolean addBeamlineOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatchOutputBeamline mteHatchOutputBeamline) {
+            mteHatchOutputBeamline.updateTexture(aBaseCasingIndex);
+            mteHatchOutputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mBeamlineOutputHatches.add(mteHatchOutputBeamline);
+        }
+        return false;
+    }
+
+    public boolean addFocusInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEBusInputFocus mteBusInputFocus) {
+            mteBusInputFocus.updateTexture(aBaseCasingIndex);
+            mteBusInputFocus.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mFocusInputBuses.add(mteBusInputFocus);
         }
         return false;
     }
@@ -2684,25 +2748,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return mExoticDynamoHatches;
     }
 
+    public List<MTEHatch> getCryotheumHatches() {
+        return mCryotheumHatches;
+    }
+
+    public List<MTEHatchInputBeamline> getBeamlineInputHatches() {
+        return mBeamlineInputHatches;
+    }
+
+    public List<MTEHatchOutputBeamline> getBeamlineOutputHatches() {
+        return mBeamlineOutputHatches;
+    }
+
+    public List<MTEBusInputFocus> getFocusInputBuses() {
+        return mFocusInputBuses;
+    }
+
     /**
-     * @return Returns true if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
+     * Check if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
      */
-    public boolean checkExoticAndNormalEnergyHatches() {
+    public void checkExoticAndNormalEnergyHatches(List<StructureError> errors) {
         if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
-            return false;
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) {
-                return false;
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
+                return;
             }
 
             if (mExoticEnergyHatches.size() != 1) {
-                return false;
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
+                return;
             }
         }
-
-        return mEnergyHatches.size() <= 2;
+        if (mEnergyHatches.size() > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.one_tt_or_two_energy"));
+        }
     }
 
     /**
@@ -3570,11 +3653,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setEnabled(widget -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements.widget(
-            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-        screenElements.widget(
             new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
@@ -3639,6 +3717,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+
+        handleStructureErrorsMui1(screenElements);
 
         screenElements.widget(
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
@@ -3706,7 +3786,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
-                    if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {
+                    if (getErrorDisplayID() == 0
+                        && (this instanceof MTELargeTurbineLegacy || this instanceof MTELargeTurbineBase)) {
                         final ItemStack tItem = inventorySlot.getMcSlot()
                             .getStack();
                         return tItem == null
@@ -3715,6 +3796,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                     return false;
                 }));
+    }
+
+    // MUI1 structure error diagnostics compat - delete this block when MUI1 is removed
+    private void handleStructureErrorsMui1(DynamicPositionedColumn screenElements) {
+        final List<StructureError> mui1ClientErrors = new ArrayList<>();
+        final ChangeableWidget structureErrorsWidget = new ChangeableWidget(
+            () -> StructureErrorMui1Compat.getDynamicPositionedColumn(mui1ClientErrors));
+        structureErrorsWidget.setEnabled(widget -> !mMachine);
+        screenElements.widget(new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(structureErrors), val -> {
+            mui1ClientErrors.clear();
+            mui1ClientErrors.addAll(val);
+            structureErrorsWidget.notifyChangeNoSync();
+        }, StructureErrorMui1Compat::writeStructureError, StructureErrorMui1Compat::readStructureError))
+            .widget(structureErrorsWidget);
     }
 
     /**

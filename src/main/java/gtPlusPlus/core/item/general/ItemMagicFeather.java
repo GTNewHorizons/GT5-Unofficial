@@ -55,12 +55,12 @@ public class ItemMagicFeather extends CoreItem {
         return Integer.MAX_VALUE;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.0"));
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, aPlayer, list, adv);
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.1"));
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.2"));
     }

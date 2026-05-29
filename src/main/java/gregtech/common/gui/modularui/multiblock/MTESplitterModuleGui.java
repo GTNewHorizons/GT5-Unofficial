@@ -29,16 +29,14 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
@@ -67,7 +65,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     multiblock.rules.addAll(val);
                 })
                 .adapter(RULE_ADAPTER)
-                .build());
+                .build()
+                .allowC2S());
 
         syncManager.syncValue("scroll", new IntSyncValue(() -> scrollValue, value -> scrollValue = value));
     }
@@ -100,15 +99,14 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 }
                 return true;
             })
-                .background(GTGuiTextures.BUTTON_NANOCHIP, GuiTextures.GEAR)
+                .backgroundOverlay(GuiTextures.GEAR)
                 .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager")))
-                .size(18));
+                .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager"))));
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
         ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager").child(
-            CommonWidgets.panelCloseButton()
+            CommonButtons.panelCloseButton()
                 .background(GTGuiTextures.BUTTON_NANOCHIP));
         var rulesSyncer = (GenericListSyncHandler<SplitterRule>) syncManager.findSyncHandler("rules");
 
@@ -118,7 +116,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         // spotless:off
         return ui
             .size(200, 170)
-            .child(new Column()
+            .child(Flow.column()
                 .child(new ButtonWidget<>()
                     .onMousePressed(mouseButton -> {
                         multiblock.rules.add(new SplitterRule());
@@ -126,7 +124,6 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         syncManager.callSyncedAction("refresh_dynamic", $ -> {});
                         return true;
                     })
-                    .size(18)
                     .marginTop(4)
                     .overlay(GuiTextures.ADD)
                     .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.add_rule"))))
@@ -155,8 +152,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
         // spotless:off
         return new ParentWidget<>()
-            .child(new Column()
-                .child(new Row()
+            .child(Flow.column()
+                .child(Flow.row()
                     .child(createSelectorButton(rulesSyncer, index, COLOR)
                         .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.Color")))
                         .overlay(new ItemDrawable(Items.dye, 10)))
@@ -197,7 +194,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 .center()
                 .coverChildrenWidth()
                 .heightRel(1F))
-            .child(new Column()
+            .child(Flow.column()
                 .child(outputColorGrid)
                 .posRel(0.8F, 0.5F)
                 .marginTop(23)
@@ -244,7 +241,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         SplitterRule rule = multiblock.rules.get(index);
 
         // spotless:off
-        return new Column()
+        return Flow.column()
             .child(IKey.lang("GT5U.gui.text.nac.splitter.channel").asWidget())
             .child(new TextFieldWidget()
                 .value(new IntValue.Dynamic(

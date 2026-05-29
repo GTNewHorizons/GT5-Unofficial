@@ -14,6 +14,9 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,6 +50,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -55,7 +61,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
@@ -71,7 +76,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static final float RATE_SCALE_FACTOR = 1.1F;
+    public static final float RATE_SCALE_FACTOR = 1.3F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -190,49 +195,35 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return ofBlockAnyMeta(Blocks.air);
             }
         }))
-        .addElement(
-            'F',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             '1',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .build()) // EM beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
         .addElement(
             '2',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(4)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .build()) // Weak beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
         .addElement(
             '3',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(5)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .build()) // Strong beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
         .addElement(
             '4',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(6)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .build()) // Grav beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())
@@ -426,23 +417,33 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
 
-        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113);
-        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9);
-        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59);
-        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59);
+        // Ignore the structure error during module checks
+        List<StructureError> tmp = new ArrayList<>();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
-            && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113, tmp);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9, tmp);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59, tmp);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59, tmp);
 
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
+        int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
+        if (energyCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
+        }
     }
 
     @Override
     public String[] getInfoData() {
+
+        if (cachedOutputParticle == null) {
+            return new String[] { EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.machineoff") };
+        }
 
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
@@ -605,13 +606,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mMaxProgresstime = TickTime.SECOND;
 
             this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
-
-            this.outputParticleID = generateOutputParticleID(this.outputEnergy);
-
-            Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
-            float outputMass = outputParticle.getMass();
-            this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
-
+            this.outputRate = max(0, (inputRate));
             this.outputFocus = inputFocus;
 
             if (this.outputRate == 0) {
@@ -619,12 +614,12 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            outputPacketAfterRecipe();
+            outputPacketAfterRecipe(this.outputRate);
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int generateOutputParticleID(float collisionEnergy) {
+    private int generateOutputParticleID(float collisionEnergy, java.util.Map<Particle, Boolean> acceptedInputMap) {
 
         // restMass is in MeV
         // beamline energies are in keV
@@ -639,6 +634,14 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
+
+            // filter module-incompatible particles -- keep blacklisted particles in the pool but output nothing if
+            // rolled
+            if (acceptedInputMap == null || !acceptedInputMap.containsKey(p)) {
+                weights[i] = 0.0;
+                continue;
+            }
+
             double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
             // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
@@ -649,7 +652,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             totalWeight += w;
         }
         if (totalWeight <= 0.0) {
-            return 0; // default to photons
+            return -1; // nothing eligible, output nothing
         }
 
         double[] cumulative = new double[n];
@@ -667,18 +670,29 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     }
 
-    private void outputPacketAfterRecipe() {
-        if (!this.mAdvancedOutputBeamline.isEmpty()) {
-            BeamLinePacket packet = new BeamLinePacket(
-                new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                if (!o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)) {
-                    o.dataPacket = null;
-                    continue;
-                }
-                o.dataPacket = packet;
+    private void outputPacketAfterRecipe(int rate) {
+        if (this.mAdvancedOutputBeamline.isEmpty()) return;
 
+        for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+
+            if (rate == 0) {
+                o.dataPacket = null;
+                continue;
             }
+            int rolledId = generateOutputParticleID(this.outputEnergy, o.acceptedInputMap);
+            if (rolledId < 0) { // energy too low for any valid particle
+                o.dataPacket = null;
+                continue;
+            }
+
+            // void blacklisted particles
+            Particle rolled = Particle.getParticleFromId(rolledId);
+            if (!o.acceptedInputMap.getOrDefault(rolled, false)) {
+                o.dataPacket = null;
+                continue;
+            }
+
+            o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }
 

@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -55,6 +56,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -237,7 +239,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             .addCasingInfoMin(GTUtility.translate("ig.siphon.structure.SiphonCasing"), 175, false)
             .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), 6, false)
             .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.FrameTungstensteel"), 93, false)
-            .addCasingInfoExactly("Heating Coils", 12, true)
+            .addCasingInfoExactly("Heating Coil", 12, true)
             .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
             .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
@@ -375,11 +377,11 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         fluid = recipeFluid.copy();
 
         if (ocLevel == 0) {
-            mEUt = -recipeEUt;
+            lEUt = -recipeEUt;
         } else {
             ocLevel--;
             fluid.amount *= 2 << ocLevel;
-            mEUt = -recipeEUt * (4 << (2 * ocLevel));
+            lEUt = -recipeEUt * (4 << (2 * ocLevel));
         }
 
         int processTime = (int) (20 * speedBoost(getCoilTier()));
@@ -399,17 +401,17 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && checkHatches() && casingAmount >= 175;
-    }
-
-    public boolean checkHatches() {
-        return mInputBusses.size() == 1 && mOutputHatches.size() == 1
-            && mEnergyHatches.size() == 1
-            && mInputHatches.isEmpty()
-            && mOutputBusses.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
+        checkHatchExact(errors, HatchElement.Energy, 1);
+        checkHatchMax(errors, HatchElement.InputHatch, 0);
+        checkHatchMax(errors, HatchElement.OutputBus, 0);
+        checkHasMaintenanceHatch(errors);
+        checkCasingMin(errors, casingAmount, 175);
     }
 
     @Override
@@ -449,7 +451,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     private void resetMachine() {
-        mEUt = 0;
+        lEUt = 0;
         mEfficiency = 0;
     }
 
@@ -481,7 +483,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                 + EnumChatFormatting.BLUE
                 + fluid.getLocalizedName()
                 + EnumChatFormatting.RESET,
-            "EU/t required: " + EnumChatFormatting.YELLOW + formatNumber(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+            "EU/t required: " + EnumChatFormatting.YELLOW + formatNumber(-lEUt) + EnumChatFormatting.RESET + " EU/t",
             "Maintenance Status: " + (getRepairStatus() == getIdealStatus()
                 ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
                 : EnumChatFormatting.RED + "Has problems" + EnumChatFormatting.RESET),

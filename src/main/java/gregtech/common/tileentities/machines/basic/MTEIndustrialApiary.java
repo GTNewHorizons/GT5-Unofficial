@@ -525,7 +525,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             effectData[1] = secondary.validateStorage(effectData[1]);
             effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
                 genome,
-                effectData[0],
+                effectData[1],
                 this,
                 usedBeeLife / (secondary instanceof AlleleEffectThrottled
                     ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
@@ -559,8 +559,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
 
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
-
-            doDisplayThings();
 
             if (!aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.isAllowedToWork()

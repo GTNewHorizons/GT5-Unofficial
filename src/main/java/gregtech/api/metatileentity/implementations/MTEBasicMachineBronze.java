@@ -128,11 +128,6 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return super.isFacingValid(facing) && facing != mMainFacing;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 1000;
     }
@@ -225,7 +220,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
                     getBaseMetaTileEntity().getFrontFacing().offsetX / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetY / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetZ / 5.0)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x
                         .setPosition(
