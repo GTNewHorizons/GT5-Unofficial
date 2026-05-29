@@ -116,6 +116,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
+    }
+
+    @Override
     public String getLocalName() {
         if (this instanceof ILocalizedMetaPipeEntity localizedPipe) {
             return localizedPipe.getLocalizedName();

@@ -7101,6 +7101,7 @@ GT5U.scanner.error_leaves_info=An exception was thrown while fetching this leave
 
 GT5U.scanner.base_info_1=Position X: §6%s§r Y: §6%s§r Z: §6%s
 GT5U.scanner.base_info_2=Name: §6%s §fMetadata: §6%s
+GT5U.scanner.base_info_meta_id=Meta ID: §6%s
 GT5U.scanner.base_info_3=Hardness: §6%s §fBlast Resistance: §6%s
 GT5U.scanner.base_info_4=§6Is valid Beacon Pyramid Material
 GT5U.scanner.fluid_handler_info_1=Tank %s: §6%sL §f/ §6%sL §f%s
@@ -8416,6 +8417,8 @@ gt.Book.Microwave Oven Manual.Page04=Do not insert any Metals. It might result i
 gt.Book.Microwave Oven Manual.Page05=Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.
 gt.Book.Microwave Oven Manual.Page06=Do not insert inflammable Objects. The Oven will catch on Fire.
 gt.Book.Microwave Oven Manual.Page07=Do not insert Explosives such as Eggs. Just don't.
+
+gt.tile.data_server.name=GT-Data Server
 
 gt.item.stable_baryon_containment_unit.name=Stable Baryon Containment Unit
 gt.item.stable_baryon_containment_unit.tooltip=Maybe contains a bound baryon?

@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,6 +38,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.common.pollution.Pollution;
 import ic2.api.energy.tile.IEnergyConductor;
@@ -172,14 +174,22 @@ public class ScannerHelper {
         list.add(addTitle("title_base_info"));
         list.add(trans("base_info_1", formatNumber(x), formatNumber(y), formatNumber(z)));
         try {
-            String name = ((tileEntity instanceof IInventory inv) ? inv.getInventoryName()
-                : block.getUnlocalizedName());
+            String name = ((tileEntity instanceof IInventory inv)
+                ? StatCollector.translateToLocal(inv.getInventoryName())
+                : block.getLocalizedName());
             int meta = world.getBlockMetadata(x, y, z);
             float hardness = block.getBlockHardness(world, x, y, z);
             float explosionResist = block
                 .getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ);
 
             list.add(trans("base_info_2", name, meta));
+            if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
+                list.add(
+                    trans(
+                        "base_info_meta_id",
+                        gtTE.getMetaTileEntity()
+                            .getMetaName()));
+            }
             list.add(trans("base_info_3", hardness, explosionResist));
 
             if (block.isBeaconBase(world, x, y, z, x, y + 1, z)) {
