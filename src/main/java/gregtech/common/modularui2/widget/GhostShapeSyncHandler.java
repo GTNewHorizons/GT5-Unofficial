@@ -21,11 +21,6 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
     public GhostShapeSyncHandler(ModularSlot slot, MTEHatchExtrusion hatch) {
         super(slot);
         this.hatch = hatch;
-    }
-
-    @Override
-    public void init(String key, PanelSyncManager syncHandler) {
-        super.init(key, syncHandler);
         indexSync = new IntSyncValue(() -> {
             ItemStack current = hatch.inventoryHandler.getStackInSlot(hatch.shapeSlot);
             return current != null ? hatch.findMatchingShapeIndex(current) : -1;
@@ -36,8 +31,22 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
                 hatch.setShape(null);
             }
         }).allowC2S();
+    }
 
-        syncHandler.syncValue(key, indexSync);
+    /**
+     * Registers the index sync value on the given sync manager. Must be called during widget construction,
+     * before {@link com.cleanroommc.modularui.value.sync.PanelSyncManager#initialize} runs, to avoid
+     * modifying the sync handler map during iteration.
+     */
+    public void registerIndexSync(PanelSyncManager syncManager, String key) {
+        if (indexSync != null) {
+            syncManager.syncValue(key, 0, indexSync);
+        }
+    }
+
+    @Override
+    public void init(String key, PanelSyncManager syncHandler) {
+        super.init(key, syncHandler);
     }
 
     @Override
