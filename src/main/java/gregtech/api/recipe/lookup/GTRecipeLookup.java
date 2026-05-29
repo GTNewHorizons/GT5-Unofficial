@@ -29,7 +29,7 @@ public final class GTRecipeLookup {
 
     public Iterator<GTRecipe> iterator(List<List<GTRecipeLookupIngredient>> ingredients) {
         validateIngredients(ingredients);
-        return new RecipeIterator(rootBranch, ingredients);
+        return new RecipeIterator(rootBranch, flattenIngredients(ingredients));
     }
 
     GTRecipeLookupBranch getRootBranch() {
@@ -89,6 +89,23 @@ public final class GTRecipeLookup {
         }
     }
 
+    private static List<GTRecipeLookupIngredient> flattenIngredients(List<List<GTRecipeLookupIngredient>> ingredients) {
+        if (ingredients.size() == 1) {
+            return ingredients.get(0);
+        }
+
+        int size = 0;
+        for (List<GTRecipeLookupIngredient> group : ingredients) {
+            size += group.size();
+        }
+
+        List<GTRecipeLookupIngredient> flattened = new ArrayList<>(size);
+        for (List<GTRecipeLookupIngredient> group : ingredients) {
+            flattened.addAll(group);
+        }
+        return flattened;
+    }
+
     static final class Node {
 
         private List<GTRecipe> recipes;
@@ -135,29 +152,25 @@ public final class GTRecipeLookup {
 
     private static final class SearchFrame {
 
-        private final int index;
         private final GTRecipeLookupBranch branch;
         private int ingredientIndex = 0;
 
-        private SearchFrame(int index, GTRecipeLookupBranch branch) {
-            this.index = index;
+        private SearchFrame(GTRecipeLookupBranch branch) {
             this.branch = branch;
         }
     }
 
     private static final class RecipeIterator implements Iterator<GTRecipe> {
 
-        private final List<List<GTRecipeLookupIngredient>> ingredients;
+        private final List<GTRecipeLookupIngredient> ingredients;
         private final Deque<SearchFrame> stack = new ArrayDeque<>();
         private Iterator<GTRecipe> leafIterator = Collections.emptyIterator();
         private GTRecipe nextRecipe;
         private boolean hasCachedNext;
 
-        private RecipeIterator(GTRecipeLookupBranch rootBranch, List<List<GTRecipeLookupIngredient>> ingredients) {
+        private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
             this.ingredients = ingredients;
-            for (int i = ingredients.size() - 1; i >= 0; i--) {
-                stack.push(new SearchFrame(i, rootBranch));
-            }
+            stack.push(new SearchFrame(rootBranch));
         }
 
         @Override
@@ -191,23 +204,19 @@ public final class GTRecipeLookup {
                 }
 
                 SearchFrame frame = stack.peek();
-                List<GTRecipeLookupIngredient> ingredientGroup = ingredients.get(frame.index);
-                if (frame.ingredientIndex >= ingredientGroup.size()) {
+                if (frame.ingredientIndex >= ingredients.size()) {
                     stack.pop();
                     continue;
                 }
 
-                GTRecipeLookupIngredient ingredient = ingredientGroup.get(frame.ingredientIndex);
-                frame.ingredientIndex++;
+                GTRecipeLookupIngredient ingredient = ingredients.get(frame.ingredientIndex++);
                 Node result = frame.branch.getNode(ingredient);
                 if (result == null) {
                     continue;
                 }
 
                 if (result.hasBranch()) {
-                    for (int i = ingredients.size() - 1; i >= 0; i--) {
-                        stack.push(new SearchFrame(i, result.branch));
-                    }
+                    stack.push(new SearchFrame(result.branch));
                 }
                 if (result.hasRecipes()) {
                     leafIterator = result.recipes.iterator();
