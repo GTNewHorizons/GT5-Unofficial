@@ -20,8 +20,9 @@ import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 public class ResourceUtils {
 
     // 14810 (max size as of 2026/29/5) * 1.333 = 19.7k ~= 20k
-    private static final Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>(
-        20_000);
+    private static final int EXISTS_CACHE_SIZE = 20_000;
+    private static Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>(
+        EXISTS_CACHE_SIZE);
 
     /**
      * Checks whether a resource exists.
@@ -71,7 +72,7 @@ public class ResourceUtils {
 
     @SideOnly(Side.CLIENT)
     public static void clearCache() {
-        EXISTS_CACHE.clear();
+        EXISTS_CACHE = new Object2BooleanOpenHashMap<>(EXISTS_CACHE_SIZE);
     }
 
     /**
