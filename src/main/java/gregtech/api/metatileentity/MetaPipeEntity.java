@@ -129,6 +129,18 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public String getInventoryName() {
+        // Pipes don't register a translation key for their name, and cloned instances
+        // may lack fields needed for dynamic name construction (e.g. mPrefixKey).
+        // Use the prototype from the registry which is always fully initialized.
+        IMetaTileEntity prototype = GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()];
+        if (prototype != null) {
+            return prototype.getLocalName();
+        }
+        return "";
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         final float tThickness = getThickness();
