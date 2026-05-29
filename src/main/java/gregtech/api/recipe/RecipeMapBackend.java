@@ -7,10 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.handleInvalidRecipeLowItems;
 import static gregtech.api.util.GTRecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -76,7 +72,9 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
 
-    private static final Logger DIAGNOSTIC_FALLBACK_LOGGER = LogManager.getLogger("GregTech GTNH");
+    private static final Logger LOGGER = LogManager.getLogger("GregTech GTNH");
+
+    public static final String VALIDATE_LOOKUP_PROPERTY = "gt.recipe.lookup.validate";
 
     private RecipeMap<?> recipeMap;
 
@@ -103,10 +101,6 @@ public class RecipeMapBackend {
     private GTRecipeLookup recipeLookup = new GTRecipeLookup();
 
     private boolean recipeLookupDirty;
-
-    private static final String DIAGNOSTIC_FALLBACK_LOG_FILE = "RecipeLookupMisses.log";
-    private static final Set<String> LOGGED_DIAGNOSTIC_FALLBACK_RECIPES = Collections
-        .newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
     /**
      * All the properties specific to this backend.
@@ -596,112 +590,382 @@ public class RecipeMapBackend {
             .filter(Objects::nonNull);
         dynamicFallback = dynamicFallback.peek(recipe -> matchedBeforeFallback.set(true));
 
-        Stream<GTRecipe> stream = Stream.concat(
-            Stream.concat(candidates, dynamicFallback),
-            diagnosticFallbackCandidateStream(
-                items,
-                fluids,
-                specialSlot,
-                dontCheckStackSizes,
-                profile,
-                matchedBeforeFallback));
+        Stream<GTRecipe> stream = Stream.concat(candidates, dynamicFallback);
         if (profile != null) {
             profile.addSetupNanos(System.nanoTime() - setupStart);
         }
         return stream;
     }
 
-    private Stream<GTRecipe> diagnosticFallbackCandidateStream(@Nullable ItemStack @NotNull [] items,
-        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
-        @Nullable RecipeLookupProfile profile, AtomicBoolean matchedBeforeFallback) {
-        return GTStreamUtil.ofSupplier(() -> {
-            if (matchedBeforeFallback.get()) {
-                return Collections.<GTRecipe>emptyList();
+    public static boolean shouldValidateLookup() {
+        return Boolean.getBoolean(VALIDATE_LOOKUP_PROPERTY);
+    }
+
+    public static void validateLookup() {
+        validateLookup(RecipeMap.ALL_RECIPE_MAPS.values());
+    }
+
+    static void validateLookup(Collection<? extends RecipeMap<?>> recipeMaps) {
+        List<RecipeLookupValidationTarget> targets = new ArrayList<>();
+        for (RecipeMap<?> recipeMap : recipeMaps) {
+            RecipeMapBackend backend = recipeMap.getBackend();
+            if (backend.doesOverwriteFindRecipe()) {
+                continue;
             }
-            return findDiagnosticFallbackMatches(items, fluids, specialSlot, dontCheckStackSizes, profile);
-        })
-            .flatMap(Collection::stream);
+            targets.add(new RecipeLookupValidationTarget(recipeMapName(recipeMap), backend));
+        }
+        new RecipeLookupIndexedValidator(targets).validate();
     }
 
-    private List<GTRecipe> findDiagnosticFallbackMatches(@Nullable ItemStack @NotNull [] items,
-        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
-        @Nullable RecipeLookupProfile profile) {
-        List<GTRecipe> foundRecipes = new ArrayList<>();
-        allRecipes().stream()
-            .filter(
-                recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
-            .forEach(recipe -> {
-                GTRecipe foundRecipe = profiledModifyFoundRecipe(recipe, items, fluids, specialSlot, profile);
-                if (foundRecipe != null) {
-                    logDiagnosticFallbackMatch(recipe, items, fluids, specialSlot);
-                    foundRecipes.add(foundRecipe);
-                }
-            });
-        return foundRecipes;
+    static void validateLookup(String mapName, RecipeMapBackend backend) {
+        new RecipeLookupIndexedValidator(Collections.singletonList(new RecipeLookupValidationTarget(mapName, backend)))
+            .validate();
     }
 
-    private void logDiagnosticFallbackMatch(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
-        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot) {
-        String fingerprint = diagnosticFallbackFingerprint(recipe);
-        if (!LOGGED_DIAGNOSTIC_FALLBACK_RECIPES.add(fingerprint)) {
-            return;
+    private static String recipeMapName(@Nullable RecipeMap<?> recipeMap) {
+        return recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
+    }
+
+    private static String describeRecipeForValidation(GTRecipe recipe) {
+        return "identity=" + System.identityHashCode(recipe)
+            + ", category="
+            + describeRecipeCategory(recipe)
+            + ", owners="
+            + describeRecipeOwners(recipe)
+            + ", inputs="
+            + describeItemStacks(recipe.mInputs)
+            + ", fluidInputs="
+            + describeFluidStacks(recipe.mFluidInputs)
+            + ", outputs="
+            + describeItemStacks(recipe.mOutputs)
+            + ", fluidOutputs="
+            + describeFluidStacks(recipe.mFluidOutputs)
+            + ", special="
+            + describeObject(recipe.mSpecialItems)
+            + ", stackTrace="
+            + describeRecipeStackTrace(recipe);
+    }
+
+    private static String describeRecipeListForValidation(List<GTRecipe> recipes) {
+        return recipes.stream()
+            .map(RecipeMapBackend::describeRecipeForValidation)
+            .collect(Collectors.joining("\n    ", "[\n    ", "\n]"));
+    }
+
+    private static List<GTRecipe> identityDifference(List<GTRecipe> left, List<GTRecipe> right) {
+        List<GTRecipe> difference = new ArrayList<>();
+        for (GTRecipe recipe : left) {
+            if (!containsIdentity(right, recipe)) {
+                difference.add(recipe);
+            }
+        }
+        return difference;
+    }
+
+    private static boolean containsIdentity(List<GTRecipe> recipes, GTRecipe target) {
+        for (GTRecipe recipe : recipes) {
+            if (recipe == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static final class RecipeLookupValidationTarget {
+
+        private final String mapName;
+        private final RecipeMapBackend backend;
+
+        private RecipeLookupValidationTarget(String mapName, RecipeMapBackend backend) {
+            this.mapName = mapName;
+            this.backend = backend;
+        }
+    }
+
+    private static final class RecipeLookupIndexedValidator {
+
+        private static final int RECIPE_PROGRESS_INTERVAL = 100;
+        private static final long PROGRESS_LOG_INTERVAL_NANOS = 5_000_000_000L;
+
+        private final List<RecipeLookupValidationTarget> targets;
+        private final List<String> issues = new ArrayList<>();
+        private final List<RuntimeException> errors = new ArrayList<>();
+        private final int totalRecipes;
+
+        private long startNanos;
+        private long lastProgressNanos;
+        private int processedMaps;
+        private int processedRecipes;
+
+        private RecipeLookupIndexedValidator(Collection<RecipeLookupValidationTarget> targets) {
+            this.targets = new ArrayList<>(targets);
+            int recipeCount = 0;
+            for (RecipeLookupValidationTarget target : this.targets) {
+                recipeCount += target.backend.allRecipes()
+                    .size();
+            }
+            this.totalRecipes = recipeCount;
         }
 
-        String message = buildDiagnosticFallbackMessage(recipe, items, fluids, specialSlot, fingerprint);
-        DIAGNOSTIC_FALLBACK_LOGGER.warn(message);
-        writeDiagnosticFallbackLog(message);
-    }
+        private void validate() {
+            startNanos = System.nanoTime();
+            lastProgressNanos = startNanos;
+            logProgress("starting");
 
-    private String diagnosticFallbackFingerprint(GTRecipe recipe) {
-        return recipeMapName() + "#" + System.identityHashCode(recipe);
-    }
+            for (RecipeLookupValidationTarget target : targets) {
+                RecipeMapBackend backend = target.backend;
+                List<GTRecipe> recipes = new ArrayList<>(backend.allRecipes());
+                logMapProgress("map-start", target, recipes.size(), processedMaps + 1);
+                try {
+                    backend.ensureLookupCurrent();
+                    for (GTRecipe recipe : recipes) {
+                        if (hasLookupIngredients(recipe)) {
+                            validateRecipe(target, recipe);
+                        }
+                        processedRecipes++;
+                        maybeLogProgress();
+                    }
+                } catch (RuntimeException e) {
+                    addError(target, null, "preparing trie lookup", e);
+                    processedRecipes += recipes.size();
+                }
+                processedMaps++;
+                logMapProgress("map-finished", target, recipes.size(), processedMaps);
+                maybeLogProgress();
+            }
 
-    private String buildDiagnosticFallbackMessage(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
-        @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, String fingerprint) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[GTRecipeLookupDiagnosticFallback] Trie lookup missed a registered recipe matched by the ")
-            .append("all-recipes fallback.\n")
-            .append("fingerprint=")
-            .append(fingerprint)
-            .append('\n')
-            .append("map=")
-            .append(recipeMapName())
-            .append(", category=")
-            .append(describeRecipeCategory(recipe))
-            .append(", owners=")
-            .append(describeRecipeOwners(recipe))
-            .append('\n')
-            .append("runtimeItems=")
-            .append(describeItemStacks(items))
-            .append('\n')
-            .append("runtimeFluids=")
-            .append(describeFluidStacks(fluids))
-            .append('\n')
-            .append("specialSlot=")
-            .append(describeItemStack(specialSlot))
-            .append('\n')
-            .append("recipeInputs=")
-            .append(describeItemStacks(recipe.mInputs))
-            .append('\n')
-            .append("recipeFluidInputs=")
-            .append(describeFluidStacks(recipe.mFluidInputs))
-            .append('\n')
-            .append("recipeOutputs=")
-            .append(describeItemStacks(recipe.mOutputs))
-            .append('\n')
-            .append("recipeFluidOutputs=")
-            .append(describeFluidStacks(recipe.mFluidOutputs))
-            .append('\n')
-            .append("recipeSpecial=")
-            .append(describeObject(recipe.mSpecialItems))
-            .append('\n')
-            .append("recipeStackTrace=")
-            .append(describeRecipeStackTrace(recipe));
-        return builder.toString();
-    }
+            logProgress("finished");
+            if (!issues.isEmpty()) {
+                throw buildException();
+            }
+        }
 
-    private String recipeMapName() {
-        return recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
+        private void validateRecipe(RecipeLookupValidationTarget target, GTRecipe recipe) {
+            RecipeMapBackend backend = target.backend;
+            ItemStack[] items = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
+            FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
+            ItemStack specialSlot = recipe.mSpecialItems instanceof ItemStack ? (ItemStack) recipe.mSpecialItems : null;
+            List<GTRecipe> indexedMatches = null;
+            List<GTRecipe> trieMatches = null;
+
+            try {
+                indexedMatches = indexedMatches(backend, items, fluids, specialSlot);
+            } catch (RuntimeException e) {
+                addError(target, recipe, "running indexed lookup", e);
+            }
+
+            try {
+                trieMatches = trieMatches(backend, items, fluids, specialSlot);
+            } catch (RuntimeException e) {
+                addError(target, recipe, "running trie lookup", e);
+            }
+
+            if (indexedMatches == null || trieMatches == null) {
+                return;
+            }
+
+            List<GTRecipe> missingTrieMatches = identityDifference(indexedMatches, trieMatches);
+            List<GTRecipe> extraTrieMatches = identityDifference(trieMatches, indexedMatches);
+            if (!missingTrieMatches.isEmpty() || !extraTrieMatches.isEmpty()) {
+                addMismatch(target, recipe, missingTrieMatches, extraTrieMatches);
+            }
+        }
+
+        private boolean hasLookupIngredients(GTRecipe recipe) {
+            if (recipe.mInputs != null) {
+                for (ItemStack item : recipe.mInputs) {
+                    if (item != null) {
+                        return true;
+                    }
+                }
+            }
+            if (recipe.mFluidInputs != null) {
+                for (FluidStack fluid : recipe.mFluidInputs) {
+                    if (fluid != null && fluid.getFluid() != null) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private List<GTRecipe> indexedMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
+            @Nullable ItemStack specialSlot) {
+            if (indexedMinInputsRejects(backend, items, fluids)) {
+                return Collections.emptyList();
+            }
+            return Stream.concat(indexedItemCandidates(backend, items), indexedFluidCandidates(backend, fluids))
+                .filter(distinctByIdentity())
+                .filter(recipe -> backend.filterFindRecipe(recipe, items, fluids, specialSlot, false))
+                .collect(Collectors.toList());
+        }
+
+        private boolean indexedMinInputsRejects(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids) {
+            if (backend.properties.minFluidInputs > 0) {
+                int count = 0;
+                for (FluidStack fluid : fluids) if (fluid != null) count++;
+                if (count < backend.properties.minFluidInputs) {
+                    return true;
+                }
+            }
+            if (backend.properties.minItemInputs > 0) {
+                int count = 0;
+                for (ItemStack item : items) if (item != null) count++;
+                return count < backend.properties.minItemInputs;
+            }
+            return false;
+        }
+
+        private Stream<GTRecipe> indexedItemCandidates(RecipeMapBackend backend, ItemStack[] items) {
+            if (backend.itemContainsIndex.isEmpty()) {
+                return Stream.empty();
+            }
+            return Arrays.stream(items)
+                .filter(Objects::nonNull)
+                .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
+                .map(backend.itemContainsIndex::get)
+                .flatMap(Collection::stream);
+        }
+
+        private Stream<GTRecipe> indexedFluidCandidates(RecipeMapBackend backend, FluidStack[] fluids) {
+            if (backend.properties.minItemInputs != 0) {
+                return Stream.empty();
+            }
+            return Arrays.stream(fluids)
+                .filter(fluid -> fluid != null && fluid.getFluid() != null)
+                .map(
+                    fluid -> backend.fluidContainsIndex.get(
+                        fluid.getFluid()
+                            .getName()))
+                .flatMap(Collection::stream);
+        }
+
+        private List<GTRecipe> trieMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
+            @Nullable ItemStack specialSlot) {
+            return backend.lookupCandidateStream(items, fluids)
+                .filter(distinctByIdentity())
+                .filter(recipe -> backend.filterFindRecipe(recipe, items, fluids, specialSlot, false))
+                .collect(Collectors.toList());
+        }
+
+        private void addMismatch(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+            List<GTRecipe> missingTrieMatches, List<GTRecipe> extraTrieMatches) {
+            StringBuilder issue = new StringBuilder();
+            issue.append("map=")
+                .append(target.mapName)
+                .append('\n')
+                .append("queryRecipe=")
+                .append(describeRecipeForValidation(queryRecipe));
+            if (!missingTrieMatches.isEmpty()) {
+                issue.append('\n')
+                    .append("indexedOnly=")
+                    .append(describeRecipeListForValidation(missingTrieMatches));
+            }
+            if (!extraTrieMatches.isEmpty()) {
+                issue.append('\n')
+                    .append("trieOnly=")
+                    .append(describeRecipeListForValidation(extraTrieMatches));
+            }
+            issues.add(issue.toString());
+        }
+
+        private void addError(RecipeLookupValidationTarget target, @Nullable GTRecipe queryRecipe, String action,
+            RuntimeException error) {
+            StringBuilder issue = new StringBuilder();
+            issue.append("map=")
+                .append(target.mapName)
+                .append('\n')
+                .append("error while ")
+                .append(action)
+                .append(": ")
+                .append(error);
+            if (queryRecipe != null) {
+                issue.append('\n')
+                    .append("queryRecipe=")
+                    .append(describeRecipeForValidation(queryRecipe));
+            }
+            issues.add(issue.toString());
+            errors.add(error);
+        }
+
+        private IllegalStateException buildException() {
+            StringBuilder message = new StringBuilder();
+            message.append("GT recipe lookup validation found ")
+                .append(issues.size())
+                .append(" issue(s) across ")
+                .append(targets.size())
+                .append(" map(s).");
+            for (int i = 0; i < issues.size(); i++) {
+                message.append("\n\n")
+                    .append(i + 1)
+                    .append(") ")
+                    .append(issues.get(i));
+            }
+
+            IllegalStateException exception = new IllegalStateException(message.toString());
+            for (RuntimeException error : errors) {
+                exception.addSuppressed(error);
+            }
+            return exception;
+        }
+
+        private void maybeLogProgress() {
+            long now = System.nanoTime();
+            if (processedRecipes == totalRecipes || processedRecipes % RECIPE_PROGRESS_INTERVAL == 0
+                || now - lastProgressNanos >= PROGRESS_LOG_INTERVAL_NANOS) {
+                logProgress("running");
+                lastProgressNanos = now;
+            }
+        }
+
+        private void logProgress(String phase) {
+            long elapsedNanos = System.nanoTime() - startNanos;
+            double percent = totalRecipes == 0 ? 100.0 : processedRecipes * 100.0 / totalRecipes;
+            LOGGER.info(
+                String.format(
+                    Locale.ROOT,
+                    "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d",
+                    phase,
+                    processedMaps,
+                    targets.size(),
+                    processedRecipes,
+                    totalRecipes,
+                    percent,
+                    formatDuration(elapsedNanos),
+                    estimateEta(elapsedNanos),
+                    issues.size()));
+        }
+
+        private void logMapProgress(String phase, RecipeLookupValidationTarget target, int mapRecipes, int mapIndex) {
+            long elapsedNanos = System.nanoTime() - startNanos;
+            LOGGER.info(
+                String.format(
+                    Locale.ROOT,
+                    "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d",
+                    phase,
+                    target.mapName,
+                    mapRecipes,
+                    mapIndex,
+                    targets.size(),
+                    processedRecipes,
+                    totalRecipes,
+                    formatDuration(elapsedNanos),
+                    issues.size()));
+        }
+
+        private String estimateEta(long elapsedNanos) {
+            if (processedRecipes <= 0 || totalRecipes <= 0) {
+                return "?";
+            }
+            long remainingRecipes = totalRecipes - processedRecipes;
+            long etaNanos = (long) (elapsedNanos * (remainingRecipes / (double) processedRecipes));
+            return formatDuration(etaNanos);
+        }
+
+        private String formatDuration(long nanos) {
+            long seconds = Math.max(0L, nanos / 1_000_000_000L);
+            return String.format(Locale.ROOT, "%02d:%02d:%02d", seconds / 3600, (seconds / 60) % 60, seconds % 60);
+        }
     }
 
     private static String describeRecipeCategory(GTRecipe recipe) {
@@ -801,31 +1065,6 @@ public class RecipeMapBackend {
             return describeItemStack((ItemStack) object);
         }
         return String.valueOf(object);
-    }
-
-    private static synchronized void writeDiagnosticFallbackLog(String message) {
-        File logFile = diagnosticFallbackLogFile();
-        File parentFile = logFile.getParentFile();
-        if (parentFile != null && !parentFile.exists() && !parentFile.mkdirs()) {
-            DIAGNOSTIC_FALLBACK_LOGGER.warn(
-                "[GTRecipeLookupDiagnosticFallback] Could not create log directory: " + parentFile.getAbsolutePath());
-            return;
-        }
-
-        try (PrintStream stream = new PrintStream(new FileOutputStream(logFile, true), true)) {
-            stream.println(message);
-            stream.println();
-        } catch (IOException e) {
-            DIAGNOSTIC_FALLBACK_LOGGER
-                .warn("[GTRecipeLookupDiagnosticFallback] Could not write " + logFile.getAbsolutePath(), e);
-        }
-    }
-
-    private static File diagnosticFallbackLogFile() {
-        if (GTLog.mLogFile != null && GTLog.mLogFile.getParentFile() != null) {
-            return new File(GTLog.mLogFile.getParentFile(), DIAGNOSTIC_FALLBACK_LOG_FILE);
-        }
-        return new File("logs", DIAGNOSTIC_FALLBACK_LOG_FILE);
     }
 
     private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,

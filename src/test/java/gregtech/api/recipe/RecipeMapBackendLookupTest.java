@@ -1,15 +1,16 @@
 package gregtech.api.recipe;
 
 import static gregtech.api.enums.OrePrefixes.circuit;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -168,7 +169,7 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void diagnosticFallbackFindsAndLogsRecipeAfterTrieMiss(@TempDir Path tempDir) throws Exception {
+    void runtimeTrieMissDoesNotUseDiagnosticFallbackOrWriteDiagnosticLog(@TempDir Path tempDir) throws Exception {
         File previousLogFile = GTLog.mLogFile;
         GTLog.mLogFile = tempDir.resolve("logs")
             .resolve("GregTech.log")
@@ -181,8 +182,7 @@ class RecipeMapBackendLookupTest {
             RecipeMapBackend backend = new EmptyLookupBackend();
             backend.compileRecipe(recipe);
 
-            assertSame(
-                recipe,
+            assertFalse(
                 backend
                     .matchRecipeStream(
                         new ItemStack[] { new ItemStack(input, 1, 0) },
@@ -192,23 +192,19 @@ class RecipeMapBackendLookupTest {
                         false,
                         false,
                         false)
-                    .findFirst()
-                    .orElse(null));
+                    .findAny()
+                    .isPresent());
 
             Path missLog = tempDir.resolve("logs")
                 .resolve("RecipeLookupMisses.log");
-            assertTrue(Files.isRegularFile(missLog));
-            String log = new String(Files.readAllBytes(missLog), StandardCharsets.UTF_8);
-            assertTrue(log.contains("[GTRecipeLookupDiagnosticFallback]"));
-            assertTrue(log.contains("lookup.diagnostic.input"));
-            assertTrue(log.contains("lookup.diagnostic.output"));
+            assertFalse(Files.exists(missLog));
         } finally {
             GTLog.mLogFile = previousLogFile;
         }
     }
 
     @Test
-    void diagnosticFallbackDoesNotRunForCollisionCheck() {
+    void collisionTrieMissDoesNotUseDiagnosticFallback() {
         Item input = item("lookup.diagnostic.collision.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe recipe = recipe(input, item("lookup.diagnostic.collision.output"), category);
@@ -227,6 +223,57 @@ class RecipeMapBackendLookupTest {
                     true)
                 .findAny()
                 .isPresent());
+    }
+
+    @Test
+    void lookupVerifierAggregatesEveryIndexedTrieMissBeforeThrowing() {
+        ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.lookup.test.validation.missing";
+        MissingLookupBackend backend = new MissingLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe firstRecipe = recipe(
+            item("lookup.validation.first.input"),
+            item("lookup.validation.first.output"),
+            category);
+        GTRecipe secondRecipe = recipe(
+            item("lookup.validation.second.input"),
+            item("lookup.validation.second.output"),
+            category);
+        backend.compileRecipe(firstRecipe);
+        backend.compileRecipe(secondRecipe);
+
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeMapBackend.validateLookup(mapName, backend));
+
+        assertTrue(
+            error.getMessage()
+                .contains(mapName));
+        assertTrue(
+            error.getMessage()
+                .contains("lookup.validation.first.input"));
+        assertTrue(
+            error.getMessage()
+                .contains("lookup.validation.second.input"));
+    }
+
+    @Test
+    void lookupVerifierIgnoresRecipesMissingFromIndexedLookup() {
+        EmptyLookupBackend backend = new EmptyLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        backend.compileRecipe(
+            recipe(item("lookup.validation.unindexed.input"), item("lookup.validation.unindexed.output"), category));
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.unindexed", backend));
+    }
+
+    @Test
+    void lookupVerifierIgnoresRecipesWithNoLookupIngredients() {
+        EmptyLookupBackend backend = new EmptyLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        backend.compileRecipe(recipeWithoutInputs(item("lookup.validation.empty.output"), category));
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.empty", backend));
     }
 
     @Test
@@ -272,6 +319,18 @@ class RecipeMapBackendLookupTest {
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
         GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
         recipe.mInputs = new ItemStack[] { new ItemStack(input, 1, 0) };
+        recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
+        recipe.mFluidInputs = new FluidStack[0];
+        recipe.mFluidOutputs = new FluidStack[0];
+        recipe.mEnabled = true;
+        recipe.mCanBeBuffered = true;
+        recipe.setRecipeCategory(category);
+        return recipe;
+    }
+
+    private static GTRecipe recipeWithoutInputs(Item output, RecipeCategory category) {
+        GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
+        recipe.mInputs = new ItemStack[0];
         recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
         recipe.mFluidInputs = new FluidStack[0];
         recipe.mFluidOutputs = new FluidStack[0];
@@ -427,6 +486,19 @@ class RecipeMapBackendLookupTest {
         @Override
         protected GTRecipe addToItemMap(GTRecipe recipe) {
             return recipe;
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            return Stream.empty();
+        }
+    }
+
+    private static final class MissingLookupBackend extends RecipeMapBackend {
+
+        private MissingLookupBackend() {
+            super(new RecipeMapBackendPropertiesBuilder());
         }
 
         @Override
