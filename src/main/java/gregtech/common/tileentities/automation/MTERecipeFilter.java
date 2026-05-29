@@ -27,9 +27,6 @@ import gregtech.common.gui.modularui.singleblock.MTERecipeFilterGui;
 
 public class MTERecipeFilter extends MTESpecialFilter {
 
-    private static final String TT_machineType = "GT5U.MBTT.MachineType";
-    private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
-    private static final String EMPTY_REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.empty_representation_slot.tooltip";
     public RecipeMap<?> mRecipeMap;
     private List<ItemStack> filteredMachines = new ArrayList<>();
     public int mRotationIndex = 0;
