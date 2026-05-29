@@ -151,6 +151,12 @@ dependencies {
 
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
+
+    // jvmDowngrader
+    compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
+    
+    // For building structures faster
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.35-GTNH')
 }
 
 afterEvaluate {

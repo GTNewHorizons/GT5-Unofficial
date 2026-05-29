@@ -5709,6 +5709,7 @@ GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
+GT5U.waila.mvf.subspace=Current Subspace Cooling: §d%s§r/s of §a%s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe

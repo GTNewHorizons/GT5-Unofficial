@@ -131,11 +131,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
                     'C',
                     ofChain(
                         buildHatchAdder(MTEIndustrialFishingPond.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(Casings.AquaticCasing.textureId)
-                            .hint(1)
-                            .build(),
-                        buildHatchAdder(MTEIndustrialFishingPond.class).anyOf(InputHatch)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                             .casingIndex(Casings.AquaticCasing.textureId)
                             .hint(1)
                             .build(),
