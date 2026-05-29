@@ -21,7 +21,7 @@ public class ResourceUtils {
 
     // 14810 (max size as of 2026/29/5) * 1.333 = 19.7k ~= 20k
     private static final Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>(
-        20_0000);
+        20_000);
 
     /**
      * Checks whether a resource exists.
