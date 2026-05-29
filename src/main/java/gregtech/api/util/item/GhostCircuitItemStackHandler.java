@@ -50,6 +50,7 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
 
     /**
      * Sets the configuration of the circuit. Accepts {@link #NO_CONFIG}.
+     * {@link #NO_CONFIG} and {@code 0} will clear the slot.
      */
     public void setCircuitConfig(int config) {
         if (config == NO_CONFIG || config == 0) {
