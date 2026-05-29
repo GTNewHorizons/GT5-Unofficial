@@ -39,7 +39,7 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.98-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.10.3:dev")
     api("com.falsepattern:chunkapi-mc1.7.10:0.8.3:dev")
-    api("com.falsepattern:endlessids-mc1.7.10:1.7.1:dev")
+    api("com.falsepattern:endlessids-mc1.7.10:1.7.3:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.4:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.66-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.29:dev")
@@ -152,6 +152,9 @@ dependencies {
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
 
+    // jvmDowngrader
+    compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
+    
     // For building structures faster
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.35-GTNH')
 }

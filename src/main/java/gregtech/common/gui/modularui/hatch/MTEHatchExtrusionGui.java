@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -43,17 +42,6 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        syncManager.syncValue("shape", new IntSyncValue(() -> {
-            ItemStack current = machine.inventoryHandler.getStackInSlot(machine.shapeSlot);
-            return current != null ? machine.findMatchingShapeIndex(current) : -1;
-        }, index -> {
-            if (index >= 0 && index < MTEHatchExtrusion.extruderShapes.length) {
-                machine.setShape(MTEHatchExtrusion.extruderShapes[index]);
-            } else {
-                machine.setShape(null);
-            }
-        }));
-
         return super.createContentSection(panel, syncManager).child(createItemSlots(syncManager));
     }
 
