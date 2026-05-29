@@ -1,5 +1,7 @@
 package gregtech.common.modularui2.widget;
 
+import static gregtech.common.modularui2.factory.SelectItemGuiBuilder.DESELECTED;
+
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.utils.MouseData;
@@ -15,6 +17,7 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
     private final MTEHatchExtrusion hatch;
     private IntSyncValue indexSync;
 
+    @SuppressWarnings("UnstableApiUsage")
     public GhostShapeSyncHandler(ModularSlot slot, MTEHatchExtrusion hatch) {
         super(slot);
         this.hatch = hatch;
@@ -40,16 +43,34 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
     @Override
     protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
         if (indexSync == null) return;
-        int delta = mouseData.mouseButton == 1 ? -1 : 1;
-        int newIndex = getSelectedIndex() + delta;
-        if (newIndex < 0) newIndex = MTEHatchExtrusion.extruderShapes.length - 1;
-        if (newIndex >= MTEHatchExtrusion.extruderShapes.length) newIndex = 0;
-        hatch.inventoryHandler.setStackInSlot(hatch.shapeSlot, MTEHatchExtrusion.extruderShapes[newIndex].copy());
+
+        int itemIndex = hatch.findMatchingShapeIndex(cursorStack);
+        if (cursorStack != null && itemIndex != -1) {
+            setSelectedIndex(itemIndex);
+        } else {
+            if (mouseData.mouseButton == 0) {
+                // increment on left-click
+                setSelectedIndex(getNextShapeConfig(1));
+            } else if (mouseData.mouseButton == 1 && mouseData.shift) {
+                // clear on shift-right-click
+                setSelectedIndex(DESELECTED);
+            } else if (mouseData.mouseButton == 1) {
+                // decrement on right-click
+                setSelectedIndex(getNextShapeConfig(-1));
+            }
+        }
     }
 
     @Override
     protected void phantomScroll(MouseData mouseData) {
-        phantomClick(mouseData, null);
+        setSelectedIndex(getNextShapeConfig(mouseData.mouseButton));
+    }
+
+    private int getNextShapeConfig(int delta) {
+        int newIndex = getSelectedIndex() + delta;
+        if (newIndex < -1) newIndex = MTEHatchExtrusion.extruderShapes.length - 1;
+        if (newIndex >= MTEHatchExtrusion.extruderShapes.length) newIndex = -1;
+        return newIndex;
     }
 
     public int getSelectedIndex() {
