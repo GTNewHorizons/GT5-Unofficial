@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,6 +66,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -120,7 +124,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 {"                       ","                       ","                       ","      II       II      ","    FFIIIIIIIIIIFFF    ","    FIIIIIIIIIIIIIF    ","   IIII         IIFI   ","   III           III   ","    II           II    ","    II    CCC    II    ","    II   C   C   II    ","    II   C D C   II    ","    II   C   C   II    ","    II    CCC    II    ","    II           II    ","   III           III   ","   IFII         IIFI   ","    FIIIIIIIIIIIIIF    ","    FFFIIIIIIIIIFFF    ","      II       II      ","                       ","                       ","                       "},
                 {"                       ","                       ","                       ","      II       II      ","    FAIIIAAAAAIIIAF    ","    AJEEEEEEEEEEEJA    ","   IIEI         IEII   ","   IIE           EII   ","    IE           EI    ","    AE     C     EA    ","    AE           EA    ","    AE   C D C   EA    ","    AE           EA    ","    AE     C     EA    ","    IE           EI    ","   IIE           EII   ","   IIEI         IEII   ","    AJEEEEEEEEEEEJA    ","    FAIIIAAAAAIIIAF    ","      II       II      ","                       ","                       ","                       "},
                 {"                       ","                       ","                       ","      II       II      ","    FABBAAAAAAABBAF    ","    ACEEEEEEEEEEECA    ","   IBEI         IEBI   ","   IBE           EBI   ","    AE     C     EA    ","    AE           EA    ","    AE           EA    ","    AE  C  D  C  EA    ","    AE           EA    ","    AE           EA    ","    AE     C     EA    ","   IBE           EBI   ","   IBEI         IEBI   ","    ACEEEEEEEEEEECA    ","    FABBAAAAAAABBAF    ","      II       II      ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","      II       II      ","    FABBAAAAAAABBAF    ","    AJJJJJJJJJJJJJA    ","   IBJI         IJBI   ","   IBJ           JBI   ","    AJ     C     JA    ","    AJ           JA    ","    AJ           JA    ","    AJ  C  D  C  JA    ","    AJ           JA    ","    AJ           JA    ","    AJ     C     JA    ","   IBJ           JBI   ","   IBJI         IJBI   ","    AJJJJJJJJJJJJJA    ","    FABBAAAAAAABBAF    ","      II       II      ","                       ","                       ","                       "},
+                {"                       ","                       ","                       ","      II       II      ","    FABBAAAAAAABBAF    ","    AJJJJJJJJJJJJJA    ","   IBJE         EJBI   ","   IBJ           JBI   ","    AJ     C     JA    ","    AJ           JA    ","    AJ           JA    ","    AJ  C  D  C  JA    ","    AJ           JA    ","    AJ           JA    ","    AJ     C     JA    ","   IBJ           JBI   ","   IBJE         EJBI   ","    AJJJJJJJJJJJJJA    ","    FABBAAAAAAABBAF    ","      II       II      ","                       ","                       ","                       "},
                 {"                       ","                       ","      II       II      ","      BB       BB      ","    FABBAAAAAAABBAF    ","    ACEEEEEEEEEEECA    ","  IBBEI         IEBBI  ","  IBBE           EBBI  ","    AE   CCCCC   EA    ","    AE  C     C  EA    ","    AE  C     C  EA    ","    AE  C  D  C  EA    ","    AE  C     C  EA    ","    AE  C     C  EA    ","    AE   CCCCC   EA    ","  IBBE           EBBI  ","  IBBEI         IEBBI  ","    ACEEEEEEEEEEECA    ","    FABBAAAAAAABBAF    ","      BB       BB      ","      II       II      ","                       ","                       "},
                 {"                       ","                       ","      II       II      ","      BB       BB      ","    FABIIAAAAAIIBAF    ","    AJEEEEEEEEEEEJA    ","  IBBEI         IEBBI  ","  IBIE           EIBI  ","    IE     C     EI    ","    AE           EA    ","    AE           EA    ","    AE  C  D  C  EA    ","    AE           EA    ","    AE           EA    ","    IE     C     EI    ","  IBIE           EIBI  ","  IBBEI         IEBBI  ","    AJEEEEEEEEEEEJA    ","    FABIIAAAAAIIBAF    ","      BB       BB      ","      II       II      ","                       ","                       "},
                 {"                       ","                       ","      II       II      ","      BB       BB      ","    FIBIIIIIIIIIBIF    ","    IIIIIIIIIIIIIII    ","  IBBI           IBBI  ","  IBII           IIBI  ","    II     C     II    ","    II           II    ","    II           II    ","    II  C  D  C  II    ","    II           II    ","    II           II    ","    II     C     II    ","  IBII           IIBI  ","  IBBI           IBBI  ","    IIIIIIIIIIIIIII    ","    FIBIIIIIIIIIBIF    ","      BB       BB      ","      II       II      ","                       ","                       "},
@@ -250,10 +254,16 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
             .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoRange("Hearth Casing", 1800, 1915, false)
+            .addCasingInfoMin("Hearth Casing", 1800, false)
             .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
-            .addCasingInfoExactly("Heating Coils", 864, true)
+            .addCasingInfoExactly("Heating Coil", 864, true)
+            .addCasingInfoExactly("Thermal Containment Casing", 780, false)
+            .addCasingInfoExactly("Radiant Naquadah Alloy Casing", 426, false)
             .addCasingInfoExactly("Any Tiered Glass", 332, true)
+            .addCasingInfoExactly("Black Plutonium Item Pipe Casing", 308, false)
+            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 208, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 131, false)
+            .addCasingInfoExactly("Prismatic Naquadah Frame Box", 56, false)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addEnergyHatch("Any Hearth Casing")
             .addMaintenanceHatch("Any Hearth Casing")
@@ -391,6 +401,23 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         return (int) Math.floor(parallelModifier * Configuration.Multiblocks.megaMachinesMax);
     }
 
+    @Override
+    public void getExtraInfoData(List<String> info) {
+        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(this.heatingCapacity)));
+        info.add(
+            StatCollector.translateToLocal(
+                this.isPyroSupplied ? "GT5U.gui.text.button.pyrotheum.enabled"
+                    : "GT5U.gui.text.button.pyrotheum.disabled"));
+        info.add(
+            StatCollector.translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(this.parallelModifier)));
+        if (this.isPyroSupplied) {
+            info.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.mebf.pyrotheum",
+                    formatFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * this.parallelModifier))));
+        }
+    }
+
     private static final int pollutionPerSecond = 400 * 256;
 
     @Override
@@ -478,39 +505,47 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.heatingCapacity = 0;
         this.glassTier = -1;
         this.casingAmount = 0;
-
         this.setCoilLevel(HeatingCoilLevel.None);
-
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) return false;
-
-        if (this.getCoilLevel() == HeatingCoilLevel.None) return false;
-
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+        if (this.getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkCasingMin(errors, casingAmount, 1800);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
+                    return;
                 }
             }
         }
         if (this.glassTier < VoltageIndex.UMV) {
             for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
             for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
-
-        this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
-        return this.casingAmount >= 1800;
+        if (errors.isEmpty()) {
+            this.heatingCapacity = (int) getCoilLevel().getHeat()
+                + 100 * (GTUtility.getTierExtended(this.getMaxInputEu()) - 2);
+        }
     }
 
     @Override

@@ -30,9 +30,9 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
     // TODO: numericTextField with "Any" as default.
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot).allowC2S();
         final ICoverable tile = data.getCoverable();
         IItemHandler inventoryHandler;
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile

@@ -874,7 +874,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Make sure there are no Crafting Input Buffers/Buses/Slaves.
         if (!mDualInputHatches.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.crib_not_allowed"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.crib_not_allowed"));
         }
 
         // Check if there are output buses
@@ -888,7 +888,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             if (mInputBusses.size() != 1) {
                 errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, InputBus, mInputBusses.size(), 1));
             } else if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
-                errors.add(StructureErrors.of("GT5U.gui.text.stocking_input_bus_not_allowed"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_bus_not_allowed"));
             }
         }
 

@@ -258,12 +258,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 checkHasAnyEnergy(errors);
                 checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
-                    errors.add(StructureErrors.of("GT5U.gui.text.al_too_many_data_access_hatch"));
+                    errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
                 return i;
             }
         }
-        errors.add(StructureErrors.of("GT5U.gui.text.al_missing_output_bus"));
+        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
         return 16;
     }
 
@@ -362,7 +362,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addMaintenanceHatch("Any layer 1 casing", 3)
             .addInputBus("As specified on layer 1", 4)
             .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
+            .addOutputBus("Replaces Input Bus or Solid Steel Machine Casing on layer 1 of last slice", 3)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
                 "Any Grate Machine Casing NOT on the first slice",

@@ -24,10 +24,10 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityModeSync = new EnumSyncValue<>(
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityModeSync = new EnumSyncValue<>(
             CoverWirelessDoesWorkDetector.ActivityMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("activityMode", activityModeSync);
 
         super.addUIWidgets(syncManager, column, data);
@@ -35,9 +35,9 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode>) syncManager
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?>) syncManager
             .getSyncHandlerFromMapKey("activityMode:0");
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()
             .child(

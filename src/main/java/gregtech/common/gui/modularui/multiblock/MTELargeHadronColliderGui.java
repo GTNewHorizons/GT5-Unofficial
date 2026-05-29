@@ -52,16 +52,17 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             "playerTargetBeamEnergyeV",
             new DoubleSyncValue(
                 () -> multiblock.playerTargetBeamEnergyeV,
-                dub -> multiblock.playerTargetBeamEnergyeV = dub));
+                dub -> multiblock.playerTargetBeamEnergyeV = dub).allowC2S());
         syncManager.syncValue(
             "playerTargetAccelerationCycles",
             new IntSyncValue(
                 () -> multiblock.playerTargetAccelerationCycles,
-                i -> multiblock.playerTargetAccelerationCycles = i));
+                i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
-        syncManager
-            .syncValue("machineMode", new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i));
+        syncManager.syncValue(
+            "machineMode",
+            new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
@@ -208,17 +209,23 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         outputWidget.child(
             new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
-            .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
+            .child(
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine));
 
         return outputWidget;
     }

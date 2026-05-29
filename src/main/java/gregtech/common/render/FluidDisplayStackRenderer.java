@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
@@ -49,9 +50,13 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
-            int tint = 0xFFFFFF;
-            if (baseMaterial instanceof Material gtppMaterial)
+            int tint;
+            if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
                 tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+            } else {
+                Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
+                tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
+            }
             GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
