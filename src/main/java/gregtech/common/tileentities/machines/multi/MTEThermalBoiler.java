@@ -133,11 +133,10 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 GTRecipe adjustedRecipe = recipe.copy();
 
-                for (int i = 0; i < adjustedRecipe.mFluidInputs.length; i++) {
-                    FluidStack inputFluid = adjustedRecipe.mFluidInputs[i];
+                for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
                     if (inputFluid != null
                         && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
-                        adjustedRecipe.mFluidInputs[i] = null;
+                        inputFluid.amount = 0;
                     }
                 }
 
