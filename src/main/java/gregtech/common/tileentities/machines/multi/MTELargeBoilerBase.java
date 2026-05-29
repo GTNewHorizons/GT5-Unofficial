@@ -231,9 +231,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
         tt.addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.3"))
             .addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.4"))
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.large_boiler.info.tooltip.5"))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.machines.large_boiler.info.tooltip.5",
+                    "GT5U.machines.large_boiler.info.tooltip.6",
                     formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
