@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -258,7 +257,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Boiler")
+        tt.addMachineType("Heat Exchanger")
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
@@ -277,7 +276,6 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addInputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addOutputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addMaintenanceHatch("Any Thermal Containment Casing", 1)
-            .addMufflerHatch("Any Thermal Containment Casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "ArsinXArscosX")
             .toolTipFinisher();
         return tt;
@@ -354,7 +352,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                                 Casings.ThermalProcessingCasing.asElement())))
                 .addElement(
                     'F',
-                    buildHatchAdder(MTEThermalBoiler.class).atLeast(Maintenance, Muffler)
+                    buildHatchAdder(MTEThermalBoiler.class).atLeast(Maintenance)
                         .casingIndex(Casings.ThermalContainmentCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -400,7 +398,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     }
 
     public void checkHatch(List<StructureError> errors) {
-        checkOneMufflerHatch(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
