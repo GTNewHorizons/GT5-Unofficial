@@ -71,7 +71,6 @@ public class ResourceUtils {
 
     @SideOnly(Side.CLIENT)
     public static void clearCache() {
-        System.out.println("CLEARING CACHE OF SIZE " + EXISTS_CACHE.size());
         EXISTS_CACHE.clear();
     }
 
