@@ -148,11 +148,10 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
                 GTRecipe adjustedRecipe = recipe.copy();
 
                 // Hack the recipe logic to not consume water, so that we can explode.
-                for (int i = 0; i < adjustedRecipe.mFluidInputs.length; i++) {
-                    FluidStack inputFluid = adjustedRecipe.mFluidInputs[i];
+                for (FluidStack inputFluid : adjustedRecipe.mFluidInputs) {
                     if (inputFluid != null
                         && (inputFluid.getFluid() == fluidWater || inputFluid.getFluid() == fluidDistilledWater)) {
-                        adjustedRecipe.mFluidInputs[i] = null;
+                        inputFluid.amount = 0;
                     }
                 }
 
