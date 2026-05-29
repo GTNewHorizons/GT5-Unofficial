@@ -138,9 +138,9 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        Materials material = GregTechAPI.sGeneratedMaterials[aMeta];
+        IOreMaterial material = materials.get(aMeta);
         if (material == null) return null;
-        return material.mIconSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
+        return material.getTextureSet().mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
