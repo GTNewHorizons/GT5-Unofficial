@@ -1,13 +1,10 @@
 package gregtech.api.modularui2.common;
 
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
@@ -22,7 +19,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
-import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 public final class CommonWidgets {
@@ -38,32 +34,6 @@ public final class CommonWidgets {
     public static Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager,
         IMetaTileEntity baseMachine) {
         if (baseMachine instanceof IConfigurationCircuitSupport circuitEnabled && circuitEnabled.allowSelectCircuit()) {
-            IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
-                ItemStack selectedItem = baseMachine.getInventoryHandler()
-                    .getStackInSlot(circuitEnabled.getCircuitSlot());
-                if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
-                    // selected index 0 == config 1
-                    return selectedItem.getItemDamage() - 1;
-                }
-                return -1;
-            }, index -> {
-                if (index != -1) {
-                    baseMachine.setInventorySlotContents(
-                        circuitEnabled.getCircuitSlot(),
-                        GTUtility.getAllIntegratedCircuits()
-                            .get(index)
-                            .copy());
-                } else {
-                    baseMachine.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
-                }
-            });
-            selectedSyncHandler.setChangeListener(() -> {
-                if (selectedSyncHandler.getSyncManager()
-                    .isClient()) return;
-                baseMachine.getBaseMetaTileEntity()
-                    .markInventoryBeenModified();
-            });
-            syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)
                 .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));
         }
