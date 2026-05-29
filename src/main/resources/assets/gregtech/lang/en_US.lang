@@ -1820,7 +1820,7 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
-GT5U.EBF.heat=Heat capacity
+GT5U.EBF.heat.s=Heat capacity: §a%s §rK
 GT5U.coil.None=None
 GT5U.coil.ULV=None
 GT5U.coil.LV=Cupronickel
@@ -5492,6 +5492,8 @@ gt.item.apiary_upgrade.unlight.tooltip=Night upgrade for Industrial Apiary\nMaxi
 ## Special items
 gt.item.nuclear_star.name=Nuclear Star
 gt.item.nuclear_star.tooltip=By the powers of Greg, I command this star to be really hot.
+gt.item.pseudo_star.name=Pseudo Star
+gt.item.pseudo_star.tooltip=A miniature black hole star. Some could say this is a quasi star.
 gt.item.cover.metrics_transmitter.name=Metrics Transmitter Cover
 gt.item.cover.metrics_transmitter.tooltip=Taking Information Panels to the next level!\nCreates a GregTech Advanced Sensor Card when attached\nWorks across dimensions or if machine is dismantled\nRemoving this cover will destroy the linked card\n- Querns
 
@@ -5716,6 +5718,7 @@ GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
+GT5U.waila.mvf.subspace=Current Subspace Cooling: §d%s§r/s of §a%s
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
