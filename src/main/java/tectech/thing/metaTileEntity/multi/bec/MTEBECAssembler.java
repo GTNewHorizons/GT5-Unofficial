@@ -128,8 +128,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     @Override
-    protected void onStructureCheckFinished() {
-        super.onStructureCheckFinished();
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
 
         this.nanitesDirty = true;
     }
