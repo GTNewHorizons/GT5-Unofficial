@@ -142,6 +142,6 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     @NotNull
     @Override
     public GhostCircuitSyncHandler getSyncHandler() {
-        return (GhostCircuitSyncHandler) super.getSyncHandler();
+        return circuitSyncHandler;
     }
 }
