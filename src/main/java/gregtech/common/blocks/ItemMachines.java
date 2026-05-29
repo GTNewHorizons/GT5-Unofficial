@@ -282,11 +282,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                                 IGregTechTileEntity adjTile = (IGregTechTileEntity) tTileEntity
                                     .getTileEntityAtSide(oppositeSide);
                                 if (adjTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
-                                    adjPipe.blockPipeOnSide(side, aPlayer, (byte) side.flag);
+                                    adjPipe.mDisableInput |= (byte) side.flag;
                                 }
                             } else {
-                                ((MTEFluidPipe) connectable)
-                                    .blockPipeOnSide(oppositeSide, aPlayer, (byte) oppositeSide.flag);
+                                ((MTEFluidPipe) connectable).mDisableInput |= (byte) oppositeSide.flag;
                             }
                             GTModHandler.damageOrDechargeItem(offHand, 1, 1000, aPlayer);
                         }
