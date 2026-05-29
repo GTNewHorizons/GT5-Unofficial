@@ -48,7 +48,7 @@ class RecipeMapBackendLookupTest {
     private static final Unsafe UNSAFE = unsafe();
 
     @Test
-    void trieCandidatesAreSortedBackToRegistrationOrder() {
+    void trieCandidatesKeepLookupOrderOnRuntimePath() {
         Item input = item("lookup.order.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe firstRegistered = recipe(input, item("lookup.order.first.output"), category);
@@ -58,7 +58,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(secondRegistered);
 
         assertSame(
-            firstRegistered,
+            secondRegistered,
             backend
                 .matchRecipeStream(
                     new ItemStack[] { new ItemStack(input, 1, 0) },
@@ -81,7 +81,7 @@ class RecipeMapBackendLookupTest {
                 false,
                 false)
             .collect(Collectors.toList());
-        assertEquals(Arrays.asList(firstRegistered, secondRegistered), allMatches);
+        assertEquals(Arrays.asList(secondRegistered, firstRegistered), allMatches);
     }
 
     @Test

@@ -129,15 +129,7 @@ public final class GTRecipeLookup {
         }
 
         boolean containsRecipe(GTRecipe recipe) {
-            if (recipes == null) {
-                return false;
-            }
-            for (GTRecipe existingRecipe : recipes) {
-                if (existingRecipe == recipe) {
-                    return true;
-                }
-            }
-            return false;
+            return recipes != null && recipes.contains(recipe);
         }
     }
 

@@ -6,12 +6,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class GTRecipeLookupBuilder {
 
     private final List<RecipeEntry> entries = new ArrayList<>();
@@ -34,7 +41,7 @@ public final class GTRecipeLookupBuilder {
     }
 
     public GTRecipeLookup buildMutable() {
-        Map<GTRecipeLookupIngredient, Integer> frequencies = computeFrequencies();
+        Object2IntMap<GTRecipeLookupIngredient> frequencies = computeFrequencies();
         Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool = new HashMap<>();
         GTRecipeLookup lookup = new GTRecipeLookup();
 
@@ -60,12 +67,12 @@ public final class GTRecipeLookupBuilder {
         lookup.add(recipe, ingredients);
     }
 
-    private Map<GTRecipeLookupIngredient, Integer> computeFrequencies() {
-        Map<GTRecipeLookupIngredient, Integer> frequencies = new HashMap<>();
+    private Object2IntMap<GTRecipeLookupIngredient> computeFrequencies() {
+        Object2IntMap<GTRecipeLookupIngredient> frequencies = new Object2IntOpenHashMap<>();
         for (RecipeEntry entry : entries) {
             for (List<GTRecipeLookupIngredient> group : entry.ingredients) {
                 for (GTRecipeLookupIngredient ingredient : group) {
-                    frequencies.put(ingredient, frequencies.getOrDefault(ingredient, 0) + 1);
+                    frequencies.put(ingredient, frequencies.getInt(ingredient) + 1);
                 }
             }
         }
@@ -73,7 +80,7 @@ public final class GTRecipeLookupBuilder {
     }
 
     private static List<List<GTRecipeLookupIngredient>> poolAndSort(List<List<GTRecipeLookupIngredient>> ingredients,
-        Map<GTRecipeLookupIngredient, Integer> frequencies,
+        Object2IntMap<GTRecipeLookupIngredient> frequencies,
         Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool) {
         List<IngredientGroup> groups = new ArrayList<>(ingredients.size());
         for (int i = 0; i < ingredients.size(); i++) {
@@ -88,11 +95,11 @@ public final class GTRecipeLookupBuilder {
                 }
                 addIfAbsent(pooledGroup, pooled);
             }
-            groups.add(new IngredientGroup(pooledGroup, minFrequency(pooledGroup, frequencies), i));
+            groups.add(new IngredientGroup(pooledGroup, maxFrequency(pooledGroup, frequencies), i));
         }
 
         groups.sort((first, second) -> {
-            int frequencyCompare = Integer.compare(first.frequency, second.frequency);
+            int frequencyCompare = Integer.compare(first.maxFrequency, second.maxFrequency);
             if (frequencyCompare != 0) return frequencyCompare;
             return Integer.compare(first.originalIndex, second.originalIndex);
         });
@@ -104,13 +111,13 @@ public final class GTRecipeLookupBuilder {
         return sorted;
     }
 
-    private static int minFrequency(List<GTRecipeLookupIngredient> group,
-        Map<GTRecipeLookupIngredient, Integer> frequencies) {
-        int result = Integer.MAX_VALUE;
+    private static int maxFrequency(List<GTRecipeLookupIngredient> group,
+        Object2IntMap<GTRecipeLookupIngredient> frequencies) {
+        int result = 0;
         for (GTRecipeLookupIngredient ingredient : group) {
-            result = Math.min(result, frequencies.getOrDefault(ingredient, 0));
+            result = Math.max(result, frequencies.getInt(ingredient));
         }
-        return result == Integer.MAX_VALUE ? 0 : result;
+        return result;
     }
 
     private static List<List<GTRecipeLookupIngredient>> flatten(GTRecipe recipe) {
@@ -265,12 +272,12 @@ public final class GTRecipeLookupBuilder {
     private static final class IngredientGroup {
 
         private final List<GTRecipeLookupIngredient> ingredients;
-        private final int frequency;
+        private final int maxFrequency;
         private final int originalIndex;
 
-        private IngredientGroup(List<GTRecipeLookupIngredient> ingredients, int frequency, int originalIndex) {
+        private IngredientGroup(List<GTRecipeLookupIngredient> ingredients, int maxFrequency, int originalIndex) {
             this.ingredients = ingredients;
-            this.frequency = frequency;
+            this.maxFrequency = maxFrequency;
             this.originalIndex = originalIndex;
         }
     }

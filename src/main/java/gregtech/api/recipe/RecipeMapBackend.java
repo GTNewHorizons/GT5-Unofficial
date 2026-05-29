@@ -108,10 +108,6 @@ public class RecipeMapBackend {
     private static final Set<String> LOGGED_DIAGNOSTIC_FALLBACK_RECIPES = Collections
         .newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
-    private final Map<GTRecipe, Integer> recipeRegistrationOrdinals = new IdentityHashMap<>();
-
-    private int nextRecipeRegistrationOrdinal;
-
     /**
      * All the properties specific to this backend.
      */
@@ -179,7 +175,6 @@ public class RecipeMapBackend {
 
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
-        ensureRegistrationOrdinal(recipe);
 
         GTRecipe result = addToItemMap(recipe);
         addRecipeToLookup(recipe);
@@ -192,7 +187,11 @@ public class RecipeMapBackend {
     protected GTRecipe addToItemMap(GTRecipe recipe) {
         if (recipe.mFluidInputs != null) {
             for (FluidStack fluid : recipe.mFluidInputs) {
-                addFluidToContainsIndex(fluid, recipe);
+                if (fluid == null) continue;
+                fluidContainsIndex.put(
+                    fluid.getFluid()
+                        .getName(),
+                    recipe);
             }
         }
 
@@ -219,20 +218,16 @@ public class RecipeMapBackend {
                 for (FluidStack[] fluidStacks : recipeWithAlt.mAltFluidInputs) {
                     if (fluidStacks == null) continue;
                     for (FluidStack fluid : fluidStacks) {
-                        addFluidToContainsIndex(fluid, recipe);
+                        if (fluid == null) continue;
+                        fluidContainsIndex.put(
+                            fluid.getFluid()
+                                .getName(),
+                            recipe);
                     }
                 }
             }
         }
         return recipe;
-    }
-
-    private void addFluidToContainsIndex(@Nullable FluidStack fluid, GTRecipe recipe) {
-        if (fluid == null || fluid.getFluid() == null) return;
-        fluidContainsIndex.put(
-            fluid.getFluid()
-                .getName(),
-            recipe);
     }
 
     /**
@@ -311,9 +306,6 @@ public class RecipeMapBackend {
             .removeIf(
                 entry -> entry.getValue()
                     .isEmpty());
-        for (GTRecipe recipe : recipesToRemove) {
-            recipeRegistrationOrdinals.remove(recipe);
-        }
         rebuildLookupStructures(false);
     }
 
@@ -347,8 +339,6 @@ public class RecipeMapBackend {
         Arrays.fill(cacheMap, null);
         recipeLookup = new GTRecipeLookup();
         recipeLookupDirty = false;
-        recipeRegistrationOrdinals.clear();
-        nextRecipeRegistrationOrdinal = 0;
     }
 
     private void rebuildLookupStructures(boolean reUnificate) {
@@ -362,7 +352,6 @@ public class RecipeMapBackend {
                 GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
                 GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
             }
-            ensureRegistrationOrdinal(recipe);
             addToItemMap(recipe);
             lookupBuilder.add(recipe);
         }
@@ -377,7 +366,6 @@ public class RecipeMapBackend {
 
         GTRecipeLookupBuilder lookupBuilder = new GTRecipeLookupBuilder();
         for (GTRecipe recipe : allRecipes()) {
-            ensureRegistrationOrdinal(recipe);
             lookupBuilder.add(recipe);
         }
         recipeLookup = lookupBuilder.buildMutable();
@@ -554,8 +542,7 @@ public class RecipeMapBackend {
 
         // The trie is the only default recipe candidate lookup path. The item/fluid indexes are containsInput-only.
         Stream<GTRecipe> cachedRecipeCandidates = GTStreamUtil.ofNullable(cachedRecipe)
-            .filter(recipe -> recipe.mCanBeBuffered)
-            .filter(this::isRecipeRegistered);
+            .filter(recipe -> recipe.mCanBeBuffered);
         if (profile != null) {
             cachedRecipeCandidates = cachedRecipeCandidates.peek(recipe -> profile.recordCachedRecipeCandidate());
         }
@@ -566,8 +553,7 @@ public class RecipeMapBackend {
             }
             return cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE];
         })
-            .filter(Objects::nonNull)
-            .filter(this::isRecipeRegistered);
+            .filter(Objects::nonNull);
         if (profile != null) {
             cacheMapCandidates = cacheMapCandidates.peek(recipe -> profile.recordCacheMapCandidate());
         }
@@ -577,14 +563,11 @@ public class RecipeMapBackend {
         AtomicBoolean matchedBeforeFallback = new AtomicBoolean(false);
         Stream<GTRecipe> candidates = Stream
             .<Supplier<Stream<GTRecipe>>>of(() -> cachedRecipeCandidateStream, () -> cacheMapCandidateStream, () -> {
-                Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile)
-                    .filter(this::isRecipeRegistered);
+                Stream<GTRecipe> trieCandidates = lookupCandidateStream(items, fluids, profile);
                 if (profile != null) {
                     trieCandidates = trieCandidates.peek(recipe -> profile.recordTrieCandidate());
                 }
-                return trieCandidates.sorted(
-                    (first, second) -> Integer
-                        .compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)));
+                return trieCandidates;
             })
             .flatMap(Supplier::get)
             .filter(distinctByIdentity())
@@ -645,9 +628,6 @@ public class RecipeMapBackend {
         @Nullable RecipeLookupProfile profile) {
         List<GTRecipe> foundRecipes = new ArrayList<>();
         allRecipes().stream()
-            .filter(this::isRecipeRegistered)
-            .sorted(
-                (first, second) -> Integer.compare(recipeRegistrationOrdinal(first), recipeRegistrationOrdinal(second)))
             .filter(
                 recipe -> profiledFilterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes, profile))
             .forEach(recipe -> {
@@ -673,7 +653,7 @@ public class RecipeMapBackend {
     }
 
     private String diagnosticFallbackFingerprint(GTRecipe recipe) {
-        return recipeMapName() + "#" + recipeRegistrationOrdinal(recipe) + "#" + System.identityHashCode(recipe);
+        return recipeMapName() + "#" + System.identityHashCode(recipe);
     }
 
     private String buildDiagnosticFallbackMessage(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
@@ -686,8 +666,6 @@ public class RecipeMapBackend {
             .append('\n')
             .append("map=")
             .append(recipeMapName())
-            .append(", ordinal=")
-            .append(recipeRegistrationOrdinal(recipe))
             .append(", category=")
             .append(describeRecipeCategory(recipe))
             .append(", owners=")
@@ -853,7 +831,7 @@ public class RecipeMapBackend {
     private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,
         @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes,
         @Nullable RecipeLookupProfile profile) {
-        Stream<GTRecipe> candidates = lookupCandidateStream(items, fluids, profile).filter(this::isRecipeRegistered);
+        Stream<GTRecipe> candidates = lookupCandidateStream(items, fluids, profile);
         if (profile != null) {
             candidates = candidates.peek(recipe -> profile.recordTrieCandidate());
         }
@@ -932,21 +910,6 @@ public class RecipeMapBackend {
         if (!group.contains(ingredient)) {
             group.add(ingredient);
         }
-    }
-
-    private boolean isRecipeRegistered(GTRecipe recipe) {
-        return recipeRegistrationOrdinals.containsKey(recipe);
-    }
-
-    private void ensureRegistrationOrdinal(GTRecipe recipe) {
-        if (!recipeRegistrationOrdinals.containsKey(recipe)) {
-            recipeRegistrationOrdinals.put(recipe, nextRecipeRegistrationOrdinal++);
-        }
-    }
-
-    private int recipeRegistrationOrdinal(GTRecipe recipe) {
-        Integer ordinal = recipeRegistrationOrdinals.get(recipe);
-        return ordinal == null ? Integer.MAX_VALUE : ordinal;
     }
 
     private static Predicate<GTRecipe> distinctByIdentity() {
