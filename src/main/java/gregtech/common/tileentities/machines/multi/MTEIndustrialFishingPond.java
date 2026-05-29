@@ -98,7 +98,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fish Trap")
+        tt.addMachineType("Fish Trap, ZFP")
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus or controller")
             .addInfo("Circuit " + FISH_MODE + " for Fish")
