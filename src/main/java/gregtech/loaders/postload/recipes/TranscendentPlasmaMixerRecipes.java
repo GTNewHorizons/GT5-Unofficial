@@ -20,6 +20,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int STELLAR_EU_PER_HALF_L = 2_138_383_760;
 
     private static final int PRIMORDIAL_MATTER = 2_000_000_000;
+    private static final int INACTIVE_COSMIC_SOLDER = 1_073_007_39;
 
     @Override
     public void run() {
@@ -148,6 +149,19 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(Materials.Creon.getPlasma(5_000))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)
+            .addTo(transcendentPlasmaMixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(24)
+            .fluidInputs(
+                Materials.DTR.getFluid(1_000),
+                Materials.Tin.getPlasma(1_000),
+                Materials.Antimony.getPlasma(1_000),
+                Materials.Lead.getPlasma(1_000),
+                Materials.RawStarMatter.getFluid(1_000))
+            .fluidOutputs(Materials.InactiveCosmicSolder.getFluid(4_000))
+            .duration(100)
+            .eut(INACTIVE_COSMIC_SOLDER)
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
