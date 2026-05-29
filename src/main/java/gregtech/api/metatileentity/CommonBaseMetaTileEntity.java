@@ -454,11 +454,13 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         // Receive and create the mte if it doesn't exist
         receiveInitialDataOnClient(nbt.getByteArray("base"));
 
-        NBTTagCompound data = nbt.getCompoundTag("mte");
         IMetaTileEntity mte = getMetaTileEntity();
 
         // The mte sent from server is invalid
         if (mte == null) return;
+
+        if (!nbt.hasKey("mte")) return;
+        NBTTagCompound data = nbt.getCompoundTag("mte");
 
         mte.onDescriptionPacket(data);
     }

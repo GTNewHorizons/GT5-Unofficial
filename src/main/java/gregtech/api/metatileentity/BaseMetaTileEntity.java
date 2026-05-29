@@ -363,11 +363,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
     }
 
-    public final void doPreTick() {
+    private void doPreTick() {
         mMetaTileEntity.onPreTick(this, mTickTimer);
     }
 
-    public final void doPostTick() {
+    private void doPostTick() {
         mMetaTileEntity.onPostTick(this, mTickTimer);
     }
 
@@ -644,6 +644,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public void scheduleTexturePacket() {
+        if (isClientSide()) return;
         mTexturePacketScheduled = true;
         if (mTickDisabled) {
             maybeSendTextureData();
@@ -653,7 +654,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void setGenericRedstoneOutput(boolean aOnOff) {
         mRedstone = aOnOff;
-        issueTextureUpdate();
+        scheduleTexturePacket();
         if (isServerSide()) {
             issueBlockUpdate();
         }
