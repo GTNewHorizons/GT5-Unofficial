@@ -30,6 +30,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
@@ -258,6 +259,22 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             mTier = aNBT.getByte("mTier");
         }
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
+
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
+
+        if (mte instanceof MTEHatchInputBeamline beamInput) {
+            beamInput.getBaseMetaTileEntity()
+                .setFrontFacing(getDirection());
+            return this.mInputBeamline.add(beamInput);
+        }
+
+        return false;
     }
 
     @Override
