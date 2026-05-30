@@ -167,13 +167,13 @@ tile.DysonSwarmFloor.name=Ultra High Strength Concrete Floor
 tile.GasSiphonCasing.name=Planetary Siphon Casing
 
 # GUI
-GT5U.gui.text.no_space_station=§7Not on a space station
-GT5U.gui.text.invalid_depth=§7Invalid depth
-GT5U.gui.text.siphoning=§aExtracting from the planet
+GT5U.gui.text.recipe_result.no_space_station=§7Not on a space station
+GT5U.gui.text.recipe_result.invalid_depth=§7Invalid depth
+GT5U.gui.text.recipe_result.siphoning=§aExtracting from the planet
 GT5U.gui.text.missing_project=§7Missing §b%s §7 at §b%s
-GT5U.gui.text.no_plasma=§7Not enough plasma
-GT5U.gui.text.invalid_overdrive=§7Invalid overdrive settings
-GT5U.gui.text.no_project_selected=§7Not working on any project
+GT5U.gui.text.recipe_result.no_plasma=§7Not enough plasma
+GT5U.gui.text.recipe_result.invalid_overdrive=§7Invalid overdrive settings
+GT5U.gui.text.recipe_result.no_project_selected=§7Not working on any project
 ig.text.project=Project
 ig.text.upgrades=Upgrades
 ig.text.start=Start
@@ -195,9 +195,9 @@ gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set 
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
 gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
-gt.blockmachines.multimachine.ig.siphon.lore0=333:Taking Space-Mining to another Level!
-gt.blockmachines.multimachine.ig.siphon.lore1=333:It's time to SUCC!
-gt.blockmachines.multimachine.ig.siphon.lore2=333:Trading EU -> Fluids
+gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
+gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
+gt.blockmachines.multimachine.ig.siphon.lore2=Trading EU -> Fluids
 gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 
 # Dyson Swarm
@@ -236,6 +236,7 @@ gt.blockmachines.multimachine.ig.elevator.gui.ready=Ready for Operation.
 gt.blockmachines.multimachine.ig.elevator.gui.noRecipe=No Operation started.
 gt.blockmachines.multimachine.ig.elevator.gui.recipe=Operating.
 gt.blockmachines.multimachine.ig.elevator.gui.config=Configuration:
+gt.blockmachines.multimachine.ig.elevator.gui.notConnected=Not connected to Space Elevator.
 
 # Module Base
 gt.blockmachines.module.name=Space Elevator Module
@@ -309,6 +310,7 @@ gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Planet Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Gas Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Parallels
 gt.blockmachines.multimachine.project.ig.pump.cfgi.3=Batch Size
+gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe=Recipe %d
 
 # Module Manager
 gt.blockmachines.multimachine.project.ig.manager.t1.name=Space Project Manager
@@ -345,11 +347,13 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front bottom
+ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos2=Front bottom center
+ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
-ig.siphon.structure.Base=3x1x3 base (hollow)
+ig.siphon.structure.Base=3x1x3 base (hollow), needs §63§7
 ig.siphon.structure.SiphonCasing=Planetary Siphon Casing
 ig.siphon.structure.FrameTungstensteel=Tungstensteel Frame Box
 ig.siphon.structure.ReboltedRhodiumPalladiumCasing=Rebolted Rhodium-Plated Palladium Casing
@@ -357,6 +361,7 @@ ig.elevator.structure.ProjectModule=Project Modules
 ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
+ig.elevator.structure.DataInputHatch=Data Input Hatch
 ig.elevator.structure.OpticalConnector=Optical Connector
 ig.elevator.structure.AnyBaseCasingWithHintNumber1=Any Space Elevator Base Casing With Hint Number 1
 ig.elevator.structure.AnyBaseCasingWithHintNumber2=Any Space Elevator Base Casing With Hint Number 2
@@ -398,6 +403,7 @@ ig.sp.upgrade.reinforcedstructure=Reinforced Structure Upgrade
 ig.sp.upgrade.reinforcedstructure.description=This upgrade reinforces the structure to survive hits from any fast moving asteroids and protects the drones from accidents
 
 # Asteroids
+ig.asteroid=Asteroid
 ig.asteroid.coalAsteroid=Coal
 ig.asteroid.saltAsteroid=Salt
 ig.asteroid.ironAsteroid=Iron
@@ -417,6 +423,7 @@ ig.asteroid.quartzAsteroid=Quartz
 ig.asteroid.lutetiumAsteroid=Lutetium
 ig.asteroid.siliconAsteroid=Silicon
 ig.asteroid.phosphateAsteroid=Phosphate
+ig.asteroid.spaceOreAsteroid=Space Ore
 ig.asteroid.leadAsteroid=Lead
 ig.asteroid.adamantiumAsteroid=Adamantium
 ig.asteroid.tungstenTitaniumAsteroid=Tungsten-Titanium

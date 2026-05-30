@@ -22,11 +22,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import bartworks.MainMod;
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
-import bartworks.util.BioCulture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -57,14 +58,11 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
-            && stack.getTagCompound()
-                .getIntArray("Color") != null
-            && stack.getTagCompound()
-                .getIntArray("Color").length > 0) {
-            int[] rgb = stack.getTagCompound()
-                .getIntArray("Color");
-            return BWColorUtil.getColorFromRGBArray(rgb);
+        if (stack.getItemDamage() == 0) {
+            final int[] colors = ItemStackNBT.getIntArray(stack, "Color");
+            if (colors != null && colors.length > 0) {
+                return BWColorUtil.getColorFromRGBArray(colors);
+            }
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
@@ -97,35 +95,19 @@ public class ItemLabParts extends SimpleSubItemClass {
             return;
         }
 
-        BioCulture culture = BioCulture.getBioCulture(
-            itemStack.getTagCompound()
-                .getString("Name"));
-
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(getTooltip(5, itemStack));
                 if (!itemStack.getTagCompound()
                     .getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(getTooltip(7, itemStack));
                 break;
             case 2:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                list.add(getTooltip(8, itemStack));
                 break;
             default:
                 break;
@@ -146,5 +128,28 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack.getItemDamage() == 0 && itemStack.getTagCompound() != null)
             return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
         return super.getUnlocalizedName(itemStack);
+    }
+
+    private static String getTooltip(int meta, ItemStack stack) {
+        return StatCollector
+            .translateToLocalFormatted("tooltip.labparts." + meta + ".name", getLocalizedBioName(stack));
+    }
+
+    private static String getLocalizedBioName(ItemStack stack) {
+        final String name = stack.getTagCompound()
+            .getString("Name");
+        if (name == null || name.isEmpty()) {
+            return "";
+        }
+        final String key = "bw.bioname." + name.toLowerCase()
+            .replace(" ", "_");
+        final String keyLatin = key + ".latin";
+        if (StatCollector.canTranslate(keyLatin)) {
+            return StatCollector.translateToLocalFormatted(
+                "bw.bioname.latin.format",
+                StatCollector.translateToLocal(key),
+                StatCollector.translateToLocal(keyLatin));
+        }
+        return StatCollector.translateToLocal(key);
     }
 }

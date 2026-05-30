@@ -34,7 +34,7 @@ public class LanthanidesRecipeMaps {
         .create(SourceChamberMetadata.class, "source_chamber_metadata");
 
     public static final RecipeMap<RecipeMapBackend> digesterRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.digester")
-        .maxIO(1, 1, 1, 1)
+        .maxIO(3, 1, 1, 1)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
@@ -132,6 +132,7 @@ public class LanthanidesRecipeMaps {
             ret.addAll(Arrays.asList(recipe.mInputs));
             return ret.toArray(new ItemStack[0]);
         })
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)

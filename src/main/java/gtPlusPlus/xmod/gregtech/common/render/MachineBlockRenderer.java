@@ -129,7 +129,9 @@ public class MachineBlockRenderer extends GTRendererBlock {
             }
         }
     }
-    // spotless:on @Override
+
+    // spotless:on
+    @Override
     public boolean renderStandardBlock(ISBRWorldContext ctx) {
         final TileEntity te = ctx.getBlockAccess()
             .getTileEntity(ctx.getX(), ctx.getY(), ctx.getZ());
@@ -479,150 +481,6 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
     // spotless:on
 
-    public static void renderNegativeYFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.getBlockAccess() != null) {
-            if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
-                && !ctx.getBlock()
-                    .shouldSideBeRendered(ctx.getBlockAccess(), ctx.getX(), ctx.getY() - 1, ctx.getZ(), 0)) {
-                return;
-            }
-            Tessellator.instance.setBrightness(
-                ctx.getBlock()
-                    .getMixedBrightnessForBlock(
-                        ctx.getBlockAccess(),
-                        ctx.getX(),
-                        aFullBlock ? ctx.getY() - 1 : ctx.getY(),
-                        ctx.getZ()));
-        }
-
-        if (aIcon != null) {
-            for (ITexture iTexture : aIcon) {
-                if (iTexture != null) {
-                    iTexture.renderYNeg(ctx);
-                }
-            }
-        }
-
-        ctx.getRenderBlocks().flipTexture = false;
-    }
-
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveYFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.getBlockAccess() != null) {
-            if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
-                && !ctx.getBlock()
-                    .shouldSideBeRendered(ctx.getBlockAccess(), ctx.getX(), ctx.getY() + 1, ctx.getZ(), 1)) {
-                return;
-            }
-
-            Tessellator.instance.setBrightness(
-                ctx.getBlock()
-                    .getMixedBrightnessForBlock(
-                        ctx.getBlockAccess(),
-                        ctx.getX(),
-                        aFullBlock ? ctx.getY() + 1 : ctx.getY(),
-                        ctx.getZ()));
-        }
-
-        if (aIcon != null) {
-            for (ITexture iTexture : aIcon) {
-                if (iTexture != null) {
-                    iTexture.renderYPos(ctx);
-                }
-            }
-        }
-
-        ctx.getRenderBlocks().flipTexture = false;
-    }
-
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeZFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.getBlockAccess() != null) {
-            if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
-                && !ctx.getBlock()
-                    .shouldSideBeRendered(ctx.getBlockAccess(), ctx.getX(), ctx.getY(), ctx.getZ() - 1, 2)) {
-                return;
-            }
-
-            Tessellator.instance.setBrightness(
-                ctx.getBlock()
-                    .getMixedBrightnessForBlock(
-                        ctx.getBlockAccess(),
-                        ctx.getX(),
-                        ctx.getY(),
-                        aFullBlock ? ctx.getZ() - 1 : ctx.getZ()));
-        }
-
-        ctx.getRenderBlocks().flipTexture = !aFullBlock;
-        if (aIcon != null) {
-            for (ITexture iTexture : aIcon) {
-                if (iTexture != null) {
-                    iTexture.renderZNeg(ctx);
-                }
-            }
-        }
-
-        ctx.getRenderBlocks().flipTexture = false;
-    }
-
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderPositiveZFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.getBlockAccess() != null) {
-            if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
-                && !ctx.getBlock()
-                    .shouldSideBeRendered(ctx.getBlockAccess(), ctx.getX(), ctx.getY(), ctx.getZ() + 1, 3)) {
-                return;
-            }
-
-            Tessellator.instance.setBrightness(
-                ctx.getBlock()
-                    .getMixedBrightnessForBlock(
-                        ctx.getBlockAccess(),
-                        ctx.getX(),
-                        ctx.getY(),
-                        aFullBlock ? ctx.getZ() + 1 : ctx.getZ()));
-        }
-
-        if (aIcon != null) {
-            for (ITexture iTexture : aIcon) {
-                if (iTexture != null) {
-                    iTexture.renderZPos(ctx);
-                }
-            }
-        }
-
-        ctx.getRenderBlocks().flipTexture = false;
-    }
-
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void renderNegativeXFacing(ISBRWorldContext ctx, ITexture[] aIcon, boolean aFullBlock) {
-        if (ctx.getBlockAccess() != null) {
-            if (aFullBlock && !ctx.getRenderBlocks().renderAllFaces
-                && !ctx.getBlock()
-                    .shouldSideBeRendered(ctx.getBlockAccess(), ctx.getX() - 1, ctx.getY(), ctx.getZ(), 4)) {
-                return;
-            }
-
-            Tessellator.instance.setBrightness(
-                ctx.getBlock()
-                    .getMixedBrightnessForBlock(
-                        ctx.getBlockAccess(),
-                        aFullBlock ? ctx.getX() - 1 : ctx.getX(),
-                        ctx.getY(),
-                        ctx.getZ()));
-        }
-
-        if (aIcon != null) {
-            for (ITexture iTexture : aIcon) {
-                if (iTexture != null) {
-                    iTexture.renderXNeg(ctx);
-                }
-            }
-        }
-
-        ctx.getRenderBlocks().flipTexture = false;
-    }
-
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
@@ -637,6 +495,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
         aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        ctx.doCleanup();
     }
 
     @Override
@@ -644,7 +503,13 @@ public class MachineBlockRenderer extends GTRendererBlock {
         RenderBlocks aRenderer) {
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
         final ISBRWorldContext ctx = sbrContextHolder.getSBRWorldContext(aX, aY, aZ, aBlock, aModelID, aRenderer);
+        final boolean b = renderInWorld(aWorld, aX, aY, aZ, tessAccess, ctx);
+        ctx.doCleanup();
+        return b;
+    }
 
+    private boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, TesselatorAccessor tessAccess,
+        ISBRWorldContext ctx) {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity
             && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null

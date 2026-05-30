@@ -19,12 +19,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -61,7 +61,10 @@ public class GregtechConduits {
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
         }
 
-        public Material getMaterial() {
+        public IOreMaterial getMaterial() {
+            if (this == Void) {
+                return Materials.Void;
+            }
             return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
         }
     }
@@ -110,8 +113,6 @@ public class GregtechConduits {
         final Materials T = Materials.get(Material);
         int V = GTUtility.getTier(Voltage);
         if (V == -1) {
-            Logger.ERROR("Failed to set voltage on " + Material + ". Invalid voltage of " + Voltage + "V set.");
-            Logger.ERROR(Material + " has defaulted to 8v.");
             V = 0;
         }
         makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GTValues.V[V], true, false, rgb);
@@ -120,7 +121,6 @@ public class GregtechConduits {
     private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated,
         final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable,
         final boolean aAutoInsulated, final short[] aRGB) {
-        Logger.WARNING("Gregtech5u Content | Registered " + aMaterial.mName + " as a new material for Wire & Cable.");
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
@@ -305,23 +305,9 @@ public class GregtechConduits {
         }
     }
 
-    private static void customWireFactory(final Material Material, final int Voltage, final int ID,
-        final long insulatedLoss, final long uninsulatedLoss, final long Amps) {
-        int V = GTUtility.getTier(Voltage);
-        if (V == -1) {
-            Logger.ERROR("Failed to set voltage on " + Material + ". Invalid voltage of " + Voltage + "V set.");
-            Logger.ERROR(Material + " has defaulted to 8v.");
-            V = 0;
-        }
-        makeCustomWires(Material, ID, insulatedLoss, uninsulatedLoss, Amps, GTValues.V[V], true, false);
-    }
-
     private static void makeCustomWires(final Material aMaterial, final int aStartID, final long aLossInsulated,
         final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable,
         final boolean aAutoInsulated) {
-        Logger.WARNING(
-            "Gregtech5u Content | Registered " + aMaterial.getDefaultLocalName()
-                + " as a new material for Wire & Cable.");
         registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
@@ -628,15 +614,10 @@ public class GregtechConduits {
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(
-            material,
-            material.getDefaultLocalName(),
-            material.getMass(),
-            material.vVoltageMultiplier / 8);
+        generatePipeRecipes(material, material.getDefaultLocalName(), material.vVoltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final Material material, final String materialName, final long Mass,
-        final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName, final long vMulti) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -646,8 +627,6 @@ public class GregtechConduits {
             output = "Void";
         }
 
-        Logger.INFO("Generating " + output + " pipes & respective recipes.");
-
         ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDict("ingot" + output, 1);
         ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDict("plate" + output, 1);
 
@@ -656,28 +635,6 @@ public class GregtechConduits {
                 pipeIngot = pipePlate;
             }
         }
-
-        // Check all pipes are not null
-        Logger.WARNING(
-            "Generated pipeTiny from " + materialName
-                + "? "
-                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 1) != null));
-        Logger.WARNING(
-            "Generated pipeSmall from " + materialName
-                + "? "
-                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1) != null));
-        Logger.WARNING(
-            "Generated pipeNormal from " + materialName
-                + "? "
-                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1) != null));
-        Logger.WARNING(
-            "Generated pipeLarge from " + materialName
-                + "? "
-                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1) != null));
-        Logger.WARNING(
-            "Generated pipeHuge from " + materialName
-                + "? "
-                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1) != null));
 
         int eut = (int) (8 * vMulti);
 
@@ -755,10 +712,8 @@ public class GregtechConduits {
             if (pipePlateDouble != null) {
                 GTModHandler.addCraftingRecipe(
                     ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
+                    GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "DhD", "D D", "DwD", 'D', pipePlateDouble.copy() });
-            } else {
-                Logger.INFO(
-                    "Failed to add a recipe for " + materialName + " Huge pipes. Double plates probably do not exist.");
             }
         }
 
@@ -841,7 +796,10 @@ public class GregtechConduits {
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
             && aMaterial.vVoltageMultiplier < 7680) {
-            GTModHandler.addCraftingRecipe(aWire01, new Object[] { "Px ", "   ", "   ", 'P', aPlate });
+            GTModHandler.addCraftingRecipe(
+                aWire01,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "Px ", "   ", "   ", 'P', aPlate });
         }
 
         // Wire mill
@@ -967,7 +925,7 @@ public class GregtechConduits {
                 .circuit(1)
                 .itemOutputs(aMaterial.getFineWire(4))
                 .duration(10 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(wiremillRecipes);
 
         }
@@ -987,75 +945,112 @@ public class GregtechConduits {
                 .itemInputs(aCable01)
                 .itemOutputs(aWire01)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(unpackagerRecipes);
         }
 
         // Shapeless Down-Crafting
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(2), new ItemStack[] { aWire02 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(2),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire02 });
         }
 
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(4), new ItemStack[] { aWire04 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04 });
         }
 
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(8), new ItemStack[] { aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(8),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire08 });
         }
 
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(12), new ItemStack[] { aWire12 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(12),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire12 });
         }
 
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aMaterial.getWire01(16), new ItemStack[] { aWire16 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aMaterial.getWire01(16),
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire16 });
         }
 
         // 1x -> 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire02, new ItemStack[] { aWire01, aWire01 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire02,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire01, aWire01 });
         }
 
         // 2x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire04, new ItemStack[] { aWire02, aWire02 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire04,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire02, aWire02 });
         }
 
         // 4x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire08, new ItemStack[] { aWire04, aWire04 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire08,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire04 });
         }
 
         // 8x -> 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire12, new ItemStack[] { aWire04, aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire12,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire08 });
         }
 
         // 12x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire12, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire16, new ItemStack[] { aWire04, aWire12 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire16,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire04, aWire12 });
         }
 
         // 8x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire16, new ItemStack[] { aWire08, aWire08 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire16,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire08, aWire08 });
         }
 
         // 1x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(aWire04, new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
+            GTModHandler.addShapelessCraftingRecipe(
+                aWire04,
+                GTModHandler.RecipeBits.BUFFERED,
+                new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
         }
 
         // 1x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
+                GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01 });
         }
 
@@ -1068,7 +1063,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable01)
                 .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1081,7 +1076,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable02)
                 .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1094,7 +1089,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable04)
                 .fluidInputs(Materials.Rubber.getMolten(2 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1107,7 +1102,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable08)
                 .fluidInputs(Materials.Rubber.getMolten(3 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1120,7 +1115,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable12)
                 .fluidInputs(Materials.Rubber.getMolten(4 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1133,7 +1128,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable16)
                 .fluidInputs(Materials.Rubber.getMolten(5 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1145,35 +1140,35 @@ public class GregtechConduits {
                 .circuit(2)
                 .itemOutputs(aWire02)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(4))
                 .circuit(4)
                 .itemOutputs(aWire04)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(8))
                 .circuit(8)
                 .itemOutputs(aWire08)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(12))
                 .circuit(12)
                 .itemOutputs(aWire12)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(16))
                 .circuit(16)
                 .itemOutputs(aWire16)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
 

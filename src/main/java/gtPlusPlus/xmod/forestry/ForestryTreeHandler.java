@@ -10,9 +10,16 @@ import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
 import forestry.plugins.PluginArboriculture;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class ForestryTreeHandler {
+
+    private static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
+        ItemStack fruit) {
+        MTETreeFarmLegacy.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+        MTETreeFarm.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+    }
 
     public static void generateForestryTrees() {
         for (TreeDefinition tree : TreeDefinition.values()) {
@@ -44,7 +51,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
@@ -81,7 +88,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),

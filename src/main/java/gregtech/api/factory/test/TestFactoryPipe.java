@@ -19,8 +19,8 @@ import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
 
 public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryElement {
 
-    public TestFactoryPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public TestFactoryPipe(int aID, String aName) {
+        super(aID, aName);
     }
 
     public TestFactoryPipe(TestFactoryPipe prototype) {

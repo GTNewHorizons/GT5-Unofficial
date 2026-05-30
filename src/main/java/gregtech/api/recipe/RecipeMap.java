@@ -151,7 +151,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     public GTRecipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
         @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
-        boolean hidden) {
+        @Nullable FluidStack[][] aFluidAlt, boolean hidden) {
         return addFakeRecipe(
             aCheckForCollisions,
             new GTRecipe.GTRecipe_WithAlt(
@@ -168,7 +168,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
                 aDuration,
                 aEUt,
                 aSpecialValue,
-                aAlt),
+                aAlt,
+                aFluidAlt),
             hidden);
     }
 

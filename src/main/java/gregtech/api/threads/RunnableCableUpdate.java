@@ -35,15 +35,15 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
 
                 final TileEntity tTileEntity;
 
+                // Check chunk availability without holding TICK_LOCK so the server thread can
+                // create the chunk map snapshot if needed (same fix as RunnableMachineUpdate)
+                if (!world.blockExists(posX, posY, posZ)) {
+                    continue;
+                }
+
                 GTMod.proxy.TICK_LOCK.lock();
                 try {
-                    // we dont want to go over cables that are in unloaded chunks
-                    // keeping the lock just to make sure no CME happens
-                    if (world.blockExists(posX, posY, posZ)) {
-                        tTileEntity = world.getTileEntity(posX, posY, posZ);
-                    } else {
-                        tTileEntity = null;
-                    }
+                    tTileEntity = world.getTileEntity(posX, posY, posZ);
                 } finally {
                     GTMod.proxy.TICK_LOCK.unlock();
                 }

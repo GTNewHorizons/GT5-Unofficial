@@ -13,9 +13,8 @@ public enum GTPPPropolisType {
     DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20)),
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
 
-    public boolean mShowInList;
+    public final boolean mShowInList;
     public final Material mMaterial;
-    public int mChance;
     public final int mID;
 
     private final String mName;
@@ -42,10 +41,6 @@ public enum GTPPPropolisType {
             aName.toLowerCase()
                 .replaceAll(" ", ""));
         GTLanguageManager.addStringLocalization("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
-    }
-
-    public void setHidden() {
-        this.mShowInList = false;
     }
 
     public String getLocalizedName() {

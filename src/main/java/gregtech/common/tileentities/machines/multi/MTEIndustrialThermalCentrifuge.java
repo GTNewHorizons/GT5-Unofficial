@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,6 +39,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -99,12 +102,12 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                     EnumChatFormatting.GRAY))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Thermal Processing Casings", 92, false)
-            .addCasingInfoMin("Heat Proof Machine Casings", 4, false)
-            .addCasingInfoMin("Red Steel Frame Box", 16, false)
-            .addCasingInfoMin("Solenoid Superconducting Coil", 6, true)
-            .addCasingInfoMin("Heating Coils", 16, true)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Thermal Processing Casing", 85, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 4, false)
+            .addCasingInfoExactly("Red Steel Frame Box", 16, false)
+            .addCasingInfoExactly("Solenoid Superconducting Coil", 6, true)
+            .addCasingInfoExactly("Heating Coil", 16, true)
             .addCasingInfoExactly("Any Glass", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -209,15 +212,17 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         coilLevel = null;
         solenoidLevel = null;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 85 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return mMufflerHatches.size() == 1 && mEnergyHatches.size() >= 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 85);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -227,9 +232,9 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1.0f / getSpeedBonus())
-            .setEuModifier(getEUMultiplier())
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEUMultiplier)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -265,19 +270,19 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
         solenoidLevel = level;
     }
 
-    public float getCoilSpeedBonus() {
-        return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
+    public double getCoilSpeedBonus() {
+        return (coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier());
     }
 
-    public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
+    public double getSpeedBonus() {
+        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
-    public float getEUMultiplier() {
+    public double getEUMultiplier() {
         double heatingBonus = (coilLevel == null ? 0
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
-        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
+        return BASE_EU_MULTIPLIER * heatingBonus;
     }
 
     @Override

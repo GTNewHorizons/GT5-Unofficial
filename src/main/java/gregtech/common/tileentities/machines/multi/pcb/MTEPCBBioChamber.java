@@ -8,6 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +27,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -103,7 +106,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
             .beginStructureBlock(5, 7, 12, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Clean Stainless Steel Machine Casing",
                 EnumChatFormatting.GRAY,
@@ -167,9 +170,9 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check self
-        return checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0);
+        checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0, errors);
     }
 
 }

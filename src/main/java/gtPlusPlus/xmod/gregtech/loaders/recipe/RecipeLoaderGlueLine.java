@@ -225,7 +225,6 @@ public class RecipeLoaderGlueLine {
     private static void fluidHeaterRecipes() {
 
         GTValues.RA.stdBuilder()
-            .circuit(16)
             .fluidInputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100))
             .fluidOutputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(45 * SECONDS)
@@ -352,7 +351,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(200))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(

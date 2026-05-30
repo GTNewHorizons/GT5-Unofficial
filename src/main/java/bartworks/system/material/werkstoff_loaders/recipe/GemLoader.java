@@ -87,19 +87,19 @@ public class GemLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gem, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawed, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemChipped, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
 
             GTValues.RA.stdBuilder()

@@ -3,6 +3,7 @@ package gtnhlanth.common.tileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -16,7 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,12 +43,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -60,8 +61,6 @@ import gtnhlanth.util.DescTextLocalization;
 public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber> implements ISurvivalConstructable {
 
     private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
-
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -83,10 +82,9 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addElement('e', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement(
                 'b',
-                buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
+                buildHatchAdder(MTESourceChamber.class).atLeast(BeamlineOutput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
-                    .adder(MTESourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
@@ -164,11 +162,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
             .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addOtherStructurePart("Beam Output Hatch", addHintNumber(4))
             .addEnergyHatch(addHintNumber(3))
             .addMaintenanceHatch(addHintNumber(3))
             .addInputBus(addHintNumber(1))
@@ -177,23 +175,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .toolTipFinisher();
         return tt;
         //spotless:on
-    }
-
-    private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
-            return false;
-        }
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
-        }
-
-        return false;
     }
 
     @NotNull
@@ -261,11 +242,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     private void outputPacketAfterRecipe() {
-        if (!mOutputBeamline.isEmpty()) {
+        if (!mBeamlineOutputHatches.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mOutputBeamline) {
+            for (MTEHatchOutputBeamline o : mBeamlineOutputHatches) {
                 o.dataPacket = packet;
             }
         }
@@ -385,14 +366,12 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
-
-        return checkPiece("sc", 2, 4, 0) && this.mMaintenanceHatches.size() == 1
-            && (this.mInputBusses.size() == 1 || this.mInputHatches.size() == 1)
-            && this.mOutputBusses.size() == 1
-            && this.mOutputBeamline.size() == 1
-            && this.mEnergyHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece("sc", 2, 4, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHatchExact(errors, OutputBus, 1);
+        checkOneEnergyHatch(errors);
     }
 
     @Override
@@ -422,6 +401,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build() };
         }
         return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private String particleText(String text) {

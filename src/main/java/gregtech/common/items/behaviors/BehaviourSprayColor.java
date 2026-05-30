@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -78,10 +80,8 @@ public class BehaviourSprayColor extends BehaviourNone {
         if (!aPlayer.canPlayerEdit(aX, aY, aZ, side.ordinal(), aStack)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
+
+        final NBTTagCompound tNBT = ItemStackNBT.get(aStack);
         long tUses = getUses(aStack, tNBT);
 
         int painted = 0;

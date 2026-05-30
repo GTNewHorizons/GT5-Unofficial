@@ -16,6 +16,7 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -47,30 +48,30 @@ public class AssemblyLineFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         int bar1Width = 17;
         int bar2Width = 18;
-        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
+        List<Supplier<Float>> splitProgress = splitProgress(ctx.progressSupplier, bar1Width, bar2Width);
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, bar1Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
-                .setPos(new Pos2d(88, 8).add(windowOffset))
+                .setPos(new Pos2d(88, 8).add(ctx.windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, bar2Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
-                .setPos(new Pos2d(124, 8).add(windowOffset))
+                .setPos(new Pos2d(124, 8).add(ctx.windowOffset))
                 .setSize(bar2Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
                 .setDirection(ProgressBar.Direction.UP)
-                .setProgress(progressSupplier)
+                .setProgress(ctx.progressSupplier)
                 .setSynced(false, false)
-                .setPos(new Pos2d(146, 26).add(windowOffset))
+                .setPos(new Pos2d(146, 26).add(ctx.windowOffset))
                 .setSize(10, 18));
     }
 }

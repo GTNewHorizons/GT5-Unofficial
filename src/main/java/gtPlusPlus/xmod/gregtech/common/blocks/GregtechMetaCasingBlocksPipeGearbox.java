@@ -42,11 +42,53 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     public IIcon getIcon(final int ordinalSide, final int meta) {
         if ((meta >= 0) && (meta < 16)) {
             switch (meta) {
-                case 0, 1, 2, 3, 4, 5, 6, 7 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_GENERIC.getIcon();
+                case 0 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_EGLINSTEEL.getIcon();
                 }
-                case 8, 9, 10, 11, 12, 13, 14, 15 -> {
-                    return TexturesGtBlock.TEXTURE_PIPE_GENERIC.getIcon();
+                case 1 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_INCONEL792.getIcon();
+                }
+                case 2 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_INCOLOYMA956.getIcon();
+                }
+                case 3 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_NITINOL60.getIcon();
+                }
+                case 4 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_ZERON100.getIcon();
+                }
+                case 5 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_PIKYONIUM.getIcon();
+                }
+                case 6 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_TITANSTEEL.getIcon();
+                }
+                case 7 -> {
+                    return TexturesGtBlock.TEXTURE_GEARBOX_ABYSSALALLOY.getIcon();
+                }
+                case 8 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_BABBITALLOY.getIcon();
+                }
+                case 9 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_INCONEL690.getIcon();
+                }
+                case 10 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_STELLITE.getIcon();
+                }
+                case 11 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_NITINOL60.getIcon();
+                }
+                case 12 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_LAFIUM.getIcon();
+                }
+                case 13 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_CINOBITE.getIcon();
+                }
+                case 14 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_TITANSTEEL.getIcon();
+                }
+                case 15 -> {
+                    return TexturesGtBlock.TEXTURE_PIPE_ABYSSALALLOY.getIcon();
                 }
             }
         }

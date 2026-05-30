@@ -61,6 +61,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -171,13 +172,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
+
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             MAIN_OFFSET_X,
             MAIN_OFFSET_Y,
             MAIN_OFFSET_Z,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -197,30 +200,26 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         modules.clear();
         vacuumConveyors.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z)) return false;
-        // At least most one energy hatch is accepted
-        boolean validEnergy = false;
-        if (this.mEnergyHatches.isEmpty()) {
-            validEnergy = this.mExoticEnergyHatches.size() == 1;
-        } else {
-            validEnergy = this.mEnergyHatches.size() == 1;
-        }
-        if (!validEnergy) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
+        // Exactly one energy hatch is accepted
+        checkOneEnergyHatchMaybeExotic(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (!errors.isEmpty()) return;
 
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiplty by 1.5 so there is no stuttering in between fully saturated recipes
+            // multiply by 2 so there is no stuttering in between fully saturated recipes
             BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
             bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
             module.setBufferSize(bufferSize);
             module.setAvailableEUt(this.getMaxInputEu());
         }
-        return true;
     }
 
     @Override

@@ -62,12 +62,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
+    @NotNull
     public ItemStack[] mInputs, mOutputs;
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
      */
+    @NotNull
     public FluidStack[] mFluidInputs, mFluidOutputs;
+
+    public FluidStack[][] mAltFluidInputs;
     /**
      * These arrays define the chance behavior for each respective input or output.
      * Values range from 1 to 10000 (10000 = 100%).
@@ -530,50 +534,77 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * WARNING: Ensure that item inputs and fluid inputs are enough to be consumed with
      * {@link #maxParallelCalculatedByInputs} before calling this method!
      */
-    public void consumeInput(int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
+    public void consumeInput(int amountMultiplier, FluidStack[] fluidInputs, ItemStack... itemInputs) {
         if (amountMultiplier <= 0) return;
 
-        if (aFluidInputs != null) {
+        if (fluidInputs != null) {
             for (int i = 0; i < mFluidInputs.length; i++) {
-                FluidStack recipeFluidCost = mFluidInputs[i];
-                if (recipeFluidCost != null) {
-                    // Determine fluid consumption chance
-                    int chance = (mFluidInputChances != null && i < mFluidInputChances.length) ? mFluidInputChances[i]
-                        : 10000;
+                // Alternative FluidStacks for SubstituteFluidStack recipes
+                FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
+                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
 
-                    long actualMultiplier = amountMultiplier;
+                if (alternatives == null || alternatives.length == 0) continue;
 
-                    // Optimization: Only calculate binomial distribution if chance is not 100%
-                    if (chance < 10000) {
-                        actualMultiplier = ParallelHelper
-                            .calculateIntegralChancedOutputMultiplier(chance, amountMultiplier);
-                        if (actualMultiplier <= 0) continue;
+                FluidStack selectedAlt = null;
+                double bestParallelForSlot = 0;
+
+                for (FluidStack alt : alternatives) {
+                    if (alt == null) continue;
+                    long totalAvailable = 0;
+                    for (FluidStack provided : fluidInputs) {
+                        if (provided != null && provided.isFluidEqual(alt)) {
+                            totalAvailable += provided.amount;
+                        }
                     }
+                    if (totalAvailable > 0 && alt.amount > 0) {
+                        double parallelForThisAlt = (double) totalAvailable / alt.amount;
+                        if (parallelForThisAlt > bestParallelForSlot) {
+                            bestParallelForSlot = parallelForThisAlt;
+                            selectedAlt = alt;
+                        }
+                    }
+                }
 
-                    long remainingCost = (long) recipeFluidCost.amount * actualMultiplier;
+                if (selectedAlt == null) continue;
 
-                    for (FluidStack providedFluid : aFluidInputs) {
-                        if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
-                            if (providedFluid.amount >= remainingCost) {
-                                providedFluid.amount -= remainingCost;
-                                break;
-                            } else {
-                                remainingCost -= providedFluid.amount;
-                                providedFluid.amount = 0;
-                            }
+                // Determine fluid consumption chance
+                int chance = (mFluidInputChances != null && i < mFluidInputChances.length) ? mFluidInputChances[i]
+                    : 10000;
+                long actualMultiplier = amountMultiplier;
+
+                // Optimization: Only calculate binomial distribution if chance is not 100%
+                if (chance < 10000) {
+                    actualMultiplier = ParallelHelper
+                        .calculateIntegralChancedOutputMultiplier(chance, amountMultiplier);
+                    if (actualMultiplier <= 0) continue;
+                }
+
+                long remainingCost = (long) selectedAlt.amount * actualMultiplier;
+
+                for (FluidStack providedFluid : fluidInputs) {
+                    if (providedFluid == null || providedFluid.amount <= 0 || remainingCost <= 0) continue;
+
+                    if (providedFluid.isFluidEqual(selectedAlt)) {
+                        if (providedFluid.amount >= remainingCost) {
+                            providedFluid.amount -= (int) remainingCost;
+                            remainingCost = 0;
+                        } else {
+                            remainingCost -= providedFluid.amount;
+                            providedFluid.amount = 0;
                         }
                     }
                 }
             }
         }
 
-        if (aInputs == null || aInputs.length == 0) {
+        if (itemInputs == null || itemInputs.length == 0) {
             return;
         }
 
-        final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
-        for (int i = 0; i < aInputs.length; i++) {
-            unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(aInputs[i]);
+        final ItemData[] unifiedProvidedInputs = new ItemData[itemInputs.length];
+        for (int i = 0; i < itemInputs.length; i++) {
+            unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(itemInputs[i]);
         }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
@@ -596,8 +627,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
             long remainingCost = recipeItemCost.inputAmount * actualMultiplier;
 
-            for (int iProvided = 0; iProvided < aInputs.length && remainingCost > 0; iProvided++) {
-                final ItemStack providedItem = aInputs[iProvided];
+            for (int iProvided = 0; iProvided < itemInputs.length && remainingCost > 0; iProvided++) {
+                final ItemStack providedItem = itemInputs[iProvided];
                 if (providedItem == null || providedItem.stackSize == 0) {
                     continue;
                 }
@@ -630,28 +661,46 @@ public class GTRecipe implements Comparable<GTRecipe> {
         // We need to have any fluids inputs, otherwise the code below does nothing. The second check is always true
         // because of early exit condition above.
         if (mFluidInputs.length > 0 /* && aFluidInputs != null */) {
-            // Create map for fluid -> stored amount
+
             Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(2);
-            Reference2LongMap<Fluid> fluidCost = new Reference2LongArrayMap<>(2);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
                 fluidMap.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
             }
-            for (FluidStack fluidStack : mFluidInputs) {
-                if (fluidStack == null) continue;
-                fluidCost.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
-            }
 
-            // Check how many parallels can it perform for each fluid
-            for (Reference2LongMap.Entry<Fluid> costEntry : fluidCost.reference2LongEntrySet()) {
-                if (costEntry.getLongValue() > 0) {
-                    currentParallel = Math.min(
-                        currentParallel,
-                        (double) fluidMap.getOrDefault(costEntry.getKey(), 0L) / costEntry.getLongValue());
+            for (int i = 0; i < mFluidInputs.length; i++) {
+                if (mFluidInputs[i].amount <= 0) continue; // Needed by DTPF, don't check "NC" for parallel
+                FluidStack[] alternatives = (mAltFluidInputs != null && i < mAltFluidInputs.length
+                    && mAltFluidInputs[i] != null) ? mAltFluidInputs[i]
+                        : (mFluidInputs[i] != null ? new FluidStack[] { mFluidInputs[i] } : null);
+
+                if (alternatives == null || alternatives.length == 0) continue;
+
+                double bestParallelForSlot = 0;
+                FluidStack selectedAlt = null;
+
+                for (FluidStack alt : alternatives) {
+                    if (alt == null) continue;
+                    long available = fluidMap.getOrDefault(alt.getFluid(), 0L);
+                    if (alt.amount > 0 && available > 0) {
+                        double parallelForThisAlt = (double) available / alt.amount;
+                        if (parallelForThisAlt > bestParallelForSlot) {
+                            bestParallelForSlot = parallelForThisAlt;
+                            selectedAlt = alt;
+                        }
+                    }
                 }
-                if (currentParallel <= 0) {
-                    return 0;
+
+                if (bestParallelForSlot <= 0) return 0;
+
+                // Consume from the chosen alternatives fluid pool
+                if (selectedAlt != null) {
+                    long consumed = (long) (selectedAlt.amount * Math.min(currentParallel, bestParallelForSlot));
+                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
                 }
+
+                currentParallel = Math.min(currentParallel, bestParallelForSlot);
+                if (currentParallel <= 0) return 0;
             }
         }
 
@@ -1341,7 +1390,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             int[] mFluidOutputChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue,
             boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
             boolean nbtSensitive, String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage,
-            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt, int[] mOreDictIds) {
+            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt, int[] mOreDictIds,
+            FluidStack[][] mAltFluidInputs) {
             super(
                 mInputs,
                 mOutputs,
@@ -1366,12 +1416,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 mDuration);
             this.mOreDictAlt = mOreDictAlt;
             this.mOreDictIds = mOreDictIds;
+            this.mAltFluidInputs = mAltFluidInputs;
         }
 
         public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
             int[] aInputChances, int[] aOutputChances, int[] aFluidInputChances, int[] aFluidOutputChances,
             FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-            ItemStack[][] aAlt) {
+            ItemStack[][] aAlt, FluidStack[][] aFluidAlt) {
             super(
                 aInputs,
                 aOutputs,
@@ -1386,21 +1437,56 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 aEUt,
                 aSpecialValue);
             mOreDictAlt = aAlt;
+            mAltFluidInputs = aFluidAlt;
         }
 
         public Object getAltRepresentativeInput(int aIndex) {
             if (aIndex < 0) return null;
-            if (aIndex < mOreDictAlt.length) {
-                if (mOreDictAlt[aIndex] != null && mOreDictAlt[aIndex].length > 0) {
-                    ItemStack[] rStacks = new ItemStack[mOreDictAlt[aIndex].length];
-                    for (int i = 0; i < mOreDictAlt[aIndex].length; i++) {
-                        rStacks[i] = GTUtility.copyOrNull(mOreDictAlt[aIndex][i]);
+            if (mOreDictAlt != null && aIndex < mOreDictAlt.length) {
+                ItemStack[] alts = mOreDictAlt[aIndex];
+                if (alts != null && alts.length > 0) {
+                    ItemStack[] copy = new ItemStack[alts.length];
+                    for (int i = 0; i < alts.length; i++) {
+                        copy[i] = GTUtility.copyOrNull(alts[i]);
                     }
-                    return rStacks;
+                    return copy;
                 }
             }
-            if (aIndex >= mInputs.length) return null;
-            return GTUtility.copyOrNull(mInputs[aIndex]);
+
+            // fallback
+            if (mInputs != null && aIndex < mInputs.length) {
+                return GTUtility.copyOrNull(mInputs[aIndex]);
+            }
+
+            return null;
+        }
+
+        public ArrayList<ItemStack> getAltRepresentativeFluidInput(int aIndex) {
+            if (aIndex < 0) return null;
+            if (mFluidInputs == null || aIndex >= mFluidInputs.length) return null;
+
+            FluidStack mainFluid = mFluidInputs[aIndex];
+
+            ArrayList<ItemStack> display = new ArrayList<>();
+
+            if (mAltFluidInputs != null && aIndex < mAltFluidInputs.length) {
+                FluidStack[] alts = mAltFluidInputs[aIndex];
+                if (alts != null) {
+                    for (FluidStack alt : alts) {
+                        if (alt != null && alt.getFluid() != null) {
+                            display.add(GTUtility.getFluidDisplayStack(alt, true));
+                        }
+                    }
+                }
+            }
+
+            // fallback
+            if (display.isEmpty()) {
+                if (mainFluid.getFluid() == null) return null;
+                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+            }
+
+            return display;
         }
 
         @Override

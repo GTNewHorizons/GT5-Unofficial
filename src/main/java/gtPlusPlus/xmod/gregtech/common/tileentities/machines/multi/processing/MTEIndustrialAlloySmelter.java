@@ -39,6 +39,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -125,10 +127,10 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Inconel Reinforced Casing", 8, false)
             .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
+            .addOtherStructurePart("Heating Coil", "Above and below Integral Encasements")
             .addInputBus("Any Inconel Reinforced Casing", 1)
             .addOutputBus("Any Inconel Reinforced Casing", 1)
             .addEnergyHatch("Any Inconel Reinforced Casing", 1)
@@ -178,14 +180,20 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-            && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+        if (!checkPiece(mName, 1, 4, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkCasingMin(errors, mCasing, 8);
+        mLevel = getCoilLevel().getTier() + 1;
+        checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

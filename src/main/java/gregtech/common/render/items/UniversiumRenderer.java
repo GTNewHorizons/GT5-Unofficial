@@ -20,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.common.config.Client;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GeneratedMaterialRenderer {
@@ -27,7 +28,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
         Item item = aStack.getItem();
-        if (item == null) return false;
+        if (item == null || !Client.render.renderUniversiumFancy) return false;
 
         magicRenderMethod(
             type,
@@ -41,6 +42,12 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
+
+        if (!Client.render.renderUniversiumFancy) {
+            super.renderItem(type, aStack, data);
+            return;
+        }
+
         if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
         int passes = 1;

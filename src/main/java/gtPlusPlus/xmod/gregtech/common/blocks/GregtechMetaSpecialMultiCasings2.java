@@ -16,14 +16,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 8; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
@@ -34,15 +33,15 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int aMeta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int aMeta = stack.getItemDamage();
             if (aMeta < 4) {
-                aList.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_stability"));
+                tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_stability"));
             }
             if (aMeta >= 4 && aMeta < 8) {
-                aList.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_modulation"));
+                tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_modulation"));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
@@ -73,14 +72,14 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     public static IIcon getStaticIcon(final byte aSide, final int aMeta) {
         return switch (aMeta) {
-            case 0 -> TexturesGtBlock.Casing_Resonance_1.getIcon();
-            case 1 -> TexturesGtBlock.Casing_Resonance_2.getIcon();
-            case 2 -> TexturesGtBlock.Casing_Resonance_3.getIcon();
-            case 3 -> TexturesGtBlock.Casing_Resonance_4.getIcon();
-            case 4 -> TexturesGtBlock.Casing_Modulator_1.getIcon();
-            case 5 -> TexturesGtBlock.Casing_Modulator_2.getIcon();
-            case 6 -> TexturesGtBlock.Casing_Modulator_3.getIcon();
-            case 7 -> TexturesGtBlock.Casing_Modulator_4.getIcon();
+            case 0 -> Textures.BlockIcons.Casing_Resonance_1.getIcon();
+            case 1 -> Textures.BlockIcons.Casing_Resonance_2.getIcon();
+            case 2 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
+            case 3 -> Textures.BlockIcons.Casing_Resonance_4.getIcon();
+            case 4 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
+            case 5 -> Textures.BlockIcons.Casing_Modulator_2.getIcon();
+            case 6 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
+            case 7 -> Textures.BlockIcons.Casing_Modulator_4.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }

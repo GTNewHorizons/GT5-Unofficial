@@ -16,6 +16,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,6 +37,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
@@ -144,7 +147,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
         tt.addMachineType("Brewery, BBB")
             .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 6, false)
             .addCasingInfoExactly("Steel Frame Box", 4, false)
@@ -177,9 +180,15 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 14);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -210,11 +219,6 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

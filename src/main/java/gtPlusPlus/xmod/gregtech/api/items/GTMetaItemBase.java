@@ -16,6 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -43,30 +45,30 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
     @Override
-    public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, List<String> tooltip,
         final boolean aF3_H) {
-        final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
+        final String tKey = this.getUnlocalizedName(stack) + ".tooltip",
             tString = GTLanguageManager.getTranslation(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
-            aList.add(tString);
+            tooltip.add(tString);
         }
 
-        Long[] tStats = this.getElectricStats(aStack);
+        Long[] tStats = this.getElectricStats(stack);
         if (tStats != null) {
             if (tStats[3] > 0) {
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
                         formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
-                final long tCharge = this.getRealCharge(aStack);
+                final long tCharge = this.getRealCharge(stack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
                             + EnumChatFormatting.GRAY);
                 } else {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
@@ -79,20 +81,18 @@ public abstract class GTMetaItemBase extends GTGenericItem
             }
         }
 
-        tStats = this.getFluidContainerStats(aStack);
+        tStats = this.getFluidContainerStats(stack);
         if ((tStats != null) && (tStats[0] > 0)) {
-            final FluidStack tFluid = this.getFluidContent(aStack);
-            aList.add(
+            final FluidStack tFluid = this.getFluidContent(stack);
+            tooltip.add(
                 EnumChatFormatting.BLUE
                     + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
                     + EnumChatFormatting.GRAY);
-            aList.add(
+            tooltip.add(
                 EnumChatFormatting.BLUE
                     + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / " + formatNumber(tStats[0]) + "L")
                     + EnumChatFormatting.GRAY);
         }
-
-        this.addAdditionalToolTips(aList, aStack);
     }
 
     @Override
@@ -235,8 +235,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats[3] > 0) {
             return (int) (long) tStats[3];
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(final ItemStack aStack, long aCharge) {
@@ -244,22 +243,13 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[3] > 0)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(this.getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(this.getEmptyMetaData(aStack));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
-        } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
         this.isItemStackUsable(aStack);
         return true;
@@ -390,24 +380,15 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[0] <= 0)) {
             return GTUtility.getFluidForFilledItem(aStack, false);
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
+        final NBTTagCompound fluidContent = ItemStackNBT.getCompoundTag(aStack, "GT.FluidContent");
+        return fluidContent == null ? null : FluidStack.loadFluidStackFromNBT(fluidContent);
     }
 
     public void setFluidContent(final ItemStack aStack, final FluidStack aFluid) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        } else {
-            tNBT.removeTag("GT.FluidContent");
-        }
         if ((aFluid != null) && (aFluid.amount > 0)) {
-            tNBT.setTag("GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
+            ItemStackNBT.setTag(aStack, "GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
         } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.FluidContent");
         }
         this.isItemStackUsable(aStack);
     }

@@ -67,7 +67,7 @@ public class TFGregtechRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
             .duration(8 * SECONDS)
@@ -78,7 +78,7 @@ public class TFGregtechRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Niter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
             .duration(8 * SECONDS)

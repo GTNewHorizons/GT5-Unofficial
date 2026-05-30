@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -41,6 +42,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -83,7 +85,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Front Center")
+            .addController("Top center")
             .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
             .addCasingInfoMin("Flotation Casing", 52, false)
             .addInputBus("Bottom Casing", 1)
@@ -171,9 +173,11 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 3, 3, 0) && mCasing >= 68 - 4 && checkHatch();
+        if (!checkPiece(mName, 3, 3, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 68 - 4);
+        checkHatch(errors);
     }
 
     @Override
@@ -262,19 +266,13 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("lockedMaterialName")) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
             tooltip.add(
                 StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
                     + StatCollector.translateToLocal(
                         stack.getTagCompound()
                             .getString("lockedMaterialName")));
         }
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Locked material: " + lockedMaterialName };
     }
 
     @Override

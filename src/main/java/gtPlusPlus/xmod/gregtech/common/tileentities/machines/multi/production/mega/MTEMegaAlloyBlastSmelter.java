@@ -16,6 +16,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +50,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -205,17 +209,22 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         coilLevel = HeatingCoilLevel.None;
         coilType = CoilType.Unknown;
-        if (!checkPiece("main", 5, 16, 0)) return false;
+        if (!checkPiece("main", 5, 16, 0, errors)) return;
         if (coilType == CoilType.BasicCoil) coilLevel = HeatingCoilLevel.None;
-        if (mMufflerHatches.size() != 1) return false;
-        if (this.glassTier < VoltageIndex.UMV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
+        checkOneMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasOutputHatch(errors);
+        checkHasAnyInput(errors);
+        if (this.glassTier < VoltageIndex.UMV) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
@@ -223,17 +232,19 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
+                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    break;
                 }
             }
         }
-        calculateSpeedBonus(coilLevel, glassTier);
-        return true;
+        if (errors.isEmpty()) {
+            calculateSpeedBonus(coilLevel);
+        }
     }
 
-    private void calculateSpeedBonus(HeatingCoilLevel lvl, int glassTier) {
-        int bonusTier = lvl != null ? Math.min(lvl.getTier() - 3, glassTier - 2) : 0;
-        if (bonusTier < 0) {
+    private void calculateSpeedBonus(HeatingCoilLevel lvl) {
+        int bonusTier = lvl != null ? lvl.getTier() - 3 : 0;
+        if (bonusTier <= 0) {
             speedBonus = 1;
             return;
         }
@@ -273,7 +284,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 TooltipHelper.speedText("-5%") + " Recipe Time per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
                     + " Tier above TPV (additive)")
-            .addInfo("if the equivalent or better " + TooltipHelper.tierText(TooltipTier.GLASS) + " is present")
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
@@ -291,7 +301,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
-            .addController("Mid of the fourth layer")
+            .addController("Front center")
             .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
             .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
             .addCasingInfoExactly("Coil", 360, true)

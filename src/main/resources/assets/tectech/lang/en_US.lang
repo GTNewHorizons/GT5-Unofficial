@@ -76,6 +76,8 @@ item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
 item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
 item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
 item.em.parametrizerMemoryCard.noConfig=Can't paste from empty card!
+item.em.parametrizerMemoryCard.whitelist=Whitelist
+item.em.parametrizerMemoryCard.blacklist=Blacklist
 
 item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
@@ -499,6 +501,7 @@ gt.blockmachines.hatch.wirelessdataoutass.desc.1=High speed internet connection
 gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
 gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
 gt.blockmachines.hatch.rack.desc.1=Holds Computer Components
+gt.blockmachines.hatch.rack.heat=Heat: %s
 gt.blockmachines.hatch.holder.tier.09.name=Object Holder
 gt.blockmachines.hatch.holder.desc.0=For Research Station
 gt.blockmachines.hatch.holder.desc.1=Advanced Holding Mechanism!
@@ -683,8 +686,8 @@ gt.blockmachines.multimachine.em.switch.adv.desc.5=For weighted computation dist
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
-gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
-gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
+gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer Casing
+gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced Computer Casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
 gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
@@ -696,8 +699,8 @@ gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wirel
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
-gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
-gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
+gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or Computer Casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
 gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembly Lines with more Data Sticks
 gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembly Lines access to the same Data Stick
@@ -748,7 +751,7 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches o
 gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
 
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
-gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer Casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
 gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
@@ -757,8 +760,8 @@ gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
 gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
 gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
-gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
-gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
+gt.blockmachines.multimachine.em.research.mode.0=Research Station
+gt.blockmachines.multimachine.em.research.mode.1=Scanner
 gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
@@ -1328,35 +1331,35 @@ gt.blockmachines.debug.tt.genny.desc.3=Change it to Laser mode with a screwdrive
 gt.blockmachines.debug.tt.certain.desc.0=Feeling certain, for sure
 gt.blockmachines.debug.tt.certain.desc.1=Schrödinger's cat escaped the box
 
-GT5U.gui.text.computing=§aComputing
-GT5U.gui.text.providing_data=§aProviding Data
-GT5U.gui.text.routing=§aRouting
-GT5U.gui.text.researching=§aResearching
-GT5U.gui.text.wrongRequirements=§7Incorrect scanning item
-GT5U.gui.text.scanning=§aScanning
-GT5U.gui.text.charging=§aCharging
-GT5U.gui.text.microwaving=§aMicrowaving
-GT5U.gui.text.no_routing=§7Can't route
-GT5U.gui.text.invalid_timer=§7Invalid timer
-GT5U.gui.text.no_research_item=§7No valid item to research
-GT5U.gui.text.no_chargeable_item=§7No chargeable item
-GT5U.gui.text.no_computing=§7Can't compute
-GT5U.gui.text.no_data=§7Can't output data
-GT5U.gui.text.no_planet_block=§7Missing planet block
-GT5U.gui.text.no_helium=§7Not enough Helium
-GT5U.gui.text.no_hydrogen=§7Not enough Hydrogen
-GT5U.gui.text.no_stellar_plasma=§7Not enough Stellar Plasma
-GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
-GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
-GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
-GT5U.gui.text.invalid_current_setting=§7Invalid current setting
-GT5U.gui.text.invalid_primary_winding=§7Primary winding tier is too low!
-GT5U.gui.text.invalid_time_setting=§7Invalid time setting
-GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
-GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
-GT5U.gui.text.missing_upgrades=§7Missing upgrades
-GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
-GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.recipe_result.computing=§aComputing
+GT5U.gui.text.recipe_result.providing_data=§aProviding Data
+GT5U.gui.text.recipe_result.routing=§aRouting
+GT5U.gui.text.recipe_result.researching=§aResearching
+GT5U.gui.text.recipe_result.wrongRequirements=§7Incorrect scanning item
+GT5U.gui.text.recipe_result.scanning=§aScanning
+GT5U.gui.text.recipe_result.charging=§aCharging
+GT5U.gui.text.recipe_result.microwaving=§aMicrowaving
+GT5U.gui.text.recipe_result.no_routing=§7Can't route
+GT5U.gui.text.recipe_result.invalid_timer=§7Invalid timer
+GT5U.gui.text.recipe_result.no_research_item=§7No valid item to research
+GT5U.gui.text.recipe_result.no_chargeable_item=§7No chargeable item
+GT5U.gui.text.recipe_result.no_computing=§7Can't compute
+GT5U.gui.text.recipe_result.no_data=§7Can't output data
+GT5U.gui.text.recipe_result.no_planet_block=§7Missing planet block
+GT5U.gui.text.recipe_result.no_helium=§7Not enough Helium
+GT5U.gui.text.recipe_result.no_hydrogen=§7Not enough Hydrogen
+GT5U.gui.text.recipe_result.no_stellar_plasma=§7Not enough Stellar Plasma
+GT5U.gui.text.recipe_result.invalid_hysteresis=§7Invalid hysteresis settings
+GT5U.gui.text.recipe_result.invalid_transfer_radius=§7Invalid transfer radius settings
+GT5U.gui.text.recipe_result.invalid_voltage_setting=§7Invalid voltage setting
+GT5U.gui.text.recipe_result.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary winding tier is too low!
+GT5U.gui.text.recipe_result.invalid_time_setting=§7Invalid time setting
+GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Invalid overdrive setting
+GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Insufficient power
+GT5U.gui.text.recipe_result.missing_upgrades=§7Missing upgrades
+GT5U.gui.text.recipe_result.waiting_for_inputs=§7Waiting for inputs
+GT5U.gui.text.shutdown_reason.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.researching_item=§fResearching: §b%s
 GT5U.gui.text.research_progress=§fComputation: %d/%d (%s%%)
 GT5U.gui.text.at_eu_transferred=§8EU Transferred:
@@ -1376,6 +1379,7 @@ gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
 gt.recipe.fog_exotic=Heliofusion Exoticizer
 gt.recipe.fog_molten=Helioflux Melting Core
 gt.recipe.upgrade_costs=Godforge Upgrades
+gt.recipe.condensate=Bose-Einstein Condensate
 
 
 # NEI
@@ -1410,14 +1414,14 @@ tt.keyword.Structure.AnyMolecularCasing4D=Any Molecular Casing with 4 dots
 tt.keyword.Structure.AnyOuterMolecularCasing3rd=Any outer Molecular Casing on the 3rd slice
 tt.keyword.Structure.AnyOuterMolecularCasing4th=Any outer Molecular Casing on the 4th slice
 tt.keyword.Structure.AnyOuterMolecularCasing3rd4th=Any outer Molecular Casing on the 3rd or 4th slice
-tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
+tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer Casing on the bottom layer
 # Optional
 tt.keyword.Structure.Optional=(optional)
 # Placement specification
 tt.keyword.Structure.FrontCenter=Front center
 tt.keyword.Structure.BackCenter=Back center
 tt.keyword.Structure.SideCenter=Side center
-tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
+tt.keyword.Structure.FrontCenter3rd=Front center, 3rd layer
 tt.keyword.Structure.CenterPillar=Center of the front pillar
 tt.keyword.Structure.Center=Center
 # Additional structure components
@@ -1968,6 +1972,14 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
+tt.infodata.multi.min_hatch_tier.s=Min hatch tier: %s
+tt.infodata.multi.last_seconds.0.s=Last 5 seconds: %s EU/t
+tt.infodata.multi.last_seconds.1.s=Last 30 seconds: %s EU/t
+tt.infodata.multi.last_seconds.2.s=Last minute: %s EU/t
+
+## Waila
+
+tt.waila.multi.computation=§7Computation: §a%s
 
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics
@@ -2007,6 +2019,42 @@ tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
 
+## Space Elevator
+tt.spaceelevator.storedEnergy=Stored Energy: %d
+# Space Miner
+tt.spaceminer.distance=Distance
+tt.spaceminer.parallel=Parallels
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
+tt.spaceminer.filterButtonTooltip=Open Filter
+tt.spaceminer.toggleFilter=Toggle Filter
+tt.spaceminer.clearFilter=Clear Filter
+tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel
+tt.spaceminer.asteroidButtonTooltipInfo=Click me to get more info!
+tt.spaceminer.asteroidButtonFilter=Right click to add asteroid to filter
+tt.spaceminer.textFieldOre=Ore
+tt.spaceminer.textFieldDistance=Distance
+tt.spaceminer.textFieldTier=Tier
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidutilitypanel.miningDrones=Can be mined by:
+tt.spaceminer.asteroidutilitypanel.itemUsage=Uses 4 of each per parallel
+tt.spaceminer.asteroidutilitypanel.sizeForDrone=Asteroid size with this drone: %d-%d
+tt.spaceminer.asteroidutilitypanel.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidutilitypanel.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidutilitypanel.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidutilitypanel.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidutilitypanel.drops=Drops:
+tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Calculate
+tt.spaceminer.calculator.asteroidChance= %s
+tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
+tt.spaceminer.filter.noValidInputs=No valid inputs!
+tt.spaceminer.filter.addOre=Click to add this ore to the filter
+
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
 tt.gui.tooltip.safe_void=Safe Void
@@ -2017,15 +2065,25 @@ tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 
-tt.gui.text.debug.eut=EUT:
-tt.gui.text.debug.amp=AMP:
-tt.gui.text.debug.sum=SUM: %s
-tt.gui.text.debug.tier=TIER: %s
+tt.gui.text.debug.set_mode=Click to Set Machine to %s
+tt.gui.text.debug.status.inactive=Inactive
+tt.gui.text.debug.status.disabled=Disabled
 
-tt.gui.text.debug_pollutor.pollution=Pollution
+tt.gui.text.debug_power.status.produce=Producing
+tt.gui.text.debug_power.status.consume=Consuming
+tt.gui.text.debug_power.toggle_laser=Toggle Laser Mode
+
+tt.gui.text.debug_pollutor.pollution=Pollution/tick
+tt.gui.text.debug_pollutor.status=Status: %s
+tt.gui.text.debug_pollutor.status.produce=Polluting
+tt.gui.text.debug_pollutor.status.consume=Cleaning
 
 tt.gui.text.hatch.uncertainty.status.ok=Status: OK
 tt.gui.text.hatch.uncertainty.status.ng=Status: NG
+
+tt.gui.text.hatch.status=Machine Status: %s
+tt.gui.text.hatch.status.active=Active
+tt.gui.text.hatch.status.inactive=Inactive
 
 tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s

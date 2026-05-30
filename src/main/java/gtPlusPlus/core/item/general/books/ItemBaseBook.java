@@ -13,6 +13,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,8 +52,8 @@ public class ItemBaseBook extends ItemWritableBook {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if (NBTUtils.hasKey(tItem, "title")) {
-            return NBTUtils.getString(tItem, "title");
+        if (ItemStackNBT.hasKey(tItem, "title")) {
+            return ItemStackNBT.getString(tItem, "title");
         }
         BookHandler.BookTemplate book = BookHandler.mBookMap.get(tItem.getItemDamage());
         if (book != null) {
@@ -66,19 +68,19 @@ public class ItemBaseBook extends ItemWritableBook {
     public void addInformation(ItemStack tItem, EntityPlayer player, List<String> list, boolean bool) {
         BookHandler.BookTemplate bookTemplate = BookHandler.mBookMap.get(tItem.getItemDamage());
         if (bookTemplate == null) return;
-        if (NBTUtils.hasKey(tItem, "author")) {
+        if (ItemStackNBT.hasKey(tItem, "author")) {
             list.add(
                 EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.author", NBTUtils.getString(tItem, "author")));
+                    .translateToLocalFormatted("gtpp.tooltip.book.author", ItemStackNBT.getString(tItem, "author")));
         } else if (bookTemplate.mAuthor() != null) {
             list.add(
                 EnumChatFormatting.WHITE
                     + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.author", bookTemplate.mAuthor()));
         }
-        if (NBTUtils.hasKey(tItem, "title")) {
+        if (ItemStackNBT.hasKey(tItem, "title")) {
             list.add(
                 EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", NBTUtils.getString(tItem, "pages")));
+                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", ItemStackNBT.getString(tItem, "pages")));
         } else if (bookTemplate.mPages() != null) {
             list.add(
                 EnumChatFormatting.WHITE + StatCollector

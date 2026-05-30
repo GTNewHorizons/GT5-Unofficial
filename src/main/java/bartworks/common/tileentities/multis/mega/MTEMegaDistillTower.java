@@ -51,6 +51,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
@@ -255,7 +258,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, MDT")
+        tt.addMachineType("MDT")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addInfo("Fluids are only put out at the correct height")
@@ -264,15 +267,16 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing")
-            .addMaintenanceHatch("Any casing")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputBus("Any bottom layer casing")
+            .addEnergyHatch("Any Casing")
+            .addMaintenanceHatch("Any Casing")
+            .addInputHatch("Any bottom layer Casing")
+            .addOutputBus("Any bottom layer Casing")
             .addOutputHatch("2-11x Output Hatches (One per Output Layer except bottom layer)")
             .addStructureInfo("An \"Output Layer\" consists of 5 layers!")
             .addStructureHint("The interior of this Mega Multiblock's hologram is empty, it should be all air.")
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -283,7 +287,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // reset
         this.mOutputHatchesByLayer.forEach(List::clear);
         this.mHeight = 1;
@@ -291,17 +295,19 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
         this.mTopState = -1;
 
         // check base
-        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0, errors)) return;
+
+        List<Integer> missingLayers = new ArrayList<>();
 
         // check each layer
         while (this.mHeight < 12) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0)) {
-                return false;
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0, errors)) {
+                return;
             }
             if (this.mOutputHatchesByLayer.size() < this.mHeight || this.mOutputHatchesByLayer.get(this.mHeight - 1)
-                .isEmpty())
-                // layer without output hatch
-                return false;
+                .isEmpty()) {
+                missingLayers.add(mHeight + 1);
+            }
             if (mTopLayerFound) {
                 break;
             }
@@ -310,10 +316,21 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             this.mHeight++;
         }
 
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
+        }
+
         // validate final invariants...
-        return this.mCasing >= 75 * this.mHeight + 10 && this.mHeight >= 2
-            && this.mTopLayerFound
-            && this.mMaintenanceHatches.size() == 1;
+        checkCasingMin(errors, mCasing, 75 * mHeight + 10);
+        if (mHeight < 2) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+        }
+        if (!mTopLayerFound) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
+        }
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -391,7 +408,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
             for (IFluidStore tHatch : tLayerOutputHatches) {
                 if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canFillFluid()) {
+                    if (tMEHatch.canAcceptFluid()) {
                         foundMEHatch = true;
                         break;
                     }

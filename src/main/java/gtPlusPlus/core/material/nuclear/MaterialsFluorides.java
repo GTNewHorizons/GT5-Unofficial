@@ -239,10 +239,4 @@ public class MaterialsFluorides {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().SODIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1));
-
-    private static final MaterialsFluorides INSTANCE = new MaterialsFluorides();
-
-    public static MaterialsFluorides getInstance() {
-        return INSTANCE;
-    }
 }

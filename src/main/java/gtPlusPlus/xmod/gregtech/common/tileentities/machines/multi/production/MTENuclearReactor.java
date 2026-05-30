@@ -13,6 +13,8 @@ import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -42,6 +45,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -106,7 +112,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
             .addCasingInfoMin("Reactor Shield Casing", 26, false)
             .addInputHatch("Top or bottom layer edges", 1)
@@ -119,18 +125,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
-        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
-            : "Needs Maintainance");
-
-        return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency." };
     }
 
     @Override
@@ -259,17 +253,21 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-            if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && !mInputHatches.isEmpty()
-                && mDynamoHatches.size() == 4
-                && mMufflerHatches.size() == 4) {
-                this.turnCasingActive(false);
-                return true;
-            }
+        if (!checkPiece(mName, 3, 3, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 27);
+        if (mOutputHatches.size() < 4 && !canDumpFluidToME()) {
+            errors
+                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
         }
-        return false;
+        checkHasInputHatch(errors);
+        checkHatchExact(errors, Dynamo, 4);
+        checkHatchExact(errors, Muffler, 4);
+        checkHasMaintenanceHatch(errors);
+        if (errors.isEmpty()) {
+            this.turnCasingActive(false);
+        }
     }
 
     // Alk's Life Lessons from Greg.

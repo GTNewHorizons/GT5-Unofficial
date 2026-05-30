@@ -12,6 +12,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
@@ -49,15 +51,13 @@ public class BehaviourScanner extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            int lines = tNBT.getInteger("dataLinesCount");
-            if (lines < 1) throw new Exception();
+        final int lines = ItemStackNBT.getInteger(aStack, "dataLinesCount");
+        if (0 < lines) {
             aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
             for (int i = 0; i < lines; i++) {
-                aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
+                aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
             }
-        } catch (Exception e) {
+        } else {
             aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));
         }
         return aList;

@@ -1,9 +1,10 @@
 package gregtech.common.powergoggles.gui;
 
+import java.math.BigInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
@@ -13,25 +14,27 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
-import com.cleanroommc.modularui.overlay.OverlayHandler;
-import com.cleanroommc.modularui.overlay.OverlayManager;
 import com.cleanroommc.modularui.screen.CustomModularScreen;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.DoubleValue;
+import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.enums.Mods;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class PowerGogglesGuiOverlay {
@@ -39,18 +42,20 @@ public class PowerGogglesGuiOverlay {
     private static String[] settings = { "GT5U.power_goggles_config.settings_general",
         "GT5U.power_goggles_config.settings_color" };
     private static int settingsPage = 0;
-    private static IDrawable background = new Rectangle().setColor(Color.argb(0, 0, 0, 100));
+    private static IDrawable background = new Rectangle().color(Color.argb(0, 0, 0, 100));
+    private static String manualGraphMinInput = "0";
+    private static String manualGraphMaxInput = "1000";
+    private static boolean manualScaleInvalid = false;
+    private static final IDrawable MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND = new DrawableStack(
+        GTGuiTextures.BACKGROUND_TEXT_FIELD,
+        new Rectangle().color(Color.argb(200, 40, 40, 110)));
+    private static final IDrawable MANUAL_SCALE_TEXT_FIELD_BACKGROUND = new DynamicDrawable(
+        () -> manualScaleInvalid ? MANUAL_SCALE_INVALID_TEXT_FIELD_BACKGROUND : GTGuiTextures.BACKGROUND_TEXT_FIELD);
 
-    public static void init() {
-
-        OverlayManager.register(
-            new OverlayHandler(
-                screen -> screen instanceof PowerGogglesGuiHudConfig,
-                PowerGogglesGuiOverlay::buildScreen));
-    }
-
-    private static CustomModularScreen buildScreen(GuiScreen screen) {
-        PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
+    public static CustomModularScreen buildScreen(PowerGogglesGuiHudConfig gui) {
+        manualGraphMinInput = PowerGogglesConfigHandler.manualGraphMin;
+        manualGraphMaxInput = PowerGogglesConfigHandler.manualGraphMax;
+        validateManualScaleInputs();
         PagedWidget.Controller controller = new PagedWidget.Controller();
         int height = 217;
         ModularPanel overlayPanel = ModularPanel
@@ -70,12 +75,13 @@ public class PowerGogglesGuiOverlay {
             .addPage(makeGeneralSettingsPage(gui))
             .addPage(makeColorSchemePage(overlayPanel));
 
-        return new CustomModularScreen() {
+        return new CustomModularScreen(Mods.ModIDs.GREG_TECH) {
 
             @Override
             public @NotNull ModularPanel buildUI(ModularGuiContext context) {
                 return overlayPanel.child(
-                    new Column().sizeRel(1)
+                    Flow.column()
+                        .full()
                         .child(
                             new SingleChildWidget<>().size(230, 22)
                                 .background(background)
@@ -84,7 +90,7 @@ public class PowerGogglesGuiOverlay {
                                 .child(makePagedWidgetButton(controller)))
                         .child(
                             new SingleChildWidget<>().size(230, height - 22)
-                                .child(pagedWidget.sizeRel(1))));
+                                .child(pagedWidget.full())));
             }
         };
     }
@@ -96,16 +102,24 @@ public class PowerGogglesGuiOverlay {
                 controller.setPage(settingsPage);
                 return true;
             })
-            .sizeRel(1)
-            .align(Alignment.Center);
+            .full()
+            .center();
     }
 
     private static IWidget makeGeneralSettingsPage(PowerGogglesGuiHudConfig gui) {
-        return new Column().coverChildren()
-            .background(background)
-            .child(makeNotationButton(gui))
+        Flow settings = Flow.column()
+            .coverChildren()
+            .background(background);
+        settings.child(makeNotationButton(gui))
             .child(makeReadingButton(gui))
+            .child(makeGraphScaleButton(gui));
+        if (PowerGogglesConfigHandler.manualGraphScale) {
+            settings.child(makeManualScaleMinRow())
+                .child(makeManualScaleMaxRow());
+        }
+        return settings.child(makeShowPowerBarButton())
             .child(makeChatHidesHudButton())
+            .child(makeResetDefaultsButton(gui))
             .child(
                 makeSliderFlow(
                     () -> PowerGogglesConfigHandler.mainTextScaling,
@@ -191,9 +205,171 @@ public class PowerGogglesGuiOverlay {
             .marginBottom(4);
     }
 
+    private static IWidget makeGraphScaleButton(PowerGogglesGuiHudConfig gui) {
+        ButtonWidget<?> graphScaleButton = new ButtonWidget<>().overlay(
+            IKey.lang(
+                "GT5U.power_goggles_config.graph_scale",
+                IKey.lang(
+                    PowerGogglesConfigHandler.manualGraphScale ? "GT5U.power_goggles_config.graph_scale_manual"
+                        : "GT5U.power_goggles_config.graph_scale_auto")));
+        graphScaleButton.onMousePressed(mouseButton -> {
+            validateManualScaleInputs();
+            if (PowerGogglesConfigHandler.manualGraphScale && !isManualScaleInputValid()) {
+                return true;
+            }
+            PowerGogglesConfigHandler.manualGraphScale = !PowerGogglesConfigHandler.manualGraphScale;
+            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                .get("Manual Graph Scale")
+                .set(PowerGogglesConfigHandler.manualGraphScale);
+            PowerGogglesConfigHandler.config.save();
+
+            PowerGogglesGuiHudConfig refreshedScreen = new PowerGogglesGuiHudConfig(
+                gui.displayWidth,
+                gui.displayHeight);
+            refreshedScreen.parentScreen = gui.parentScreen;
+            Minecraft.getMinecraft()
+                .displayGuiScreen(refreshedScreen);
+            return true;
+        });
+        return graphScaleButton.size(230, 18)
+            .marginBottom(4);
+    }
+
+    private static IWidget makeManualScaleMinRow() {
+        return Flow.row()
+            .size(230, 18)
+            .marginBottom(4)
+            .child(
+                IKey.lang("GT5U.power_goggles_config.manual_graph_min")
+                    .color(Color.WHITE.main)
+                    .asWidget()
+                    .paddingLeft(3)
+                    .width(106)
+                    .marginRight(14)
+                    .textAlign(Alignment.CenterRight))
+            .child(
+                new TextFieldWidget().size(110, 18)
+                    .setTextAlignment(Alignment.Center)
+                    .setFormatAsInteger(true)
+                    .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
+                    .value(new StringValue.Dynamic(() -> manualGraphMinInput, val -> {
+                        manualGraphMinInput = val == null ? "" : val.trim();
+                        validateManualScaleInputs();
+                        if (isManualScaleInputValid()) {
+                            saveManualScaleInputs();
+                        }
+                    }))
+                    .setMaxLength(40)
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.power_goggles_config.manual_graph_min_tooltip"))));
+    }
+
+    private static IWidget makeManualScaleMaxRow() {
+        return Flow.row()
+            .size(230, 18)
+            .marginBottom(4)
+            .child(
+                IKey.lang("GT5U.power_goggles_config.manual_graph_max")
+                    .color(Color.WHITE.main)
+                    .asWidget()
+                    .paddingLeft(3)
+                    .width(106)
+                    .marginRight(14)
+                    .textAlign(Alignment.CenterRight))
+            .child(
+                new TextFieldWidget().size(110, 18)
+                    .setTextAlignment(Alignment.Center)
+                    .setFormatAsInteger(true)
+                    .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
+                    .value(new StringValue.Dynamic(() -> manualGraphMaxInput, val -> {
+                        manualGraphMaxInput = val == null ? "" : val.trim();
+                        validateManualScaleInputs();
+                        if (isManualScaleInputValid()) {
+                            saveManualScaleInputs();
+                        }
+                    }))
+                    .setMaxLength(40)
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.power_goggles_config.manual_graph_max_tooltip"))));
+    }
+
+    private static void validateManualScaleInputs() {
+        BigInteger min = parseNonNegativeBigInteger(manualGraphMinInput);
+        BigInteger max = parseNonNegativeBigInteger(manualGraphMaxInput);
+        manualScaleInvalid = min == null || max == null || min.compareTo(max) >= 0;
+    }
+
+    private static boolean isManualScaleInputValid() {
+        return !manualScaleInvalid;
+    }
+
+    private static BigInteger parseNonNegativeBigInteger(String value) {
+        if (value == null || value.isEmpty()) return null;
+        try {
+            BigInteger parsed = new BigInteger(value);
+            return parsed.compareTo(BigInteger.ZERO) < 0 ? null : parsed;
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private static void saveManualScaleInputs() {
+        PowerGogglesConfigHandler.manualGraphMin = manualGraphMinInput;
+        PowerGogglesConfigHandler.manualGraphMax = manualGraphMaxInput;
+        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+            .get("Manual Graph Min")
+            .set(PowerGogglesConfigHandler.manualGraphMin);
+        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+            .get("Manual Graph Max")
+            .set(PowerGogglesConfigHandler.manualGraphMax);
+        PowerGogglesConfigHandler.config.save();
+    }
+
+    private static IWidget makeShowPowerBarButton() {
+        ButtonWidget<?> showPowerBarButton = new ButtonWidget<>().overlay(
+            IKey.lang(
+                "GT5U.power_goggles_config.toggle_power_bar",
+                (PowerGogglesConfigHandler.showPowerBar ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
+        showPowerBarButton
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.power_goggles_config.toggle_power_bar_tooltip")));
+        showPowerBarButton.onMousePressed(mouseButton -> {
+            PowerGogglesConfigHandler.showPowerBar = !PowerGogglesConfigHandler.showPowerBar;
+            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                .get("Show Power Bar")
+                .set(PowerGogglesConfigHandler.showPowerBar);
+            PowerGogglesConfigHandler.config.save();
+            showPowerBarButton.overlay(
+                IKey.lang(
+                    "GT5U.power_goggles_config.toggle_power_bar",
+                    (PowerGogglesConfigHandler.showPowerBar ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
+            return true;
+        });
+        return showPowerBarButton.size(230, 18)
+            .marginBottom(4);
+    }
+
+    private static IWidget makeResetDefaultsButton(PowerGogglesGuiHudConfig gui) {
+        ButtonWidget<?> resetDefaultsButton = new ButtonWidget<>()
+            .overlay(IKey.lang("GT5U.power_goggles_config.reset_defaults"));
+        resetDefaultsButton
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.power_goggles_config.reset_defaults_tooltip")));
+        resetDefaultsButton.onMousePressed(mouseButton -> {
+            PowerGogglesConfigHandler.resetToDefaults();
+
+            PowerGogglesGuiHudConfig refreshedScreen = new PowerGogglesGuiHudConfig(
+                gui.displayWidth,
+                gui.displayHeight);
+            refreshedScreen.parentScreen = gui.parentScreen;
+            Minecraft.getMinecraft()
+                .displayGuiScreen(refreshedScreen);
+            return true;
+        });
+        return resetDefaultsButton.size(230, 18)
+            .marginBottom(4);
+    }
+
     private static IWidget makeSliderFlow(Supplier<Double> valSupplier, Consumer<Double> setter, String key,
         String textKey) {
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang(textKey)
@@ -202,7 +378,7 @@ public class PowerGogglesGuiOverlay {
                     .paddingLeft(3)
                     .width(106)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new SliderWidget().size(110, 18)
                     .background(GuiTextures.MC_BUTTON)
@@ -218,9 +394,11 @@ public class PowerGogglesGuiOverlay {
     }
 
     private static IWidget makeColorSchemePage(ModularPanel overlayPanel) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .background(background)
-            .align(Alignment.TopCenter)
+            .topRel(0)
+            .horizontalCenter()
             .child(
                 makeColorConfigButton(
                     overlayPanel,
@@ -270,17 +448,67 @@ public class PowerGogglesGuiOverlay {
                     "GT5U.power_goggles_config.gradient_good",
                     "GT5U.power_goggles_config.gradient_good_tooltip"))
             .child(
-                new Row().size(228, 18)
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartBackgroundColor,
+                    val -> { PowerGogglesConfigHandler.chartBackgroundColor = val; },
+                    "Chart Background Color",
+                    "GT5U.power_goggles_config.background_color",
+                    "GT5U.power_goggles_config.background_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartBorderColor,
+                    val -> { PowerGogglesConfigHandler.chartBorderColor = val; },
+                    "Chart Border Color",
+                    "GT5U.power_goggles_config.border_color",
+                    "GT5U.power_goggles_config.border_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartMinTextColor,
+                    val -> { PowerGogglesConfigHandler.chartMinTextColor = val; },
+                    "Chart Min Text Color",
+                    "GT5U.power_goggles_config.chart_min_text_color",
+                    "GT5U.power_goggles_config.chart_min_text_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.measurementsBackgroundColor,
+                    val -> { PowerGogglesConfigHandler.measurementsBackgroundColor = val; },
+                    "Measurements Background Color",
+                    "GT5U.power_goggles_config.background_lines_color",
+                    "GT5U.power_goggles_config.background_lines_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartMaxTextColor,
+                    val -> { PowerGogglesConfigHandler.chartMaxTextColor = val; },
+                    "Chart Max Text Color",
+                    "GT5U.power_goggles_config.chart_max_text_color",
+                    "GT5U.power_goggles_config.chart_max_text_color_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.chartManualScaleIndicatorColor,
+                    val -> { PowerGogglesConfigHandler.chartManualScaleIndicatorColor = val; },
+                    "Chart Manual Scale Indicator Color",
+                    "GT5U.power_goggles_config.chart_manual_scale_indicator_color",
+                    "GT5U.power_goggles_config.chart_manual_scale_indicator_color_tooltip"))
+
+            .child(
+                Flow.row()
+                    .size(228, 18)
                     .marginBottom(4)
                     .child(
                         new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
+                            () -> new Rectangle().horizontalGradient(
                                 PowerGogglesConfigHandler.gradientBadColor,
                                 PowerGogglesConfigHandler.gradientOkColor)).asWidget()
                                     .size(114, 18))
                     .child(
                         new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
+                            () -> new Rectangle().horizontalGradient(
                                 PowerGogglesConfigHandler.gradientOkColor,
                                 PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
                                     .size(114, 18)));
@@ -297,7 +525,8 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
             }, colorSupplier.get(), true).size(200, 100), true);
 
-        return new Row().size(230, 18)
+        return Flow.row()
+            .size(230, 18)
             .marginBottom(4)
             .child(
                 IKey.lang(buttonKey)
@@ -305,11 +534,11 @@ public class PowerGogglesGuiOverlay {
                     .asWidget()
                     .size(106, 18)
                     .marginRight(14)
-                    .alignment(Alignment.CenterRight))
+                    .textAlign(Alignment.CenterRight))
             .child(
                 new ButtonWidget<>().size(18, 18)
-                    .overlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
-                    .hoverOverlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
+                    .overlay(new DynamicDrawable(() -> new Rectangle().color(colorSupplier.get())))
+                    .hoverOverlay(new DynamicDrawable(() -> new Rectangle().color(colorSupplier.get())))
                     .tooltipBuilder(t -> t.addLine(IKey.lang((tooltipKey))))
                     .onMousePressed(d -> {
                         colorPicker.openPanel();

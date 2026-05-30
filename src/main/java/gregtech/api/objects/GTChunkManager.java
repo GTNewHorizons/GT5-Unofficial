@@ -10,6 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
+import net.minecraftforge.common.ForgeChunkManager.PlayerOrderedLoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -24,11 +26,13 @@ import gregtech.api.util.GTLog;
 /**
  * Handles re-initialization of chunks after a server restart.
  */
-public class GTChunkManager
-    implements ForgeChunkManager.OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
+public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoadingCallback {
+
+    public static final GTChunkManager instance = new GTChunkManager();
 
     private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
-    public static GTChunkManager instance = new GTChunkManager();
+
+    private GTChunkManager() {}
 
     public static void init() {
         ForgeChunkManager.setForcedChunkLoadingCallback(GTMod.GT, instance);
@@ -203,5 +207,9 @@ public class GTChunkManager
             }
         });
         GTLog.out.println("GTChunkManager: End forced chunks dump:");
+    }
+
+    public void onServerStopped() {
+        this.registeredTickets.clear();
     }
 }

@@ -13,6 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
+import toxiceverglades.dimension.DimensionEverglades;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
@@ -43,7 +44,9 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
     public Fluid getFluidToGenerate() {
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
-
+        if (id == DimensionEverglades.DIMID) {
+            return Materials.ToxicAir.mGas;
+        }
         if (id == -1) {
             return Materials.NetherAir.mFluid;
         } else {
@@ -96,7 +99,6 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
         float xSpd;
         float zSpd;
         if (aDir.offsetY == -1) {
-            // Logger.INFO("Y = -1");
             final float temp = MTEHatchAirIntake.floatGen.nextFloat() * 2.0f * GTPPCore.PI;
             xSpd = (float) Math.sin(temp) * 0.1f;
             zSpd = (float) Math.cos(temp) * 0.1f;

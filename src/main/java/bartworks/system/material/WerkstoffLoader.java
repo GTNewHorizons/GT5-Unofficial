@@ -16,10 +16,8 @@ package bartworks.system.material;
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static bartworks.util.BWUtil.superscriptNumbers;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.capsule;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellPlasma;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -63,7 +61,6 @@ import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
 import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.wireFine;
-import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -88,7 +85,6 @@ import com.google.common.collect.HashBiMap;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
-import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.system.material.werkstoff_loaders.recipe.AspectLoader;
@@ -110,10 +106,8 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bartworks.util.EnumUtils;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -148,9 +142,6 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
     public static void setUp() {
-        // add tiberium
-        EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
-
         Werkstoff.GenerationFeatures.initPrefixLogic();
         BWGTMaterialReference.init();
     }
@@ -1314,7 +1305,7 @@ public class WerkstoffLoader {
             .onlyDust(),
         87,
         TextureSet.SET_QUARTZ);
-    public static final Werkstoff LuVTierMaterial = new Werkstoff(
+    public static final Werkstoff RhodiumPlatedPalladium = new Werkstoff(
         Materials.Chrome.getRGBA(),
         "Rhodium-Plated Palladium",
         new Werkstoff.Stats().setCentrifuge(true)
@@ -1340,8 +1331,8 @@ public class WerkstoffLoader {
         new short[] { 0x22, 0xEE, 0x22 },
         "Tiberium",
         "Tr",
-        new Werkstoff.Stats().setProtons(123)
-            .setMass(326)
+        new Werkstoff.Stats().setProtons(Element.Tr.mProtons)
+            .setMass(Element.Tr.getMass())
             .setBlastFurnace(true)
             .setMeltingPoint(1800)
             .setRadioactive(true)
@@ -1798,7 +1789,7 @@ public class WerkstoffLoader {
 
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
 
-        WerkstoffLoader.LuVTierMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
+        WerkstoffLoader.RhodiumPlatedPalladium.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.Ruridit.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.AdemicSteel.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
 
@@ -1849,7 +1840,7 @@ public class WerkstoffLoader {
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
 
-        SubTag.METAL.addTo(LuVTierMaterial.getBridgeMaterial());
+        SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
     }
 
     public static long toGenerateGlobal;
@@ -1939,22 +1930,12 @@ public class WerkstoffLoader {
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BWMetaGeneratedItems(cell));
-            if (Forestry.isModLoaded()) {
-                BWMetaGeneratedItems capsuleClass = new BWMetaGeneratedItems(capsule);
-                API.hideItem(new ItemStack(capsuleClass, 1, WILDCARD));
-                WerkstoffLoader.items.put(capsule, capsuleClass);
-            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BWMetaGeneratedItems(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BWMetaGeneratedItems(OrePrefixes.cellMolten));
-            if (Forestry.isModLoaded()) {
-                BWMetaGeneratedItems capsuleMoltenClass = new BWMetaGeneratedItems(OrePrefixes.capsuleMolten);
-                API.hideItem(new ItemStack(capsuleMoltenClass, 1, WILDCARD));
-                WerkstoffLoader.items.put(OrePrefixes.capsuleMolten, capsuleMoltenClass);
-            }
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BWMetaGeneratedItems(plate));
@@ -2025,9 +2006,6 @@ public class WerkstoffLoader {
             WerkstoffLoader.BWBlockCasingsAdvanced,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasingadvanced.01");
-
-        GTMetaItemEnhancer.addAdditionalOreDictToForestry();
-        GTMetaItemEnhancer.init();
     }
 
     private static void runGTItemDataRegistrator() {
@@ -2092,7 +2070,7 @@ public class WerkstoffLoader {
     private static int getFluidTemperature(Werkstoff werkstoff) {
         Werkstoff.Stats stat = werkstoff.getStats();
         int bp = stat.getBoilingPoint();
-        int mp = stat.getMeltingPoint();
+        int mp = stat.getMeltingPointDirect();
         int rt = 300; // room temperature
         if (stat.isGas()) {
             return Math.max(bp, rt);

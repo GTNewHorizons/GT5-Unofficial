@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
@@ -9,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +23,10 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,10 +51,14 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.WirelessComputationPacket;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -179,41 +187,40 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
         eRacks.clear();
-        if (!structureCheck_EM("front", 1, 2, 0)) {
-            return false;
-        }
-        if (!structureCheck_EM("cap", 1, 2, -1)) {
-            return false;
-        }
+        if (!checkPiece("front", 1, 2, 0, errors)) return;
+        if (!checkPiece("cap", 1, 2, -1, errors)) return;
         byte offset = -2, totalLen = 4;
         while (offset > -16) {
-            if (!structureCheck_EM("slice", 1, 2, offset)) {
+            if (!checkPiece("slice", 1, 2, offset, errors)) {
                 break;
             }
             totalLen++;
             offset--;
         }
+        errors.clear();
         if (totalLen > 17) {
-            return false;
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
         }
-        if (!structureCheck_EM("cap", 1, 2, ++offset)) {
-            return false;
-        }
-        if (!structureCheck_EM("back", 1, 2, --offset)) {
-            return false;
-        }
+        if (!checkPiece("cap", 1, 2, ++offset, errors)) return;
+        if (!checkPiece("back", 1, 2, --offset, errors)) return;
+        checkOneUncertaintyHatch(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasDataOutput(errors);
+        if (!errors.isEmpty()) return;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
-        return eUncertainHatches.size() == 1;
     }
 
     @Override
@@ -233,6 +240,24 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("Computation", eAvailableData);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final long computation = accessor.getNBTData()
+            .getLong("Computation");
+        if (computation > 0) {
+            currentTip.add(translateToLocalFormatted("tt.waila.multi.computation", formatNumber(computation)));
+        }
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mMachine
@@ -240,8 +265,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             && aTick % 20 == CommonValues.MULTI_CHECK_AT) {
             double maxTemp = 0;
             for (MTEHatchRack rack : validMTEList(eRacks)) {
-                if (rack.heat > maxTemp) {
-                    maxTemp = rack.heat;
+                if (rack.getHeat() > maxTemp) {
+                    maxTemp = rack.getHeat();
                 }
             }
             maxCurrentTemp.set(maxTemp);
@@ -271,8 +296,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             int rackComputation;
 
             for (MTEHatchRack rack : validMTEList(eRacks)) {
-                if (rack.heat > maxTemp) {
-                    maxTemp = rack.heat;
+                if (rack.getHeat() > maxTemp) {
+                    maxTemp = rack.getHeat();
                 }
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
@@ -356,6 +381,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+            .addController("Front left, 2nd layer")
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
@@ -379,15 +405,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                                            // last
                                                                                                            // slice
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
-                                                                                                                // Hatch:
-                                                                                                                // Any
-                                                                                                                // Computer
-                                                                                                                // Casing
-                                                                                                                // on
-                                                                                                                // first
-                                                                                                                // or
-                                                                                                                // last
-                                                                                                                // slice
+                                                                                                                // Hatch
+            .addOtherStructurePart(
+                "Cloud Computation Server Hatch",
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                1) // Wireless Computation Output: Any Computer Casing on first or last slice
             .toolTipFinisher();
         return tt;
     }
@@ -491,16 +513,16 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
-        structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
+        buildPiece("front", stackSize, hintsOnly, 1, 2, 0);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, -1);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            structureBuild_EM("slice", 1, 2, offset--, stackSize, hintsOnly);
+            buildPiece("slice", stackSize, hintsOnly, 1, 2, offset--);
         }
 
-        structureBuild_EM("cap", 1, 2, offset--, stackSize, hintsOnly);
-        structureBuild_EM("back", 1, 2, offset, stackSize, hintsOnly);
+        buildPiece("cap", stackSize, hintsOnly, 1, 2, offset--);
+        buildPiece("back", stackSize, hintsOnly, 1, 2, offset);
     }
 
     @Override
@@ -542,6 +564,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 "tt.infodata.qc.total_wireless_computation",
                 "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         return data.toArray(new String[] {});
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {

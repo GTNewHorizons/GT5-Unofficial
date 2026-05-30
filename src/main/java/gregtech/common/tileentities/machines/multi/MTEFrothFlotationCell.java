@@ -27,6 +27,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -49,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -119,11 +122,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 120, false)
-            .addCasingInfoMin("Flotation Cell Casing", 31, false)
-            .addCasingInfoMin("Staballoy Frame Box", 20, false)
-            .addCasingInfoMin("Inconel-690 Frame Box", 8, false)
+            .addController("Front center, 2nd layer")
+            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
+            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
+            .addCasingInfoExactly("Staballoy Frame Box", 20, false)
+            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
             .addInputBus("Bottom Casing", 1)
             .addInputHatch("Bottom Casing", 1)
             .addOutputHatch("Bottom Casing", 1)
@@ -196,16 +199,17 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        boolean valid = checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 90
-            && checkHatch();
-        if (valid) needsWaterFill = true;
-        return valid;
-    }
-
-    public boolean checkHatch() {
-        return mEnergyHatches.size() >= 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 90);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasInputBus(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     @Override
@@ -289,14 +293,18 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey("lockedMaterialName")) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
             tooltip.add(
                 StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
                     + StatCollector.translateToLocal(
                         stack.getTagCompound()
                             .getString("lockedMaterialName")));
         }
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override

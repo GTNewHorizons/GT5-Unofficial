@@ -2,13 +2,16 @@ package gtPlusPlus.core.block.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,10 +21,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.client.TextureBlockMaterial;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -33,14 +36,29 @@ public class BlockBaseModular extends BasicBlock {
     public BlockTypes blockType;
     protected String materialName;
 
+    @SideOnly(Side.CLIENT)
+    private IIcon blockIcon;
+
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
     public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
+    private static boolean isCustomBlockOnly(Material material) {
+        return material.equals(ASTRAL_TITANIUM) || material.equals(CELESTIAL_TUNGSTEN)
+            || material.equals(CHRONOMATIC_GLASS);
+    }
+
+    private static int getMaterialColour(Material material) {
+        if (isCustomBlockOnly(material)) {
+            return 0xFFFFFF;
+        }
+        return material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex();
+    }
+
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
-        this(material, blockType, material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex());
+        this(material, blockType, getMaterialColour(material));
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
@@ -86,10 +104,8 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public void registerComponent() {
-        Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
 
         if (this.material == null) {
-            Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return;
         }
 
@@ -101,11 +117,9 @@ public class BlockBaseModular extends BasicBlock {
         final String key = getKey(this.blockType);
 
         if (map.containsKey(key)) {
-            Logger.MATERIALS("Tried to double register a material component.");
             return;
         }
 
-        Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
         map.put(key, new ItemStack(this));
     }
 
@@ -138,7 +152,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material.getLocalizedName());
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material);
     }
 
     @Override
@@ -163,17 +177,31 @@ public class BlockBaseModular extends BasicBlock {
     public void registerBlockIcons(final IIconRegister iIcon) {
         if (this.material == null || this.blockType == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.blockType.getTexture());
-        }
-        String metType = null;
-        TextureSet u = this.material.getTextureSet();
-        if (u != null) {
-            metType = u.mSetName;
+            return;
         }
 
-        metType = (metType == null ? "METALLIC" : metType);
+        String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
         int tier = this.material.vTier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-        this.blockIcon = iIcon.registerIcon(GregTech.ID + ":" + "materialicons/" + metType + "/" + aType);
+
+        if (isCustomBlockOnly(this.material)) {
+            metType = "CUSTOM/" + this.material.getUnlocalizedName();
+        }
+
+        String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
+
+        if (isCustomBlockOnly(this.material) && iIcon instanceof TextureMap) {
+            ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
+        }
+
+        this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
+            .getIcon();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return blockIcon;
     }
 
     @Override

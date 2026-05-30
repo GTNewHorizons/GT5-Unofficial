@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
+import static gregtech.api.util.GTUtility.min;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -84,8 +88,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
-            buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
+            buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
+                .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .hint(3)
                 .build())
@@ -233,7 +237,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 3, true)
@@ -281,24 +285,35 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (mCasingAmount < 35) return false;
-        if (laserSource == null) return false;
-        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
-
-        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) return false;
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (laserSource.mTier < VoltageIndex.UEV) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
+            } else {
+                int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+                if (count != 1) {
+                    errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, count, 1));
+                }
+            }
+        } else {
+            checkHasEnergyHatch(errors);
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasAnyInput(errors);
 
-        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
+        int requiredGlassTier = min(VoltageIndex.UMV, laserSource.mTier);
+        if (glassTier < requiredGlassTier) {
+            errors.add(StructureErrors.glassTierNotEnough(requiredGlassTier));
+        }
+        if (!errors.isEmpty()) return;
+        findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
@@ -387,11 +402,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

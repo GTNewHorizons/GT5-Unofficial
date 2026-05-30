@@ -57,6 +57,7 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings14;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -64,6 +65,7 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsBEC;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
@@ -97,6 +99,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
@@ -174,6 +177,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        MechArmorLoader.run();
         new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
@@ -736,8 +740,10 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasings13 = new BlockCasings13();
+        GregTechAPI.sBlockCasings14 = new BlockCasings14();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
+        GregTechAPI.sBlockCasingsBEC = new BlockCasingsBEC();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
@@ -823,7 +829,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
+            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
                 Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
                 Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
                 Materials.Ichorium, Materials.Firestone, Materials.Shadow },
@@ -860,9 +866,15 @@ public class LoaderGTBlockFluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
                 Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
                 Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM },
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
+
+        GregTechAPI.sBlockMetal10 = new BlockMetal(
+            "gt.blockmetal10",
+            new Materials[] { Materials.Shijima, Materials.Churitsu },
+            OrePrefixes.block,
+            gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
@@ -1456,6 +1468,51 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        // region NewHorizonsCoreMod fluids
+        // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
+        // new MetaGeneratedItem01 fluid cells.
+        GTFluidFactory.builder("SodiumPotassium")
+            .withDefaultLocalName("Sodium Potassium")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.SodiumPotassium)
+            .addLocalizedName(Materials.SodiumPotassium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("Pollution")
+            .withDefaultLocalName("Pollution")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.Pollution)
+            .addLocalizedName(Materials.Pollution)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
+                ItemList.Cell_Empty.get(1L));
+        GTFluidFactory.builder("EnrichedBacterialSludge")
+            .withDefaultLocalName("Enriched Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials.EnrichedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.EnrichedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(15);
+        GTFluidFactory.builder("FermentedBacterialSludge")
+            .withDefaultLocalName("Fermented Bacterial Sludge")
+            .withStateAndTemperature(LIQUID, 300)
+            .buildAndRegister()
+            .configureMaterials(Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials.FermentedBacterialSludge)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FermentedBacterialSludge, 1L),
+                ItemList.Cell_Empty.get(1L))
+            .asFluid()
+            .setLuminosity(8);
+        // endregion
+
         GTFluidFactory.builder("DimensionallyTranscendentResidue")
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
@@ -1661,6 +1718,26 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("InactiveCosmicSolder")
+            .withDefaultLocalName(Materials.InactiveCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.InactiveCosmicSolder)
+            .addLocalizedName(Materials.InactiveCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.InactiveCosmicSolder, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("BoundlessCosmicSolder")
+            .withDefaultLocalName(Materials.BoundlessCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.BoundlessCosmicSolder)
+            .addLocalizedName(Materials.BoundlessCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.BoundlessCosmicSolder, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1668,7 +1745,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")

@@ -20,18 +20,13 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 200;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
         column.child(positionRow(createFrequencyRow()))
             .child(positionRow(createRedstoneModeRow()));
     }
 
     private Flow createFrequencyRow() {
-        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::setFrequency);
+        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -49,12 +44,14 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     private Flow createRedstoneModeRow() {
-        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel);
+        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel)
+            .allowC2S();
         return Flow.row()
             .child(createPrivacyModeButton(privateChannelSyncer))
             .child(
                 IKey.lang("gt.interact.desc.RedstoneWirelessBase.Use_Private_Freq")
-                    .asWidget());
+                    .asWidget())
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 
     private IWidget createPrivacyModeButton(BooleanSyncValue privateChannelSyncer) {

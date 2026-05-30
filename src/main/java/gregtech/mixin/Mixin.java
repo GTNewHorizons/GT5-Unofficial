@@ -81,6 +81,7 @@ public enum Mixin implements IMixins {
     ForgeHooksMixin(new MixinBuilder("Adds missing hooks in ForgeHooks")
         .addCommonMixins("forge.ForgeHooksMixin")
         .setPhase(Phase.EARLY)),
+
     IC2_MACHINE_WRENCHING(new MixinBuilder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addCommonMixins(
             "ic2.MixinDamageDropped",
@@ -88,6 +89,7 @@ public enum Mixin implements IMixins {
             "ic2.MixinItemDropped")
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
+
     IC2_REINFORCED_GLASS_SILK(
         new MixinBuilder("Lets Reinforced Glass be harvested by silk touch")
             .addCommonMixins("ic2.MixinIc2ReinforcedGlass")

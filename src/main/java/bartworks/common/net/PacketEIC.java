@@ -6,7 +6,7 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.API.SideReference;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
+import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.util.Coords;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -52,7 +52,7 @@ public class PacketEIC extends GTPacket {
             TileEntity te = aWorld.getTileEntity(this.coords.x, this.coords.y, this.coords.z);
             if (!(te instanceof IGregTechTileEntity)) return;
             IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-            if (!(mte instanceof MTEElectricImplosionCompressor)) return;
+            if (!(mte instanceof MTEElectricImplosionCompressorLegacy)) return;
             if (this.bool && !((IGregTechTileEntity) te).isMuffled()) ((IGregTechTileEntity) te).addMufflerUpgrade();
         }
     }

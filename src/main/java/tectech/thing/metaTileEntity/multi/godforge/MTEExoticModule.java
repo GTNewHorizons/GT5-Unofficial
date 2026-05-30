@@ -507,6 +507,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

@@ -143,6 +143,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -350,15 +352,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
             .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addInputBus("Any bottom Casing (optional, for weapon with Looting)", 1)
+            .addOutputBus("Any bottom Casing", 1)
+            .addOutputHatch("Any bottom Casing", 1)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
@@ -927,16 +930,25 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
-        if (glassTier < VoltageIndex.UV)
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 35);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.UV) {
+            for (MTEHatchEnergy hatch : mEnergyHatches) {
+                if (hatch.mTier > glassTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+                    break;
+                }
+            }
+        }
+        checkHasAnyOutput(errors);
+        if (!errors.isEmpty()) return;
         checkRitualConnection();
         this.rotateSpikes();
-        return true;
     }
 
     @Override
@@ -1223,6 +1235,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public final boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private static final class EECMachineStatusWidget extends CycleButtonWidget {
