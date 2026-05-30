@@ -9,10 +9,10 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.api.enums.SoundResource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -263,7 +264,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
 
-        checkCasingMin(errors, casingAmount, 150);
+        checkCasingMin(errors, casingAmount, 100);
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
         checkHasInputHatch(errors);
@@ -531,6 +532,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery, DT, MDT")
@@ -542,11 +548,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(TooltipHelper.parallelText("256 * (1+ Tower Height/2)") + " Parallels")
             .addStaticSpeedInfo(DISTILLERY_SPEED)
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
+            .addInfo("Fluids output to the first hatch only")
             .addSeparator()
             .addInfo("Distillation Tower Mode")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addStaticSpeedInfo(TOWER_SPEED)
             .addStaticEuEffInfo(TOWER_EU_EFFICIENCY)
+            .addInfo("Fluids output to their corresponding layer only")
             .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
@@ -555,7 +563,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front off-center, 3rd Layer")
             .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 150, false)
+            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 100, false)
             .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
             .addCasingInfoExactly("Stainless Steel Framebox", 99, false)
@@ -590,22 +598,22 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             if (aActive) return new ITexture[] {
                 Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] {
                 Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
