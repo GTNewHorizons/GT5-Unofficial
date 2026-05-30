@@ -45,11 +45,6 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
     }
 
     @Override
-    public void init(String key, PanelSyncManager syncHandler) {
-        super.init(key, syncHandler);
-    }
-
-    @Override
     protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
         if (indexSync == null) return;
 
