@@ -536,6 +536,28 @@ class RecipeMapBackendLookupTest {
         assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.nullable", backend));
     }
 
+    @Test
+    void lookupVerifierMatchesAltRecipeRepresentativeInput() {
+        ensureMinecraftStackComparisonItem();
+        RecipeMapBackend backend = new NoOreDictLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        Item representativeItem = item("lookup.validation.alt_representative.representative");
+        Item alternativeItem = item("lookup.validation.alt_representative.alternative");
+        Item circuitItem = item("lookup.validation.alt_representative.circuit");
+        GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(
+            new ItemStack[] { new ItemStack(representativeItem, 1, 0), new ItemStack(circuitItem, 0, 21) },
+            new FluidStack[0],
+            item("lookup.validation.alt_representative.output"),
+            category);
+        recipe.mOreDictAlt = new ItemStack[][] { { new ItemStack(alternativeItem, 1, 0) },
+            { new ItemStack(circuitItem, 0, 21) } };
+        recipe.mOreDictIds = new int[] { -1, -1 };
+
+        backend.compileRecipe(recipe);
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.alt_representative", backend));
+    }
+
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
         GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
         recipe.mInputs = new ItemStack[] { new ItemStack(input, 1, 0) };

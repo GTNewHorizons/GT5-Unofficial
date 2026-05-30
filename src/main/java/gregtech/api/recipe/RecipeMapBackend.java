@@ -48,6 +48,7 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.ModContainer;
+import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -775,6 +776,14 @@ public class RecipeMapBackend {
             }
 
             if (!trieMatches.foundQueryRecipe) {
+                if (trieMatches.rawCandidates == 0) {
+                    backend.rebuildLookupStructures(false);
+                    try {
+                        trieMatches.afterRebuild = trieMatches(backend, recipe, items, fluids, specialSlot);
+                    } catch (RuntimeException e) {
+                        addError(target, recipe, "running trie lookup after rebuild", e);
+                    }
+                }
                 addMissingQueryRecipe(target, recipe, trieMatches);
             }
         }
@@ -988,6 +997,45 @@ public class RecipeMapBackend {
                 .append(trieMatches.filteredMatches)
                 .append(", max=")
                 .append(LOOKUP_CANDIDATE_SCAN_LIMIT);
+            if (trieMatches.afterRebuild != null) {
+                issue.append('\n')
+                    .append("lookupAfterRebuild=")
+                    .append(trieMatches.afterRebuild.foundQueryRecipe ? "found" : "missing")
+                    .append(", scan=")
+                    .append(trieMatches.afterRebuild.truncated ? "truncated" : "exhausted")
+                    .append(", rawCandidates=")
+                    .append(trieMatches.afterRebuild.rawCandidates)
+                    .append(", filteredMatches=")
+                    .append(trieMatches.afterRebuild.filteredMatches);
+                if (!trieMatches.afterRebuild.sampleMatches.isEmpty()) {
+                    issue.append('\n')
+                        .append("lookupAfterRebuildMatches=")
+                        .append(describeRecipeListForValidation(trieMatches.afterRebuild.sampleMatches));
+                }
+                if (!trieMatches.afterRebuild.sampleRejectedCandidates.isEmpty()) {
+                    issue.append('\n')
+                        .append("lookupAfterRebuildRejectedCandidates=")
+                        .append(describeRecipeListForValidation(trieMatches.afterRebuild.sampleRejectedCandidates));
+                }
+            }
+            if (trieMatches.rawCandidates == 0 && trieMatches.afterRebuild != null
+                && trieMatches.afterRebuild.rawCandidates == 0) {
+                List<List<GTRecipeLookupIngredient>> recipeLookupGroups = GTRecipeLookupBuilder
+                    .flattenForValidation(queryRecipe);
+                List<List<GTRecipeLookupIngredient>> runtimeLookupGroups = runtimeLookupIngredients(
+                    queryRecipe.mInputs == null ? GTValues.emptyItemStackArray : queryRecipe.mInputs,
+                    queryRecipe.mFluidInputs == null ? GTValues.emptyFluidStackArray : queryRecipe.mFluidInputs);
+                issue.append('\n')
+                    .append("recipeLookupGroups=")
+                    .append(describeLookupGroups(recipeLookupGroups));
+                issue.append('\n')
+                    .append("runtimeLookupGroups=")
+                    .append(describeLookupGroups(runtimeLookupGroups));
+                issue.append('\n')
+                    .append("sharedLookupKeys=")
+                    .append(
+                        describeLookupIngredients(sharedLookupIngredients(recipeLookupGroups, runtimeLookupGroups)));
+            }
             issues.add(issue.toString());
         }
 
@@ -1107,6 +1155,96 @@ public class RecipeMapBackend {
             return issues.size() + unresolvedOreDictIssues.size();
         }
 
+        private List<List<GTRecipeLookupIngredient>> runtimeLookupIngredients(ItemStack[] items, FluidStack[] fluids) {
+            List<List<GTRecipeLookupIngredient>> ingredients = new ArrayList<>();
+
+            for (ItemStack item : items) {
+                if (item == null) continue;
+
+                List<GTRecipeLookupIngredient> group = new ArrayList<>();
+                addRuntimeItemStackLookupIngredients(group, item);
+                try {
+                    addRuntimeOreDictLookupIngredients(group, item);
+                } catch (LinkageError | RuntimeException ignored) {
+                    // Unit tests do not bootstrap the full Forge ore dictionary; server-side diagnostics still include
+                    // it.
+                }
+                if (!group.isEmpty()) {
+                    ingredients.add(group);
+                }
+            }
+
+            for (FluidStack fluid : fluids) {
+                if (fluid == null || fluid.getFluid() == null) continue;
+
+                List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
+                addLookupIngredient(group, new GTFluidLookupIngredient(fluid));
+                ingredients.add(group);
+            }
+
+            return ingredients;
+        }
+
+        private List<GTRecipeLookupIngredient> sharedLookupIngredients(
+            List<List<GTRecipeLookupIngredient>> recipeGroups, List<List<GTRecipeLookupIngredient>> runtimeGroups) {
+            List<GTRecipeLookupIngredient> shared = new ArrayList<>();
+            for (List<GTRecipeLookupIngredient> recipeGroup : recipeGroups) {
+                for (GTRecipeLookupIngredient recipeIngredient : recipeGroup) {
+                    if (containsLookupIngredient(runtimeGroups, recipeIngredient)
+                        && !shared.contains(recipeIngredient)) {
+                        shared.add(recipeIngredient);
+                    }
+                }
+            }
+            return shared;
+        }
+
+        private boolean containsLookupIngredient(List<List<GTRecipeLookupIngredient>> groups,
+            GTRecipeLookupIngredient target) {
+            for (List<GTRecipeLookupIngredient> group : groups) {
+                if (group.contains(target)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private String describeLookupGroups(List<List<GTRecipeLookupIngredient>> groups) {
+            List<String> describedGroups = new ArrayList<>(groups.size());
+            for (List<GTRecipeLookupIngredient> group : groups) {
+                describedGroups.add(describeLookupIngredients(group));
+            }
+            return describedGroups.toString();
+        }
+
+        private String describeLookupIngredients(List<GTRecipeLookupIngredient> ingredients) {
+            return ingredients.stream()
+                .map(this::describeLookupIngredient)
+                .collect(Collectors.joining(", ", "[", "]"));
+        }
+
+        private String describeLookupIngredient(GTRecipeLookupIngredient ingredient) {
+            if (ingredient instanceof GTItemStackLookupIngredient itemIngredient) {
+                Item item = itemIngredient.getItem();
+                Object registryName = Item.itemRegistry.getNameForObject(item);
+                return "item=" + (registryName == null ? "<unregistered>" : registryName)
+                    + ":"
+                    + itemIngredient.getDamage()
+                    + ",nbt="
+                    + itemIngredient.isNbtSensitive();
+            }
+            if (ingredient instanceof GTOreDictLookupIngredient oreIngredient) {
+                int oreId = oreIngredient.getOreId();
+                return "ore=" + oreId + "(" + oreDictName(oreId) + ")";
+            }
+            if (ingredient instanceof GTFluidLookupIngredient fluidIngredient) {
+                Fluid fluid = fluidIngredient.getFluid();
+                return "fluid=" + fluid.getName();
+            }
+            return ingredient.getClass()
+                .getName();
+        }
+
         private static final class ValidationLookupResult {
 
             private final boolean foundQueryRecipe;
@@ -1115,6 +1253,7 @@ public class RecipeMapBackend {
             private final int rawCandidates;
             private final int filteredMatches;
             private final boolean truncated;
+            private ValidationLookupResult afterRebuild;
 
             private ValidationLookupResult(boolean foundQueryRecipe, List<GTRecipe> sampleMatches,
                 List<GTRecipe> sampleRejectedCandidates, int rawCandidates, int filteredMatches, boolean truncated) {

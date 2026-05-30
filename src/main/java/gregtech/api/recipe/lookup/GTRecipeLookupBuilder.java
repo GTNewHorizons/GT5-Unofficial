@@ -127,6 +127,10 @@ public final class GTRecipeLookupBuilder {
         return ingredients;
     }
 
+    public static List<List<GTRecipeLookupIngredient>> flattenForValidation(GTRecipe recipe) {
+        return flatten(recipe);
+    }
+
     private static void flattenItemInputs(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
         ItemStack[] inputs = recipe.mInputs;
         if (inputs == null) {
@@ -147,8 +151,10 @@ public final class GTRecipeLookupBuilder {
             if (oreDictId >= 0) {
                 group.add(new GTOreDictLookupIngredient(oreDictId));
                 addItemAlternativesMissingOreDictId(recipe, recipeWithAlt, i, oreDictId, group);
+                addRepresentativeItemIngredient(recipe, i, group);
             } else {
                 addItemAlternatives(recipe, recipeWithAlt, i, group);
+                addRepresentativeItemIngredient(recipe, i, group);
             }
             if (!group.isEmpty()) {
                 ingredients.add(group);
@@ -194,6 +200,13 @@ public final class GTRecipeLookupBuilder {
 
         if (recipe.mInputs != null && index < recipe.mInputs.length) {
             addItemIngredientIfMissingOreDictId(recipe, recipe.mInputs[index], oreDictId, group);
+        }
+    }
+
+    private static void addRepresentativeItemIngredient(GTRecipe recipe, int index,
+        List<GTRecipeLookupIngredient> group) {
+        if (recipe.mInputs != null && index < recipe.mInputs.length) {
+            addItemIngredient(recipe, recipe.mInputs[index], group);
         }
     }
 
