@@ -36,7 +36,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
-    protected byte mTier = 1;
+    private byte mTier = 1;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -260,6 +260,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         super.loadNBTData(aNBT);
     }
 
+    @Override
     public boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
