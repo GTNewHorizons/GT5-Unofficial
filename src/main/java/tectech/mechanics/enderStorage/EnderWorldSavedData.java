@@ -134,29 +134,23 @@ public class EnderWorldSavedData extends WorldSavedData {
 
     private static void loadInstance() {
         if (INSTANCE == null) {
-            var world = DimensionManager.getWorld(0);
-            if (world == null) return;
-            MapStorage storage = world.mapStorage;
+            MapStorage storage = DimensionManager.getWorld(0).mapStorage;
             INSTANCE = (EnderWorldSavedData) storage.loadData(EnderWorldSavedData.class, DATA_NAME);
             if (INSTANCE == null) {
                 INSTANCE = new EnderWorldSavedData();
                 storage.setData(DATA_NAME, INSTANCE);
             }
         }
-        if (INSTANCE != null) {
-            INSTANCE.markDirty();
-        }
+        INSTANCE.markDirty();
     }
 
     private static Map<EnderLinkTag, EnderFluidContainer> getEnderLiquidLink() {
         loadInstance();
-        if (INSTANCE == null) return new HashMap<>();
         return INSTANCE.EnderLiquidTagLink;
     }
 
     private static Map<EnderLinkTank, EnderLinkTag> getEnderLiquidTankLink() {
         loadInstance();
-        if (INSTANCE == null) return new HashMap<>();
         return INSTANCE.EnderLiquidTankLink;
     }
 
