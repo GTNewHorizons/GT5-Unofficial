@@ -29,6 +29,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -83,7 +84,21 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
         { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
         { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } };
 
-    private static IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEFrothFlotationCell>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement(
+            'C',
+            buildHatchAdder(MTEFrothFlotationCell.class).atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .casingIndex(Casings.InconelReinforcedCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
+        .addElement('D', Casings.FlotationCellCasings.asElement())
+        .addElement('E', Casings.InconelReinforcedCasing.asElement())
+        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
+        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
+        .build();
 
     public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -133,24 +148,6 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, structure)
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEFrothFlotationCell.class)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                        .casingIndex(Casings.InconelReinforcedCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
-                .addElement('D', Casings.FlotationCellCasings.asElement())
-                .addElement('E', Casings.InconelReinforcedCasing.asElement())
-                .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
-                .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
-                .addElement('W', ofChain(isAir(), ofAnyWater(false)))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
@@ -303,6 +300,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                         stack.getTagCompound()
                             .getString("lockedMaterialName")));
         }
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override

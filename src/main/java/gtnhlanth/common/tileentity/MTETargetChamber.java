@@ -191,7 +191,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addEnergyHatch(addHintNumber(2))
             .addInputBus(addHintNumber(3))
             .addOutputBus(addHintNumber(4))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.beamlineinputhatch"), addHintNumber(5))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.beaminputhatch"), addHintNumber(5))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

@@ -78,7 +78,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Machine_ULV_SolarPanel.get(1))
                 .fluidInputs(SubstituteFluidStack.soldering(QUARTER_INGOTS))
                 .duration(30 * SECONDS)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -590,7 +590,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.FR_Stick.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(50L))
             .duration(16 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -679,7 +679,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.written_book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1422,7 +1422,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.name_tag, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1431,7 +1431,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Items.compass, 1, 32767))
             .itemOutputs(new ItemStack(Items.map, 1, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1449,7 +1449,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfLife2", 1L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1457,7 +1457,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfKeeping2", 1L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1465,7 +1465,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfKeeping3", 1L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1473,7 +1473,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfLife1", 4L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1481,7 +1481,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfKeeping1", 4L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1489,7 +1489,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(getModItem(TwilightForest.ID, "item.charmOfKeeping2", 4L, 0))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1532,7 +1532,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1, 32767))
             .itemOutputs(certusQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         final ItemStack netherQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 600);
@@ -1545,7 +1545,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1, 32767))
             .itemOutputs(netherQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         final ItemStack fluixSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 1200);
@@ -1558,7 +1558,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1, 32767))
             .itemOutputs(fluixSeed)
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1566,7 +1566,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(getModItem(Forestry.ID, "candle", 24L, 0))
             .fluidInputs(Materials.Water.getFluid(600))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1574,7 +1574,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(getModItem(Forestry.ID, "candle", 8L, 0))
             .fluidInputs(Materials.Water.getFluid(200))
             .duration(16 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1583,7 +1583,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(getModItem(Forestry.ID, "craftingMaterial", 1L, 3))
             .fluidInputs(Materials.Water.getFluid(500))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1591,7 +1591,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(5)
             .itemOutputs(getModItem(Forestry.ID, "craftingMaterial", 1L, 1))
             .duration(16 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1609,7 +1609,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1687,7 +1687,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1697,7 +1697,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1705,14 +1705,14 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.written_book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 4))
             .itemOutputs(ItemList.Cell_Universal_Fluid.get(1))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1720,7 +1720,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.cake, 1, 0))
             .fluidInputs(Materials.Milk.getFluid(3_000))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -2178,7 +2178,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.ULV_Coil.get(1))
             .duration(10 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -3325,7 +3325,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144L))
             .itemOutputs(ItemList.Casing_Strengthened_Inanimate.get(1L))
             .circuit(1)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -3336,7 +3336,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Naquadah.getMolten(9L))
             .itemOutputs(ItemList.Casing_Precise_Stationary.get(1L))
             .circuit(1)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -3347,7 +3347,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Quantium.getMolten(144L))
             .itemOutputs(ItemList.Casing_Ultimately_Static.get(1L))
             .circuit(1)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -3357,7 +3357,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemRegistry.acidGens[2],
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2L))
             .itemOutputs(ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -3368,7 +3368,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Casing_Strengthened_Inanimate.get(1L))
             .fluidInputs(Materials.SolderingAlloy.getMolten(8 * INGOTS))
             .itemOutputs(ItemList.Hatch_ToxicResidueSensor.get(1L))
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
 
@@ -4602,7 +4602,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.RC_Tie_Stone.get(1))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -4610,7 +4610,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.RC_Tie_Stone.get(1))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -4987,7 +4987,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(tRailSS)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -5064,7 +5064,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(tRailSW)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -5141,7 +5141,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(tRailSJ)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()

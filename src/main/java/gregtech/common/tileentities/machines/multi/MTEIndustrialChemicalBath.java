@@ -97,7 +97,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Bath")
+        tt.addMachineType("Chemical Bath, ICB")
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Always requires an Input Hatch full of water to refill structure")
             .addInfo("Need to be filled with water")

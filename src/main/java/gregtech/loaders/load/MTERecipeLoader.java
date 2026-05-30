@@ -1154,7 +1154,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
-                OreDictNames.craftingIndustrialDiamond },
+                OrePrefixes.gemExquisite.get(Materials.Diamond) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(

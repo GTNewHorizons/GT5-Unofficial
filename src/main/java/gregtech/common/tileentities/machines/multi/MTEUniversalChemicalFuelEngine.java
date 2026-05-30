@@ -220,10 +220,10 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addCasingInfoExactly("Titanium Firebox Casing", 10, false)
             .addCasingInfoExactly("Chemically Inert Machine Casing", 39, false)
             .addCasingInfoExactly("PTFE Frame Box", 72, false)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing")
-            .addMufflerHatch("Any Stable Titanium Machine Casing")
-            .addInputHatch("Any Stable Titanium Machine Casing")
-            .addDynamoHatch("Back center of the machine")
+            .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
+            .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
+            .addInputHatch("Any Stable Titanium Machine Casing", 1)
+            .addDynamoHatch("Back center of the machine", 2)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
         return tt;

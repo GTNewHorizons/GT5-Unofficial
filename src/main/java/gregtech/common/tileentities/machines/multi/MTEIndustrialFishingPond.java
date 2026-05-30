@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -97,7 +98,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fish Trap")
+        tt.addMachineType("Fish Trap, ZFP")
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus or controller")
             .addInfo("Circuit " + FISH_MODE + " for Fish")
@@ -131,11 +132,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
                     'C',
                     ofChain(
                         buildHatchAdder(MTEIndustrialFishingPond.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(Casings.AquaticCasing.textureId)
-                            .hint(1)
-                            .build(),
-                        buildHatchAdder(MTEIndustrialFishingPond.class).anyOf(InputHatch)
+                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
                             .casingIndex(Casings.AquaticCasing.textureId)
                             .hint(1)
                             .build(),
@@ -308,5 +305,10 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("maxParallelRecipes"));
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 }
