@@ -571,6 +571,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         aNBT.setByteArray("currentEU", this.currentEU.toByteArray());
 
         aNBT.setBoolean("connected", this.isConnected);
+        aNBT.setByte("outputColor", this.outputColor);
     }
 
     @Override
@@ -579,6 +580,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.euBufferSize = new BigInteger(aNBT.getByteArray("bufferSize"));
         this.currentEU = new BigInteger(aNBT.getByteArray("currentEU"));
         this.isConnected = aNBT.getBoolean("connected");
+        // Default to -1 (unset) if missing from old saves
+        this.outputColor = aNBT.hasKey("outputColor") ? aNBT.getByte("outputColor") : -1;
     }
 
     @Override
@@ -688,7 +691,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void addVCOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
         if (GTUtility.isStackInvalid(aStack)) return;
         if (hatch == null) {
-            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
+            stopMachine(SimpleShutDownReason.ofCritical("nac_output_hatch_missing"));
             return;
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch

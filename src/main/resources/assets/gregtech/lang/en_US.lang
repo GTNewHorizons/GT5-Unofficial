@@ -2656,6 +2656,7 @@ GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 GT5U.gui.text.recipe_result.no_bec_assembler=Condensate Observation Array Offline
 GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too Low)
 GT5U.gui.text.shutdown_reason.bec_clogged=More Than 3 Condensates Present
+GT5U.gui.text.shutdown_reason.nac_output_hatch_missing=§4Colored output hatch disappeared mid-recipe.
 GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
