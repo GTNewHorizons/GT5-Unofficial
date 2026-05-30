@@ -278,9 +278,11 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                     case UPSIDE_DOWN -> beamOutput.getBaseMetaTileEntity()
                         .setFrontFacing(ForgeDirection.DOWN);
                     case CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(getDirection().getRotation(isFlipped ? ForgeDirection.UP : ForgeDirection.DOWN));
+                        .setFrontFacing(
+                            getDirection().getRotation(isFlipped ? ForgeDirection.UP : ForgeDirection.DOWN));
                     case COUNTER_CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(getDirection().getRotation(isFlipped ? ForgeDirection.DOWN : ForgeDirection.UP));
+                        .setFrontFacing(
+                            getDirection().getRotation(isFlipped ? ForgeDirection.DOWN : ForgeDirection.UP));
                     default -> beamOutput.getBaseMetaTileEntity()
                         .setFrontFacing(getDirection().getRotation(ForgeDirection.UP));
                 }
