@@ -679,9 +679,13 @@ public class RecipeMapBackend {
 
         private final List<RecipeLookupValidationTarget> targets;
         private final List<String> issues = new ArrayList<>();
+        private final List<String> unresolvedOreDictIssues = new ArrayList<>();
         private final List<RuntimeException> errors = new ArrayList<>();
         private final int totalRecipes;
 
+        private int skippedDisabledRecipes;
+        private int skippedFakeRecipes;
+        private int skippedNoLookupIngredientRecipes;
         private long startNanos;
         private long lastProgressNanos;
         private int processedMaps;
@@ -709,7 +713,7 @@ public class RecipeMapBackend {
                 try {
                     backend.ensureLookupCurrent();
                     for (GTRecipe recipe : recipes) {
-                        if (shouldValidateRecipe(recipe)) {
+                        if (shouldValidateRecipe(backend, recipe)) {
                             validateRecipe(target, recipe);
                         }
                         processedRecipes++;
@@ -725,13 +729,28 @@ public class RecipeMapBackend {
             }
 
             logProgress("finished");
-            if (!issues.isEmpty()) {
+            if (!issues.isEmpty() || !unresolvedOreDictIssues.isEmpty()) {
                 throw buildException();
             }
         }
 
-        private boolean shouldValidateRecipe(GTRecipe recipe) {
-            return recipe.mEnabled && !recipe.mFakeRecipe && hasLookupIngredients(recipe);
+        private boolean shouldValidateRecipe(RecipeMapBackend backend, GTRecipe recipe) {
+            if (!recipe.mEnabled) {
+                skippedDisabledRecipes++;
+                return false;
+            }
+            if (recipe.mFakeRecipe) {
+                skippedFakeRecipes++;
+                return false;
+            }
+
+            ItemStack[] items = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
+            FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
+            if (hasLookupIngredients(recipe) || preLookupRejectReason(backend, items, fluids) != null) {
+                return true;
+            }
+            skippedNoLookupIngredientRecipes++;
+            return false;
         }
 
         private void validateRecipe(RecipeLookupValidationTarget target, GTRecipe recipe) {
@@ -739,6 +758,16 @@ public class RecipeMapBackend {
             ItemStack[] items = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
             FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
             ItemStack specialSlot = recipe.mSpecialItems instanceof ItemStack ? (ItemStack) recipe.mSpecialItems : null;
+            String preLookupRejectReason = preLookupRejectReason(backend, items, fluids);
+            if (preLookupRejectReason != null) {
+                String unresolvedOreDictReason = unresolvedOreDictInputReason(recipe, items);
+                if (unresolvedOreDictReason != null) {
+                    addUnresolvedOreDictRecipe(target, recipe, unresolvedOreDictReason, preLookupRejectReason);
+                } else {
+                    addPreLookupRejectedRecipe(target, recipe, preLookupRejectReason);
+                }
+                return;
+            }
             List<GTRecipe> trieMatches = null;
 
             try {
@@ -754,6 +783,86 @@ public class RecipeMapBackend {
             if (!containsIdentity(trieMatches, recipe)) {
                 addMissingQueryRecipe(target, recipe, trieMatches);
             }
+        }
+
+        @Nullable
+        private String preLookupRejectReason(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids) {
+            if (backend.properties.minFluidInputs > 0) {
+                int fluidInputs = 0;
+                for (FluidStack fluid : fluids) {
+                    if (fluid != null) {
+                        fluidInputs++;
+                    }
+                }
+                if (fluidInputs < backend.properties.minFluidInputs) {
+                    return "minFluidInputs=" + backend.properties.minFluidInputs + ", actualFluidInputs=" + fluidInputs;
+                }
+            }
+
+            if (backend.properties.minItemInputs > 0) {
+                int itemInputs = 0;
+                for (ItemStack item : items) {
+                    if (item != null) {
+                        itemInputs++;
+                    }
+                }
+                if (itemInputs < backend.properties.minItemInputs) {
+                    return "minItemInputs=" + backend.properties.minItemInputs + ", actualItemInputs=" + itemInputs;
+                }
+            }
+
+            return null;
+        }
+
+        @Nullable
+        private String unresolvedOreDictInputReason(GTRecipe recipe, ItemStack[] items) {
+            if (!(recipe instanceof GTRecipe.GTRecipe_WithAlt)) {
+                return null;
+            }
+
+            GTRecipe.GTRecipe_WithAlt recipeWithAlt = (GTRecipe.GTRecipe_WithAlt) recipe;
+            if (recipeWithAlt.mOreDictIds == null) {
+                return null;
+            }
+
+            List<String> unresolvedSlots = new ArrayList<>();
+            int slotCount = Math.min(items.length, recipeWithAlt.mOreDictIds.length);
+            for (int i = 0; i < slotCount; i++) {
+                int oreDictId = recipeWithAlt.mOreDictIds[i];
+                if (items[i] != null || oreDictId < 0 || hasOreDictAlternatives(recipeWithAlt, i)) {
+                    continue;
+                }
+                unresolvedSlots
+                    .add("slot=" + i + ", oreDictId=" + oreDictId + ", oreDictName=" + oreDictName(oreDictId));
+            }
+
+            return unresolvedSlots.isEmpty() ? null : String.join("; ", unresolvedSlots);
+        }
+
+        private boolean hasOreDictAlternatives(GTRecipe.GTRecipe_WithAlt recipe, int slot) {
+            if (recipe.mOreDictAlt == null || slot >= recipe.mOreDictAlt.length) {
+                return false;
+            }
+            ItemStack[] alternatives = recipe.mOreDictAlt[slot];
+            if (alternatives == null) {
+                return false;
+            }
+            for (ItemStack alternative : alternatives) {
+                if (alternative != null) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private String oreDictName(int oreDictId) {
+            String name;
+            try {
+                name = OreDictionary.getOreName(oreDictId);
+            } catch (LinkageError | RuntimeException e) {
+                return "<unavailable>";
+            }
+            return name == null ? "<unknown>" : name;
         }
 
         private boolean hasLookupIngredients(GTRecipe recipe) {
@@ -780,6 +889,37 @@ public class RecipeMapBackend {
                 .filter(distinctByIdentity())
                 .filter(recipe -> backend.filterFindRecipe(recipe, items, fluids, specialSlot, false))
                 .collect(Collectors.toList());
+        }
+
+        private void addPreLookupRejectedRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+            String reason) {
+            StringBuilder issue = new StringBuilder();
+            issue.append("map=")
+                .append(target.mapName)
+                .append('\n')
+                .append("queryRecipe=")
+                .append(describeRecipeForValidation(queryRecipe));
+            issue.append('\n')
+                .append("query rejected before trie lookup: ")
+                .append(reason);
+            issues.add(issue.toString());
+        }
+
+        private void addUnresolvedOreDictRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+            String unresolvedOreDictReason, String preLookupRejectReason) {
+            StringBuilder issue = new StringBuilder();
+            issue.append("map=")
+                .append(target.mapName)
+                .append('\n')
+                .append("queryRecipe=")
+                .append(describeRecipeForValidation(queryRecipe));
+            issue.append('\n')
+                .append("unresolved oredict input: ")
+                .append(unresolvedOreDictReason);
+            issue.append('\n')
+                .append("query rejected before trie lookup: ")
+                .append(preLookupRejectReason);
+            unresolvedOreDictIssues.add(issue.toString());
         }
 
         private void addMissingQueryRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
@@ -816,17 +956,35 @@ public class RecipeMapBackend {
         }
 
         private IllegalStateException buildException() {
+            int totalIssues = issues.size() + unresolvedOreDictIssues.size();
             StringBuilder message = new StringBuilder();
             message.append("GT recipe lookup validation found ")
-                .append(issues.size())
+                .append(totalIssues)
                 .append(" issue(s) across ")
                 .append(targets.size())
-                .append(" map(s).");
+                .append(" map(s).")
+                .append("\nlookup mismatch(es)=")
+                .append(issues.size())
+                .append(", unresolved oredict input(s)=")
+                .append(unresolvedOreDictIssues.size())
+                .append("\nskipped recipe(s): disabled=")
+                .append(skippedDisabledRecipes)
+                .append(", fake=")
+                .append(skippedFakeRecipes)
+                .append(", noLookupIngredients=")
+                .append(skippedNoLookupIngredientRecipes);
+            int issueIndex = 1;
             for (int i = 0; i < issues.size(); i++) {
                 message.append("\n\n")
-                    .append(i + 1)
+                    .append(issueIndex++)
                     .append(") ")
                     .append(issues.get(i));
+            }
+            for (int i = 0; i < unresolvedOreDictIssues.size(); i++) {
+                message.append("\n\n")
+                    .append(issueIndex++)
+                    .append(") ")
+                    .append(unresolvedOreDictIssues.get(i));
             }
 
             IllegalStateException exception = new IllegalStateException(message.toString());
@@ -851,7 +1009,7 @@ public class RecipeMapBackend {
             LOGGER.info(
                 String.format(
                     Locale.ROOT,
-                    "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d",
+                    "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d lookupMismatches=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
                     phase,
                     processedMaps,
                     targets.size(),
@@ -860,7 +1018,12 @@ public class RecipeMapBackend {
                     percent,
                     formatDuration(elapsedNanos),
                     estimateEta(elapsedNanos),
-                    issues.size()));
+                    totalIssueCount(),
+                    issues.size(),
+                    unresolvedOreDictIssues.size(),
+                    skippedDisabledRecipes,
+                    skippedFakeRecipes,
+                    skippedNoLookupIngredientRecipes));
         }
 
         private void logMapProgress(String phase, RecipeLookupValidationTarget target, int mapRecipes, int mapIndex) {
@@ -868,7 +1031,7 @@ public class RecipeMapBackend {
             LOGGER.info(
                 String.format(
                     Locale.ROOT,
-                    "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d",
+                    "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d lookupMismatches=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
                     phase,
                     target.mapName,
                     mapRecipes,
@@ -877,7 +1040,16 @@ public class RecipeMapBackend {
                     processedRecipes,
                     totalRecipes,
                     formatDuration(elapsedNanos),
-                    issues.size()));
+                    totalIssueCount(),
+                    issues.size(),
+                    unresolvedOreDictIssues.size(),
+                    skippedDisabledRecipes,
+                    skippedFakeRecipes,
+                    skippedNoLookupIngredientRecipes));
+        }
+
+        private int totalIssueCount() {
+            return issues.size() + unresolvedOreDictIssues.size();
         }
 
         private String estimateEta(long elapsedNanos) {

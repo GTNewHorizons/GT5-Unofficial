@@ -773,6 +773,7 @@ public class GTMod {
             GT_FML_LOGGER.info("GTRecipeLookupValidator: first server tick reached; starting validation.");
             RecipeMapBackend.validateLookup();
             GT_FML_LOGGER.info("GTRecipeLookupValidator: validation completed without mismatches.");
+            throw new IllegalStateException("GT recipe lookup validation found 0 issue(s); run completed.");
         }
     }
 

@@ -50,6 +50,8 @@ import sun.reflect.ReflectionFactory;
 class RecipeMapBackendLookupTest {
 
     private static final Constructor<GTRecipe> GT_RECIPE_CONSTRUCTOR = constructorFor(GTRecipe.class);
+    private static final Constructor<GTRecipe.GTRecipe_WithAlt> GT_RECIPE_WITH_ALT_CONSTRUCTOR = constructorFor(
+        GTRecipe.GTRecipe_WithAlt.class);
     private static final Constructor<RecipeCategory> RECIPE_CATEGORY_CONSTRUCTOR = constructorFor(RecipeCategory.class);
     private static final Unsafe UNSAFE = unsafe();
 
@@ -244,8 +246,21 @@ class RecipeMapBackendLookupTest {
             item("lookup.validation.second.input"),
             item("lookup.validation.second.output"),
             category);
+        GTRecipe fakeRecipe = recipe(
+            item("lookup.validation.skipped.fake.input"),
+            item("lookup.validation.skipped.fake.output"),
+            category);
+        fakeRecipe.mFakeRecipe = true;
+        GTRecipe disabledRecipe = recipe(
+            item("lookup.validation.skipped.disabled.input"),
+            item("lookup.validation.skipped.disabled.output"),
+            category);
+        disabledRecipe.mEnabled = false;
         backend.compileRecipe(firstRecipe);
         backend.compileRecipe(secondRecipe);
+        backend.compileRecipe(fakeRecipe);
+        backend.compileRecipe(disabledRecipe);
+        backend.compileRecipe(recipeWithoutInputs(item("lookup.validation.skipped.no_lookup.output"), category));
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
@@ -260,6 +275,9 @@ class RecipeMapBackendLookupTest {
         assertTrue(
             error.getMessage()
                 .contains("lookup.validation.second.input"));
+        assertTrue(
+            error.getMessage()
+                .contains("skipped recipe(s): disabled=1, fake=1, noLookupIngredients=1"));
     }
 
     @Test
@@ -358,6 +376,63 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
+    void lookupVerifierReportsRecipesRejectedByMinInputGate() {
+        Fluid water = new Fluid("lookup.validation.min_input_gate.water");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            new ItemStack[] { null },
+            new FluidStack[] { fluidStack(water, 750) },
+            item("lookup.validation.min_input_gate.output"),
+            category);
+        MinItemInputBackend backend = new MinItemInputBackend(recipe);
+        backend.compileRecipe(recipe);
+
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.min_input_gate", backend));
+        assertTrue(
+            error.getMessage()
+                .contains("query rejected before trie lookup"));
+        assertTrue(
+            error.getMessage()
+                .contains("minItemInputs=1"));
+        assertTrue(
+            error.getMessage()
+                .contains("unresolved oredict input(s)=0"));
+    }
+
+    @Test
+    void lookupVerifierCategorizesMissingOreDictInputs() {
+        Fluid water = new Fluid("lookup.validation.missing_oredict.water");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(
+            new ItemStack[] { null },
+            new FluidStack[] { fluidStack(water, 750) },
+            item("lookup.validation.missing_oredict.output"),
+            category);
+        recipe.mOreDictIds = new int[] { 12345 };
+        recipe.mOreDictAlt = new ItemStack[][] { new ItemStack[0] };
+        MinItemInputBackend backend = new MinItemInputBackend(recipe);
+        backend.compileRecipe(recipe);
+
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.missing_oredict", backend));
+        assertTrue(
+            error.getMessage()
+                .contains("unresolved oredict input(s)=1"));
+        assertTrue(
+            error.getMessage()
+                .contains("lookup mismatch(es)=0"));
+        assertTrue(
+            error.getMessage()
+                .contains("unresolved oredict input"));
+        assertTrue(
+            error.getMessage()
+                .contains("oreDictId=12345"));
+    }
+
+    @Test
     void runtimeItemStackKeysDoNotIncludeGtUnificationTarget() {
         ensureMinecraftStackComparisonItem();
         Item representativeItem = item("lookup.unified.representative");
@@ -450,6 +525,19 @@ class RecipeMapBackendLookupTest {
         recipe.mInputs = new ItemStack[0];
         recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
         recipe.mFluidInputs = new FluidStack[0];
+        recipe.mFluidOutputs = new FluidStack[0];
+        recipe.mEnabled = true;
+        recipe.mCanBeBuffered = true;
+        recipe.setRecipeCategory(category);
+        return recipe;
+    }
+
+    private static GTRecipe.GTRecipe_WithAlt recipeWithAlt(ItemStack[] inputs, FluidStack[] fluidInputs, Item output,
+        RecipeCategory category) {
+        GTRecipe.GTRecipe_WithAlt recipe = allocate(GT_RECIPE_WITH_ALT_CONSTRUCTOR);
+        recipe.mInputs = inputs;
+        recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
+        recipe.mFluidInputs = fluidInputs;
         recipe.mFluidOutputs = new FluidStack[0];
         recipe.mEnabled = true;
         recipe.mCanBeBuffered = true;
@@ -678,6 +766,22 @@ class RecipeMapBackendLookupTest {
         protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.empty();
+        }
+    }
+
+    private static final class MinItemInputBackend extends RecipeMapBackend {
+
+        private final GTRecipe recipe;
+
+        private MinItemInputBackend(GTRecipe recipe) {
+            super(new RecipeMapBackendPropertiesBuilder().minItemInputs(1));
+            this.recipe = recipe;
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            return Stream.of(recipe);
         }
     }
 
