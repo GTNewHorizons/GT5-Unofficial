@@ -207,6 +207,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void checkMachine(IGregTechTileEntity bastMTE, ItemStack stack, List<StructureError> errors) {
         this.outputHatchesPerLayer.forEach(List::clear);
+        this.casingAmount = 0;
         this.height = 1;
         this.isTopLayerFound = false;
         if (!checkPiece(STRUCTURE_PIECE_BASE, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
@@ -262,7 +263,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
 
-        checkCasingMin(errors, casingAmount, 20);
+        checkCasingMin(errors, casingAmount, 150);
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
         checkHasInputHatch(errors);
@@ -554,7 +555,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front off-center, 3rd Layer")
             .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 20, false)
+            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 150, false)
             .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
             .addCasingInfoExactly("Stainless Steel Framebox", 99, false)

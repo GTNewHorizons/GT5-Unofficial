@@ -58,7 +58,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
-public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistillTowerLegacy> implements ISurvivalConstructable {
+public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistillTowerLegacy>
+    implements ISurvivalConstructable {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -134,7 +135,9 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTowerLegacy::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                        onElementPass(
+                            MTEMegaDistillTowerLegacy::onCasingFound,
+                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement(
                 'l',
                 buildHatchAdder(MTEMegaDistillTowerLegacy.class)
@@ -142,7 +145,9 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTowerLegacy::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                        onElementPass(
+                            MTEMegaDistillTowerLegacy::onCasingFound,
+                            ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement('c', (IStructureElementCheckOnly<MTEMegaDistillTowerLegacy>) (t, world, x, y, z) -> {
                 if (world.isAirBlock(x, y, z)) {
                     if (t.mTopState < 1) {
