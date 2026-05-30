@@ -337,21 +337,21 @@ public class GTRecipeConstants {
         int baseDuration = builder.getDuration();
 
         if (recycle) {
+            // Recycling only has no gas variant
             builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
-        }
+        } else {
+            // Generate recipe with gas
+            for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+                int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+                ret.addAll(
+                    builder.copy()
+                        .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
+                        .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
+                        .circuit(11)
+                        .addTo(RecipeMaps.arcFurnaceRecipes));
+            }
 
-        // Generate recipe with gas
-        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
-            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
-            ret.addAll(
-                builder.copy()
-                    .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
-                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
-                    .circuit(11)
-                    .addTo(RecipeMaps.arcFurnaceRecipes));
-        }
-
-        if (!recycle) {
+            // Generate recipe with plasma
             for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
                 int tPlasmaAmount = (int) Math.max(1L, baseDuration / (mat.getMass() * 16L));
                 GTRecipeBuilder plasmaBuilder = builder.copy()
