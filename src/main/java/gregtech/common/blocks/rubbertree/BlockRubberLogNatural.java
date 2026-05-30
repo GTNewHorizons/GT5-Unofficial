@@ -1,6 +1,7 @@
 package gregtech.common.blocks.rubbertree;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -10,11 +11,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,45 +26,55 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTModHandler;
+import gregtech.api.enums.ToolDictNames;
+import gregtech.common.items.ItemRubberTreeTap;
+import gregtech.crossmod.backhand.Backhand;
 
 public class BlockRubberLogNatural extends Block {
 
     public static final String NAME = "gt.block_rubber_log_natural";
+
     public static final int META_EMPTY = 0;
-
-    // TODO Remove in next major version after GT rubber tree is implemented
-    // Needed because trees are transformed by Postea has no scheduleTreeRefill triggered like normal generation
-    // Result : No Resin spawn in this trees. This META only set by Postea transformer, in this cas a special
-    // scheduleTreeRefill is triggered in updateTick()
-    public static final int META_POSTEA_TRANSFORM = 1;
-
-    private static final int ELECTRIC_TREETAP_EU_PER_USE = 50;
+    public static final int META_TAPPED_HOLE_MIN = 2;
+    public static final int META_TAPPED_HOLE_MAX = 5;
 
     private IIcon sideIcon;
     private IIcon topIcon;
-    private IIcon resinSideIcon;
+    private IIcon tappedSideIcon;
+    @SideOnly(Side.CLIENT)
+    private static IIcon woodendTreeTapRenderIcon;
+    @SideOnly(Side.CLIENT)
+    private static IIcon bronzeTreeTapRenderIcon;
+    @SideOnly(Side.CLIENT)
+    private static IIcon steelTreeTapRenderIcon;
 
     public BlockRubberLogNatural() {
         super(Material.wood);
-
         setBlockName(NAME);
         setCreativeTab(null);
         setStepSound(soundTypeWood);
         setHardness(2.0F);
         setResistance(5.0F);
         setHarvestLevel("axe", 0);
-
         GameRegistry.registerBlock(this, ItemBlockRubberLogNatural.class, NAME);
     }
 
-    public static boolean hasResin(int meta) {
-        return meta >= 2 && meta <= 5;
+    public static boolean hasTappedHole(int meta) {
+        return meta >= META_TAPPED_HOLE_MIN && meta <= META_TAPPED_HOLE_MAX;
     }
 
-    public static boolean isResinSide(int meta, int side) {
-        return hasResin(meta) && meta == side;
+    public static boolean isTappedHoleSide(int meta, int side) {
+        return hasTappedHole(meta) && meta == side;
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return hasTappedHole(metadata);
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata) {
+        return hasTappedHole(metadata) ? new TileEntityRubberLogTapped() : null;
     }
 
     @Override
@@ -69,7 +82,12 @@ public class BlockRubberLogNatural extends Block {
     public void registerBlockIcons(@NotNull IIconRegister iconRegister) {
         this.sideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_side");
         this.topIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_top");
-        this.resinSideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_resin_side");
+
+        this.tappedSideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_tap_side");
+        woodendTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_wooden");
+        bronzeTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_bronze");
+        steelTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_steel");
+
         this.blockIcon = this.sideIcon;
     }
 
@@ -85,7 +103,7 @@ public class BlockRubberLogNatural extends Block {
             return this.topIcon;
         }
 
-        return isResinSide(meta, side) ? this.resinSideIcon : this.sideIcon;
+        return isTappedHoleSide(meta, side) ? this.tappedSideIcon : this.sideIcon;
     }
 
     @Override
@@ -97,7 +115,7 @@ public class BlockRubberLogNatural extends Block {
     @SuppressWarnings({ "rawtypes" })
     @Override
     public void getSubBlocks(Item item, net.minecraft.creativetab.CreativeTabs tab, List list) {
-        // world gen only
+        // Natural log is worldgen-only.
     }
 
     @Override
@@ -153,139 +171,305 @@ public class BlockRubberLogNatural extends Block {
     }
 
     @Override
-    public void updateTick(@NotNull World world, int x, int y, int z, java.util.Random random) {
-        if (world.isRemote) {
-            return;
-        }
-
+    public boolean onBlockActivated(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player, int side,
+        float hitX, float hitY, float hitZ) {
         int meta = world.getBlockMetadata(x, y, z);
 
-        // TODO Remove in next major version after GT rubber tree is implemented
-        // Special case: old IC2 tree logs migrated by Postea
-        if (meta == META_POSTEA_TRANSFORM) {
-            world.setBlockMetadataWithNotify(x, y, z, META_EMPTY, 2);
-            RubberTreeResinLogic.scheduleTreeRefill(world, x, y, z, random);
+        if (world.isRemote) {
+            return canClientAttemptInteraction(player, side, meta);
+        }
+
+        if (hasTappedHole(meta)) {
+            if (player.isSneaking()) {
+                TileEntityRubberLogTapped tile = getTappedTileEntity(world, x, y, z);
+
+                if (tile != null && tile.hasInstalledTap()) {
+                    removeInstalledTap(world, x, y, z, true, player);
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (!canInstallTapIntoExistingHole(world, x, y, z, player, side, meta)) {
+                return false;
+            }
+
+            installTapIntoExistingHole(world, x, y, z, player, side);
+            return true;
+        }
+
+        if (!canCreateTappedHole(world, x, y, z, player, side, meta)) {
+            return false;
+        }
+
+        createTappedHoleAndInstallTap(world, x, y, z, player, side);
+        return true;
+    }
+
+    private boolean canClientAttemptInteraction(@NotNull EntityPlayer player, int side, int meta) {
+        if (player.isSneaking() && hasTappedHole(meta)) {
+            return true;
+        }
+
+        return side >= META_TAPPED_HOLE_MIN && side <= META_TAPPED_HOLE_MAX
+            && isSoftMallet(player.getCurrentEquippedItem())
+            && isTreeTapItem(Backhand.getOffhandItem(player))
+            && (meta == META_EMPTY || hasTappedHole(meta));
+    }
+
+    private boolean canCreateTappedHole(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player,
+        int side, int meta) {
+        return side >= META_TAPPED_HOLE_MIN && side <= META_TAPPED_HOLE_MAX
+            && meta == META_EMPTY
+            && isSoftMallet(player.getCurrentEquippedItem())
+            && isTreeTapItem(Backhand.getOffhandItem(player))
+            && RubberTreeResinLogic.isLowerTrunkPosition(world, x, y, z)
+            && RubberTreeResinLogic.countTappedHolesOnLowerTrunk(world, x, y, z)
+                < RubberTreeResinLogic.MAX_TAPPED_HOLES_PER_TREE
+            && !RubberTreeResinLogic.isTreeReservoirExhausted(world, x, y, z)
+            && RubberTreeResinLogic.isReplaceableSide(world, x, y, z, side);
+    }
+
+    private boolean canInstallTapIntoExistingHole(@NotNull World world, int x, int y, int z,
+        @NotNull EntityPlayer player, int side, int meta) {
+        if (!hasTappedHole(meta)) {
+            return false;
+        }
+
+        if (side != meta) {
+            return false;
+        }
+
+        if (!isSoftMallet(player.getCurrentEquippedItem()) || !isTreeTapItem(Backhand.getOffhandItem(player))) {
+            return false;
+        }
+
+        if (!RubberTreeResinLogic.isLowerTrunkPosition(world, x, y, z)) {
+            return false;
+        }
+
+        if (RubberTreeResinLogic.isTreeReservoirExhausted(world, x, y, z)) {
+            return false;
+        }
+
+        TileEntityRubberLogTapped tile = getTappedTileEntity(world, x, y, z);
+        return tile == null || tile.canAcceptTap();
+    }
+
+    private void createTappedHoleAndInstallTap(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player,
+        int side) {
+        ItemStack offhandTap = Backhand.getOffhandItem(player);
+        if (!isTreeTapItem(offhandTap)) {
             return;
         }
 
-        RubberTreeResinLogic.tryRefillTree(world, x, y, z, random);
+        ItemStack installedTap = copyOne(offhandTap);
+        int initialRemainingResin = RubberTreeResinLogic.getInitialRemainingResinForNewHole(world, x, y, z, world.rand);
+
+        world.setBlockMetadataWithNotify(x, y, z, side, 3);
+
+        TileEntityRubberLogTapped tile = getOrCreateTappedTileEntity(world, x, y, z);
+        if (tile == null) {
+            world.setBlockMetadataWithNotify(x, y, z, META_EMPTY, 3);
+            return;
+        }
+
+        consumeOffhandTap(player, offhandTap);
+
+        tile.configureNewHole(installedTap, side, world.rand, initialRemainingResin);
+        RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, initialRemainingResin);
     }
 
-    private static @Nullable Item getIC2ToolItem(String ic2Name) {
-        ItemStack stack = GTModHandler.getIC2Item(ic2Name, 1L);
-        return stack == null ? null : stack.getItem();
+    private void installTapIntoExistingHole(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player,
+        int side) {
+        ItemStack offhandTap = Backhand.getOffhandItem(player);
+        if (!isTreeTapItem(offhandTap)) {
+            return;
+        }
+
+        ItemStack installedTap = copyOne(offhandTap);
+
+        TileEntityRubberLogTapped tile = getOrCreateTappedTileEntity(world, x, y, z);
+        if (tile == null || !tile.canAcceptTap()) {
+            return;
+        }
+
+        int remainingResin = RubberTreeResinLogic.getInitialRemainingResinForNewHole(world, x, y, z, world.rand);
+        if (remainingResin <= 0) {
+            return;
+        }
+
+        consumeOffhandTap(player, offhandTap);
+
+        tile.setRemainingResin(remainingResin);
+        tile.installTap(installedTap, side, world.rand);
+        RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, remainingResin);
     }
 
-    private static boolean isRegularTreetap(ItemStack stack) {
-        if (stack == null) return false;
-        Item treetap = getIC2ToolItem("treetap");
-        return treetap != null && stack.getItem() == treetap;
+    public void removeInstalledTap(@NotNull World world, int x, int y, int z, boolean dropTap,
+        @Nullable EntityPlayer player) {
+        TileEntityRubberLogTapped tile = getTappedTileEntity(world, x, y, z);
+        if (tile == null) {
+            return;
+        }
+
+        ItemStack tapStack = dropTap ? tile.removeInstalledTapForDrop() : null;
+
+        if (!dropTap) {
+            tile.clearInstalledTap();
+        }
+
+        if (tapStack != null && tapStack.stackSize > 0) {
+            giveOrDropTap(world, x, y, z, tapStack, player);
+        }
     }
 
-    private static boolean isElectricTreetap(ItemStack stack) {
-        if (stack == null) return false;
-        Item electricTreetap = getIC2ToolItem("electricTreetap");
-        return electricTreetap != null && stack.getItem() == electricTreetap;
+    @Override
+    public boolean removedByPlayer(@NotNull World world, EntityPlayer player, int x, int y, int z,
+        boolean willHarvest) {
+        boolean shouldFellTree = !world.isRemote && RubberTreeResinLogic.isFellingCutPosition(world, x, y, z);
+
+        List<RubberTreeResinLogic.LogPosition> logsToTransform = shouldFellTree
+            ? RubberTreeResinLogic.collectNaturalTrunkLogs(world, x, y, z)
+            : Collections.emptyList();
+
+        boolean removed = super.removedByPlayer(world, player, x, y, z, willHarvest);
+
+        if (removed && shouldFellTree) {
+            RubberTreeResinLogic.fellNaturalTree(world, logsToTransform, x, y, z);
+        }
+
+        return removed;
     }
 
-    private static boolean canUseToolForResinHarvest(ItemStack stack, EntityPlayer player) {
-        if (stack == null || player == null) {
-            return false;
-        }
+    @Override
+    public void breakBlock(@NotNull World world, int x, int y, int z, Block block, int meta) {
+        if (!world.isRemote && hasTappedHole(meta)
+            && world.getGameRules()
+                .getGameRuleBooleanValue("doTileDrops")) {
+            TileEntity tile = world.getTileEntity(x, y, z);
 
-        if (player.capabilities.isCreativeMode) {
-            return isRegularTreetap(stack) || isElectricTreetap(stack);
-        }
+            if (tile instanceof TileEntityRubberLogTapped) {
+                ItemStack tapStack = ((TileEntityRubberLogTapped) tile).getTapStackForDrop();
 
-        if (isElectricTreetap(stack)) {
-            return GTModHandler.canUseElectricItem(stack, ELECTRIC_TREETAP_EU_PER_USE);
-        }
-
-        return isRegularTreetap(stack);
-    }
-
-    private static boolean consumeToolForResinHarvest(ItemStack stack, EntityPlayer player) {
-        if (stack == null || player == null) {
-            return false;
-        }
-
-        if (player.capabilities.isCreativeMode) {
-            return true;
-        }
-
-        if (isElectricTreetap(stack)) {
-            return GTModHandler.useElectricItem(stack, ELECTRIC_TREETAP_EU_PER_USE, player);
-        }
-
-        if (isRegularTreetap(stack)) {
-            stack.damageItem(1, player);
-
-            if (stack.stackSize <= 0) {
-                player.destroyCurrentEquippedItem();
+                if (tapStack != null && tapStack.stackSize > 0) {
+                    spawnItemStack(world, x, y, z, tapStack);
+                }
             }
+        }
 
-            return true;
+        super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    private static @Nullable TileEntityRubberLogTapped getTappedTileEntity(@NotNull World world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        return tile instanceof TileEntityRubberLogTapped ? (TileEntityRubberLogTapped) tile : null;
+    }
+
+    private static @Nullable TileEntityRubberLogTapped getOrCreateTappedTileEntity(@NotNull World world, int x, int y,
+        int z) {
+        if (!hasTappedHole(world.getBlockMetadata(x, y, z))) {
+            return null;
+        }
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileEntityRubberLogTapped) {
+            return (TileEntityRubberLogTapped) tile;
+        }
+
+        TileEntityRubberLogTapped tappedTile = new TileEntityRubberLogTapped();
+        tappedTile.setSide(world.getBlockMetadata(x, y, z));
+        world.setTileEntity(x, y, z, tappedTile);
+
+        return tappedTile;
+    }
+
+    private static boolean isTreeTapItem(@Nullable ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ItemRubberTreeTap;
+    }
+
+    private static boolean isSoftMallet(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+
+        int[] oreIds = OreDictionary.getOreIDs(stack);
+        for (int oreId : oreIds) {
+            if (ToolDictNames.craftingToolSoftMallet.name()
+                .equals(OreDictionary.getOreName(oreId))) {
+                return true;
+            }
         }
 
         return false;
     }
 
-    @Override
-    public boolean onBlockActivated(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player, int side,
-        float hitX, float hitY, float hitZ) {
+    private static @NotNull ItemStack copyOne(@NotNull ItemStack stack) {
+        ItemStack copy = stack.copy();
+        copy.stackSize = 1;
+        return copy;
+    }
 
-        int meta = world.getBlockMetadata(x, y, z);
-        boolean canHarvestFromThisFace = isResinSide(meta, side);
-        ItemStack heldStack = player.getCurrentEquippedItem();
-        boolean usableTool = canUseToolForResinHarvest(heldStack, player);
-
-        if (world.isRemote) {
-            return canHarvestFromThisFace && usableTool;
+    private static void consumeOffhandTap(@NotNull EntityPlayer player, @NotNull ItemStack offhandTap) {
+        if (player.capabilities.isCreativeMode) {
+            return;
         }
 
-        if (!canHarvestFromThisFace || !usableTool) {
-            return false;
-        }
+        offhandTap.stackSize--;
 
-        if (!consumeToolForResinHarvest(heldStack, player)) {
-            return false;
+        if (offhandTap.stackSize <= 0) {
+            int offhandSlot = Backhand.getOffhandSlot(player);
+
+            if (offhandSlot >= 0) {
+                player.inventory.setInventorySlotContents(offhandSlot, null);
+            }
         }
 
         player.inventory.markDirty();
         player.inventoryContainer.detectAndSendChanges();
-
-        world.setBlockMetadataWithNotify(x, y, z, META_EMPTY, 3);
-        RubberTreeResinLogic.scheduleTreeRefill(world, x, y, z, world.rand);
-
-        spawnResinDrop(world, x, y, z, side, ItemList.Sticky_Resin.get(getResinAmount(world)));
-
-        return true;
     }
 
-    private void spawnResinDrop(World world, int x, int y, int z, int side, ItemStack stack) {
-        ForgeDirection dir = ForgeDirection.getOrientation(side);
+    private static void giveOrDropTap(@NotNull World world, int x, int y, int z, @NotNull ItemStack tapStack,
+        @Nullable EntityPlayer player) {
+        if (player != null) {
+            if (player.capabilities.isCreativeMode) {
+                return;
+            }
 
-        double spawnX = x + 0.5D + dir.offsetX * 0.70D;
-        double spawnY = y + 0.55D;
-        double spawnZ = z + 0.5D + dir.offsetZ * 0.70D;
+            if (player.inventory.addItemStackToInventory(tapStack.copy())) {
+                player.inventory.markDirty();
+                player.inventoryContainer.detectAndSendChanges();
+                return;
+            }
+        }
+
+        spawnItemStack(world, x, y, z, tapStack);
+    }
+
+    private static void spawnItemStack(@NotNull World world, int x, int y, int z, @NotNull ItemStack stack) {
+        double spawnX = x + 0.5D;
+        double spawnY = y + 0.5D;
+        double spawnZ = z + 0.5D;
 
         EntityItem entityItem = new EntityItem(world, spawnX, spawnY, spawnZ, stack);
-        entityItem.motionX = dir.offsetX * 0.08D;
-        entityItem.motionY = 0.02D + world.rand.nextDouble() * 0.03D;
-        entityItem.motionZ = dir.offsetZ * 0.08D;
-        entityItem.delayBeforeCanPickup = 5;
-
+        entityItem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityItem);
-
-        RubberTreeEffects.playResinHarvestSound(world, x, y, z);
     }
 
-    private int getResinAmount(@NotNull World world) {
-        int resinAmount = 1;
-        if (world.rand.nextFloat() < 0.35F) resinAmount++;
-        if (world.rand.nextFloat() < 0.20F) resinAmount++;
-        if (world.rand.nextFloat() < 0.10F) resinAmount++;
+    // 3D special renderer
+    @SideOnly(Side.CLIENT)
+    public static IIcon getWoodendTreeTapRenderIcon() {
+        return woodendTreeTapRenderIcon;
+    }
 
-        return resinAmount;
+    @SideOnly(Side.CLIENT)
+    public static IIcon getBronzeTreeTapRenderIcon() {
+        return bronzeTreeTapRenderIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static IIcon getSteelTreeTapRenderIcon() {
+        return steelTreeTapRenderIcon;
     }
 }

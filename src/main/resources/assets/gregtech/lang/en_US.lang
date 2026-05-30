@@ -5045,11 +5045,21 @@ gt.Item_Toolbox.tooltip=A container to hold your tools!
 
 ## Rubber tree
 gt.block_rubber_log.name=Rubber Wood
-gt.block_rubber_log_natural.name=Rubber Wood Natural
+gt.block_rubber_log_natural.name=Rubber Wood
 gt.block_rubber_leaves.rubber.name=Rubber Tree Leaves
 gt.block_rubber_sapling.name=Rubber Tree Sapling
 gt.item_sticky_resin.name=Sticky Resin
 gt.item_sticky_resin.tooltip=Sap of a Rubber Tree
+gt.item_tree_tap_wood.name=Wooden Tree Tap
+gt.item_tree_tap_wood.tooltip=Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand
+gt.item_tree_tap_bronze.name=Bronze Tree Tap
+gt.item_tree_tap_bronze.tooltip=Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand
+gt.item_tree_tap_steel.name=Steel Tree Tap
+gt.item_tree_tap_steel.tooltip=Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand
+gt.waila.rubber_tree.remaining_resin=Remaining Resin: %s
+gt.waila.rubber_tree.exhausted=Rubber Tree Exhausted
+gt.waila.rubber_tree.no_tap=No Tree Tap Installed
+gt.waila.rubber_tree.tap_durability=Tree Tap Durability: %s / %s
 
 # MetaItem02
 ## Power Goggles

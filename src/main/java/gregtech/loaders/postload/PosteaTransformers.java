@@ -163,7 +163,7 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager.addSimpleReplacement(
             "IC2:blockRubWood",
             GregTechAPI.sBlockRubberLogNatural,
-            BlockRubberLogNatural.META_POSTEA_TRANSFORM,
+            BlockRubberLogNatural.META_EMPTY,
             true);
 
         // Rubber Logs in inventories replaced by regular logs

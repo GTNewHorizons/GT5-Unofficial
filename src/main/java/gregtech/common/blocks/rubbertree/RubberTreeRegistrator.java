@@ -1,15 +1,20 @@
 package gregtech.common.blocks.rubbertree;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
+import gregtech.common.items.ItemRubberTreeTap;
 import gregtech.common.items.ItemStickyResin;
 
 public final class RubberTreeRegistrator {
+
+    private static final int WOOD_TREE_TAP_DURABILITY = 64;
+    private static final int BRONZE_TREE_TAP_DURABILITY = 256;
+    private static final int STEEL_TREE_TAP_DURABILITY = 2048;
 
     private RubberTreeRegistrator() {}
 
@@ -18,6 +23,8 @@ public final class RubberTreeRegistrator {
         GregTechAPI.sBlockRubberLogNatural = new BlockRubberLogNatural();
         GregTechAPI.sBlockRubberLeaves = new BlockRubberLeaves();
         GregTechAPI.sBlockRubberSapling = new BlockRubberSapling();
+
+        GameRegistry.registerTileEntity(TileEntityRubberLogTapped.class, "gt.tile_rubber_log_tapped");
 
         OreDictionary
             .registerOre("logRubber", new ItemStack(GregTechAPI.sBlockRubberLog, 1, OreDictionary.WILDCARD_VALUE));
@@ -30,12 +37,76 @@ public final class RubberTreeRegistrator {
             new ItemStack(GregTechAPI.sBlockRubberSapling, 1, OreDictionary.WILDCARD_VALUE));
 
         GameRegistry.registerFuelHandler(new RubberTreeFuelHandler());
-
-        // TODO Remove in next major version after GT rubber tree is implemented
-        MinecraftForge.EVENT_BUS.register(new RubberTreeWorldEvents());
     }
 
     public static void initItems() {
         ItemList.Sticky_Resin.set(new ItemStickyResin("item_sticky_resin", "Sticky Resin", "Sap of a Rubber Tree"));
+
+        ItemList.Tree_Tap_Wood.set(
+            new ItemRubberTreeTap(
+                "item_tree_tap_wood",
+                "Wooden Tree Tap",
+                "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
+                WOOD_TREE_TAP_DURABILITY));
+        ItemList.Tree_Tap_Bronze.set(
+            new ItemRubberTreeTap(
+                "item_tree_tap_bronze",
+                "Bronze Tree Tap",
+                "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
+                BRONZE_TREE_TAP_DURABILITY));
+        ItemList.Tree_Tap_Steel.set(
+            new ItemRubberTreeTap(
+                "item_tree_tap_steel",
+                "Steel Tree Tap",
+                "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
+                STEEL_TREE_TAP_DURABILITY));
+
+        registerTreeTapOreDictionaryEntries();
+        registerTreeTapRecipes();
+    }
+
+    private static void registerTreeTapOreDictionaryEntries() {
+        OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Wood.get(1));
+        OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Bronze.get(1));
+        OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Steel.get(1));
+    }
+
+    private static void registerTreeTapRecipes() {
+        GameRegistry.addRecipe(
+            new ShapedOreRecipe(
+                ItemList.Tree_Tap_Wood.get(1),
+                " P ",
+                "PSP",
+                " S ",
+                'P',
+                "plankWood",
+                'S',
+                "stickWood"));
+
+        GameRegistry.addRecipe(
+            new ShapedOreRecipe(
+                ItemList.Tree_Tap_Bronze.get(1),
+                " P ",
+                "PRP",
+                " S ",
+                'P',
+                "plateBronze",
+                'R',
+                "ringBronze",
+                'S',
+                "stickBronze"));
+
+        GameRegistry.addRecipe(
+            new ShapedOreRecipe(
+                ItemList.Tree_Tap_Steel.get(1),
+                " P ",
+                "PRP",
+                " S ",
+                'P',
+                "plateSteel",
+                'R',
+                "ringSteel",
+                'S',
+                "stickSteel"));
     }
 }

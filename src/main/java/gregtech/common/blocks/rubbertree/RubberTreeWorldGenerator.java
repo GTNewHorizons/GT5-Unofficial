@@ -20,7 +20,7 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
 
     @Override
     public boolean generate(World world, @NotNull Random random, int x, int y, int z) {
-        int height = 5 + random.nextInt(3);
+        int height = 6 + random.nextInt(7);
 
         if (y < 1 || y + height + 1 > 256) {
             return false;
@@ -32,10 +32,9 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
             return false;
         }
 
-        // Check necessary space
+        // Check necessary space.
         for (int yy = y; yy <= y + 1 + height; yy++) {
             int radius = 1;
-
             if (yy == y) {
                 radius = 0;
             } else if (yy >= y + height - 1) {
@@ -60,20 +59,17 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
 
         soil.onPlantGrow(world, x, y - 1, z, x, y, z);
 
-        // Leaves
+        // Leaves.
         for (int yy = y - 3 + height; yy <= y + height; yy++) {
             int layer = yy - (y + height);
             int radius = 1 - layer / 2;
 
             for (int xx = x - radius; xx <= x + radius; xx++) {
                 int dx = xx - x;
-
                 for (int zz = z - radius; zz <= z + radius; zz++) {
                     int dz = zz - z;
-
                     if (Math.abs(dx) != radius || Math.abs(dz) != radius || random.nextInt(2) != 0 && layer != 0) {
                         Block block = world.getBlock(xx, yy, zz);
-
                         if (block == null || block.isAir(world, xx, yy, zz)
                             || block.isLeaves(world, xx, yy, zz)
                             || block.canBeReplacedByLeaves(world, xx, yy, zz)) {
@@ -84,14 +80,12 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
             }
         }
 
-        // Tree log
+        // Natural logs are generated as plain blocks. A TileEntity is created only when a player installs a tap.
         for (int trunkY = 0; trunkY < height; trunkY++) {
             Block block = world.getBlock(x, y + trunkY, z);
-
             if (block == null || block.isAir(world, x, y + trunkY, z)
                 || block.isLeaves(world, x, y + trunkY, z)
                 || block.canBeReplacedByLeaves(world, x, y + trunkY, z)) {
-
                 setBlockAndNotifyAdequately(
                     world,
                     x,
@@ -101,15 +95,6 @@ public class RubberTreeWorldGenerator extends WorldGenAbstractTree {
                     BlockRubberLogNatural.META_EMPTY);
             }
         }
-
-        // Init timer for resin spawn when tree is generated
-        int refillY = y + random.nextInt(height);
-        world.scheduleBlockUpdate(
-            x,
-            refillY,
-            z,
-            GregTechAPI.sBlockRubberLogNatural,
-            RubberTreeResinLogic.nextResinDelay(random));
 
         return true;
     }

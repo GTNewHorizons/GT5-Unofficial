@@ -68,7 +68,7 @@ dependencies {
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
     compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.10:dev") { transitive = false }
+    devOnlyNonPublishable("com.github.GTNewHorizons:Backhand:1.8.10:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.16:dev") { transitive = false }
@@ -154,7 +154,7 @@ dependencies {
 
     // jvmDowngrader
     compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
-    
+
     // For building structures faster
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.35-GTNH')
 }
