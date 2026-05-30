@@ -255,20 +255,6 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mTier", mTier);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mTier")) {
-            mTier = aNBT.getByte("mTier");
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
