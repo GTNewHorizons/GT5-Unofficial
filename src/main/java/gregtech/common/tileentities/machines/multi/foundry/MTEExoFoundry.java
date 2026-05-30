@@ -83,6 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -294,11 +296,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
-        .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEExoFoundry::addCoolantInputToMachineList)
-                .casingIndex(TAE.getIndexFromPage(2, 10))
-                .hint(2)
-                .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
+        .addElement(
+            'w',
+            lazy(
+                () -> InputHatch.withAdder(MTEExoFoundry::addCoolantInputToMachineList)
+                    .newAnyOrCasing(TAE.getIndexFromPage(2, 10), 2, ModBlocks.blockCasings3Misc, 10)))
         .addShape(
             FoundryModule.HELIOCAST_REINFORCEMENT.structureID,
             transpose(
@@ -462,7 +464,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Foundry")
+        tt.addMachineType("Fluid Solidifier")
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
@@ -637,18 +639,24 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         foundryData.tier = -1;
         coolantHatches.clear();
         // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
-        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules() && casingAmount >= MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            foundryData.checkSolidifierModules(); // recalculate module flags with current tier
+            checkModules(errors);
+            int requiredCasings = MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            checkCasingMin(errors, casingAmount, requiredCasings);
+            checkHasInputHatch(errors);
+            checkHasOutputBus(errors);
+            checkHasAnyEnergy(errors);
+        } else {
+            getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }
-        getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-        return false;
     }
 
     @Override
@@ -663,17 +671,21 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private boolean checkModules() {
+    private boolean checkModules(List<StructureError> errors) {
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
             FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
                 moduleVerticalOffsets[i],
-                moduleDepthOffsets[i])) {
+                moduleDepthOffsets[i],
+                errors)) {
                 return false;
             }
-            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) return false;
+            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.exo_foundry_hypercooler_hatch"));
+                return false;
+            }
         }
         return true;
 
@@ -837,7 +849,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // GUI code
     @Override
     public int getMaxParallelRecipes() {
-        checkModules();
+        checkModules(new ArrayList<>());
         return (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 

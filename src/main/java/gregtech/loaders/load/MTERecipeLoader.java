@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
@@ -1153,7 +1154,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
-                OreDictNames.craftingIndustrialDiamond },
+                OrePrefixes.gemExquisite.get(Materials.Diamond) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -1703,6 +1704,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Industrial 3D Copying Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPrinter.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialAutoChisel });
+
         // Industrial Extruder Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialExtruder.get(1),
@@ -1752,6 +1758,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Boldarnator.get(1),
             new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
+        // Industrial Cutting Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCuttingMachine.get(1),
+            new Object[] { GregtechItemList.Industrial_CuttingFactoryController });
 
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1911,6 +1922,24 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
+
+        // Mega Vacuum Freezer -> Endothermic Fridge Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[1]))
+            .itemOutputs(ItemList.EndothermicFridge.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[0]))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
 
         // Industrial Arc Furnace Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(

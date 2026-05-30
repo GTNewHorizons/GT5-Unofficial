@@ -15,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -44,30 +45,11 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                                 : OrePrefixes.plate.get(aMaterial),
                             'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
                 }
-
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
                     .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .fluidInputs(Materials.Tin.getMolten(2 * NUGGETS))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(tPlate.copy(), tRing.copy())
-                    .circuit(4)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .fluidInputs(Materials.Lead.getMolten(3 * NUGGETS))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(tPlate.copy(), tRing.copy())
-                    .circuit(4)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .fluidInputs(Materials.SolderingAlloy.getMolten(1 * NUGGETS))
+                    .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
                     .addTo(assemblerRecipes);

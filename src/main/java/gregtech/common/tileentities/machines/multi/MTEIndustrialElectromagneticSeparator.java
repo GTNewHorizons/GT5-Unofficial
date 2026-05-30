@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -35,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -50,6 +52,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -139,7 +143,7 @@ public class MTEIndustrialElectromagneticSeparator
             'E',
             buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
-                .hatchClass(MTEHatchMagnet.class)
+                .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
                 .build())
@@ -212,7 +216,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
+            .addCasingInfoMin("MagTech Casing", MIN_CASING, false)
             .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart(
@@ -246,24 +250,23 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mMagHatch = null;
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0)) return false;
-        if (mCasingAmount < MIN_CASING) return false;
-        if (mMagHatch == null) return false;
-
-        // If there are exotic hatches, ensure there is only 1.
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, MIN_CASING);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        } else {
+            checkHasEnergyHatch(errors);
         }
-
-        // All checks passed!
-        return true;
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

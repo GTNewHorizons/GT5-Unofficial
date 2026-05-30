@@ -130,6 +130,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
@@ -302,26 +304,35 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         mCasing = 0;
         glassTier = -1;
         isCheckingDirtWater = false;
         if (debug) glassTier = 8;
 
-        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0)) return false;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
+        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
+        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) return;
 
-        if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-
-        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
-
-        if (valid) {
-            this.updateSeedLimits();
-            isCheckingDirtWater = true;
+        if (this.glassTier < 8) {
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+                if (this.glassTier < hatchEnergy.mTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
+                    break;
+                }
+            }
         }
 
-        return valid;
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasing, 70);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
+
+        if (!errors.isEmpty()) return;
+
+        this.updateSeedLimits();
+        isCheckingDirtWater = true;
     }
 
     @Override
@@ -383,16 +394,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         tt.beginStructureBlock(7, 7, 9, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Sterile Farm Casing", 70, false)
-            .addStructureInfo("Tiered glass")
+            .addStructureInfo("Tiered Glass")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")

@@ -4,12 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
@@ -255,7 +256,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Boiler")
+        tt.addMachineType("Heat Exchanger")
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
@@ -274,7 +275,6 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addInputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addOutputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
             .addMaintenanceHatch("Any Thermal Containment Casing", 1)
-            .addMufflerHatch("Any Thermal Containment Casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "ArsinXArscosX")
             .toolTipFinisher();
         return tt;
@@ -351,7 +351,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                                 Casings.ThermalProcessingCasing.asElement())))
                 .addElement(
                     'F',
-                    buildHatchAdder(MTEThermalBoiler.class).atLeast(Maintenance, Muffler)
+                    buildHatchAdder(MTEThermalBoiler.class).atLeast(Maintenance)
                         .casingIndex(Casings.ThermalContainmentCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -384,19 +384,22 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmountThermalContainment = 0;
         casingAmountThermalProcessing = 0;
         casingAmountRobust = 0;
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmountRobust >= 10
-            && casingAmountThermalProcessing >= 10
-            && casingAmountThermalContainment >= 20
-            && checkHatch();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmountRobust, 10);
+        checkCasingMin(errors, casingAmountThermalProcessing, 10);
+        checkCasingMin(errors, casingAmountThermalContainment, 20);
+        checkHatch(errors);
     }
 
-    public boolean checkHatch() {
-        return mMufflerHatches.size() == 1 && mInputHatches.size() >= 1 && mOutputHatches.size() >= 1;
+    public void checkHatch(List<StructureError> errors) {
+        checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

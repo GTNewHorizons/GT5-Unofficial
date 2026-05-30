@@ -63,6 +63,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -539,7 +543,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addInfo(getTierInfoTextFormatted(3, "Ultimate Static Machine Casing", 700, 2500000))
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
-            .addCasingInfoRange("Tiered Casings", 30, 46, false)
+            .addCasingInfoRange("Tiered Casing", 30, 46, false)
             .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
             .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
             .addInputBus("Any Tiered Casing", 1)
@@ -553,18 +557,24 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         structureTier = -1;
         sensorHatches.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (mCasing < 30 || structureTier < 1) return false;
-        if (mMaintenanceHatches.size() != 1) return false;
-        if (getBaseMetaTileEntity() == null) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (structureTier < 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
+        checkCasingMin(errors, mCasing, 30);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
         updateResidueCapacity();
-        return true;
     }
 
     public void updateHatchTexture() {

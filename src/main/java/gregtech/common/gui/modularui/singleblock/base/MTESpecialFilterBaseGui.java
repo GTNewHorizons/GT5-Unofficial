@@ -10,13 +10,14 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import xyz.wagyourtail.jvmdg.util.Pair;
 
 public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extends MTEFilterBaseGui<T> {
@@ -33,13 +34,12 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
             .coverChildren()
-            .childPadding(1)
-            .horizontalCenter();
+            .childPadding(1);
 
         // white arrow shaft
         mainRow.child(
             new Rectangle().asWidget()
-                .size(28, 6));
+                .size(26, 6));
 
         // filter slot
         mainRow.child(createFilterSlot(panel, syncManager));
@@ -51,30 +51,20 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
 
         // buffer grid
         mainRow.child(
-            new Grid().coverChildren()
-                .gridOfWidthHeight(
-                    3,
-                    3,
-                    ($x, $y, index) -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv"))));
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
+                .build());
 
         // red arrow
         mainRow.child(
             GTGuiTextures.PICTURE_ARROW_24_RED.asWidget()
-                .size(19, 24));
+                .size(17, 24));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     protected ItemSlot createFilterSlot(ModularPanel panel, PanelSyncManager syncManager) {
         ItemSlot itemSlot = createFilterSlotBase(panel, syncManager)
-            .slot(new ModularSlot(machine.inventoryHandler, MTEFilterBase.FILTER_SLOT_INDEX) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            });
+            .slot(new ModularSlot(machine.inventoryHandler, MTEFilterBase.FILTER_SLOT_INDEX));
 
         itemSlot.tooltipDynamic(t -> t.addStringLines(getEmptyFilterSlotTooltip(panel, syncManager)))
             .background(GTGuiTextures.BUTTON_STANDARD);
@@ -102,8 +92,8 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
         buttons.add(
             new Pair<>(
                 supportsAllowNBT(),
-                () -> createButton(
-                    new BooleanSyncValue(machine::isAllowNbt, machine::setAllowNbt),
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
+                    new BooleanSyncValue(machine::isAllowNbt, machine::setAllowNbt).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_NBT,
                     configureTooltip("GT5U.machines.allow_nbt.tooltip"))));
 

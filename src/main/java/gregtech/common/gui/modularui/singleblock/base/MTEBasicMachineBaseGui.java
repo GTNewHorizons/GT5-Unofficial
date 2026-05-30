@@ -3,10 +3,13 @@ package gregtech.common.gui.modularui.singleblock.base;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -14,9 +17,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -28,6 +31,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
+import it.unimi.dsi.fastutil.chars.CharList;
 
 public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
 
@@ -51,55 +55,35 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
         super.registerSyncValues(syncManager);
         BooleanSyncValue itemSync = new BooleanSyncValue(
             () -> machine.mItemTransfer,
-            value -> machine.mItemTransfer = value);
+            value -> machine.mItemTransfer = value).allowC2S();
         BooleanSyncValue fluidSync = new BooleanSyncValue(
             () -> machine.mFluidTransfer,
-            value -> machine.mFluidTransfer = value);
+            value -> machine.mFluidTransfer = value).allowC2S();
         syncManager.syncValue("itemAutoOutput", itemSync);
         syncManager.syncValue("fluidAutoOutput", fluidSync);
 
-    }
-
-    @Override
-    protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentHolderRow(panel, syncManager).paddingBottom(4);
+        syncManager.registerSlotGroup("item_inv", 1 + ((properties.maxItemInputs - 1) / 3));
     }
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentSection(panel, syncManager).child(
-            createChargerSlot().bottomRel(0)
-                .horizontalCenter())
-            .child(
-                createItemRecipeArea().horizontalCenter()
-                    .topRel(0.2f));
+        return super.createContentSection(panel, syncManager).child(createItemRecipeArea());
     }
 
     protected Flow createItemRecipeArea() {
-
         return Flow.row()
-            .width(18 * 8 + properties.progressBarWidthMUI2)
-            .paddingLeft(10)
-            .coverChildrenHeight()
-            .child(
-                new ParentWidget<>().size(18 * 3)
-                    .marginRight(9)
-                    .child(
-                        createItemInputSlots().verticalCenter()
-                            .rightRel(0)))
-            .child(
-                createProgressBar().tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .marginRight(7))
-            .child(
-                new ParentWidget<>().size(18 * 3)
-                    .child(
-                        createItemOutputSlots().verticalCenter()
-                            .leftRel(0)));
+            .coverChildren()
+            .horizontalCenter()
+            .childPadding((2 * SLOT_SIZE - properties.progressBarWidthMUI2) / 2)
+            .mainAxisAlignment(Alignment.MainAxis.CENTER)
+            .child(createItemInputSlots())
+            .child(createProgressBar())
+            .child(createItemOutputSlots());
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = super.createLeftCornerFlow(panel, syncManager);
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow cornerFlow = super.createBottomLeftCornerFlow(panel, syncManager);
         if (machine.isSteampowered()) return cornerFlow;
 
         return cornerFlow
@@ -118,28 +102,23 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
     }
 
     @Override
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager).paddingBottom(0)
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomRightCornerFlow(panel, syncManager)
             .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
             .childIf(properties.maxFluidOutputs > 0, this::createFluidOutputSlot);
-        // the fluid output slot is positioned under the first item output slot, which is 1.5 slots over in the gui.
-    }
-
-    protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
-        return new ToggleButton().size(18)
-            .syncHandler(syncKey)
-            .overlay(overlay)
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)));
-    }
-
-    private boolean shouldIncreaseGuiHeight() {
-        return properties.maxItemInputs > 6 || properties.maxItemOutputs > 6;
+        // the fluid output slot is positioned under the first item output slot, which is 0.5 slots over in the gui.
     }
 
     @Override
-    protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + (9 * (this.shouldIncreaseGuiHeight() ? 1 : 0));
+    protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
+    }
+
+    protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
+        return new ToggleButton().syncHandler(syncKey)
+            .overlay(overlay)
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)));
     }
 
     @Override
@@ -157,10 +136,9 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                 new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex())
                     .changeListener(
                         (newItem, onlyAmountChanged, client, init) -> {
-                            if (!client && !init) machine.getBaseMetaTileEntity()
-                                .markInventoryBeenModified();
+                            if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
                         })
-                    .slotGroup("item_inv"))
+                    .singletonSlotGroup(1000))
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
@@ -175,7 +153,8 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
             .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
             .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)
-            .direction(properties.progressBarDirectionMUI2);
+            .direction(properties.progressBarDirectionMUI2)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private String createTooltipForProgressBar() {
@@ -184,27 +163,26 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
         return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 
-    protected SlotGroupWidget createItemInputSlots() {
-        String[] matrix = mapInSlotsToMatrix();
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                'a',
-                i -> IDrawable.NONE.asWidget()
-                    .size(18))
-            .key(
-                'c',
-                i -> new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, false, false))
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
-                            .changeListener(
-                                (newItem, onlyAmountChanged, client, init) -> {
-                                    if (!client && !init) machine.getBaseMetaTileEntity()
-                                        .markInventoryBeenModified();
-                                })
-                            .singletonSlotGroup(50 + i)))
-            .build();
+    protected ParentWidget<?> createItemInputSlots() {
+        return new ParentWidget<>().size(3 * SLOT_SIZE)
+            .child(
+                new Grid().coverChildren()
+                    .gridOfElements(
+                        mapInSlotsToMatrix(),
+                        ($x, $y, i,
+                            key) -> key == 'c'
+                                ? new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, false, false))
+                                    .slot(
+                                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
+                                            .changeListener(
+                                                (newItem, onlyAmountChanged, client, init) -> {
+                                                    if (!client && !init)
+                                                        baseMetaTileEntity.markInventoryBeenModified();
+                                                })
+                                            .slotGroup("item_inv"))
+                                : null)
+                    .verticalCenter()
+                    .rightRel(0));
     }
 
     protected FluidSlot createFluidInputSlot() {
@@ -216,33 +194,31 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                     super.onValueChanged();
                     if (this.getSyncManager()
                         .isClient()) return;
-                    machine.getBaseMetaTileEntity()
-                        .markInventoryBeenModified();
+                    baseMetaTileEntity.markInventoryBeenModified();
                 }
-
             });
     }
 
-    protected SlotGroupWidget createItemOutputSlots() {
-        String[] matrix = mapOutSlotsToMatrix();
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                'a',
-                i -> IDrawable.NONE.asWidget()
-                    .size(18))
-            .key(
-                'c',
-                i -> new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
-                            .changeListener(
-                                (newItem, onlyAmountChanged, client, init) -> {
-                                    if (!client && !init) machine.getBaseMetaTileEntity()
-                                        .markInventoryBeenModified();
-                                })
-                            .accessibility(false, true)))
-            .build();
+    protected ParentWidget<?> createItemOutputSlots() {
+        return new ParentWidget<>().size(3 * SLOT_SIZE)
+            .child(
+                new Grid().coverChildren()
+                    .gridOfElements(
+                        mapOutSlotsToMatrix(),
+                        ($x, $y, i,
+                            key) -> key == 'c'
+                                ? new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
+                                    .slot(
+                                        new ModularSlot(machine.inventoryHandler, machine.getOutputSlot() + i)
+                                            .changeListener(
+                                                (newItem, onlyAmountChanged, client, init) -> {
+                                                    if (!client && !init)
+                                                        baseMetaTileEntity.markInventoryBeenModified();
+                                                })
+                                            .accessibility(false, true))
+                                : null)
+                    .verticalCenter()
+                    .leftRel(0));
     }
 
     protected FluidSlot createFluidOutputSlot() {
@@ -254,34 +230,27 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                     super.onValueChanged();
                     if (this.getSyncManager()
                         .isClient()) return;
-                    machine.getBaseMetaTileEntity()
-                        .markInventoryBeenModified();
+                    baseMetaTileEntity.markInventoryBeenModified();
                 }
 
             }.canFillSlot(false));
     }
 
-    protected String[] mapInSlotsToMatrix() {
+    protected List<CharList> mapInSlotsToMatrix() {
         int slots = properties.maxItemInputs;
         String[] matrix = new String[1 + ((slots - 1) / 3)];
 
-        Arrays.fill(matrix, "aaa");
+        Arrays.fill(matrix, "");
         switch (slots) {
-            case 1 -> {
-                matrix[0] = "aac";
-            }
-            case 2 -> {
-                matrix[0] = "acc";
-            }
-            case 3 -> {
-                matrix[0] = "ccc";
-            }
+            case 1 -> matrix[0] = "c";
+            case 2 -> matrix[0] = "cc";
+            case 3 -> matrix[0] = "ccc";
             case 4 -> {
-                matrix[0] = "acc";
-                matrix[1] = "acc";
+                matrix[0] = "cc";
+                matrix[1] = "cc";
             }
             case 5 -> {
-                matrix[0] = "acc";
+                matrix[0] = " cc";
                 matrix[1] = "ccc";
             }
             case 6 -> {
@@ -291,12 +260,12 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             case 7 -> {
                 matrix[0] = "ccc";
                 matrix[1] = "ccc";
-                matrix[2] = "aac";
+                matrix[2] = "  c";
             }
             case 8 -> {
                 matrix[0] = "ccc";
                 matrix[1] = "ccc";
-                matrix[2] = "acc";
+                matrix[2] = " cc";
             }
             case 9 -> {
                 matrix[0] = "ccc";
@@ -304,33 +273,30 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                 matrix[2] = "ccc";
             }
         }
-        return matrix;
 
+        return Arrays.stream(matrix)
+            .map(String::toCharArray)
+            .map(CharList::of)
+            .collect(Collectors.toList());
     }
 
-    protected String[] mapOutSlotsToMatrix() {
+    protected List<CharList> mapOutSlotsToMatrix() {
         int slots = properties.maxItemOutputs;
 
         String[] matrix = new String[1 + ((slots - 1) / 3)];
 
-        Arrays.fill(matrix, "aaa");
+        Arrays.fill(matrix, "");
         switch (slots) {
-            case 1 -> {
-                matrix[0] = "caa";
-            }
-            case 2 -> {
-                matrix[0] = "cca";
-            }
-            case 3 -> {
-                matrix[0] = "ccc";
-            }
+            case 1 -> matrix[0] = "c";
+            case 2 -> matrix[0] = "cc";
+            case 3 -> matrix[0] = "ccc";
             case 4 -> {
-                matrix[0] = "cca";
-                matrix[1] = "cca";
+                matrix[0] = "cc";
+                matrix[1] = "cc";
             }
             case 5 -> {
                 matrix[0] = "ccc";
-                matrix[1] = "cca";
+                matrix[1] = "cc ";
             }
             case 6 -> {
                 matrix[0] = "ccc";
@@ -339,12 +305,12 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             case 7 -> {
                 matrix[0] = "ccc";
                 matrix[1] = "ccc";
-                matrix[2] = "caa";
+                matrix[2] = "c  ";
             }
             case 8 -> {
                 matrix[0] = "ccc";
                 matrix[1] = "ccc";
-                matrix[2] = "cca";
+                matrix[2] = "cc ";
             }
             case 9 -> {
                 matrix[0] = "ccc";
@@ -352,8 +318,10 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                 matrix[2] = "ccc";
             }
         }
-        return matrix;
-
+        return Arrays.stream(matrix)
+            .map(String::toCharArray)
+            .map(CharList::of)
+            .collect(Collectors.toList());
     }
 
     @Override

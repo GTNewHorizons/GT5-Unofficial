@@ -13,8 +13,8 @@ import gregtech.api.enums.SubTag;
 
 public class SubstituteFluidStack {
 
-    public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-        Materials.Tin };
+    public static final Materials[] solderingMats = new Materials[] { Materials.SolderingAlloy, Materials.Tin,
+        Materials.Lead };
     public final List<FluidStack> fluidStacks;
 
     /**

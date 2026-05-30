@@ -14,6 +14,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -42,6 +43,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -92,7 +94,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                 buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
                     .hint(1)
                     .casingIndex(CASING_INDEX)
-                    .buildAndChain(sBlockCasings4, 1),
+                    .buildAndChain(ofBlock(sBlockCasings4, 1)),
                 ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
         .build();
     // endregion
@@ -135,8 +137,12 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 2, 2, 0);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 2, 2, 0, errors)) return;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -255,10 +261,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                                                                                                         // Stainless
                                                                                                         // Steel
             // Casing (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
-                translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                2) // Output Bus: Any outer casing on the bottom layer
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Output Bus: Any outer
+                                                                                              // casing on the bottom
+                                                                                              // layer
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
                                                                                                 // outer casing on
                                                                                                 // the bottom layer
@@ -319,7 +324,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override

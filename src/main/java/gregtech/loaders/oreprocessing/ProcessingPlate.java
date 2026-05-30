@@ -38,6 +38,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
@@ -199,7 +200,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(10L))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
 
@@ -248,7 +249,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(20L))
                 .duration(4 * SECONDS + 16 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
 
@@ -299,7 +300,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(30L))
                 .duration(6 * SECONDS + 8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
         if (!aNoSmashing) {
@@ -337,7 +338,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .fluidInputs(Materials.Glue.getFluid(40L))
                 .duration(8 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
         if (!aNoSmashing) {
@@ -441,26 +442,21 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
                 .fluidInputs(
-                    Materials.Water.getFluid(
-                        Math.max(
-                            4,
-                            Math.min(
-                                1000,
-                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 320))))
-                .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                .eut(calculateRecipeEU(aMaterial, 16))
-                .addTo(cutterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
-                .fluidInputs(
-                    GTModHandler.getDistilledWater(
-                        Math.max(
-                            3,
-                            Math.min(
-                                750,
-                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 426))))
+                    new SubstituteFluidStack(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 320))),
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
+                                        / 426)))))
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
@@ -505,7 +501,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, aStack))
                     .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
                     .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(8)
+                    .eut(TierEU.RECIPE_ULV)
                     .addTo(assemblerRecipes);
 
                 GTValues.RA.stdBuilder()
