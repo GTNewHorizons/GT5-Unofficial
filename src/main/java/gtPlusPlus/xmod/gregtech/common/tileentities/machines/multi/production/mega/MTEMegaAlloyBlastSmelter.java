@@ -238,13 +238,13 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             }
         }
         if (errors.isEmpty()) {
-            calculateSpeedBonus(coilLevel, glassTier);
+            calculateSpeedBonus(coilLevel);
         }
     }
 
-    private void calculateSpeedBonus(HeatingCoilLevel lvl, int glassTier) {
-        int bonusTier = lvl != null ? Math.min(lvl.getTier() - 3, glassTier - 2) : 0;
-        if (bonusTier < 0) {
+    private void calculateSpeedBonus(HeatingCoilLevel lvl) {
+        int bonusTier = lvl != null ? lvl.getTier() - 3 : 0;
+        if (bonusTier <= 0) {
             speedBonus = 1;
             return;
         }
