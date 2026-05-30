@@ -987,7 +987,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.CasingNaquadahReinforcedDistillation.get(8),
                 ItemList.Electric_Pump_LuV.get(4),
                 ItemList.FluidRegulator_LuV.get(4),
-                ItemList.DistilleryLuV.get(2),
+                ItemList.Machine_IV_Distillery.get(2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
             .fluidInputs(
                 Materials.Lubricant.getFluid(16_000),

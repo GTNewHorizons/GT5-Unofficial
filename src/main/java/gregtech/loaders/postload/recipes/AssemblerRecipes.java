@@ -3379,7 +3379,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Casing_CleanStainlessSteel.get(4),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 4),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1))
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 1 })
             .fluidInputs(Materials.SolderingAlloy.getMolten(16 * INGOTS))
             .itemOutputs(ItemList.CasingNaquadahReinforcedDistillation.get(4))
             .duration(2 * SECONDS)
