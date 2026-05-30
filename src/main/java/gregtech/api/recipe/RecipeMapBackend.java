@@ -652,15 +652,6 @@ public class RecipeMapBackend {
             .collect(Collectors.joining("\n    ", "[\n    ", "\n]"));
     }
 
-    private static boolean containsIdentity(List<GTRecipe> recipes, GTRecipe target) {
-        for (GTRecipe recipe : recipes) {
-            if (recipe == target) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static final class RecipeLookupValidationTarget {
 
         private final String mapName;
@@ -676,6 +667,9 @@ public class RecipeMapBackend {
 
         private static final int RECIPE_PROGRESS_INTERVAL = 100;
         private static final long PROGRESS_LOG_INTERVAL_NANOS = 5_000_000_000L;
+        private static final int LOOKUP_MATCH_SAMPLE_LIMIT = 16;
+        private static final int LOOKUP_CANDIDATE_SCAN_LIMIT = Math
+            .max(1, Integer.getInteger("gt.recipe.lookup.validate.max_candidates", 4096));
 
         private final List<RecipeLookupValidationTarget> targets;
         private final List<String> issues = new ArrayList<>();
@@ -768,10 +762,10 @@ public class RecipeMapBackend {
                 }
                 return;
             }
-            List<GTRecipe> trieMatches = null;
+            ValidationLookupResult trieMatches = null;
 
             try {
-                trieMatches = trieMatches(backend, items, fluids, specialSlot);
+                trieMatches = trieMatches(backend, recipe, items, fluids, specialSlot);
             } catch (RuntimeException e) {
                 addError(target, recipe, "running trie lookup", e);
             }
@@ -780,7 +774,7 @@ public class RecipeMapBackend {
                 return;
             }
 
-            if (!containsIdentity(trieMatches, recipe)) {
+            if (!trieMatches.foundQueryRecipe) {
                 addMissingQueryRecipe(target, recipe, trieMatches);
             }
         }
@@ -883,12 +877,57 @@ public class RecipeMapBackend {
             return false;
         }
 
-        private List<GTRecipe> trieMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
-            @Nullable ItemStack specialSlot) {
-            return backend.lookupCandidateStream(items, fluids)
-                .filter(distinctByIdentity())
-                .filter(recipe -> backend.filterFindRecipe(recipe, items, fluids, specialSlot, false))
-                .collect(Collectors.toList());
+        private ValidationLookupResult trieMatches(RecipeMapBackend backend, GTRecipe queryRecipe, ItemStack[] items,
+            FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+            Iterator<GTRecipe> candidates = backend.lookupCandidateStream(items, fluids)
+                .iterator();
+            Predicate<GTRecipe> distinct = distinctByIdentity();
+            List<GTRecipe> sampleMatches = new ArrayList<>(LOOKUP_MATCH_SAMPLE_LIMIT);
+            List<GTRecipe> sampleRejectedCandidates = new ArrayList<>(LOOKUP_MATCH_SAMPLE_LIMIT);
+            int rawCandidates = 0;
+            int filteredMatches = 0;
+            while (candidates.hasNext()) {
+                GTRecipe candidate = candidates.next();
+                rawCandidates++;
+                if (!distinct.test(candidate)) {
+                    continue;
+                }
+                if (!backend.filterFindRecipe(candidate, items, fluids, specialSlot, false)) {
+                    if (sampleRejectedCandidates.size() < LOOKUP_MATCH_SAMPLE_LIMIT) {
+                        sampleRejectedCandidates.add(candidate);
+                    }
+                } else {
+                    filteredMatches++;
+                    if (sampleMatches.size() < LOOKUP_MATCH_SAMPLE_LIMIT) {
+                        sampleMatches.add(candidate);
+                    }
+                    if (candidate == queryRecipe) {
+                        return new ValidationLookupResult(
+                            true,
+                            sampleMatches,
+                            sampleRejectedCandidates,
+                            rawCandidates,
+                            filteredMatches,
+                            false);
+                    }
+                }
+                if (rawCandidates >= LOOKUP_CANDIDATE_SCAN_LIMIT) {
+                    return new ValidationLookupResult(
+                        false,
+                        sampleMatches,
+                        sampleRejectedCandidates,
+                        rawCandidates,
+                        filteredMatches,
+                        true);
+                }
+            }
+            return new ValidationLookupResult(
+                false,
+                sampleMatches,
+                sampleRejectedCandidates,
+                rawCandidates,
+                filteredMatches,
+                false);
         }
 
         private void addPreLookupRejectedRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
@@ -923,7 +962,7 @@ public class RecipeMapBackend {
         }
 
         private void addMissingQueryRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
-            List<GTRecipe> trieMatches) {
+            ValidationLookupResult trieMatches) {
             StringBuilder issue = new StringBuilder();
             issue.append("map=")
                 .append(target.mapName)
@@ -932,7 +971,23 @@ public class RecipeMapBackend {
                 .append(describeRecipeForValidation(queryRecipe));
             issue.append('\n')
                 .append("lookupMatches=")
-                .append(trieMatches.isEmpty() ? "[]" : describeRecipeListForValidation(trieMatches));
+                .append(
+                    trieMatches.sampleMatches.isEmpty() ? "[]"
+                        : describeRecipeListForValidation(trieMatches.sampleMatches));
+            issue.append('\n')
+                .append("lookupRejectedCandidates=")
+                .append(
+                    trieMatches.sampleRejectedCandidates.isEmpty() ? "[]"
+                        : describeRecipeListForValidation(trieMatches.sampleRejectedCandidates));
+            issue.append('\n')
+                .append("lookupCandidateScan=")
+                .append(trieMatches.truncated ? "truncated" : "exhausted")
+                .append(", rawCandidates=")
+                .append(trieMatches.rawCandidates)
+                .append(", filteredMatches=")
+                .append(trieMatches.filteredMatches)
+                .append(", max=")
+                .append(LOOKUP_CANDIDATE_SCAN_LIMIT);
             issues.add(issue.toString());
         }
 
@@ -1050,6 +1105,26 @@ public class RecipeMapBackend {
 
         private int totalIssueCount() {
             return issues.size() + unresolvedOreDictIssues.size();
+        }
+
+        private static final class ValidationLookupResult {
+
+            private final boolean foundQueryRecipe;
+            private final List<GTRecipe> sampleMatches;
+            private final List<GTRecipe> sampleRejectedCandidates;
+            private final int rawCandidates;
+            private final int filteredMatches;
+            private final boolean truncated;
+
+            private ValidationLookupResult(boolean foundQueryRecipe, List<GTRecipe> sampleMatches,
+                List<GTRecipe> sampleRejectedCandidates, int rawCandidates, int filteredMatches, boolean truncated) {
+                this.foundQueryRecipe = foundQueryRecipe;
+                this.sampleMatches = sampleMatches;
+                this.sampleRejectedCandidates = sampleRejectedCandidates;
+                this.rawCandidates = rawCandidates;
+                this.filteredMatches = filteredMatches;
+                this.truncated = truncated;
+            }
         }
 
         private String estimateEta(long elapsedNanos) {

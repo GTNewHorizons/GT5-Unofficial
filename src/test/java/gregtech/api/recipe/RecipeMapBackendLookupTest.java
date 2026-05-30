@@ -281,6 +281,46 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
+    void lookupVerifierStopsCandidateScanAfterFindingQueryRecipe() {
+        ensureMinecraftStackComparisonItem();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            item("lookup.validation.short_circuit.input"),
+            item("lookup.validation.short_circuit.output"),
+            category);
+        ThrowingAfterFirstCandidateBackend backend = new ThrowingAfterFirstCandidateBackend(recipe);
+        backend.compileRecipe(recipe);
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.short_circuit", backend));
+    }
+
+    @Test
+    void lookupVerifierReportsRawCandidatesRejectedByFilter() {
+        ensureMinecraftStackComparisonItem();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            item("lookup.validation.filter_reject.input"),
+            item("lookup.validation.filter_reject.output"),
+            category);
+        FilterRejectingLookupBackend backend = new FilterRejectingLookupBackend(recipe);
+        backend.compileRecipe(recipe);
+
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.filter_reject", backend));
+
+        assertTrue(
+            error.getMessage()
+                .contains("rawCandidates=1"));
+        assertTrue(
+            error.getMessage()
+                .contains("filteredMatches=0"));
+        assertTrue(
+            error.getMessage()
+                .contains("lookupRejectedCandidates="));
+    }
+
+    @Test
     void lookupVerifierDoesNotNeedContainsIndexCandidates() {
         NoContainsIndexBackend backend = new NoContainsIndexBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -795,6 +835,62 @@ class RecipeMapBackendLookupTest {
         protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.empty();
+        }
+    }
+
+    private static final class ThrowingAfterFirstCandidateBackend extends RecipeMapBackend {
+
+        private final GTRecipe recipe;
+
+        private ThrowingAfterFirstCandidateBackend(GTRecipe recipe) {
+            super(new RecipeMapBackendPropertiesBuilder());
+            this.recipe = recipe;
+        }
+
+        @Override
+        protected GTRecipe addToItemMap(GTRecipe recipe) {
+            return recipe;
+        }
+
+        @Override
+        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+            return true;
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            return Stream.concat(
+                Stream.of(recipe),
+                Stream.generate(() -> { throw new IllegalStateException("validator exhausted candidate stream"); }));
+        }
+    }
+
+    private static final class FilterRejectingLookupBackend extends RecipeMapBackend {
+
+        private final GTRecipe recipe;
+
+        private FilterRejectingLookupBackend(GTRecipe recipe) {
+            super(new RecipeMapBackendPropertiesBuilder());
+            this.recipe = recipe;
+        }
+
+        @Override
+        protected GTRecipe addToItemMap(GTRecipe recipe) {
+            return recipe;
+        }
+
+        @Override
+        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+            return false;
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            return Stream.of(recipe);
         }
     }
 }
