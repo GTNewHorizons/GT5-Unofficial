@@ -206,8 +206,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addMaintenanceHatch(addHintNumber(1))
             .addInputHatch(addHintNumber(2))
             .addOutputHatch(addHintNumber(2))
-            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(3))
-            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addOtherStructurePart("Beam Input Hatch", addHintNumber(3))
+            .addOtherStructurePart("Beam Output Hatch", addHintNumber(4))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         //spotless:on
