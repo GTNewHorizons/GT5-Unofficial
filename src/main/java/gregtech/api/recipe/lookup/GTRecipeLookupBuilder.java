@@ -127,10 +127,6 @@ public final class GTRecipeLookupBuilder {
         return ingredients;
     }
 
-    public static List<List<GTRecipeLookupIngredient>> flattenForValidation(GTRecipe recipe) {
-        return flatten(recipe);
-    }
-
     private static void flattenItemInputs(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
         ItemStack[] inputs = recipe.mInputs;
         if (inputs == null) {
