@@ -85,17 +85,20 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "EEE",
                 "EDE",
                 "   ",
+                "   ",
                 "ECE",
                 "E~E"
             },{
                 "BBB",
                 "BAB",
                 "   ",
+                "   ",
                 "BAB",
                 "BBB"
             },{
                 "BBB",
                 "BAB",
+                "   ",
                 "   ",
                 "BAB",
                 "BBB"
@@ -104,8 +107,10 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "BAB",
                 "BAB",
                 "BAB",
+                "BAB",
                 "BBB"
             },{
+                "BBB",
                 "BBB",
                 "BBB",
                 "BBB",
@@ -190,11 +195,11 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .beginStructureBlock(3, 5, 5, false)
             .addController(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 31, 47, false)
+            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 31, 52, false)
             .addCasingInfoRange(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
                 5,
-                7,
+                8,
                 true)
             .addCasingInfoExactly(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
