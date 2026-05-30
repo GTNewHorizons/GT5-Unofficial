@@ -18,12 +18,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +34,10 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
@@ -226,7 +231,7 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierAggregatesEveryIndexedTrieMissBeforeThrowing() {
+    void lookupVerifierAggregatesEveryMissingRecipeBeforeThrowing() {
         ensureMinecraftStackComparisonItem();
         String mapName = "gt.recipe.lookup.test.validation.missing";
         MissingLookupBackend backend = new MissingLookupBackend();
@@ -258,13 +263,64 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierIgnoresRecipesMissingFromIndexedLookup() {
-        EmptyLookupBackend backend = new EmptyLookupBackend();
+    void lookupVerifierDoesNotNeedContainsIndexCandidates() {
+        NoContainsIndexBackend backend = new NoContainsIndexBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         backend.compileRecipe(
             recipe(item("lookup.validation.unindexed.input"), item("lookup.validation.unindexed.output"), category));
 
         assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.unindexed", backend));
+    }
+
+    @Test
+    void lookupVerifierDoesNotRequireCrossUnificationMatches() {
+        ensureMinecraftStackComparisonItem();
+        NoOreDictLookupBackend backend = new NoOreDictLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        Item representativeItem = item("lookup.validation.cross_unification.representative");
+        Item equivalentItem = item("lookup.validation.cross_unification.equivalent");
+        Item circuitItem = item("lookup.validation.cross_unification.circuit");
+        ItemStack representative = new ItemStack(representativeItem, 1, 0);
+        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
+        String unificationName = circuit.get(Materials.HV)
+            .toString();
+        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
+            .containsKey(unificationName);
+        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
+            .put(unificationName, representative);
+
+        try {
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.HV));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.HV));
+            GTOreDictUnificator.resetUnificationEntries();
+
+            backend.compileRecipe(
+                recipe(
+                    new ItemStack[] { representative, new ItemStack(circuitItem, 0, 11) },
+                    new FluidStack[0],
+                    item("lookup.validation.cross_unification.representative.output"),
+                    category));
+            backend.compileRecipe(
+                recipe(
+                    new ItemStack[] { equivalent, new ItemStack(circuitItem, 0, 11) },
+                    new FluidStack[0],
+                    item("lookup.validation.cross_unification.equivalent.output"),
+                    category));
+
+            assertDoesNotThrow(
+                () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.cross_unification", backend));
+        } finally {
+            if (hadPreviousTarget) {
+                GTOreDictUnificator.getName2StackMap()
+                    .put(unificationName, previousTarget);
+            } else {
+                GTOreDictUnificator.getName2StackMap()
+                    .remove(unificationName);
+            }
+            GTOreDictUnificator.removeItemData(representative);
+            GTOreDictUnificator.removeItemData(equivalent);
+            GTOreDictUnificator.resetUnificationEntries();
+        }
     }
 
     @Test
@@ -277,7 +333,7 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void runtimeItemStackKeysIncludeGtUnificationTarget() {
+    void runtimeItemStackKeysDoNotIncludeGtUnificationTarget() {
         ensureMinecraftStackComparisonItem();
         Item representativeItem = item("lookup.unified.representative");
         Item equivalentItem = item("lookup.unified.equivalent");
@@ -300,8 +356,8 @@ class RecipeMapBackendLookupTest {
 
             assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(equivalent)));
             assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(equivalent)));
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(representative)));
+            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
+            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(representative)));
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
@@ -316,11 +372,47 @@ class RecipeMapBackendLookupTest {
         }
     }
 
+    @Test
+    void lookupVerifierAcceptsNullableItemSlotMatches() {
+        ensureMinecraftStackComparisonItem();
+        RecipeMapBackend backend = new NoOreDictLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        Item material = item("lookup.validation.nullable.material");
+        Item saw = item("lookup.validation.nullable.saw");
+        Fluid water = new Fluid("lookup.validation.nullable.water");
+        GTRecipe nullableSlotRecipe = recipe(
+            new ItemStack[] { null, new ItemStack(saw, 0, 0) },
+            new FluidStack[] { fluidStack(water, 4) },
+            item("lookup.validation.nullable.output"),
+            category);
+        GTRecipe concreteRecipe = recipe(
+            new ItemStack[] { new ItemStack(material, 1, 0), new ItemStack(saw, 0, 0) },
+            new FluidStack[] { fluidStack(water, 4) },
+            item("lookup.validation.nullable.concrete.output"),
+            category);
+        backend.compileRecipe(nullableSlotRecipe);
+        backend.compileRecipe(concreteRecipe);
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.nullable", backend));
+    }
+
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
         GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
         recipe.mInputs = new ItemStack[] { new ItemStack(input, 1, 0) };
         recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
         recipe.mFluidInputs = new FluidStack[0];
+        recipe.mFluidOutputs = new FluidStack[0];
+        recipe.mEnabled = true;
+        recipe.mCanBeBuffered = true;
+        recipe.setRecipeCategory(category);
+        return recipe;
+    }
+
+    private static GTRecipe recipe(ItemStack[] inputs, FluidStack[] fluidInputs, Item output, RecipeCategory category) {
+        GTRecipe recipe = allocate(GT_RECIPE_CONSTRUCTOR);
+        recipe.mInputs = inputs;
+        recipe.mOutputs = new ItemStack[] { new ItemStack(output, 1, 0) };
+        recipe.mFluidInputs = fluidInputs;
         recipe.mFluidOutputs = new FluidStack[0];
         recipe.mEnabled = true;
         recipe.mCanBeBuffered = true;
@@ -409,6 +501,75 @@ class RecipeMapBackendLookupTest {
         }
     }
 
+    private static FluidStack fluidStack(Fluid fluid, int amount) {
+        try {
+            FluidStack stack = (FluidStack) UNSAFE.allocateInstance(FluidStack.class);
+            Field fluidField = FluidStack.class.getDeclaredField("fluid");
+            Field fluidDelegateField = FluidStack.class.getDeclaredField("fluidDelegate");
+            Field amountField = FluidStack.class.getDeclaredField("amount");
+            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidField), fluid);
+            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidDelegateField), new RegistryDelegate<Fluid>() {
+
+                @Override
+                public Fluid get() {
+                    return fluid;
+                }
+
+                @Override
+                public String name() {
+                    return fluid.getName();
+                }
+
+                @Override
+                public Class<Fluid> type() {
+                    return Fluid.class;
+                }
+            });
+            UNSAFE.putInt(stack, UNSAFE.objectFieldOffset(amountField), amount);
+            return stack;
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static class NoOreDictLookupBackend extends RecipeMapBackend {
+
+        private NoOreDictLookupBackend() {
+            super(new RecipeMapBackendPropertiesBuilder());
+        }
+
+        @Override
+        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids) {
+            List<List<GTRecipeLookupIngredient>> ingredients = new ArrayList<>();
+
+            for (ItemStack item : items) {
+                if (item == null) continue;
+
+                List<GTRecipeLookupIngredient> group = new ArrayList<>();
+                RecipeMapBackend.addRuntimeItemStackLookupIngredients(group, item);
+                if (!group.isEmpty()) {
+                    ingredients.add(group);
+                }
+            }
+
+            for (FluidStack fluid : fluids) {
+                if (fluid == null || fluid.getFluid() == null) continue;
+
+                List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
+                group.add(new GTFluidLookupIngredient(fluid));
+                ingredients.add(group);
+            }
+
+            if (ingredients.isEmpty()) {
+                return Stream.empty();
+            }
+
+            Iterator<GTRecipe> iterator = recipeLookup(this).iterator(ingredients);
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
+        }
+    }
+
     private static final class ReversedCandidateBackend extends RecipeMapBackend {
 
         private final GTRecipe[] candidates;
@@ -465,10 +626,10 @@ class RecipeMapBackendLookupTest {
         }
     }
 
-    private static class NoContainsIndexBackend extends RecipeMapBackend {
+    private static final class NoContainsIndexBackend extends NoOreDictLookupBackend {
 
         private NoContainsIndexBackend() {
-            super(new RecipeMapBackendPropertiesBuilder());
+            super();
         }
 
         @Override

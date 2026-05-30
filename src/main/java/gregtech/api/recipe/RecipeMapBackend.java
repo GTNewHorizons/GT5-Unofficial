@@ -614,11 +614,11 @@ public class RecipeMapBackend {
             }
             targets.add(new RecipeLookupValidationTarget(recipeMapName(recipeMap), backend));
         }
-        new RecipeLookupIndexedValidator(targets).validate();
+        new RecipeLookupValidator(targets).validate();
     }
 
     static void validateLookup(String mapName, RecipeMapBackend backend) {
-        new RecipeLookupIndexedValidator(Collections.singletonList(new RecipeLookupValidationTarget(mapName, backend)))
+        new RecipeLookupValidator(Collections.singletonList(new RecipeLookupValidationTarget(mapName, backend)))
             .validate();
     }
 
@@ -652,16 +652,6 @@ public class RecipeMapBackend {
             .collect(Collectors.joining("\n    ", "[\n    ", "\n]"));
     }
 
-    private static List<GTRecipe> identityDifference(List<GTRecipe> left, List<GTRecipe> right) {
-        List<GTRecipe> difference = new ArrayList<>();
-        for (GTRecipe recipe : left) {
-            if (!containsIdentity(right, recipe)) {
-                difference.add(recipe);
-            }
-        }
-        return difference;
-    }
-
     private static boolean containsIdentity(List<GTRecipe> recipes, GTRecipe target) {
         for (GTRecipe recipe : recipes) {
             if (recipe == target) {
@@ -682,7 +672,7 @@ public class RecipeMapBackend {
         }
     }
 
-    private static final class RecipeLookupIndexedValidator {
+    private static final class RecipeLookupValidator {
 
         private static final int RECIPE_PROGRESS_INTERVAL = 100;
         private static final long PROGRESS_LOG_INTERVAL_NANOS = 5_000_000_000L;
@@ -697,7 +687,7 @@ public class RecipeMapBackend {
         private int processedMaps;
         private int processedRecipes;
 
-        private RecipeLookupIndexedValidator(Collection<RecipeLookupValidationTarget> targets) {
+        private RecipeLookupValidator(Collection<RecipeLookupValidationTarget> targets) {
             this.targets = new ArrayList<>(targets);
             int recipeCount = 0;
             for (RecipeLookupValidationTarget target : this.targets) {
@@ -745,14 +735,7 @@ public class RecipeMapBackend {
             ItemStack[] items = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
             FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
             ItemStack specialSlot = recipe.mSpecialItems instanceof ItemStack ? (ItemStack) recipe.mSpecialItems : null;
-            List<GTRecipe> indexedMatches = null;
             List<GTRecipe> trieMatches = null;
-
-            try {
-                indexedMatches = indexedMatches(backend, items, fluids, specialSlot);
-            } catch (RuntimeException e) {
-                addError(target, recipe, "running indexed lookup", e);
-            }
 
             try {
                 trieMatches = trieMatches(backend, items, fluids, specialSlot);
@@ -760,14 +743,12 @@ public class RecipeMapBackend {
                 addError(target, recipe, "running trie lookup", e);
             }
 
-            if (indexedMatches == null || trieMatches == null) {
+            if (trieMatches == null) {
                 return;
             }
 
-            List<GTRecipe> missingTrieMatches = identityDifference(indexedMatches, trieMatches);
-            List<GTRecipe> extraTrieMatches = identityDifference(trieMatches, indexedMatches);
-            if (!missingTrieMatches.isEmpty() || !extraTrieMatches.isEmpty()) {
-                addMismatch(target, recipe, missingTrieMatches, extraTrieMatches);
+            if (!containsIdentity(trieMatches, recipe)) {
+                addMissingQueryRecipe(target, recipe, trieMatches);
             }
         }
 
@@ -789,57 +770,6 @@ public class RecipeMapBackend {
             return false;
         }
 
-        private List<GTRecipe> indexedMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
-            @Nullable ItemStack specialSlot) {
-            if (indexedMinInputsRejects(backend, items, fluids)) {
-                return Collections.emptyList();
-            }
-            return Stream.concat(indexedItemCandidates(backend, items), indexedFluidCandidates(backend, fluids))
-                .filter(distinctByIdentity())
-                .filter(recipe -> backend.filterFindRecipe(recipe, items, fluids, specialSlot, false))
-                .collect(Collectors.toList());
-        }
-
-        private boolean indexedMinInputsRejects(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids) {
-            if (backend.properties.minFluidInputs > 0) {
-                int count = 0;
-                for (FluidStack fluid : fluids) if (fluid != null) count++;
-                if (count < backend.properties.minFluidInputs) {
-                    return true;
-                }
-            }
-            if (backend.properties.minItemInputs > 0) {
-                int count = 0;
-                for (ItemStack item : items) if (item != null) count++;
-                return count < backend.properties.minItemInputs;
-            }
-            return false;
-        }
-
-        private Stream<GTRecipe> indexedItemCandidates(RecipeMapBackend backend, ItemStack[] items) {
-            if (backend.itemContainsIndex.isEmpty()) {
-                return Stream.empty();
-            }
-            return Arrays.stream(items)
-                .filter(Objects::nonNull)
-                .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
-                .map(backend.itemContainsIndex::get)
-                .flatMap(Collection::stream);
-        }
-
-        private Stream<GTRecipe> indexedFluidCandidates(RecipeMapBackend backend, FluidStack[] fluids) {
-            if (backend.properties.minItemInputs != 0) {
-                return Stream.empty();
-            }
-            return Arrays.stream(fluids)
-                .filter(fluid -> fluid != null && fluid.getFluid() != null)
-                .map(
-                    fluid -> backend.fluidContainsIndex.get(
-                        fluid.getFluid()
-                            .getName()))
-                .flatMap(Collection::stream);
-        }
-
         private List<GTRecipe> trieMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
             @Nullable ItemStack specialSlot) {
             return backend.lookupCandidateStream(items, fluids)
@@ -848,24 +778,17 @@ public class RecipeMapBackend {
                 .collect(Collectors.toList());
         }
 
-        private void addMismatch(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
-            List<GTRecipe> missingTrieMatches, List<GTRecipe> extraTrieMatches) {
+        private void addMissingQueryRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+            List<GTRecipe> trieMatches) {
             StringBuilder issue = new StringBuilder();
             issue.append("map=")
                 .append(target.mapName)
                 .append('\n')
                 .append("queryRecipe=")
                 .append(describeRecipeForValidation(queryRecipe));
-            if (!missingTrieMatches.isEmpty()) {
-                issue.append('\n')
-                    .append("indexedOnly=")
-                    .append(describeRecipeListForValidation(missingTrieMatches));
-            }
-            if (!extraTrieMatches.isEmpty()) {
-                issue.append('\n')
-                    .append("trieOnly=")
-                    .append(describeRecipeListForValidation(extraTrieMatches));
-            }
+            issue.append('\n')
+                .append("lookupMatches=")
+                .append(trieMatches.isEmpty() ? "[]" : describeRecipeListForValidation(trieMatches));
             issues.add(issue.toString());
         }
 
@@ -1129,13 +1052,6 @@ public class RecipeMapBackend {
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
         if (item.hasTagCompound()) {
             addLookupIngredient(group, GTItemStackLookupIngredient.fromNbtSensitiveRecipe(item));
-        }
-
-        ItemStack unifiedItem = GTOreDictUnificator.get_nocopy(false, item);
-        if (unifiedItem != null
-            && (unifiedItem.getItem() != item.getItem() || unifiedItem.getItemDamage() != item.getItemDamage())) {
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(unifiedItem));
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(unifiedItem));
         }
     }
 
