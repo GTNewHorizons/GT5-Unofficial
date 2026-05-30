@@ -78,6 +78,7 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
     public PhantomItemSlot slot(ModularSlot slot) {
         moldSyncHandler = new GhostMoldSyncHandler(slot, hatch);
         setSyncOrValue(moldSyncHandler);
+        moldSyncHandler.registerIndexSync(syncManager, "ghostMoldIndex");
         return this;
     }
 
