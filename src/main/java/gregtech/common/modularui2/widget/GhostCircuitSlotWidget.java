@@ -16,8 +16,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.MouseData;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -39,17 +37,16 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     private static final String GUI_ID = "circuit_selector";
 
     private final IMetaTileEntity mte;
-    private final IntSyncValue selectedSyncHandler;
+    private GhostCircuitSyncHandler circuitSyncHandler;
     private IPanelHandler selectorPanelHandler;
-    private PanelSyncManager syncManager;
+    private final PanelSyncManager syncManager;
 
     public GhostCircuitSlotWidget(IMetaTileEntity mte, PanelSyncManager syncManager) {
         super();
         this.mte = mte;
-        tooltipBuilder(this::getCircuitSlotTooltip);
         this.syncManager = syncManager;
-        this.selectedSyncHandler = syncManager.findSyncHandler("selector_screen_selected", IntSyncValue.class);
-        selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+        tooltipBuilder(this::getCircuitSlotTooltip);
+        selectorPanelHandler = buildSelectorPanel();
     }
 
     @Override
@@ -74,15 +71,16 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     @Override
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
-        MouseData mouseData = MouseData.create(-scrollDirection.modifier);
+        MouseData mouseData = MouseData.create(scrollDirection.modifier);
         getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
 
     @Override
     public PhantomItemSlot slot(ModularSlot slot) {
-        ItemSlotSH sh = new GhostCircuitSyncHandler(slot);
-        this.setSyncOrValue(sh);
+        circuitSyncHandler = new GhostCircuitSyncHandler(slot, mte);
+        setSyncOrValue(circuitSyncHandler);
+        circuitSyncHandler.registerIndexSync(syncManager, "ghostCircuitIndex");
         return this;
     }
 
@@ -105,12 +103,6 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
             .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.3"));
     }
 
-    @NotNull
-    @Override
-    public GhostCircuitSyncHandler getSyncHandler() {
-        return (GhostCircuitSyncHandler) super.getSyncHandler();
-    }
-
     private boolean isSelectorPanelOpen() {
         return getPanel().getScreen()
             .isPanelOpen(GUI_ID);
@@ -119,19 +111,19 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     private void openSelectorPanel() {
         if (selectorPanelHandler == null) {
 
-            selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+            selectorPanelHandler = buildSelectorPanel();
         }
         selectorPanelHandler.openPanel();
     }
 
-    private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
+    private IPanelHandler buildSelectorPanel() {
 
         return syncManager.syncedPanel("ghostCircuitPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_circuit"))
-                .setSelectedSyncHandler(selectedSyncHandler)
+                .setSelectedSyncHandler(circuitSyncHandler.getIndexSync())
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     getSyncHandler().syncToServer(SYNC_CIRCUIT_CONFIG, buffer -> {
                         // selected index 0 == config 1
@@ -146,5 +138,11 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
                 .setAllowDeselected(true)
                 .build();
         });
+    }
+
+    @NotNull
+    @Override
+    public GhostCircuitSyncHandler getSyncHandler() {
+        return (GhostCircuitSyncHandler) super.getSyncHandler();
     }
 }
