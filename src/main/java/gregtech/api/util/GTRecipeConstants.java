@@ -339,8 +339,7 @@ public class GTRecipeConstants {
         if (recycle) {
             // Recycling only has no gas variant
             builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
-        }
-        else {
+        } else {
             // Generate recipe with gas
             for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
                 int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
