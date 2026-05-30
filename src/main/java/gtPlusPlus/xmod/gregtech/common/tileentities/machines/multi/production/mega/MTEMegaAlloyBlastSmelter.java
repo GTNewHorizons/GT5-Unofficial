@@ -284,7 +284,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 TooltipHelper.speedText("-5%") + " Recipe Time per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
                     + " Tier above TPV (additive)")
-            .addInfo("if the equivalent or better " + TooltipHelper.tierText(TooltipTier.GLASS) + " is present")
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
                     + TooltipHelper.tierText(TooltipTier.COIL)
