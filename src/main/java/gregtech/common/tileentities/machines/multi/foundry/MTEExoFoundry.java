@@ -464,7 +464,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Foundry")
+        tt.addMachineType("Fluid Solidifier")
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
