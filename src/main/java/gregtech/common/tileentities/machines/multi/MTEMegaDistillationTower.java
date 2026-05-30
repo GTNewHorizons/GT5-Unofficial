@@ -13,11 +13,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -25,7 +29,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
@@ -46,14 +54,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
-public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower> {// implements
-                                                                                                        // ISurvivalConstructable
-                                                                                                        // {
+public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
+    implements ISurvivalConstructable {
 
-    // todo: survival construct, distillery mode, a little gimmick, possible stat buffs, tooltip, recipes and migration
+    // todo: tooltip, recipes and migration
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
 
@@ -284,6 +293,50 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     }
 
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (this.mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        this.height = 0;
+        int built = this.survivalBuildPiece(
+            STRUCTURE_PIECE_BASE,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            realBudget,
+            env,
+            false,
+            true);
+        if (built >= 0) return built;
+
+        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 1, 5);
+
+        for (int currentLayer = 1; currentLayer <= totalHeight; currentLayer++) {
+            built = this.survivalBuildPiece(
+                STRUCTURE_PIECE_LAYER,
+                stackSize,
+                HORIZONTAL_OFFSET,
+                LAYER_OFFSET_BASE + LAYER_OFFSET_INCREMENT * currentLayer,
+                DEPTH_OFFSET,
+                realBudget,
+                env,
+                false,
+                true);
+            if (built >= 0) return built;
+        }
+        return this.survivalBuildPiece(
+            STRUCTURE_PIECE_TOP,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + LAYER_OFFSET_INCREMENT * totalHeight,
+            DEPTH_OFFSET,
+            realBudget,
+            env,
+            false,
+            true);
+    }
+
     // each middle layer is composed of a bottom and a top hatch. for height h, the bottom hatch layer is at index 2h-2
     // the top hatch layer is at index 2h-1. the final hatch layer is at index 2h.
 
@@ -344,16 +397,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return Configuration.Multiblocks.megaMachinesMax;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
     public boolean canDumpFluidToME() {
 
         // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
@@ -394,8 +437,36 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    public int nextMachineMode() {
+        if (this.machineMode == MACHINEMODE_DISTILLERY) return MACHINEMODE_TOWER;
+        return MACHINEMODE_DISTILLERY;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this)
+            .withMachineModeIcons(OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER, OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
+    }
+
+    @Override
+    public String getMachineModeKey() {
+        if (this.machineMode == MACHINEMODE_DISTILLERY) return "GT5U.MDT.mode.1";
+        return "GT5U.MDT.mode.0";
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.distillationTowerRecipes;
+        return machineMode == MACHINEMODE_TOWER ? RecipeMaps.distillationTowerRecipes : RecipeMaps.distilleryRecipes;
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.distillationTowerRecipes, RecipeMaps.distilleryRecipes);
     }
 
     @Override
@@ -404,11 +475,83 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    public int getMaxParallelRecipes() {
+        if (this.machineMode == MACHINEMODE_DISTILLERY) {
+            // 512 - 1024 parallels min to max height
+            return Configuration.Multiblocks.megaMachinesMax * (1 + this.height / 2);
+        }
+        return Configuration.Multiblocks.megaMachinesMax;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    private static final float DISTILLERY_SPEED = 1.5f;
+    private static final float DISTILLERY_EU_EFFICIENCY = 0.5f;
+
+    private static final float TOWER_SPEED = 1.2f;
+    private static final float TOWER_EU_EFFICIENCY = 0.9f;
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
+        if (this.machineMode == MACHINEMODE_DISTILLERY) {
+            // make it compete with dangote somewhat. it will still be less eu efficient. numbers can be tweaked
+            logic.setSpeedBonus(DISTILLERY_SPEED);
+            logic.setEuModifier(DISTILLERY_EU_EFFICIENCY);
+        } else {
+            // same here, still worse than dangote but with laser
+            logic.setSpeedBonus(TOWER_SPEED);
+            logic.setEuModifier(TOWER_EU_EFFICIENCY);
+        }
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery, DT, MDT")
+            .addInfo("Stats dictated by tower mode, change mode in GUI")
+            .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
+            .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
+            .addSeparator()
+            .addInfo("Distillery Mode")
+            .addInfo(TooltipHelper.parallelText("256 * (1+ Tower Height/2)") + " Parallels")
+            .addStaticSpeedInfo(DISTILLERY_SPEED)
+            .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
+            .addSeparator()
+            .addInfo("Distillation Tower Mode")
+            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addStaticSpeedInfo(TOWER_SPEED)
+            .addStaticEuEffInfo(TOWER_EU_EFFICIENCY)
+            .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front off-center, 3rd Layer")
             .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
@@ -469,26 +612,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         }
         return new ITexture[] {
             Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()) };
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
     }
 
 }
