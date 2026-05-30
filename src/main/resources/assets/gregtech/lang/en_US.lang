@@ -6919,6 +6919,10 @@ GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
 GTPP.battpack.tooltip.2=Drains
 GTPP.battpack.tooltip.3=to charge worn armour
 GTPP.battpack.tooltip.4=Also charges items on the hotbar
+GTPP.battpack.tooltip.5=Tesla capable battery
+GTPP.battpack.tooltip.6=Who the hell uses wireless charger single blocks anyway?
+
+
 
 # Tooltips for the Personal Healing Bauble
 GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
