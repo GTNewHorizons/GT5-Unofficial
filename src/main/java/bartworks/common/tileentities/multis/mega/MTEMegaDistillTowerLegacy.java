@@ -58,19 +58,19 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
-public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower> implements ISurvivalConstructable {
+public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistillTowerLegacy> implements ISurvivalConstructable {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_TOP_HINT = "top";
-    private static final IStructureDefinition<MTEMegaDistillTower> STRUCTURE_DEFINITION;
+    private static final IStructureDefinition<MTEMegaDistillTowerLegacy> STRUCTURE_DEFINITION;
 
     static {
-        IHatchElement<MTEMegaDistillTower> layeredOutputHatch = OutputHatch
-            .withCount(MTEMegaDistillTower::getCurrentLayerOutputHatchCount)
-            .withAdder(MTEMegaDistillTower::addLayerOutputHatch);
-        STRUCTURE_DEFINITION = StructureDefinition.<MTEMegaDistillTower>builder()
+        IHatchElement<MTEMegaDistillTowerLegacy> layeredOutputHatch = OutputHatch
+            .withCount(MTEMegaDistillTowerLegacy::getCurrentLayerOutputHatchCount)
+            .withAdder(MTEMegaDistillTowerLegacy::addLayerOutputHatch);
+        STRUCTURE_DEFINITION = StructureDefinition.<MTEMegaDistillTowerLegacy>builder()
             .addShape(
                 STRUCTURE_PIECE_BASE,
                 transpose(
@@ -129,21 +129,21 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addElement('=', StructureElementAirNoHint.getInstance())
             .addElement(
                 'b',
-                buildHatchAdder(MTEMegaDistillTower.class)
+                buildHatchAdder(MTEMegaDistillTowerLegacy.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+                        onElementPass(MTEMegaDistillTowerLegacy::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement(
                 'l',
-                buildHatchAdder(MTEMegaDistillTower.class)
+                buildHatchAdder(MTEMegaDistillTowerLegacy.class)
                     .atLeast(layeredOutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .buildAndChain(
-                        onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-            .addElement('c', (IStructureElementCheckOnly<MTEMegaDistillTower>) (t, world, x, y, z) -> {
+                        onElementPass(MTEMegaDistillTowerLegacy::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
+            .addElement('c', (IStructureElementCheckOnly<MTEMegaDistillTowerLegacy>) (t, world, x, y, z) -> {
                 if (world.isAirBlock(x, y, z)) {
                     if (t.mTopState < 1) {
                         t.mTopState = 0;
@@ -181,17 +181,17 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     // -1 => maybe top, maybe not, 0 => definitely not top, 1 => definitely top
     private int mTopState = -1;
 
-    public MTEMegaDistillTower(int aID, String aName, String aNameRegional) {
+    public MTEMegaDistillTowerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    private MTEMegaDistillTower(String aName) {
+    private MTEMegaDistillTowerLegacy(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaDistillTower(this.mName);
+        return new MTEMegaDistillTowerLegacy(this.mName);
     }
 
     protected void onCasingFound() {
@@ -259,6 +259,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("MDT")
+            .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addInfo("Fluids are only put out at the correct height")
@@ -282,7 +283,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     @Override
-    public IStructureDefinition<MTEMegaDistillTower> getStructureDefinition() {
+    public IStructureDefinition<MTEMegaDistillTowerLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
