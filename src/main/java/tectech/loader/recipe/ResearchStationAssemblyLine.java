@@ -2845,7 +2845,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             300 * SECONDS,
             (int) TierEU.RECIPE_UHV);
 
-        // Advanced Beamline Output Hatch
+        // Advanced Beam Output Hatch
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH,
             128_000,

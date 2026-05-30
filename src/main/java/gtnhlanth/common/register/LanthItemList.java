@@ -15,7 +15,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
@@ -101,12 +100,12 @@ public final class LanthItemList {
         LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
             HATCH_BEAMLINE_INPUT.ID,
             "hatch.beamlineinput",
-            GTUtility.translate("GT5U.MBTT.BeamlineInputHatch"),
+            "Beam Input Hatch",
             6).getStackForm(1L);
         LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
             HATCH_BEAMLINE_OUTPUT.ID,
             "hatch.beamlineoutput",
-            GTUtility.translate("GT5U.MBTT.BeamlineOutputHatch"),
+            "Beam Output Hatch",
             6).getStackForm(1L);
 
         BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
