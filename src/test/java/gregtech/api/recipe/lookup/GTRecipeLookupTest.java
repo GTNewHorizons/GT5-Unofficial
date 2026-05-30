@@ -169,6 +169,16 @@ class GTRecipeLookupTest {
     }
 
     @Test
+    void duplicateRuntimeIngredientsDoNotDuplicateCandidates() {
+        GTRecipeLookup lookup = new GTRecipeLookup();
+        GTRecipe recipe = recipe();
+
+        lookup.add(recipe, groups(group(ore(95))));
+
+        assertEquals(Arrays.asList(recipe), results(lookup.iterator(group(ore(95), ore(95)))));
+    }
+
+    @Test
     void iteratorHasNextIsIdempotentAndNextThrowsWhenExhausted() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe first = recipe();

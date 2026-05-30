@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -146,15 +147,13 @@ public final class GTRecipeLookup {
         private int actionIndex = 0;
 
         private SearchFrame(GTRecipeLookupBranch branch, List<GTRecipeLookupIngredient> ingredients) {
-            List<Node> nodes = new ArrayList<>();
+            this.actions = new ArrayList<>(ingredients.size());
             for (GTRecipeLookupIngredient ingredient : ingredients) {
                 Node node = branch.getNode(ingredient);
-                if (node != null && !nodes.contains(node)) {
-                    nodes.add(node);
+                if (node == null) {
+                    continue;
                 }
-            }
-            this.actions = new ArrayList<>(nodes.size());
-            for (Node node : nodes) {
+
                 if (node.hasBranch()) {
                     actions.add(SearchAction.branch(node));
                 }
@@ -196,8 +195,8 @@ public final class GTRecipeLookup {
         private boolean hasCachedNext;
 
         private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
-            this.ingredients = ingredients;
-            stack.push(new SearchFrame(rootBranch, ingredients));
+            this.ingredients = new ArrayList<>(new LinkedHashSet<>(ingredients));
+            stack.push(new SearchFrame(rootBranch, this.ingredients));
         }
 
         @Override
