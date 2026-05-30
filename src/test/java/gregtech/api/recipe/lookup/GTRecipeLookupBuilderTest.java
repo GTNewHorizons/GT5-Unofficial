@@ -1,5 +1,6 @@
 package gregtech.api.recipe.lookup;
 
+import static gregtech.api.enums.OrePrefixes.circuit;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,6 +21,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
+import gregtech.api.enums.Materials;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
@@ -119,6 +123,46 @@ class GTRecipeLookupBuilderTest {
             recipe,
             onlyResult(
                 lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(secondAlt, 64, 4))))));
+    }
+
+    @Test
+    void indexesGtUnifiedRecipeKeys() {
+        ensureMinecraftStackComparisonItem();
+        Item representativeItem = item("builder.item.unified.representative");
+        Item equivalentItem = item("builder.item.unified.equivalent");
+        ItemStack representative = new ItemStack(representativeItem, 1, 0);
+        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
+        String unificationName = circuit.get(Materials.LV)
+            .toString();
+        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
+            .containsKey(unificationName);
+        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
+            .put(unificationName, representative);
+
+        try {
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.resetUnificationEntries();
+            GTRecipe recipe = recipe(new ItemStack[] { equivalent }, null);
+
+            GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
+                .build();
+
+            assertSame(
+                recipe,
+                onlyResult(lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(representative)))));
+        } finally {
+            if (hadPreviousTarget) {
+                GTOreDictUnificator.getName2StackMap()
+                    .put(unificationName, previousTarget);
+            } else {
+                GTOreDictUnificator.getName2StackMap()
+                    .remove(unificationName);
+            }
+            GTOreDictUnificator.removeItemData(representative);
+            GTOreDictUnificator.removeItemData(equivalent);
+            GTOreDictUnificator.resetUnificationEntries();
+        }
     }
 
     @Test

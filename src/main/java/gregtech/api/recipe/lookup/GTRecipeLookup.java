@@ -45,11 +45,11 @@ public final class GTRecipeLookup {
 
             if (lastIngredient) {
                 if (node == null) {
-                    nodes.put(ingredient, Node.leaf(recipe));
+                    nodes.put(ingredient, Node.leaf(recipe, branch.allocateNodeOrder()));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
-                    node.addRecipe(recipe);
+                    node.addRecipe(recipe, branch.allocateNodeOrder());
                 }
                 continue;
             }
@@ -57,12 +57,13 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                nodes.put(ingredient, Node.branch(childBranch));
+                nodes.put(ingredient, Node.branch(childBranch, branch.allocateNodeOrder()));
             } else if (node.hasBranch()) {
                 childBranch = node.branch;
             } else {
                 childBranch = new GTRecipeLookupBranch();
                 node.branch = childBranch;
+                node.branchOrder = branch.allocateNodeOrder();
             }
 
             addRecursive(recipe, ingredients, childBranch, index + 1);
@@ -99,20 +100,23 @@ public final class GTRecipeLookup {
 
         private List<GTRecipe> recipes;
         private GTRecipeLookupBranch branch;
+        private int recipeOrder = -1;
+        private int branchOrder = -1;
 
-        private Node(List<GTRecipe> recipes, GTRecipeLookupBranch branch) {
-            this.recipes = recipes;
-            this.branch = branch;
-        }
-
-        static Node leaf(GTRecipe recipe) {
+        static Node leaf(GTRecipe recipe, int order) {
+            Node node = new Node();
             List<GTRecipe> recipes = new ArrayList<>(1);
             recipes.add(recipe);
-            return new Node(recipes, null);
+            node.recipes = recipes;
+            node.recipeOrder = order;
+            return node;
         }
 
-        static Node branch(GTRecipeLookupBranch branch) {
-            return new Node(null, branch);
+        static Node branch(GTRecipeLookupBranch branch, int order) {
+            Node node = new Node();
+            node.branch = branch;
+            node.branchOrder = order;
+            return node;
         }
 
         boolean hasBranch() {
@@ -123,9 +127,10 @@ public final class GTRecipeLookup {
             return recipes != null && !recipes.isEmpty();
         }
 
-        void addRecipe(GTRecipe recipe) {
+        void addRecipe(GTRecipe recipe, int order) {
             if (recipes == null) {
                 recipes = new ArrayList<>(1);
+                recipeOrder = order;
             }
             recipes.add(recipe);
         }
@@ -137,11 +142,48 @@ public final class GTRecipeLookup {
 
     private static final class SearchFrame {
 
-        private final GTRecipeLookupBranch branch;
-        private int ingredientIndex = 0;
+        private final List<SearchAction> actions;
+        private int actionIndex = 0;
 
-        private SearchFrame(GTRecipeLookupBranch branch) {
+        private SearchFrame(GTRecipeLookupBranch branch, List<GTRecipeLookupIngredient> ingredients) {
+            List<Node> nodes = new ArrayList<>();
+            for (GTRecipeLookupIngredient ingredient : ingredients) {
+                Node node = branch.getNode(ingredient);
+                if (node != null && !nodes.contains(node)) {
+                    nodes.add(node);
+                }
+            }
+            this.actions = new ArrayList<>(nodes.size());
+            for (Node node : nodes) {
+                if (node.hasBranch()) {
+                    actions.add(SearchAction.branch(node));
+                }
+                if (node.hasRecipes()) {
+                    actions.add(SearchAction.recipes(node));
+                }
+            }
+            actions.sort((first, second) -> Integer.compare(first.order, second.order));
+        }
+    }
+
+    private static final class SearchAction {
+
+        private final Node node;
+        private final boolean branch;
+        private final int order;
+
+        private SearchAction(Node node, boolean branch, int order) {
+            this.node = node;
             this.branch = branch;
+            this.order = order;
+        }
+
+        static SearchAction branch(Node node) {
+            return new SearchAction(node, true, node.branchOrder);
+        }
+
+        static SearchAction recipes(Node node) {
+            return new SearchAction(node, false, node.recipeOrder);
         }
     }
 
@@ -155,7 +197,7 @@ public final class GTRecipeLookup {
 
         private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
             this.ingredients = ingredients;
-            stack.push(new SearchFrame(rootBranch));
+            stack.push(new SearchFrame(rootBranch, ingredients));
         }
 
         @Override
@@ -189,21 +231,17 @@ public final class GTRecipeLookup {
                 }
 
                 SearchFrame frame = stack.peek();
-                if (frame.ingredientIndex >= ingredients.size()) {
+                if (frame.actionIndex >= frame.actions.size()) {
                     stack.pop();
                     continue;
                 }
 
-                GTRecipeLookupIngredient ingredient = ingredients.get(frame.ingredientIndex++);
-                Node result = frame.branch.getNode(ingredient);
-                if (result == null) {
-                    continue;
-                }
+                SearchAction action = frame.actions.get(frame.actionIndex++);
+                Node result = action.node;
 
-                if (result.hasBranch()) {
-                    stack.push(new SearchFrame(result.branch));
-                }
-                if (result.hasRecipes()) {
+                if (action.branch) {
+                    stack.push(new SearchFrame(result.branch, ingredients));
+                } else {
                     leafIterator = result.recipes.iterator();
                 }
             }

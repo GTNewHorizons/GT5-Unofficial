@@ -49,7 +49,9 @@ import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.ModContainer;
 import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
+import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
 import gregtech.api.recipe.lookup.GTOreDictLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
@@ -708,7 +710,7 @@ public class RecipeMapBackend {
                     backend.ensureLookupCurrent();
                     for (GTRecipe recipe : recipes) {
                         if (shouldValidateRecipe(backend, recipe)) {
-                            validateRecipe(target, recipe);
+                            validateRecipe(target, recipes, recipe);
                         }
                         processedRecipes++;
                         maybeLogProgress();
@@ -747,14 +749,15 @@ public class RecipeMapBackend {
             return false;
         }
 
-        private void validateRecipe(RecipeLookupValidationTarget target, GTRecipe recipe) {
+        private void validateRecipe(RecipeLookupValidationTarget target, List<GTRecipe> recipes, GTRecipe recipe) {
             RecipeMapBackend backend = target.backend;
-            ItemStack[] items = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
+            ItemStack[] rawItems = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
+            ItemStack[] items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
             FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
             ItemStack specialSlot = recipe.mSpecialItems instanceof ItemStack ? (ItemStack) recipe.mSpecialItems : null;
             String preLookupRejectReason = preLookupRejectReason(backend, items, fluids);
             if (preLookupRejectReason != null) {
-                String unresolvedOreDictReason = unresolvedOreDictInputReason(recipe, items);
+                String unresolvedOreDictReason = unresolvedOreDictInputReason(recipe, rawItems);
                 if (unresolvedOreDictReason != null) {
                     addUnresolvedOreDictRecipe(target, recipe, unresolvedOreDictReason, preLookupRejectReason);
                 } else {
@@ -762,20 +765,28 @@ public class RecipeMapBackend {
                 }
                 return;
             }
-            ValidationLookupResult trieMatches = null;
+            List<GTRecipe> expectedMatches = null;
+            ValidationLookupResult lookupMatches = null;
 
             try {
-                trieMatches = trieMatches(backend, recipe, items, fluids, specialSlot);
+                expectedMatches = fullScanMatches(backend, recipes, items, fluids, specialSlot);
+            } catch (RuntimeException e) {
+                addError(target, recipe, "running full scan lookup", e);
+            }
+
+            try {
+                lookupMatches = lookupMatches(backend, items, fluids, specialSlot);
             } catch (RuntimeException e) {
                 addError(target, recipe, "running trie lookup", e);
             }
 
-            if (trieMatches == null) {
+            if (expectedMatches == null || lookupMatches == null) {
                 return;
             }
 
-            if (!trieMatches.foundQueryRecipe) {
-                addMissingQueryRecipe(target, recipe, trieMatches);
+            if (lookupMatches.truncated
+                || !matchesExpectedLookup(recipe, rawItems, expectedMatches, lookupMatches.matches)) {
+                addLookupMismatch(target, recipe, expectedMatches, lookupMatches);
             }
         }
 
@@ -877,12 +888,23 @@ public class RecipeMapBackend {
             return false;
         }
 
-        private ValidationLookupResult trieMatches(RecipeMapBackend backend, GTRecipe queryRecipe, ItemStack[] items,
+        private List<GTRecipe> fullScanMatches(RecipeMapBackend backend, List<GTRecipe> recipes, ItemStack[] items,
             FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+            List<GTRecipe> matches = new ArrayList<>();
+            for (GTRecipe candidate : recipes) {
+                if (matchesAfterFinalFilters(backend, candidate, items, fluids, specialSlot)) {
+                    matches.add(candidate);
+                }
+            }
+            return matches;
+        }
+
+        private ValidationLookupResult lookupMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
+            @Nullable ItemStack specialSlot) {
             Iterator<GTRecipe> candidates = backend.lookupCandidateStream(items, fluids)
                 .iterator();
             Predicate<GTRecipe> distinct = distinctByIdentity();
-            List<GTRecipe> sampleMatches = new ArrayList<>(LOOKUP_MATCH_SAMPLE_LIMIT);
+            List<GTRecipe> matches = new ArrayList<>();
             List<GTRecipe> sampleRejectedCandidates = new ArrayList<>(LOOKUP_MATCH_SAMPLE_LIMIT);
             int rawCandidates = 0;
             int filteredMatches = 0;
@@ -892,42 +914,83 @@ public class RecipeMapBackend {
                 if (!distinct.test(candidate)) {
                     continue;
                 }
-                if (!backend.filterFindRecipe(candidate, items, fluids, specialSlot, false)) {
+                if (!matchesAfterFinalFilters(backend, candidate, items, fluids, specialSlot)) {
                     if (sampleRejectedCandidates.size() < LOOKUP_MATCH_SAMPLE_LIMIT) {
                         sampleRejectedCandidates.add(candidate);
                     }
                 } else {
                     filteredMatches++;
-                    if (sampleMatches.size() < LOOKUP_MATCH_SAMPLE_LIMIT) {
-                        sampleMatches.add(candidate);
-                    }
-                    if (candidate == queryRecipe) {
-                        return new ValidationLookupResult(
-                            true,
-                            sampleMatches,
-                            sampleRejectedCandidates,
-                            rawCandidates,
-                            filteredMatches,
-                            false);
-                    }
+                    matches.add(candidate);
                 }
                 if (rawCandidates >= LOOKUP_CANDIDATE_SCAN_LIMIT) {
                     return new ValidationLookupResult(
-                        false,
-                        sampleMatches,
+                        matches,
                         sampleRejectedCandidates,
                         rawCandidates,
                         filteredMatches,
                         true);
                 }
             }
-            return new ValidationLookupResult(
-                false,
-                sampleMatches,
-                sampleRejectedCandidates,
-                rawCandidates,
-                filteredMatches,
-                false);
+            return new ValidationLookupResult(matches, sampleRejectedCandidates, rawCandidates, filteredMatches, false);
+        }
+
+        private boolean matchesAfterFinalFilters(RecipeMapBackend backend, GTRecipe candidate, ItemStack[] items,
+            FluidStack[] fluids, @Nullable ItemStack specialSlot) {
+            if (!backend.filterFindRecipe(candidate, items, fluids, specialSlot, false)) {
+                return false;
+            }
+            return backend.modifyFoundRecipe(candidate, items, fluids, specialSlot) != null;
+        }
+
+        private boolean sameFirstRecipeIdentity(List<GTRecipe> expectedMatches, List<GTRecipe> lookupMatches) {
+            if (expectedMatches.isEmpty() || lookupMatches.isEmpty()) {
+                return expectedMatches.isEmpty() && lookupMatches.isEmpty();
+            }
+            return expectedMatches.get(0) == lookupMatches.get(0);
+        }
+
+        private boolean matchesExpectedLookup(GTRecipe queryRecipe, ItemStack[] rawItems,
+            List<GTRecipe> expectedMatches, List<GTRecipe> lookupMatches) {
+            if (expectedMatches.isEmpty() || lookupMatches.isEmpty()) {
+                return sameFirstRecipeIdentity(expectedMatches, lookupMatches);
+            }
+            if (hasWildcardItemInput(rawItems)) {
+                return containsRecipeIdentity(lookupMatches, queryRecipe);
+            }
+            if (hasNbtSensitiveItemInput(queryRecipe, rawItems)) {
+                return containsRecipeIdentity(lookupMatches, queryRecipe);
+            }
+            return sameFirstRecipeIdentity(expectedMatches, lookupMatches);
+        }
+
+        private boolean hasWildcardItemInput(ItemStack[] rawItems) {
+            for (ItemStack item : rawItems) {
+                if (item != null && item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean hasNbtSensitiveItemInput(GTRecipe queryRecipe, ItemStack[] rawItems) {
+            if (!queryRecipe.isNBTSensitive) {
+                return false;
+            }
+            for (ItemStack item : rawItems) {
+                if (item != null && item.hasTagCompound()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean containsRecipeIdentity(List<GTRecipe> recipes, GTRecipe recipe) {
+            for (GTRecipe candidate : recipes) {
+                if (candidate == recipe) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void addPreLookupRejectedRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
@@ -961,8 +1024,8 @@ public class RecipeMapBackend {
             unresolvedOreDictIssues.add(issue.toString());
         }
 
-        private void addMissingQueryRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
-            ValidationLookupResult trieMatches) {
+        private void addLookupMismatch(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+            List<GTRecipe> expectedMatches, ValidationLookupResult lookupMatches) {
             StringBuilder issue = new StringBuilder();
             issue.append("map=")
                 .append(target.mapName)
@@ -970,25 +1033,39 @@ public class RecipeMapBackend {
                 .append("queryRecipe=")
                 .append(describeRecipeForValidation(queryRecipe));
             issue.append('\n')
+                .append("expectedMatches=")
+                .append(
+                    expectedMatches.isEmpty() ? "[]" : describeRecipeListForValidation(sampleRecipes(expectedMatches)));
+            issue.append('\n')
                 .append("lookupMatches=")
                 .append(
-                    trieMatches.sampleMatches.isEmpty() ? "[]"
-                        : describeRecipeListForValidation(trieMatches.sampleMatches));
+                    lookupMatches.matches.isEmpty() ? "[]"
+                        : describeRecipeListForValidation(sampleRecipes(lookupMatches.matches)));
             issue.append('\n')
                 .append("lookupRejectedCandidates=")
                 .append(
-                    trieMatches.sampleRejectedCandidates.isEmpty() ? "[]"
-                        : describeRecipeListForValidation(trieMatches.sampleRejectedCandidates));
+                    lookupMatches.sampleRejectedCandidates.isEmpty() ? "[]"
+                        : describeRecipeListForValidation(lookupMatches.sampleRejectedCandidates));
+            issue.append('\n')
+                .append("expectedMatchCount=")
+                .append(expectedMatches.size())
+                .append(", lookupMatchCount=")
+                .append(lookupMatches.matches.size());
             issue.append('\n')
                 .append("lookupCandidateScan=")
-                .append(trieMatches.truncated ? "truncated" : "exhausted")
+                .append(lookupMatches.truncated ? "truncated" : "exhausted")
                 .append(", rawCandidates=")
-                .append(trieMatches.rawCandidates)
+                .append(lookupMatches.rawCandidates)
                 .append(", filteredMatches=")
-                .append(trieMatches.filteredMatches)
+                .append(lookupMatches.filteredMatches)
                 .append(", max=")
                 .append(LOOKUP_CANDIDATE_SCAN_LIMIT);
             issues.add(issue.toString());
+        }
+
+        private List<GTRecipe> sampleRecipes(List<GTRecipe> recipes) {
+            return recipes.size() <= LOOKUP_MATCH_SAMPLE_LIMIT ? recipes
+                : recipes.subList(0, LOOKUP_MATCH_SAMPLE_LIMIT);
         }
 
         private void addError(RecipeLookupValidationTarget target, @Nullable GTRecipe queryRecipe, String action,
@@ -1109,17 +1186,15 @@ public class RecipeMapBackend {
 
         private static final class ValidationLookupResult {
 
-            private final boolean foundQueryRecipe;
-            private final List<GTRecipe> sampleMatches;
+            private final List<GTRecipe> matches;
             private final List<GTRecipe> sampleRejectedCandidates;
             private final int rawCandidates;
             private final int filteredMatches;
             private final boolean truncated;
 
-            private ValidationLookupResult(boolean foundQueryRecipe, List<GTRecipe> sampleMatches,
-                List<GTRecipe> sampleRejectedCandidates, int rawCandidates, int filteredMatches, boolean truncated) {
-                this.foundQueryRecipe = foundQueryRecipe;
-                this.sampleMatches = sampleMatches;
+            private ValidationLookupResult(List<GTRecipe> matches, List<GTRecipe> sampleRejectedCandidates,
+                int rawCandidates, int filteredMatches, boolean truncated) {
+                this.matches = matches;
                 this.sampleRejectedCandidates = sampleRejectedCandidates;
                 this.rawCandidates = rawCandidates;
                 this.filteredMatches = filteredMatches;
@@ -1198,13 +1273,22 @@ public class RecipeMapBackend {
             .append(" x")
             .append(stack.stackSize)
             .append(" (")
-            .append(item == null ? "<null item>" : stack.getUnlocalizedName())
+            .append(item == null ? "<null item>" : safeUnlocalizedName(stack))
             .append(')');
         if (stack.hasTagCompound()) {
             builder.append(" tag=")
                 .append(stack.getTagCompound());
         }
         return builder.toString();
+    }
+
+    private static String safeUnlocalizedName(ItemStack stack) {
+        try {
+            return stack.getUnlocalizedName();
+        } catch (LinkageError | RuntimeException e) {
+            return "<unavailable name: " + e.getClass()
+                .getSimpleName() + ">";
+        }
     }
 
     private static String describeFluidStacks(@Nullable FluidStack[] fluids) {
@@ -1295,11 +1379,19 @@ public class RecipeMapBackend {
     static void addRuntimeItemStackLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
+        addRuntimeItemDataLookupIngredient(group, item);
     }
 
     private static void addRuntimeOreDictLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
         for (int oreId : OreDictionary.getOreIDs(item)) {
             addLookupIngredient(group, new GTOreDictLookupIngredient(oreId));
+        }
+    }
+
+    private static void addRuntimeItemDataLookupIngredient(List<GTRecipeLookupIngredient> group, ItemStack item) {
+        ItemData itemData = GTOreDictUnificator.getAssociation(item);
+        if (itemData != null && itemData.hasValidPrefixMaterialData()) {
+            addLookupIngredient(group, GTItemDataLookupIngredient.fromItemData(itemData));
         }
     }
 
