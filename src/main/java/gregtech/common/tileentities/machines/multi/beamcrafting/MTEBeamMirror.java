@@ -221,7 +221,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         if (stackSize.stackSize >= 2) {
-            buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, 1, 4, 0);
+            buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, 1, 5, 0);
         } else {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
         }
@@ -232,7 +232,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         if (mMachine) return -1;
 
         if (stackSize.stackSize >= 2) {
-            return survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 1, 4, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 1, 5, 0, elementBudget, env, false, true);
         }
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
@@ -242,7 +242,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         mInputBeamline.clear();
         mOutputBeamline.clear();
 
-        if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 4, 0, null)) {
+        if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 5, 0, null)) {
             mTier = 2;
             return;
         }
