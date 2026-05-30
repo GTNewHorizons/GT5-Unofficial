@@ -278,7 +278,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public String getInventoryName() {
-        return "L.E.S.U.";
+        return getLocalNameKey();
     }
 
     @Override
