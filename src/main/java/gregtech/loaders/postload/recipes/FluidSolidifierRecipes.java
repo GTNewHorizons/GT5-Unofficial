@@ -141,7 +141,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Cheese.get(1L))
             .fluidInputs(Materials.Cheese.getMolten(1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -245,7 +245,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -253,7 +253,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -269,7 +269,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L))
             .fluidInputs(Materials.CastIron.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -277,7 +277,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L))
             .fluidInputs(Materials.CastIron.getMolten(9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
