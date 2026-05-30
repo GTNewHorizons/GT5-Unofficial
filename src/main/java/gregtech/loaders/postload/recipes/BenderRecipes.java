@@ -235,7 +235,7 @@ public class BenderRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -243,7 +243,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(10 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -251,7 +251,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -259,7 +259,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(4L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -283,7 +283,7 @@ public class BenderRecipes implements Runnable {
             .circuit(2)
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()

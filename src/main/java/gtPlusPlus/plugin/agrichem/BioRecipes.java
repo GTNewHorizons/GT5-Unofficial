@@ -244,7 +244,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.WoodPellet.get(8))
             .itemOutputs(GregtechItemList.WoodBrick.get(2))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         // CO2
