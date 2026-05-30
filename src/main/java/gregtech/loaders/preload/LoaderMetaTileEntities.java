@@ -858,10 +858,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Industrial Sledgehammer").getStackForm(1L));
 
         ItemList.LargeSifter.set(
-            new MTEIndustrialSifter(
-                LargeSifter.ID,
-                "industrialsifter.controller.tier.single",
-                "Large Sifter Control Block").getStackForm(1L));
+            new MTEIndustrialSifter(LargeSifter.ID, "industrialsifter.controller.tier.single", "Large Sifter")
+                .getStackForm(1L));
 
         ItemList.CryogenicFreezer.set(
             new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
@@ -10241,7 +10239,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchAdvancedOutputBeamline(
                 HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
                 "hatch.advancedbeamlineoutput",
-                "Filtered Beamline Output Hatch",
+                "Filtered Beam Output Hatch",
                 8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(

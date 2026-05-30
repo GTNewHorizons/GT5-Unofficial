@@ -99,13 +99,13 @@ public final class LanthItemList {
         BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
         LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
             HATCH_BEAMLINE_INPUT.ID,
-            "LuV Beamline Input Hatch",
-            "LuV Beamline Input Hatch",
+            "hatch.beamlineinput",
+            "Beam Input Hatch",
             6).getStackForm(1L);
         LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
             HATCH_BEAMLINE_OUTPUT.ID,
-            "LuV Beamline Output Hatch",
-            "LuV Beamline Output Hatch",
+            "hatch.beamlineoutput",
+            "Beam Output Hatch",
             6).getStackForm(1L);
 
         BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
