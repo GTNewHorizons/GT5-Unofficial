@@ -80,6 +80,7 @@ import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -10239,7 +10240,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchAdvancedOutputBeamline(
                 HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
                 "hatch.advancedbeamlineoutput",
-                "Filtered Beam Output Hatch",
+                GTUtility.translate("GT5U.MBTT.BeamlineFilteredOutputHatch"),
                 8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(
