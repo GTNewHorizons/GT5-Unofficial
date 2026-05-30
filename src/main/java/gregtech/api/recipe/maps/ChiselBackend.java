@@ -24,6 +24,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
@@ -93,7 +94,7 @@ public class ChiselBackend extends RecipeMapBackend {
                     .itemInputs(GTUtility.copyAmount(1, input))
                     .itemOutputs(GTUtility.copyAmount(1, target))
                     .duration(20)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .specialValue(0)
                     .noBuffer()
                     .build()
@@ -165,7 +166,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .itemOutputs(GTUtility.copyAmount(shape.itemsProduced, output))
             .outputChances(10000)
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(0)
             .noBuffer()
             .build()
@@ -249,7 +250,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .circuit(circuitConfiguration)
             .itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
             .noBuffer()
             .build()
@@ -265,7 +266,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .circuit(circuitConfiguration)
             .itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
             .fake()
             .noBuffer()

@@ -358,7 +358,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("RTGPellets", 1))
             .duration(0)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(2.6f))
             .addTo(rtgFuels);
     }
