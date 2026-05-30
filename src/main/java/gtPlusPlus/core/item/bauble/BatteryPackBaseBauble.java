@@ -1,13 +1,16 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
+import baubles.api.BaublesApi;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,6 +26,7 @@ import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import org.jetbrains.annotations.NotNull;
 
 public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
@@ -103,6 +107,21 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
     @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
+    // stolen from WirelessChargerManager.java
+    static ItemStack[] getBaublesItems(@NotNull EntityPlayer player) {
+        ItemStack[] baubleItems = null;
+        if (Baubles.isModLoaded()) {
+            IInventory baubleInv = BaublesApi.getBaubles(player);
+            if (baubleInv != null) {
+                baubleItems = new ItemStack[baubleInv.getSizeInventory()];
+                for (int i = 0; i < baubleInv.getSizeInventory(); i++) {
+                    baubleItems[i] = baubleInv.getStackInSlot(i);
+                }
+            }
+        }
+        return baubleItems;
+    }
+
     @Override
     public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aLivingBase) {
         if (!aLivingBase.worldObj.isRemote) {
@@ -117,6 +136,10 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                         // Hotbar Slots
                         inv = aPlayer.inventory.mainInventory;
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
+
+                        // baubles
+                        inv=getBaublesItems(aPlayer);
+                        chargeInventory(inv, inv.length, aBaubleStack);
                     }
                 }
             } catch (Exception ignored) {}

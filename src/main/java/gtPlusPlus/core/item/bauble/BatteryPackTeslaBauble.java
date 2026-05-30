@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
 import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -16,10 +17,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import org.jetbrains.annotations.NotNull;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
@@ -30,7 +33,9 @@ import javax.sound.midi.SysexMessage;
 import java.util.HashSet;
 import java.util.List;
 
+import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gtPlusPlus.core.item.bauble.BatteryPackBaseBauble.getBaublesItems;
 
 public class BatteryPackTeslaBauble extends ElectricBaseBauble {
     public BatteryPackTeslaBauble(int tier) {
@@ -154,6 +159,10 @@ public class BatteryPackTeslaBauble extends ElectricBaseBauble {
                         // Hotbar Slots
                         inv = aPlayer.inventory.mainInventory;
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
+
+                        // baubles
+                        inv=getBaublesItems(aPlayer);
+                        chargeInventory(inv, inv.length, aBaubleStack);
                     }
                 }
             } catch (Exception ignored) {}
