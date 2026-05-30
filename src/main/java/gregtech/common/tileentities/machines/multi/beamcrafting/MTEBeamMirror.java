@@ -37,7 +37,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
-    private byte mTier = 1;
+    private byte mTier = 2;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -243,7 +243,9 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         }
         mTier = 1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
-            return;
+            // "hack" for the next structure check, to ensure that rotations are correctly
+            // applied on the beam output during the structure check
+            mTier = 2;
         }
     }
 
