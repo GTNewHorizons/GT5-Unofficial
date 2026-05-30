@@ -3,7 +3,6 @@ package gregtech.api.recipe.lookup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +58,7 @@ class GTRecipeLookupIngredientTest {
     }
 
     @Test
-    void nbtSensitiveItemKeysAreMarkedAndDistinctFromNormalItemKeys() {
+    void itemKeysIgnoreNbtSensitivity() {
         ItemStack stack = new ItemStack(itemWithSubtypes("lookup.item.nbt"), 1, 0);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("integer", 123456);
@@ -75,14 +74,13 @@ class GTRecipeLookupIngredientTest {
             .fromNbtSensitiveRecipe(stackWithDifferentTag);
 
         assertFalse(normal.isNbtSensitive());
-        assertTrue(nbtSensitive.isNbtSensitive());
-        assertNotEquals(normal, nbtSensitive);
-        // The NBT-sensitive key only marks the candidate path. Final NBT equality is checked by GTRecipe validation.
+        assertFalse(nbtSensitive.isNbtSensitive());
+        assertEquals(normal, nbtSensitive);
         assertEquals(nbtSensitive, nbtSensitiveWithDifferentTag);
     }
 
     @Test
-    void recipeFactoryOnlyMarksNbtSensitiveWhenRecipeAndStackRequireIt() {
+    void recipeFactoryIgnoresNbtSensitivityFlag() {
         Item item = itemWithSubtypes("lookup.item.nbt.explicit");
         ItemStack tagless = new ItemStack(item, 1, 0);
         ItemStack tagged = new ItemStack(item, 1, 0);
@@ -98,9 +96,9 @@ class GTRecipeLookupIngredientTest {
         assertFalse(taglessNormal.isNbtSensitive());
         assertFalse(taglessNbtRecipe.isNbtSensitive());
         assertFalse(taggedNormal.isNbtSensitive());
-        assertTrue(taggedNbtRecipe.isNbtSensitive());
+        assertFalse(taggedNbtRecipe.isNbtSensitive());
         assertEquals(taglessNormal, taglessNbtRecipe);
-        assertNotEquals(taggedNormal, taggedNbtRecipe);
+        assertEquals(taggedNormal, taggedNbtRecipe);
     }
 
     @Test

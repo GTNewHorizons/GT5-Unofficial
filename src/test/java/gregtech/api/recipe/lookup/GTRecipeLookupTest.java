@@ -35,7 +35,7 @@ class GTRecipeLookupTest {
         lookup.add(first, groups(group(ore(1)), group(ore(2))));
         lookup.add(second, groups(group(ore(1)), group(ore(2))));
 
-        Iterator<GTRecipe> iterator = lookup.iterator(groups(group(ore(1)), group(ore(2))));
+        Iterator<GTRecipe> iterator = lookup.iterator(group(ore(1), ore(2)));
 
         assertTrue(iterator.hasNext());
         assertSame(first, iterator.next());
@@ -51,15 +51,15 @@ class GTRecipeLookupTest {
 
         lookup.add(recipe, groups(group(ore(10), ore(11)), group(ore(12))));
 
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(ore(10)), group(ore(12))))));
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(ore(11)), group(ore(12))))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(ore(10), ore(12)))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(ore(11), ore(12)))));
         assertFalse(
-            lookup.iterator(groups(group(ore(13)), group(ore(12))))
+            lookup.iterator(group(ore(13), ore(12)))
                 .hasNext());
     }
 
     @Test
-    void separatesNormalAndNbtSensitiveItemKeysByLookupKeyIdentity() {
+    void itemLookupKeysIgnoreNbtSensitivity() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe normalRecipe = recipe();
         GTRecipe nbtSensitiveRecipe = recipe();
@@ -71,12 +71,14 @@ class GTRecipeLookupTest {
         GTRecipeLookupIngredient normal = GTItemStackLookupIngredient.fromRecipe(stack);
         GTRecipeLookupIngredient nbtSensitive = GTItemStackLookupIngredient.fromNbtSensitiveRecipe(stack);
 
-        assertFalse(normal.equals(nbtSensitive));
+        assertEquals(normal, nbtSensitive);
         lookup.add(normalRecipe, groups(group(normal)));
         lookup.add(nbtSensitiveRecipe, groups(group(nbtSensitive)));
 
-        assertSame(normalRecipe, onlyResult(lookup.iterator(groups(group(normal)))));
-        assertSame(nbtSensitiveRecipe, onlyResult(lookup.iterator(groups(group(nbtSensitive)))));
+        List<GTRecipe> results = results(lookup.iterator(group(normal)));
+        assertEquals(2, results.size());
+        assertTrue(results.contains(normalRecipe));
+        assertTrue(results.contains(nbtSensitiveRecipe));
     }
 
     @Test
@@ -88,7 +90,7 @@ class GTRecipeLookupTest {
         lookup.add(existing, groups(group(ore(30))));
         lookup.add(overlapping, groups(group(ore(30)), group(ore(32))));
 
-        List<GTRecipe> results = results(lookup.iterator(groups(group(ore(30)), group(ore(32)))));
+        List<GTRecipe> results = results(lookup.iterator(group(ore(30), ore(32))));
         assertEquals(2, results.size());
         assertTrue(results.contains(existing));
         assertTrue(results.contains(overlapping));
@@ -103,8 +105,8 @@ class GTRecipeLookupTest {
         lookup.add(existing, groups(group(ore(40)), group(ore(41))));
         lookup.add(overlapping, groups(group(ore(40))));
 
-        assertSame(overlapping, onlyResult(lookup.iterator(groups(group(ore(40))))));
-        List<GTRecipe> results = results(lookup.iterator(groups(group(ore(40)), group(ore(41)))));
+        assertSame(overlapping, onlyResult(lookup.iterator(group(ore(40)))));
+        List<GTRecipe> results = results(lookup.iterator(group(ore(40), ore(41))));
         assertEquals(2, results.size());
         assertTrue(results.contains(existing));
         assertTrue(results.contains(overlapping));
@@ -119,7 +121,7 @@ class GTRecipeLookupTest {
         lookup.add(first, groups(group(ore(50))));
         lookup.add(second, groups(group(ore(50))));
 
-        Iterator<GTRecipe> iterator = lookup.iterator(groups(group(ore(50))));
+        Iterator<GTRecipe> iterator = lookup.iterator(group(ore(50)));
 
         assertTrue(iterator.hasNext());
         assertTrue(iterator.hasNext());
@@ -145,7 +147,7 @@ class GTRecipeLookupTest {
             lookup.add(recipe, groups(group(ore(100 + i))));
         }
 
-        Iterator<GTRecipe> iterator = lookup.iterator(groups(queryKeys));
+        Iterator<GTRecipe> iterator = lookup.iterator(queryKeys);
         for (GTRecipe recipe : recipes) {
             assertTrue(iterator.hasNext());
             assertSame(recipe, iterator.next());

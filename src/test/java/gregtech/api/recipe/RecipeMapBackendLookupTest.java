@@ -104,7 +104,7 @@ class RecipeMapBackendLookupTest {
         assertFalse(recipeLookupDirty(backend));
         List<GTRecipeLookupIngredient> runtimeInput = Collections
             .singletonList(GTItemStackLookupIngredient.fromRuntime(new ItemStack(input, 1, 0)));
-        Iterator<GTRecipe> matches = recipeLookup(backend).iterator(Collections.singletonList(runtimeInput));
+        Iterator<GTRecipe> matches = recipeLookup(backend).iterator(runtimeInput);
         assertSame(recipe, matches.next());
     }
 
@@ -716,24 +716,18 @@ class RecipeMapBackendLookupTest {
         @Override
         protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
-            List<List<GTRecipeLookupIngredient>> ingredients = new ArrayList<>();
+            List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
 
             for (ItemStack item : items) {
                 if (item == null) continue;
 
-                List<GTRecipeLookupIngredient> group = new ArrayList<>();
-                RecipeMapBackend.addRuntimeItemStackLookupIngredients(group, item);
-                if (!group.isEmpty()) {
-                    ingredients.add(group);
-                }
+                RecipeMapBackend.addRuntimeItemStackLookupIngredients(ingredients, item);
             }
 
             for (FluidStack fluid : fluids) {
                 if (fluid == null || fluid.getFluid() == null) continue;
 
-                List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
-                group.add(new GTFluidLookupIngredient(fluid));
-                ingredients.add(group);
+                ingredients.add(new GTFluidLookupIngredient(fluid));
             }
 
             if (ingredients.isEmpty()) {

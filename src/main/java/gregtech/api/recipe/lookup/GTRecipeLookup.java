@@ -27,9 +27,9 @@ public final class GTRecipeLookup {
         addRecursive(recipe, ingredients, rootBranch, 0);
     }
 
-    public Iterator<GTRecipe> iterator(List<List<GTRecipeLookupIngredient>> ingredients) {
-        validateIngredients(ingredients);
-        return new RecipeIterator(rootBranch, flattenIngredients(ingredients));
+    public Iterator<GTRecipe> iterator(List<GTRecipeLookupIngredient> ingredients) {
+        validateRuntimeIngredients(ingredients);
+        return new RecipeIterator(rootBranch, ingredients);
     }
 
     GTRecipeLookupBranch getRootBranch() {
@@ -89,21 +89,14 @@ public final class GTRecipeLookup {
         }
     }
 
-    private static List<GTRecipeLookupIngredient> flattenIngredients(List<List<GTRecipeLookupIngredient>> ingredients) {
-        if (ingredients.size() == 1) {
-            return ingredients.get(0);
+    private static void validateRuntimeIngredients(List<GTRecipeLookupIngredient> ingredients) {
+        Objects.requireNonNull(ingredients, "ingredients");
+        if (ingredients.isEmpty()) {
+            throw new IllegalArgumentException("ingredients must not be empty");
         }
-
-        int size = 0;
-        for (List<GTRecipeLookupIngredient> group : ingredients) {
-            size += group.size();
+        for (GTRecipeLookupIngredient ingredient : ingredients) {
+            Objects.requireNonNull(ingredient, "ingredient");
         }
-
-        List<GTRecipeLookupIngredient> flattened = new ArrayList<>(size);
-        for (List<GTRecipeLookupIngredient> group : ingredients) {
-            flattened.addAll(group);
-        }
-        return flattened;
     }
 
     static final class Node {

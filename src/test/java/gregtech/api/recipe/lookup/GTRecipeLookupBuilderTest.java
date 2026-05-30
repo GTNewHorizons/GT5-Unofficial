@@ -45,9 +45,9 @@ class GTRecipeLookupBuilderTest {
             .build();
 
         Iterator<GTRecipe> iterator = lookup.iterator(
-            groups(
-                group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 2))),
-                group(new GTFluidLookupIngredient(fluid))));
+            group(
+                GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 2)),
+                new GTFluidLookupIngredient(fluid)));
 
         assertSame(recipe, onlyResult(iterator));
     }
@@ -63,12 +63,11 @@ class GTRecipeLookupBuilderTest {
         GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
             .build();
 
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTOreDictLookupIngredient(7001))))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(new GTOreDictLookupIngredient(7001)))));
         assertSame(
             recipe,
             onlyResult(
-                lookup.iterator(
-                    groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(alternative, 1, 0)))))));
+                lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(alternative, 1, 0))))));
     }
 
     @Test
@@ -83,9 +82,9 @@ class GTRecipeLookupBuilderTest {
         GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
             .build();
 
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTFluidLookupIngredient(fluid))))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(new GTFluidLookupIngredient(fluid)))));
         assertFalse(
-            lookup.iterator(groups(group(new GTOreDictLookupIngredient(7003))))
+            lookup.iterator(group(new GTOreDictLookupIngredient(7003)))
                 .hasNext());
     }
 
@@ -115,14 +114,11 @@ class GTRecipeLookupBuilderTest {
 
         assertSame(
             recipe,
-            onlyResult(
-                lookup
-                    .iterator(groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(firstAlt, 1, 3)))))));
+            onlyResult(lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(firstAlt, 1, 3))))));
         assertSame(
             recipe,
             onlyResult(
-                lookup.iterator(
-                    groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(secondAlt, 64, 4)))))));
+                lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(secondAlt, 64, 4))))));
     }
 
     @Test
@@ -135,8 +131,8 @@ class GTRecipeLookupBuilderTest {
         GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
             .build();
 
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTFluidLookupIngredient(main))))));
-        assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTFluidLookupIngredient(alternative))))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(new GTFluidLookupIngredient(main)))));
+        assertSame(recipe, onlyResult(lookup.iterator(group(new GTFluidLookupIngredient(alternative)))));
     }
 
     @Test
@@ -149,7 +145,7 @@ class GTRecipeLookupBuilderTest {
             .build();
 
         assertFalse(
-            lookup.iterator(groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 0)))))
+            lookup.iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 0))))
                 .hasNext());
     }
 
@@ -167,9 +163,9 @@ class GTRecipeLookupBuilderTest {
             .build();
 
         Iterator<GTRecipe> iterator = lookup.iterator(
-            groups(
-                group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(common, 1, 0))),
-                group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(rare, 1, 0)))));
+            group(
+                GTItemStackLookupIngredient.fromRuntime(new ItemStack(common, 1, 0)),
+                GTItemStackLookupIngredient.fromRuntime(new ItemStack(rare, 1, 0))));
 
         assertSame(prefixRecipe, iterator.next());
         assertSame(overlappingRecipe, iterator.next());
@@ -187,7 +183,7 @@ class GTRecipeLookupBuilderTest {
             .build();
 
         Iterator<GTRecipe> iterator = lookup
-            .iterator(groups(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 0)))));
+            .iterator(group(GTItemStackLookupIngredient.fromRuntime(new ItemStack(item, 1, 0))));
 
         assertSame(first, iterator.next());
         assertSame(second, iterator.next());

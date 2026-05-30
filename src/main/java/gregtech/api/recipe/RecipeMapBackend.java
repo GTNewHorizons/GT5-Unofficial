@@ -1408,25 +1408,19 @@ public class RecipeMapBackend {
 
     protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
         @Nullable FluidStack @NotNull [] fluids) {
-        List<List<GTRecipeLookupIngredient>> ingredients = new ArrayList<>();
+        List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
 
         for (ItemStack item : items) {
             if (item == null) continue;
 
-            List<GTRecipeLookupIngredient> group = new ArrayList<>();
-            addRuntimeItemStackLookupIngredients(group, item);
-            addRuntimeOreDictLookupIngredients(group, item);
-            if (!group.isEmpty()) {
-                ingredients.add(group);
-            }
+            addRuntimeItemStackLookupIngredients(ingredients, item);
+            addRuntimeOreDictLookupIngredients(ingredients, item);
         }
 
         for (FluidStack fluid : fluids) {
             if (fluid == null || fluid.getFluid() == null) continue;
 
-            List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
-            addLookupIngredient(group, new GTFluidLookupIngredient(fluid));
-            ingredients.add(group);
+            addLookupIngredient(ingredients, new GTFluidLookupIngredient(fluid));
         }
 
         if (ingredients.isEmpty()) {
@@ -1440,9 +1434,6 @@ public class RecipeMapBackend {
     static void addRuntimeItemStackLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
         addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
-        if (item.hasTagCompound()) {
-            addLookupIngredient(group, GTItemStackLookupIngredient.fromNbtSensitiveRecipe(item));
-        }
     }
 
     private static void addRuntimeOreDictLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
