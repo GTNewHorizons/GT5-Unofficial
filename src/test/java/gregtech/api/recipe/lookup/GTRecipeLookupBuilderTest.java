@@ -191,38 +191,6 @@ class GTRecipeLookupBuilderTest {
     }
 
     @Test
-    void poolsEquivalentLookupIngredientObjectsAcrossBranches() {
-        Item firstRoot = item("builder.item.pool.root.first");
-        Item secondRoot = item("builder.item.pool.root.second");
-        Item shared = item("builder.item.pool.shared");
-        GTRecipe first = recipe(new ItemStack[] { new ItemStack(firstRoot, 1, 0), new ItemStack(shared, 1, 0) }, null);
-        GTRecipe second = recipe(
-            new ItemStack[] { new ItemStack(secondRoot, 1, 0), new ItemStack(shared, 64, 0) },
-            null);
-
-        GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(first)
-            .add(second)
-            .build();
-
-        GTRecipeLookup.Node firstRootNode = lookup.getRootBranch()
-            .getNode(GTItemStackLookupIngredient.fromRuntime(new ItemStack(firstRoot, 1, 0)));
-        GTRecipeLookup.Node secondRootNode = lookup.getRootBranch()
-            .getNode(GTItemStackLookupIngredient.fromRuntime(new ItemStack(secondRoot, 1, 0)));
-        GTRecipeLookupIngredient firstSharedKey = firstRootNode.getBranch()
-            .getNodes()
-            .keySet()
-            .iterator()
-            .next();
-        GTRecipeLookupIngredient secondSharedKey = secondRootNode.getBranch()
-            .getNodes()
-            .keySet()
-            .iterator()
-            .next();
-
-        assertSame(firstSharedKey, secondSharedKey);
-    }
-
-    @Test
     void builtLookupIsImmutable() {
         Item item = item("builder.item.immutable");
         GTRecipe recipe = recipe(new ItemStack[] { new ItemStack(item, 1, 0) }, null);

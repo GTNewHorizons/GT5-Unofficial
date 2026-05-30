@@ -32,10 +32,6 @@ public final class GTRecipeLookup {
         return new RecipeIterator(rootBranch, ingredients);
     }
 
-    GTRecipeLookupBranch getRootBranch() {
-        return rootBranch;
-    }
-
     void freeze() {
         frozen = true;
     }
@@ -125,10 +121,6 @@ public final class GTRecipeLookup {
 
         boolean hasRecipes() {
             return recipes != null && !recipes.isEmpty();
-        }
-
-        GTRecipeLookupBranch getBranch() {
-            return branch;
         }
 
         void addRecipe(GTRecipe recipe) {

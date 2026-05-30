@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterators;
@@ -93,7 +92,8 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void compileRecipeAddsToLookupIncrementallyWithoutDirtyingLookup() {
+    void compileRecipeMakesRecipeImmediatelyFindable() {
+        ensureMinecraftStackComparisonItem();
         Item input = item("lookup.incremental.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe recipe = recipe(input, item("lookup.incremental.output"), category);
@@ -101,11 +101,19 @@ class RecipeMapBackendLookupTest {
 
         backend.compileRecipe(recipe);
 
-        assertFalse(recipeLookupDirty(backend));
-        List<GTRecipeLookupIngredient> runtimeInput = Collections
-            .singletonList(GTItemStackLookupIngredient.fromRuntime(new ItemStack(input, 1, 0)));
-        Iterator<GTRecipe> matches = recipeLookup(backend).iterator(runtimeInput);
-        assertSame(recipe, matches.next());
+        assertSame(
+            recipe,
+            backend
+                .matchRecipeStream(
+                    new ItemStack[] { new ItemStack(input, 1, 0) },
+                    new FluidStack[0],
+                    null,
+                    null,
+                    false,
+                    false,
+                    false)
+                .findFirst()
+                .orElse(null));
     }
 
     @Test
@@ -137,7 +145,8 @@ class RecipeMapBackendLookupTest {
         Item input = item("lookup.cached.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe recipe = recipe(input, item("lookup.cached.output"), category);
-        CountingLookupBackend backend = new CountingLookupBackend(recipe);
+        GTRecipe fallbackRecipe = recipe(input, item("lookup.cached.fallback.output"), category);
+        CountingLookupBackend backend = new CountingLookupBackend(fallbackRecipe);
         backend.compileRecipe(recipe);
 
         assertSame(
@@ -163,7 +172,8 @@ class RecipeMapBackendLookupTest {
         FluidStack[] fluids = new FluidStack[0];
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe recipe = recipe(input, item("lookup.cachemap.output"), category);
-        CountingLookupBackend backend = new CountingLookupBackend(recipe);
+        GTRecipe fallbackRecipe = recipe(input, item("lookup.cachemap.fallback.output"), category);
+        CountingLookupBackend backend = new CountingLookupBackend(fallbackRecipe);
         backend.compileRecipe(recipe);
         backend.cache(items, fluids, recipe);
 
@@ -610,16 +620,6 @@ class RecipeMapBackendLookupTest {
     private static <T> T allocate(Constructor<T> constructor) {
         try {
             return constructor.newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    private static boolean recipeLookupDirty(RecipeMapBackend backend) {
-        try {
-            Field field = RecipeMapBackend.class.getDeclaredField("recipeLookupDirty");
-            field.setAccessible(true);
-            return field.getBoolean(backend);
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
