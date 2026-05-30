@@ -12,9 +12,9 @@ import gregtech.common.items.ItemStickyResin;
 
 public final class RubberTreeRegistrator {
 
-    private static final int WOOD_TREE_TAP_DURABILITY = 64;
-    private static final int BRONZE_TREE_TAP_DURABILITY = 256;
-    private static final int STEEL_TREE_TAP_DURABILITY = 2048;
+    private static final int TREE_TAP_WOODEN_DURABILITY = 64;
+    private static final int TREE_TAP_BRONZE_DURABILITY = 256;
+    private static final int TREE_TAP_STEEL_DURABILITY = 2048;
 
     private RubberTreeRegistrator() {}
 
@@ -42,31 +42,31 @@ public final class RubberTreeRegistrator {
     public static void initItems() {
         ItemList.Sticky_Resin.set(new ItemStickyResin("item_sticky_resin", "Sticky Resin", "Sap of a Rubber Tree"));
 
-        ItemList.Tree_Tap_Wood.set(
+        ItemList.Tree_Tap_Wooden.set(
             new ItemRubberTreeTap(
-                "item_tree_tap_wood",
+                "item_tree_tap_wooden",
                 "Wooden Tree Tap",
                 "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
-                WOOD_TREE_TAP_DURABILITY));
+                TREE_TAP_WOODEN_DURABILITY));
         ItemList.Tree_Tap_Bronze.set(
             new ItemRubberTreeTap(
                 "item_tree_tap_bronze",
                 "Bronze Tree Tap",
                 "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
-                BRONZE_TREE_TAP_DURABILITY));
+                TREE_TAP_BRONZE_DURABILITY));
         ItemList.Tree_Tap_Steel.set(
             new ItemRubberTreeTap(
                 "item_tree_tap_steel",
                 "Steel Tree Tap",
                 "Can be installed on a Rubber Tree with a soft mallet in right hand and Tree Tap in left hand",
-                STEEL_TREE_TAP_DURABILITY));
+                TREE_TAP_STEEL_DURABILITY));
 
         registerTreeTapOreDictionaryEntries();
         registerTreeTapRecipes();
     }
 
     private static void registerTreeTapOreDictionaryEntries() {
-        OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Wood.get(1));
+        OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Wooden.get(1));
         OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Bronze.get(1));
         OreDictionary.registerOre("treeTapRubber", ItemList.Tree_Tap_Steel.get(1));
     }
@@ -74,7 +74,7 @@ public final class RubberTreeRegistrator {
     private static void registerTreeTapRecipes() {
         GameRegistry.addRecipe(
             new ShapedOreRecipe(
-                ItemList.Tree_Tap_Wood.get(1),
+                ItemList.Tree_Tap_Wooden.get(1),
                 " P ",
                 "PSP",
                 " S ",

@@ -42,11 +42,11 @@ public class BlockRubberLogNatural extends Block {
     private IIcon topIcon;
     private IIcon tappedSideIcon;
     @SideOnly(Side.CLIENT)
-    private static IIcon woodendTreeTapRenderIcon;
+    private static IIcon treeTapWoodenRenderIcon;
     @SideOnly(Side.CLIENT)
-    private static IIcon bronzeTreeTapRenderIcon;
+    private static IIcon treeTapBronzeRenderIcon;
     @SideOnly(Side.CLIENT)
-    private static IIcon steelTreeTapRenderIcon;
+    private static IIcon treeTapSteelRenderIcon;
 
     public BlockRubberLogNatural() {
         super(Material.wood);
@@ -84,11 +84,26 @@ public class BlockRubberLogNatural extends Block {
         this.topIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_top");
 
         this.tappedSideIcon = iconRegister.registerIcon("gregtech:rubbertree/rubber_log_tap_side");
-        woodendTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_wooden");
-        bronzeTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_bronze");
-        steelTreeTapRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_steel");
+        treeTapWoodenRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_wooden");
+        treeTapBronzeRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_bronze");
+        treeTapSteelRenderIcon = iconRegister.registerIcon("gregtech:rubbertree/tree_tap_steel");
 
         this.blockIcon = this.sideIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static IIcon getTreeTapWoodenRenderIcon() {
+        return treeTapWoodenRenderIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static IIcon getTreeTapBronzeRenderIcon() {
+        return treeTapBronzeRenderIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static IIcon getTreeTapSteelRenderIcon() {
+        return treeTapSteelRenderIcon;
     }
 
     @Override
@@ -455,21 +470,5 @@ public class BlockRubberLogNatural extends Block {
         EntityItem entityItem = new EntityItem(world, spawnX, spawnY, spawnZ, stack);
         entityItem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityItem);
-    }
-
-    // 3D special renderer
-    @SideOnly(Side.CLIENT)
-    public static IIcon getWoodendTreeTapRenderIcon() {
-        return woodendTreeTapRenderIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static IIcon getBronzeTreeTapRenderIcon() {
-        return bronzeTreeTapRenderIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static IIcon getSteelTreeTapRenderIcon() {
-        return steelTreeTapRenderIcon;
     }
 }

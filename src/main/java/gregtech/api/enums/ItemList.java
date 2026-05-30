@@ -81,7 +81,7 @@ public enum ItemList implements IItemContainer {
     IC2_Mixed_Metal_Ingot,
     IC2_Resin,
     Sticky_Resin,
-    Tree_Tap_Wood,
+    Tree_Tap_Wooden,
     Tree_Tap_Bronze,
     Tree_Tap_Steel,
     IC2_Plantball,

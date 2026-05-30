@@ -127,19 +127,19 @@ public class RenderRubberTreeTap extends TileEntitySpecialRenderer {
             return null;
         }
 
-        if (isSameItem(tapStack, ItemList.Tree_Tap_Wood.get(1))) {
-            return BlockRubberLogNatural.getWoodendTreeTapRenderIcon();
+        if (isSameItem(tapStack, ItemList.Tree_Tap_Wooden.get(1))) {
+            return BlockRubberLogNatural.getTreeTapWoodenRenderIcon();
         }
 
         if (isSameItem(tapStack, ItemList.Tree_Tap_Bronze.get(1))) {
-            return BlockRubberLogNatural.getBronzeTreeTapRenderIcon();
+            return BlockRubberLogNatural.getTreeTapBronzeRenderIcon();
         }
 
         if (isSameItem(tapStack, ItemList.Tree_Tap_Steel.get(1))) {
-            return BlockRubberLogNatural.getSteelTreeTapRenderIcon();
+            return BlockRubberLogNatural.getTreeTapSteelRenderIcon();
         }
 
-        return BlockRubberLogNatural.getWoodendTreeTapRenderIcon();
+        return BlockRubberLogNatural.getTreeTapWoodenRenderIcon();
     }
 
     private static boolean isSameItem(ItemStack stack, ItemStack expected) {
