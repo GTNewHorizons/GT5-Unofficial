@@ -134,8 +134,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addElement('F', ofFrame(Materials.StainlessSteel))
             .addElement('G', ofSheetMetal(Materials.Naquadah))
             .addElement('H', Casings.StrongBronzeMachineCasing.asElement())
-            //first slice hatches
-            .addElement('1',
+            // first slice hatches
+            .addElement(
+                '1',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(Maintenance, InputBus, Energy.or(ExoticEnergy))
                     .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                     .hint(1)
@@ -155,7 +156,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(2)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
-            //middle slice hatches
+            // middle slice hatches
             .addElement(
                 '4',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(bottomLayeredOutputHatch)
@@ -168,7 +169,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(5)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
-            //top slice hatch
+            // top slice hatch
             .addElement(
                 '6',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
@@ -200,22 +201,38 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         this.outputHatchesPerLayer.forEach(List::clear);
         this.height = 1;
         this.isTopLayerFound = false;
-
         if (!checkPiece(STRUCTURE_PIECE_BASE, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
         List<Integer> missingLayers = new ArrayList<>();
 
         while (this.height <= 5) {
-            if(checkPiece(STRUCTURE_PIECE_TOP, HORIZONTAL_OFFSET, FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height-1)), DEPTH_OFFSET, null)) {
-                int topHatchIndex = this.height * 2;
+
+            if (this.isTopLayerFound) {
+                int topHatchIndex = (this.height - 1) * 2;
                 if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
                     || this.outputHatchesPerLayer.get(topHatchIndex)
-                    .isEmpty()) {
-                    missingLayers.add(height + 1);
+                        .isEmpty()) {
+                    missingLayers.add(height);
                 }
+
                 break;
             }
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, HORIZONTAL_OFFSET, LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * height), DEPTH_OFFSET, errors)) return;
+
+            if (checkPiece(
+                STRUCTURE_PIECE_TOP,
+                HORIZONTAL_OFFSET,
+                FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height)),
+                DEPTH_OFFSET,
+                null)) {
+
+                this.isTopLayerFound = true;
+            }
+            if (!checkPiece(
+                STRUCTURE_PIECE_LAYER,
+                HORIZONTAL_OFFSET,
+                LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * height),
+                DEPTH_OFFSET,
+                errors)) return;
 
             // there are 5 total middle layers that output hatches may be on, exlcuding the top layer
             int outputHatchLayers = this.height * 2; // this is the amount of output hatches expected
