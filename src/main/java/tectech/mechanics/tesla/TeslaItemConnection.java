@@ -4,27 +4,24 @@ import static tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNod
 
 import java.util.Objects;
 
-import ic2.api.item.ElectricItem;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import org.lwjgl.Sys;
+import ic2.api.item.ElectricItem;
 
 public class TeslaItemConnection implements ITeslaConnectableSimple {
 
     private final EntityLivingBase entity;
     private final ItemStack stack;
     private final byte teslaReceptionCapability;
-    private boolean pls=true;
-    public TeslaItemConnection(EntityLivingBase entity,ItemStack stack, byte teslaReceptionCapability) {
+    private boolean once = true;
+
+    public TeslaItemConnection(EntityLivingBase entity, ItemStack stack, byte teslaReceptionCapability) {
         this.entity = entity;
-        this.stack=stack;
+        this.stack = stack;
         this.teslaReceptionCapability = teslaReceptionCapability;
     }
 
@@ -40,17 +37,17 @@ public class TeslaItemConnection implements ITeslaConnectableSimple {
 
     @Override
     public boolean isTeslaReadyToReceive() {
-        return pls;
+        return once;
     }
 
     @Override
     public long getTeslaStoredEnergy() {
-        return (long)ElectricItem.manager.getCharge(stack);
+        return (long) ElectricItem.manager.getCharge(stack);
     }
 
     @Override
     public Vec3Impl getTeslaPosition() {
-        return new Vec3Impl((int)entity.posX,(int)entity.posY,(int)entity.posZ);
+        return new Vec3Impl((int) entity.posX, (int) entity.posY, (int) entity.posZ);
     }
 
     @Override
@@ -64,15 +61,15 @@ public class TeslaItemConnection implements ITeslaConnectableSimple {
         boolean output = false;
 
         if (!entity.isDead) {
-            if (ElectricItem.manager.charge(stack,teslaVoltageInjected,Integer.MAX_VALUE,true,true)==teslaVoltageInjected)
-            {
-                output=true;
-                ElectricItem.manager.charge(stack,teslaVoltageInjected,Integer.MAX_VALUE,true,false);
+            if (ElectricItem.manager.charge(stack, teslaVoltageInjected, Integer.MAX_VALUE, true, true)
+                == teslaVoltageInjected) {
+                output = true;
+                ElectricItem.manager.charge(stack, teslaVoltageInjected, Integer.MAX_VALUE, true, false);
             }
         } else {
             teslaSimpleNodeSetRemoveScheduled(this);
         }
-        pls=false;
+        once = false;
 
         return output;
     }

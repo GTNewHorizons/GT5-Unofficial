@@ -1,10 +1,21 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gtPlusPlus.core.item.bauble.BatteryPackBaseBauble.getBaublesItems;
+
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import baubles.api.BaubleType;
-import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
-import com.google.common.collect.Multimap;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,31 +24,11 @@ import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import org.jetbrains.annotations.NotNull;
-import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
-import tectech.mechanics.tesla.ITeslaConnectableSimple;
-import tectech.mechanics.tesla.TeslaCoverConnection;
 import tectech.mechanics.tesla.TeslaItemConnection;
 
-import javax.sound.midi.SysexMessage;
-import java.util.HashSet;
-import java.util.List;
-
-import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gtPlusPlus.core.item.bauble.BatteryPackBaseBauble.getBaublesItems;
-
 public class BatteryPackTeslaBauble extends ElectricBaseBauble {
+
     public BatteryPackTeslaBauble(int tier) {
         super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPackTesla.0" + tier + ".name");
         String aUnlocalName = "GTPP.BattPackTesla.0" + tier + ".name";
@@ -93,8 +84,8 @@ public class BatteryPackTeslaBauble extends ElectricBaseBauble {
                 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
         list.add("");
-        list.add(EnumChatFormatting.YELLOW+aString5+EnumChatFormatting.GRAY);
-        list.add(EnumChatFormatting.RED+aString6+EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.YELLOW + aString5 + EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.RED + aString6 + EnumChatFormatting.GRAY);
         super.addInformation(stack, aPlayer, list, bool);
     }
 
@@ -115,40 +106,35 @@ public class BatteryPackTeslaBauble extends ElectricBaseBauble {
 
     @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {
-        /**if (arg1.worldObj.isRemote) {return;}
-        ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
-            new TeslaItemConnection(
-                arg1,
-                arg0,
-                (byte) 2
-            ));**/ // doesnt work :sad:
+        /**
+         * if (arg1.worldObj.isRemote) {return;}
+         * ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
+         * new TeslaItemConnection(
+         * arg1,
+         * arg0,
+         * (byte) 2
+         * ));
+         **/ // doesnt work :sad:
     }
 
     @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {
-        if (arg1.worldObj.isRemote) {return;}
-        ITeslaConnectable.TeslaUtil
-            .teslaSimpleNodeSetRemove(new TeslaItemConnection(
-                arg1,
-                arg0,
-                (byte) 2
-            ));
+        if (arg1.worldObj.isRemote) {
+            return;
+        }
+        ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(new TeslaItemConnection(arg1, arg0, (byte) 2));
     }
 
     @Override
     public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aLivingBase) {
         if (!aLivingBase.worldObj.isRemote) {
-            TeslaItemConnection connect= new TeslaItemConnection(
-                aLivingBase,
-                aBaubleStack,
-                (byte) 2
-            );
+            TeslaItemConnection connect = new TeslaItemConnection(aLivingBase, aBaubleStack, (byte) 2);
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(connect);
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(connect);
             try {
-                //System.out.println("I AM REAL, I AM ALIVE");
-                //double d = ElectricItem.manager.charge(aBaubleStack,2048,mTier,true,false);
-                //System.out.println(d);
+                // System.out.println("I AM REAL, I AM ALIVE");
+                // double d = ElectricItem.manager.charge(aBaubleStack,2048,mTier,true,false);
+                // System.out.println(d);
 
                 if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
                     if (aLivingBase instanceof EntityPlayer aPlayer) {
@@ -161,7 +147,7 @@ public class BatteryPackTeslaBauble extends ElectricBaseBauble {
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
 
                         // baubles
-                        inv=getBaublesItems(aPlayer);
+                        inv = getBaublesItems(aPlayer);
                         chargeInventory(inv, inv.length, aBaubleStack);
                     }
                 }

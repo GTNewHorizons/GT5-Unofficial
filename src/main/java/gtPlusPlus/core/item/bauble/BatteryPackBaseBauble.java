@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import baubles.api.BaublesApi;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -26,7 +28,6 @@ import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import org.jetbrains.annotations.NotNull;
 
 public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
@@ -138,7 +139,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
 
                         // baubles
-                        inv=getBaublesItems(aPlayer);
+                        inv = getBaublesItems(aPlayer);
                         chargeInventory(inv, inv.length, aBaubleStack);
                     }
                 }

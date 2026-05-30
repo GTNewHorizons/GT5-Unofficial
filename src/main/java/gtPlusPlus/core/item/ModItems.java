@@ -9,7 +9,6 @@ import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
-import gtPlusPlus.core.item.bauble.BatteryPackTeslaBauble;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -32,6 +31,7 @@ import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
+import gtPlusPlus.core.item.bauble.BatteryPackTeslaBauble;
 import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
@@ -366,6 +366,7 @@ public final class ModItems {
         registerTieredTooltip(new ItemStack(item, 1, GTRecipeBuilder.WILDCARD), GTTooltipHandler.Tier.values()[tier]);
         return item;
     }
+
     private static Item registerTeslaChargePack(int tier) {
         Item item = new BatteryPackTeslaBauble(tier);
         registerTieredTooltip(new ItemStack(item, 1, GTRecipeBuilder.WILDCARD), GTTooltipHandler.Tier.values()[tier]);
