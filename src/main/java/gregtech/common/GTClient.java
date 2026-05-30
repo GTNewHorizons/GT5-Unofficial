@@ -33,6 +33,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -89,6 +90,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
@@ -624,6 +626,11 @@ public class GTClient extends GTProxy {
             if (hazard == Hazard.SPACE) continue;
             addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
+    }
+
+    @SubscribeEvent
+    public void onFinishTextureStitch(TextureStitchEvent.Post event) {
+        ResourceUtils.clearCache();
     }
 
     private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {

@@ -1870,7 +1870,7 @@ public class GTProxy implements IFuelHandler {
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
-                                                        .eut(8)
+                                                        .eut(TierEU.RECIPE_ULV)
                                                         .addTo(cutterRecipes);
                                                 }
                                     }
