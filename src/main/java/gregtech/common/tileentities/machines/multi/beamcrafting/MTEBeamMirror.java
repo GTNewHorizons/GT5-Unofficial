@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,6 +35,8 @@ import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_TIER2 = "tier2";
+    protected byte mTier = 1;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -73,6 +76,42 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "BBB",
                 "BBB"
             }})
+        //spotless:on
+        .addShape(
+            STRUCTURE_PIECE_TIER2,
+            // spotless:off
+            new String[][]{{
+                "EEE",
+                "EDE",
+                "   ",
+                "ECE",
+                "E~E"
+            },{
+                "BBB",
+                "BAB",
+                "   ",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BAB",
+                "   ",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BAB",
+                "BAB",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BBB",
+                "BBB",
+                "BBB",
+                "BBB"
+            }}
+        )
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
@@ -150,13 +189,11 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .beginStructureBlock(3, 5, 5, false)
             .addController(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                40,
-                false)
-            .addCasingInfoExactly(
+            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 31, 47, false)
+            .addCasingInfoRange(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
                 5,
+                7,
                 true)
             .addCasingInfoExactly(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
@@ -177,12 +214,20 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        if (stackSize.stackSize >= 2) {
+            buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, 1, 4, 0);
+        } else {
+            buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
+
+        if (stackSize.stackSize >= 2) {
+            return survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        }
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 
@@ -190,6 +235,59 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mInputBeamline.clear();
         mOutputBeamline.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) return;
+
+        if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 4, 0, null)) {
+            mTier = 2;
+            return;
+        }
+        mTier = 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
+            return;
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setByte("mTier", mTier);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("mTier")) {
+            mTier = aNBT.getByte("mTier");
+        }
+        super.loadNBTData(aNBT);
+    }
+
+    public boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
+
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
+
+        if (mte instanceof MTEHatchOutputBeamline beamOutput) {
+            if (this.mTier == 2) {
+                beamOutput.getBaseMetaTileEntity()
+                    .setFrontFacing(getDirection());
+            } else {
+                boolean isFlipped = getFlip().isHorizontallyFlipped();
+                switch (getRotation()) {
+                    case NORMAL -> beamOutput.getBaseMetaTileEntity()
+                        .setFrontFacing(ForgeDirection.UP);
+                    case UPSIDE_DOWN -> beamOutput.getBaseMetaTileEntity()
+                        .setFrontFacing(ForgeDirection.DOWN);
+                    case CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
+                        .setFrontFacing(getDirection().getRotation(isFlipped ? ForgeDirection.UP : ForgeDirection.DOWN));
+                    case COUNTER_CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
+                        .setFrontFacing(getDirection().getRotation(isFlipped ? ForgeDirection.DOWN : ForgeDirection.UP));
+                    default -> beamOutput.getBaseMetaTileEntity()
+                        .setFrontFacing(getDirection().getRotation(ForgeDirection.UP));
+                }
+            }
+            return this.mOutputBeamline.add(beamOutput);
+        }
+
+        return false;
     }
 }
