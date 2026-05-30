@@ -143,7 +143,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             //spotless:on
             .addElement(
                 'P',
-                buildHatchAdder(MTELargeBoilerBase.class).atLeast(InputHatch, OutputHatch)
+                buildHatchAdder(MTELargeBoilerBase.class).atLeast(InputHatch, InputBus, OutputHatch)
                     .casingIndex(pipeCasing.getTextureId())
                     .hint(1)
                     .buildAndChain(
@@ -232,13 +232,13 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             .addCasingInfoMin(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, false)
             .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 3 minimum")
             .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Block", "Inner 3 blocks")
-            .addMaintenanceHatch("Any Machine or Firebox Casing", 2)
-            .addMufflerHatch("Any Machine or Firebox Casing", 2)
-            .addInputBus("Solid fuel, any Machine or Firebox Casing", 2)
-            .addInputHatch("Liquid fuel, any Pipe Casing", 1)
+            .addMaintenanceHatch("Any Firebox Casing", 1)
+            .addMufflerHatch("Any Firebox Casing", 1)
+            .addInputBus("Solid fuel, any Firebox Casing", 1)
+            .addInputHatch("Liquid fuel, any Firebox Casing", 1)
             .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, any Pipe Casing", 1)
-            .addOutputHatch("Steam, any Pipe Casing", 1)
+            .addInputHatch("Water, any Firebox Casing", 1)
+            .addOutputHatch("Steam, any Casing", 2)
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
 
