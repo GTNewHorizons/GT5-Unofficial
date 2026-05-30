@@ -62,7 +62,6 @@ import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable {
 
-    // todo: tooltip, recipes and migration
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
 

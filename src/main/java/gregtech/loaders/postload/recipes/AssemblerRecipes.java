@@ -3371,6 +3371,20 @@ public class AssemblerRecipes implements Runnable {
             .eut(16)
             .duration(50 * TICKS)
             .addTo(assemblerRecipes);
+
+        // Naquadah Reinforced Distillation Casing
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_CleanStainlessSteel.get(4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.CasingNaquadahReinforcedDistillation.get(4))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
     }
 
     /**
