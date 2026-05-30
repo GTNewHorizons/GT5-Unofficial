@@ -709,7 +709,7 @@ public class RecipeMapBackend {
                 try {
                     backend.ensureLookupCurrent();
                     for (GTRecipe recipe : recipes) {
-                        if (hasLookupIngredients(recipe)) {
+                        if (shouldValidateRecipe(recipe)) {
                             validateRecipe(target, recipe);
                         }
                         processedRecipes++;
@@ -728,6 +728,10 @@ public class RecipeMapBackend {
             if (!issues.isEmpty()) {
                 throw buildException();
             }
+        }
+
+        private boolean shouldValidateRecipe(GTRecipe recipe) {
+            return recipe.mEnabled && !recipe.mFakeRecipe && hasLookupIngredients(recipe);
         }
 
         private void validateRecipe(RecipeLookupValidationTarget target, GTRecipe recipe) {

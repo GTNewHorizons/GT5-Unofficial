@@ -72,6 +72,24 @@ class GTRecipeLookupBuilderTest {
     }
 
     @Test
+    void ignoresOreDictIdWhenRecipeInputSlotIsNull() {
+        Fluid fluid = new Fluid("builder_fluid_null_ore_slot");
+        GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(
+            new ItemStack[] { null },
+            new FluidStack[] { fluidStack(fluid, 750) });
+        recipe.mOreDictIds = new int[] { 7003 };
+        recipe.mOreDictAlt = new ItemStack[][] { new ItemStack[0] };
+
+        GTRecipeLookup lookup = new GTRecipeLookupBuilder().add(recipe)
+            .build();
+
+        assertSame(recipe, onlyResult(lookup.iterator(groups(group(new GTFluidLookupIngredient(fluid))))));
+        assertFalse(
+            lookup.iterator(groups(group(new GTOreDictLookupIngredient(7003))))
+                .hasNext());
+    }
+
+    @Test
     void oreDictAltRecipeInputMatchesAlternativeStackWhenOreIdDoesNot() {
         ensureMinecraftStackComparisonItem();
         Item representative = item("builder.item.ore.match.representative");

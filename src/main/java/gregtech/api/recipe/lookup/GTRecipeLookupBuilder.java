@@ -138,6 +138,10 @@ public final class GTRecipeLookupBuilder {
             : null;
 
         for (int i = 0; i < inputs.length; i++) {
+            if (inputs[i] == null) {
+                continue;
+            }
+
             List<GTRecipeLookupIngredient> group = new ArrayList<>(1);
             int oreDictId = oreDictIdFor(recipeWithAlt, i);
             if (oreDictId >= 0) {

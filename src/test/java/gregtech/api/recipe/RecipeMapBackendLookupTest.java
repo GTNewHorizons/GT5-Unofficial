@@ -333,6 +333,31 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
+    void lookupVerifierIgnoresFakeRecipes() {
+        EmptyLookupBackend backend = new EmptyLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(item("lookup.validation.fake.input"), item("lookup.validation.fake.output"), category);
+        recipe.mFakeRecipe = true;
+        backend.compileRecipe(recipe);
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.fake", backend));
+    }
+
+    @Test
+    void lookupVerifierIgnoresDisabledRecipes() {
+        EmptyLookupBackend backend = new EmptyLookupBackend();
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            item("lookup.validation.disabled.input"),
+            item("lookup.validation.disabled.output"),
+            category);
+        recipe.mEnabled = false;
+        backend.compileRecipe(recipe);
+
+        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.disabled", backend));
+    }
+
+    @Test
     void runtimeItemStackKeysDoNotIncludeGtUnificationTarget() {
         ensureMinecraftStackComparisonItem();
         Item representativeItem = item("lookup.unified.representative");
