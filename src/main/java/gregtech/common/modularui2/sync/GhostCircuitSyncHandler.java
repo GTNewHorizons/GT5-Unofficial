@@ -36,11 +36,6 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
     public GhostCircuitSyncHandler(ModularSlot slot, IMetaTileEntity mte) {
         super(slot);
         this.mte = mte;
-    }
-
-    @Override
-    public void init(String key, PanelSyncManager syncHandler) {
-        super.init(key, syncHandler);
         if (mte instanceof IConfigurationCircuitSupport circuitEnabled && circuitEnabled.allowSelectCircuit()) {
             indexSync = new IntSyncValue(() -> {
                 ItemStack selectedItem = mte.getInventoryHandler()
@@ -61,13 +56,30 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
                     mte.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
                 }
             });
+        }
+    }
+
+    /**
+     * Registers the index sync value on the given sync manager. Must be called during widget construction,
+     * before {@link com.cleanroommc.modularui.value.sync.PanelSyncManager#initialize} runs, to avoid
+     * modifying the sync handler map during iteration.
+     */
+    public void registerIndexSync(PanelSyncManager syncManager, String key) {
+        if (indexSync != null) {
+            syncManager.syncValue(key, 0, indexSync);
+        }
+    }
+
+    @Override
+    public void init(String key, PanelSyncManager syncHandler) {
+        super.init(key, syncHandler);
+        if (indexSync != null) {
             indexSync.setChangeListener(() -> {
                 if (indexSync.getSyncManager()
                     .isClient()) return;
                 mte.getBaseMetaTileEntity()
                     .markInventoryBeenModified();
             });
-            syncHandler.syncValue(key, indexSync);
         }
     }
 
