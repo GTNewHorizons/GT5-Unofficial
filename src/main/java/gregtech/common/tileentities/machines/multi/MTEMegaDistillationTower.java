@@ -135,7 +135,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 }))
             // spotless:on
             // base structure blocks / elements
-            .addElement('A', Casings.NaquadahReinforcedDistillationCasing.asElement())
+            .addElement(
+                'A',
+                onElementPass(
+                    MTEMegaDistillationTower::onCasingAdded,
+                    Casings.NaquadahReinforcedDistillationCasing.asElement()))
             .addElement('B', Casings.SolidSteelMachineCasing.asElement())
             .addElement('C', Casings.BronzePipeCasing.asElement())
             .addElement('D', Casings.SteelPipeCasing.asElement())
@@ -264,7 +268,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
 
-        checkCasingMin(errors, casingAmount, 100);
+        checkCasingMin(errors, casingAmount, 150);
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
         checkHasInputHatch(errors);
@@ -324,6 +328,20 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 env,
                 false,
                 true);
+            if (currentLayer == 5) {
+                // workaround as for some reason highest middle level was not building the top piece
+                built += this.survivalBuildPiece(
+                    STRUCTURE_PIECE_TOP,
+                    stackSize,
+                    HORIZONTAL_OFFSET,
+                    FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + LAYER_OFFSET_INCREMENT * currentLayer,
+                    DEPTH_OFFSET,
+                    realBudget,
+                    env,
+                    false,
+                    true);
+                return built;
+            }
             if (built >= 0) return built;
         }
         return this.survivalBuildPiece(
