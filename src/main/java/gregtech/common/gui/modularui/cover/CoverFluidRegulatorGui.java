@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.MathUtils;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -91,42 +90,28 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
         return Flow.row()
             .child(
                 makeNumberField().value(new IntSyncValue(cover::getSpeed, cover::setSpeed).allowC2S())
-                    .setNumbers(cover::getMinSpeed, cover::getMaxSpeed)
+                    .numbersInt(cover::getMinSpeed, cover::getMaxSpeed)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.L")
                     .asWidget())
             .child(
                 makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi).allowC2S())
-                    .setValidator(this::validateTickRateText))
+                    .numbersInt(this::valiateTickRate, () -> TICK_RATE_MIN, () -> TICK_RATE_MAX)
+                    .defaultNumber(20))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Ticks")
                     .asWidget());
     }
 
-    private @NotNull String validateTickRateText(String tickRateText) {
-        return Long.toString(
-            (long) valiateTickRate(
-                MathUtils.parseExpression(tickRateText, cover.getTickRateForUi())
-                    .getResult() == null ? 20
-                        : MathUtils.parseExpression(tickRateText, cover.getTickRateForUi())
-                            .getResult()
-                            .getNumberValue()
-                            .doubleValue()));
-    }
-
     /**
      * This extra validation is required to make sure we don't exceed the maximum transfer rate of the cover
      */
-    private double valiateTickRate(double val) {
+    private int valiateTickRate(int val) {
         final int speed = cover.getSpeed();
         final long transferRate = cover.getTransferRate();
-        if (val > TICK_RATE_MAX) {
-            val = (long) TICK_RATE_MAX;
-        } else if (Math.abs(speed) > transferRate * val) {
-            val = Math.min(TICK_RATE_MAX, (Math.abs(speed) + transferRate - 1) / transferRate);
-        } else if (val < TICK_RATE_MIN) {
-            val = TICK_RATE_MIN;
+        if (Math.abs(speed) > transferRate * val) {
+            val = (int) ((Math.abs(speed) + transferRate - 1) / transferRate);
         }
         return val;
     }
