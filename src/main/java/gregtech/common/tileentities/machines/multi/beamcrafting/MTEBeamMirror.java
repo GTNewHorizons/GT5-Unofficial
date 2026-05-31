@@ -36,7 +36,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
-    private byte mTier = 2;
+    private byte mTier = 0;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -245,11 +245,8 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             mTier = 2;
             return;
         }
-        mTier = 1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
-            // "hack" for the next structure check, to ensure that rotations are correctly
-            // applied on the beam output during the structure check
-            mTier = 2;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
+            mTier = 1;
         }
     }
 
@@ -280,7 +277,8 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             if (this.mTier == 2) {
                 beamOutput.getBaseMetaTileEntity()
                     .setFrontFacing(getDirection());
-            } else {
+            } else if (this.mTier == 1) {
+                // only flip orientation I could achieve during tests
                 boolean isFlipped = getFlip().isHorizontallyFlipped();
                 switch (getRotation()) {
                     case NORMAL -> beamOutput.getBaseMetaTileEntity()
