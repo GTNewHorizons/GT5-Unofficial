@@ -49,11 +49,11 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                                     return true;
                                 }))
                         .child(
-                            new TextFieldWidget().setFormatAsInteger(true)
-                                .setDefaultNumber(0)
+                            new TextFieldWidget().formatAsInteger(true)
+                                .defaultNumber(0)
                                 .height(14)
                                 .setTextAlignment(Alignment.CENTER)
-                                .setNumbers(0, machine.MAX_CHANNEL)
+                                .numbersInt(0, machine.MAX_CHANNEL)
                                 .syncHandler("channel"))
                         .child(
                             new ButtonWidget<>().size(14)
