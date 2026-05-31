@@ -16,6 +16,7 @@ package bartworks.common.tileentities.tiered;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.items.ItemLabModule;
@@ -53,6 +54,10 @@ public class MTEBioLab extends MTEBasicMachine {
     private static final int TRANSFORMATION_MODULE = 3;
     private static final int CLONAL_CELLULAR_SYNTHESIS_MODULE = 4;
     private static final int INCUBATION_MODULE = 5;
+
+    public static final int DISH_ITEM_DAMAGE = 0;
+    public static final int FLASK_ITEM_DAMAGE = 1;
+    public static final int DETERGENT_ITEM_DAMAGE = 3;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -145,27 +150,36 @@ public class MTEBioLab extends MTEBasicMachine {
             .getItem() instanceof ItemLabModule) {
             int damage = this.getSpecialSlot()
                 .getItemDamage();
+            var inputSlot = this.getInputSlot();
             switch (damage) {
-                case DNA_EXTRACTION_MODULE:
-                    if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
-                        && this.mInventory[this.getInputSlot()].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot()].getItemDamage() == 0
-                        && this.mInventory[this.getInputSlot()].getTagCompound() != null
-                        && // checks if it is a Culture
-                        GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
-                        && this.mInventory[this.getInputSlot() + 1].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot() + 1].getItemDamage() == 1
-                        && this.mInventory[this.getInputSlot() + 1].getTagCompound() == null
-                        && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
-                        && this.mInventory[this.getInputSlot() + 2].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot() + 2].getItemDamage() == 3
-                        && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 3], Materials.Ethanol.getCells(1))
-                        && this.mFluid != null
-                        && this.mFluid.isFluidEqual(GTModHandler.getDistilledWater(1_000))
-                        && this.mFluid.amount >= 1000) {
-
-                        NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound()
+                case DNA_EXTRACTION_MODULE -> {
+                    int dishSlot = -1;
+                    int flaskSlot = -1;
+                    int detergentSlot = -1;
+                    int cellSlot = -1;
+                    boolean hasItems = false;
+                    for (int i = 0; i < this.mInputSlotCount; i++) {
+                        if (dishSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1) {
+                            hasItems = true;
+                            break;
+                        }
+                        if (this.mInventory[inputSlot + i] == null) {
+                            continue;
+                        }
+                        if (isValidLabPart(this.mInventory[inputSlot + i])) {
+                            switch (this.mInventory[inputSlot + i].getItemDamage()) {
+                                case DISH_ITEM_DAMAGE -> dishSlot = inputSlot + i;
+                                case FLASK_ITEM_DAMAGE -> flaskSlot = inputSlot + i;
+                                case DETERGENT_ITEM_DAMAGE -> detergentSlot = inputSlot + i;
+                                default -> {}
+                            }
+                        }
+                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], Materials.Ethanol.getCells(1))) {
+                            cellSlot = inputSlot + i;
+                        }
+                    }
+                    if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), 1000)) {
+                        NBTTagCompound DNABioDataTag = this.mInventory[dishSlot].getTagCompound()
                             .getCompoundTag("DNA");
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
                         BioData cultureDNABioData = BioData.getBioDataFromName(
@@ -177,7 +191,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         if (this.mTier < rTier + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i < this.mInputSlotCount; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
                         }
@@ -195,13 +209,10 @@ public class MTEBioLab extends MTEBasicMachine {
 
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
-                    break;
-                case PCR_THERMOCYCLE_MODULE: {
-                    if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
-                        && this.mInventory[this.getInputSlot()].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot()].getItemDamage() == 1
-                        && this.mInventory[this.getInputSlot()].getTagCompound() != null
-                        && // checks if it is a Culture
+                }
+                case PCR_THERMOCYCLE_MODULE -> {
+                    if (isStackLabPart(this.mInventory[this.getInputSlot()], FLASK_ITEM_DAMAGE) && // checks if it is a
+                                                                                                   // Culture
                         GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 3])
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 3], ItemList.Tool_DataOrb.get(1L))
@@ -211,9 +222,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 2], FluidLoader.BioLabFluidCells[3])
-                        && this.mFluid != null
-                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
-                        && this.mFluid.amount >= 1000) {
+                        && hasFluid(GTModHandler.getLiquidDNA(1_000), 1000)) {
                         NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound();
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
                         BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
@@ -222,7 +231,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i < this.mInputSlotCount; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
                         }
@@ -245,20 +254,14 @@ public class MTEBioLab extends MTEBasicMachine {
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                    break;
-                case PLASMID_SYNTHESIS_MODULE: {
+                case PLASMID_SYNTHESIS_MODULE -> {
                     ItemStack inp2 = ItemList.Tool_DataOrb.get(1L);
                     BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
                     BehaviourDataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
                             .areStacksEqual(FluidLoader.BioLabFluidCells[1], this.mInventory[this.getInputSlot()])
-                        && // checks
-                           // if
-                           // it
-                           // is
-                           // a
-                           // Culture
+                        && // checks if it is a Culture
                         GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioItemList.getPlasmidCell(null))
@@ -272,9 +275,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             .isEmpty()
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 3])
                         && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 3], inp2)
-                        && this.mFluid != null
-                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
-                        && this.mFluid.amount >= 1000) {
+                        && hasFluid(GTModHandler.getLiquidDNA(1_000), 1000)) {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2]));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
@@ -296,8 +297,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                    break;
-                case TRANSFORMATION_MODULE: {
+                case TRANSFORMATION_MODULE -> {
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot()], BioItemList.getPetriDish(null), true)
@@ -311,9 +311,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot() + 2], FluidLoader.BioLabFluidCells[2])
-                        && this.mFluid != null
-                        && this.mFluid.isFluidEqual(GTModHandler.getDistilledWater(1_000))
-                        && this.mFluid.amount >= 1000) {
+                        && hasFluid(GTModHandler.getDistilledWater(1_000), 1000)) {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromNBTTag(this.mInventory[this.getInputSlot() + 1].getTagCompound());
                         BioCulture bioCulture = BioCulture
@@ -337,8 +335,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                    break;
-                case CLONAL_CELLULAR_SYNTHESIS_MODULE: {
+                case CLONAL_CELLULAR_SYNTHESIS_MODULE -> {
                     ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
                     BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
 
@@ -357,8 +354,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             ItemList.Tool_DataOrb.get(1L),
                             true)
                         && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(this.mInventory[this.getInputSlot() + 3]))
-                        && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
-                        && this.mFluid.amount >= 8000) {
+                        && hasFluid(GTModHandler.getLiquidDNA(1_000), 8000)) {
 
                         BioData cultureDNABioData = BioData
                             .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3]));
@@ -382,13 +378,28 @@ public class MTEBioLab extends MTEBasicMachine {
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
                 }
-                    break;
-                case INCUBATION_MODULE:
-                default:
-                    break;
+                default -> {}
             }
         }
         return super.checkRecipe(skipOC);
+    }
+
+    private boolean hasFluid(FluidStack fluid, int atLeast) {
+        return this.mFluid != null && this.mFluid.isFluidEqual(fluid) && this.mFluid.amount >= atLeast;
+    }
+
+    /**
+     * Checks if the given stack is a LabPart of the given damage and has a NBTTagCompound
+     */
+    private boolean isStackLabPart(ItemStack stack, int damage) {
+        return GTUtility.isStackValid(stack) && stack.getItem() instanceof ItemLabParts
+            && stack.getItemDamage() == damage
+            && stack.getTagCompound() != null;
+    }
+
+    private boolean isValidLabPart(ItemStack stack) {
+        return GTUtility.isStackValid(stack) && stack.getItem() instanceof ItemLabParts
+            && stack.getTagCompound() != null;
     }
 
     @Override
