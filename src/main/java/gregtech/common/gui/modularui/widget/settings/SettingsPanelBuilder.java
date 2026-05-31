@@ -11,7 +11,6 @@ import java.util.function.IntSupplier;
 import java.util.function.LongConsumer;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import net.minecraftforge.fluids.Fluid;
@@ -27,6 +26,8 @@ import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.DAM;
+import com.cleanroommc.modularui.utils.MathUtils;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -73,72 +74,73 @@ public class SettingsPanelBuilder {
     }
 
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
-        UnaryOperator<Integer> validator) {
+        MathUtils.UnaryIntOperator validator) {
         return addIntEditor(label, getter, setter, validator, null);
     }
 
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
-        UnaryOperator<Integer> validator, WidgetConfigurator<TextFieldWidget> configure) {
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addIntEditor(label, new IntSyncValue(getter, setter).allowC2S(), validator, configure);
     }
 
     public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
-        UnaryOperator<Integer> validator) {
+        MathUtils.UnaryIntOperator validator) {
         return addIntEditor(label, value, validator, null);
     }
 
-    public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value, UnaryOperator<Integer> validator,
-        WidgetConfigurator<TextFieldWidget> configure) {
+    public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addTextField(label, value, (panel, syncManager, widget) -> {
-            widget.setNumbers(validator)
-                .setFormatAsInteger(true);
+            widget.numbersInt(validator);
+            widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
         });
     }
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
-        UnaryOperator<Long> validator) {
+        MathUtils.UnaryLongOperator validator) {
         return addLongEditor(label, getter, setter, validator, null);
     }
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
-        UnaryOperator<Long> validator, WidgetConfigurator<TextFieldWidget> configure) {
+        MathUtils.UnaryLongOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addLongEditor(label, new LongSyncValue(getter, setter).allowC2S(), validator, configure);
     }
 
-    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value, UnaryOperator<Long> validator) {
+    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value,
+        MathUtils.UnaryLongOperator validator) {
 
         return addLongEditor(label, value, validator, null);
     }
 
-    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value, UnaryOperator<Long> validator,
-        WidgetConfigurator<TextFieldWidget> configure) {
+    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value,
+        MathUtils.UnaryLongOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addTextField(label, value, (panel, syncManager, widget) -> {
-            widget.setNumbersLong(validator)
-                .setFormatAsInteger(true);
+            widget.numbersLong(validator);
+            widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
         });
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
-        UnaryOperator<Double> validator) {
+        DAM.UnaryDoubleOperator validator) {
         return addDoubleEditor(label, getter, setter, validator, null);
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
-        UnaryOperator<Double> validator, WidgetConfigurator<TextFieldWidget> configure) {
+        DAM.UnaryDoubleOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addDoubleEditor(label, new DoubleSyncValue(getter, setter).allowC2S(), validator, configure);
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, IStringValue<Double> value,
-        UnaryOperator<Double> validator) {
+        DAM.UnaryDoubleOperator validator) {
         return addDoubleEditor(label, value, validator, null);
     }
 
-    public SettingsPanelBuilder addDoubleEditor(IKey label, IStringValue<Double> value, UnaryOperator<Double> validator,
-        WidgetConfigurator<TextFieldWidget> configure) {
+    public SettingsPanelBuilder addDoubleEditor(IKey label, IStringValue<Double> value,
+        DAM.UnaryDoubleOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
         return addTextField(label, value, (panel, syncManager, widget) -> {
-            widget.setNumbersDouble(validator);
+            widget.numbersDouble(validator);
             if (configure != null) configure.configure(panel, syncManager, widget);
         });
     }
