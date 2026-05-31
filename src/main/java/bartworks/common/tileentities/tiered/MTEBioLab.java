@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.tiered;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -26,11 +25,11 @@ import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.util.BWTooltipReference;
-import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -61,6 +60,8 @@ public class MTEBioLab extends MTEBasicMachine {
     public static final int DETERGENT_ITEM_DAMAGE = 3;
     public static final int FLUORESCENT_DNA = 0;
     public static final int POLYMERASE = 3;
+
+    private final int R_TIER = 3;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -147,151 +148,16 @@ public class MTEBioLab extends MTEBasicMachine {
 
     @Override
     public int checkRecipe(boolean skipOC) {
-        int rTier = 3;
-
         if (this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule) {
             int damage = this.getSpecialSlot()
                 .getItemDamage();
-            var inputSlot = this.getInputSlot();
             switch (damage) {
                 case DNA_EXTRACTION_MODULE -> {
-                    int dishSlot = -1;
-                    int flaskSlot = -1;
-                    int detergentSlot = -1;
-                    int cellSlot = -1;
-                    boolean hasItems = false;
-                    for (int i = 0; i < this.mInputSlotCount; i++) {
-                        if (dishSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1) {
-                            hasItems = true;
-                            break;
-                        }
-                        if (this.mInventory[inputSlot + i] == null) {
-                            continue;
-                        }
-                        if (isValidLabPart(this.mInventory[inputSlot + i])) {
-                            switch (this.mInventory[inputSlot + i].getItemDamage()) {
-                                case DISH_ITEM_DAMAGE -> {
-                                    if (this.mInventory[inputSlot + i].getTagCompound() != null)
-                                        dishSlot = inputSlot + i;
-                                }
-                                case FLASK_ITEM_DAMAGE -> {
-                                    if (this.mInventory[inputSlot + i].getTagCompound() == null)
-                                        flaskSlot = inputSlot + i;
-                                }
-                                case DETERGENT_ITEM_DAMAGE -> detergentSlot = inputSlot + i;
-                                default -> {}
-                            }
-                            continue;
-                        }
-                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], Materials.Ethanol.getCells(1))) {
-                            cellSlot = inputSlot + i;
-                        }
-                    }
-                    if (!hasItems && dishSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1) {
-                        hasItems = true;
-                    }
-                    if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), 1_000)) {
-                        NBTTagCompound DNABioDataTag = this.mInventory[dishSlot].getTagCompound()
-                            .getCompoundTag("DNA");
-                        if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-                        BioData cultureDNABioData = BioData.getBioDataFromName(
-                            this.mInventory[dishSlot].getTagCompound()
-                                .getCompoundTag("DNA")
-                                .getString("Name"));
-                        if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-
-                        if (this.mTier < rTier + cultureDNABioData.getTier())
-                            return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-
-                        for (int i = 0; i < this.mInputSlotCount; i++) {
-                            if (this.mInventory[this.getInputSlot() + i] != null)
-                                this.mInventory[this.getInputSlot() + i].stackSize--;
-                        }
-
-                        this.mFluid.amount -= 1000;
-
-                        if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList
-                                .getDNASampleFlask(BioDNA.convertDataToDNA(cultureDNABioData));
-                        }
-                        this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
-                        this.calculateOverclockedNess(
-                            GTUtility.safeInt(GTValues.V[rTier + cultureDNABioData.getTier()]),
-                            500);
-
-
-                        return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
-                    }
+                    return processDNAModuleLogic(skipOC);
                 }
                 case PCR_THERMOCYCLE_MODULE -> {
-                    int orbSlot1 = -1;
-                    int flaskSlot = -1;
-                    int dnaCellSlot = -1;
-                    int polymeraseSlot = -1;
-                    boolean hasItems = false;
-                    for (int i = 0; i < this.mInputSlotCount; i++) {
-                        if (orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1) {
-                            hasItems = true;
-                            break;
-                        }
-                        if (this.mInventory[inputSlot + i] == null) {
-                            continue;
-                        }
-                        if (isValidLabPart(this.mInventory[inputSlot + i])) {
-                            if (this.mInventory[inputSlot + i].getItemDamage() == FLASK_ITEM_DAMAGE) {
-                                if (this.mInventory[inputSlot + i].getTagCompound() != null)
-                                    flaskSlot = inputSlot + i;
-                            } else {
-                                continue;
-                            }
-                        }
-                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], ItemList.Tool_DataOrb.get(1L))) {
-                            orbSlot1 = inputSlot + i;
-                            continue;
-                        }
-                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[FLUORESCENT_DNA])) {
-                            dnaCellSlot = inputSlot + i;
-                            continue;
-                        }
-                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[POLYMERASE])) {
-                            polymeraseSlot = inputSlot + i;
-                        }
-                    }
-                    if (!hasItems && orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1) {
-                        hasItems = true;
-                    }
-                    if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), 1_000)) {
-                        NBTTagCompound DNABioDataTag = this.mInventory[flaskSlot].getTagCompound();
-                        if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-                        BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
-                        if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
-                            return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-
-                        for (int i = 0; i < this.mInputSlotCount; i++) {
-                            if (this.mInventory[this.getInputSlot() + i] != null)
-                                this.mInventory[this.getInputSlot() + i].stackSize--;
-                        }
-
-                        this.mFluid.amount -= 1000;
-
-                        ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-                        BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
-                        BehaviourDataOrb.setDataName(Outp, cultureDNABioData.getName());
-
-                        if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = Outp;
-                        } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L);
-                        this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
-
-                        this.calculateOverclockedNess(
-                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
-                            500);
-
-                        return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
-                    }
+                    return processPCRModuleLogic(skipOC);
                 }
                 case PLASMID_SYNTHESIS_MODULE -> {
                     ItemStack inp2 = ItemList.Tool_DataOrb.get(1L);
@@ -318,7 +184,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2]));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 1 + R_TIER + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 2; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -331,7 +197,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
+                            GTUtility.safeInt(GTValues.V[1 + R_TIER + cultureDNABioData.getTier()]),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -356,7 +222,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioCulture bioCulture = BioCulture
                             .getBioCultureFromNBTTag(this.mInventory[this.getInputSlot()].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 1 + R_TIER + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -369,7 +235,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
+                            GTUtility.safeInt(GTValues.V[1 + R_TIER + cultureDNABioData.getTier()]),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -398,7 +264,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioData cultureDNABioData = BioData
                             .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3]));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 3 + R_TIER + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -412,7 +278,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()),
+                            GTUtility.safeInt(GTValues.V[3 + R_TIER + cultureDNABioData.getTier()]),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -423,17 +289,140 @@ public class MTEBioLab extends MTEBasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private boolean hasFluid(FluidStack fluid, int atLeast) {
-        return this.mFluid != null && this.mFluid.isFluidEqual(fluid) && this.mFluid.amount >= atLeast;
+    private int processDNAModuleLogic(boolean skipOC) {
+        int inputSlot = this.getInputSlot();
+        int dishSlot = -1;
+        int flaskSlot = -1;
+        int detergentSlot = -1;
+        int cellSlot = -1;
+        int recipeFluidAmount = 1_000;
+        for (int i = 0; i < this.mInputSlotCount; i++) {
+            if (this.mInventory[inputSlot + i] == null) {
+                continue;
+            }
+            if (isValidLabPart(this.mInventory[inputSlot + i])) {
+                switch (this.mInventory[inputSlot + i].getItemDamage()) {
+                    case DISH_ITEM_DAMAGE -> {
+                        if (this.mInventory[inputSlot + i].getTagCompound() != null) dishSlot = inputSlot + i;
+                    }
+                    case FLASK_ITEM_DAMAGE -> {
+                        if (this.mInventory[inputSlot + i].getTagCompound() == null) flaskSlot = inputSlot + i;
+                    }
+                    case DETERGENT_ITEM_DAMAGE -> detergentSlot = inputSlot + i;
+                    default -> {}
+                }
+                continue;
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], Materials.Ethanol.getCells(1))) {
+                cellSlot = inputSlot + i;
+            }
+        }
+
+        boolean hasItems = dishSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1;
+
+        if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), recipeFluidAmount)) {
+            NBTTagCompound DNABioDataTag = this.mInventory[dishSlot].getTagCompound()
+                .getCompoundTag("DNA");
+            if (DNABioDataTag == null) return super.checkRecipe(skipOC);
+            BioData cultureDNABioData = BioData.getBioDataFromName(
+                this.mInventory[dishSlot].getTagCompound()
+                    .getCompoundTag("DNA")
+                    .getString("Name"));
+            if (cultureDNABioData == null) return super.checkRecipe(skipOC);
+
+            int effectiveRecipeTier = R_TIER + cultureDNABioData.getTier();
+
+            if (this.mTier < effectiveRecipeTier)
+                return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+            for (int i = 0; i < this.mInputSlotCount; i++) {
+                if (this.mInventory[this.getInputSlot() + i] != null)
+                    this.mInventory[this.getInputSlot() + i].stackSize--;
+            }
+
+            this.mFluid.amount -= recipeFluidAmount;
+
+            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
+                this.mOutputItems[0] = BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(cultureDNABioData));
+            }
+            this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
+            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
+
+            return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+        }
+        return MTEBasicMachine.DID_NOT_FIND_RECIPE;
     }
 
-    /**
-     * Checks if the given stack is a LabPart of the given damage and has a NBTTagCompound
-     */
-    private boolean isStackLabPart(ItemStack stack, int damage) {
-        return GTUtility.isStackValid(stack) && stack.getItem() instanceof ItemLabParts
-            && stack.getItemDamage() == damage
-            && stack.getTagCompound() != null;
+    private int processPCRModuleLogic(boolean skipOC) {
+        int inputSlot = this.getInputSlot();
+        int orbSlot1 = -1;
+        int flaskSlot = -1;
+        int dnaCellSlot = -1;
+        int polymeraseSlot = -1;
+        int recipeFluidAmount = 1_000;
+        for (int i = 0; i < this.mInputSlotCount; i++) {
+            if (this.mInventory[inputSlot + i] == null) {
+                continue;
+            }
+            if (isValidLabPart(this.mInventory[inputSlot + i])) {
+                if (this.mInventory[inputSlot + i].getItemDamage() == FLASK_ITEM_DAMAGE) {
+                    if (this.mInventory[inputSlot + i].getTagCompound() != null) flaskSlot = inputSlot + i;
+                } else {
+                    continue;
+                }
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], ItemList.Tool_DataOrb.get(1L))) {
+                orbSlot1 = inputSlot + i;
+                continue;
+            }
+            if (GTUtility
+                .areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[FLUORESCENT_DNA])) {
+                dnaCellSlot = inputSlot + i;
+                continue;
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[POLYMERASE])) {
+                polymeraseSlot = inputSlot + i;
+            }
+        }
+
+        boolean hasItems = orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1;
+
+        if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), recipeFluidAmount)) {
+            NBTTagCompound DNABioDataTag = this.mInventory[flaskSlot].getTagCompound();
+            if (DNABioDataTag == null) return super.checkRecipe(skipOC);
+            BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
+            if (cultureDNABioData == null) return super.checkRecipe(skipOC);
+
+            int effectiveRecipeTier = 1 + R_TIER + cultureDNABioData.getTier();
+
+            if (this.mTier < effectiveRecipeTier)
+                return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+            for (int i = 0; i < this.mInputSlotCount; i++) {
+                if (this.mInventory[this.getInputSlot() + i] != null)
+                    this.mInventory[this.getInputSlot() + i].stackSize--;
+            }
+
+            this.mFluid.amount -= recipeFluidAmount;
+
+            ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
+            BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
+            BehaviourDataOrb.setDataName(Outp, cultureDNABioData.getName());
+
+            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
+                this.mOutputItems[0] = Outp;
+            } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L);
+            this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
+
+            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
+
+            return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+        }
+        return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+    }
+
+    private boolean hasFluid(FluidStack fluid, int atLeast) {
+        return this.mFluid != null && this.mFluid.isFluidEqual(fluid) && this.mFluid.amount >= atLeast;
     }
 
     private boolean isValidLabPart(ItemStack stack) {
