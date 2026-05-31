@@ -222,7 +222,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         while (this.height <= 5) {
 
             if (this.isTopLayerFound) {
-                break;
+                break; // needed to break out of the loop in the case the structure isn't max height.
             }
 
             if (checkPiece(
