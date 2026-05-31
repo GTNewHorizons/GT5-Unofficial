@@ -389,7 +389,10 @@ class RecipeMapBackendLookupTest {
         String mapName = "gt.recipe.largeboilerfakefuels";
         Item input = item("lookup.validation.large_boiler_fake_fuel.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
-        GTRecipe noContainerRecipe = recipe(input, item("lookup.validation.large_boiler_fake_fuel.no_output"), category);
+        GTRecipe noContainerRecipe = recipe(
+            input,
+            item("lookup.validation.large_boiler_fake_fuel.no_output"),
+            category);
         noContainerRecipe.mOutputs = new ItemStack[0];
         GTRecipe containerReturnRecipe = recipe(
             input,
