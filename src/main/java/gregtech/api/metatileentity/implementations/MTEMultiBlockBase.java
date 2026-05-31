@@ -2367,7 +2367,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 : seconds > 0 ? "GT5U.multiblock.scanner.totalRunSeconds"
                 : "GT5U.multiblock.scanner.totalRunTicks";
 
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        for (MTEHatch tHatch : getExoticAndNormalEnergyHatchList()) {
             final IGregTechTileEntity te = tHatch.getBaseMetaTileEntity();
             if (te != null) {
                 storedEnergy += te.getStoredEU();
@@ -3944,5 +3944,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean hasRunningText() {
         return true;
+    }
+
+    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
+        List<MTEHatch> tHatches = new ArrayList<>();
+        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
+        tHatches.addAll(filterValidMTEs(mEnergyHatches));
+        return tHatches;
     }
 }
