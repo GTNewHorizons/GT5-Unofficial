@@ -19,19 +19,72 @@ gtnhlanth.tt.disstank.machinetype=Dissolution Tank
 gtnhlanth.tt.disstank.info1=Input Water and Fluid, output Fluid
 gtnhlanth.tt.disstank.info2=Fluids must be input in the exact ratio as listed in NEI
 
+# Source Chamber
+gtnhlanth.tt.sc.machinetype=Particle Source
+gtnhlanth.tt.sc.info1=Generates particle beams from specific §dsource materials
+gtnhlanth.tt.sc.info2=NEI has the list of §dsource materials§7 and their stats
+gtnhlanth.tt.sc.info3=Recipes are all one second long and output a single beam packet
+gtnhlanth.tt.sc.info4=Increasing the power above the §3EU/t Required§7 asymptotically approaches the §dMax Material Energy
+gtnhlanth.tt.sc.info5=Particle beams have a §5particle type§7, §9energy§7, §2focus§7, and §6rate
+gtnhlanth.tt.sc.info6=§5Type§7 determines the charge, rest mass, and §9Max Particle Energy
+gtnhlanth.tt.sc.info7=§9Energy§7 is the energy of the particle beam in electron volts (eV)
+gtnhlanth.tt.sc.info8=§2Focus§7 is the width of the particle beam
+gtnhlanth.tt.sc.info9=§6Rate§7 is the amount of particles per packet
+gtnhlanth.tt.sc.info10=§9Output Beam Energy§7 = min(§9Max Particle Energy§7, §eaeV§f)
+gtnhlanth.tt.sc.info11=where §eaeV§f = §dMax Material Energy§f * (1 - 1.001^(§9-Energy Ratio§f * (§3EU/t Provided§f - §3EU/t Required§f)))
+gtnhlanth.tt.sc.input=§cRequires 1 input bus OR 1 input hatch
+
+# Linear Accelerator
+gtnhlanth.tt.linac.machinetype=Particle Accelerator, LINAC
+gtnhlanth.tt.linac.info1=Accelerates particle beams to higher energies by passing them through an electric field
+gtnhlanth.tt.linac.info2=Electrically neutral §5particles§7 are therefore unaffected
+gtnhlanth.tt.linac.info3=Requires §fLength * 1,000 %s/s§7 of §bcoolant§7 to run, returns as §chot coolant
+gtnhlanth.tt.linac.info4=Increasing the length/power increases the §9Output Beam Energy§7 but decreases the §2Output Beam Focus
+gtnhlanth.tt.linac.info5=Preserve §2Beam Focus§7 more effectively with lower temperature §bcoolant
+gtnhlanth.tt.linac.info6=§9Output Beam Energy§f = max(§eV§f, 50) * 10^§eIE
+gtnhlanth.tt.linac.info7=where §eV§f = 0.25 * (Length - 1) * cbrt(§3EU/t Provided§f)
+gtnhlanth.tt.linac.info8=and §eIE§f = 1 + min(§9Input Beam Energy§f, 7500) / §9Max Particle Energy
+gtnhlanth.tt.linac.info9=§2Output Beam Focus§f = (§2Input Beam Focus§f + §eMachine Focus§f)/2§7 if §2Input Beam Focus§f > §eMachine Focus
+gtnhlanth.tt.linac.info10=§2Output Beam Focus§f = §2Input Beam Focus§f * §eMachine Focus§f/100§7 if §2Input Beam Focus§f <= §eMachine Focus
+gtnhlanth.tt.linac.info11=where §eMachine Focus§f = min(90, max(5, (-0.9 * (Length-1) * 1.1^(0.2 * §bCoolant Temperature§f) + 110)))
+
+# Synchrotron
+gtnhlanth.tt.synch.machinetype=Particle Accelerator
+gtnhlanth.tt.synch.info1=Accelerates particle beams until they produce a photon beam from the relativistic Larmor effect
+gtnhlanth.tt.synch.info2=Electrically neutral §5particles§7 and beams with less than 25 §2Focus§7 are therefore unaffected
+gtnhlanth.tt.synch.info3=Requires §f32,000 %s/s§7 of §bcoolant§7 to run, returns as §chot coolant
+gtnhlanth.tt.synch.info4=Increasing power increases the §6Output Beam Rate
+gtnhlanth.tt.synch.info5=Preserve §2Beam Focus§7 more effectively with lower temperature §bcoolant
+gtnhlanth.tt.synch.info6=Increasing the tier of the §dAntenna Casings§7 improves the efficiency of the machine
+gtnhlanth.tt.synch.info7=The §9energies§7 in the following formulae must all be in keV
+gtnhlanth.tt.synch.info8=§9Output Beam Energy§f = §eIR§7 * §ePower Scale Factor
+gtnhlanth.tt.synch.info9=where §eIR§7 = (§9Input Beam Energy§f)^(1.13 * (§dAntenna Tier§f)^(4/9)) / 40,000,000
+gtnhlanth.tt.synch.info10=and §ePower Scale Factor§f = 1 - 0.15^(§3Total EU/t Provided§f / (30,384 * (§dAntenna Tier§f)^2.5))
+gtnhlanth.tt.synch.info11=§2Output Beam Focus§f = (§2Input Beam Focus§f + §eMachine Focus§f)/2.5§7 if §2Input Beam Focus§f > §eMachine Focus
+gtnhlanth.tt.synch.info12=§2Output Beam Focus§f = §2Input Beam Focus§f * §eMachine Focus§f/100§7 if §2Input Beam Focus§f <= §eMachine Focus
+gtnhlanth.tt.synch.info13=where §eMachine Focus§f = max(10, min(90, 1.5^(12 - §bCoolant Temperature§f/40)))
+gtnhlanth.tt.synch.info14=§6Output Beam Rate§f = floor(2.5^(§dAntenna Tier§f) * sqrt(§3Total EU/t Provided§f) * §6Input Beam Rate§f/15,000)
+
 # Target Chamber
 gtnhlanth.tt.tc.machinetype=Collision Chamber
-gtnhlanth.tt.tc.info1=Engraves Wafers with §dParticle Beams§7 and §aMasks
-gtnhlanth.tt.tc.info2=§aMasks§7 have limited durability, degrading by 1 with each engraving
-gtnhlanth.tt.tc.info3=NEI shows the required §dparticle type§7, minimum §bEU/t
-gtnhlanth.tt.tc.info4=minimum §cBeam Focus§7, minimum §6Beam Rate§7(Amount), and required §9Beam Energy Range
-gtnhlanth.tt.tc.info5=The incoming §dBeam§7 must be within the required §9Energy Range§7, be the correct §dparticle type
-gtnhlanth.tt.tc.info6=and have sufficient §cFocus§7 and §6Rate
-gtnhlanth.tt.tc.info7=§fProcessing Time§7 is determined solely by the §eBeam Rate
-gtnhlanth.tt.tc.info8=§fProcessing Time = 5 seconds * §6Minimum Required Rate§f / §eInput Beam Rate
-gtnhlanth.tt.tc.info9=Can process up to the durability of all §aMask's§7 in the Focus Input Bus of one type per game tick
-gtnhlanth.tt.tc.focusinputbus=Focus Input Bus
-gtnhlanth.tt.tc.beaminputhatch=Beam Input Hatch
+gtnhlanth.tt.tc.info1=Engraves wafers with a photon beam and distinct §dMasks§7 or templates
+gtnhlanth.tt.tc.info2=Engraving recipes all have their own suitable §9Beam Energy§7 range,
+gtnhlanth.tt.tc.info3=minimum §2Beam Focus§7, minimum §6Beam Rate§7, and minimum §3EU/t Requirement
+gtnhlanth.tt.tc.info4=§dMasks§7 also have limited durability, degrading by 1 with each engraving
+gtnhlanth.tt.tc.info5=Processing speed is determined solely by the §6Beam Rate§7, not the §3EU/t Provided
+gtnhlanth.tt.tc.info6=§fRecipe Duration = 5 seconds * §6Required Beam Rate§f / §6Input Beam Rate
+gtnhlanth.tt.tc.info7=Can process the entire durability of all §dMasks§7 of one type in a single tick
+
+# Beam Coolant
+gtnhlanth.tt.coolant.oxygen=§bLiquid Oxygen§f: 90 K
+gtnhlanth.tt.coolant.nitrogen=§bLiquid Nitrogen§f: 77 K
+gtnhlanth.tt.coolant.coolant=§bCoolant§f: 60 K
+gtnhlanth.tt.coolant.Scoolant=§bSuper Coolant§f: 1 K
+
+# Beam Hatches
+gtnhlanth.tt.hatch.beaminput=Beam Input Hatch
+gtnhlanth.tt.hatch.beamoutput=Beam Output Hatch
+gtnhlanth.tt.hatch.focus=Focus Input Bus
 
 GT5U.gui.text.shutdown_reason.gtnhlanth.nocoolant=No coolant present in machine!
 GT5U.gui.text.shutdown_reason.gtnhlanth.inscoolant=Insufficient coolant in machine!
@@ -39,6 +92,7 @@ GT5U.gui.text.shutdown_reason.gtnhlanth.noaccel=Particle type can't be accelerat
 GT5U.gui.text.shutdown_reason.gtnhlanth.low_input_eut=Input EU/t too low to produce photons!
 GT5U.gui.text.shutdown_reason.gtnhlanth.scerror=Math error, broken recipe?
 GT5U.gui.text.shutdown_reason.gtnhlanth.inputinterrupt=Input Beam must not be interrupted or changed!
+GT5U.gui.text.recipe_result.dissolution_ratio=§7Wrong fluid input ratio!
 GT5U.gui.text.recipe_result.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Below Required Energy!
 GT5U.gui.text.shutdown_reason.gtnhlanth.noparticle=Particle absent (rate is 0)!
@@ -162,26 +216,24 @@ item.substrate_precursor.name=Substrate Precursor
 item.masked_mask_substrate.name=Processed Mask Substrate
 
 
-
-
 beamline.info=Machine Information
-
-beamline.in_pre=Multiblock Beamline Input
+beamline.in_pre=Multiblock Beam Input
+beamline.out_pre=Multiblock Beam Output
 beamline.particle=Particle
 beamline.energy=Energy
 beamline.focus=Focus
 beamline.amount=Amount
 beamline.rate=Rate
-
+beamline.materialenergy=Max Material Energy
+beamline.particleenergy=Max Particle Energy
+beamline.energyratio=Energy Ratio
 beamline.temperature=Temperature
 beamline.coolusage=Coolant Usage
 
-beamline.out_pre=Multiblock Beamline Output
-
+gt.blockmachines.beamline_pipe.name=Beam Pipe
 beamline.pipe.desc.0=Transport for particles
-beamline.pipe.desc.1=Signal does not cross or bend
+beamline.pipe.desc.1=Beams cannot cross or bend
 
-gt.blockmachines.beamline_pipe.name=Beamline Pipe
 
 tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
@@ -200,13 +252,12 @@ particle.muon_neutrino=Muon Neutrino
 particle.tau_neutrino=Tau Neutrino
 particle.proton=Proton
 particle.neutron=Neutron
-particle.lambda=lambda
+particle.lambda=Lambda
 particle.omega=Omega
 particle.eta=Eta
 particle.jpsi=J/Psi
 particle.upsilon=Upsilon
 particle.alpha=Alpha
-GT5U.gui.text.recipe_result.dissolution_ratio=§7Wrong fluid input ratio
 
 beamcrafting.energy_A=min Energy 1
 beamcrafting.energy_B=min Energy 2

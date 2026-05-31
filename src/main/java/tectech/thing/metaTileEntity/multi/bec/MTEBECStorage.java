@@ -471,7 +471,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     IKey.lang("GT5U.gui.text.bec-field-strength"),
                     () -> fieldStrength,
                     l -> fieldStrength = (long) l,
-                    (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
+                    (panel1, syncManager1, widget) -> { widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
                     IKey.lang("GT5U.gui.text.bec-stored"),
                     new DoubleSyncValue(MTEBECStorage.this::getAmountStored),

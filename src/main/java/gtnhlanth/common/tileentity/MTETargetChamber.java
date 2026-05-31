@@ -162,7 +162,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info1"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
@@ -174,8 +173,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info9"))
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
@@ -186,16 +183,15 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
             .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
             .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.focusinputbus"), addHintNumber(1))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.focus"), addHintNumber(1))
             .addMaintenanceHatch(addHintNumber(2))
             .addEnergyHatch(addHintNumber(2))
             .addInputBus(addHintNumber(3))
             .addOutputBus(addHintNumber(4))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.tc.beaminputhatch"), addHintNumber(5))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(5))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
-        //spotless:on
     }
 
     @Override
