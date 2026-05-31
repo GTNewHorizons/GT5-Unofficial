@@ -24,6 +24,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
@@ -73,23 +74,13 @@ public class ChiselBackend extends RecipeMapBackend {
 
     @Nullable
     private static GTRecipe generateChiselTargetRecipe(ItemStack[] items, @Nullable ItemStack specialSlot) {
-        ItemStack target = findChiselTarget(items, specialSlot);
-        if (target == null) return null;
+        if (!hasChiselResults(specialSlot)) return null;
 
         for (ItemStack input : items) {
             if (input == null || GTUtility.isAnyIntegratedCircuit(input)) continue;
-            if (GTUtility.areStacksEqual(input, target, true)) continue; // same item, skip
-            GTRecipe recipe = generateChiselToTargetRecipe(input, target);
+            if (GTUtility.areStacksEqual(input, specialSlot, true)) continue;
+            GTRecipe recipe = generateChiselToTargetRecipe(input, specialSlot);
             if (recipe != null) return recipe;
-        }
-        return null;
-    }
-
-    @Nullable
-    private static ItemStack findChiselTarget(ItemStack[] items, @Nullable ItemStack specialSlot) {
-        if (hasChiselResults(specialSlot)) return specialSlot;
-        for (ItemStack item : items) {
-            if (hasChiselResults(item)) return item;
         }
         return null;
     }
@@ -103,7 +94,7 @@ public class ChiselBackend extends RecipeMapBackend {
                     .itemInputs(GTUtility.copyAmount(1, input))
                     .itemOutputs(GTUtility.copyAmount(1, target))
                     .duration(20)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .specialValue(0)
                     .noBuffer()
                     .build()
@@ -145,24 +136,12 @@ public class ChiselBackend extends RecipeMapBackend {
     @Nullable
     private static GTRecipe generateArchitectureRecipe(ItemStack[] items, @Nullable ItemStack specialSlot) {
         if (!Mods.ArchitectureCraft.isModLoaded()) return null;
-
-        ItemStack target = findArchitectureTarget(items, specialSlot);
-        if (target == null) return null;
+        if (!isArchitectureTarget(specialSlot)) return null;
 
         for (ItemStack input : items) {
             if (input == null || GTUtility.isAnyIntegratedCircuit(input) || isArchitectureTarget(input)) continue;
-            GTRecipe recipe = generateArchitectureRecipe(input, target);
+            GTRecipe recipe = generateArchitectureRecipe(input, specialSlot);
             if (recipe != null) return recipe;
-        }
-        return null;
-    }
-
-    @Nullable
-    private static ItemStack findArchitectureTarget(ItemStack[] items, @Nullable ItemStack specialSlot) {
-        if (isArchitectureTarget(specialSlot)) return specialSlot;
-
-        for (ItemStack item : items) {
-            if (isArchitectureTarget(item)) return item;
         }
         return null;
     }
@@ -187,7 +166,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .itemOutputs(GTUtility.copyAmount(shape.itemsProduced, output))
             .outputChances(10000)
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(0)
             .noBuffer()
             .build()
@@ -211,16 +190,46 @@ public class ChiselBackend extends RecipeMapBackend {
         int inputDamage = input.getItemDamage();
         if (inputDamage < 0 || inputDamage > 15) return null;
 
-        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(block);
-        if (id == null) return null;
+        GameRegistry.UniqueIdentifier inputId = GameRegistry.findUniqueIdentifierFor(block);
+        if (inputId == null) return null;
+
+        String outputBaseName = inputId.toString();
+        int outputBaseData = inputDamage;
+
+        String targetBaseName = tag.getString("BaseName");
+        int targetBaseData = tag.getInteger("BaseData");
+        if (!targetBaseName.isEmpty()) {
+            ItemStack targetBaseStack = findBlockStack(targetBaseName, targetBaseData);
+            if (targetBaseStack != null && areInSameChiselGroup(input, targetBaseStack)) {
+                outputBaseName = targetBaseName;
+                outputBaseData = targetBaseData;
+            }
+        }
 
         ItemStack output = target.copy();
         NBTTagCompound outputTag = (NBTTagCompound) tag.copy();
-        outputTag.setInteger("BaseData", inputDamage);
+        outputTag.setInteger("BaseData", outputBaseData);
         outputTag.setInteger("Shape", tag.getInteger("Shape"));
-        outputTag.setString("BaseName", id.toString());
+        outputTag.setString("BaseName", outputBaseName);
         output.setTagCompound(outputTag);
         return output;
+    }
+
+    @Nullable
+    private static ItemStack findBlockStack(String baseName, int baseData) {
+        String[] parts = baseName.split(":");
+        if (parts.length != 2) return null;
+        Block block = GameRegistry.findBlock(parts[0], parts[1]);
+        if (block == null || block == Blocks.air) return null;
+        return new ItemStack(block, 1, baseData);
+    }
+
+    private static boolean areInSameChiselGroup(ItemStack a, ItemStack b) {
+        List<ItemStack> variants = getItemsForChiseling(a);
+        for (ItemStack variant : variants) {
+            if (GTUtility.areStacksEqual(variant, b, true)) return true;
+        }
+        return false;
     }
 
     @Nullable
@@ -241,7 +250,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .circuit(circuitConfiguration)
             .itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
             .noBuffer()
             .build()
@@ -257,7 +266,7 @@ public class ChiselBackend extends RecipeMapBackend {
             .circuit(circuitConfiguration)
             .itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
             .fake()
             .noBuffer()

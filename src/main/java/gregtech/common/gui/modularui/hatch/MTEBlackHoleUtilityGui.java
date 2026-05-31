@@ -25,7 +25,7 @@ public class MTEBlackHoleUtilityGui extends MTEHatchBaseGui<MTEBlackHoleUtility>
     }
 
     private Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(machine::getMode, machine::setMode);
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(machine::getMode, machine::setMode).allowC2S();
         return Flow.row()
             .child(
                 new ToggleButton().value(invertedSyncer)

@@ -146,11 +146,11 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addController("Front bottom center")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot Fluid, bottom center casing", 2)
-            .addInputHatch("Distilled Water, any casing", 1)
-            .addOutputHatch("Cold Fluid, top center casing", 3)
-            .addOutputHatch("Steam/SH Steam, any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Hot Fluid, bottom center Casing", 2)
+            .addInputHatch("Distilled Water, any Casing", 1)
+            .addOutputHatch("Cold Fluid, top center Casing", 3)
+            .addOutputHatch("Steam/SH Steam, any Casing", 1)
             .toolTipFinisher();
         return tt;
     }

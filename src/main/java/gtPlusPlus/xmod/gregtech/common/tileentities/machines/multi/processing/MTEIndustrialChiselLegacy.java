@@ -35,6 +35,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -97,11 +98,11 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin("Sturdy Printer Casing", 6, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -244,7 +245,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
                     .itemOutputs(GTUtility.copyAmount(outputAmount, tOutput))
                     .outputChances(10000)
                     .duration(20)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .specialValue(0)
                     .build();
 

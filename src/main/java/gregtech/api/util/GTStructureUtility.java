@@ -13,8 +13,11 @@ import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -22,6 +25,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
@@ -38,6 +43,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -142,12 +148,34 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
-        return ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID);
+        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticleTinted(
+                    world,
+                    x,
+                    y,
+                    z,
+                    sBlockSheetmetalGT,
+                    material.mMetaItemSubID,
+                    material.getRGBA());
+                return true;
+            }
+        };
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
-        return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
+        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI
+                    .hintParticleTinted(world, x, y, z, sBlockSheetmetalBW, werkstoff.getmID(), werkstoff.getRGBA());
+                return true;
+            }
+        };
     }
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
@@ -557,7 +585,7 @@ public class GTStructureUtility {
         return new IStructureElement<>() {
 
             @Override
-            public @Nullable List<String> getDescription() {
+            public @Nullable List<String> getDescription(T context) {
                 return Collections.singletonList("GT5U.structure.heating_coil");
             }
 
@@ -1044,6 +1072,30 @@ public class GTStructureUtility {
     }
 
     /**
+     * Builds a block->metas map from an OreDict entry, suitable for use with
+     * {@link StructureUtility#ofBlocksMap}.
+     */
+    public static Map<Block, Collection<Integer>> ofOreDictBlockMap(String oreDictName) {
+        Map<Block, Collection<Integer>> map = new HashMap<>();
+        for (ItemStack stack : OreDictionary.getOres(oreDictName)) {
+            Block block = Block.getBlockFromItem(stack.getItem());
+            if (block == null || block == Blocks.air) continue;
+            int meta = stack.getItemDamage();
+            if (meta == OreDictionary.WILDCARD_VALUE) {
+                map.computeIfAbsent(block, k -> new ArrayList<>())
+                    .addAll(
+                        IntStream.rangeClosed(0, 15)
+                            .boxed()
+                            .collect(Collectors.toList()));
+            } else {
+                map.computeIfAbsent(block, k -> new ArrayList<>())
+                    .add(meta);
+            }
+        }
+        return map;
+    }
+
+    /**
      * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
      * specific operations while keeping the rest unchanged.
      */
@@ -1134,8 +1186,8 @@ public class GTStructureUtility {
         }
 
         @Override
-        public @Nullable List<String> getDescription() {
-            return proxiedElement.getDescription();
+        public @Nullable List<String> getDescription(T context) {
+            return proxiedElement.getDescription(context);
         }
     }
 

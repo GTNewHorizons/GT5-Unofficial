@@ -47,6 +47,7 @@ tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
+container.tileentity.name=Base Tile Entity
 
 # Tools
 item.itemBufferCore.name=Energy Core
@@ -120,7 +121,7 @@ gtpp.nei.tgs.2=If %s is provided,
 gtpp.nei.tgs.3=Saplings are made instead.
 gtpp.nei.tgs.sapling=Outputted if %s is provided
 gtpp.nei.chemical_plant.not_consumed=Does not always get consumed in the process
-gtpp.nei.chemical_plant.higher_tier_casing=Higher tier pipe casings allow this item to last longer
+gtpp.nei.chemical_plant.higher_tier_casing=Higher tier Pipe Casings allows this item to last longer
 
 gtpp.nei.tgs.tooltip.sapling=Place in machine controller slot
 gtpp.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
@@ -2219,8 +2220,6 @@ block.Uranium232.standard.name=Block of Uranium 232
 block.Uranium233.standard.name=Block of Uranium 233
 block.WatertightSteel.frame.name=Watertight Steel Frame Box
 block.WatertightSteel.standard.name=Block of Watertight Steel
-block.WhiteMetal.frame.name=White Metal Frame Box
-block.WhiteMetal.standard.name=Block of White Metal
 block.Zeron100.frame.name=Zeron-100 Frame Box
 block.Zeron100.standard.name=Block of Zeron-100
 block.ZirconiumCarbide.frame.name=Zirconium Carbide Frame Box
@@ -3176,24 +3175,6 @@ item.itemCellBlackMetal.name=Black Metal Cell
 tile.Block of Black Metal.name=Block of Black Metal
 tile.Black Metal Frame Box.name=Black Metal Frame Box
 
-item.itemIngotWhiteMetal.name=White Metal Ingot
-item.itemHotIngotWhiteMetal.name=Hot White Metal Ingot
-item.itemDustWhiteMetal.name=White Metal Dust
-item.itemDustTinyWhiteMetal.name=Tiny Pile of White Metal Dust
-item.itemDustSmallWhiteMetal.name=Small Pile of White Metal Dust
-item.itemNuggetWhiteMetal.name=White Metal Nugget
-item.itemPlateWhiteMetal.name=White Metal Plate
-item.itemPlateDoubleWhiteMetal.name=Double White Metal Plate
-item.itemBoltWhiteMetal.name=White Metal Bolt
-item.itemRodWhiteMetal.name=White Metal Rod
-item.itemRodLongWhiteMetal.name=Long White Metal Rod
-item.itemRingWhiteMetal.name=White Metal Ring
-item.itemScrewWhiteMetal.name=White Metal Screw
-item.itemRotorWhiteMetal.name=White Metal Rotor
-item.itemGearWhiteMetal.name=White Metal Gear
-item.itemCellWhiteMetal.name=White Metal Cell
-tile.Block of White Metal.name=Block of White Metal
-tile.White Metal Frame Box.name=White Metal Frame Box
 
 # Added 29/04/2019
 tile.OreRunite.name=Runite Ore
@@ -3365,7 +3346,6 @@ item.itemFoilPikyonium64B.name=Pikyonium 64B Foil
 item.itemFoilQuantum.name=Quantum Foil
 item.itemFoilRhugnor.name=Rhugnor Foil
 item.itemFoilTitansteel.name=Titansteel Foil
-item.itemFoilWhiteMetal.name=White Metal Foil
 
 item.itemGearDragonblood.name=Dragonblood Gear
 item.itemGearRhugnor.name=Rhugnor Gear
@@ -3430,7 +3410,6 @@ item.itemPlateDenseTriniumTitaniumAlloy.name=Dense Trinium Titanium Alloy Plate
 item.itemPlateDenseTumbaga.name=Dense Tumbaga Plate
 item.itemPlateDenseTungstenTitaniumCarbide.name=Dense Tungsten Titanium Carbide Plate
 item.itemPlateDenseWatertightSteel.name=Dense Watertight Steel Plate
-item.itemPlateDenseWhiteMetal.name=Dense White Metal Plate
 item.itemPlateDenseZeron100.name=Dense Zeron-100 Plate
 item.itemPlateDenseZirconiumCarbide.name=Dense Zirconium Carbide Plate
 
@@ -3459,7 +3438,6 @@ item.GTPP.BattPack.05.name.name=Charge Pack [IV]
 item.IndustrialDiamondExquisite.name=Exquisite Industrial Diamond
 
 item.itemSpringCelestialTungsten.name=Celestial Tungsten Spring
-item.itemSpringWhiteMetal.name=White Metal Spring
 item.itemSpringNitinol60.name=Nitinol 60 Spring
 item.itemSpringWatertightSteel.name=Watertight Steel Spring
 item.itemSpringEglinSteel.name=Eglin Steel Spring
@@ -3470,7 +3448,6 @@ item.itemSmallSpringStaballoy.name=Small Staballoy Spring
 item.itemSmallSpringBlackSteel.name=Small Black Steel Spring
 item.itemSmallSpringBlackTitanium.name=Small Black Titanium Spring
 
-item.itemFineWireWhiteMetal.name=Fine White Metal Wire
 item.itemFineWirePalladium.name=Fine Palladium Wire
 item.itemFineWireZirconium.name=Fine Zirconium Wire
 item.itemFineWireGrisium.name=Fine Grisium Wire
@@ -3494,7 +3471,6 @@ item.itemHeavyPlateRhugnor.name=Heavy Rhugnor Plate
 item.itemHeavyPlateAdvancedNitinol.name=Heavy Advanced Nitinol Plate
 item.itemHeavyPlateAstralTitanium.name=Heavy Astral Titanium Plate
 item.itemHeavyPlateCelestialTungsten.name=Heavy Celestial Tungsten Plate
-item.itemHeavyPlateWhiteMetal.name=Heavy White Metal Plate
 item.itemHeavyPlateBlackMetal.name=Heavy Black Metal Plate
 item.itemHeavyPlateAncientGranite.name=Heavy Ancient Granite Plate
 

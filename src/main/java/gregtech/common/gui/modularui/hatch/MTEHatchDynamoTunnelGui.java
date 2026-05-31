@@ -18,7 +18,8 @@ public class MTEHatchDynamoTunnelGui extends MTEHatchBaseGui<MTEHatchDynamoTunne
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
-            WirelessEnergyHatchGuiHelper
-                .createMainColumn(new IntSyncValue(machine::getAmperes, machine::setAmperes), machine.maxAmperes));
+            WirelessEnergyHatchGuiHelper.createMainColumn(
+                new IntSyncValue(machine::getAmperes, machine::setAmperes).allowC2S(),
+                machine.maxAmperes));
     }
 }

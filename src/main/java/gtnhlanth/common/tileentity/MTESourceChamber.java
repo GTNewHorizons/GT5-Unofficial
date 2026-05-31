@@ -166,7 +166,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addOtherStructurePart("Beam Output Hatch", addHintNumber(4))
             .addEnergyHatch(addHintNumber(3))
             .addMaintenanceHatch(addHintNumber(3))
             .addInputBus(addHintNumber(1))

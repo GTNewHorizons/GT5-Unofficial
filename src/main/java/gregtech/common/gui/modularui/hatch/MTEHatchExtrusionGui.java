@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -43,17 +42,6 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        syncManager.syncValue("shape", new IntSyncValue(() -> {
-            ItemStack current = machine.inventoryHandler.getStackInSlot(machine.shapeSlot);
-            return current != null ? machine.findMatchingShapeIndex(current) : -1;
-        }, index -> {
-            if (index >= 0 && index < MTEHatchExtrusion.extruderShapes.length) {
-                machine.setShape(MTEHatchExtrusion.extruderShapes[index]);
-            } else {
-                machine.setShape(null);
-            }
-        }));
-
         return super.createContentSection(panel, syncManager).child(createItemSlots(syncManager));
     }
 
@@ -90,11 +78,12 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
         }.singletonSlotGroup()
             .filter(this::isShape));
 
-        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v);
+        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v)
+            .allowC2S();
 
         BooleanSyncValue insertionSync = new BooleanSyncValue(
             () -> !machine.disableLimited,
-            v -> machine.disableLimited = !v);
+            v -> machine.disableLimited = !v).allowC2S();
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(shapeSlot)
             .child(

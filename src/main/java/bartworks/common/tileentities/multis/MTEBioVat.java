@@ -200,20 +200,20 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
+            .addCasingInfoMin("Clean Stainless Steel Casing", 19, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("tooltip.bw.structure.glass"),
                 "Hollow two middle layers",
                 2)
             .addCasingInfoExactly("Any Tiered Glass", 32, true)
             .addStructureInfo("Some Recipes need more advanced Glass Types")
-            .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -767,26 +767,19 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public String[] getInfoData() {
-        final String[] baseInfoData = super.getInfoData();
-        final String[] infoData = new String[baseInfoData.length + 2];
-        System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
-        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
-        // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMachine
-                ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
-                    * 100
-                : -1)
-            + EnumChatFormatting.RESET
-            + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100
-            + EnumChatFormatting.RESET
-            + " %";
-        return infoData;
+    public void getExtraInfoData(List<String> info) {
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.expectedProduction.s",
+                (this.mMachine
+                    ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
+                        * 100
+                    : -1)));
+
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.production.s",
+                (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
     }
 
     @Override

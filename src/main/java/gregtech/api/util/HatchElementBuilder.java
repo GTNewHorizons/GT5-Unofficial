@@ -491,8 +491,9 @@ public class HatchElementBuilder<T> {
     public final IStructureElementChain<T> buildAndChain(IStructureElement<T>... elements) {
         // just in case
         mExclusive = false;
-        List<IStructureElement<T>> l = new ArrayList<>(Arrays.asList(elements));
+        List<IStructureElement<T>> l = new ArrayList<>();
         l.add(build());
+        l.addAll(Arrays.asList(elements));
         IStructureElement<T>[] array = l.toArray(new IStructureElement[0]);
         return () -> array;
     }
@@ -587,7 +588,7 @@ public class HatchElementBuilder<T> {
             }
 
             @Override
-            public List<String> getDescription() {
+            public List<String> getDescription(T context) {
                 if (mDescriptionNames != null) {
                     return mDescriptionNames.get();
                 }

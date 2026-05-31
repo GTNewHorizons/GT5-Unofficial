@@ -321,11 +321,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint Block Number 1", 1)
-            .addEnergyHatch("1-9, Hint Block Number 2", 2)
+            .addInputHatch("1-6, Hint block number 1", 1)
+            .addEnergyHatch("1-9, Hint block number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block Number 3",
+                "16, Hint block number 3",
                 3)
             .toolTipFinisher();
         return tt;
@@ -722,65 +722,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public String[] getInfoData() {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+    public void getExtraInfoData(List<String> info) {
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.0.s", formatNumber(getAntimatterAmount())));
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.1.s", formatNumber(getPassiveConsumption())));
 
-        for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.2.s", formatNumber(getActiveConsumption())));
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(getAntimatterAmount())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getPassiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getActiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                + EnumChatFormatting.AQUA
-                + formatNumber(getAntimatterChange())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.3.s", formatNumber(getAntimatterChange())));
     }
 
     public long getAntimatterAmount() {

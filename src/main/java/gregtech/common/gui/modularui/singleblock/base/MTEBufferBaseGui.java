@@ -74,7 +74,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             new Pair<>(
                 supportsEmitEnergy(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isOutput, machine::setOutput),
+                    new BooleanSyncValue(machine::isOutput, machine::setOutput).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_ENERGY,
                     configureTooltip(
                         "GT5U.machines.emit_energy.tooltip",
@@ -91,7 +91,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             new Pair<>(
                 supportsSortStacks(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isSortStacks, machine::setSortStacks),
+                    new BooleanSyncValue(machine::isSortStacks, machine::setSortStacks).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE,
                     configureTooltip("GT5U.machines.sorting_mode.tooltip"))));
 
@@ -101,7 +101,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             new Pair<>(
                 supportsEmitRedstone(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
+                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
                     configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_if_full.tooltip",
@@ -113,7 +113,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             new Pair<>(
                 supportsInvertRedstone(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isInvert, machine::setInvert),
+                    new BooleanSyncValue(machine::isInvert, machine::setInvert).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON,
                     GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF,
                     configureTooltip("GT5U.machines.invert_redstone.tooltip"))));
@@ -123,7 +123,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
             new Pair<>(
                 supportsStocking(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isStockingMode, machine::setStockingMode),
+                    new BooleanSyncValue(machine::isStockingMode, machine::setStockingMode).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_STOCKING_MODE,
                     configureTooltip("GT5U.machines.buffer_stocking_mode.tooltip"))));
 

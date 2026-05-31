@@ -94,7 +94,7 @@ public class MTEElectricAutoWorkbenchGui {
 
         CycleButtonWidget throughputButton = new CycleButtonWidget().marginLeft(2)
             .marginRight(13)
-            .value(new IntSyncValue(() -> machine.mThroughPut, val -> machine.mThroughPut = val))
+            .value(new IntSyncValue(() -> machine.mThroughPut, val -> machine.mThroughPut = val).allowC2S())
             .stateCount(MTEElectricAutoWorkbench.MAX_THROUGHPUT);
 
         for (int i = 0; i < MTEElectricAutoWorkbench.MAX_THROUGHPUT; i++) {
@@ -136,7 +136,7 @@ public class MTEElectricAutoWorkbenchGui {
             .value(new IntSyncValue(() -> machine.mMode, val -> {
                 machine.mMode = val;
                 machine.switchMode();
-            }))
+            }).allowC2S())
             .stateCount(MTEElectricAutoWorkbench.MAX_MODES);
 
         for (int i = 0; i < MTEElectricAutoWorkbench.MAX_MODES; i++) {

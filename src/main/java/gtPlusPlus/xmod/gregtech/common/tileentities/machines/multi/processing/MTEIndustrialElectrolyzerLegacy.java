@@ -69,7 +69,7 @@ public class MTEIndustrialElectrolyzerLegacy extends GTPPMultiBlockBase<MTEIndus
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfoMin("Electrolyzer Casings", 6, false)
+            .addCasingInfoMin("Electrolyzer Casing", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

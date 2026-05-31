@@ -122,6 +122,7 @@ import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
+import gregtech.common.tileentities.machines.basic.MTEModificationTable;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import gregtech.common.tileentities.machines.basic.MTENameRemover;
 import gregtech.common.tileentities.machines.basic.MTEPotionBrewer;
@@ -857,10 +858,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Industrial Sledgehammer").getStackForm(1L));
 
         ItemList.LargeSifter.set(
-            new MTEIndustrialSifter(
-                LargeSifter.ID,
-                "industrialsifter.controller.tier.single",
-                "Large Sifter Control Block").getStackForm(1L));
+            new MTEIndustrialSifter(LargeSifter.ID, "industrialsifter.controller.tier.single", "Large Sifter")
+                .getStackForm(1L));
 
         ItemList.CryogenicFreezer.set(
             new MTECryogenicFreezer(CryogenicFreezer.ID, "multimachine.adv.industrialfreezer", "Cryogenic Freezer")
@@ -10002,6 +10001,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerModificationTable() {
+        ItemList.ModificationTable.set(
+            new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
+                .getStackForm(1L));
+    }
+
     private static void registerAirFilters() {
         ItemList.Machine_Multi_AirFilterT1.set(
             new MTEAirFilter1(AIR_FILTER_CONTROLLER_T1.ID, "multimachine.airfilter.01", "Electric Air Filter T1")
@@ -10165,6 +10170,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerModificationTable();
         registerAirFilters();
         registerNacHatches();
         registerDrawerFramer();
@@ -10233,7 +10239,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchAdvancedOutputBeamline(
                 HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
                 "hatch.advancedbeamlineoutput",
-                "Filtered Beamline Output Hatch",
+                "Filtered Beam Output Hatch",
                 8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(

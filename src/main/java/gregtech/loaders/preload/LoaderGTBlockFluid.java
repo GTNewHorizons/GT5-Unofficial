@@ -99,6 +99,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
@@ -176,6 +177,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        MechArmorLoader.run();
         new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
@@ -1714,6 +1716,26 @@ public class LoaderGTBlockFluid implements Runnable {
             .addLocalizedName(Materials.Ichorium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("InactiveCosmicSolder")
+            .withDefaultLocalName(Materials.InactiveCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.InactiveCosmicSolder)
+            .addLocalizedName(Materials.InactiveCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.InactiveCosmicSolder, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("BoundlessCosmicSolder")
+            .withDefaultLocalName(Materials.BoundlessCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.BoundlessCosmicSolder)
+            .addLocalizedName(Materials.BoundlessCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.BoundlessCosmicSolder, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")

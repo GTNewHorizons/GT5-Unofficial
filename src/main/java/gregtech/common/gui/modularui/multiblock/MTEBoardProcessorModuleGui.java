@@ -48,7 +48,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
-            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage));
+            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());
 
         syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.fillTank());
         syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.flushTank());

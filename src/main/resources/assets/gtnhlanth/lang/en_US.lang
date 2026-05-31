@@ -31,17 +31,17 @@ gtnhlanth.tt.tc.info7=§fProcessing Time§7 is determined solely by the §eBeam 
 gtnhlanth.tt.tc.info8=§fProcessing Time = 5 seconds * §6Minimum Required Rate§f / §eInput Beam Rate
 gtnhlanth.tt.tc.info9=Can process up to the durability of all §aMask's§7 in the Focus Input Bus of one type per game tick
 gtnhlanth.tt.tc.focusinputbus=Focus Input Bus
-gtnhlanth.tt.tc.beamlineinputhatch=Beamline Input Hatch
+gtnhlanth.tt.tc.beaminputhatch=Beam Input Hatch
 
-GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
-GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
-GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
-GT5U.gui.text.gtnhlanth.low_input_eut=Input EU/t too low to produce photons!
-GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
-GT5U.gui.text.gtnhlanth.inputinterrupt=Input Beam must not be interrupted or changed!
+GT5U.gui.text.shutdown_reason.gtnhlanth.nocoolant=No coolant present in machine!
+GT5U.gui.text.shutdown_reason.gtnhlanth.inscoolant=Insufficient coolant in machine!
+GT5U.gui.text.shutdown_reason.gtnhlanth.noaccel=Particle type can't be accelerated!
+GT5U.gui.text.shutdown_reason.gtnhlanth.low_input_eut=Input EU/t too low to produce photons!
+GT5U.gui.text.shutdown_reason.gtnhlanth.scerror=Math error, broken recipe?
+GT5U.gui.text.shutdown_reason.gtnhlanth.inputinterrupt=Input Beam must not be interrupted or changed!
 GT5U.gui.text.recipe_result.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Below Required Energy!
-GT5U.gui.text.gtnhlanth.noparticle=Particle absent (rate is 0)!
+GT5U.gui.text.shutdown_reason.gtnhlanth.noparticle=Particle absent (rate is 0)!
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -65,7 +65,7 @@ SourceChamber.hint.2=16x Electrode Casing
 SourceChamber.hint.3=Hint Number 1: Input Bus
 SourceChamber.hint.4=Hint Number 2: Output Bus
 SourceChamber.hint.5=Hint Number 3: Maintenance Hatch, Energy Hatch
-SourceChamber.hint.6=Hint Number 4: Beamline Output Hatch
+SourceChamber.hint.6=Hint Number 4: Beam Output Hatch
 
 LINAC.hint.0=325-1285x Shielded Accelerator Casing
 LINAC.hint.1=148-852x Coolant Delivery Casing
@@ -76,8 +76,8 @@ LINAC.hint.5=47x Grate Machine Casing
 LINAC.hint.6=48x Any Tiered Glass (LuV+)
 LINAC.hint.7=Hint Number 1: Energy Hatch, Maintenance Hatch
 LINAC.hint.8=Hint Number 2: Input Hatch, Output Hatch
-LINAC.hint.9=Hint Number 3: Beamline Input Hatch
-LINAC.hint.10=Hint Number 4: Beamline Output Hatch
+LINAC.hint.9=Hint Number 3: Beam Input Hatch
+LINAC.hint.10=Hint Number 4: Beam Output Hatch
 
 Synchrotron.hint.0=676x Shielded Accelerator Casing
 Synchrotron.hint.1=90x Superconducting Coil Block
@@ -85,8 +85,8 @@ Synchrotron.hint.2=64x Niobium Cavity Machine Casing
 Synchrotron.hint.3=28x Coolant Delivery Casing
 Synchrotron.hint.4=16x Any Tiered Glass (LuV+)
 Synchrotron.hint.5=4x Antenna Casing
-Synchrotron.hint.6=Hint Number 1: Beamline Input Hatch
-Synchrotron.hint.7=Hint Number 2: Beamline Output Hatch
+Synchrotron.hint.6=Hint Number 1: Beam Input Hatch
+Synchrotron.hint.7=Hint Number 2: Beam Output Hatch
 Synchrotron.hint.8=Hint Number 3: Maintenance Hatch
 Synchrotron.hint.9=Hint Number 4: Input Hatch
 Synchrotron.hint.10=Hint Number 5: Output Hatch
@@ -104,7 +104,7 @@ TargetChamber.hint.8=Hint Number 1: Focus Input Bus
 TargetChamber.hint.9=Hint Number 2: Energy Hatch, Maintenance Hatch
 TargetChamber.hint.10=Hint Number 3: Input Bus
 TargetChamber.hint.11=Hint Number 4: Output Bus
-TargetChamber.hint.12=Hint Number 5: Beamline Input Hatch
+TargetChamber.hint.12=Hint Number 5: Beam Input Hatch
 
 
 fluid.Antimony Pentafluoride Solution=Antimony Pentafluoride Solution
