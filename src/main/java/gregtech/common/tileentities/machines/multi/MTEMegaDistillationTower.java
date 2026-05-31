@@ -210,7 +210,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public void checkMachine(IGregTechTileEntity bastMTE, ItemStack stack, List<StructureError> errors) {
+    public void checkMachine(IGregTechTileEntity baseMTE, ItemStack stack, List<StructureError> errors) {
         this.outputHatchesPerLayer.forEach(List::clear);
         this.casingAmount = 0;
         this.height = 1;
@@ -248,7 +248,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 DEPTH_OFFSET,
                 errors)) return;
 
-            // there are 5 total middle layers that output hatches may be on, exlcuding the top layer
+            // there are 5 total middle layers that output hatches may be on, excluding the top layer
             int outputHatchLayers = this.height * 2; // this is the amount of output hatches expected
             // for a height of 1, output hatches would be at index 0 and index 1. ie expected -1, expected -2.
             int bottomLayerHatch = outputHatchLayers - 2;
@@ -302,7 +302,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        this.height = 0;
         int built = this.survivalBuildPiece(
             STRUCTURE_PIECE_BASE,
             stackSize,
@@ -374,7 +373,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     protected int getFinalLayerOutputHatchCount() {
-        int currentLayer = height * 2 + 1; // in a max dt (height 5), this is index 10. so height*2
+        int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
         return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
@@ -563,7 +562,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
             .addSeparator()
             .addInfo("Distillery Mode")
-            .addInfo(TooltipHelper.parallelText("256 * (1+ Tower Height/2)") + " Parallels")
+            .addInfo(
+                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1+ Tower Height/2)")
+                    + " Parallels")
             .addStaticSpeedInfo(DISTILLERY_SPEED)
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
             .addInfo("Fluids output to the first hatch only")
@@ -600,7 +601,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addInputBus("Any Naquadah Distillation Casing in the first 5 layers", 1)
             .addEnergyHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
             .addMaintenanceHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right ", 2)
+            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right", 2)
             .addInputHatch("Bottom Slice, Bronze Pipe Casing, 8th layer, furthest left", 3)
             .addOutputHatch("Middle Slices & Top Slice, Bronze Pipe Casing, furthest right", 4, 5, 6)
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
