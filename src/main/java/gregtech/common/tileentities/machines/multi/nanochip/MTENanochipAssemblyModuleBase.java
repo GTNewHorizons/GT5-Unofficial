@@ -782,9 +782,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.interface.connected"));
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
             } else {
-                currentTip.add(EnumChatFormatting.RED + translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
         }
