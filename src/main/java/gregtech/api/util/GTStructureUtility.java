@@ -53,6 +53,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -116,6 +117,11 @@ public class GTStructureUtility {
             }
 
             @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList("GT5U.structure.water");
+            }
+
+            @Override
             public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
                 return check(t, world, x, y, z);
             }
@@ -138,6 +144,27 @@ public class GTStructureUtility {
                 return IStructureElement.BlocksToPlace.create(Blocks.water, 0);
             }
         };
+    }
+
+    public static boolean hasWaterAtStructurePosition(IGregTechTileEntity tile, ExtendedFacing facing,
+        String[][] structure, int offsetX, int offsetY, int offsetZ, char waterChar) {
+        if (tile == null || facing == null || structure == null) return false;
+        World world = tile.getWorld();
+        int cx = tile.getXCoord(), cy = tile.getYCoord(), cz = tile.getZCoord();
+        for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+            String[] layers = structure[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    if (row.charAt(charX) != waterChar) continue;
+                    int[] abc = new int[] { charX - offsetX, layerY - offsetY, sliceZ - offsetZ };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    facing.getWorldOffset(abc, xyz);
+                    if (isWater(world.getBlock(cx + xyz[0], cy + xyz[1], cz + xyz[2]))) return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {

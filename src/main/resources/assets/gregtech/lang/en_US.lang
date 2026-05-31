@@ -2619,6 +2619,7 @@ GT5U.gui.text.structure_error.missing_casings_specific=Not enough %s: need at le
 GT5U.gui.text.structure_error.missing_hatch=Missing %s
 GT5U.gui.text.structure_error.too_many_hatches=Too many %ses (max %s)
 GT5U.structure.heating_coil=Heating Coil
+GT5U.structure.water=Water
 GT5U.structure.tiered_glass=Tiered Glass
 GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.text.powerfail_events=Powerfail Events

@@ -55,6 +55,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -173,7 +174,17 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
         glassTier = -1;
         tier = -1;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E');
+            return;
+        }
         checkCasingMin(errors, casingAmount, 20);
         checkHasOutputBus(errors);
         checkHatchExact(errors, HatchElement.Energy, 1);
@@ -229,7 +240,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();

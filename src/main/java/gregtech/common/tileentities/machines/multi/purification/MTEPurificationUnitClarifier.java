@@ -307,8 +307,17 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         needsWaterFill = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W');
             return;
+        }
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         checkHasInputBus(errors);
@@ -319,7 +328,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();

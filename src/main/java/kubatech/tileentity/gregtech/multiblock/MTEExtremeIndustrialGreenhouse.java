@@ -129,6 +129,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
@@ -241,32 +242,31 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_D = 0;
     private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
     private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
+    private static final String[][] STRUCTURE_MAIN = transpose(
+        new String[][] { // spotless:off
+            {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
+            {" fgggf "," g   g "," g   g "," g   g "," flllf "," g   g "," g   g "," g   g "," fgggf "},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"aaaaaaa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","aaaaaaa"},
+            {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
+        } // spotless:on
+    );
+    private static final String[][] STRUCTURE_MAIN_OLD = transpose(
+        new String[][] { // spotless:off
+            { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
+            { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
+            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
+            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
+            { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
+            { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
+        } // spotless:on
+    );
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { // spotless:off
-                    {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
-                    {" fgggf "," g   g "," g   g "," g   g "," flllf "," g   g "," g   g "," g   g "," fgggf "},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"aaaaaaa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","aaaaaaa"},
-                    {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
-                } // spotless:on
-            ))
-        .addShape(
-            STRUCTURE_PIECE_MAIN_OLD,
-            transpose(
-                new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
-                    { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-                    { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-                    { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
-                    { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
-                })) // spotless:on
+        .addShape(STRUCTURE_PIECE_MAIN, STRUCTURE_MAIN)
+        .addShape(STRUCTURE_PIECE_MAIN_OLD, STRUCTURE_MAIN_OLD)
         .addElement(
             'a',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
@@ -309,7 +309,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (debug) glassTier = 8;
 
         if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) return;
+        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
+            isCheckingDirtWater = GTStructureUtility.hasWaterAtStructurePosition(
+                iGregTechTileEntity,
+                getExtendedFacing(),
+                STRUCTURE_MAIN,
+                OFFSET_H,
+                OFFSET_V,
+                OFFSET_D,
+                'w');
+            return;
+        }
 
         if (this.glassTier < 8) {
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
@@ -715,7 +725,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     isOldStructure);
             }
         } else {
-            if (!isOldStructure && isCheckingDirtWater && mMachine && aTick % 20 == 0) {
+            if (!isOldStructure && isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
                 int didPlace = 0;
                 // try to till the dirt and place the water

@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -150,7 +151,17 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsFluidRefill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E');
+            return;
+        }
         checkCasingMin(errors, casingAmount, 50);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
@@ -249,7 +260,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();
