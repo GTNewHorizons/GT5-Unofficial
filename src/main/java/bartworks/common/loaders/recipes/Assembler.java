@@ -44,15 +44,6 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        // todo: put new recipes for MVF and MDT in coremod and change them to be zpm appropriate
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Distillation_Tower.get(64))
-            .itemOutputs(ItemRegistry.megaMachines[2])
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
-            .duration(1 * HOURS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.OilCracker.get(64))
             .itemOutputs(ItemRegistry.megaMachines[4])
