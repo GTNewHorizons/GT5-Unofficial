@@ -292,8 +292,8 @@ public class UpgradeTreePanel {
 
         // Graviton shard amount
         col.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 112)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 112)
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
                 .setScrollValues(1, 4, 64)

@@ -926,7 +926,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     () -> minParallel,
                     f -> minParallel = f,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(1, Integer.MAX_VALUE);
+                        widget.numbersInt(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -938,7 +938,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     () -> maxParallel,
                     f -> maxParallel = f,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(1, Integer.MAX_VALUE);
+                        widget.numbersInt(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -950,7 +950,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     () -> manualSlowdown,
                     i -> manualSlowdown = i,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(0, Integer.MAX_VALUE);
+                        widget.numbersInt(0, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
