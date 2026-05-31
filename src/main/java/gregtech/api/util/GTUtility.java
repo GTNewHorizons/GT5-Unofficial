@@ -191,6 +191,8 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2Potion;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
@@ -4308,12 +4310,26 @@ public class GTUtility {
 
     public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
-        boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-            && (block instanceof BlockWater || block instanceof BlockTickingWater);
-        boolean isFlowing = block == Blocks.flowing_water;
-        boolean isWater = isFlowing || block == Blocks.water || isCOFHCore;
-        isFlowing = isFlowing || (isWater && world.getBlockMetadata(x, y, z) > 0);
+        boolean isFlowing = isFlowingWater(block, world, x, y, z);
         boolean isAir = block == Blocks.air;
         return (isFlowing || isAir);
+    }
+
+    public static boolean isCOFHWater(Block block) {
+        return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
+    }
+
+    public static boolean isWater(Block block) {
+        return block == Blocks.flowing_water || block == Blocks.water
+            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+            || isCOFHWater(block);
+    }
+
+    public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
+    }
+
+    public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
+        return isWater(block) && !isFlowingWater(block, world, x, y, z);
     }
 }

@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -362,16 +363,15 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                         int wx = controllerX + xyz[0];
                         int wy = controllerY + xyz[1];
                         int wz = controllerZ + xyz[2];
-                        boolean isReplaceable = GTUtility.canReplaceBlockWithWater(world, wx, wy, wz);
-                        if (isReplaceable) {
+                        Block block = world.getBlock(wx, wy, wz);
+                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
                             world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                        } else {
+                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
                             allFilled = false;
                         }
                     }
                 }
             }
-
             if (allFilled) needsWaterFill = false;
         }
     }

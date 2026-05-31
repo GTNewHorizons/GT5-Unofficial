@@ -10,6 +10,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
+import static gregtech.api.util.GTUtility.isFlowingWater;
+import static gregtech.api.util.GTUtility.isWater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,13 +61,10 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import bartworks.system.material.Werkstoff;
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -81,8 +80,6 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.Material;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class GTStructureUtility {
@@ -108,18 +105,12 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
         return new IStructureElement<>() {
 
-            final Block distilledWater = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-                    && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                boolean isFlowing = block == Blocks.flowing_water;
-                boolean isStillWater = block == Blocks.water || block == distilledWater || isCOFHCore;
-                isFlowing = isFlowing || (isStillWater && world.getBlockMetadata(x, y, z) > 0);
-                boolean isWater = isStillWater && !isFlowing;
-                if (isWater) return true;
+                boolean isWater = isWater(block);
+                boolean isFlowing = isFlowingWater(block, world, x, y, z);
+                if (isWater && !isFlowing) return true;
                 if (allowFlowing && isFlowing) return true;
                 return false;
             }
