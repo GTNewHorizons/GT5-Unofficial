@@ -29,4 +29,9 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTEMachineWithF
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
+
+    @Override
+    protected Predicate<FluidStack> getFluidSlotFilter() {
+        return machine::isFluidInputAllowed;
+    }
 }
