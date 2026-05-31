@@ -75,7 +75,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected boolean doesOverwriteFindRecipe() {
+    public boolean doesOverwriteFindRecipe() {
         return true;
     }
 

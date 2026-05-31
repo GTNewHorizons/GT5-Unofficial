@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import gregtech.api.util.MethodsReturnNonnullByDefault;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,10 +47,9 @@ import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -281,7 +281,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup(mapName, backend));
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
 
         assertTrue(
             error.getMessage()
@@ -311,7 +311,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup(mapName, backend));
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
 
         assertTrue(
             error.getMessage()
@@ -338,7 +338,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(secondRegistered);
         backend.compileRecipe(thirdRegistered);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup(mapName, backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup(mapName, backend));
     }
 
     @Test
@@ -361,7 +361,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(exactRecipe);
         backend.compileRecipe(wildcardRecipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup(mapName, backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup(mapName, backend));
     }
 
     @Test
@@ -377,7 +377,8 @@ class RecipeMapBackendLookupTest {
         FilterRejectingLookupBackend backend = new FilterRejectingLookupBackend(recipe);
         backend.compileRecipe(recipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.wildcard_rejected", backend));
+        assertDoesNotThrow(
+            () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.wildcard_rejected", backend));
     }
 
     @Test
@@ -401,7 +402,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(firstRecipe);
         backend.compileRecipe(queryRecipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.nbt_seed", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.nbt_seed", backend));
     }
 
     @Test
@@ -418,7 +419,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup(mapName, backend));
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
 
         assertTrue(
             error.getMessage()
@@ -441,7 +442,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.short_circuit", backend));
+            () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.short_circuit", backend));
 
         assertTrue(
             error.getMessage()
@@ -463,7 +464,7 @@ class RecipeMapBackendLookupTest {
         FilterRejectingLookupBackend backend = new FilterRejectingLookupBackend(recipe);
         backend.compileRecipe(recipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.filter_reject", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.filter_reject", backend));
     }
 
     @Test
@@ -473,7 +474,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(
             recipe(item("lookup.validation.unindexed.input"), item("lookup.validation.unindexed.output"), category));
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.unindexed", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.unindexed", backend));
     }
 
     @Test
@@ -512,7 +513,7 @@ class RecipeMapBackendLookupTest {
                     category));
 
             assertDoesNotThrow(
-                () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.cross_unification", backend));
+                () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.cross_unification", backend));
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
@@ -563,7 +564,7 @@ class RecipeMapBackendLookupTest {
                     item("lookup.validation.item_data.equivalent.output"),
                     category));
 
-            assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.item_data", backend));
+            assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.item_data", backend));
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
@@ -584,7 +585,7 @@ class RecipeMapBackendLookupTest {
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         backend.compileRecipe(recipeWithoutInputs(item("lookup.validation.empty.output"), category));
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.empty", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.empty", backend));
     }
 
     @Test
@@ -595,7 +596,7 @@ class RecipeMapBackendLookupTest {
         recipe.mFakeRecipe = true;
         backend.compileRecipe(recipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.fake", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.fake", backend));
     }
 
     @Test
@@ -609,7 +610,7 @@ class RecipeMapBackendLookupTest {
         recipe.mEnabled = false;
         backend.compileRecipe(recipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.disabled", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.disabled", backend));
     }
 
     @Test
@@ -626,7 +627,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.min_input_gate", backend));
+            () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.min_input_gate", backend));
         assertTrue(
             error.getMessage()
                 .contains("query rejected before trie lookup"));
@@ -654,7 +655,7 @@ class RecipeMapBackendLookupTest {
 
         IllegalStateException error = assertThrows(
             IllegalStateException.class,
-            () -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.missing_oredict", backend));
+            () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.missing_oredict", backend));
         assertTrue(
             error.getMessage()
                 .contains("unresolved oredict input(s)=1"));
@@ -730,7 +731,7 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(nullableSlotRecipe);
         backend.compileRecipe(concreteRecipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.nullable", backend));
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.nullable", backend));
     }
 
     @Test
@@ -752,7 +753,8 @@ class RecipeMapBackendLookupTest {
 
         backend.compileRecipe(recipe);
 
-        assertDoesNotThrow(() -> RecipeMapBackend.validateLookup("gt.recipe.lookup.test.alt_representative", backend));
+        assertDoesNotThrow(
+            () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.alt_representative", backend));
     }
 
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {

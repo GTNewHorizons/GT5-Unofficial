@@ -2,14 +2,14 @@ package gregtech.api.recipe.maps;
 
 import java.util.Collection;
 
-import gregtech.api.util.MethodsReturnNonnullByDefault;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

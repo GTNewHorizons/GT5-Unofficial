@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.util.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -33,6 +32,7 @@ import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import team.chisel.carving.Carving;
 
 @ParametersAreNonnullByDefault
@@ -48,7 +48,7 @@ public class ChiselBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected boolean doesOverwriteFindRecipe() {
+    public boolean doesOverwriteFindRecipe() {
         return true;
     }
 
