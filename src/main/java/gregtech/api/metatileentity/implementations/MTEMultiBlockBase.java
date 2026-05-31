@@ -2692,6 +2692,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
+        oldMufflerState = state;
         final int size = mMufflerHatches.size();
         for (int i = 0; i < size; i++) {
             final MTEHatchMuffler muffler = mMufflerHatches.get(i);
@@ -2703,7 +2704,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected void setMufflersIfChanged(boolean newState) {
         if (newState != oldMufflerState) {
-            oldMufflerState = newState;
             setMufflers(newState);
         }
     }
