@@ -1317,14 +1317,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue(
             "shutdownDisplayString",
             new StringSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .getLastShutDownReason()
+                () -> baseMetaTileEntity.getLastShutDownReason()
                     .getDisplayString()));
         syncManager.syncValue(
             "shutdownReasonKey",
             new StringSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .getLastShutDownReason()
+                () -> baseMetaTileEntity.getLastShutDownReason()
                     .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
