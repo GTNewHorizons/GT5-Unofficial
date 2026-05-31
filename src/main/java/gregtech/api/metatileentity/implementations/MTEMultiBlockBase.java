@@ -183,6 +183,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
+    private boolean oldMufflerState = false;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public String mNEI;
@@ -621,7 +622,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     | (mMachine ? 0 : 64));
 
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-            setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
+            setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
 
             boolean isActive = mMaxProgresstime > 0;
 
@@ -2697,6 +2698,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
             if (tile == null || tile.isDead()) continue;
             tile.setActive(state);
+        }
+    }
+
+    protected void setMufflersIfChanged(boolean newState) {
+        if (newState != oldMufflerState) {
+            oldMufflerState = newState;
+            setMufflers(newState);
         }
     }
 
