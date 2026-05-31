@@ -13,6 +13,9 @@
 
 package bartworks.common.tileentities.tiered;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -58,6 +61,7 @@ public class MTEBioLab extends MTEBasicMachine {
     private final int DISH_ITEM_DAMAGE = 0;
     private final int FLASK_ITEM_DAMAGE = 1;
     private final int DETERGENT_ITEM_DAMAGE = 3;
+    private final int PLASMACELL_MEMBRAME = 4;
     private final int FLUORESCENT_DNA = 0;
     private final int ENZYME_SOLUTION = 1;
     private final int PENICILLIN = 2;
@@ -182,6 +186,54 @@ public class MTEBioLab extends MTEBasicMachine {
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
             BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+    }
+
+    /**
+     * Checks if all predicates are matched and the index of the first matching input slot will be saved per predicate.
+     * Items must not be in the same order as the predicates, but they must exist within the input slots of the
+     * inventory of the machine.
+     * <p>
+     * Only non-NCs (Non Consumables) get consumed by the recipe processing.
+     */
+    private int processGenericModuleLogic(boolean skipOC, FluidStack fluid, int recipeFluidAmount,
+        Predicate<ItemStack>[] predicates, boolean[] isNC) {
+        int inputSlot = this.getInputSlot();
+        int[] inputSlotIndices = new int[predicates.length];
+        Arrays.fill(inputSlotIndices, -1);
+        for (int i = 0; i < this.mInputSlotCount; i++) {
+            if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[i])) {
+                continue;
+            }
+
+            for (int ip = 0; ip < predicates.length; ip++) {
+                if (inputSlotIndices[ip] == -1 && predicates[ip].test(this.mInventory[inputSlot + i])) {
+                    inputSlotIndices[ip] = inputSlot + i;
+                    break;
+                }
+            }
+        }
+        boolean hasItems = Arrays.stream(inputSlotIndices)
+            .allMatch(i -> i != -1);
+
+        if (hasItems && hasFluid(fluid, recipeFluidAmount)) {
+            // TODO: think about a good api interface here
+
+            int effectiveRecipeTier = R_TIER;
+
+            if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+            for (int i = 0; i < inputSlotIndices.length; i++) {
+                if (!isNC[i]) {
+                    this.mInventory[inputSlotIndices[i]].stackSize--;
+                }
+            }
+            this.mFluid.amount -= recipeFluidAmount;
+            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
+
+            return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+        }
+
+        return MTEBasicMachine.DID_NOT_FIND_RECIPE;
     }
 
     private int processDNAModuleLogic(boolean skipOC) {
