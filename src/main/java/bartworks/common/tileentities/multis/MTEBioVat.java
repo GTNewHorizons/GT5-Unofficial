@@ -42,6 +42,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import bartworks.API.enums.BioCultureEnum;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -402,7 +404,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 y + aBaseMetaTileEntity.getYCoord(),
                 zDir + z + aBaseMetaTileEntity.getZCoord(),
                 aBaseMetaTileEntity.getWorld().provider.dimensionId),
-            lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
+            lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
             GTValues.NW.sendPacketToAllPlayersInRange(
@@ -413,7 +415,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     true),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -425,7 +427,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     false),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -700,7 +702,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                                     y + aBaseMetaTileEntity.getYCoord(),
                                     zDir + z + aBaseMetaTileEntity.getZCoord(),
                                     aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                                this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB()
+                                this.mCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB()
                                     : this.mCulture.getColorRGB(),
                                 true),
                             aBaseMetaTileEntity.getXCoord(),

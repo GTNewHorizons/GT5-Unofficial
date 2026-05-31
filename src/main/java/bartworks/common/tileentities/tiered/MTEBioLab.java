@@ -13,6 +13,9 @@
 
 package bartworks.common.tileentities.tiered;
 
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
+import gregtech.common.items.MetaGeneratedItem98;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
@@ -29,7 +32,6 @@ import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
 import gregtech.api.enums.GTValues;
@@ -48,6 +50,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MTEBioLab extends MTEBasicMachine {
 
@@ -152,11 +155,52 @@ public class MTEBioLab extends MTEBasicMachine {
         return this.mTier * 1000;
     }
 
+    private boolean isValidCulture(ItemStack stack){
+        //hyp: if it has a NBT then the Name field exist and is correct
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, BioCultureEnum.NullBioCulture.culture.get(1), true) && stack.getTagCompound() != null;
+    }
+
+    private boolean isEmptyDNAFlask(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.EmptyDNAFlask.get(1), false);
+    }
+
+    private boolean isFilledDNAFlask(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.DNANull.get(1), true) && stack.getTagCompound() != null;
+    }
+
+    private boolean isEmptyDataOrb(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.Tool_DataOrb.get(1));
+    }
+
+    private boolean isDetergentPowder(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.DetergentPowder.get(1), false);
+    }
+
+    private boolean hasEnoughDistilledWater(FluidStack stack){
+        return stack != null && stack.isFluidEqual(GTModHandler.getDistilledWater(1_000)) && stack.amount >= 1000;
+    }
+
+    private boolean hasEnoughLiquiDNA(FluidStack stack){
+        return stack != null && stack.isFluidEqual(GTModHandler.getLiquidDNA(1_000)) && stack.amount >= 1000;
+    }
+
+    private boolean isEthanolCell(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, Materials.Ethanol.getCells(1));
+    }
+
+    private boolean isFluorescentDNACell(ItemStack stack){
+        return GTUtility.isStackValid(stack)
+            && GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.FLUORESCENT_DNA.get());
+    }
+
+    private boolean isPolymeraseCell(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.POLYMERASE.get());
+    }
+
     @Override
     public int checkRecipe(boolean skipOC) {
         if (hasModuleInstalled()) {
-            int moduleType = this.getSpecialSlot()
-                .getItemDamage();
+            int moduleType = this.getSpecialSlot();
             return switch (moduleType) {
                 case DNA_EXTRACTION_MODULE -> processDNAModuleLogic(skipOC);
                 case PCR_THERMOCYCLE_MODULE -> processPCRModuleLogic(skipOC);
@@ -348,14 +392,14 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
 
-            ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-            BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
-            BehaviourDataOrb.setDataName(Outp, cultureDNABioData.getName());
+            ItemStack DNAOrb = ItemList.Tool_DataOrb.get(1);
+            BehaviourDataOrb.setDataTitle(DNAOrb, "DNA Sample");
+            BehaviourDataOrb.setDataName(DNAOrb, cultureDNABioData.getName());
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                this.mOutputItems[0] = Outp;
-            } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L);
-            this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
+            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+                this.mOutputItems[0] = DNAOrb;
+            } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1);
+            this.mOutputItems[1] = ItemList.Cell_Empty.get(2);
 
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
 

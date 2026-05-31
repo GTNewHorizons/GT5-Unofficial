@@ -13,8 +13,12 @@
 
 package bartworks.common.items;
 
+import java.awt.Color;
 import java.util.List;
 
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
+import bartworks.util.BioData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -22,12 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-
 import bartworks.MainMod;
-import bartworks.common.loaders.BioItemList;
-import bartworks.util.BWColorUtil;
-import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,13 +43,12 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         return switch (itemStack.getItemDamage()) {
-            case 0 -> BWUtil.getRarityFromByte(
-                itemStack.getTagCompound()
-                    .getCompoundTag("DNA")
-                    .getByte("Rarity"));
-            case 1, 2 -> BWUtil.getRarityFromByte(
-                itemStack.getTagCompound()
-                    .getByte("Rarity"));
+            case 0 ->
+                BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(itemStack.getTagCompound()
+                    .getString("Name"), BioCultureEnum.NullBioCulture).rarity;
+            case 1, 2 ->
+                BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(itemStack.getTagCompound()
+                    .getString("Name"), BioDataEnum.NullBioData).rarity;
             default -> EnumRarity.common;
         };
     }
@@ -58,11 +56,9 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0) {
-            final int[] colors = ItemStackNBT.getIntArray(stack, "Color");
-            if (colors != null && colors.length > 0) {
-                return BWColorUtil.getColorFromRGBArray(colors);
-            }
+        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null){
+            Color color = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(stack.getTagCompound().getString("Name"), BioCultureEnum.NullBioCulture).color;
+            return color.getRGB();
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
@@ -95,19 +91,22 @@ public class ItemLabParts extends SimpleSubItemClass {
             return;
         }
 
+        String name = itemStack.getTagCompound().getString("Name");
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(getTooltip(5, itemStack));
-                if (!itemStack.getTagCompound()
-                    .getBoolean("Breedable")) {
+                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioCultureEnum.NullBioCulture).bioCulture;
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.5.name", culture.getLocalisedName()));
+                if (!culture.isBreedable()) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(getTooltip(7, itemStack));
+                BioData DNAFlask = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData).getBioData();
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.7.name", DNAFlask.getLocalisedName()));
                 break;
             case 2:
-                list.add(getTooltip(8, itemStack));
+                BioData plasmidCell = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData).getBioData();
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.8.name", plasmidCell.getLocalisedName()));
                 break;
             default:
                 break;
@@ -117,9 +116,9 @@ public class ItemLabParts extends SimpleSubItemClass {
 
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-        list.addAll(BioItemList.getAllPetriDishes());
-        list.addAll(BioItemList.getAllDNASampleFlasks());
-        list.addAll(BioItemList.getAllPlasmidCells());
+        list.addAll(BioCultureEnum.getAllPetriDishes());
+        list.addAll(BioDataEnum.getAllDNASampleFlasks());
+        list.addAll(BioDataEnum.getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
     }
 
@@ -128,28 +127,5 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack.getItemDamage() == 0 && itemStack.getTagCompound() != null)
             return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
         return super.getUnlocalizedName(itemStack);
-    }
-
-    private static String getTooltip(int meta, ItemStack stack) {
-        return StatCollector
-            .translateToLocalFormatted("tooltip.labparts." + meta + ".name", getLocalizedBioName(stack));
-    }
-
-    private static String getLocalizedBioName(ItemStack stack) {
-        final String name = stack.getTagCompound()
-            .getString("Name");
-        if (name == null || name.isEmpty()) {
-            return "";
-        }
-        final String key = "bw.bioname." + name.toLowerCase()
-            .replace(" ", "_");
-        final String keyLatin = key + ".latin";
-        if (StatCollector.canTranslate(keyLatin)) {
-            return StatCollector.translateToLocalFormatted(
-                "bw.bioname.latin.format",
-                StatCollector.translateToLocal(key),
-                StatCollector.translateToLocal(keyLatin));
-        }
-        return StatCollector.translateToLocal(key);
     }
 }
