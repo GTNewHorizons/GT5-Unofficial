@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.tiered;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -187,7 +188,10 @@ public class MTEBioLab extends MTEBasicMachine {
                             cellSlot = inputSlot + i;
                         }
                     }
-                    if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), 1000)) {
+                    if (!hasItems && dishSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1) {
+                        hasItems = true;
+                    }
+                    if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), 1_000)) {
                         NBTTagCompound DNABioDataTag = this.mInventory[dishSlot].getTagCompound()
                             .getCompoundTag("DNA");
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
@@ -213,8 +217,9 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(rTier + cultureDNABioData.getTier()),
+                            GTUtility.safeInt(GTValues.V[rTier + cultureDNABioData.getTier()]),
                             500);
+
 
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -282,7 +287,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
 
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
                             500);
 
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
@@ -326,7 +331,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -364,7 +369,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            GTUtility.safeInt(GTValues.V[1 + rTier + cultureDNABioData.getTier()]),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
