@@ -222,6 +222,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
+    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -4321,7 +4322,7 @@ public class GTUtility {
 
     public static boolean isWater(Block block) {
         return block == Blocks.flowing_water || block == Blocks.water
-            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+            || block == DISTILLED_WATER_BLOCK
             || isCOFHWater(block);
     }
 
