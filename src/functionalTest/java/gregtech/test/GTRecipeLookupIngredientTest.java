@@ -4,6 +4,7 @@ import static net.minecraft.init.Items.iron_ingot;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,7 +26,8 @@ class GTRecipeLookupIngredientTest {
         OreDictionary.registerOre(oreName, stack);
         GTOreDictLookupIngredient recipeKey = new GTOreDictLookupIngredient(OreDictionary.getOreID(oreName));
 
-        List<GTOreDictLookupIngredient> runtimeKeys = GTOreDictLookupIngredient.fromRuntime(stack);
+        List<GTOreDictLookupIngredient> runtimeKeys = new ArrayList<>();
+        GTOreDictLookupIngredient.fromRuntime(runtimeKeys::add, stack);
 
         assertTrue(runtimeKeys.contains(recipeKey));
         for (GTOreDictLookupIngredient runtimeKey : runtimeKeys) {

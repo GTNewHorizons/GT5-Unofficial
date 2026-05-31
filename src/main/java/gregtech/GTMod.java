@@ -70,6 +70,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
@@ -771,7 +772,7 @@ public class GTMod {
                 .bus()
                 .unregister(this);
             GT_FML_LOGGER.info("GTRecipeLookupValidator: first server tick reached; starting validation.");
-            RecipeMapBackend.validateLookup();
+            RecipeLookupValidator.validateLookup();
             GT_FML_LOGGER.info("GTRecipeLookupValidator: validation completed without mismatches.");
             throw new IllegalStateException("GT recipe lookup validation found 0 issue(s); run completed.");
         }
