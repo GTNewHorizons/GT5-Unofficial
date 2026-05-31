@@ -82,7 +82,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final long BLADE_TICKS_PER_ROTATION = Math.round(360.0F / BLADE_ROTATION_SPEED);
     private static final double BLADE_CLIP_BOTTOM = 1.0D;
     @SideOnly(Side.CLIENT)
-    private static final DoubleBuffer CLIP_PLANE_BUFFER = BufferUtils.createDoubleBuffer(4);
+    private static DoubleBuffer CLIP_PLANE_BUFFER;
     private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
@@ -448,6 +448,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+
+        if (CLIP_PLANE_BUFFER == null) {
+            CLIP_PLANE_BUFFER = BufferUtils.createDoubleBuffer(4);
+        }
+
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null || stopAllRendering
             || !mMachine
