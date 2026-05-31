@@ -240,7 +240,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mInputBeamline.clear();
         mOutputBeamline.clear();
-
+mTier = 0;
         if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 5, 0, null)) {
             mTier = 2;
             return;
