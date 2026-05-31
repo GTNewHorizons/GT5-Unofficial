@@ -238,7 +238,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill")
+        tt.addMachineType("Macerator")
             .addInfo("A primitive Grinder powered by Kinetic energy")
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")

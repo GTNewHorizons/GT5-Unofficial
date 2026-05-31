@@ -35,6 +35,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gcewing.architecture.common.item.ArchitectureItemBlock;
 import gcewing.architecture.common.shape.Shape;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -244,7 +245,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
                     .itemOutputs(GTUtility.copyAmount(outputAmount, tOutput))
                     .outputChances(10000)
                     .duration(20)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .specialValue(0)
                     .build();
 
