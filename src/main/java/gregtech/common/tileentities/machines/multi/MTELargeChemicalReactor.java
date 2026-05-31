@@ -124,6 +124,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addOutputBus("Any Casing", 1, 2)
             .addOutputHatch("Any Casing", 1, 2)
             .addStructureInfo("You can have multiple hatches/buses")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
