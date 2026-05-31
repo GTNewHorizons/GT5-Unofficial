@@ -952,6 +952,7 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
+
         // Exothermic Hearth
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
@@ -977,6 +978,7 @@ public class AssemblyLineRecipes implements Runnable {
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
 
+        // Mega Chemical Reactor
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_LargeChemicalReactor.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
