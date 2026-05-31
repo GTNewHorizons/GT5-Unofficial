@@ -143,7 +143,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+        return DescTextLocalization.addText("UniversalChemicalFuelEngineLegacy.hint", 11);
     }
 
     @Override

@@ -310,7 +310,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                             .margin(4, 4, 7, 4))
                     .child(
                         new TextFieldWidget().value(stored)
-                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .numbersLong(() -> 0L, () -> Long.MAX_VALUE)
                             .marginLeft(4)
                             .marginRight(4)
                             .marginBottom(4)

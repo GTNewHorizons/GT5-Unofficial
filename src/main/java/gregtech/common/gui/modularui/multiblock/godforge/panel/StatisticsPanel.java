@@ -182,8 +182,8 @@ public class StatisticsPanel {
             new TextFieldWidget().setFormatAsInteger(true)
                 .size(70, 18)
                 .value(new IntValue.Dynamic(previewFuelFactor::intValue, previewFuelFactor::setValue))
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setScrollValues(1, 4, 64)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .scrollValues(1, 64, 4, 16)
                 .setTextAlignment(Alignment.CENTER)
                 .tooltip(t -> t.addLine(translateToLocal("fog.text.tooltip.factorpreview")))
                 .marginRight(4));
