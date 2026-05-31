@@ -242,18 +242,18 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
         if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 5, 0, null)) {
             mTier = 2;
+            updateHatchRotation();
             return;
         }
         if (checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
             mTier = 1;
+            updateHatchRotation();
             return;
         }
         mTier = 0;
     }
 
-    @Override
-    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
-        super.onStructureCheckFinished(igte);
+    private void updateHatchRotation() {
         if (!mInputBeamline.isEmpty()) {
             mInputBeamline.get(0)
                 .getBaseMetaTileEntity()
