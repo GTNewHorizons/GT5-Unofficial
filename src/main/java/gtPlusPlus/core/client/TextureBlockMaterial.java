@@ -34,7 +34,7 @@ public class TextureBlockMaterial extends TextureAtlasSprite {
         INSTANCES.add(this);
     }
 
-    /// Driven from {@code TextureBlockMaterialTickHandler} to update the tint every render tick.
+    /// Driven from {@code TextureBlockMaterialTickHandler} to update the tint every client tick.
     public static void tickAll() {
         if (INSTANCES.isEmpty()) return;
         Minecraft mc = Minecraft.getMinecraft();

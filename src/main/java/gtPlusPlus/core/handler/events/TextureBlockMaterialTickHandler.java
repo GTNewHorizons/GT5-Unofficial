@@ -12,8 +12,8 @@ import gtPlusPlus.core.client.TextureBlockMaterial;
 public class TextureBlockMaterialTickHandler {
 
     @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.getTextureManager() == null) return;
         TextureBlockMaterial.tickAll();

@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTAnimatedColor;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -217,18 +217,11 @@ public class BaseItemComponent extends Item {
     public static int getMaterialCustomColor(Material material) {
         switch (material.getRGBA()[3]) {
             case 2:
-                // Mild Glow Effect
-                // 4 sec cycle, 200 control point. 20ms interval.
-                int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
-                int value = currentFrame < 50 ? currentFrame + 1
-                    : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
-                return Utils.rgbtoHexValue(
-                    Math.min(255, Math.max(material.getRGBA()[0] + value, 0)),
-                    Math.min(255, Math.max(material.getRGBA()[1] + value, 0)),
-                    Math.min(255, Math.max(material.getRGBA()[2] + value, 0)));
+                // Mild glow pulse, synced to the shared client-tick animation clock.
+                return GTAnimatedColor.getGlowColor(material.getRGBA());
             case 3:
-                // Rainbow Hue Cycle
-                return Color.HSBtoRGB((float) (System.nanoTime() % 8_000_000_000L) / 8_000_000_000f, 1, 1);
+                // Rainbow hue cycle, synced to the shared client-tick animation clock.
+                return GTAnimatedColor.getRainbowColor();
             default:
                 return Utils.rgbtoHexValue(255, 255, 255);
         }
