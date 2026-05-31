@@ -23,7 +23,7 @@ public class CoverFluidLimiterGui extends CoverBaseGui<CoverFluidLimiter> {
                 .marginBottom(4)
                 .marginLeft(4))
             .child(
-                makeNumberField().setNumbers(0, 100)
+                makeNumberField().numbersInt(0, 100)
                     .setFocusOnGuiOpen(true)
                     .value(
                         new IntSyncValue(

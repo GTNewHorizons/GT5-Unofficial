@@ -1123,7 +1123,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         BooleanSyncValue alwaysMaxParallelSyncer, IntSyncValue powerPanelMaxParallelSyncer) {
         return new TextFieldWidget().value(powerPanelMaxParallelSyncer)
             .setTextAlignment(Alignment.Center)
-            .setNumbers(
+            .numbersInt(
                 () -> alwaysMaxParallelSyncer.getValue() ? maxParallelSyncer.getValue() : 1,
                 maxParallelSyncer::getValue)
             .tooltipBuilder(
