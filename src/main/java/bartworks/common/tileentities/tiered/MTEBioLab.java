@@ -58,6 +58,8 @@ public class MTEBioLab extends MTEBasicMachine {
     public static final int DISH_ITEM_DAMAGE = 0;
     public static final int FLASK_ITEM_DAMAGE = 1;
     public static final int DETERGENT_ITEM_DAMAGE = 3;
+    public static final int FLUORESCENT_DNA = 0;
+    public static final int POLYMERASE = 3;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -218,19 +220,44 @@ public class MTEBioLab extends MTEBasicMachine {
                     }
                 }
                 case PCR_THERMOCYCLE_MODULE -> {
-                    if (isStackLabPart(this.mInventory[this.getInputSlot()], FLASK_ITEM_DAMAGE) && // checks if it is a
-                                                                                                   // Culture
-                        GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 3])
-                        && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 3], ItemList.Tool_DataOrb.get(1L))
-                        && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
-                        && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 1], FluidLoader.BioLabFluidCells[0])
-                        && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
-                        && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 2], FluidLoader.BioLabFluidCells[3])
-                        && hasFluid(GTModHandler.getLiquidDNA(1_000), 1000)) {
-                        NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound();
+                    int orbSlot1 = -1;
+                    int flaskSlot = -1;
+                    int dnaCellSlot = -1;
+                    int polymeraseSlot = -1;
+                    boolean hasItems = false;
+                    for (int i = 0; i < this.mInputSlotCount; i++) {
+                        if (orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1) {
+                            hasItems = true;
+                            break;
+                        }
+                        if (this.mInventory[inputSlot + i] == null) {
+                            continue;
+                        }
+                        if (isValidLabPart(this.mInventory[inputSlot + i])) {
+                            if (this.mInventory[inputSlot + i].getItemDamage() == FLASK_ITEM_DAMAGE) {
+                                if (this.mInventory[inputSlot + i].getTagCompound() != null)
+                                    flaskSlot = inputSlot + i;
+                            } else {
+                                continue;
+                            }
+                        }
+                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], ItemList.Tool_DataOrb.get(1L))) {
+                            orbSlot1 = inputSlot + i;
+                            continue;
+                        }
+                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[FLUORESCENT_DNA])) {
+                            dnaCellSlot = inputSlot + i;
+                            continue;
+                        }
+                        if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], FluidLoader.BioLabFluidCells[POLYMERASE])) {
+                            polymeraseSlot = inputSlot + i;
+                        }
+                    }
+                    if (!hasItems && orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1) {
+                        hasItems = true;
+                    }
+                    if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), 1_000)) {
+                        NBTTagCompound DNABioDataTag = this.mInventory[flaskSlot].getTagCompound();
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
                         BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
