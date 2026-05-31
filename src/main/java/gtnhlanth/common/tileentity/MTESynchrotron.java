@@ -522,6 +522,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
+            .addTecTechHatchInfo()
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front center")
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)

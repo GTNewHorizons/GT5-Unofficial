@@ -23,13 +23,13 @@ gtnhlanth.tt.disstank.info2=Fluids must be input in the exact ratio as listed in
 gtnhlanth.tt.sc.machinetype=Particle Source
 gtnhlanth.tt.sc.info1=Generates particle beams from specific §dsource materials
 gtnhlanth.tt.sc.info2=NEI has the list of §dsource materials§7 and their stats
-gtnhlanth.tt.sc.info3=Recipes are all one second long and have a minimum §3EU/t Requirement
-gtnhlanth.tt.sc.info4=Increasing the power asymptotically approaches the §dMax Material Energy
+gtnhlanth.tt.sc.info3=Recipes are all one second long and output a single beam packet
+gtnhlanth.tt.sc.info4=Increasing the power above the minimum §3EU/t Required§7 asymptotically approaches the §dMax Material Energy
 gtnhlanth.tt.sc.info5=Particle beams have a §5particle type§7, §9energy§7, §2focus§7, and §6rate
 gtnhlanth.tt.sc.info6=§5Type§7 determines the charge, rest mass, and §9Max Particle Energy
 gtnhlanth.tt.sc.info7=§9Energy§7 is the energy of the particle beam in electron volts (eV)
 gtnhlanth.tt.sc.info8=§2Focus§7 is the width of the particle beam
-gtnhlanth.tt.sc.info9=§6Rate§7 is the amount of particles per second
+gtnhlanth.tt.sc.info9=§6Rate§7 is the amount of particles per packet
 gtnhlanth.tt.sc.info10=§9Output Beam Energy§7 = min(§9Max Particle Energy§7, §eaeV§f)
 gtnhlanth.tt.sc.info11=where §eaeV§f = §dMax Material Energy§f * (1 - 1.001^(§9-Energy Ratio§f * (§3EU/t Provided§f - §3EU/t Required§f)))
 gtnhlanth.tt.sc.input=§cRequires 1 input bus OR 1 input hatch
@@ -224,6 +224,9 @@ beamline.energy=Energy
 beamline.focus=Focus
 beamline.amount=Amount
 beamline.rate=Rate
+beamline.materialenergy=Max Material Energy
+beamline.particleenergy=Max Particle Energy
+beamline.energyratio=Energy Ratio
 beamline.temperature=Temperature
 beamline.coolusage=Coolant Usage
 
