@@ -995,12 +995,12 @@ public class AssemblyLineRecipes implements Runnable {
                 Materials.Lubricant.getFluid(16_000),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Naquadah.getMolten(4 * INGOTS))
-              .itemOutputs(ItemList.MegaDistillationTower.get(1))
-              .eut(TierEU.RECIPE_LuV / 2)
-              .duration(1 * MINUTES)
-             .addTo(AssemblyLine);
+            .itemOutputs(ItemList.MegaDistillationTower.get(1))
+            .eut(TierEU.RECIPE_LuV / 2)
+            .duration(1 * MINUTES)
+            .addTo(AssemblyLine);
 
-       // Mega Chemical Reactor
+        // Mega Chemical Reactor
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_LargeChemicalReactor.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
