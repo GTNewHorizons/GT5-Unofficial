@@ -242,7 +242,6 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         if (requiresMufflers()) {
             checkHatchExact(errors, HatchElement.Muffler, 4);
         }
-        checkHasInputBus(errors);
         checkHasInputHatch(errors);
         if (requiresOutputHatch()) {
             checkHasOutputHatch(errors);
