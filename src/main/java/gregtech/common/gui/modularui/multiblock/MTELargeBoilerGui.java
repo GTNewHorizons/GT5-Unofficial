@@ -96,23 +96,24 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
+        // spotless:off
         return new TextWidget<>(
             IKey.dynamic(
                 () -> getFluidTextLine(
                     fluidName,
-                    currentSteamProductionSync.getValue()
-                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
-                            .scale(0.75f)
-                            .tooltipBuilder(
-                                t -> t.addLine(
-                                    EnumChatFormatting.AQUA + fluidName
-                                        + "\n"
-                                        + GTUtility.appendRate(
-                                            false,
-                                            currentSteamProductionSync.getValue()
-                                                .longValue(),
-                                            false,
-                                            1)));
+                    currentSteamProductionSync.getValue().longValue())))
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
+            .tooltipBuilder(
+                t -> t.addLine(
+                EnumChatFormatting.AQUA + fluidName
+                    + "\n"
+                    + GTUtility.appendRate(false,
+                    currentSteamProductionSync.getValue().longValue(),
+                    false,
+                    1)))
+            .tooltipAutoUpdate(true);
+        //spotless:on
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
