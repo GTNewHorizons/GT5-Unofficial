@@ -36,7 +36,7 @@ public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
     public Flow createThresholdFieldRow() {
         return Flow.row()
             .child(
-                new TextFieldWidget().setNumbersDouble(val -> Math.min(14, Math.max(0, val)))
+                new TextFieldWidget().numbersDouble(val -> Math.min(14, Math.max(0, val)))
                     .size(77, 12)
                     .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))

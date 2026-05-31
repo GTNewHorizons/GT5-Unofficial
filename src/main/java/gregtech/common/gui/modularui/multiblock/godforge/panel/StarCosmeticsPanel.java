@@ -282,8 +282,8 @@ public class StarCosmeticsPanel {
                     .asWidget()
                     .size(34, 16))
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, maxValue)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, maxValue)
                     .setTextAlignment(Alignment.CENTER)
                     .value(syncValue)
                     .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlyintegers")))

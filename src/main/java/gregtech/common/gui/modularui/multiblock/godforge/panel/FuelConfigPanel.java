@@ -57,12 +57,12 @@ public class FuelConfigPanel {
 
         // Textbox
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.FUEL_FACTOR.create(hypervisor))
                 .setTooltipOverride(true)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .size(70, 18)
                 .marginLeft(4)
                 .marginTop(3));

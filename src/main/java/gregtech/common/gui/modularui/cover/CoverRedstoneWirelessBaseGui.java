@@ -39,7 +39,7 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     private IWidget createFrequencyInputField(IntSyncValue frequencySyncer) {
         return makeNumberField(88).marginRight(2)
             .height(12)
-            .setNumbers(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
+            .numbersInt(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
             .value(frequencySyncer);
     }
 
