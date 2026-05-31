@@ -237,14 +237,12 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mInputBeamline.clear();
-        mOutputBeamline.clear();
-
         if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 5, 0, null)) {
             mTier = 2;
             updateHatchRotation();
             return;
         }
+        clearHatches();
         if (checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
             mTier = 1;
             updateHatchRotation();
