@@ -80,8 +80,8 @@ public class SettingsPanelBuilder {
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
             textField.value(new IntSyncValue(getter, setter).allowC2S());
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
+            textField.formatAsInteger(true);
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
@@ -98,8 +98,8 @@ public class SettingsPanelBuilder {
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
             textField.value(new LongSyncValue(getter, setter).allowC2S());
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
+            textField.formatAsInteger(true);
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
@@ -122,7 +122,7 @@ public class SettingsPanelBuilder {
                     return NumberFormatUtil.formatNumber(this.getValue());
                 }
             }.allowC2S());
-            textField.setNumbers();
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 

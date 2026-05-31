@@ -64,9 +64,9 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         // priority input text field
         mainRow.child(
             new TextFieldWidget().size(75, 14)
-                .setFormatAsInteger(true)
+                .formatAsInteger(true)
                 .value(prioritySyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
+                .numbersInt(1, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
