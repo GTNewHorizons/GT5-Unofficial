@@ -46,11 +46,11 @@ public final class GTRecipeLookup {
 
             if (lastIngredient) {
                 if (node == null) {
-                    nodes.put(ingredient, Node.leaf(recipe, branch.allocateNodeOrder()));
+                    nodes.put(ingredient, Node.leaf(recipe));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
-                    node.addRecipe(recipe, branch.allocateNodeOrder());
+                    node.addRecipe(recipe);
                 }
                 continue;
             }
@@ -58,13 +58,12 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                nodes.put(ingredient, Node.branch(childBranch, branch.allocateNodeOrder()));
+                nodes.put(ingredient, Node.branch(childBranch));
             } else if (node.hasBranch()) {
                 childBranch = node.branch;
             } else {
                 childBranch = new GTRecipeLookupBranch();
                 node.branch = childBranch;
-                node.branchOrder = branch.allocateNodeOrder();
             }
 
             addRecursive(recipe, ingredients, childBranch, index + 1);
@@ -101,22 +100,18 @@ public final class GTRecipeLookup {
 
         private List<GTRecipe> recipes;
         private GTRecipeLookupBranch branch;
-        private int recipeOrder = -1;
-        private int branchOrder = -1;
 
-        static Node leaf(GTRecipe recipe, int order) {
+        static Node leaf(GTRecipe recipe) {
             Node node = new Node();
             List<GTRecipe> recipes = new ArrayList<>(1);
             recipes.add(recipe);
             node.recipes = recipes;
-            node.recipeOrder = order;
             return node;
         }
 
-        static Node branch(GTRecipeLookupBranch branch, int order) {
+        static Node branch(GTRecipeLookupBranch branch) {
             Node node = new Node();
             node.branch = branch;
-            node.branchOrder = order;
             return node;
         }
 
@@ -128,10 +123,9 @@ public final class GTRecipeLookup {
             return recipes != null && !recipes.isEmpty();
         }
 
-        void addRecipe(GTRecipe recipe, int order) {
+        void addRecipe(GTRecipe recipe) {
             if (recipes == null) {
                 recipes = new ArrayList<>(1);
-                recipeOrder = order;
             }
             recipes.add(recipe);
         }
@@ -161,7 +155,6 @@ public final class GTRecipeLookup {
                     actions.add(SearchAction.recipes(node));
                 }
             }
-            actions.sort((first, second) -> Integer.compare(first.order, second.order));
         }
     }
 
@@ -169,20 +162,18 @@ public final class GTRecipeLookup {
 
         private final Node node;
         private final boolean branch;
-        private final int order;
 
-        private SearchAction(Node node, boolean branch, int order) {
+        private SearchAction(Node node, boolean branch) {
             this.node = node;
             this.branch = branch;
-            this.order = order;
         }
 
         static SearchAction branch(Node node) {
-            return new SearchAction(node, true, node.branchOrder);
+            return new SearchAction(node, true);
         }
 
         static SearchAction recipes(Node node) {
-            return new SearchAction(node, false, node.recipeOrder);
+            return new SearchAction(node, false);
         }
     }
 

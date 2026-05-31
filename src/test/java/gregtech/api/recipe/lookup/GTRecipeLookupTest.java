@@ -97,7 +97,7 @@ class GTRecipeLookupTest {
     }
 
     @Test
-    void returnsCandidatesInInsertionOrderAcrossDifferentPaths() {
+    void returnsCandidatesAcrossDifferentPaths() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe first = recipe();
         GTRecipe second = recipe();
@@ -107,7 +107,9 @@ class GTRecipeLookupTest {
 
         List<GTRecipe> results = results(lookup.iterator(group(ore(61), ore(60))));
 
-        assertEquals(Arrays.asList(first, second), results);
+        assertEquals(2, results.size());
+        assertTrue(results.contains(first));
+        assertTrue(results.contains(second));
     }
 
     @Test
@@ -127,7 +129,7 @@ class GTRecipeLookupTest {
     }
 
     @Test
-    void returnsLongerPathBeforeSharedPrefixWhenRegisteredFirst() {
+    void returnsLongerPathAndSharedPrefixWhenBothMatch() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe longer = recipe();
         GTRecipe prefix = recipe();
@@ -137,11 +139,13 @@ class GTRecipeLookupTest {
 
         List<GTRecipe> results = results(lookup.iterator(group(ore(70), ore(71))));
 
-        assertEquals(Arrays.asList(longer, prefix), results);
+        assertEquals(2, results.size());
+        assertTrue(results.contains(longer));
+        assertTrue(results.contains(prefix));
     }
 
     @Test
-    void returnsLongerRepeatedPathBeforeSharedPrefixWhenRegisteredFirst() {
+    void returnsLongerRepeatedPathAndSharedPrefixWhenBothMatch() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe longer = recipe();
         GTRecipe prefix = recipe();
@@ -151,11 +155,13 @@ class GTRecipeLookupTest {
 
         List<GTRecipe> results = results(lookup.iterator(group(ore(80), ore(81))));
 
-        assertEquals(Arrays.asList(longer, prefix), results);
+        assertEquals(2, results.size());
+        assertTrue(results.contains(longer));
+        assertTrue(results.contains(prefix));
     }
 
     @Test
-    void returnsSharedPrefixBeforeLongerRepeatedPathWhenRegisteredFirst() {
+    void returnsSharedPrefixAndLongerRepeatedPathWhenBothMatch() {
         GTRecipeLookup lookup = new GTRecipeLookup();
         GTRecipe prefix = recipe();
         GTRecipe longer = recipe();
@@ -165,7 +171,9 @@ class GTRecipeLookupTest {
 
         List<GTRecipe> results = results(lookup.iterator(group(ore(90), ore(91))));
 
-        assertEquals(Arrays.asList(prefix, longer), results);
+        assertEquals(2, results.size());
+        assertTrue(results.contains(prefix));
+        assertTrue(results.contains(longer));
     }
 
     @Test

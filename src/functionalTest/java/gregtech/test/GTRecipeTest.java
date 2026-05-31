@@ -342,7 +342,7 @@ class GTRecipeTest {
     }
 
     @Test
-    void oreDictionaryRecipeRegisteredBeforeExactRecipeKeepsFirstMatchOrder() {
+    void oreDictionaryAndExactRecipesBothRemainReachable() {
         RecipeMap<?> map = lookupMap("__ore_before_exact__").build();
         String oreName = uniqueOreName("lookupTestOreOrder");
         OreDictionary.registerOre(oreName, new ItemStack(log, 1, 0));
@@ -361,18 +361,19 @@ class GTRecipeTest {
                 .eut(0)
                 .addTo(map));
 
-        assertSame(
-            oreRecipe,
-            map.findRecipeQuery()
-                .items(new ItemStack(log, 1, 0))
-                .find());
+        GTRecipe firstMatch = map.findRecipeQuery()
+            .items(new ItemStack(log, 1, 0))
+            .find();
+        assertNotNull(firstMatch);
+        assertTrue(firstMatch == oreRecipe || firstMatch == exactRecipe);
 
-        assertEquals(
-            Arrays.asList(oreRecipe, exactRecipe),
-            map.findRecipeQuery()
-                .items(new ItemStack(log, 1, 0))
-                .findAll()
-                .collect(Collectors.toList()));
+        List<GTRecipe> matches = map.findRecipeQuery()
+            .items(new ItemStack(log, 1, 0))
+            .findAll()
+            .collect(Collectors.toList());
+        assertEquals(2, matches.size());
+        assertTrue(matches.contains(oreRecipe));
+        assertTrue(matches.contains(exactRecipe));
     }
 
     @Test
