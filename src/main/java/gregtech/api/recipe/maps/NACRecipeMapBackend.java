@@ -2,12 +2,17 @@ package gregtech.api.recipe.maps;
 
 import java.util.Collection;
 
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class NACRecipeMapBackend extends RecipeMapBackend {
 
     private int maxDuration;

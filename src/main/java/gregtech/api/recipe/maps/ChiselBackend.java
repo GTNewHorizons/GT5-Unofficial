@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -33,6 +35,8 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import team.chisel.carving.Carving;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class ChiselBackend extends RecipeMapBackend {
 
     private static final int MAX_CIRCUIT_CONFIGURATION = 24;
