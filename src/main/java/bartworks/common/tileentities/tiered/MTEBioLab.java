@@ -335,9 +335,8 @@ public class MTEBioLab extends MTEBasicMachine {
             if (this.mTier < effectiveRecipeTier)
                 return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-            for (int i = 0; i < this.mInputSlotCount; i++) {
-                if (this.mInventory[this.getInputSlot() + i] != null)
-                    this.mInventory[this.getInputSlot() + i].stackSize--;
+            for (int slot : new int[] { dishSlot, flaskSlot, detergentSlot, cellSlot }) {
+                this.mInventory[slot].stackSize--;
             }
 
             this.mFluid.amount -= recipeFluidAmount;
@@ -398,9 +397,8 @@ public class MTEBioLab extends MTEBasicMachine {
             if (this.mTier < effectiveRecipeTier)
                 return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-            for (int i = 0; i < this.mInputSlotCount; i++) {
-                if (this.mInventory[this.getInputSlot() + i] != null)
-                    this.mInventory[this.getInputSlot() + i].stackSize--;
+            for (int slot : new int[] { orbSlot1, flaskSlot, dnaCellSlot, polymeraseSlot }) {
+                this.mInventory[slot].stackSize--;
             }
 
             this.mFluid.amount -= recipeFluidAmount;
