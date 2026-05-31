@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -22,12 +25,17 @@ import org.jetbrains.annotations.Nullable;
 import cpw.mods.fml.common.ModContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 
 public final class RecipeLookupValidator {
 
     private static final Logger LOGGER = LogManager.getLogger("GregTech GTNH");
 
     public static final String VALIDATE_LOOKUP_PROPERTY = "gt.recipe.lookup.validate";
+    public static final String CAPTURE_CALLSITE_PROPERTY = VALIDATE_LOOKUP_PROPERTY + ".capture_callsite";
+    private static final String LARGE_BOILER_FAKE_FUELS_MAP_NAME = "gt.recipe.largeboilerfakefuels";
+    private static final String QFT_RECIPE_MAP_NAME = "gtpp.recipe.quantumforcesmelter";
     private static final int RECIPE_PROGRESS_INTERVAL = 100;
     private static final long PROGRESS_LOG_INTERVAL_NANOS = 5_000_000_000L;
     private static final int LOOKUP_MATCH_SAMPLE_LIMIT = 16;
@@ -36,8 +44,10 @@ public final class RecipeLookupValidator {
 
     private final List<RecipeLookupValidationTarget> targets;
     private final List<String> issues = new ArrayList<>();
+    private final List<String> recipeConflictIssues = new ArrayList<>();
     private final List<String> unresolvedOreDictIssues = new ArrayList<>();
     private final List<RuntimeException> errors = new ArrayList<>();
+    private final Set<String> reportedRecipeConflictKeys = new HashSet<>();
     private final int totalRecipes;
 
     private int skippedDisabledRecipes;
@@ -79,6 +89,18 @@ public final class RecipeLookupValidator {
             .validate();
     }
 
+    public static boolean shouldValidateLookup() {
+        return Boolean.getBoolean(VALIDATE_LOOKUP_PROPERTY);
+    }
+
+    public static boolean shouldCaptureRecipeCallsites() {
+        String propertyValue = System.getProperty(CAPTURE_CALLSITE_PROPERTY);
+        if (propertyValue != null) {
+            return Boolean.parseBoolean(propertyValue);
+        }
+        return shouldValidateLookup();
+    }
+
     private static String recipeMapName(@Nullable RecipeMap<?> recipeMap) {
         return recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
     }
@@ -89,6 +111,10 @@ public final class RecipeLookupValidator {
             + describeRecipeCategory(recipe)
             + ", owners="
             + describeRecipeOwners(recipe)
+            + ", callsite="
+            + describeRecipeCallsite(recipe)
+            + ", metadata="
+            + describeRecipeMetadata(recipe)
             + ", inputs="
             + describeItemStacks(recipe.mInputs)
             + ", fluidInputs="
@@ -97,6 +123,8 @@ public final class RecipeLookupValidator {
             + describeItemStacks(recipe.mOutputs)
             + ", fluidOutputs="
             + describeFluidStacks(recipe.mFluidOutputs)
+            + ", specialValue="
+            + recipe.mSpecialValue
             + ", special="
             + describeObject(recipe.mSpecialItems)
             + ", stackTrace="
@@ -126,8 +154,68 @@ public final class RecipeLookupValidator {
             .collect(Collectors.joining(", ", "[", "]"));
     }
 
+    private static String describeRecipeCallsite(GTRecipe recipe) {
+        if (recipe.stackTraces == null) {
+            return "<disabled>";
+        }
+        if (recipe.stackTraces.isEmpty()) {
+            return "[]";
+        }
+        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        for (String stackTraceElement : stackTrace) {
+            if (!isInternalRecipeCallsite(stackTraceElement)) {
+                return stackTraceElement;
+            }
+        }
+        return stackTrace.isEmpty() ? "[]" : stackTrace.get(0);
+    }
+
+    private static boolean isInternalRecipeCallsite(String stackTraceElement) {
+        return stackTraceElement.contains("gregtech.api.util.GTRecipe$");
+    }
+
     private static String describeModContainer(@Nullable ModContainer owner) {
         return owner == null ? "null" : owner.getModId();
+    }
+
+    private static String describeRecipeMetadata(GTRecipe recipe) {
+        try {
+            if (recipe.getMetadataStorage() == null || recipe.getMetadataStorage()
+                .getEntries()
+                .isEmpty()) {
+                return "[]";
+            }
+            return recipe.getMetadataStorage()
+                .getEntries()
+                .stream()
+                .map(RecipeLookupValidator::describeRecipeMetadataEntry)
+                .collect(Collectors.joining(", ", "[", "]"));
+        } catch (LinkageError | RuntimeException e) {
+            return "<unavailable metadata: " + e.getClass()
+                .getSimpleName() + ">";
+        }
+    }
+
+    private static String describeRecipeMetadataEntry(Map.Entry<RecipeMetadataKey<?>, Object> entry) {
+        return describeRecipeMetadataKey(entry.getKey()) + "=" + describeObject(entry.getValue());
+    }
+
+    private static String describeRecipeMetadataKey(RecipeMetadataKey<?> key) {
+        String text = String.valueOf(key);
+        String marker = "identifier=";
+        int markerStart = text.indexOf(marker);
+        if (markerStart < 0) {
+            return text;
+        }
+        int identifierStart = markerStart + marker.length();
+        int identifierEnd = text.indexOf('\'', identifierStart);
+        if (identifierEnd < 0) {
+            identifierEnd = text.indexOf('}', identifierStart);
+        }
+        if (identifierEnd <= identifierStart) {
+            return text;
+        }
+        return text.substring(identifierStart, identifierEnd);
     }
 
     private static String describeRecipeStackTrace(GTRecipe recipe) {
@@ -245,7 +333,7 @@ public final class RecipeLookupValidator {
         }
 
         logProgress("finished");
-        if (!issues.isEmpty() || !unresolvedOreDictIssues.isEmpty()) {
+        if (!issues.isEmpty() || !recipeConflictIssues.isEmpty() || !unresolvedOreDictIssues.isEmpty()) {
             throw buildException();
         }
     }
@@ -304,8 +392,12 @@ public final class RecipeLookupValidator {
             return;
         }
 
-        if (lookupMatches.truncated
-            || !matchesExpectedLookup(recipe, rawItems, expectedMatches, lookupMatches.matches)) {
+        List<GTRecipe> conflictingMatches = recipeConflictMatches(target, recipe, expectedMatches);
+        if (conflictingMatches.size() > 1) {
+            addRecipeConflict(target, recipes, recipe, conflictingMatches);
+        }
+
+        if (lookupMatches.truncated || !matchesExpectedLookup(expectedMatches, lookupMatches.matches)) {
             addLookupMismatch(target, recipe, expectedMatches, lookupMatches);
         }
     }
@@ -461,46 +553,13 @@ public final class RecipeLookupValidator {
         return backend.modifyFoundRecipe(candidate, items, fluids, specialSlot) != null;
     }
 
-    private boolean sameFirstRecipeIdentity(List<GTRecipe> expectedMatches, List<GTRecipe> lookupMatches) {
-        if (expectedMatches.isEmpty() || lookupMatches.isEmpty()) {
-            return expectedMatches.isEmpty() && lookupMatches.isEmpty();
-        }
-        return expectedMatches.get(0) == lookupMatches.get(0);
-    }
-
-    private boolean matchesExpectedLookup(GTRecipe queryRecipe, ItemStack[] rawItems, List<GTRecipe> expectedMatches,
-        List<GTRecipe> lookupMatches) {
-        if (expectedMatches.isEmpty() || lookupMatches.isEmpty()) {
-            return sameFirstRecipeIdentity(expectedMatches, lookupMatches);
-        }
-        if (hasWildcardItemInput(rawItems)) {
-            return containsRecipeIdentity(lookupMatches, queryRecipe);
-        }
-        if (hasNbtSensitiveItemInput(queryRecipe, rawItems)) {
-            return containsRecipeIdentity(lookupMatches, queryRecipe);
-        }
-        return sameFirstRecipeIdentity(expectedMatches, lookupMatches);
-    }
-
-    private boolean hasWildcardItemInput(ItemStack[] rawItems) {
-        for (ItemStack item : rawItems) {
-            if (item != null && item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                return true;
+    private boolean matchesExpectedLookup(List<GTRecipe> expectedMatches, List<GTRecipe> lookupMatches) {
+        for (GTRecipe expectedMatch : expectedMatches) {
+            if (!containsRecipeIdentity(lookupMatches, expectedMatch)) {
+                return false;
             }
         }
-        return false;
-    }
-
-    private boolean hasNbtSensitiveItemInput(GTRecipe queryRecipe, ItemStack[] rawItems) {
-        if (!queryRecipe.isNBTSensitive) {
-            return false;
-        }
-        for (ItemStack item : rawItems) {
-            if (item != null && item.hasTagCompound()) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     private boolean containsRecipeIdentity(List<GTRecipe> recipes, GTRecipe recipe) {
@@ -510,6 +569,72 @@ public final class RecipeLookupValidator {
             }
         }
         return false;
+    }
+
+    private List<GTRecipe> recipeConflictMatches(RecipeLookupValidationTarget target, GTRecipe queryRecipe,
+        List<GTRecipe> expectedMatches) {
+        if (LARGE_BOILER_FAKE_FUELS_MAP_NAME.equals(target.mapName)) {
+            return Collections.emptyList();
+        }
+        if (!QFT_RECIPE_MAP_NAME.equals(target.mapName)) {
+            return expectedMatches;
+        }
+
+        ItemStack queryCatalyst = queryRecipe.getMetadata(GTRecipeConstants.QFT_CATALYST);
+        if (queryCatalyst == null) {
+            return expectedMatches;
+        }
+
+        return expectedMatches.stream()
+            .filter(match -> sameQftCatalyst(queryCatalyst, match))
+            .collect(Collectors.toList());
+    }
+
+    private boolean sameQftCatalyst(ItemStack queryCatalyst, GTRecipe candidate) {
+        ItemStack candidateCatalyst = candidate.getMetadata(GTRecipeConstants.QFT_CATALYST);
+        return GTUtility.areStacksEqual(queryCatalyst, candidateCatalyst, false);
+    }
+
+    private void addRecipeConflict(RecipeLookupValidationTarget target, List<GTRecipe> recipes, GTRecipe queryRecipe,
+        List<GTRecipe> conflictingMatches) {
+        String conflictKey = recipeConflictKey(recipes, conflictingMatches);
+        if (!reportedRecipeConflictKeys.add(target.mapName + ":" + conflictKey)) {
+            return;
+        }
+
+        StringBuilder issue = new StringBuilder();
+        issue.append("map=")
+            .append(target.mapName)
+            .append('\n')
+            .append("queryRecipe=")
+            .append(describeRecipeForValidation(queryRecipe));
+        issue.append('\n')
+            .append("conflictingMatches=")
+            .append(describeRecipeListForValidation(sampleRecipes(conflictingMatches)));
+        issue.append('\n')
+            .append("conflictMatchCount=")
+            .append(conflictingMatches.size());
+        recipeConflictIssues.add(issue.toString());
+    }
+
+    private String recipeConflictKey(List<GTRecipe> recipes, List<GTRecipe> conflictingMatches) {
+        StringBuilder key = new StringBuilder();
+        for (GTRecipe conflictingMatch : conflictingMatches) {
+            if (key.length() > 0) {
+                key.append(',');
+            }
+            key.append(indexOfRecipeIdentity(recipes, conflictingMatch));
+        }
+        return key.toString();
+    }
+
+    private int indexOfRecipeIdentity(List<GTRecipe> recipes, GTRecipe recipe) {
+        for (int i = 0; i < recipes.size(); i++) {
+            if (recipes.get(i) == recipe) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void addPreLookupRejectedRecipe(RecipeLookupValidationTarget target, GTRecipe queryRecipe, String reason) {
@@ -604,7 +729,7 @@ public final class RecipeLookupValidator {
     }
 
     private IllegalStateException buildException() {
-        int totalIssues = issues.size() + unresolvedOreDictIssues.size();
+        int totalIssues = issues.size() + recipeConflictIssues.size() + unresolvedOreDictIssues.size();
         StringBuilder message = new StringBuilder();
         message.append("GT recipe lookup validation found ")
             .append(totalIssues)
@@ -613,6 +738,8 @@ public final class RecipeLookupValidator {
             .append(" map(s).")
             .append("\nlookup mismatch(es)=")
             .append(issues.size())
+            .append(", recipe conflict(s)=")
+            .append(recipeConflictIssues.size())
             .append(", unresolved oredict input(s)=")
             .append(unresolvedOreDictIssues.size())
             .append("\nskipped recipe(s): disabled=")
@@ -627,6 +754,12 @@ public final class RecipeLookupValidator {
                 .append(issueIndex++)
                 .append(") ")
                 .append(issues.get(i));
+        }
+        for (int i = 0; i < recipeConflictIssues.size(); i++) {
+            message.append("\n\n")
+                .append(issueIndex++)
+                .append(") ")
+                .append(recipeConflictIssues.get(i));
         }
         for (int i = 0; i < unresolvedOreDictIssues.size(); i++) {
             message.append("\n\n")
@@ -657,7 +790,7 @@ public final class RecipeLookupValidator {
         LOGGER.info(
             String.format(
                 Locale.ROOT,
-                "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d lookupMismatches=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
+                "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d lookupMismatches=%d recipeConflicts=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
                 phase,
                 processedMaps,
                 targets.size(),
@@ -668,6 +801,7 @@ public final class RecipeLookupValidator {
                 estimateEta(elapsedNanos),
                 totalIssueCount(),
                 issues.size(),
+                recipeConflictIssues.size(),
                 unresolvedOreDictIssues.size(),
                 skippedDisabledRecipes,
                 skippedFakeRecipes,
@@ -679,7 +813,7 @@ public final class RecipeLookupValidator {
         LOGGER.info(
             String.format(
                 Locale.ROOT,
-                "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d lookupMismatches=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
+                "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d lookupMismatches=%d recipeConflicts=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
                 phase,
                 target.mapName,
                 mapRecipes,
@@ -690,6 +824,7 @@ public final class RecipeLookupValidator {
                 formatDuration(elapsedNanos),
                 totalIssueCount(),
                 issues.size(),
+                recipeConflictIssues.size(),
                 unresolvedOreDictIssues.size(),
                 skippedDisabledRecipes,
                 skippedFakeRecipes,
@@ -697,7 +832,7 @@ public final class RecipeLookupValidator {
     }
 
     private int totalIssueCount() {
-        return issues.size() + unresolvedOreDictIssues.size();
+        return issues.size() + recipeConflictIssues.size() + unresolvedOreDictIssues.size();
     }
 
     private static final class ValidationLookupResult {

@@ -32,6 +32,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -144,13 +145,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Stores which mod added this recipe
      */
     @Nullable
-    public List<ModContainer> owners = GTMod.proxy.mNEIRecipeOwner ? new ArrayList<>() : null;
+    public List<ModContainer> owners = shouldCaptureRecipeOwnerInfo() ? new ArrayList<>() : null;
     /**
      * Stores stack traces where this recipe was added
      */
     // BW wants to overwrite it, so no final
     @Nullable
-    public List<List<String>> stackTraces = GTMod.proxy.mNEIRecipeOwnerStackTrace ? new ArrayList<>() : null;
+    public List<List<String>> stackTraces = shouldCaptureRecipeCallsites() ? new ArrayList<>() : null;
 
     /** Used for simple cache validation */
     private ItemStack[] inputsAtCacheTime = null;
@@ -839,6 +840,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
         "gregtech.api.util.GTRecipeConstants",
         "gregtech.api.util.GTRecipeMapUtil",
         "gregtech.common.GTRecipeAdder");
+
+    private static boolean shouldCaptureRecipeOwnerInfo() {
+        return GTMod.proxy.mNEIRecipeOwner || RecipeLookupValidator.shouldCaptureRecipeCallsites();
+    }
+
+    private static boolean shouldCaptureRecipeCallsites() {
+        return GTMod.proxy.mNEIRecipeOwnerStackTrace || RecipeLookupValidator.shouldCaptureRecipeCallsites();
+    }
 
     public void reloadOwner() {
         if (owners != null) {

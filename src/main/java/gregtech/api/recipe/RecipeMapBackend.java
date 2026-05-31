@@ -593,7 +593,7 @@ public class RecipeMapBackend {
     }
 
     public static boolean shouldValidateLookup() {
-        return Boolean.getBoolean(RecipeLookupValidator.VALIDATE_LOOKUP_PROPERTY);
+        return RecipeLookupValidator.shouldValidateLookup();
     }
 
     private Stream<GTRecipe> collisionCandidateStream(@Nullable ItemStack @NotNull [] items,

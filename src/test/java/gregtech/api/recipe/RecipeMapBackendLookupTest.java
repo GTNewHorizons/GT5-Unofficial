@@ -46,9 +46,13 @@ import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
+import gregtech.api.recipe.metadata.RecipeMetadataStorage;
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
@@ -300,7 +304,7 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierReportsWhenLookupOrderDiffersFromFullScan() {
+    void lookupVerifierReportsRecipeConflictWhenMultipleRecipesMatchSameQuery() {
         ensureMinecraftStackComparisonItem();
         String mapName = "gt.recipe.lookup.test.validation.order";
         Item input = item("lookup.validation.order.input");
@@ -315,19 +319,11 @@ class RecipeMapBackendLookupTest {
             IllegalStateException.class,
             () -> RecipeLookupValidator.validateLookup(mapName, backend));
 
-        assertTrue(
-            error.getMessage()
-                .contains(mapName));
-        assertTrue(
-            error.getMessage()
-                .contains("expectedMatches="));
-        assertTrue(
-            error.getMessage()
-                .contains("lookupMatches="));
+        assertRecipeConflict(error, mapName, 1);
     }
 
     @Test
-    void lookupVerifierAcceptsDifferentTailOrderWhenFirstMatchIsEquivalent() {
+    void lookupVerifierReportsConflictWhenEquivalentTailMatchesExist() {
         ensureMinecraftStackComparisonItem();
         String mapName = "gt.recipe.lookup.test.validation.tail_order";
         Item input = item("lookup.validation.tail_order.input");
@@ -340,11 +336,74 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(secondRegistered);
         backend.compileRecipe(thirdRegistered);
 
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+        assertRecipeConflict(error, mapName, 1);
+    }
+
+    @Test
+    void lookupVerifierTreatsQftCatalystAsConflictSelector() {
+        ensureMinecraftStackComparisonItem();
+        String mapName = "gtpp.recipe.quantumforcesmelter";
+        Item input = item("lookup.validation.qft_selector.input");
+        Item catalyst = item("lookup.validation.qft_selector.catalyst");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe plasticRecipe = recipe(input, item("lookup.validation.qft_selector.plastic.output"), category);
+        GTRecipe rubberRecipe = recipe(input, item("lookup.validation.qft_selector.rubber.output"), category);
+        setMetadataStorage(plasticRecipe, qftCatalystMetadata(new ItemStack(catalyst, 1, 17)));
+        setMetadataStorage(rubberRecipe, qftCatalystMetadata(new ItemStack(catalyst, 1, 18)));
+        RecipeMapBackend backend = new ReversedCandidateBackend(rubberRecipe, plasticRecipe);
+        backend.compileRecipe(plasticRecipe);
+        backend.compileRecipe(rubberRecipe);
+
         assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup(mapName, backend));
     }
 
     @Test
-    void lookupVerifierAcceptsWildcardRecipeInputWhenLookupFindsQueryRecipe() {
+    void lookupVerifierReportsQftConflictWhenCatalystMatches() {
+        ensureMinecraftStackComparisonItem();
+        String mapName = "gtpp.recipe.quantumforcesmelter";
+        Item input = item("lookup.validation.qft_conflict.input");
+        Item catalyst = item("lookup.validation.qft_conflict.catalyst");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe firstRecipe = recipe(input, item("lookup.validation.qft_conflict.first.output"), category);
+        GTRecipe secondRecipe = recipe(input, item("lookup.validation.qft_conflict.second.output"), category);
+        setMetadataStorage(firstRecipe, qftCatalystMetadata(new ItemStack(catalyst, 1, 17)));
+        setMetadataStorage(secondRecipe, qftCatalystMetadata(new ItemStack(catalyst, 1, 17)));
+        RecipeMapBackend backend = new ReversedCandidateBackend(secondRecipe, firstRecipe);
+        backend.compileRecipe(firstRecipe);
+        backend.compileRecipe(secondRecipe);
+
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+        assertRecipeConflict(error, mapName, 1);
+    }
+
+    @Test
+    void lookupVerifierIgnoresLargeBoilerFakeFuelConflicts() {
+        ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.largeboilerfakefuels";
+        Item input = item("lookup.validation.large_boiler_fake_fuel.input");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe noContainerRecipe = recipe(input, item("lookup.validation.large_boiler_fake_fuel.no_output"), category);
+        noContainerRecipe.mOutputs = new ItemStack[0];
+        GTRecipe containerReturnRecipe = recipe(
+            input,
+            item("lookup.validation.large_boiler_fake_fuel.container_return"),
+            category);
+        RecipeMapBackend backend = new ReversedCandidateBackend(containerReturnRecipe, noContainerRecipe);
+        backend.compileRecipe(noContainerRecipe);
+        backend.compileRecipe(containerReturnRecipe);
+
+        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup(mapName, backend));
+    }
+
+    @Test
+    void lookupVerifierReportsConflictForWildcardRecipeInput() {
         ensureMinecraftStackComparisonItem();
         String mapName = "gt.recipe.lookup.test.validation.wildcard_query";
         Item input = item("lookup.validation.wildcard_query.input");
@@ -363,7 +422,11 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(exactRecipe);
         backend.compileRecipe(wildcardRecipe);
 
-        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup(mapName, backend));
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+        assertRecipeConflict(error, mapName, 1, 1);
     }
 
     @Test
@@ -384,8 +447,9 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierAcceptsReachableNbtSensitiveQueryWhenFirstMatchIsAmbiguous() {
+    void lookupVerifierReportsConflictForAmbiguousNbtSensitiveMatches() {
         ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.lookup.test.nbt_seed";
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         Item seedItem = item("lookup.validation.nbt_seed.input");
         GTRecipe firstRecipe = recipe(
@@ -404,7 +468,11 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(firstRecipe);
         backend.compileRecipe(queryRecipe);
 
-        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.nbt_seed", backend));
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+        assertRecipeConflict(error, mapName, 1);
     }
 
     @Test
@@ -480,8 +548,9 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierAcceptsCrossUnificationMatches() {
+    void lookupVerifierReportsConflictForCrossUnificationMatches() {
         ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.lookup.test.cross_unification";
         NoOreDictLookupBackend backend = new NoOreDictLookupBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         Item representativeItem = item("lookup.validation.cross_unification.representative");
@@ -514,8 +583,11 @@ class RecipeMapBackendLookupTest {
                     item("lookup.validation.cross_unification.equivalent.output"),
                     category));
 
-            assertDoesNotThrow(
-                () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.cross_unification", backend));
+            IllegalStateException error = assertThrows(
+                IllegalStateException.class,
+                () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+            assertRecipeConflict(error, mapName, 1);
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
@@ -531,8 +603,9 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierUsesItemDataWhenInputStaysRawAfterUnification() {
+    void lookupVerifierReportsConflictWhenItemDataMakesRawInputEquivalent() {
         ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.lookup.test.item_data";
         NoOreDictLookupBackend backend = new NoOreDictLookupBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         Item representativeItem = item("lookup.validation.item_data.representative");
@@ -566,7 +639,11 @@ class RecipeMapBackendLookupTest {
                     item("lookup.validation.item_data.equivalent.output"),
                     category));
 
-            assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.item_data", backend));
+            IllegalStateException error = assertThrows(
+                IllegalStateException.class,
+                () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+            assertRecipeConflict(error, mapName, 1);
         } finally {
             if (hadPreviousTarget) {
                 GTOreDictUnificator.getName2StackMap()
@@ -713,8 +790,9 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierAcceptsNullableItemSlotMatches() {
+    void lookupVerifierReportsConflictForNullableItemSlotMatches() {
         ensureMinecraftStackComparisonItem();
+        String mapName = "gt.recipe.lookup.test.nullable";
         RecipeMapBackend backend = new NoOreDictLookupBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         Item material = item("lookup.validation.nullable.material");
@@ -733,7 +811,11 @@ class RecipeMapBackendLookupTest {
         backend.compileRecipe(nullableSlotRecipe);
         backend.compileRecipe(concreteRecipe);
 
-        assertDoesNotThrow(() -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.nullable", backend));
+        IllegalStateException error = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeLookupValidator.validateLookup(mapName, backend));
+
+        assertRecipeConflict(error, mapName, 1);
     }
 
     @Test
@@ -757,6 +839,44 @@ class RecipeMapBackendLookupTest {
 
         assertDoesNotThrow(
             () -> RecipeLookupValidator.validateLookup("gt.recipe.lookup.test.alt_representative", backend));
+    }
+
+    @Test
+    void lookupVerifierDescriptionIncludesCapturedRecipeCallsite() {
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            item("lookup.validation.callsite.input"),
+            item("lookup.validation.callsite.output"),
+            category);
+        recipe.stackTraces = new ArrayList<>();
+        recipe.stackTraces.add(
+            Arrays.asList(
+                "gregtech.api.util.GTRecipe$GTRecipe_WithAlt.<init>(GTRecipe.java:1429)",
+                "com.example.ModRecipes.register(ModRecipes.java:42)",
+                "com.example.ModLoader.load(ModLoader.java:7)"));
+
+        String description = RecipeLookupValidator.describeRecipeForValidation(recipe);
+
+        assertTrue(description.contains("callsite=com.example.ModRecipes.register(ModRecipes.java:42)"));
+    }
+
+    @Test
+    void lookupVerifierDescriptionIncludesRecipeMetadata() {
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(
+            item("lookup.validation.metadata.input"),
+            item("lookup.validation.metadata.output"),
+            category);
+        RecipeMetadataKey<ItemStack> catalystKey = SimpleRecipeMetadataKey
+            .create(ItemStack.class, "lookup_validation_metadata_catalyst");
+        RecipeMetadataStorage metadataStorage = new RecipeMetadataStorage();
+        metadataStorage.store(catalystKey, new ItemStack(item("lookup.validation.metadata.catalyst"), 1, 4));
+        setMetadataStorage(recipe, metadataStorage);
+
+        String description = RecipeLookupValidator.describeRecipeForValidation(recipe);
+
+        assertTrue(description.contains("metadata=[lookup_validation_metadata_catalyst="), description);
+        assertTrue(description.contains(":4 x1 (item.lookup.validation.metadata.catalyst)"), description);
     }
 
     private static GTRecipe recipe(Item input, Item output, RecipeCategory category) {
@@ -816,6 +936,26 @@ class RecipeMapBackendLookupTest {
         }
     }
 
+    private static void assertRecipeConflict(IllegalStateException error, String mapName, int expectedCount) {
+        assertRecipeConflict(error, mapName, expectedCount, 0);
+    }
+
+    private static void assertRecipeConflict(IllegalStateException error, String mapName, int expectedCount,
+        int expectedLookupMismatches) {
+        assertTrue(
+            error.getMessage()
+                .contains(mapName));
+        assertTrue(
+            error.getMessage()
+                .contains("recipe conflict(s)=" + expectedCount));
+        assertTrue(
+            error.getMessage()
+                .contains("lookup mismatch(es)=" + expectedLookupMismatches));
+        assertTrue(
+            error.getMessage()
+                .contains("conflictingMatches="));
+    }
+
     private static GTRecipeLookup recipeLookup(RecipeMapBackend backend) {
         try {
             Field field = RecipeMapBackend.class.getDeclaredField("recipeLookup");
@@ -837,6 +977,21 @@ class RecipeMapBackendLookupTest {
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
+    }
+
+    private static void setMetadataStorage(GTRecipe recipe, IRecipeMetadataStorage metadataStorage) {
+        try {
+            Field field = GTRecipe.class.getDeclaredField("metadataStorage");
+            UNSAFE.putObject(recipe, UNSAFE.objectFieldOffset(field), metadataStorage);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static IRecipeMetadataStorage qftCatalystMetadata(ItemStack catalyst) {
+        RecipeMetadataStorage metadataStorage = new RecipeMetadataStorage();
+        metadataStorage.store(GTRecipeConstants.QFT_CATALYST, catalyst);
+        return metadataStorage;
     }
 
     private static Item item(String name) {
