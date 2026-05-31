@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
 
@@ -55,9 +56,9 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             new String[][] {
                 { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  B~B  ", "  BDB  " },
                 { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ", " DBBBD " },
-                { "  CAC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
-                { "  A A  ", " A   A ", "A     A", "       ", "A     A", "DA   AD", "  A A  ", "BBBBBBB", "DBBBBBD" },
-                { "  CAC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
+                { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
+                { "  E E  ", " A   A ", "A     A", "       ", "A     A", "DA   AD", "  A A  ", "BBBBBBB", "DBBBBBD" },
+                { "  CEC  ", " AA AA ", " A   A ", "A     A", " A   A ", " AA AA ", "D  A  D", "BBBBBBB", "BBBBBBB" },
                 { "       ", "  AAA  ", " AA AA ", " A   A ", " AA AA ", " DAAAD ", "       ", " BBBBB ", " DBBBD " },
                 { "       ", "       ", "   A   ", "  A A  ", "   A   ", "   D   ", "  D D  ", "  BBB  ", "  BDB  " } })
         .addElement('A', Casings.RefinedGraphiteBlock.asElement())
@@ -72,6 +73,7 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
                 onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
         .addElement('C', ofFrame(Materials.Gold))
         .addElement('D', ofFrame(Materials.TungstenSteel))
+        .addElement('E', ofSheetMetal(Materials.Gold))
         .build();
 
     public MTEAdvImplosionCompressor(int aID, String aName, String aNameRegional) {
@@ -99,8 +101,9 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .beginStructureBlock(7, 9, 7, true)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 50, false)
-            .addCasingInfoExactly("Refined Graphite Block", 84, false)
+            .addCasingInfoExactly("Refined Graphite Block", 80, false)
             .addCasingInfoExactly("Gold Frame Box", 4, false)
+            .addCasingInfoExactly("Gold Sheetmetal", 4, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 24, false)
             .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
             .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
