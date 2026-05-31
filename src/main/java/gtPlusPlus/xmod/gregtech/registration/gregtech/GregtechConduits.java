@@ -925,7 +925,7 @@ public class GregtechConduits {
                 .circuit(1)
                 .itemOutputs(aMaterial.getFineWire(4))
                 .duration(10 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(wiremillRecipes);
 
         }
@@ -945,7 +945,7 @@ public class GregtechConduits {
                 .itemInputs(aCable01)
                 .itemOutputs(aWire01)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(unpackagerRecipes);
         }
 
@@ -1063,7 +1063,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable01)
                 .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1076,7 +1076,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable02)
                 .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1089,7 +1089,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable04)
                 .fluidInputs(Materials.Rubber.getMolten(2 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1102,7 +1102,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable08)
                 .fluidInputs(Materials.Rubber.getMolten(3 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1115,7 +1115,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable12)
                 .fluidInputs(Materials.Rubber.getMolten(4 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1128,7 +1128,7 @@ public class GregtechConduits {
                 .itemOutputs(aCable16)
                 .fluidInputs(Materials.Rubber.getMolten(5 * INGOTS))
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
 
         }
@@ -1140,35 +1140,35 @@ public class GregtechConduits {
                 .circuit(2)
                 .itemOutputs(aWire02)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(4))
                 .circuit(4)
                 .itemOutputs(aWire04)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(8))
                 .circuit(8)
                 .itemOutputs(aWire08)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(12))
                 .circuit(12)
                 .itemOutputs(aWire12)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getWire01(16))
                 .circuit(16)
                 .itemOutputs(aWire16)
                 .duration(5 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
         }
 

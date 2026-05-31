@@ -120,7 +120,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Washer, Simple Washer")
+        tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addInfo("Always requires an Input Hatch full of water to refill structure")

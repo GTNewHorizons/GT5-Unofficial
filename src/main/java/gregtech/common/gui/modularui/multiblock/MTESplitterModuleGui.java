@@ -260,8 +260,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         rule.redstoneMode.level = val;
                         syncer.notifyUpdate();
                     }))
-                .setNumbers(0, 15)
-                .setFormatAsInteger(true)
+                .numbersInt(0, 15)
+                .formatAsInteger(true)
                 .size(52, 12))
             .setEnabledIf(f -> rule.enabledWidget == REDSTONE)
             .coverChildren();
