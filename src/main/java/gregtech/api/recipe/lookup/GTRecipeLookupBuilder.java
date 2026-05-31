@@ -43,20 +43,29 @@ public final class GTRecipeLookupBuilder {
     }
 
     public GTRecipeLookup buildMutable() {
+        return buildMutableWithState().lookup;
+    }
+
+    public BuildResult buildMutableWithState() {
         Object2IntMap<GTRecipeLookupIngredient> frequencies = computeFrequencies();
-        Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool = new HashMap<>();
+        LookupBuildState state = new LookupBuildState(frequencies, new HashMap<>());
         GTRecipeLookup lookup = new GTRecipeLookup();
 
         for (RecipeEntry entry : entries) {
-            List<List<GTRecipeLookupIngredient>> pooled = poolAndSort(entry.ingredients, frequencies, pool);
+            List<List<GTRecipeLookupIngredient>> pooled = poolAndSort(entry.ingredients, state.frequencies, state.pool);
             lookup.add(entry.recipe, pooled);
         }
 
-        return lookup;
+        return new BuildResult(lookup, state);
     }
 
-    public static void addToLookup(GTRecipeLookup lookup, GTRecipe recipe) {
+    public static LookupBuildState newLookupState() {
+        return new LookupBuildState(new Object2IntOpenHashMap<>(), new HashMap<>());
+    }
+
+    public static void addToLookup(GTRecipeLookup lookup, LookupBuildState state, GTRecipe recipe) {
         Objects.requireNonNull(lookup, "lookup");
+        Objects.requireNonNull(state, "state");
         Objects.requireNonNull(recipe, "recipe");
         if (recipe.mFakeRecipe) {
             return;
@@ -66,7 +75,8 @@ public final class GTRecipeLookupBuilder {
         if (ingredients.isEmpty()) {
             return;
         }
-        lookup.add(recipe, ingredients);
+        incrementFrequencies(state.frequencies, ingredients);
+        lookup.add(recipe, poolAndSort(ingredients, state.frequencies, state.pool));
     }
 
     private Object2IntMap<GTRecipeLookupIngredient> computeFrequencies() {
@@ -79,6 +89,15 @@ public final class GTRecipeLookupBuilder {
             }
         }
         return frequencies;
+    }
+
+    private static void incrementFrequencies(Object2IntMap<GTRecipeLookupIngredient> frequencies,
+        List<List<GTRecipeLookupIngredient>> ingredients) {
+        for (List<GTRecipeLookupIngredient> group : ingredients) {
+            for (GTRecipeLookupIngredient ingredient : group) {
+                frequencies.put(ingredient, frequencies.getInt(ingredient) + 1);
+            }
+        }
     }
 
     private static List<List<GTRecipeLookupIngredient>> poolAndSort(List<List<GTRecipeLookupIngredient>> ingredients,
@@ -293,6 +312,29 @@ public final class GTRecipeLookupBuilder {
         private RecipeEntry(GTRecipe recipe, List<List<GTRecipeLookupIngredient>> ingredients) {
             this.recipe = recipe;
             this.ingredients = ingredients;
+        }
+    }
+
+    public static final class BuildResult {
+
+        public final GTRecipeLookup lookup;
+        public final LookupBuildState state;
+
+        private BuildResult(GTRecipeLookup lookup, LookupBuildState state) {
+            this.lookup = lookup;
+            this.state = state;
+        }
+    }
+
+    public static final class LookupBuildState {
+
+        private final Object2IntMap<GTRecipeLookupIngredient> frequencies;
+        private final Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool;
+
+        private LookupBuildState(Object2IntMap<GTRecipeLookupIngredient> frequencies,
+            Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool) {
+            this.frequencies = frequencies;
+            this.pool = pool;
         }
     }
 

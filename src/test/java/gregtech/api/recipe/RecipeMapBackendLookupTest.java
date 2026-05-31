@@ -130,6 +130,36 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
+    void incrementalRecipeInsertionUsesFrequencyOrderingForNewRecipe() {
+        ensureMinecraftStackComparisonItem();
+        Item common = item("lookup.incremental.frequency.common");
+        Item rare = item("lookup.incremental.frequency.rare");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe commonOnlyRecipe = recipe(common, item("lookup.incremental.frequency.common.output"), category);
+        GTRecipe twoInputRecipe = recipe(
+            new ItemStack[] { new ItemStack(common, 1, 0), new ItemStack(rare, 1, 0) },
+            new FluidStack[0],
+            item("lookup.incremental.frequency.two_input.output"),
+            category);
+        RecipeMapBackend backend = new TrueFilterLookupBackend();
+        backend.compileRecipe(commonOnlyRecipe);
+
+        backend.compileRecipe(twoInputRecipe);
+
+        List<GTRecipe> matches = backend
+            .matchRecipeStream(
+                new ItemStack[] { new ItemStack(common, 1, 0), new ItemStack(rare, 1, 0) },
+                new FluidStack[0],
+                null,
+                null,
+                false,
+                false,
+                false)
+            .collect(Collectors.toList());
+        assertEquals(Arrays.asList(commonOnlyRecipe, twoInputRecipe), matches);
+    }
+
+    @Test
     void collisionCandidateStreamDoesNotSortCandidates() {
         Item input = item("lookup.collision.unsorted.input");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -1100,6 +1130,20 @@ class RecipeMapBackendLookupTest {
 
             Iterator<GTRecipe> iterator = recipeLookup(this).iterator(ingredients);
             return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
+        }
+    }
+
+    private static final class TrueFilterLookupBackend extends NoOreDictLookupBackend {
+
+        @Override
+        protected GTRecipe addToItemMap(GTRecipe recipe) {
+            return recipe;
+        }
+
+        @Override
+        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+            @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
+            return true;
         }
     }
 

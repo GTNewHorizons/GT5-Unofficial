@@ -93,6 +93,7 @@ public class RecipeMapBackend {
     private final GTRecipe[] cacheMap = new GTRecipe[CACHE_MAP_SIZE];
 
     private GTRecipeLookup recipeLookup = new GTRecipeLookup();
+    private GTRecipeLookupBuilder.LookupBuildState recipeLookupState = GTRecipeLookupBuilder.newLookupState();
 
     private boolean recipeLookupDirty;
 
@@ -326,6 +327,7 @@ public class RecipeMapBackend {
         fluidContainsIndex.clear();
         Arrays.fill(cacheMap, null);
         recipeLookup = new GTRecipeLookup();
+        recipeLookupState = GTRecipeLookupBuilder.newLookupState();
         recipeLookupDirty = false;
     }
 
@@ -343,7 +345,9 @@ public class RecipeMapBackend {
             addToItemMap(recipe);
             lookupBuilder.add(recipe);
         }
-        recipeLookup = lookupBuilder.buildMutable();
+        GTRecipeLookupBuilder.BuildResult result = lookupBuilder.buildMutableWithState();
+        recipeLookup = result.lookup;
+        recipeLookupState = result.state;
         recipeLookupDirty = false;
     }
 
@@ -356,7 +360,9 @@ public class RecipeMapBackend {
         for (GTRecipe recipe : allRecipes()) {
             lookupBuilder.add(recipe);
         }
-        recipeLookup = lookupBuilder.buildMutable();
+        GTRecipeLookupBuilder.BuildResult result = lookupBuilder.buildMutableWithState();
+        recipeLookup = result.lookup;
+        recipeLookupState = result.state;
         recipeLookupDirty = false;
     }
 
@@ -364,7 +370,7 @@ public class RecipeMapBackend {
         if (recipeLookupDirty) {
             ensureLookupCurrent();
         }
-        GTRecipeLookupBuilder.addToLookup(recipeLookup, recipe);
+        GTRecipeLookupBuilder.addToLookup(recipeLookup, recipeLookupState, recipe);
     }
 
     /**
