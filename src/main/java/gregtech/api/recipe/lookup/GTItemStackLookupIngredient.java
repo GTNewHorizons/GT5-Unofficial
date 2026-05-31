@@ -1,6 +1,7 @@
 package gregtech.api.recipe.lookup;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,16 +33,27 @@ public final class GTItemStackLookupIngredient extends GTRecipeLookupIngredient 
         return new GTItemStackLookupIngredient(stack, isWildcard(stack));
     }
 
+    public static GTItemStackLookupIngredient fromNbtSensitiveRecipe(ItemStack stack) {
+        return fromRecipe(stack, true);
+    }
+
+    public static void fromRuntime(Consumer<? super GTItemStackLookupIngredient> ingredients, ItemStack stack) {
+        ingredients.accept(new GTItemStackLookupIngredient(stack, false));
+        if (stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+            ingredients.accept(new GTItemStackLookupIngredient(stack, true));
+        }
+    }
+
+    private static GTItemStackLookupIngredient fromRuntime(ItemStack stack, boolean recipeNbtSensitive) {
+        return new GTItemStackLookupIngredient(stack, recipeNbtSensitive);
+    }
+
     public static GTItemStackLookupIngredient fromRuntime(ItemStack stack) {
-        return new GTItemStackLookupIngredient(stack, false);
+        return fromRuntime(stack, false);
     }
 
     public static GTItemStackLookupIngredient fromRuntimeWildcard(ItemStack stack) {
-        return new GTItemStackLookupIngredient(stack, true);
-    }
-
-    public static GTItemStackLookupIngredient fromNbtSensitiveRecipe(ItemStack stack) {
-        return fromRecipe(stack, true);
+        return fromRuntime(stack, true);
     }
 
     public Item getItem() {

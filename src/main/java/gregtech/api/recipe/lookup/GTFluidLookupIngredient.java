@@ -1,6 +1,7 @@
 package gregtech.api.recipe.lookup;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,6 +19,10 @@ public final class GTFluidLookupIngredient extends GTRecipeLookupIngredient {
     public GTFluidLookupIngredient(Fluid fluid) {
         super(System.identityHashCode(fluid));
         this.fluid = Objects.requireNonNull(fluid, "fluid");
+    }
+
+    public static void fromRuntime(Consumer<? super GTFluidLookupIngredient> ingredients, FluidStack stack) {
+        ingredients.accept(new GTFluidLookupIngredient(stack));
     }
 
     public Fluid getFluid() {

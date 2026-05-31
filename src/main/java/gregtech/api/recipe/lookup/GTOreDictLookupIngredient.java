@@ -1,7 +1,6 @@
 package gregtech.api.recipe.lookup;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -15,17 +14,10 @@ public final class GTOreDictLookupIngredient extends GTRecipeLookupIngredient {
         this.oreId = oreId;
     }
 
-    public static List<GTOreDictLookupIngredient> fromRuntime(ItemStack stack) {
-        int[] oreIds = OreDictionary.getOreIDs(stack);
-        List<GTOreDictLookupIngredient> result = new ArrayList<>(oreIds.length);
-        for (int oreId : oreIds) {
-            result.add(new GTOreDictLookupIngredient(oreId));
+    public static void fromRuntime(Consumer<? super GTOreDictLookupIngredient> ingredients, ItemStack stack) {
+        for (int oreId : OreDictionary.getOreIDs(stack)) {
+            ingredients.accept(new GTOreDictLookupIngredient(oreId));
         }
-        return result;
-    }
-
-    public int getOreId() {
-        return oreId;
     }
 
     @Override

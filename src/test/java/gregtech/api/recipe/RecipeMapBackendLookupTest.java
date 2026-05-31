@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -41,6 +42,7 @@ import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
+import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
@@ -690,7 +692,7 @@ class RecipeMapBackendLookupTest {
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();
-            RecipeMapBackend.addRuntimeItemStackLookupIngredients(group, equivalent);
+            GTItemStackLookupIngredient.fromRuntime(group::add, equivalent);
 
             assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(equivalent)));
             assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(equivalent)));
@@ -922,17 +924,19 @@ class RecipeMapBackendLookupTest {
         protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
+            Consumer<GTRecipeLookupIngredient> adder = ingredients::add;
 
             for (ItemStack item : items) {
                 if (item == null) continue;
 
-                RecipeMapBackend.addRuntimeItemStackLookupIngredients(ingredients, item);
+                GTItemStackLookupIngredient.fromRuntime(adder, item);
+                GTItemDataLookupIngredient.fromRuntime(adder, item);
             }
 
             for (FluidStack fluid : fluids) {
                 if (fluid == null || fluid.getFluid() == null) continue;
 
-                ingredients.add(new GTFluidLookupIngredient(fluid));
+                GTFluidLookupIngredient.fromRuntime(adder, fluid);
             }
 
             if (ingredients.isEmpty()) {

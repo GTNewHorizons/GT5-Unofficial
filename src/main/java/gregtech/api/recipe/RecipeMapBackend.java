@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterators;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -33,7 +34,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +45,6 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -626,18 +625,20 @@ public class RecipeMapBackend {
     protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
         @Nullable FluidStack @NotNull [] fluids) {
         List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
+        Consumer<GTRecipeLookupIngredient> adder = ingredient -> addLookupIngredient(ingredients, ingredient);
 
         for (ItemStack item : items) {
             if (item == null) continue;
 
-            addRuntimeItemStackLookupIngredients(ingredients, item);
-            addRuntimeOreDictLookupIngredients(ingredients, item);
+            GTItemStackLookupIngredient.fromRuntime(adder, item);
+            GTItemDataLookupIngredient.fromRuntime(adder, item);
+            GTOreDictLookupIngredient.fromRuntime(adder, item);
         }
 
         for (FluidStack fluid : fluids) {
             if (fluid == null || fluid.getFluid() == null) continue;
 
-            addLookupIngredient(ingredients, new GTFluidLookupIngredient(fluid));
+            GTFluidLookupIngredient.fromRuntime(adder, fluid);
         }
 
         if (ingredients.isEmpty()) {
@@ -646,25 +647,6 @@ public class RecipeMapBackend {
 
         Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
-    }
-
-    static void addRuntimeItemStackLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
-        addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntime(item));
-        addLookupIngredient(group, GTItemStackLookupIngredient.fromRuntimeWildcard(item));
-        addRuntimeItemDataLookupIngredient(group, item);
-    }
-
-    private static void addRuntimeOreDictLookupIngredients(List<GTRecipeLookupIngredient> group, ItemStack item) {
-        for (int oreId : OreDictionary.getOreIDs(item)) {
-            addLookupIngredient(group, new GTOreDictLookupIngredient(oreId));
-        }
-    }
-
-    private static void addRuntimeItemDataLookupIngredient(List<GTRecipeLookupIngredient> group, ItemStack item) {
-        ItemData itemData = GTOreDictUnificator.getAssociation(item);
-        if (itemData != null && itemData.hasValidPrefixMaterialData()) {
-            addLookupIngredient(group, GTItemDataLookupIngredient.fromItemData(itemData));
-        }
     }
 
     private static void addLookupIngredient(List<GTRecipeLookupIngredient> group, GTRecipeLookupIngredient ingredient) {
