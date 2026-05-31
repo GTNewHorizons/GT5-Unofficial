@@ -222,13 +222,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         while (this.height <= 5) {
 
             if (this.isTopLayerFound) {
-                int topHatchIndex = (this.height - 1) * 2;
-                if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
-                    || this.outputHatchesPerLayer.get(topHatchIndex)
-                        .isEmpty()) {
-                    missingLayers.add(height);
-                }
-
                 break;
             }
 
@@ -238,8 +231,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height)),
                 DEPTH_OFFSET,
                 null)) {
-
                 this.isTopLayerFound = true;
+                int topHatchIndex = (this.height) * 2;
+                if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
+                    || this.outputHatchesPerLayer.get(topHatchIndex)
+                        .isEmpty()) {
+                    missingLayers.add(height + 1);
+                }
             }
             if (!checkPiece(
                 STRUCTURE_PIECE_LAYER,
@@ -302,6 +300,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        this.height = 0; // required for nei preview to not crash on out of index. (hatch adder being out of bounds)
         int built = this.survivalBuildPiece(
             STRUCTURE_PIECE_BASE,
             stackSize,
