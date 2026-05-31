@@ -430,34 +430,60 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private int processClonalCellularModule(boolean skipOC) {
-        ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-        BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
+        int inputSlot = this.getInputSlot();
+        int dishSlot = -1;
+        int stemcellSlot = -1;
+        int membraneSlot = -1;
+        int orbSlot = -1;
+        int recipeFluidAmount = 8_000;
+        for (int i = 0; i < this.mInputSlotCount; i++) {
+            if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[i])) {
+                continue;
+            }
 
-        if (GTUtility.areStacksEqual(this.mInventory[this.getInputSlot()], BioItemList.getPetriDish(null))
-            && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioItemList.getOther(4))
-            && GTUtility
-                .areStacksEqual(this.mInventory[this.getInputSlot() + 2], ItemList.Circuit_Chip_Stemcell.get(2L))
-            && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 3], ItemList.Tool_DataOrb.get(1L), true)
-            && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(this.mInventory[this.getInputSlot() + 3]))
-            && hasFluid(GTModHandler.getLiquidDNA(1_000), 8000)) {
+            if (GTUtility.areStacksEqual(this.mInventory[i], BioItemList.getPetriDish(null))) {
+                dishSlot = inputSlot + i;
+                continue;
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[i], BioItemList.getOther(4))) {
+                membraneSlot = inputSlot + i;
+                continue;
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[i], ItemList.Circuit_Chip_Stemcell.get(2L))) {
+                stemcellSlot = inputSlot + i;
+                continue;
+            }
+            if (GTUtility.areStacksEqual(this.mInventory[i], ItemList.Tool_DataOrb.get(1L), true)
+                && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(this.mInventory[i]))) {
+                orbSlot = inputSlot + i;
+            }
+        }
+
+        boolean hasItems = stemcellSlot != -1 && membraneSlot != -1 && dishSlot != -1 && orbSlot != -1;
+
+        if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), recipeFluidAmount)) {
 
             BioData cultureDNABioData = BioData
-                .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3]));
+                .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[orbSlot]));
             if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-            if (this.mTier < 3 + R_TIER + cultureDNABioData.getTier())
-                return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-            for (int i = 0; i < 3; i++) {
-                if (this.mInventory[this.getInputSlot() + i] != null)
-                    this.mInventory[this.getInputSlot() + i].stackSize--;
+
+            int effectiveRecipeTier = 3 + R_TIER + cultureDNABioData.getTier();
+
+            if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
+            for (int slot : new int[] { stemcellSlot, membraneSlot, dishSlot }) {
+                this.mInventory[slot].stackSize--;
             }
-            this.mFluid.amount -= 8000;
+
+            this.mFluid.amount -= recipeFluidAmount;
+
             if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                 BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
                 if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
                 out = out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                 this.mOutputItems[0] = BioItemList.getPetriDish(out);
             }
-            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[3 + R_TIER + cultureDNABioData.getTier()]), 500);
+            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
             return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return MTEBasicMachine.DID_NOT_FIND_RECIPE;
