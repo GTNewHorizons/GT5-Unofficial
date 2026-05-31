@@ -168,11 +168,18 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         if (isValidLabPart(this.mInventory[inputSlot + i])) {
                             switch (this.mInventory[inputSlot + i].getItemDamage()) {
-                                case DISH_ITEM_DAMAGE -> dishSlot = inputSlot + i;
-                                case FLASK_ITEM_DAMAGE -> flaskSlot = inputSlot + i;
+                                case DISH_ITEM_DAMAGE -> {
+                                    if (this.mInventory[inputSlot + i].getTagCompound() != null)
+                                        dishSlot = inputSlot + i;
+                                }
+                                case FLASK_ITEM_DAMAGE -> {
+                                    if (this.mInventory[inputSlot + i].getTagCompound() == null)
+                                        flaskSlot = inputSlot + i;
+                                }
                                 case DETERGENT_ITEM_DAMAGE -> detergentSlot = inputSlot + i;
                                 default -> {}
                             }
+                            continue;
                         }
                         if (GTUtility.areStacksEqual(this.mInventory[inputSlot + i], Materials.Ethanol.getCells(1))) {
                             cellSlot = inputSlot + i;
@@ -183,7 +190,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             .getCompoundTag("DNA");
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
                         BioData cultureDNABioData = BioData.getBioDataFromName(
-                            this.mInventory[this.getInputSlot()].getTagCompound()
+                            this.mInventory[dishSlot].getTagCompound()
                                 .getCompoundTag("DNA")
                                 .getString("Name"));
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
@@ -398,8 +405,7 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private boolean isValidLabPart(ItemStack stack) {
-        return GTUtility.isStackValid(stack) && stack.getItem() instanceof ItemLabParts
-            && stack.getTagCompound() != null;
+        return GTUtility.isStackValid(stack) && stack.getItem() instanceof ItemLabParts;
     }
 
     @Override
