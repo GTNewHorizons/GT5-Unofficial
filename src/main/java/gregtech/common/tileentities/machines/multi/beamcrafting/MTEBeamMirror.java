@@ -29,7 +29,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
@@ -253,29 +252,15 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     }
 
     @Override
-    public boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline beamInput) {
-            beamInput.getBaseMetaTileEntity()
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
+        if (!mInputBeamline.isEmpty()) {
+            mInputBeamline.get(0)
+                .getBaseMetaTileEntity()
                 .setFrontFacing(getDirection());
-            return this.mInputBeamline.add(beamInput);
         }
-
-        return false;
-    }
-
-    @Override
-    public boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline beamOutput) {
+        if (!mOutputBeamline.isEmpty()) {
+            MTEHatchOutputBeamline beamOutput = mOutputBeamline.get(0);
             if (this.mTier == 2) {
                 beamOutput.getBaseMetaTileEntity()
                     .setFrontFacing(getDirection());
@@ -297,9 +282,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                         .setFrontFacing(getDirection().getRotation(ForgeDirection.UP));
                 }
             }
-            return this.mOutputBeamline.add(beamOutput);
         }
-
-        return false;
     }
+
 }
