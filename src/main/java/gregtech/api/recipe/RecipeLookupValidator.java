@@ -397,9 +397,20 @@ public final class RecipeLookupValidator {
             addRecipeConflict(target, recipes, recipe, conflictingMatches);
         }
 
-        if (lookupMatches.truncated || !matchesExpectedLookup(expectedMatches, lookupMatches.matches)) {
+        if (shouldCompareLookupCompleteness(items)
+            && (lookupMatches.truncated || !matchesExpectedLookup(expectedMatches, lookupMatches.matches))) {
             addLookupMismatch(target, recipe, expectedMatches, lookupMatches);
         }
+    }
+
+    private boolean shouldCompareLookupCompleteness(ItemStack[] items) {
+        for (ItemStack item : items) {
+            // Wildcard recipe inputs are declarations, not concrete runtime query stacks.
+            if (item != null && item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Nullable
