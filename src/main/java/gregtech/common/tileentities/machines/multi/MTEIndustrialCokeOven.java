@@ -145,6 +145,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMufflerHatch("Any Structural Coke Oven Casing of the base structure", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
         return tt;

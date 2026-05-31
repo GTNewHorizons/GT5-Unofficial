@@ -58,8 +58,8 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
 
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
-                            .setDefaultNumber(0)
-                            .setNumbers(0, Integer.MAX_VALUE)
+                            .defaultNumber(0)
+                            .numbersInt(0, Integer.MAX_VALUE)
                             .marginRight(2))
                     .child(new TextWidget<>(translateToLocal("gt.interact.desc.itemthreshold"))))
             .coverChildrenWidth()
@@ -71,9 +71,9 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .child(
                         // number field with 'Any' goes here
                         makeNumberField(88).value(slotSyncer)
-                            .setFormatAsInteger(true)
-                            .setDefaultNumber(-1)
-                            .setNumbers(-1, tile.getSizeInventory() - 1)
+                            .formatAsInteger(true)
+                            .defaultNumber(-1)
+                            .numbersInt(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
                     .child(displayWidget.tooltipDynamic(t -> {
                         // to convey the -1 = 'Any'.
