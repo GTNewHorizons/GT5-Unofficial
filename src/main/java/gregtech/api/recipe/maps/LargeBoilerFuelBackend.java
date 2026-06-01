@@ -86,6 +86,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                             "GT5U.nei.large_boiler.solid",
                             MTELargeBoilerBronze.EUT_GENERATED,
                             MTELargeBoilerSteel.EUT_GENERATED)))
+                .fake()
                 .build()
                 .map(this::compileRecipe);
             addedGeneralDesc = true;
