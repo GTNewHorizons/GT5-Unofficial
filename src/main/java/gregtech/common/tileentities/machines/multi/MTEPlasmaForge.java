@@ -877,22 +877,26 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 EnumChatFormatting.RED + formatNumber(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
                 extraCatalystNeeded));
 
-        info.add(
-            IGregTechDeviceInformation.encode(
-                "GT5U.infodata.plasma_forge.convergence",
-                (convergence
-                    ? EnumChatFormatting.GREEN
-                        + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.active")
-                        + EnumChatFormatting.RESET
-                        + (discount == maximum_discount
-                            ? IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.achieved")
-                            : IGregTechDeviceInformation.decode(
-                                IGregTechDeviceInformation.encode(
-                                    "GT5U.infodata.plasma_forge.convergence.progress",
-                                    formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60)))))
-
-                    : EnumChatFormatting.RED
-                        + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.inactive")));
+        String convergenceStatus;
+        if (convergence) {
+            String progressStr;
+            if (discount == maximum_discount) {
+                progressStr = IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.achieved");
+            } else {
+                progressStr = IGregTechDeviceInformation.decode(
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.plasma_forge.convergence.progress",
+                        formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))));
+            }
+            convergenceStatus = EnumChatFormatting.GREEN
+                + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.active")
+                + EnumChatFormatting.RESET
+                + progressStr;
+        } else {
+            convergenceStatus = EnumChatFormatting.RED
+                + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.inactive");
+        }
+        info.add(IGregTechDeviceInformation.encode("GT5U.infodata.plasma_forge.convergence", convergenceStatus));
     }
 
     private void recalculateDiscount() {

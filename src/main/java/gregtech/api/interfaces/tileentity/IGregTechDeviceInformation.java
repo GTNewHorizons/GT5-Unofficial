@@ -9,12 +9,17 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import gregtech.api.enums.GTValues;
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
 public interface IGregTechDeviceInformation {
+
+    Logger LOG = LogManager.getLogger(IGregTechDeviceInformation.class);
 
     /**
      * Is this even a TileEntity which allows GregTech Sensor Kits? I need things like this Function for
@@ -30,6 +35,9 @@ public interface IGregTechDeviceInformation {
      * <p>
      * Each element is either a plain translation key (decoded via {@link #decode}), or a string encoded via
      * {@link #encode} containing a key and substitution arguments separated by {@code \\}.
+     * <p>
+     * A bare translation key (without calling {@link #encode}) is valid and will be translated directly by
+     * {@link #decode}. Use {@link #encode} only when substitution arguments are needed.
      *
      * @return an Array of Information Strings.
      */
@@ -93,6 +101,7 @@ public interface IGregTechDeviceInformation {
         try {
             return String.format(translated, (Object[]) args);
         } catch (Exception e) {
+            LOG.warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
             StringBuilder sb = new StringBuilder(translated);
             for (int i = 1; i < parts.length; i++) sb.append(parts[i]);
             return sb.toString();
