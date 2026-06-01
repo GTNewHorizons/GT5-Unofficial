@@ -237,7 +237,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
             if (!LargeBoilerFuelBackend.isAllowedFuel(input) && !Circuit_Integrated.isStackEqual(input, true, true)) {
-                // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
+                // if any item is not in ALLOWED_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
                 this.mEUt = 0;

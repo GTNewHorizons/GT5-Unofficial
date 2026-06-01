@@ -324,7 +324,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue), getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(tRecipe.mSpecialValue, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -334,7 +334,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(runtimeBoost(tRecipe.mSpecialValue * 2), getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(tRecipe.mSpecialValue * 2, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -354,7 +354,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                             this.excessFuel += (int) (fuelValue % 80);
                             burnTime += this.excessFuel / 80;
                             this.excessFuel %= 80;
-                            setupBoilerRecipe(runtimeBoost(burnTime), getEfficiencyIncrease(), false);
+                            setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
                             tInput.stackSize -= 1;
                             updateSlots();
                             return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -384,7 +384,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
-        rawBurnTime = (int) LargeBoilerFuelBackend.getBurntimeRatio(rawBurnTime, 20);
+        rawBurnTime = runtimeBoost((int) LargeBoilerFuelBackend.getBurntimeRatio(rawBurnTime, 20));
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
         if (isFluid) {
@@ -420,6 +420,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             int tGeneratedEU = GTUtility.safeInt(this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 int waterToConsume = getWaterConsumptionForSteam(tGeneratedEU);
+                startRecipeProcessing();
                 if (isSuperheated()) {
                     if (consumeWater(waterToConsume)) {
                         int superheatedSteam = getSuperheatedSteam(tGeneratedEU);
@@ -440,6 +441,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         explodeMultiblock();
                     }
                 }
+                endRecipeProcessing();
             }
             return true;
         }
@@ -507,7 +509,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             : getEfficiencyIncrease();
         mEfficiencyIncrease = 0;
         currentMaxEfficiency = aNBT.getInteger("currentMaxEfficiency");
-        burnDecrease = aNBT.getInteger("burnDecrease");
+        burnDecrease = aNBT.hasKey("burnDecrease") ? aNBT.getInteger("burnDecrease") : 2;
         solidBurnTime = aNBT.getInteger("solidBurnTime");
         fluidBurnTime = aNBT.getInteger("fluidBurnTime");
     }
