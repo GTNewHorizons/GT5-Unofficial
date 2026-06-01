@@ -419,9 +419,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
-
         // Ignore the structure error during module checks
         List<StructureError> tmp = new ArrayList<>();
 
