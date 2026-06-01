@@ -3,23 +3,24 @@ package gregtech.common.tileentities.machines.basic;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.jaquadro.minecraft.storagedrawers.block.BlockDrawersCustom;
 import com.jaquadro.minecraft.storagedrawers.item.ItemCustomDrawers;
 
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 public class MTEDrawerFramer extends MTEBasicMachine {
 
@@ -77,32 +78,21 @@ public class MTEDrawerFramer extends MTEBasicMachine {
         return new MTEDrawerFramer(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("drawer_framer", GTUITextures.PROGRESSBAR_ARROW_MULTIPLE);
-
     @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
-            .progressBarTexture(progressBarTexture)
+            .slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
+                if (isFluid || isOutput || isSpecial) return null;
+                return switch (index) {
+                    case 1 -> GTGuiTextures.OVERLAY_SLOT_DRAWER_SIDE;
+                    case 2 -> GTGuiTextures.OVERLAY_SLOT_DRAWER_TRIM;
+                    case 3 -> GTGuiTextures.OVERLAY_SLOT_DRAWER_FRONT;
+                    default -> null;
+                };
+            })
+            .useSpecialSlot(false)
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_ARROW_MULTIPLE)
             .build();
-    }
-
-    @Override
-    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        SlotWidget slot = super.createItemInputSlot(index, backgrounds, pos);
-        if (index == 0) return slot;
-        if (index == 1) return (SlotWidget) slot
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_SIDE);
-        if (index == 2) return (SlotWidget) slot
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_TRIM);
-        return (SlotWidget) slot
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_FRONT);
-    }
-
-    // we don't need a special slot here
-    @Override
-    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
-        return null;
     }
 
     private boolean isCustomDrawer(ItemStack itemStack) {
@@ -161,4 +151,14 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

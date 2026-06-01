@@ -13,7 +13,6 @@ import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import goodgenerator.tabs.MyTabs;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
@@ -68,7 +67,6 @@ public final class GoodGenerator {
 
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        NaquadahReworkRecipeLoader.Remover();
         Loaders.completeLoad();
     }
 

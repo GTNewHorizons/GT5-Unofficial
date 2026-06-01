@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,6 +62,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -144,7 +148,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("Any catalyst must be placed in the catalyst housing")
-            .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
+            .addInfo("Awakened Draconium Coils combined with Tungstensteel Pipe Casings makes catalyst unbreakable")
             .beginStructureBlock(7, 7, 7, false)
             .addController("Front bottom center")
             .addOtherStructurePart("Catalyst Housing", "Any Casing")
@@ -155,7 +159,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "metal machine casing (minimum 70)")
+            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "Metal Machine Casing (minimum 70)")
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
@@ -222,7 +226,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .casingIndex(getCasingTextureID())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
+                        buildHatchAdder(MTEChemicalPlant.class).hatchId(MetaTileEntityIDs.Bus_Catalysts.ID)
                             .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
@@ -358,7 +362,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         for (int i = 0; i < 8; i++) {
             checkCasing[i] = 0;
@@ -372,20 +376,32 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         maxTierOfHatch = 0;
         mCatalystBuses.clear();
         setCoilMeta(HeatingCoilLevel.None);
-        if (checkPiece(mName, 3, 6, 0) && mCasing >= 70) {
-            for (int i = 0; i < 8; i++) {
-                if (checkCasing[i] == mCasing) {
-                    mSolidCasingTier = i;
-                } else if (checkCasing[i] > 0) return false;
+
+        if (!checkPiece(mName, 3, 6, 0, errors)) return;
+        for (int i = 0; i < 8; i++) {
+            if (checkCasing[i] == mCasing) {
+                mSolidCasingTier = i;
+            } else if (checkCasing[i] > 0) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_casing_problem"));
+                return;
             }
-            mMachineCasingTier = checkMachine - 1;
-            mPipeCasingTier = checkPipe - 12;
-            mCoilTier = checkCoil.getTier();
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            updateHatchTexture();
-            return (mMachineCasingTier >= 9 || mMachineCasingTier >= maxTierOfHatch) && mCatalystBuses.size() <= 1;
         }
-        return false;
+        checkCasingMin(errors, mCasing, 70);
+        mMachineCasingTier = checkMachine - 1;
+        mPipeCasingTier = checkPipe - 12;
+        mCoilTier = checkCoil.getTier();
+        if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
+        }
+        if (mCatalystBuses.size() > 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_too_many_catalyst_hatch"));
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        updateHatchTexture();
     }
 
     public void updateHatchTexture() {
@@ -498,8 +514,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchCatalysts) {
-            return addToMachineListInternal(mCatalystBuses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchCatalysts hatch) {
+            return addToMachineListInternal(mCatalystBuses, hatch, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }

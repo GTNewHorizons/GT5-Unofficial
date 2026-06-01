@@ -515,6 +515,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return true;
     }
 
+    default void onAdjacentBlockChange(int x, int y, int z) {
+        /* do nothing */
+    }
+
     /**
      * A randomly called display update to be able to add particles or other items for display
      *
@@ -540,8 +544,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    default String getLocalNameKey() {
+        return "GT5U.gui.title.unknown";
+    }
+
+    /**
+     * You should override {@link #getLocalNameKey()} instead of this one.
+     *
+     * @return localized name
+     */
     default String getLocalName() {
-        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     default boolean doesBindPlayerInventory() {

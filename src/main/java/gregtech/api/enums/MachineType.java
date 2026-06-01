@@ -43,6 +43,7 @@ public enum MachineType {
     ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
     OVEN(FunnyTexts.OVEN, "gt.recipe.oven"),
     PACKAGER(FunnyTexts.PACKAGER, "gt.recipe.packager"),
+    @Deprecated
     PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "gt.recipe.plasmaarcfurnace"),
     POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
     PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),

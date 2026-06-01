@@ -136,6 +136,8 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -658,8 +660,24 @@ public class GTProxy implements IFuelHandler {
      * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
      */
     public int mTitleTabStyle = 0;
-    /** Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line */
+    /// Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
+    /// Use [#getSeparatorStyle()] instead.
     public int separatorStyle = 2;
+
+    public enum SeparatorStyle {
+        Empty,
+        Dashes,
+        ContinuousLine
+    }
+
+    public SeparatorStyle getSeparatorStyle() {
+        return switch (separatorStyle) {
+            case 0 -> SeparatorStyle.Empty;
+            case 1 -> SeparatorStyle.Dashes;
+            default -> SeparatorStyle.ContinuousLine;
+        };
+    }
+
     /**
      * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
      * continuous line
@@ -709,8 +727,8 @@ public class GTProxy implements IFuelHandler {
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
-    private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
-    private Map<String, UUID> UUID_BY_NAME;
+    private static Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+    private static Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
@@ -785,9 +803,6 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-        if (Thaumcraft.isModLoaded()) {
-            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
-        }
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
@@ -812,6 +827,9 @@ public class GTProxy implements IFuelHandler {
         // spotless:off
         GTLog.out.println("GTMod: Preload-Phase started!");
 
+        if (Thaumcraft.isModLoaded()) {
+            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
+        }
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
@@ -1048,11 +1066,17 @@ public class GTProxy implements IFuelHandler {
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
         if (!this.enableUndergroundDirtGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
+        ArmorEventHandlers armorEvents = new ArmorEventHandlers();
+
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(armorEvents);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(armorEvents);
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
@@ -1081,6 +1105,8 @@ public class GTProxy implements IFuelHandler {
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
+
+        new ArmorKeybinds();
 
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
@@ -1842,7 +1868,7 @@ public class GTProxy implements IFuelHandler {
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
-                                                        .eut(8)
+                                                        .eut(TierEU.RECIPE_ULV)
                                                         .addTo(cutterRecipes);
                                                 }
                                     }

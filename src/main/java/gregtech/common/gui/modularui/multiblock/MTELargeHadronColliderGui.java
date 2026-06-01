@@ -26,9 +26,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -54,16 +52,17 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             "playerTargetBeamEnergyeV",
             new DoubleSyncValue(
                 () -> multiblock.playerTargetBeamEnergyeV,
-                dub -> multiblock.playerTargetBeamEnergyeV = dub));
+                dub -> multiblock.playerTargetBeamEnergyeV = dub).allowC2S());
         syncManager.syncValue(
             "playerTargetAccelerationCycles",
             new IntSyncValue(
                 () -> multiblock.playerTargetAccelerationCycles,
-                i -> multiblock.playerTargetAccelerationCycles = i));
+                i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
-        syncManager
-            .syncValue("machineMode", new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i));
+        syncManager.syncValue(
+            "machineMode",
+            new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
@@ -189,6 +188,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
+
         DoubleSyncValue playerTargetBeamEnergyeV = syncManager
             .findSyncHandler("playerTargetBeamEnergyeV", DoubleSyncValue.class);
         DoubleSyncValue cachedOutputBeamEnergy = syncManager
@@ -206,21 +207,27 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         IKey accelCycleTextKey = IKey.dynamic(() -> formatAccelCycleTextKey(accelerationCycleCounter));
         IKey statusTextKey = IKey.dynamic(() -> formatStatusTextKey(cachedOutputBeamEnergy, machineMode));
 
-        return new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+        outputWidget.child(
+            new TextWidget<>(beamEnergyTextKey).marginBottom(9)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
-            .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
+            .child(
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine));
+
+        return outputWidget;
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -253,44 +260,38 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         return new ModularPanel("statsPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(180, 110)
+            .coverChildren()
+            .padding(6)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
-                    .widgetTheme("backgroundPopup")
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(6)
                     .child(
-                        new Column().size(160, 60)
-                            .paddingLeft(40)
-                            .child(
-                                new TextWidget<>(
-                                    IKey.dynamic(
-                                        () -> StatCollector
-                                            .translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
-                                                .size(160, 20)
-                                                .alignment(Alignment.CENTER))
-                            .child(
-                                new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
-                                    .width(120)
-                                    .height(14)
-                                    .marginRight(2)
-                                    .value(playerTargetBeamEnergyeVSync)
-                                    .setDefaultNumber(1_000_000_000))
-                            .child(
-                                new TextWidget<>(
-                                    IKey.dynamic(
-                                        () -> StatCollector
-                                            .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
-                                                .size(160, 20)
-                                                .alignment(Alignment.CENTER))
-                            .child(
-                                new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setFormatAsInteger(true)
-                                    .width(40)
-                                    .height(14)
-                                    .marginRight(2)
-                                    .value(playerTargetAccelerationCyclesSync)
-                                    .setDefaultNumber(10))));
+                        new TextWidget<>(
+                            IKey.dynamic(
+                                () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.LHC.targetbeamenergyeV")))
+                                    .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .marginRight(2)
+                            .value(playerTargetBeamEnergyeVSync)
+                            .defaultNumber(1_000_000_000))
+                    .child(
+                        new TextWidget<>(
+                            IKey.dynamic(
+                                () -> StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.LHC.maxaccelerationcycles")))
+                                        .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .formatAsInteger(true)
+                            .size(40, 14)
+                            .marginRight(2)
+                            .value(playerTargetAccelerationCyclesSync)
+                            .defaultNumber(10)));
     }
 
 }

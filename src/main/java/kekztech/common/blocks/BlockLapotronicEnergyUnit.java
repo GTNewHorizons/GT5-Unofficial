@@ -131,26 +131,25 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         // Multi casing
-        par3List.add(new ItemStack(par1, 1, 0));
+        list.add(new ItemStack(item, 1, 0));
         // Empty capacitor
-        par3List.add(new ItemStack(par1, 1, 6));
+        list.add(new ItemStack(item, 1, 6));
         // Lapo capacitors EV - UV
-        par3List.add(new ItemStack(par1, 1, 7));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-        par3List.add(new ItemStack(par1, 1, 4));
+        list.add(new ItemStack(item, 1, 7));
+        list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
+        list.add(new ItemStack(item, 1, 3));
+        list.add(new ItemStack(item, 1, 4));
         // Ultimate battery
-        par3List.add(new ItemStack(par1, 1, 5));
+        list.add(new ItemStack(item, 1, 5));
         // UEV Cap
-        par3List.add(new ItemStack(par1, 1, 8));
+        list.add(new ItemStack(item, 1, 8));
         // UIV Cap
-        par3List.add(new ItemStack(par1, 1, 9));
+        list.add(new ItemStack(item, 1, 9));
         // UMV Cap
-        par3List.add(new ItemStack(par1, 1, 10));
+        list.add(new ItemStack(item, 1, 10));
     }
 
     @Override

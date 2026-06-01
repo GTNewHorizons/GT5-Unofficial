@@ -33,6 +33,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -43,8 +44,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
-import com.glodblock.github.nei.recipes.FluidRecipe;
-import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizons.navigator.api.NavigatorApi;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -67,6 +66,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -82,7 +82,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
-import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -91,9 +90,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
+import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
@@ -121,6 +122,7 @@ import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
@@ -356,6 +358,13 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+
+        final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), mechanicalArmorRenderer);
+
         metaItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
         metaItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
@@ -364,6 +373,7 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
+        MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
@@ -398,16 +408,9 @@ public class GTClient extends GTProxy {
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         super.onLoadComplete(event);
-        for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
-            if (category.recipeMap.getFrontend()
-                .getNEIProperties().registerNEI) {
-                FluidRecipe.addRecipeMap(
-                    category.unlocalizedName,
-                    new GregTech5RecipeExtractor(
-                        category.unlocalizedName.equals("gt.recipe.scanner")
-                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
-            }
-        }
+
+        Textures.ItemIcons.cleanup();
+        Textures.BlockIcons.cleanup();
     }
 
     @Override
@@ -623,6 +626,11 @@ public class GTClient extends GTProxy {
             if (hazard == Hazard.SPACE) continue;
             addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
+    }
+
+    @SubscribeEvent
+    public void onFinishTextureStitch(TextureStitchEvent.Post event) {
+        ResourceUtils.clearCache();
     }
 
     private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {

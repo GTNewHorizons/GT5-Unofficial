@@ -10,6 +10,9 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -24,6 +27,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -154,6 +158,13 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             .addStructureInfoSeparator()
             .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
             .toolTipFinisher();
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputHatch(errors);
     }
 
     @Override

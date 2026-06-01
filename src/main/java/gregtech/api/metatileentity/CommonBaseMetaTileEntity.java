@@ -3,6 +3,8 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.IllegalFormatException;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.interfaces.IInterfaceNameProvider;
+import appeng.api.util.WorldCoord;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -32,6 +35,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
@@ -40,9 +44,14 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-        mInventoryChanged = false;
+        mInventoryChanged = false, mTickDisabled = false;
 
     protected NBTTagCompound pendingDescriptionPacket;
+
+    private boolean mIgnoreNextUnload = false;
+
+    protected int oldX = 0, oldY = 0, oldZ = 0;
+    protected byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -69,7 +78,47 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
-    protected abstract void updateEntityProfiled();
+    public boolean isTickDisabled() {
+        return mTickDisabled;
+    }
+
+    // Re-enable ticking after disable.
+    @Override
+    public void enableTicking() {
+        if (!mTickDisabled) return;
+        getWorld().func_147448_a(Collections.singleton(this));
+        mTickDisabled = false;
+    }
+
+    // Effectively triggers unloading of the current tile entity, this does not invalidate the tile entity.
+    // After unloading, the tile entity will be in the same state as a non-tickable tile entity.
+    // This method may fail silently due to various reason, and calling enableTicking in the same tick will
+    // cause the disable tick call to be effectively ignored, as adding tile entity take precedence over unloading.
+    @Override
+    public void tryDisableTicking() {
+        if (mTickDisabled) return;
+        if (getValidCoversMask() != 0) return;
+        if (mIgnoreNextUnload) return;
+        getWorld().func_147457_a(this);
+        mIgnoreNextUnload = true;
+        hasTimeStatisticsStarted = false;
+        Arrays.fill(mTimeStatistics, 0);
+        mTickDisabled = true;
+    }
+
+    // This method is called both when the ticking is disabled for this block and the block is unloaded.
+    @Override
+    public final void onChunkUnload() {
+        if (mIgnoreNextUnload) {
+            mIgnoreNextUnload = false;
+            return;
+        }
+        onUnload();
+    }
+
+    public void onUnload() {
+        super.onChunkUnload();
+    }
 
     @Override
     public final void updateEntity() {
@@ -127,6 +176,101 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     }
 
+    protected abstract void updateEntityProfiled();
+
+    /**
+     * Handles setting data on the first tick
+     */
+    protected final void handleFirstTick(boolean isServerSide) {
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        if (isServerSide) {
+            checkDropCover();
+        } else {
+            requestCoverDataIfNeeded();
+        }
+        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        getMetaTileEntity().onFirstTick(this);
+    }
+
+    /**
+     * Handles the color changing on the client side
+     */
+    protected final void handleColorChangeClient() {
+        if (mColor == oldColor) {
+            return;
+        }
+        oldColor = mColor;
+        getMetaTileEntity().onColorChangeClient(mColor);
+        issueTextureUpdate();
+    }
+
+    /**
+     * Handles marking the tile entity's block for an update on the client side
+     */
+    protected final void handleBlockUpdateClient() {
+        if (!mNeedsUpdate) {
+            return;
+        }
+        if (GTMod.proxy.mUseBlockUpdateHandler) {
+            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, new WorldCoord(this));
+        } else {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+        getMetaTileEntity().onTextureUpdate();
+        mNeedsUpdate = false;
+    }
+
+    /**
+     * Handles the tile entity's position changing
+     */
+    protected final void handlePositionChange() {
+        if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
+            return;
+        }
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        issueClientUpdate();
+        clearTileEntityBuffer();
+    }
+
+    /**
+     * Handles the update data changing
+     */
+    protected final void handleUpdateDataChangeServer() {
+        byte updateData = getMetaTileEntity().getUpdateData();
+        if (updateData == oldUpdateData) {
+            return;
+        }
+        oldUpdateData = updateData;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
+    }
+
+    /**
+     * Handles the color changing on the server side
+     */
+    protected final void handleColorChangeServer() {
+        if (mColor == oldColor) {
+            return;
+        }
+        oldColor = mColor;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
+    }
+
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
     protected abstract void onTickFail();
 
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
@@ -151,13 +295,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-                    GTMod.logStackTrace(e);
+                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-            GTMod.logStackTrace(e);
+            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
     }
 
@@ -212,7 +354,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     protected void addProfilingInformation(List<String> tList) {
-        if (hasTimeStatisticsStarted) {
+        if (mTickDisabled) {
+            tList.add("Tick Disabled");
+        } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
             int amountOfZero = 0;
@@ -270,6 +414,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public Packet getDescriptionPacket() {
         issueClientUpdate();
+        sendClientData();
 
         IMetaTileEntity imte = getMetaTileEntity();
 
@@ -305,16 +450,34 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public void issueClientUpdate() {
         mSendClientData = true;
+        if (mTickDisabled) {
+            sendClientData();
+        }
     }
+
+    abstract protected void sendClientData();
 
     @Override
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
+        if (mTickDisabled) {
+            doBlockUpdateServer();
+        }
+    }
+
+    public final void doBlockUpdateServer() {
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
     }
 
     @Override
     public void issueTileUpdate() {
         mNeedsTileUpdate = true;
+        if (mTickDisabled) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            mNeedsTileUpdate = false;
+        }
     }
 
     @Override

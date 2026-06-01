@@ -1,6 +1,13 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_ADVANCED_BEAMLINE_OUTPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_OUTPUT;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
 import java.util.ArrayList;
+
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -100,6 +107,41 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mInputBeamline.clear();
+        this.mOutputBeamline.clear();
+        this.mAdvancedOutputBeamline.clear();
+    }
+
+    protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineInputHatch(Class<T> clazz,
+        int casingIndex, int hint) {
+        return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_INPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder(MTEBeamMultiBase::addBeamLineInputHatch)
+            .build();
+    }
+
+    protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineOutputHatch(Class<T> clazz,
+        int casingIndex, int hint) {
+        return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_OUTPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
+            .build();
+    }
+
+    protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildAdvancedBeamlineOutputHatch(
+        Class<T> clazz, int casingIndex, int hint, FundamentalForce force) {
+        return buildHatchAdder(clazz).hatchId(HATCH_ADVANCED_BEAMLINE_OUTPUT.ID)
+            .casingIndex(casingIndex)
+            .hint(hint)
+            .adder((multi, te, ci) -> multi.addAdvancedBeamlineOutputHatch(te, ci, force))
+            .build();
     }
 
 }

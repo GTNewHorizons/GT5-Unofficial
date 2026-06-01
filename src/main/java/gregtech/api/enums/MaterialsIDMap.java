@@ -94,6 +94,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(111, Materials.TengamPurified);
         r(112, Materials.TengamAttuned);
         r(113, Materials.ExcitedDTPC);
+        r(114, Materials.InactiveCosmicSolder);
+        r(115, Materials.BoundlessCosmicSolder);
         r(118, Materials.NetherAir);
         r(119, Materials.NetherSemiFluid);
         r(120, Materials.NefariousGas);
@@ -166,6 +168,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(188,Materials.ChlorosulfonicAcid);
         r(189, Materials.Shijima);
         r(190, Materials.Churitsu);
+        r(191, Materials.PoisonousSlurry);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);
@@ -187,7 +190,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(301, Materials.Brass);
         r(302, Materials.Invar);
         r(303, Materials.Electrum);
-        r(304, Materials.WroughtIron);
+        r(304, Materials.CastIron);
         r(305, Materials.Steel);
         r(306, Materials.StainlessSteel);
         r(307, Materials.PigIron);

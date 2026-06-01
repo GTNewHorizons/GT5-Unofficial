@@ -1,10 +1,10 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static tectech.thing.metaTileEntity.multi.MTEActiveTransformer.formatUIAmperage;
+import static tectech.thing.metaTileEntity.multi.MTEActiveTransformer.formatUIEUt;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -49,9 +48,9 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
         IntSyncValue hatchTierSyncer = new IntSyncValue(multiblock::calculateHatchTier);
         syncManager.syncValue("hatchTier", hatchTierSyncer);
 
-        Column throughputColumn = new Column();
+        Flow throughputColumn = Flow.column();
         throughputColumn.coverChildrenHeight()
-            .widthRel(1);
+            .fullWidth();
 
         throughputColumn.child(
             createIndividualThroughputColumn(
@@ -76,7 +75,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
         String headerLangKey) {
         return Flow.column()
             .height(18)
-            .widthRel(1)
+            .fullWidth()
             .marginBottom(2)
             .child(
                 IKey.lang(headerLangKey)
@@ -92,18 +91,5 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
                     .asWidget()
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                     .anchorLeft(0));
-    }
-
-    private static String formatUIEUt(double eut) {
-        if (eut < 1_000_000_000) return formatNumber(eut);
-
-        int exp = 0;
-
-        while (eut > 1_000) {
-            eut /= 1000d;
-            exp += 3;
-        }
-
-        return formatNumber(eut) + "e" + exp;
     }
 }

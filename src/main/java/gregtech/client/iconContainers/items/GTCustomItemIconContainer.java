@@ -2,8 +2,8 @@ package gregtech.client.iconContainers.items;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -23,11 +23,10 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    // TODO: Change to package-private once API no longer extends this implementation
-    protected GTCustomItemIconContainer(@NotNull String aIconName) {
+    GTCustomItemIconContainer(@NotNull String aIconName) {
         mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-        mOverlayName = mIconName + "_OVERLAY";
+        mOverlayName = mIconName + Textures.OverlaySuffix;
         overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
@@ -38,11 +37,15 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
         GTLog.ico.println("O " + overlayResource);
     }
 
-    // 2026-02-03: Counted 1928 unique Item CustomIcons, so 3K will avoid resize until 2304 entries
-    static final Map<String, IIconContainer> INSTANCES = new ConcurrentHashMap<>(3072);
+    // 2026-13-05: Currently unused
+    private static Map<String, IIconContainer> INSTANCES = new HashMap<>();
 
     public static @NotNull IIconContainer create(@NotNull String aIconName) {
         return INSTANCES.computeIfAbsent(aIconName, GTCustomItemIconContainer::new);
+    }
+
+    public static void cleanup() {
+        INSTANCES = new HashMap<>();
     }
 
     @Override

@@ -41,9 +41,7 @@ import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GTAuthors;
@@ -131,7 +129,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 listWidget.child(createModuleRow(modulePair));
             }
             return listWidget;
-        });
+        })
+            .allowC2S();
         moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(($) -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
@@ -299,7 +298,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .style(EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .color(0xFFFFFFFF)
             .asWidget()
-            .alignX(Alignment.CenterLeft)
+            .leftRel(0)
             .marginBottom(8);
     }
 
@@ -308,7 +307,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .style(EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .color(0xFFCE4242)
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 
@@ -361,13 +360,16 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 .asWidget()
                 .style(EnumChatFormatting.BOLD)
                 .marginTop(8)
-                .align(Alignment.TopCenter))
+                .topRel(0)
+                .horizontalCenter())
             .child(
                 ButtonWidget.panelCloseButton()
                     .background(GTGuiTextures.BUTTON_NANOCHIP));
 
         Flow contributorColumn = Flow.column()
             .coverChildren()
+            .childPadding(5)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(26)
             .marginTop(24);
 
@@ -405,16 +407,15 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     private static Flow createContributorSection(String titleKey, Widget<?>... entries) {
-        return new Column().coverChildren()
-            .marginBottom(5)
-            .alignX(0)
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 IKey.lang(titleKey)
                     .style(EnumChatFormatting.UNDERLINE)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
-                    .marginBottom(2)
-                    .alignX(0))
+                    .marginBottom(2))
             .children(Arrays.asList(entries));
     }
 
@@ -477,7 +478,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     private Flow createTitleColumn(ModularPanel panel, PanelSyncManager syncManager) {
         StringSyncValue titleSync = syncManager.findSyncHandler("calibrationTitle", StringSyncValue.class);
 
-        return new Column().widthRel(1)
+        return Flow.column()
+            .fullWidth()
             .paddingLeft(4)
             .paddingLeft(4)
             .coverChildrenHeight()
@@ -492,7 +494,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
             .paddingRight(6)
             .paddingLeft(4)
             .height(getTextBoxToInventoryGap() + 20)
@@ -538,7 +541,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .height(38)
             .top(2)
             .marginLeft(3)
@@ -552,7 +556,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("talk", 0, new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b));
+        syncManager
+            .syncValue("talk", 0, new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b).allowC2S());
         syncManager
             .syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.PRIMITIVE)));
         syncManager

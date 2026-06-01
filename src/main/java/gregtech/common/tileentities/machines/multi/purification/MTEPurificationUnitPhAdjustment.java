@@ -50,6 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -439,7 +440,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1-2",
                 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),
@@ -551,11 +552,16 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
-        if (acidInputHatch == null || alkalineInputBus == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (acidInputHatch == null || alkalineInputBus == null) {
+            throw new IllegalArgumentException(
+                "This should not happen, since the structure definition included mandatory hatches...");
+        }
     }
 
     @Override

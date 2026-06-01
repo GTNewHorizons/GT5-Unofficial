@@ -22,6 +22,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import gregtech.GTMod;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -36,6 +41,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEScanner extends MTEBasicMachine {
@@ -200,5 +206,16 @@ public class MTEScanner extends MTEBasicMachine {
     @Override
     public void startProcess() {
         sendLoopStart((byte) 1);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

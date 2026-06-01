@@ -60,7 +60,7 @@ public interface IOreMaterial extends ISubTagContainer {
         if (gt != null) {
             return GTOreDictUnificator.get(prefix, gt, amount);
         } else {
-            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), 1);
+            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), amount);
         }
     }
 

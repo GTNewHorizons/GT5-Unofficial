@@ -180,7 +180,7 @@ public class ToolboxUtil {
             final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
             handler.mutateCurrentTool(toolStack -> {
                 if (toolStack.getItem() instanceof final MetaGeneratedTool toolItem) {
-                    toolItem.doDamageToItem(toolStack, toolItem.getToolStats(toolStack).getToolDamagePerEntityAttack());
+                    toolItem.doDamage(toolStack, toolItem.getToolStats(toolStack).getToolDamagePerEntityAttack());
                 }
             });
         }

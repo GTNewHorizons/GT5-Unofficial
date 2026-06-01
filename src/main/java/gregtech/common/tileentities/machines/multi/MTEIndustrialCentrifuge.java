@@ -42,6 +42,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
@@ -159,7 +160,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center")
-            .addCasingInfoMin("Centrifuge Casings", 6, false)
+            .addCasingInfoMin("Centrifuge Casing", 6, false)
             .addCasingInfoExactly("Large Sieve Grate", 18, false)
             .addCasingInfoExactly("Eglin Steel Frame Box", 24, false)
             .addInputBus("Any Casing", 1)
@@ -222,9 +223,15 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 6);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasMufflerHatch(errors);
     }
 
     private void updateTurbineOverlay() {

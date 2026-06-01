@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
@@ -27,17 +28,15 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        super.setLockedFluidName(
+        super.setLockedFluid(
             Materials.Antimatter.getFluid(1)
-                .getFluid()
-                .getName());
+                .getFluid());
     }
 
     @Override
-    public void setLockedFluidName(String lockedFluidName) {
-        this.lockedFluidName = Materials.Antimatter.getFluid(1)
-            .getFluid()
-            .getName();
+    public void setLockedFluid(Fluid lockedFluid) {
+        this.lockedFluid = Materials.Antimatter.getFluid(1)
+            .getFluid();
         markDirty();
     }
 
