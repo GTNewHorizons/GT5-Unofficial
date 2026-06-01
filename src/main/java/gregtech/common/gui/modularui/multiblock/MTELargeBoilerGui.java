@@ -80,8 +80,7 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                 () -> translateToLocalFormatted(
                     "GT5U.machines.large_boiler.gui.fluid_burn",
                     String.format(
-                        "%.2f",
-                        Math.ceil((double) fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue()) / 20))));
+                        "%.2f", fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))));
     }
 
     private IWidget createSolidTimerTextWidget(PanelSyncManager syncManager) {
@@ -92,8 +91,7 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
                 () -> translateToLocalFormatted(
                     "GT5U.machines.large_boiler.gui.solid_burn",
                     String.format(
-                        "%.2f",
-                        Math.ceil((double) solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue()) / 20))));
+                        "%.2f", solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))));
     }
 
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, PanelSyncManager syncManager) {
