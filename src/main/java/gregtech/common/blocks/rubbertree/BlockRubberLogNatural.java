@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.items.MetaGeneratedTool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -291,6 +292,7 @@ public class BlockRubberLogNatural extends Block {
         }
 
         consumeOffhandTap(player, offhandTap);
+        damageSoftMalletOnInstall(player, 10);
 
         tile.configureNewHole(installedTap, side, world.rand, initialRemainingResin);
         RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, initialRemainingResin);
@@ -316,6 +318,7 @@ public class BlockRubberLogNatural extends Block {
         }
 
         consumeOffhandTap(player, offhandTap);
+        damageSoftMalletOnInstall(player, 5);
 
         tile.setRemainingResin(remainingResin);
         tile.installTap(installedTap, side, world.rand);
@@ -470,5 +473,30 @@ public class BlockRubberLogNatural extends Block {
         EntityItem entityItem = new EntityItem(world, spawnX, spawnY, spawnZ, stack);
         entityItem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityItem);
+    }
+
+    private static void damageSoftMalletOnInstall(@NotNull EntityPlayer player, long damage) {
+        if (player.capabilities.isCreativeMode || damage <= 0) {
+            return;
+        }
+
+        ItemStack softMallet = player.getCurrentEquippedItem();
+
+        if (softMallet == null) {
+            return;
+        }
+
+        if (softMallet.getItem() instanceof MetaGeneratedTool) {
+            ((MetaGeneratedTool) softMallet.getItem()).doDamage(softMallet, damage * 100L);
+        } else {
+            softMallet.damageItem((int) Math.min(Integer.MAX_VALUE, damage), player);
+        }
+
+        if (softMallet.stackSize <= 0) {
+            player.destroyCurrentEquippedItem();
+        }
+
+        player.inventory.markDirty();
+        player.inventoryContainer.detectAndSendChanges();
     }
 }
