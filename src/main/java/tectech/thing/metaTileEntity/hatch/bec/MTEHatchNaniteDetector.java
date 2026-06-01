@@ -128,7 +128,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         () -> configuredTier,
                         l -> configuredTier = (int) l,
                         (panel1, syncManager1, widget) -> {
-                            widget.setNumbers(1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt());
+                            widget.numbersInt(1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt());
                         })
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
