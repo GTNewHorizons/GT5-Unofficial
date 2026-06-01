@@ -407,7 +407,9 @@ public class MTEBioLab extends MTEBasicMachine {
 
         if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), recipeFluidAmount)) {
             // isDNAFlask(stack, true) ensures that the NBT tag exists, but the tag "Name" may not
-            BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(this.mInventory[flaskSlot].getTagCompound().getString("Name"))
+            BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(
+                this.mInventory[flaskSlot].getTagCompound()
+                    .getString("Name"))
                 .getBioData();
 
             int effectiveRecipeTier = 1 + cultureDNABioData.getTier();
