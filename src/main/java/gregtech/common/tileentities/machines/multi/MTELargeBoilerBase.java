@@ -99,7 +99,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private int fluidBurnTime = 0;
     private int solidBurnTime = 0;
     private int burnDecrease = 2;
-    private int currentMaxEfficiency = 10000;
 
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
         Casings fireboxCasing, int eut, int efficiencyIncrease, boolean isSuperheated, int pollutionPerSecond) {
@@ -415,7 +414,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     public boolean onRunningTick(ItemStack aStack) {
         if (this.lEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
-            maxEff *= burnDecrease == 1 ? 2 : 1;
             adjustEfficiencyTowards(maxEff, Math.max(1, efficiencyChangePerTick));
             int tGeneratedEU = GTUtility.safeInt(this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
@@ -492,7 +490,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("excessProjectedEU", excessProjectedEU);
         aNBT.setInteger("excessSuperheatedSteam", excessSuperheatedSteam);
         aNBT.setInteger("efficiencyChangePerTick", efficiencyChangePerTick);
-        aNBT.setInteger("currentMaxEfficiency", currentMaxEfficiency);
         aNBT.setInteger("burnDecrease", burnDecrease);
         aNBT.setInteger("solidBurnTime", solidBurnTime);
         aNBT.setInteger("fluidBurnTime", fluidBurnTime);
@@ -508,7 +505,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         efficiencyChangePerTick = aNBT.hasKey("efficiencyChangePerTick") ? aNBT.getInteger("efficiencyChangePerTick")
             : getEfficiencyIncrease();
         mEfficiencyIncrease = 0;
-        currentMaxEfficiency = aNBT.getInteger("currentMaxEfficiency");
         burnDecrease = aNBT.hasKey("burnDecrease") ? aNBT.getInteger("burnDecrease") : 2;
         solidBurnTime = aNBT.getInteger("solidBurnTime");
         fluidBurnTime = aNBT.getInteger("fluidBurnTime");
