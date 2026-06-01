@@ -59,10 +59,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.structure.error.MissingOutputHatchDT;
-import gregtech.api.structure.error.SimpleStructureError;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -269,12 +268,14 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         // check base
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
+        List<Integer> missingLayers = new ArrayList<>();
+
         // check each layer
         while (mHeight < 12) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
                 .isEmpty()) {
-                errors.add(new MissingOutputHatchDT(mHeight + 1));
+                missingLayers.add(mHeight + 1);
             }
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
                 break;
@@ -282,16 +283,22 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             // not top
             mHeight++;
         }
+
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
+        }
+
         if (!mTopLayerFound) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.dangote_missing_top"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.dangote_missing_top"));
         }
         if (mHeight == 1) {
-            errors.add(new SimpleStructureError("GT5U.gui.text.too_short"));
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
-        if (mCasing < 7) {
-            errors.add(new TooFewCasings(mCasing, 7));
-        }
+        checkCasingMin(errors, mCasing, 7);
         checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         // check success
         if (mHeight < 11) {
@@ -389,7 +396,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineType() {
-        return "Distillery, Distillation Tower";
+        return "Distillery, DT";
     }
 
     @Override

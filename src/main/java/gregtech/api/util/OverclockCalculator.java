@@ -276,6 +276,11 @@ public class OverclockCalculator {
         return this;
     }
 
+    /** @return Current parallel */
+    public int getCurrentParallel() {
+        return currentParallel;
+    }
+
     /** @return The consumption after overclock has been calculated */
     public long getConsumption() {
         if (!calculated) {

@@ -8,11 +8,13 @@ import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
@@ -32,10 +34,11 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
     private GTTextureSetBlockIconContainer(@NotNull Pair<String, String> pair) {
-        this(pair.getLeft(), pair.getRight());
+        this(pair.getLeft(), pair.getRight(), null);
     }
 
-    private GTTextureSetBlockIconContainer(@NotNull String setName, @NotNull String prefix) {
+    private GTTextureSetBlockIconContainer(@NotNull String setName, @NotNull String prefix,
+        @Nullable IIconRegister override) {
         this.iconName = createIconName(setName, prefix);
         this.fallbackIconName = createIconName(TextureSetFallback, prefix);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconName);
@@ -46,14 +49,22 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
         iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconOverlayName);
         iconOverlayFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconOverlayName);
 
-        GregTechAPI.sGTBlockIconload.add(this);
+        if (override != null) {
+            run(override);
+        } else {
+            GregTechAPI.sGTBlockIconload.add(this);
+        }
         if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
     }
 
     // 2026-13-05: Counted 1782 unique Block TextureSetIcons, so 2.5K will avoid resize until 1920 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(2520);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, String prefix) {
+    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix,
+        IIconRegister override) {
+        if (override != null) {
+            return new GTTextureSetBlockIconContainer(setName, prefix, override);
+        }
         return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetBlockIconContainer::new);
     }
 
@@ -78,18 +89,22 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
 
     @Override
     public void run() {
+        run(GregTechAPI.sBlockIcons);
+    }
+
+    private void run(IIconRegister register) {
         Pair<IIcon, TextureSetIconType> iconPair = registerResourceOrFallback(
             iconResource,
             iconName,
             iconFallbackResource,
             fallbackIconName,
-            GregTechAPI.sBlockIcons);
+            register);
         Pair<IIcon, TextureSetIconType> overlayPair = registerResourceOrFallback(
             iconOverlayResource,
             iconOverlayName,
             iconOverlayFallbackResource,
             fallbackIconOverlayName,
-            GregTechAPI.sBlockIcons);
+            register);
         mIcon = iconPair.getRight() == TextureSetIconType.INVISIBLE ? GregTechAPI.sBlockIcons.registerIcon(iconName)
             : iconPair.getLeft();
         if (iconPair.getRight() == overlayPair.getRight() && overlayPair.getRight() != TextureSetIconType.INVISIBLE) {

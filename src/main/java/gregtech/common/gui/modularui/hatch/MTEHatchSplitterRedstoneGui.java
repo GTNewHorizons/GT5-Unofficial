@@ -29,6 +29,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         IntSyncValue redstone = syncManager.findSyncHandler("redstone", IntSyncValue.class);
         IntSyncValue channel = syncManager.findSyncHandler("channel", IntSyncValue.class);
+
         return super.createContentSection(panel, syncManager).child(
             Flow.column()
                 .coverChildren()
@@ -44,21 +45,21 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                             new ButtonWidget<>().size(14)
                                 .overlay(GuiTextures.REMOVE)
                                 .onMousePressed((a) -> {
-                                    channel.setValue((channel.getValue() - 1) % hatch.MAX_CHANNEL);
+                                    channel.setValue((channel.getValue() - 1) % machine.MAX_CHANNEL);
                                     return true;
                                 }))
                         .child(
-                            new TextFieldWidget().setFormatAsInteger(true)
-                                .setDefaultNumber(0)
+                            new TextFieldWidget().formatAsInteger(true)
+                                .defaultNumber(0)
                                 .height(14)
                                 .setTextAlignment(Alignment.CENTER)
-                                .setNumbers(0, hatch.MAX_CHANNEL)
+                                .numbersInt(0, machine.MAX_CHANNEL)
                                 .syncHandler("channel"))
                         .child(
                             new ButtonWidget<>().size(14)
                                 .overlay(GuiTextures.ADD)
                                 .onMousePressed((a) -> {
-                                    channel.setValue((channel.getValue() + 1) % hatch.MAX_CHANNEL);
+                                    channel.setValue((channel.getValue() + 1) % machine.MAX_CHANNEL);
                                     return true;
                                 })))
                 .child(
@@ -79,10 +80,14 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
 
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
-        IntSyncValue redstone = new IntSyncValue(hatch::getRedstoneInput);
-        IntSyncValue channel = new IntSyncValue(hatch::getChannel, hatch::setChannel);
-        syncManager.syncValue("redstone", redstone);
-        syncManager.syncValue("channel", channel);
         super.registerSyncValues(syncManager);
+
+        syncManager.syncValue("redstone", new IntSyncValue(machine::getRedstoneInput));
+        syncManager.syncValue("channel", new IntSyncValue(machine::getChannel, machine::setChannel).allowC2S());
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

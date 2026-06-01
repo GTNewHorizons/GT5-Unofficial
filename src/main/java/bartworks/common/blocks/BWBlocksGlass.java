@@ -30,7 +30,7 @@ public class BWBlocksGlass extends BWBlocks {
     @SideOnly(Side.CLIENT)
     private IIcon[] connectedTexture;
 
-    private final boolean connectedTex;
+    public boolean connectedTex;
     private boolean fake;
     private short[][] color = new short[this.textureNames.length][3];
 

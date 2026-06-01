@@ -1,10 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.util.GTUtility.filterValidMTEs;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -75,13 +70,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     @Override
     protected long getActualEnergyUsage() {
         return (long) (-this.lEUt * (10000.0 / Math.max(1000, mEfficiency)));
-    }
-
-    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> tHatches = new ArrayList<>();
-        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
-        tHatches.addAll(filterValidMTEs(mEnergyHatches));
-        return tHatches;
     }
 
     @Override

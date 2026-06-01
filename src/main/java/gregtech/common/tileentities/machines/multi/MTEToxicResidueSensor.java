@@ -188,17 +188,17 @@ public class MTEToxicResidueSensor extends MTEHatch {
 
         ThresholdType(int maxCapacity, String nameUntranslated, String tooltipUntranslated) {
             this.maxCapacity = maxCapacity;
-            this.name = StatCollector.translateToLocal(nameUntranslated);
-            this.tooltip = StatCollector.translateToLocal(tooltipUntranslated);
+            this.name = nameUntranslated;
+            this.tooltip = tooltipUntranslated;
         }
 
         @Override
         public String toString() {
-            return name;
+            return StatCollector.translateToLocal(name);
         }
 
         public String getTooltip() {
-            return tooltip;
+            return StatCollector.translateToLocal(tooltip);
         }
 
         public int getMaxCapacity() {

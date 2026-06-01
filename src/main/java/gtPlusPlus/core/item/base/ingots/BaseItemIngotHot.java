@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -24,9 +23,6 @@ import gtPlusPlus.core.util.Utils;
 public class BaseItemIngotHot extends BaseItemIngot {
 
     private final ItemStack outputIngot;
-
-    @SideOnly(Side.CLIENT)
-    private IIconContainer iconContainer;
 
     public BaseItemIngotHot(final Material material) {
         super(material, ComponentTypes.HOTINGOT);
@@ -74,15 +70,9 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
-        iconContainer = Textures.ItemIcons.textureSet("METALLIC", "/" + OrePrefixes.ingotHot.getName());
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0) {
-            return this.iconContainer.getIcon();
-        }
-        return this.iconContainer.getOverlayIcon();
+        IIconContainer container = Textures.ItemIcons
+            .textureSetWithRegister("METALLIC", "/" + OrePrefixes.ingotHot.getName(), i);
+        iconBase = container.getIcon();
+        iconOverlay = container.getOverlayIcon();
     }
 }

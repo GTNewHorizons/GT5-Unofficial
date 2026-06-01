@@ -1028,7 +1028,7 @@ public class RecipesMachinesCustom {
     private static void thermalBoiler() {
         // Thermal Boiler
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
+            ItemList.ThermalBoiler.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
                 ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.get(Materials.TungstenSteel), 'I',

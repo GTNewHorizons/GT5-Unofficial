@@ -57,7 +57,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (aMaterial.mStandardMoltenFluid != null
-                    && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()

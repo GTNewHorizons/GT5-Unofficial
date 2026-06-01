@@ -604,7 +604,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void joinEnet() {
-        if (joinedIc2Enet || !shouldJoinIc2Enet()) return;
+        if (isClientSide() || joinedIc2Enet || !shouldJoinIc2Enet()) return;
 
         if (ic2EnergySink == null) createIc2Sink();
 
@@ -639,6 +639,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
         ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip", POWER_SOURCE_KEY = "GT5U.machines.powersource.",
         BUTTON_FORBIDDEN_TOOLTIP = "GT5U.gui.button.forbidden",
+        BUTTON_FEATURE_ENABLED_TOOLTIP = "GT5U.gui.button.feature_enabled",
+        BUTTON_FEATURE_DISABLED_TOOLTIP = "GT5U.gui.button.feature_disabled",
         NEI_TRANSFER_STEAM_TOOLTIP = "GT5U.machines.nei_transfer.steam.tooltip",
         NEI_TRANSFER_VOLTAGE_TOOLTIP = "GT5U.machines.nei_transfer.voltage.tooltip";
 

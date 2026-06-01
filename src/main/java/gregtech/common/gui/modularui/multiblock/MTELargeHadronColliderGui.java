@@ -52,16 +52,17 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             "playerTargetBeamEnergyeV",
             new DoubleSyncValue(
                 () -> multiblock.playerTargetBeamEnergyeV,
-                dub -> multiblock.playerTargetBeamEnergyeV = dub));
+                dub -> multiblock.playerTargetBeamEnergyeV = dub).allowC2S());
         syncManager.syncValue(
             "playerTargetAccelerationCycles",
             new IntSyncValue(
                 () -> multiblock.playerTargetAccelerationCycles,
-                i -> multiblock.playerTargetAccelerationCycles = i));
+                i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
-        syncManager
-            .syncValue("machineMode", new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i));
+        syncManager.syncValue(
+            "machineMode",
+            new IntSyncValue(() -> multiblock.machineMode, i -> multiblock.machineMode = i).allowC2S());
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
@@ -187,6 +188,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
+
         DoubleSyncValue playerTargetBeamEnergyeV = syncManager
             .findSyncHandler("playerTargetBeamEnergyeV", DoubleSyncValue.class);
         DoubleSyncValue cachedOutputBeamEnergy = syncManager
@@ -204,21 +207,27 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         IKey accelCycleTextKey = IKey.dynamic(() -> formatAccelCycleTextKey(accelerationCycleCounter));
         IKey statusTextKey = IKey.dynamic(() -> formatStatusTextKey(cachedOutputBeamEnergy, machineMode));
 
-        return new ListWidget<>().fullWidth()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+        outputWidget.child(
+            new TextWidget<>(beamEnergyTextKey).marginBottom(9)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
-            .child(new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine))
+            .child(
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .setEnabledIf(w -> multiblock.mMachine));
+
+        return outputWidget;
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -265,11 +274,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                     .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
                             .size(120, 14)
                             .marginRight(2)
                             .value(playerTargetBeamEnergyeVSync)
-                            .setDefaultNumber(1_000_000_000))
+                            .defaultNumber(1_000_000_000))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
@@ -278,11 +287,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                         .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setFormatAsInteger(true)
+                            .formatAsInteger(true)
                             .size(40, 14)
                             .marginRight(2)
                             .value(playerTargetAccelerationCyclesSync)
-                            .setDefaultNumber(10)));
+                            .defaultNumber(10)));
     }
 
 }

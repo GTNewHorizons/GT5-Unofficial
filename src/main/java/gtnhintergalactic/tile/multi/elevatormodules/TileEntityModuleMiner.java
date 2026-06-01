@@ -42,6 +42,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -101,7 +103,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     protected long getAvailableData_EM() {
-        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        if (eInputData.isEmpty()) {
+            if (this.parent == null) return 0;
+            return this.parent.getAvailableDataForModules();
+        }
         return super.getAvailableData_EM();
     }
 
@@ -129,9 +134,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     private IntegerParameter distanceParameter;
     private IntegerParameter parallelParameter;
     private BooleanParameter cycleParameter;
-    private IntegerParameter cycleDistanceParameter;
     private IntegerParameter rangeParameter;
     private IntegerParameter stepParameter;
+    private IntegerParameter cycleDistanceParameter;
 
     public static final String DISTANCE_PARAMETER = "distance";
     public static final String PARALLEL_PARAMETER = "parallel";
@@ -247,25 +252,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             () -> 0,
             this::getMaxParallels);
         cycleParameter = new BooleanParameter(false, "tt.spaceminer.cycle", CYCLE_PARAMETER);
-        cycleDistanceParameter = new IntegerParameter(
-            0,
-            "tt.spaceminer.range",
-            CYCLE_DISTANCE_PARAMETER,
-            () -> 0,
-            () -> Integer.MAX_VALUE);
         rangeParameter = new IntegerParameter(
             0,
-            "tt.spaceminer.step",
+            "tt.spaceminer.range",
             RANGE_PARAMETER,
             () -> 0,
             () -> Integer.MAX_VALUE);
-        stepParameter = new IntegerParameter(
+        stepParameter = new IntegerParameter(0, "tt.spaceminer.step", STEP_PARAMETER, () -> 0, () -> Integer.MAX_VALUE);
+        cycleDistanceParameter = new IntegerParameter(
             distanceParameter.getValue(),
             "",
-            STEP_PARAMETER,
+            CYCLE_DISTANCE_PARAMETER,
             () -> distanceParameter.getValue() - rangeParameter.getValue(),
             () -> distanceParameter.getValue() + rangeParameter.getValue());
-        stepParameter.disableGui();
+        cycleDistanceParameter.disableGui();
     }
 
     @Override
@@ -901,9 +901,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
-            return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty() && this.parent != null && !this.parent.hasDataHatches()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
         if (wasFilterModified) {
             wasFilterModified = false;
@@ -916,7 +921,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
-        return true;
     }
 
     @Override

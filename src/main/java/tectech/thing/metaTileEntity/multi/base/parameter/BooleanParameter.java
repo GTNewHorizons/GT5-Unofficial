@@ -35,7 +35,7 @@ public class BooleanParameter extends Parameter<Boolean> {
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
-        return new BooleanSyncValue(this::getValue, this::setValue);
+    public SyncHandler<?> createSyncHandler() {
+        return new BooleanSyncValue(this::getValue, this::setValue).allowC2S();
     }
 }

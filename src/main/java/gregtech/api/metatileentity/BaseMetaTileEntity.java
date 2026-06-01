@@ -70,7 +70,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketTileEntity;
-import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -112,10 +111,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     private boolean mWorkUpdate = false;
     private boolean mWorks = true;
     private boolean oRedstone = false;
-    private byte mColor = 0, oldColor = 0, oldRedstoneData = 63, oldTextureData = 0, oldUpdateData = 0;
+    private byte oldTextureData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
-    private int oldX = 0, oldY = 0, oldZ = 0;
     private long oldOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
     private String mOwnerName = "";
@@ -271,72 +269,37 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void updateEntityProfiled() {
+    public final void updateEntityProfiled() {
         if (!hasValidMetaTileEntity()) {
             if (mMetaTileEntity == null) return;
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
-
         mRunningThroughTick = true;
-        final boolean isServerSide = isServerSide();
         if (hasValidMetaTileEntity()) {
+            final boolean isServerSide = isServerSide();
             if (mTickTimer++ == 0) {
-                oldX = xCoord;
-                oldY = yCoord;
-                oldZ = zCoord;
-                if (isServerSide) {
-                    checkDropCover();
-                } else {
-                    requestCoverDataIfNeeded();
-                }
-                worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-                mMetaTileEntity.onFirstTick(this);
+                handleFirstTick(isServerSide);
                 if (!hasValidMetaTileEntity()) {
                     mRunningThroughTick = false;
                     return;
                 }
             }
-            if (isClientSide()) {
-                if (mColor != oldColor) {
-                    mMetaTileEntity.onColorChangeClient(oldColor = mColor);
-                    issueTextureUpdate();
-                }
+            if (!isServerSide) {
+                handleColorChangeClient();
 
                 if (mLightValue != oldLightValueClient) {
-                    worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord - 1, yCoord, zCoord);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord + 1, zCoord);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
-                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
+                    updateLightValue();
                     oldLightValueClient = mLightValue;
                     issueTextureUpdate();
                 }
 
-                if (mNeedsUpdate) {
-                    if (GTMod.proxy.mUseBlockUpdateHandler) {
-                        BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
-                    } else {
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    }
-                    mMetaTileEntity.onTextureUpdate();
-                    mNeedsUpdate = false;
-                }
-            }
-            if (isServerSide && mTickTimer > 10) {
-                if (!doCoverThings()) {
+                handleBlockUpdateClient();
+            } else {
+                if (mTickTimer > 10 && !doCoverThings()) {
                     mRunningThroughTick = false;
                     return;
                 }
-            }
-            if (isServerSide) {
-                if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
-                if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
-
-                mAverageEUInput[mAverageEUInputIndex] = 0;
-                mAverageEUOutput[mAverageEUOutputIndex] = 0;
+                updateAvgEUIO();
             }
 
             mMetaTileEntity.onPreTick(this, mTickTimer);
@@ -346,172 +309,26 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 return;
             }
             if (isServerSide) {
-                if (mRedstone != oRedstone || mTickTimer == 10) {
-                    oRedstone = mRedstone;
-                    issueBlockUpdate();
-                }
-                if (mTickTimer == 10) joinEnet();
-
-                if (xCoord != oldX || yCoord != oldY || zCoord != oldZ) {
-                    oldX = xCoord;
-                    oldY = yCoord;
-                    oldZ = zCoord;
-                    issueClientUpdate();
-                    clearTileEntityBuffer();
+                handleRedstoneChange();
+                if (mTickTimer == 10) {
+                    joinEnet();
                 }
 
-                if (mFacing != oldFacing) {
-                    oldFacing = mFacing;
-                    checkDropCover();
-                    issueBlockUpdate();
-                }
+                handlePositionChange();
+                handleFacingChange();
 
                 if (mNeedsTileUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     mNeedsTileUpdate = false;
                 }
 
-                if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
-                    mAcceptedAmperes = 0;
-
-                    if (getOutputVoltage() != oldOutput) {
-                        oldOutput = getOutputVoltage();
-                    }
-
-                    if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                            final int ordinalSide = side.ordinal();
-                            boolean temp = isEnergyInputSide(side);
-                            if (temp != mActiveEUInputs[ordinalSide]) {
-                                mActiveEUInputs[ordinalSide] = temp;
-                            }
-                            temp = isEnergyOutputSide(side);
-                            if (temp != mActiveEUOutputs[ordinalSide]) {
-                                mActiveEUOutputs[ordinalSide] = temp;
-                            }
-                        }
-                    }
-
-                    if (mMetaTileEntity.isEnetOutput() && oldOutput > 0) {
-                        final long tOutputVoltage = Math
-                            .max(oldOutput, oldOutput + (1L << Math.max(0, GTUtility.getTier(oldOutput) - 1)));
-                        final long tUsableAmperage = Math.min(
-                            getOutputAmperage(),
-                            (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / tOutputVoltage);
-                        if (tUsableAmperage > 0) {
-                            final long tEU = tOutputVoltage
-                                * Util.emitEnergyToNetwork(oldOutput, tUsableAmperage, this);
-                            mAverageEUOutput[mAverageEUOutputIndex] += tEU;
-                            decreaseStoredEU(tEU, true);
-                        }
-                    }
-                    if (getEUCapacity() > 0) {
-                        if (GregTechAPI.sMachineFireExplosions && getRandomNumber(1000) == 0) {
-                            final Block tBlock = getBlockAtSide(ForgeDirection.getOrientation(getRandomNumber(6)));
-                            if (tBlock instanceof BlockFire) doEnergyExplosion();
-                        }
-
-                        if (!hasValidMetaTileEntity()) {
-                            mRunningThroughTick = false;
-                            return;
-                        }
-
-                        if (GregTechAPI.sMachineRainExplosions) {
-                            if (mMetaTileEntity.willExplodeInRain()) {
-                                if (getRandomNumber(1000) == 0 && isRainPossible()) {
-                                    // Short-circuit so raincheck happens before isRainExposed,
-                                    // saves sme TPS since rain exposed check can be slow
-                                    // This logic can be compressed further by only checking for
-                                    // isRainExposed once IF we can guarantee it never thunders without
-                                    // raining, but I don't know if this is true or not.
-                                    if (worldObj.isRaining() && isRainExposed()) {
-                                        if (getRandomNumber(10) == 0) {
-                                            try {
-                                                GTMod.achievements.issueAchievement(
-                                                    this.getWorldObj()
-                                                        .getPlayerEntityByName(mOwnerName),
-                                                    "badweather");
-                                            } catch (Exception ignored) {}
-                                            GTLog
-                                                .writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
-                                            doEnergyExplosion();
-                                        } else {
-                                            GTLog.writeExplosionLog(
-                                                this,
-                                                this.getLocalName(),
-                                                "set to fire due to rain!");
-                                            setOnFire();
-                                        }
-                                    }
-                                    if (!hasValidMetaTileEntity()) {
-                                        mRunningThroughTick = false;
-                                        return;
-                                    }
-                                    if (GregTechAPI.sMachineThunderExplosions && worldObj.isThundering()
-                                        && getRandomNumber(3) == 0
-                                        && isRainExposed()) {
-                                        try {
-                                            GTMod.achievements.issueAchievement(
-                                                this.getWorldObj()
-                                                    .getPlayerEntityByName(mOwnerName),
-                                                "badweather");
-                                        } catch (Exception ignored) {}
-                                        GTLog.writeExplosionLog(
-                                            this,
-                                            this.getLocalName(),
-                                            "explosion due to thunderstorm!");
-                                        doEnergyExplosion();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (!hasValidMetaTileEntity()) {
+                if (!handleElectricUpdates()) {
                     mRunningThroughTick = false;
                     return;
                 }
-            }
-            if (isServerSide) {
-                if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
-                    for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                        k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
-                        if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
-                            dischargeItem(mMetaTileEntity.mInventory[i]);
-                            if (ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]) > 0) {
-                                if ((getStoredEU()
-                                    + ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]))
-                                    < getEUCapacity()) {
-                                    increaseStoredEnergyUnits(
-                                        (long) ic2.api.info.Info.itemEnergy
-                                            .getEnergyValue(mMetaTileEntity.mInventory[i]),
-                                        false);
-                                    mMetaTileEntity.mInventory[i].stackSize--;
-                                    mInventoryChanged = true;
-                                }
-                            }
-                            if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
-                                mMetaTileEntity.mInventory[i] = null;
-                                mInventoryChanged = true;
-                            }
-                        }
-                    }
-                }
-            }
-            if (isServerSide) {
-                if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
-                    for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                        k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
-                        if (getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
-                            chargeItem(mMetaTileEntity.mInventory[i]);
-                            if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
-                                mMetaTileEntity.mInventory[i] = null;
-                                mInventoryChanged = true;
-                            }
-                        }
-                    }
-                }
+
+                handleInventoryDechargingServer();
+                handleInventoryChargingServer();
             }
             updateStatus();
             if (!hasValidMetaTileEntity()) {
@@ -524,57 +341,274 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 return;
             }
             if (isServerSide) {
-                if (mTickTimer > 20 && cableUpdateDelay == 0) {
-                    generatePowerNodes();
-                }
-                cableUpdateDelay--;
+                handleCableUpdates();
+
                 if (mTickTimer % 10 == 0) {
                     sendClientData();
                 }
 
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
-
-                    byte updateData = mMetaTileEntity.getUpdateData();
-
-                    if (updateData != oldUpdateData) {
-                        oldUpdateData = updateData;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
-                    }
-
-                    if (mColor != oldColor) {
-                        oldColor = mColor;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
-                    }
-
-                    byte redstone = getSidedRedstoneMask();
-
-                    if (redstone != oldRedstoneData) {
-                        oldRedstoneData = redstone;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
-                    }
+                    handleUpdateDataChangeServer();
+                    handleColorChangeServer();
+                    handleSidedRedstoneChangeServer();
 
                     if (mLightValue != oldLightValue) {
-                        worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord - 1, yCoord, zCoord);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord + 1, zCoord);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
-                        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
+                        updateLightValue();
                         issueTextureUpdate();
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, oldLightValue = mLightValue);
+                        oldLightValue = mLightValue;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, mLightValue);
                     }
                 }
 
                 if (mNeedsBlockUpdate) {
-                    doBlockUpdate();
+                    doBlockUpdateServer();
                 }
             }
         }
-
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+    }
+
+    /**
+     * Updates the light value for the tile entity
+     */
+    private void updateLightValue() {
+        worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord - 1, yCoord, zCoord);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord + 1, zCoord);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
+    }
+
+    /**
+     * Updates the average EU I/O
+     */
+    private void updateAvgEUIO() {
+        if (++mAverageEUInputIndex >= mAverageEUInput.length) {
+            mAverageEUInputIndex = 0;
+        }
+        if (++mAverageEUOutputIndex >= mAverageEUOutput.length) {
+            mAverageEUOutputIndex = 0;
+        }
+        mAverageEUInput[mAverageEUInputIndex] = 0;
+        mAverageEUOutput[mAverageEUOutputIndex] = 0;
+    }
+
+    /**
+     * Handles generic Redstone changing
+     */
+    private void handleRedstoneChange() {
+        if (mRedstone == oRedstone && mTickTimer != 10) {
+            return;
+        }
+        oRedstone = mRedstone;
+        issueBlockUpdate();
+    }
+
+    /**
+     * Handles the tile entity's facing changing
+     */
+    private void handleFacingChange() {
+        if (mFacing == oldFacing) {
+            return;
+        }
+        oldFacing = mFacing;
+        checkDropCover();
+        issueBlockUpdate();
+    }
+
+    /**
+     * Handles electricity-related updates
+     *
+     * @return true if the MetaTileEntity is still valid
+     */
+    private boolean handleElectricUpdates() {
+        if (mTickTimer <= 20 || !mMetaTileEntity.isElectric()) {
+            return true;
+        }
+        mAcceptedAmperes = 0;
+        oldOutput = getOutputVoltage();
+        updateActiveEUIOFaces();
+        handleEUOutput();
+        return handleEnvironmentalEffects();
+    }
+
+    /**
+     * Updates which faces are active for EU I/O
+     */
+    private void updateActiveEUIOFaces() {
+        if (!mMetaTileEntity.isEnetOutput() && !mMetaTileEntity.isEnetInput()) {
+            return;
+        }
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            int ordinalSide = side.ordinal();
+            mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
+            mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+        }
+    }
+
+    /**
+     * Performs EU output to the energy network
+     */
+    private void handleEUOutput() {
+        if (!mMetaTileEntity.isEnetOutput() || oldOutput <= 0) {
+            return;
+        }
+        int voltageTier = Math.max(0, GTUtility.getTier(oldOutput) - 1);
+        // voltage + output loss
+        long outputVoltage = Math.max(oldOutput, oldOutput + (1L << voltageTier));
+        long availableAmperage = (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / outputVoltage;
+        long usableAmperage = Math.min(getOutputAmperage(), availableAmperage);
+        if (usableAmperage <= 0) {
+            return;
+        }
+        final long eu = outputVoltage * Util.emitEnergyToNetwork(oldOutput, usableAmperage, this);
+        mAverageEUOutput[mAverageEUOutputIndex] += eu;
+        decreaseStoredEU(eu, true);
+    }
+
+    /**
+     * Handles environmental effects
+     *
+     * @return true if the MetaTileEntity is still valid
+     */
+    private boolean handleEnvironmentalEffects() {
+        if (getEUCapacity() <= 0) {
+            return true;
+        }
+        if (!handleFireExposure()) {
+            return false;
+        }
+        return handleRainExposure();
+    }
+
+    /**
+     * Handles environmental affects due to adjacent fire blocks
+     *
+     * @return true if the MetaTileEntity is still valid
+     */
+    private boolean handleFireExposure() {
+        if (!GregTechAPI.sMachineFireExplosions || getRandomNumber(1000) != 0) {
+            return true;
+        }
+        Block block = getBlockAtSide(ForgeDirection.getOrientation(getRandomNumber(6)));
+        if (block instanceof BlockFire) {
+            doEnergyExplosion();
+            return hasValidMetaTileEntity();
+        }
+        return true;
+    }
+
+    /**
+     * Handles environmental affects due to rain and thunder exposure
+     *
+     * @return true if the MetaTileEntity is still valid
+     */
+    private boolean handleRainExposure() {
+        if (!GregTechAPI.sMachineRainExplosions || !mMetaTileEntity.willExplodeInRain()) {
+            return true;
+        }
+        if (getRandomNumber(1000) != 0 || !isRainPossible()) {
+            return true;
+        }
+        // Short-circuit so world.isRaining() check happens before isRainExposed, saving TPS since rain exposed check
+        // can be slow.
+        // This logic can be compressed further by only checking for isRainExposed once IF we can guarantee it never
+        // thunders without raining, but I don't know if this is true or not.
+        if (worldObj.isRaining() && isRainExposed()) {
+            if (getRandomNumber(10) == 0) {
+                try {
+                    GTMod.achievements.issueAchievement(
+                        this.getWorldObj()
+                            .getPlayerEntityByName(mOwnerName),
+                        "badweather");
+                } catch (Exception ignored) {}
+                GTLog.writeExplosionLog(this, this.getLocalName(), "explosion due to rain!");
+                doEnergyExplosion();
+            } else {
+                GTLog.writeExplosionLog(this, this.getLocalName(), "set to fire due to rain!");
+                setOnFire();
+            }
+        }
+        if (!hasValidMetaTileEntity()) {
+            return false;
+        }
+        if (!GregTechAPI.sMachineThunderExplosions || !worldObj.isThundering()) {
+            return true;
+        }
+        if (getRandomNumber(3) != 0 || !isRainExposed()) {
+            return true;
+        }
+        try {
+            GTMod.achievements.issueAchievement(
+                this.getWorldObj()
+                    .getPlayerEntityByName(mOwnerName),
+                "badweather");
+        } catch (Exception ignored) {}
+        GTLog.writeExplosionLog(this, this.getLocalName(), "explosion due to thunderstorm!");
+        doEnergyExplosion();
+        return hasValidMetaTileEntity();
+    }
+
+    /**
+     * Handles discharging items from the de-charger slot
+     */
+    private void handleInventoryDechargingServer() {
+        if (mMetaTileEntity.dechargerSlotCount() <= 0 || getStoredEU() >= getEUCapacity()) {
+            return;
+        }
+        for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i
+            < k; i++) {
+            if (mMetaTileEntity.mInventory[i] == null || getStoredEU() >= getEUCapacity()) {
+                continue;
+            }
+            // electric batteries
+            dischargeItem(mMetaTileEntity.mInventory[i]);
+            // consumable, e.g. redstone
+            double ic2Energy = ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]);
+            if (ic2Energy > 0 && getStoredEU() + ic2Energy < getEUCapacity()) {
+                increaseStoredEnergyUnits((long) ic2Energy, false);
+                mMetaTileEntity.mInventory[i].stackSize--;
+                mInventoryChanged = true;
+            }
+            if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
+                mMetaTileEntity.mInventory[i] = null;
+                mInventoryChanged = true;
+            }
+        }
+    }
+
+    /**
+     * Handles charging items in the charger slot
+     */
+    private void handleInventoryChargingServer() {
+        if (mMetaTileEntity.rechargerSlotCount() <= 0 || getStoredEU() <= 0) {
+            return;
+        }
+        for (int i = mMetaTileEntity.rechargerSlotStartIndex(), k = mMetaTileEntity.rechargerSlotCount() + i; i
+            < k; i++) {
+            if (getStoredEU() <= 0 || mMetaTileEntity.mInventory[i] == null) {
+                continue;
+            }
+            chargeItem(mMetaTileEntity.mInventory[i]);
+            if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
+                mMetaTileEntity.mInventory[i] = null;
+                mInventoryChanged = true;
+            }
+        }
+    }
+
+    /**
+     * Handles cable power node updates
+     */
+    private void handleCableUpdates() {
+        if (mTickTimer > 20 && cableUpdateDelay == 0) {
+            generatePowerNodes();
+        }
+        cableUpdateDelay--;
     }
 
     @Override

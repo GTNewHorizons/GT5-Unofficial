@@ -133,6 +133,15 @@ public class MTEHatchRack extends MTEHatch {
         return Math.max(0, heat);
     }
 
+    public void setHeat(int heat) {
+        this.heat = heat;
+    }
+
+    public boolean isValidItem(ItemStack itemStack) {
+        return MTEHatchRack.validRackItems.stream()
+            .anyMatch(itemStack::isItemEqual);
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -148,7 +157,7 @@ public class MTEHatchRack extends MTEHatch {
         if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
-        return side == aBaseMetaTileEntity.getFrontFacing();
+        return side == aBaseMetaTileEntity.getFrontFacing() && isValidItem(aStack);
     }
 
     @Override
@@ -164,11 +173,6 @@ public class MTEHatchRack extends MTEHatch {
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
-        // if(aBaseMetaTileEntity.isActive())
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        // else if(heat>0)
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        // else
         openGui(aPlayer);
         return true;
     }
