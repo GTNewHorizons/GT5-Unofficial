@@ -1,5 +1,47 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -7,6 +49,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
@@ -35,7 +78,14 @@ import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.util.*;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -45,33 +95,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
-import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
@@ -187,7 +210,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     SpecialHatchElement.NaniteBus)
                 .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
-                .buildAndChain(onElementPass(MTEPCBFactory::onCasingAdded, Casings.RadiationProofPhotolithographicFrameworkCasing.asElement())))
+                .buildAndChain(
+                    onElementPass(
+                        MTEPCBFactory::onCasingAdded,
+                        Casings.RadiationProofPhotolithographicFrameworkCasing.asElement())))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
             'L',
@@ -259,7 +285,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
@@ -328,7 +354,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkCasingMin(errors, casingAmount, 256); //292 - 36
+        checkCasingMin(errors, casingAmount, 256); // 292 - 36
     }
 
     /**
@@ -619,7 +645,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                        ItemStack aTool) {
+        ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatTrans(
             aPlayer,
@@ -655,71 +681,71 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         int mCurrentParallel = 0;
         return new String[] {
             /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(mProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s / "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(mMaxProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s",
+                + EnumChatFormatting.GREEN
+                + formatNumber(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
             /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(storedEnergy)
-            + EnumChatFormatting.RESET
-            + " EU / "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(maxEnergy)
-            + EnumChatFormatting.RESET
-            + " EU",
+                + EnumChatFormatting.GREEN
+                + formatNumber(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
             /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-            + EnumChatFormatting.RED
-            + formatNumber(getActualEnergyUsage())
-            + EnumChatFormatting.RESET
-            + " EU/t",
+                + EnumChatFormatting.RED
+                + formatNumber(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
             /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(voltage)
-            + EnumChatFormatting.RESET
-            + " EU/t(*"
-            + amps
-            + " A)"
-            + translateToLocal("GT5U.machines.tier")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + VN[GTUtility.getTier(voltage)]
-            + EnumChatFormatting.RESET,
+                + EnumChatFormatting.YELLOW
+                + formatNumber(voltage)
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + amps
+                + " A)"
+                + translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GTUtility.getTier(voltage)]
+                + EnumChatFormatting.RESET,
             /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-            + EnumChatFormatting.RED
-            + (getIdealStatus() - getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + translateToLocal("GT5U.multiblock.efficiency")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + mEfficiency / 100.0F
-            + EnumChatFormatting.RESET
-            + " %",
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
             /* 6 */ translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.GREEN
-            + mMaxParallel
-            + ", "
-            + translateToLocal("GT5U.multiblock.curparallelism")
-            + ": "
-            + EnumChatFormatting.GREEN
-            + mCurrentParallel,
+                + EnumChatFormatting.GREEN
+                + mMaxParallel
+                + ", "
+                + translateToLocal("GT5U.multiblock.curparallelism")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + mCurrentParallel,
             /* 7 */ translateToLocal("GT5U.multiblock.upgrades") + ": "
-            + EnumChatFormatting.GREEN
-            + (mBioChamber == null ? "" : "Bio Chamber ")
-            + (mBioChamber != null && mCoolingTower != null ? ", " : "")
-            + EnumChatFormatting.GREEN
-            + (mCoolingTower == null ? ""
-            : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-            + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
+                + EnumChatFormatting.GREEN
+                + (mBioChamber == null ? "" : "Bio Chamber ")
+                + (mBioChamber != null && mCoolingTower != null ? ", " : "")
+                + EnumChatFormatting.GREEN
+                + (mCoolingTower == null ? ""
+                    : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
+                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
             /* 8 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(recipesDone)
-            + EnumChatFormatting.RESET };
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -1062,7 +1088,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
 
         // Display linked controller in Waila.
@@ -1095,7 +1121,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         if (mBioChamber != null) {
             NBTTagCompound bioChamber = new NBTTagCompound();
             bioChamber.setInteger("x", mBioChamberX);
