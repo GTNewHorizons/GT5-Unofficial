@@ -53,14 +53,6 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.OilCracker.get(64))
-            .itemOutputs(ItemRegistry.megaMachines[4])
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
-            .duration(1 * HOURS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),

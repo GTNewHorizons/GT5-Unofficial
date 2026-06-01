@@ -211,6 +211,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
+import gregtech.common.tileentities.machines.multi.MTEMegaOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -1090,6 +1091,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.ExothermicHearth.set(
             new MTEExothermicHearth(ExothermicHearth.ID, "multimachine.exothermichearth", "Exothermic Hearth")
+                .getStackForm(1));
+
+        ItemList.MegaOilCracker.set(
+            new MTEMegaOilCracker(MegaOilCracker.ID, "multimachine.mega_oil_cracker", "Mega Oil Cracker")
                 .getStackForm(1));
     }
 
