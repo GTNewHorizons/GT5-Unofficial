@@ -23,5 +23,6 @@ public class ItemRubberTreeTap extends GTGenericItem {
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
         tooltip.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip.0"));
         tooltip.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip.1"));
+        tooltip.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip.2"));
     }
 }

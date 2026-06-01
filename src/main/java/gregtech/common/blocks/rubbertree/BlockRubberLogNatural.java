@@ -39,6 +39,8 @@ public class BlockRubberLogNatural extends Block {
     public static final int META_TAPPED_HOLE_MIN = 2;
     public static final int META_TAPPED_HOLE_MAX = 5;
 
+    private static final long CROWBAR_DAMAGE_ON_REMOVE = 1L;
+
     private IIcon sideIcon;
     private IIcon topIcon;
     private IIcon tappedSideIcon;
@@ -196,11 +198,12 @@ public class BlockRubberLogNatural extends Block {
         }
 
         if (hasTappedHole(meta)) {
-            if (player.isSneaking()) {
+            if (isCrowbar(player.getCurrentEquippedItem())) {
                 TileEntityRubberLogTapped tile = getTappedTileEntity(world, x, y, z);
 
                 if (tile != null && tile.hasInstalledTap()) {
                     removeInstalledTap(world, x, y, z, true, player);
+                    damageCrowbarOnRemove(player);
                     return true;
                 }
 
@@ -224,7 +227,7 @@ public class BlockRubberLogNatural extends Block {
     }
 
     private boolean canClientAttemptInteraction(@NotNull EntityPlayer player, int side, int meta) {
-        if (player.isSneaking() && hasTappedHole(meta)) {
+        if (hasTappedHole(meta) && isCrowbar(player.getCurrentEquippedItem())) {
             return true;
         }
 
@@ -292,7 +295,7 @@ public class BlockRubberLogNatural extends Block {
         }
 
         consumeOffhandTap(player, offhandTap);
-        damageSoftMalletOnInstall(player, 10);
+        damageSoftMalletOnInstall(player, 10L);
 
         tile.configureNewHole(installedTap, side, world.rand, initialRemainingResin);
         RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, initialRemainingResin);
@@ -318,7 +321,7 @@ public class BlockRubberLogNatural extends Block {
         }
 
         consumeOffhandTap(player, offhandTap);
-        damageSoftMalletOnInstall(player, 5);
+        damageSoftMalletOnInstall(player, 5L);
 
         tile.setRemainingResin(remainingResin);
         tile.installTap(installedTap, side, world.rand);
@@ -498,5 +501,45 @@ public class BlockRubberLogNatural extends Block {
 
         player.inventory.markDirty();
         player.inventoryContainer.detectAndSendChanges();
+    }
+
+    private static void damageCrowbarOnRemove(@NotNull EntityPlayer player) {
+        if (player.capabilities.isCreativeMode || CROWBAR_DAMAGE_ON_REMOVE <= 0) {
+            return;
+        }
+
+        ItemStack crowbar = player.getCurrentEquippedItem();
+
+        if (crowbar == null) {
+            return;
+        }
+
+        if (crowbar.getItem() instanceof MetaGeneratedTool) {
+            ((MetaGeneratedTool) crowbar.getItem()).doDamage(crowbar, CROWBAR_DAMAGE_ON_REMOVE * 100L);
+        } else {
+            crowbar.damageItem((int) Math.min(Integer.MAX_VALUE, CROWBAR_DAMAGE_ON_REMOVE), player);
+        }
+
+        if (crowbar.stackSize <= 0) {
+            player.destroyCurrentEquippedItem();
+        }
+
+        player.inventory.markDirty();
+        player.inventoryContainer.detectAndSendChanges();
+    }
+
+    private static boolean isCrowbar(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+
+        int[] oreIds = OreDictionary.getOreIDs(stack);
+        for (int oreId : oreIds) {
+            if (ToolDictNames.craftingToolCrowbar.name().equals(OreDictionary.getOreName(oreId))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
