@@ -14,7 +14,10 @@
 package bartworks.common.tileentities.tiered;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -234,19 +237,24 @@ public class MTEBioLab extends MTEBasicMachine {
      * inventory of the machine.
      * <p>
      * Only non-NCs (Non Consumables) get consumed by the recipe processing.
+     *
+     * @param itemWithBioData from 0 up to {@code predicate#size()}, {@link #getInputSlot()} offset will be applied.
      */
-    private int processGenericModuleLogic(FluidStack fluid, int recipeFluidAmount, Predicate<ItemStack>[] predicates,
-        boolean[] isNC) {
+    private int processGenericModuleLogic(FluidStack fluid, int recipeFluidAmount,
+        List<Predicate<ItemStack>> predicates, boolean[] isNC, int recipeTierOffset, int itemWithBioData,
+        Function<ItemStack, BioData> bioDataGetter, Function<BioData, ItemStack> chanceOutputSupplier, Supplier<ItemStack> nonChanceOutputSpullier) {
         int inputSlot = this.getInputSlot();
-        int[] inputSlotIndices = new int[predicates.length];
+        int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
+        if (itemWithBioData < 0 || itemWithBioData > predicates.size()) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
         for (int i = 0; i < this.mInputSlotCount; i++) {
             if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[inputSlot + i])) {
                 continue;
             }
 
-            for (int ip = 0; ip < predicates.length; ip++) {
-                if (inputSlotIndices[ip] == -1 && predicates[ip].test(this.mInventory[inputSlot + i])) {
+            for (int ip = 0; ip < predicates.size(); ip++) {
+                if (inputSlotIndices[ip] == -1 && predicates.get(ip)
+                    .test(this.mInventory[inputSlot + i])) {
                     inputSlotIndices[ip] = inputSlot + i;
                     break;
                 }
@@ -258,7 +266,9 @@ public class MTEBioLab extends MTEBasicMachine {
         if (hasItems && hasFluid(fluid, recipeFluidAmount)) {
             // TODO: think about a good api interface here
 
-            int effectiveRecipeTier = 3; // TODO: getByItem
+            BioData cultureDNABioData = bioDataGetter.apply(this.mInventory[inputSlot + itemWithBioData]);
+
+            int effectiveRecipeTier = recipeTierOffset + cultureDNABioData.getTier();
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
@@ -267,6 +277,11 @@ public class MTEBioLab extends MTEBasicMachine {
                     this.mInventory[inputSlotIndices[i]].stackSize--;
                 }
             }
+
+            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+                this.mOutputItems[0] = chanceOutputSupplier.apply(cultureDNABioData);
+            }
+            this.mOutputItems[1] = nonChanceOutputSpullier.get();
             this.mFluid.amount -= recipeFluidAmount;
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
 
@@ -274,6 +289,28 @@ public class MTEBioLab extends MTEBasicMachine {
         }
 
         return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+    }
+
+    private int processDNAModuleLogic2() {
+        return processGenericModuleLogic(
+            GTModHandler.getDistilledWater(1_000),
+            1_000,
+            List.of(
+                this::isValidCulture,
+                (stack) -> isDNAFlask(stack, false),
+                this::isDetergentPowder,
+                this::isEthanolCell),
+            new boolean[] { false, false, false, false },
+            0,
+            0,
+            (stack -> {
+                return BioCulture.getBioCulture(
+                    stack.getTagCompound()
+                        .getString("Name"))
+                    .getdDNA();
+            }),
+            (BioDataEnum::getPlasmidCell),
+            (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
     }
 
     private int processDNAModuleLogic() {
