@@ -20,7 +20,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -200,7 +199,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 .getItemDamage();
             return switch (moduleType) {
                 case DNA_EXTRACTION_MODULE -> processDNAModuleLogic();
-                case PCR_THERMOCYCLE_MODULE -> processPCRModuleLogic(skipOC);
+                case PCR_THERMOCYCLE_MODULE -> processPCRModuleLogic();
                 case PLASMID_SYNTHESIS_MODULE -> processSynthesisModuleLogic();
                 case TRANSFORMATION_MODULE -> processTransformationModule(skipOC);
                 case CLONAL_CELLULAR_SYNTHESIS_MODULE -> processClonalCellularModule();
@@ -242,8 +241,7 @@ public class MTEBioLab extends MTEBasicMachine {
      */
     private int processGenericModuleLogic(FluidStack fluid, int recipeFluidAmount,
         List<Predicate<ItemStack>> predicates, boolean[] isNC, int recipeTierOffset, int itemWithBioData,
-        Function<ItemStack, BioData> bioDataGetter, Function<BioData, ItemStack> chanceOutputSupplier,
-        Supplier<ItemStack> nonChanceOutputSpullier) {
+        Function<ItemStack, BioData> bioDataGetter, BioLabRecipeOutputSupplier blOutputSupplier) {
         int inputSlot = this.getInputSlot();
         int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
@@ -280,9 +278,11 @@ public class MTEBioLab extends MTEBasicMachine {
             }
 
             if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
-                this.mOutputItems[0] = chanceOutputSupplier.apply(cultureDNABioData);
+                this.mOutputItems[0] = blOutputSupplier.chanced()
+                    .apply(cultureDNABioData);
             }
-            this.mOutputItems[1] = nonChanceOutputSpullier.get();
+            this.mOutputItems[1] = blOutputSupplier.nonChanced()
+                .get();
             this.mFluid.amount -= recipeFluidAmount;
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
 
@@ -293,25 +293,28 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private int processDNAModuleLogic() {
+        List<Predicate<ItemStack>> predicates = List.of(
+            this::isValidCulture,
+            (stack) -> isDNAFlask(stack, false),
+            this::isDetergentPowder,
+            this::isEthanolCell);
+        boolean[] isNC = new boolean[] { false, false, false, false };
+
+        BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
+            (BioDataEnum::getPlasmidCell),
+            (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
+
         return processGenericModuleLogic(
             GTModHandler.getDistilledWater(1_000),
             1_000,
-            List.of(
-                this::isValidCulture,
-                (stack) -> isDNAFlask(stack, false),
-                this::isDetergentPowder,
-                this::isEthanolCell),
-            new boolean[] { false, false, false, false },
+            predicates,
+            isNC,
             0,
             0,
-            (stack -> {
-                return BioCulture.getBioCulture(
-                    stack.getTagCompound()
-                        .getString("Name"))
-                    .getdDNA();
-            }),
-            (BioDataEnum::getPlasmidCell),
-            (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
+            // spotless:off
+            (stack -> BioCulture.getBioCulture(stack.getTagCompound().getString("Name")).getdDNA()),
+            //spotless:on
+            blOutputSupplier);
     }
 
     private int processDNAModuleLogic2() {
@@ -372,7 +375,7 @@ public class MTEBioLab extends MTEBasicMachine {
         return MTEBasicMachine.DID_NOT_FIND_RECIPE;
     }
 
-    private int processPCRModuleLogic(boolean skipOC) {
+    private int processPCRModuleLogic() {
         int inputSlot = this.getInputSlot();
         int orbSlot1 = -1;
         int flaskSlot = -1;
@@ -403,10 +406,8 @@ public class MTEBioLab extends MTEBasicMachine {
         boolean hasItems = orbSlot1 != -1 && flaskSlot != -1 && dnaCellSlot != -1 && polymeraseSlot != -1;
 
         if (hasItems && hasFluid(GTModHandler.getLiquidDNA(1_000), recipeFluidAmount)) {
-            NBTTagCompound DNABioDataTag = this.mInventory[flaskSlot].getTagCompound();
-
-            if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-            BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(DNABioDataTag.getString("Name"))
+            // isDNAFlask(stack, true) ensures that the NBT tag exists, but the tag "Name" may not
+            BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(this.mInventory[flaskSlot].getTagCompound().getString("Name"))
                 .getBioData();
 
             int effectiveRecipeTier = 1 + cultureDNABioData.getTier();
@@ -609,4 +610,6 @@ public class MTEBioLab extends MTEBasicMachine {
         }
         return MTEBasicMachine.DID_NOT_FIND_RECIPE;
     }
+
+    private record BioLabRecipeOutputSupplier(Function<BioData, ItemStack> chanced, Supplier<ItemStack> nonChanced) {}
 }
