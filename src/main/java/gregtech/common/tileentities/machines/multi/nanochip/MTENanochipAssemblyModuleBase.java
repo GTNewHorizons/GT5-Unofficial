@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
@@ -23,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -571,6 +571,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         aNBT.setByteArray("currentEU", this.currentEU.toByteArray());
 
         aNBT.setBoolean("connected", this.isConnected);
+        aNBT.setByte("outputColor", this.outputColor);
     }
 
     @Override
@@ -579,6 +580,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.euBufferSize = new BigInteger(aNBT.getByteArray("bufferSize"));
         this.currentEU = new BigInteger(aNBT.getByteArray("currentEU"));
         this.isConnected = aNBT.getBoolean("connected");
+        // Default to -1 (unset) if missing from old saves
+        this.outputColor = aNBT.hasKey("outputColor") ? aNBT.getByte("outputColor") : -1;
     }
 
     @Override
@@ -688,7 +691,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void addVCOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
         if (GTUtility.isStackInvalid(aStack)) return;
         if (hatch == null) {
-            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
+            stopMachine(SimpleShutDownReason.ofCritical("nac_output_hatch_missing"));
             return;
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
@@ -778,9 +781,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(EnumChatFormatting.GREEN + "Connected To NAC");
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
             } else {
-                currentTip.add(EnumChatFormatting.RED + "Disconnected from NAC");
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
         }

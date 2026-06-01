@@ -241,7 +241,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "tile.BWHeatedWaterPump.name";
     }
 
     @Override

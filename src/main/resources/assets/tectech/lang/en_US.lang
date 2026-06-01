@@ -185,7 +185,7 @@ gt.blockmachines.tt.transformer.tier.13.name=Extended Mega Ultimate Transformer
 gt.blockmachines.tt.transformer.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
 
 gt.blockmachines.transformer.ha.tier.09.name=Highly Ultimate Hi-Amp Transformer
-gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert
+gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.ha.tier.10.name=Extremely Ultimate Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.ha.tier.11.name=Insanely Ultimate Hi-Amp Transformer
@@ -200,7 +200,7 @@ tt.base.emhatch.desc.0=Max stacks amount:
 tt.base.emhatch.desc.1=Stack capacity:
 tt.base.emhatch.desc.2=Place Overflow Hatch behind,on top or below
 tt.base.emhatch.desc.3=to provide overflow protection while this block
-tt.base.emhatch.desc.4=is not attached to multi block.
+tt.base.emhatch.desc.4=is not attached to a multiblock.
 tt.base.emhatch.desc.5=Transport range can be extended in straight
 tt.base.emhatch.desc.6=line up to 15 blocks with quantum tunnels.
 tt.base.emhatch.desc.7=Must be painted to work
@@ -538,7 +538,7 @@ gt.blockhintTT.desc.3=Make sure it contains Air material.
 gt.blockhintTT.14.name=Hint no air
 gt.blockhintTT.desc.4=Make sure it does not contain Air material.
 gt.blockhintTT.15.name=Hint error
-gt.blockhintTT.desc.5=ERROR, what did u expect?
+gt.blockhintTT.desc.5=ERROR, what did you expect?
 
 gt.blockcasingsTT.name=Machine Casing
 gt.blockcasingsTT.0.name=High Power Casing
@@ -604,7 +604,7 @@ gt.blockcasingsBA0.0.desc.0=Handles up to
 gt.blockcasingsBA0.0.desc.1=What one man calls God, another calls the laws of physics.
 gt.blockcasingsBA0.6.name=Tesla Base Casing
 gt.blockcasingsBA0.6.desc.0=The base of a wondrous contraption
-gt.blockcasingsBA0.6.desc.1=it's alive, IT'S ALIVE!
+gt.blockcasingsBA0.6.desc.1=It's alive, IT'S ALIVE!
 gt.blockcasingsBA0.7.name=Tesla Toroid Casing
 gt.blockcasingsBA0.7.desc.0=Made out of the finest tin foil!
 gt.blockcasingsBA0.7.desc.1=Faraday suits might come later
@@ -1117,7 +1117,7 @@ gt.blockmachines.multimachine.FOG.inversion=Inversion
 gt.blockmachines.multimachine.FOG.expectedinputs=Expected Inputs
 gt.blockmachines.multimachine.FOG.possibleinputsqgp=Possible Input Materials for QGP
 gt.blockmachines.multimachine.FOG.possibleinputsmagmatter=Possible Input Materials for Magmatter
-gt.blockmachines.multimachine.FOG.inversioninfotext=Once all milestones of the Forge reach tier 7,  inversion activates. This uncaps the maximum tier of all milestones and allows to scale infinitely. The scaling of each milestone changes from exponential to linear, but the granted graviton shard amount keeps increasing. The amount of progress needed for each subsequent milestone is as much as needed for the 7th tier of each milestone. The Composition milestone is once again an exception, as that continues to scale by 1 each tier, with it's own formula for calculating progress. Each module type is given a value, ranging from 1 for the Helioflare Power Forge to 5 for the Heliofusion Exoticizer in magmatter mode, then the amount of each module present is substracted by 1 and multiplied by its value. These values are added up and divided by 5, this is the final milestone tier on top of the base 7.
+gt.blockmachines.multimachine.FOG.inversioninfotext=Once all milestones of the Forge reach tier 7,  inversion activates. This uncaps the maximum tier of all milestones and allows it to scale infinitely. The scaling of each milestone changes from exponential to linear, but the granted graviton shard amount keeps increasing. The amount of progress needed for each subsequent milestone is as much as needed for the 7th tier of each milestone. The Composition milestone is once again an exception, as that continues to scale by 1 each tier, with its own formula for calculating progress. Each module type is given a value, ranging from 1 for the Helioflare Power Forge to 5 for the Heliofusion Exoticizer in magmatter mode, then the amount of each module present is subtracted by 1 and multiplied by its value. These values are added up and divided by 5, this is the final milestone tier on top of the base 7.
 gt.blockmachines.multimachine.FOG.powermilestone=Charge
 gt.blockmachines.multimachine.FOG.recipemilestone=Conversion
 gt.blockmachines.multimachine.FOG.fuelmilestone=Catalyst
@@ -1448,7 +1448,7 @@ tt.keyword.Weight=Output Hatch Weight
 tt.keyword.Source=Source
 tt.keyword.Progress=Progress
 tt.keyword.Computation=Computation
-#Problemns as in maintanance issues
+#Problems as in maintenance issues
 tt.keyword.Problems=Problems
 tt.keyword.Efficiency=Efficiency
 #Button that allows to pass power to other machines

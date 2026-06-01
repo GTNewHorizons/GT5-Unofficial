@@ -75,6 +75,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     public PhantomItemSlot slot(ModularSlot slot) {
         shapeSyncHandler = new GhostShapeSyncHandler(slot, hatch);
         setSyncOrValue(shapeSyncHandler);
+        shapeSyncHandler.registerIndexSync(syncManager, "ghostShapeIndex");
         return this;
     }
 
