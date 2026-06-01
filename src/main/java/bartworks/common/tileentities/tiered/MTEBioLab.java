@@ -247,7 +247,7 @@ public class MTEBioLab extends MTEBasicMachine {
         int inputSlot = this.getInputSlot();
         int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
-        if (itemWithBioData < 0 || itemWithBioData > predicates.size()) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+        if (itemWithBioData < 0 || itemWithBioData >= predicates.size()) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
         for (int i = 0; i < this.mInputSlotCount; i++) {
             if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[inputSlot + i])) {
                 continue;
@@ -267,7 +267,7 @@ public class MTEBioLab extends MTEBasicMachine {
         if (hasItems && hasFluid(fluid, recipeFluidAmount)) {
             // TODO: think about a good api interface here
 
-            BioData cultureDNABioData = bioDataGetter.apply(this.mInventory[inputSlot + itemWithBioData]);
+            BioData cultureDNABioData = bioDataGetter.apply(this.mInventory[inputSlotIndices[itemWithBioData]]);
 
             int effectiveRecipeTier = recipeTierOffset + cultureDNABioData.getTier();
 
@@ -292,7 +292,7 @@ public class MTEBioLab extends MTEBasicMachine {
         return MTEBasicMachine.DID_NOT_FIND_RECIPE;
     }
 
-    private int processDNAModuleLogic2() {
+    private int processDNAModuleLogic() {
         return processGenericModuleLogic(
             GTModHandler.getDistilledWater(1_000),
             1_000,
@@ -314,7 +314,7 @@ public class MTEBioLab extends MTEBasicMachine {
             (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
     }
 
-    private int processDNAModuleLogic() {
+    private int processDNAModuleLogic2() {
         int inputSlot = this.getInputSlot();
         int cultureSlot = -1;
         int flaskSlot = -1;
