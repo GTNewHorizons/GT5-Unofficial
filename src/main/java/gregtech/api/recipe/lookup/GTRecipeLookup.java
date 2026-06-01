@@ -137,43 +137,11 @@ public final class GTRecipeLookup {
 
     private static final class SearchFrame {
 
-        private final List<SearchAction> actions;
-        private int actionIndex = 0;
+        private final GTRecipeLookupBranch branch;
+        private int ingredientIndex = 0;
 
-        private SearchFrame(GTRecipeLookupBranch branch, List<GTRecipeLookupIngredient> ingredients) {
-            this.actions = new ArrayList<>(ingredients.size());
-            for (GTRecipeLookupIngredient ingredient : ingredients) {
-                Node node = branch.getNode(ingredient);
-                if (node == null) {
-                    continue;
-                }
-
-                if (node.hasBranch()) {
-                    actions.add(SearchAction.branch(node));
-                }
-                if (node.hasRecipes()) {
-                    actions.add(SearchAction.recipes(node));
-                }
-            }
-        }
-    }
-
-    private static final class SearchAction {
-
-        private final Node node;
-        private final boolean branch;
-
-        private SearchAction(Node node, boolean branch) {
-            this.node = node;
+        private SearchFrame(GTRecipeLookupBranch branch) {
             this.branch = branch;
-        }
-
-        static SearchAction branch(Node node) {
-            return new SearchAction(node, true);
-        }
-
-        static SearchAction recipes(Node node) {
-            return new SearchAction(node, false);
         }
     }
 
@@ -187,7 +155,7 @@ public final class GTRecipeLookup {
 
         private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
             this.ingredients = new ArrayList<>(new LinkedHashSet<>(ingredients));
-            stack.push(new SearchFrame(rootBranch, this.ingredients));
+            stack.push(new SearchFrame(rootBranch));
         }
 
         @Override
@@ -221,18 +189,24 @@ public final class GTRecipeLookup {
                 }
 
                 SearchFrame frame = stack.peek();
-                if (frame.actionIndex >= frame.actions.size()) {
+                if (frame.ingredientIndex >= ingredients.size()) {
                     stack.pop();
                     continue;
                 }
 
-                SearchAction action = frame.actions.get(frame.actionIndex++);
-                Node result = action.node;
+                GTRecipeLookupIngredient ingredient = ingredients.get(frame.ingredientIndex++);
+                Node node = frame.branch.getNode(ingredient);
 
-                if (action.branch) {
-                    stack.push(new SearchFrame(result.branch, ingredients));
-                } else {
-                    leafIterator = result.recipes.iterator();
+                if (node == null) {
+                    continue;
+                }
+
+                if (node.hasBranch()) {
+                    stack.push(new SearchFrame(node.branch));
+                }
+
+                if (node.hasRecipes()) {
+                    leafIterator = node.recipes.iterator();
                 }
             }
         }
