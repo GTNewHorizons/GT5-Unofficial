@@ -161,13 +161,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 '2',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(OutputBus)
                     .casingIndex(Casings.SteelPipeCasing.textureId)
-                    .hint(3)
+                    .hint(2)
                     .buildAndChain(Casings.SteelPipeCasing.asElement()))
             .addElement(
                 '3',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(2)
+                    .hint(3)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             // middle slice hatches
             .addElement(
