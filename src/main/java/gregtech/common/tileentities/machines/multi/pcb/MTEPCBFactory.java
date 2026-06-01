@@ -335,6 +335,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
 
         byte newTier = checkForNewTier();
         if (newTier == 0) {
@@ -349,12 +350,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (compatMode.isSet && compatMode.OCTier != 0) {
             if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ, errors)) return;
         }
+        checkCasingMin(errors, casingAmount, 256); // 292 - 36
         checkOneMaintenanceHatch(errors);
         checkExoticAndNormalEnergyHatches(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkCasingMin(errors, casingAmount, 256); // 292 - 36
     }
 
     /**
