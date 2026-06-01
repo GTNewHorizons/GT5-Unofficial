@@ -389,7 +389,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             mSoftMallet = true;
             setMaintenanceSound(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F);
         }
-        if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
+        if ((GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(aStack, GregTechAPI.sJackhammerList)) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
             setMaintenanceSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1.0F);

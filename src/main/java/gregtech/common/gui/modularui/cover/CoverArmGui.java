@@ -74,8 +74,8 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
                     .value(
                         new IntSyncValue(() -> cover.getInternalSlotId() - 1, val -> cover.setInternalSlotId(val + 1))
                             .allowC2S())
-                    .setDefaultNumber(-1)
-                    .setNumbers(
+                    .defaultNumber(-1)
+                    .numbersInt(
                         -1,
                         cover.getTile()
                             .getSizeInventory() - 1)
