@@ -47,6 +47,8 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import galacticgreg.SpaceDimRegisterer;
 import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import gregtech.api.GregTechAPI;
@@ -68,6 +70,8 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeLookupValidator;
+import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
 import gregtech.api.util.AssemblyLineServer;
@@ -748,6 +752,29 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         proxy.onServerStarted(event);
+        if (RecipeMapBackend.shouldValidateLookup()) {
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: enabled; waiting for first server tick after server start.");
+            FMLCommonHandler.instance()
+                .bus()
+                .register(new RecipeLookupValidationServerTickHandler());
+        }
+    }
+
+    public static final class RecipeLookupValidationServerTickHandler {
+
+        @SubscribeEvent
+        public void onServerTick(TickEvent.ServerTickEvent event) {
+            if (event.phase != TickEvent.Phase.END) {
+                return;
+            }
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(this);
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: first server tick reached; starting validation.");
+            RecipeLookupValidator.validateLookup();
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: validation completed without mismatches.");
+            throw new IllegalStateException("GT recipe lookup validation found 0 issue(s); run completed.");
+        }
     }
 
     @Mod.EventHandler
