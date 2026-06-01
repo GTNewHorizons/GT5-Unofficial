@@ -77,7 +77,9 @@ public class MTEHatchCreativeData extends MTEHatchDataInput {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aBaseMetaTileEntity.isAllowedToWork()) {
-                setContents(new QuantumDataPacket(production));
+                if (CommonValues.MOVE_AT == aTick % 20) {
+                    setContents(new QuantumDataPacket(production));
+                }
             } else {
                 setContents(null);
                 updateComputationHistory(0);
