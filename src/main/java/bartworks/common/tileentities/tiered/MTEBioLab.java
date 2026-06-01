@@ -242,7 +242,8 @@ public class MTEBioLab extends MTEBasicMachine {
      */
     private int processGenericModuleLogic(FluidStack fluid, int recipeFluidAmount,
         List<Predicate<ItemStack>> predicates, boolean[] isNC, int recipeTierOffset, int itemWithBioData,
-        Function<ItemStack, BioData> bioDataGetter, Function<BioData, ItemStack> chanceOutputSupplier, Supplier<ItemStack> nonChanceOutputSpullier) {
+        Function<ItemStack, BioData> bioDataGetter, Function<BioData, ItemStack> chanceOutputSupplier,
+        Supplier<ItemStack> nonChanceOutputSpullier) {
         int inputSlot = this.getInputSlot();
         int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
