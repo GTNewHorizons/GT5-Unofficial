@@ -17,15 +17,15 @@ import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
-import bartworks.API.enums.BioCultureEnum;
-
-import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
+import bartworks.API.enums.BioCultureEnum;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
@@ -35,13 +35,17 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                 .replace(" ", "_"));
     }
 
+    public void setLocalisedName(String localisedName) {
+        GTLanguageManager.addStringLocalization(this.getName(), localisedName);
+    }
+
     Color color;
     BioData plasmid;
     BioData dDNA;
     boolean bBreedable;
     Fluid mFluid;
 
-    public BioCulture(BioCultureEnum culture){
+    public BioCulture(BioCultureEnum culture) {
         super(culture.name, culture.id, culture.rarity, 75_00, VoltageIndex.ULV);
         this.color = culture.color;
         this.plasmid = culture.plasmid.getBioData();
@@ -67,7 +71,8 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static BioCulture getBioCultureFromNBTTag(NBTTagCompound tag) {
         if (tag == null || !tag.hasKey("Name")) return null;
-        return BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).bioCulture;
+        return BioCultureEnum.LOOKUPS_BY_NAME
+            .getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).bioCulture;
     }
 
     public static BioCulture getBioCulture(String Name) {
@@ -190,9 +195,15 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     @Override
-    public String toString(){
-        return String.format("BioCulture(color=%s, name=%s, id=%d, plasmid=%s, dDNA=%s, rarity=%s, bBreedable=%b)",
-            this.color.toString(), this.name, this.ID, this.plasmid.toString(), this.dDNA.toString(),
-            this.rarity.name(),  this.bBreedable);
+    public String toString() {
+        return String.format(
+            "BioCulture(color=%s, name=%s, id=%d, plasmid=%s, dDNA=%s, rarity=%s, bBreedable=%b)",
+            this.color.toString(),
+            this.name,
+            this.ID,
+            this.plasmid.toString(),
+            this.dDNA.toString(),
+            this.rarity.name(),
+            this.bBreedable);
     }
 }

@@ -54,8 +54,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import bartworks.API.enums.BioCultureEnum;
-import bartworks.API.enums.BioDataEnum;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -65,6 +63,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
@@ -80,6 +80,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gtPlusPlus.core.fluids.GTPPFluids;
 
@@ -131,7 +132,7 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[1])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[DNA.getTier()+1])
+                    .eut(GTValues.VP[DNA.getTier() + 1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -147,7 +148,10 @@ public class AdditionalRecipes {
                 BehaviourDataOrb.setDataName(inp, DNA.getName());
                 ItemStack inp2 = ItemList.Tool_DataOrb.get(0L);
                 BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-                BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.getBioData().getName());
+                BehaviourDataOrb.setDataName(
+                    inp2,
+                    BioDataEnum.BetaLactamase.getBioData()
+                        .getName());
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(FluidLoader.BioLabFluidCells[1], ItemList.EmptyPlasmid.get(1), inp, inp2)
@@ -156,7 +160,7 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[2])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[DNA.getTier()+1])
+                    .eut(GTValues.VP[DNA.getTier() + 1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -205,7 +209,9 @@ public class AdditionalRecipes {
                 ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
                 Outp)
-            .itemOutputs(ItemList.EmptyPetriDish.get(1).setStackDisplayName("The Culture made from DNA"))
+            .itemOutputs(
+                ItemList.EmptyPetriDish.get(1)
+                    .setStackDisplayName("The Culture made from DNA"))
             .outputChances(75_00)
             .fluidInputs(GTModHandler.getLiquidDNA(8_000))
             .special(BioItemList.mBioLabParts[4])

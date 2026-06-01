@@ -16,10 +16,11 @@ package bartworks.util;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
-import bartworks.API.enums.BioDataEnum;
-import gregtech.api.util.GTLanguageManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
+
+import bartworks.API.enums.BioDataEnum;
+import gregtech.api.util.GTLanguageManager;
 
 public class BioData {
 
@@ -59,10 +60,9 @@ public class BioData {
     public static BioData getBioDataFromNBTTag(NBTTagCompound tag) {
         if (tag == null) return null;
         if (!tag.hasKey("Name")) return null;
-        return BioDataEnum.LOOKUPS_BY_NAME.get(tag.getString("Name")).getBioData();
+        return BioDataEnum.LOOKUPS_BY_NAME.get(tag.getString("Name"))
+            .getBioData();
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -105,7 +105,13 @@ public class BioData {
 
     @Override
     public String toString() {
-        return String.format("BioData(name=%s, id=%d, rarity=%s, chance=%d, tier=%d)", this.name, this.ID, this.rarity.name(), this.chance, this.tier);
+        return String.format(
+            "BioData(name=%s, id=%d, rarity=%s, chance=%d, tier=%d)",
+            this.name,
+            this.ID,
+            this.rarity.name(),
+            this.chance,
+            this.tier);
     }
 
     public EnumRarity getRarity() {

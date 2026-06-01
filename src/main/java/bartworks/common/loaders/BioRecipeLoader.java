@@ -20,13 +20,13 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 
-import bartworks.API.enums.BioCultureEnum;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.API.enums.BioCultureEnum;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -128,7 +128,7 @@ public class BioRecipeLoader {
             for (FluidStack fluidStack : easyFluids) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(16, grape))
-                    .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
+                    .special(BioCultureEnum.getPetriDish(BioCultureLoader.WhineYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
                     .metadata(GLASS, 3)

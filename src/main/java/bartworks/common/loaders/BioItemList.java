@@ -13,18 +13,11 @@
 
 package bartworks.common.loaders;
 
-import java.util.Collection;
-import java.util.HashSet;
-
-import bartworks.API.enums.BioCultureEnum;
-import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.items.ItemLabModule;
 import bartworks.common.items.ItemLabParts;
-import bartworks.util.BioCulture;
-import bartworks.util.BioData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BioItemList {

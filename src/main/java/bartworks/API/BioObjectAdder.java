@@ -17,16 +17,10 @@ import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import java.awt.Color;
-
-import bartworks.API.enums.BioCultureEnum;
-import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.Nullable;
-
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.util.BioCulture;
-import bartworks.util.BioData;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;

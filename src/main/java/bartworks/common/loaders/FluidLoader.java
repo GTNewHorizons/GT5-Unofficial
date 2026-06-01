@@ -20,13 +20,13 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.awt.Color;
 
-import bartworks.API.enums.BioCultureEnum;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.client.renderer.RendererGlassBlock;
 import bartworks.client.renderer.RendererSwitchingColorFluid;
 import bartworks.common.blocks.BlockBioFluid;

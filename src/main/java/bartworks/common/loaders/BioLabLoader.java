@@ -13,11 +13,12 @@
 
 package bartworks.common.loaders;
 
+import net.minecraft.item.ItemStack;
+
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.ItemList;
-import net.minecraft.item.ItemStack;
 
 public class BioLabLoader {
 
@@ -27,7 +28,6 @@ public class BioLabLoader {
         BioCultureEnum.registerAllCultures();
         BioDataEnum.registerAllDNAItemStacks();
         BioDataEnum.registerAllPlasmidItemStacks();
-
 
         ItemList.EmptyPetriDish.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 0));
         ItemList.EmptyDNAFlask.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 1));

@@ -13,14 +13,8 @@
 
 package bartworks.common.loaders;
 
-import java.awt.Color;
-
 import bartworks.API.enums.BioCultureEnum;
-import bartworks.API.enums.BioDataEnum;
-import net.minecraft.item.EnumRarity;
-
 import bartworks.util.BioCulture;
-import bartworks.util.BioData;
 
 public class BioCultureLoader {
 

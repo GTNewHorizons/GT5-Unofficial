@@ -3,13 +3,11 @@ package bartworks.common.loaders.recipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import bartworks.API.enums.BioDataEnum;
-import gregtech.api.enums.ItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.loaders.BioItemList;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 
 public class LaserEngraver implements Runnable {
