@@ -562,7 +562,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addSeparator()
             .addInfo("Distillery Mode")
             .addInfo(
-                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1+ Tower Height/2)")
+                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
                     + " Parallels")
             .addStaticSpeedInfo(DISTILLERY_SPEED)
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
