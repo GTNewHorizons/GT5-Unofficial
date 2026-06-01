@@ -11,9 +11,12 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe.GTRecipe_WithAlt;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 public class RecipeGenMultisUsingFluidInsteadOfCells {
 
@@ -59,8 +62,20 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             ArrayList<FluidStack> aInputFluidsMap = new ArrayList<>();
             ArrayList<FluidStack> aOutputFluidsMap = new ArrayList<>();
 
+            // For GTRecipe_WithAlt
+            List<ItemStack[]> oreDictList = null;
+            IntList oreDictIds = null;
+            GTRecipe_WithAlt altRecipe = null;
+
+            if (recipe instanceof GTRecipe_WithAlt alt) {
+                altRecipe = alt;
+                if (altRecipe.mOreDictAlt != null) oreDictList = new ArrayList<>(altRecipe.mOreDictAlt.length);
+                if (altRecipe.mOreDictIds != null) oreDictIds = new IntArrayList(altRecipe.mOreDictIds.length);
+            }
+
             // Iterate Inputs, Convert valid items into fluids
-            for (ItemStack aInputStack : recipe.mInputs) {
+            for (int i = 0; i < recipe.mInputs.length; i++) {
+                ItemStack aInputStack = recipe.mInputs[i];
                 FluidStack aFoundFluid = GTUtility.getFluidForFilledItem(aInputStack, true);
                 if (aFoundFluid == null) {
                     for (ItemStack aBadStack : mItemsToIgnore) {
@@ -70,6 +85,12 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     }
                     if (!isEmptyCell(aInputStack)) {
                         aInputItemsMap.add(aInputStack);
+                        if (altRecipe != null) {
+                            if (oreDictList != null && i < altRecipe.mOreDictAlt.length)
+                                oreDictList.add(altRecipe.mOreDictAlt[i]);
+                            if (oreDictIds != null && i < altRecipe.mOreDictIds.length)
+                                oreDictIds.add(altRecipe.mOreDictIds[i]);
+                        }
                     }
                 } else {
                     aFoundFluid.amount = aFoundFluid.amount * aInputStack.stackSize;
@@ -110,19 +131,17 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 continue; // Skip this recipe entirely if we find an item we don't like
             }
 
-            GTRecipe aNewRecipe = new GTRecipe(
-                aNewItemInputs,
-                aNewItemOutputs,
-                recipe.mSpecialItems,
-                recipe.mInputChances,
-                recipe.mOutputChances,
-                recipe.mFluidInputChances,
-                recipe.mFluidOutputChances,
-                aNewFluidInputs,
-                aNewFluidOutputs,
-                recipe.mDuration,
-                recipe.mEUt,
-                recipe.mSpecialValue);
+            GTRecipe aNewRecipe = recipe.copyShallow();
+            aNewRecipe.setInputs(aNewItemInputs);
+            aNewRecipe.setOutputs(aNewItemOutputs);
+            aNewRecipe.setFluidInputs(aNewFluidInputs);
+            aNewRecipe.setFluidInputs(aNewFluidOutputs);
+
+            if (aNewRecipe instanceof GTRecipe_WithAlt alt) {
+                if (oreDictList != null) alt.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);
+                if (oreDictIds != null) alt.mOreDictIds = oreDictIds.toIntArray();
+            }
+
             aNewRecipe.owners = recipe.owners == null ? null : new ArrayList<>(recipe.owners);
 
             // add all recipes to an intermediate array

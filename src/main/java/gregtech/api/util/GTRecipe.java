@@ -1440,6 +1440,24 @@ public class GTRecipe implements Comparable<GTRecipe> {
             mAltFluidInputs = aFluidAlt;
         }
 
+        private GTRecipe_WithAlt(GTRecipe_WithAlt aRecipe, boolean shallow) {
+            super(aRecipe, shallow);
+            if (shallow) {
+                mOreDictAlt = aRecipe.mOreDictAlt;
+                mOreDictIds = aRecipe.mOreDictIds;
+            } else {
+                if (aRecipe.mOreDictAlt != null) {
+                    mOreDictAlt = new ItemStack[aRecipe.mOreDictAlt.length][];
+                    for (int i = 0; i < aRecipe.mOreDictAlt.length; i++) {
+                        mOreDictAlt[i] = ArrayExt.copyItemsIfNonEmpty(aRecipe.mOreDictAlt[i]);
+                    }
+                }
+                if (aRecipe.mOreDictIds != null) {
+                    mOreDictIds = aRecipe.mOreDictIds.clone();
+                }
+            }
+        }
+
         public Object getAltRepresentativeInput(int aIndex) {
             if (aIndex < 0) return null;
             if (mOreDictAlt != null && aIndex < mOreDictAlt.length) {
@@ -1532,6 +1550,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
         @Override
         protected boolean skipItemInputCountCheck() {
             return true;
+        }
+
+        @Override
+        public GTRecipe copy() {
+            return new GTRecipe_WithAlt(this, false);
+        }
+
+        @Override
+        public GTRecipe copyShallow() {
+            return new GTRecipe_WithAlt(this, true);
         }
     }
 }
