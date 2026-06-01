@@ -51,7 +51,8 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
 
-        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());
+        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank())
+            .filter(getFluidSlotFilter());
         fluidSlotSH.setChangeListener(() -> {
             byte mode = modeSyncer.getValue();
             machine.lockFluid(mode == 8 || mode == 9);

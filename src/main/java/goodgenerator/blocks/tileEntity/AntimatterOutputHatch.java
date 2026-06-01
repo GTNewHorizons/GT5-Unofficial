@@ -26,15 +26,12 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        super.setLockedFluid(
-            Materials.Antimatter.getFluid(1)
-                .getFluid());
+        super.setLockedFluid(ANTIMATTER.getFluid());
     }
 
     @Override
     public void setLockedFluid(Fluid lockedFluid) {
-        this.lockedFluid = Materials.Antimatter.getFluid(1)
-            .getFluid();
+        this.lockedFluid = ANTIMATTER.getFluid();
         markDirty();
     }
 
@@ -84,5 +81,10 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.output_hatch_antimatter.desc");
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.isFluidEqual(ANTIMATTER);
     }
 }
