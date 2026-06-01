@@ -211,6 +211,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
+import gregtech.common.tileentities.machines.multi.MTEMegaDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -1091,6 +1092,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.ExothermicHearth.set(
             new MTEExothermicHearth(ExothermicHearth.ID, "multimachine.exothermichearth", "Exothermic Hearth")
                 .getStackForm(1));
+
+        ItemList.MegaDistillationTower.set(
+            new MTEMegaDistillationTower(
+                MegaDistillationTower.ID,
+                "multimachine.mega_distillation_tower",
+                "Mega Distillation Tower").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
