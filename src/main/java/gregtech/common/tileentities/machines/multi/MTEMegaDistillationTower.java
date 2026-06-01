@@ -24,7 +24,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.api.util.GTUtility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -454,6 +457,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
+    }
+
+    @Override
     public int nextMachineMode() {
         if (this.machineMode == MACHINEMODE_DISTILLERY) return MACHINEMODE_TOWER;
         return MACHINEMODE_DISTILLERY;
@@ -556,7 +567,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery, DT, MDT")
-            .addInfo("Stats dictated by tower mode, change mode in GUI")
+            .addInfo("Stats dictated by tower mode, change mode in GUI or with a screwdriver")
             .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
             .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
             .addSeparator()
