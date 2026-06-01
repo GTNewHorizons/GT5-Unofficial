@@ -112,8 +112,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
     private final static ItemStack SODIUM_HYDROXIDE_DUST = Materials.SodiumHydroxide.getDust(1);
 
-    private static final String SEPARATOR = EnumChatFormatting.GRAY + " : ";
-
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
@@ -292,255 +290,72 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return STRUCTURE_DEFINITION;
     }
 
-    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency) {
-        return EnumChatFormatting.AQUA + baseName
-            + SEPARATOR
-            + EnumChatFormatting.LIGHT_PURPLE
-            + efficiency
-            + "%"
-            + SEPARATOR
-            + EnumChatFormatting.WHITE
-            + frequency
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.WHITE
-            + "minute";
-    }
-
-    private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
-        return EnumChatFormatting.WHITE + "T"
-            + tier
-            + SEPARATOR
-            + EnumChatFormatting.WHITE
-            + casingName
-            + SEPARATOR
-            + EnumChatFormatting.BLUE
-            + baseDecay
-            + SEPARATOR
-            + EnumChatFormatting.DARK_AQUA
-            + formatNumber(capacity);
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Acid Generator, LNE")
             .addInfo("(Dis)solves all your problems!")
             .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.efficiency"))
             .addInfo(
-                "Can " + EnumChatFormatting.WHITE
-                    + "use "
-                    + EnumChatFormatting.GRAY
-                    + "a "
-                    + EnumChatFormatting.AQUA
-                    + "base "
-                    + EnumChatFormatting.GRAY
-                    + "to boost "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "(consumes one by one):")
-            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 60))
-            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24))
-            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6))
-            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 5))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Sodium Hydroxide",
+                    150,
+                    60))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Potassium Hydroxide",
+                    190,
+                    24))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Caesium Hydroxide",
+                    250,
+                    6))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Francium Hydroxide",
+                    500,
+                    5))
             .addSeparator()
-            .addInfo(
-                "Produces " + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "from burning acids")
-            .addInfo(
-                "If the " + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "exceeds the "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Capacity"
-                    + EnumChatFormatting.GRAY
-                    + ", the multiblock will "
-                    + EnumChatFormatting.DARK_RED
-                    + "EXPLODE!")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "tick"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "will "
-                    + EnumChatFormatting.WHITE
-                    + "increase "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.GOLD
-                    + "Residue Rate"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L)"
-                    + EnumChatFormatting.GRAY
-                    + "*rand("
-                    + EnumChatFormatting.WHITE
-                    + "0.5"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.WHITE
-                    + "1.5"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Residue Rate "
-                    + EnumChatFormatting.GRAY
-                    + "is calculated as "
-                    + EnumChatFormatting.WHITE
-                    + "0.05"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Base Fuel Value (EU/L)"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.WHITE
-                    + "0.8")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "tick"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "will "
-                    + EnumChatFormatting.WHITE
-                    + "decrease "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.BLUE
-                    + "Base Decay"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost"
-                    + EnumChatFormatting.GRAY
-                    + "*("
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.WHITE
-                    + "0.08"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                "Residue will decay " + EnumChatFormatting.WHITE
-                    + "10 "
-                    + EnumChatFormatting.GRAY
-                    + "times slower when multiblock is disabled")
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
             .addSeparator()
-            .addInfo(
-                "Insert " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arms "
-                    + EnumChatFormatting.GRAY
-                    + "to increase "
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost"
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Decay Boost "
-                    + EnumChatFormatting.GRAY
-                    + "is calculated as "
-                    + EnumChatFormatting.WHITE
-                    + "1.2"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier "
-                    + EnumChatFormatting.GRAY
-                    + "if "
-                    + EnumChatFormatting.GREEN
-                    + "IV"
-                    + EnumChatFormatting.GRAY
-                    + " or below, "
-                    + EnumChatFormatting.WHITE
-                    + "1.4"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier "
-                    + EnumChatFormatting.GRAY
-                    + "if "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "LuV"
-                    + EnumChatFormatting.GRAY
-                    + " or above")
-            .addInfo(
-                "Insert " + EnumChatFormatting.LIGHT_PURPLE
-                    + "multiple "
-                    + EnumChatFormatting.GRAY
-                    + "("
-                    + EnumChatFormatting.WHITE
-                    + "16"
-                    + EnumChatFormatting.GRAY
-                    + " max) robot arms to multiply "
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost "
-                    + EnumChatFormatting.GRAY
-                    + "by sqrt("
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Amount"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "minute"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Amount"
-                    + EnumChatFormatting.GRAY
-                    + "/("
-                    + EnumChatFormatting.WHITE
-                    + "45"
-                    + EnumChatFormatting.GRAY
-                    + "*("
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier"
-                    + EnumChatFormatting.GRAY
-                    + ")) chance for "
-                    + EnumChatFormatting.WHITE
-                    + "one "
-                    + EnumChatFormatting.GRAY
-                    + "used robot arm to "
-                    + EnumChatFormatting.RED
-                    + "void")
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.4"))
             .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.structure_tiers"))
             .addInfo(
-                "Structure has " + EnumChatFormatting.WHITE
-                    + "3 Tiers"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.WHITE
-                    + "Tier "
-                    + EnumChatFormatting.GRAY
-                    + "determines "
-                    + EnumChatFormatting.BLUE
-                    + "Base Decay "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Capacity"
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo(getTierInfoTextFormatted(1, "Strengthened Inanimate Machine Casing", 200, 375000))
-            .addInfo(getTierInfoTextFormatted(2, "Precise Stationary Machine Casing", 400, 1000000))
-            .addInfo(getTierInfoTextFormatted(3, "Ultimate Static Machine Casing", 700, 2500000))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    1,
+                    "Strengthened Inanimate Machine Casing",
+                    200,
+                    formatNumber(375000)))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    2,
+                    "Precise Stationary Machine Casing",
+                    400,
+                    formatNumber(1000000)))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    3,
+                    "Ultimate Static Machine Casing",
+                    700,
+                    formatNumber(2500000)))
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
             .addCasingInfoRange("Tiered Casing", 30, 46, false)
