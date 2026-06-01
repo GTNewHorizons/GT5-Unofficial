@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.items.MetaGeneratedTool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,7 +26,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemRubberTreeTap;
 import gregtech.crossmod.backhand.Backhand;
 
@@ -204,6 +206,7 @@ public class BlockRubberLogNatural extends Block {
                 if (tile != null && tile.hasInstalledTap()) {
                     removeInstalledTap(world, x, y, z, true, player);
                     damageCrowbarOnRemove(player);
+                    playCrowbarRemoveSound(world, x, y, z);
                     return true;
                 }
 
@@ -299,6 +302,8 @@ public class BlockRubberLogNatural extends Block {
 
         tile.configureNewHole(installedTap, side, world.rand, initialRemainingResin);
         RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, initialRemainingResin);
+
+        playSoftMalletInstallSound(world, x, y, z);
     }
 
     private void installTapIntoExistingHole(@NotNull World world, int x, int y, int z, @NotNull EntityPlayer player,
@@ -326,6 +331,8 @@ public class BlockRubberLogNatural extends Block {
         tile.setRemainingResin(remainingResin);
         tile.installTap(installedTap, side, world.rand);
         RubberTreeResinLogic.syncRemainingResinOnLowerTrunk(world, x, y, z, remainingResin);
+
+        playSoftMalletInstallSound(world, x, y, z);
     }
 
     public void removeInstalledTap(@NotNull World world, int x, int y, int z, boolean dropTap,
@@ -535,11 +542,29 @@ public class BlockRubberLogNatural extends Block {
 
         int[] oreIds = OreDictionary.getOreIDs(stack);
         for (int oreId : oreIds) {
-            if (ToolDictNames.craftingToolCrowbar.name().equals(OreDictionary.getOreName(oreId))) {
+            if (ToolDictNames.craftingToolCrowbar.name()
+                .equals(OreDictionary.getOreName(oreId))) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private static void playSoftMalletInstallSound(@NotNull World world, int x, int y, int z) {
+        if (world.isRemote) {
+            return;
+        }
+
+        GTUtility
+            .sendSoundToPlayers(world, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, x + 0.5D, y + 0.5D, z + 0.5D);
+    }
+
+    private static void playCrowbarRemoveSound(@NotNull World world, int x, int y, int z) {
+        if (world.isRemote) {
+            return;
+        }
+
+        GTUtility.sendSoundToPlayers(world, SoundResource.RANDOM_BREAK, 1.0F, -1.0F, x + 0.5D, y + 0.5D, z + 0.5D);
     }
 }

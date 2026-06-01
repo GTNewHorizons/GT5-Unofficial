@@ -1,12 +1,13 @@
 package gregtech.common.items;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.items.GTGenericItem;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import java.util.List;
+import gregtech.api.GregTechAPI;
+import gregtech.api.items.GTGenericItem;
 
 public class ItemRubberTreeTap extends GTGenericItem {
 
