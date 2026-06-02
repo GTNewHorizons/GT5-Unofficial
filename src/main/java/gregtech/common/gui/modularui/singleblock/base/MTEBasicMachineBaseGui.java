@@ -155,7 +155,7 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
 
         // Top
         buttons.add(null);
-        buttons.add(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_ARROW_UP));
+        buttons.add(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_UP));
         buttons.add(null);
 
         // Middle
@@ -163,22 +163,22 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getRotation(ForgeDirection.UP),
-                GTGuiTextures.OVERLAY_BUTTON_ARROW_LEFT));
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_LEFT));
         buttons.add(null);
         buttons.add(
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
-                GTGuiTextures.OVERLAY_BUTTON_ARROW_RIGHT));
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_RIGHT));
 
         // Bottom
         buttons.add(null);
-        buttons.add(createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN));
+        buttons.add(createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_DOWN));
         buttons.add(
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getOpposite(),
-                GTGuiTextures.OVERLAY_BUTTON_PENSIB));
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_BACK));
 
         return panel.child(
             new Grid().coverChildren()
