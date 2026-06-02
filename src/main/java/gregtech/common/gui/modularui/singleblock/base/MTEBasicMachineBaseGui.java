@@ -6,16 +6,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -23,6 +32,7 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.gtnewhorizons.modularui.api.widget.Interactable;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -88,17 +98,128 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
 
         return cornerFlow
             .child(
-                createAutoOutputButton(
+                createNewAutoOutputButton(
+                    syncManager,
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
                     BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
             .child(
-                createAutoOutputButton(
+                createNewAutoOutputButton(
+                    syncManager,
                     "itemAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
                     BaseTileEntity.ITEM_TRANSFER_TOOLTIP).marginRight(9))
 
             .childIf(properties.maxFluidInputs > 0, this::createFluidInputSlot);
+    }
+
+    private ButtonWidget<?> createNewAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
+        String tooltipKey) {
+        BooleanSyncValue syncHandler = syncManager.findSyncHandler(syncKey, BooleanSyncValue.class);
+
+        ButtonWidget<?> button = new ButtonWidget<>();
+        IPanelHandler autoOutputPanel = syncManager.syncedPanel(
+            "sideSelection_" + syncKey,
+            true,
+            (panelSyncManager, b) -> openSideSelector(button, panelSyncManager, syncKey));
+        return button.overlay(overlay)
+            .background(
+                new DynamicDrawable(
+                    () -> syncHandler.getValue() ? GTGuiTextures.BUTTON_STANDARD_PRESSED
+                        : GTGuiTextures.BUTTON_STANDARD))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)))
+            .onMousePressed(mouseButton -> {
+                if (Interactable.hasShiftDown()) {
+                    autoOutputPanel.openPanel();
+                } else {
+                    boolean newVal = !syncHandler.getValue();
+                    syncHandler.setValue(newVal);
+                }
+                return true;
+            });
+    }
+
+    private @NotNull ModularPanel openSideSelector(ButtonWidget<?> button, @NotNull PanelSyncManager panelSyncManager,
+        String syncKey) {
+        int buttonSize = 18;
+
+        ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        }.relative(button)
+            .background(IDrawable.EMPTY)
+            .size(buttonSize * 3);
+
+        return panel.child(
+            Flow.column()
+                .coverChildren()
+                .child(createTopSelectionRow(panel, panelSyncManager))
+                .child(createMiddleSelectionRow(panel, panelSyncManager))
+                .child(createBottomSelectionRow(panel, panelSyncManager)));
+    }
+
+    private Flow createTopSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+        return Flow.row()
+            .coverChildren()
+            .child(
+                createSideSelectionButton(
+                    panel,
+                    panelSyncManager,
+                    ForgeDirection.UP,
+                    GTGuiTextures.OVERLAY_BUTTON_ARROW_UP))
+            .mainAxisAlignment(Alignment.MainAxis.CENTER);
+    }
+
+    private Flow createMiddleSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+        return Flow.row()
+            .coverChildren()
+            .child(
+                createSideSelectionButton(
+                    panel,
+                    panelSyncManager,
+                    this.machine.mMainFacing.getRotation(ForgeDirection.UP),
+                    GTGuiTextures.OVERLAY_BUTTON_ARROW_LEFT))
+            .child(
+                IDrawable.EMPTY.asWidget()
+                    .size(18))
+            .child(
+                createSideSelectionButton(
+                    panel,
+                    panelSyncManager,
+                    this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
+                    GTGuiTextures.OVERLAY_BUTTON_ARROW_RIGHT));
+    }
+
+    private Flow createBottomSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+        return Flow.row()
+            .widthRel(1)
+            .child(
+                createSideSelectionButton(
+                    panel,
+                    panelSyncManager,
+                    ForgeDirection.DOWN,
+                    GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN))
+            .child(
+                createSideSelectionButton(
+                    panel,
+                    panelSyncManager,
+                    this.machine.mMainFacing.getOpposite(),
+                    GTGuiTextures.OVERLAY_BUTTON_PENSIB))
+            .mainAxisAlignment(Alignment.MainAxis.END);
+    }
+
+    private IWidget createSideSelectionButton(ModularPanel panel, PanelSyncManager panelSyncManager,
+        ForgeDirection direction, IDrawable texture) {
+        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
+            this.machine.onWrenchRightClick(direction, direction, panelSyncManager.getPlayer(), 0, 0, 0, null);
+            panel.closeIfOpen();
+        });
+        return new ButtonWidget<>().syncHandler(sideSelectionHandler)
+            .overlay(texture);
     }
 
     @Override
@@ -112,13 +233,6 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
     @Override
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
-    }
-
-    protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
-        return new ToggleButton().syncHandler(syncKey)
-            .overlay(overlay)
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)));
     }
 
     @Override
