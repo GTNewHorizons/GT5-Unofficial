@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -140,7 +141,6 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
     }
 
     private ModularPanel openSideSelector(ButtonWidget<?> button, String syncKey) {
-        int buttonSize = 18;
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
 
@@ -150,51 +150,39 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             }
         }.relative(button)
             .background(IDrawable.EMPTY)
-            .size(buttonSize * 3);
+            .size(SLOT_SIZE * 3);
+        List<IWidget> buttons = new ArrayList<>();
+
+        // Top
+        buttons.add(null);
+        buttons.add(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_ARROW_UP));
+        buttons.add(null);
+
+        // Middle
+        buttons.add(
+            createSideSelectionButton(
+                panel,
+                this.machine.mMainFacing.getRotation(ForgeDirection.UP),
+                GTGuiTextures.OVERLAY_BUTTON_ARROW_LEFT));
+        buttons.add(null);
+        buttons.add(
+            createSideSelectionButton(
+                panel,
+                this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
+                GTGuiTextures.OVERLAY_BUTTON_ARROW_RIGHT));
+
+        // Bottom
+        buttons.add(null);
+        buttons.add(createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN));
+        buttons.add(
+            createSideSelectionButton(
+                panel,
+                this.machine.mMainFacing.getOpposite(),
+                GTGuiTextures.OVERLAY_BUTTON_PENSIB));
 
         return panel.child(
-            Flow.column()
-                .coverChildren()
-                .child(createTopSelectionRow(panel))
-                .child(createMiddleSelectionRow(panel))
-                .child(createBottomSelectionRow(panel)));
-    }
-
-    private Flow createTopSelectionRow(ModularPanel panel) {
-        return Flow.row()
-            .coverChildren()
-            .child(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_ARROW_UP))
-            .mainAxisAlignment(Alignment.MainAxis.CENTER);
-    }
-
-    private Flow createMiddleSelectionRow(ModularPanel panel) {
-        return Flow.row()
-            .coverChildren()
-            .child(
-                createSideSelectionButton(
-                    panel,
-                    this.machine.mMainFacing.getRotation(ForgeDirection.UP),
-                    GTGuiTextures.OVERLAY_BUTTON_ARROW_LEFT))
-            .child(
-                IDrawable.EMPTY.asWidget()
-                    .size(18))
-            .child(
-                createSideSelectionButton(
-                    panel,
-                    this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
-                    GTGuiTextures.OVERLAY_BUTTON_ARROW_RIGHT));
-    }
-
-    private Flow createBottomSelectionRow(ModularPanel panel) {
-        return Flow.row()
-            .widthRel(1)
-            .child(createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN))
-            .child(
-                createSideSelectionButton(
-                    panel,
-                    this.machine.mMainFacing.getOpposite(),
-                    GTGuiTextures.OVERLAY_BUTTON_PENSIB))
-            .mainAxisAlignment(Alignment.MainAxis.END);
+            new Grid().coverChildren()
+                .gridOf(3, buttons));
     }
 
     private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
