@@ -69,5 +69,28 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(multiblockRockBreakerRecipes);
         }
+
+        if (Mods.ThaumicBases.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 0, 2))
+                .circuit(6)
+                .itemOutputs(
+                    new ItemStack(Blocks.netherrack, 1),
+                    new ItemStack(Blocks.soul_sand, 1),
+                    new ItemStack(Blocks.quartz_ore, 1))
+                .outputChances(6200, 3000, 800)
+                .duration(SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(multiblockRockBreakerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 0, 3))
+                .circuit(7)
+                .itemOutputs(new ItemStack(Blocks.end_stone, 1), new ItemStack(Blocks.obsidian, 1))
+                .outputChances(8800, 1200)
+                .duration(SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(multiblockRockBreakerRecipes);
+        }
     }
 }
