@@ -4058,6 +4058,9 @@ gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
 gtpp.gui.multiblock.duration.text=Duration: %s ticks
 gtpp.gui.multiblock.max_voltage.txt=%s EU/t(*2A) Tier: %s
 gtpp.gui.multiblock.pollution.txt=Pollution: %s/sec
+gtpp.gui.atmospheric_reconditioner.slot.rotor=Rotor Slot
+gtpp.gui.atmospheric_reconditioner.slot.filter=Filter Slot
+gtpp.gui.atmospheric_reconditioner.slot.conveyor=Conveyor Slot
 
 gtpp.chat.wireless_charger.mode_change=Now in %s %s.
 gtpp.chat.wireless_charger.mode_info=Current: %s %s
@@ -4071,6 +4074,9 @@ gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
 gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
 gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
+gtpp.chat.atmospheric_reconditioner.efficiency=Set machine mode to %s
+gtpp.chat.atmospheric_reconditioner.efficiency.low=Low Efficiency
+gtpp.chat.atmospheric_reconditioner.efficiency.high=High Efficiency
 
 gtpp.book.modular_baubles.name=How to: Modular Baubles
 gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customization of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
