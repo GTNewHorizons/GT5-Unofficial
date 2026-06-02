@@ -135,7 +135,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             aNewRecipe.setInputs(aNewItemInputs);
             aNewRecipe.setOutputs(aNewItemOutputs);
             aNewRecipe.setFluidInputs(aNewFluidInputs);
-            aNewRecipe.setFluidInputs(aNewFluidOutputs);
+            aNewRecipe.setFluidOutputs(aNewFluidOutputs);
 
             if (aNewRecipe instanceof GTRecipe_WithAlt alt) {
                 if (oreDictList != null) alt.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);

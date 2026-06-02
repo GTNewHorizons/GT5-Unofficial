@@ -63,9 +63,9 @@ public class GTRecipeUtils {
                 GTRecipe newRecipe = recipeInput.copyShallow();
                 newRecipe.setInputs(itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]));
 
-                if (altRecipe != null) {
-                    if (oreDictList != null) altRecipe.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);
-                    if (oreDictIds != null) altRecipe.mOreDictIds = oreDictIds.toIntArray();
+                if (newRecipe instanceof GTRecipe_WithAlt newAlt) {
+                    if (oreDictList != null) newAlt.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);
+                    if (oreDictIds != null) newAlt.mOreDictIds = oreDictIds.toIntArray();
                 }
 
                 recipesHashSet.add(newRecipe);

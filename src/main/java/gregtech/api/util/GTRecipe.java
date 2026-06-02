@@ -1479,6 +1479,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (shallow) {
                 mOreDictAlt = aRecipe.mOreDictAlt;
                 mOreDictIds = aRecipe.mOreDictIds;
+                mAltFluidInputs = aRecipe.mAltFluidInputs;
             } else {
                 if (aRecipe.mOreDictAlt != null) {
                     mOreDictAlt = new ItemStack[aRecipe.mOreDictAlt.length][];
@@ -1488,6 +1489,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
                 if (aRecipe.mOreDictIds != null) {
                     mOreDictIds = aRecipe.mOreDictIds.clone();
+                }
+                if (aRecipe.mAltFluidInputs != null) {
+                    mAltFluidInputs = new FluidStack[aRecipe.mAltFluidInputs.length][];
+                    for (int i = 0; i < aRecipe.mAltFluidInputs.length; i++) {
+                        mAltFluidInputs[i] = ArrayExt.copyFluidsIfNonEmpty(aRecipe.mAltFluidInputs[i]);
+                    }
                 }
             }
         }
