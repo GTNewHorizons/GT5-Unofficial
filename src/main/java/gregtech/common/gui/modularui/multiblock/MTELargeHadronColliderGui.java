@@ -339,11 +339,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                     .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
                             .size(120, 14)
                             .marginRight(2)
                             .value(playerTargetBeamEnergyeVSync)
-                            .setDefaultNumber(1_000_000_000))
+                            .defaultNumber(1_000_000_000))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
@@ -352,11 +352,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                         .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setFormatAsInteger(true)
+                            .formatAsInteger(true)
                             .size(40, 14)
                             .marginRight(2)
                             .value(playerTargetAccelerationCyclesSync)
-                            .setDefaultNumber(10)));
+                            .defaultNumber(10)));
     }
 
     private ModularPanel openCalculatorPanel(PanelSyncManager p_syncManager, ModularPanel parent,

@@ -58,7 +58,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
                 makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
-                    .setNumbersLong(
+                    .numbersLong(
                         () -> 0L,
                         () -> cover.getType()
                             .getTileEntityEnergyCapacity(cover.getTile()))
