@@ -150,7 +150,7 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             }
         }.relative(button)
             .background(IDrawable.EMPTY)
-            .size(SLOT_SIZE * 3);
+            .coverChildren();
         List<IWidget> buttons = new ArrayList<>();
 
         // Top
