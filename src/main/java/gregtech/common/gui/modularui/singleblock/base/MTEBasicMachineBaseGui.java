@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -26,7 +25,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
@@ -35,6 +33,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -42,6 +41,8 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import it.unimi.dsi.fastutil.chars.CharList;
+import tectech.thing.metaTileEntity.pipe.MTEPipeData;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
 
@@ -118,10 +119,8 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
         BooleanSyncValue syncHandler = syncManager.findSyncHandler(syncKey, BooleanSyncValue.class);
 
         ButtonWidget<?> button = new ButtonWidget<>();
-        IPanelHandler autoOutputPanel = syncManager.syncedPanel(
-            "sideSelection_" + syncKey,
-            true,
-            (panelSyncManager, b) -> openSideSelector(button, panelSyncManager, syncKey));
+        IPanelHandler autoOutputPanel = syncManager
+            .syncedPanel("sideSelection_" + syncKey, true, (panelSyncManager, b) -> openSideSelector(button, syncKey));
         return button.overlay(overlay)
             .background(
                 new DynamicDrawable(
@@ -140,8 +139,7 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             });
     }
 
-    private @NotNull ModularPanel openSideSelector(ButtonWidget<?> button, @NotNull PanelSyncManager panelSyncManager,
-        String syncKey) {
+    private @NotNull ModularPanel openSideSelector(ButtonWidget<?> button, String syncKey) {
         int buttonSize = 18;
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
@@ -157,30 +155,24 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
         return panel.child(
             Flow.column()
                 .coverChildren()
-                .child(createTopSelectionRow(panel, panelSyncManager))
-                .child(createMiddleSelectionRow(panel, panelSyncManager))
-                .child(createBottomSelectionRow(panel, panelSyncManager)));
+                .child(createTopSelectionRow(panel))
+                .child(createMiddleSelectionRow(panel))
+                .child(createBottomSelectionRow(panel)));
     }
 
-    private Flow createTopSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+    private Flow createTopSelectionRow(ModularPanel panel) {
         return Flow.row()
             .coverChildren()
-            .child(
-                createSideSelectionButton(
-                    panel,
-                    panelSyncManager,
-                    ForgeDirection.UP,
-                    GTGuiTextures.OVERLAY_BUTTON_ARROW_UP))
+            .child(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_ARROW_UP))
             .mainAxisAlignment(Alignment.MainAxis.CENTER);
     }
 
-    private Flow createMiddleSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+    private Flow createMiddleSelectionRow(ModularPanel panel) {
         return Flow.row()
             .coverChildren()
             .child(
                 createSideSelectionButton(
                     panel,
-                    panelSyncManager,
                     this.machine.mMainFacing.getRotation(ForgeDirection.UP),
                     GTGuiTextures.OVERLAY_BUTTON_ARROW_LEFT))
             .child(
@@ -189,33 +181,38 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             .child(
                 createSideSelectionButton(
                     panel,
-                    panelSyncManager,
                     this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
                     GTGuiTextures.OVERLAY_BUTTON_ARROW_RIGHT));
     }
 
-    private Flow createBottomSelectionRow(ModularPanel panel, PanelSyncManager panelSyncManager) {
+    private Flow createBottomSelectionRow(ModularPanel panel) {
         return Flow.row()
             .widthRel(1)
+            .child(createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN))
             .child(
                 createSideSelectionButton(
                     panel,
-                    panelSyncManager,
-                    ForgeDirection.DOWN,
-                    GTGuiTextures.OVERLAY_BUTTON_ARROW_DOWN))
-            .child(
-                createSideSelectionButton(
-                    panel,
-                    panelSyncManager,
                     this.machine.mMainFacing.getOpposite(),
                     GTGuiTextures.OVERLAY_BUTTON_PENSIB))
             .mainAxisAlignment(Alignment.MainAxis.END);
     }
 
-    private IWidget createSideSelectionButton(ModularPanel panel, PanelSyncManager panelSyncManager,
-        ForgeDirection direction, IDrawable texture) {
+    private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
         InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
-            this.machine.onWrenchRightClick(direction, direction, panelSyncManager.getPlayer(), 0, 0, 0, null);
+            // This is copied 1:1 from MetaTileEntity code because i didn't want to hook into onWrenchRightClick
+            final IGregTechTileEntity meta = this.machine.getBaseMetaTileEntity();
+            if (!meta.isValidFacing(direction)) {
+                return;
+            }
+            meta.setFrontFacing(direction);
+
+            for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+                }
+            }
             panel.closeIfOpen();
         });
         return new ButtonWidget<>().syncHandler(sideSelectionHandler)
