@@ -1682,33 +1682,38 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_ARROW_LEFT = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_button/arrow_left")
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_LEFT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_left")
         .fullImage()
         .canApplyTheme()
+        .nonOpaque()
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_ARROW_UP = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_button/arrow_up")
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_UP = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_up")
         .fullImage()
         .canApplyTheme()
+        .nonOpaque()
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_ARROW_RIGHT = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_button/arrow_right")
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_RIGHT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_right")
         .fullImage()
         .canApplyTheme()
+        .nonOpaque()
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_ARROW_DOWN = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_button/arrow_down")
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_DOWN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_down")
         .fullImage()
         .canApplyTheme()
+        .nonOpaque()
         .build();
-    public static final UITexture OVERLAY_BUTTON_PENSIB = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_button/pensib")
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_BACK = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_back")
         .fullImage()
         .canApplyTheme()
+        .nonOpaque()
         .build();
     // endregion button overlay
 
