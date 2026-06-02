@@ -1681,6 +1681,35 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_BUTTON_ARROW_LEFT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/arrow_left")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_ARROW_UP = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/arrow_up")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_ARROW_RIGHT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/arrow_right")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_ARROW_DOWN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/arrow_down")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_PENSIB = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/pensib")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion button overlay
 
     // region picture

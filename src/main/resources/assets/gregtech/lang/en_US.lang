@@ -2139,6 +2139,7 @@ GT5U.machines.item_transfer.tooltip.extended.2=§7shift to toggle the input filt
 GT5U.machines.item_transfer.tooltip.extended.3=§6Soldering iron:§7 Right click to toggle
 GT5U.machines.item_transfer.tooltip.extended.4=§7redstone strength; also hold
 GT5U.machines.item_transfer.tooltip.extended.5=§7shift to toggle multi-stack input.
+GT5U.machines.side_selection.tooltip=§6Shift click§r to select output side
 GT5U.machines.battery_slot.tooltip=Power Slot
 GT5U.machines.battery_slot.tooltip.1=§7Draws from %1$s§7 batteries
 GT5U.machines.battery_slot.tooltip.2=§7Charges %1$s§7 tools & batteries
