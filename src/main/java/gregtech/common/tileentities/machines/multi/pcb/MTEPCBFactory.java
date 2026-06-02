@@ -350,7 +350,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (compatMode.isSet && compatMode.OCTier != 0) {
             if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ, errors)) return;
         }
-        checkCasingMin(errors, casingAmount, 256); // 292 - 36
+        if (newTier == 3) checkCasingMin(errors, casingAmount, 256); // 292 - 36
         checkOneMaintenanceHatch(errors);
         checkExoticAndNormalEnergyHatches(errors);
         checkHasInputBus(errors);
