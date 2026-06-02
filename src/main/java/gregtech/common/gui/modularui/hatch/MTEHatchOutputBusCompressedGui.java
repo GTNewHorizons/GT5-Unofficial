@@ -87,9 +87,9 @@ public class MTEHatchOutputBusCompressedGui extends MTEHatchBaseGui<MTEHatchOutp
                         .asWidget()
                         .marginRight(4))
                     .child(new TextFieldWidget()
-                        .setNumbersLong(() -> 1L, () -> machine.stackCapacity)
+                        .numbersLong(() -> 1L, () -> machine.stackCapacity)
                         .value(capacitySyncer)
-                        .setScrollValues(1d, 4d, 64d))));
+                        .scrollValues(1d, 64d, 4d, 16d))));
         // spotless:on
     }
 
