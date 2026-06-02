@@ -59,8 +59,8 @@ public class VolumetricFlaskGui {
         textRow.child(
             new TextFieldWidget().width(80)
                 .value(cap)
-                .setFormatAsInteger(true)
-                .setNumbers(1, maxCapacity)
+                .formatAsInteger(true)
+                .numbersInt(1, maxCapacity)
                 .setMaxLength(10)
                 .tooltipShowUpTimer(5)
                 .tooltip(
