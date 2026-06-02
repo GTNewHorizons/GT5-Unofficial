@@ -92,7 +92,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
     private static final int MAX_PARALLELS = 16;
 
-    public TileEntityRotorBlock rotorBlock;
+    private TileEntityRotorBlock rotorBlock;
     private int mDoor = 0;
     private int mHardenedClay = 0;
 
@@ -241,15 +241,16 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         tt.addMachineType("Macerator")
             .addInfo("A primitive Grinder powered by Kinetic energy")
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
+            .addInfo("Rotor can be put in the Primitive Kinetic Shaftbox")
             .addInfo("Macerates up to 16 items at a time")
             .addInfo("Amount of parallels based on wind speed")
             .addInfo("Processing time is the same regardless of parallels")
             .addInfo("Wind speed can be determined using the Simple Wind Meter")
             .addInfo("========================================================")
             .addInfo("2 parallels: Low")
-            .addInfo("2 parallels: Common")
-            .addInfo("2 parallels: Rather strong")
-            .addInfo("2 parallels: Very Strong")
+            .addInfo("4 parallels: Common")
+            .addInfo("8 parallels: Rather strong")
+            .addInfo("16 parallels: Very Strong")
             .addInfo("========================================================")
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
@@ -282,7 +283,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
     }
 
     private float multiplierRecipe(ItemStack itemStack) {
-        // will return max and min value of the multiplier, the average of these is used to calculate the multiplier.
         final Item item = itemStack.getItem();
         if (item == Items.wheat || item == Items.reeds) {
             return 1.5f;
@@ -323,7 +323,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         ItemStack itemStack = getControllerSlot();
         if (itemStack == null || itemStack.getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (invalidWindLevel()) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (getWindLevel(this.rotorBlock) == windLevel.NON_EXISTENT) {
+            return CheckRecipeResultRegistry.WIND_LOW;
+        } else if (getWindLevel(this.rotorBlock) == windLevel.TOO_STRONG) {
+            return CheckRecipeResultRegistry.WIND_HIGH;
+        }
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
@@ -439,11 +443,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
         }
         checkCasingMin(errors, this.mHardenedClay, 40);
-        if (getWindLevel(this.rotorBlock) == windLevel.NON_EXISTENT) {
-            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.wind_low"));
-        } else if (getWindLevel(this.rotorBlock) == windLevel.TOO_STRONG) {
-            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.wind_high"));
-        }
     }
 
     @Override
@@ -607,6 +606,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return new MTEWindmillGui(this);
     }
 
+    @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.PRIMITIVE;
     }
@@ -620,4 +620,15 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeMuffled() {
+        return false;
+    }
+
 }
