@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -99,13 +97,13 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
 
         return cornerFlow
             .child(
-                createNewAutoOutputButton(
+                createAutoOutputButton(
                     syncManager,
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
                     BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
             .child(
-                createNewAutoOutputButton(
+                createAutoOutputButton(
                     syncManager,
                     "itemAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
@@ -114,7 +112,7 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             .childIf(properties.maxFluidInputs > 0, this::createFluidInputSlot);
     }
 
-    private ButtonWidget<?> createNewAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
+    private ButtonWidget<?> createAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
         String tooltipKey) {
         BooleanSyncValue syncHandler = syncManager.findSyncHandler(syncKey, BooleanSyncValue.class);
 
@@ -127,7 +125,9 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
                     () -> syncHandler.getValue() ? GTGuiTextures.BUTTON_STANDARD_PRESSED
                         : GTGuiTextures.BUTTON_STANDARD))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)))
+            .tooltip(
+                t -> t.addLine(GTUtility.translate(tooltipKey))
+                    .addLine(GTUtility.translate("GT5U.machines.side_selection.tooltip")))
             .onMousePressed(mouseButton -> {
                 if (Interactable.hasShiftDown()) {
                     autoOutputPanel.openPanel();
@@ -139,7 +139,7 @@ public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasi
             });
     }
 
-    private @NotNull ModularPanel openSideSelector(ButtonWidget<?> button, String syncKey) {
+    private ModularPanel openSideSelector(ButtonWidget<?> button, String syncKey) {
         int buttonSize = 18;
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
