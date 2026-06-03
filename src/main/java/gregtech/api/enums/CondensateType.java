@@ -40,7 +40,7 @@ public enum CondensateType {
         144,
         recipe -> recipe.fluidInputs(Materials.Neutronium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UHV)),
     BEDROCKIUM(
-        "neutronium",
+        "bedrockium",
         () -> Materials.Bedrockium,
         144,
         recipe -> recipe.fluidInputs(Materials.Bedrockium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UEV)),
