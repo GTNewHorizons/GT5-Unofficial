@@ -174,7 +174,7 @@ public class GTUtilityTest {
 
         assertEquals(1, GTUtility.fastDivMul(1, 1, 1));
         assertEquals(2, GTUtility.fastDivMul(7, 3, 1));
-        assertEquals(6, GTUtility.fastDivMul(7, 3, 3));
+        assertEquals(7, GTUtility.fastDivMul(7, 3, 3));
 
         assertEquals(Long.MAX_VALUE, GTUtility.fastDivMul(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE));
         assertEquals(Long.MIN_VALUE, GTUtility.fastDivMul(Long.MIN_VALUE, Long.MIN_VALUE, Long.MIN_VALUE));
