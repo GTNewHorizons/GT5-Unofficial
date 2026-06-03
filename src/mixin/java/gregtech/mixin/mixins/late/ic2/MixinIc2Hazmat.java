@@ -25,6 +25,6 @@ public class MixinIc2Hazmat implements IHazardProtector {
 
     @Override
     public boolean protectsAgainst(ItemStack itemStack, Hazard hazard) {
-        return hazard != Hazard.SPACE;
+        return Hazard.STANDARD_HAZARDS.contains(hazard);
     }
 }
