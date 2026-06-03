@@ -59,67 +59,43 @@ public class MTEBioLab extends MTEBasicMachine {
     private static final int INCUBATION_MODULE = 5;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            (String) null,
-            6,
-            2,
+        // spotless:off
+        ITexture[] overlays = new ITexture[]{
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW")).glow().build()
+            ),
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build() /* this is topactive */),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build() /* this is topactive */
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build() /* this is top */),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW")).glow().build() /* this is top */
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW"))
-                    .glow()
-                    .build()));
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW")).glow().build()
+            )
+        };
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, overlays);
+        // spotless:on
     }
 
     public MTEBioLab(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures) {
