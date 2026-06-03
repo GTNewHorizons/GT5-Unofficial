@@ -1461,8 +1461,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             if (material.mPendingArcSmeltingIntoWithGas != null) {
                 for (Map.Entry<Supplier<Materials>, Supplier<Materials>> entry : material.mPendingArcSmeltingIntoWithGas
                     .entrySet()) {
-                    material.mArcSmeltIntoWithGas
-                        .put(entry.getKey().get().mMaterialInto, entry.getValue().get().mMaterialInto.mArcSmeltInto);
+                    material.mArcSmeltIntoWithGas.put(
+                        entry.getKey()
+                            .get().mMaterialInto,
+                        entry.getValue()
+                            .get().mMaterialInto.mArcSmeltInto);
                 }
                 material.mPendingArcSmeltingIntoWithGas = null;
             }
