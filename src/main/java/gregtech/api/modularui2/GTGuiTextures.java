@@ -1688,6 +1688,40 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_LEFT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_left")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_UP = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_up")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_RIGHT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_right")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_DOWN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_down")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_BACK = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_back")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
     // endregion button overlay
 
     // region picture
