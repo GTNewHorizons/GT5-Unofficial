@@ -24,7 +24,6 @@ import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.mixin.interfaces.TextureAtlasSpriteExt;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
 
@@ -265,13 +264,9 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         } else {
             if (stillIconResourceLocation != null) {
                 stillIcon = GregTechAPI.sBlockIcons.registerIcon(stillIconResourceLocation.toString());
-
-                ((TextureAtlasSpriteExt) stillIcon).gt5u$setSynched(true);
             }
             if (flowingIconResourceLocation != null) {
                 flowingIcon = GregTechAPI.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
-
-                ((TextureAtlasSpriteExt) stillIcon).gt5u$setSynched(true);
             }
         }
     }

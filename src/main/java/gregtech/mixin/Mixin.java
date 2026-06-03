@@ -82,11 +82,6 @@ public enum Mixin implements IMixins {
         .addCommonMixins("forge.ForgeHooksMixin")
         .setPhase(Phase.EARLY)),
 
-    SPRITE_SYNCING(
-        new MixinBuilder("Synchronizes the animations of specific TextureAtlasSprites")
-            .addCommonMixins("minecraft.MixinTextureAtlasSprite_AnimSynch")
-            .setPhase(Phase.EARLY)),
-
     IC2_MACHINE_WRENCHING(new MixinBuilder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addCommonMixins(
             "ic2.MixinDamageDropped",
