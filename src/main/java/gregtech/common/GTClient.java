@@ -612,13 +612,13 @@ public class GTClient extends GTProxy {
                 protections.add(hazard);
             }
         }
-        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+        if (protections.containsAll(Hazard.CBRN_HAZARDS)) {
+            protections.removeAll(Hazard.CBRN_HAZARDS);
             addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
         }
 
-        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+        if (protections.containsAll(Hazard.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(Hazard.TEMPERATURE_HAZARDS);
             addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
         }
         for (Hazard hazard : protections) {
