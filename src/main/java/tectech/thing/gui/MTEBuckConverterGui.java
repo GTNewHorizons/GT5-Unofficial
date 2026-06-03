@@ -175,9 +175,9 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
         voltageTextRow.child(
             createNumberTextField().width(20)
                 .setMaxLength(2)
-                .setNumbers(0, MAX_TIER)
+                .numbersInt(0, MAX_TIER)
                 .value(voltageTierSyncer)
-                .setDefaultNumber(0)
+                .defaultNumber(0)
                 .setEnabledIf(t -> isUsingTiersSyncer.getBoolValue()));
 
         // add the changing tier description widget
@@ -193,9 +193,9 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
         voltageTextRow.child(
             createNumberTextField().width(75)
                 .setMaxLength((int) Math.ceil(Math.log10(MAX_VOLTAGE)))
-                .setNumbers(1, MAX_VOLTAGE)
+                .numbersInt(1, MAX_VOLTAGE)
                 .value(voltageSyncer)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .tooltip(t -> t.addLine(IKey.dynamic(() -> {
                     byte tier = getTier(voltageSyncer.getIntValue());
                     return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
@@ -239,9 +239,9 @@ public class MTEBuckConverterGui extends MTETieredMachineBlockBaseGui<MTEBuckCon
                     (int) Math.ceil(
                         Math.log10(
                             getMaxAmperageAtCurrentVoltage(voltageSyncer, voltageTierSyncer, isUsingTiersSyncer))))
-                .setNumbers(1, getMaxAmperageAtCurrentVoltage(voltageSyncer, voltageTierSyncer, isUsingTiersSyncer))
+                .numbersInt(1, getMaxAmperageAtCurrentVoltage(voltageSyncer, voltageTierSyncer, isUsingTiersSyncer))
                 .value(amperageSyncer)
-                .setDefaultNumber(2));
+                .defaultNumber(2));
 
         // text widget for amperage, is static
         amperageTextRow.child(

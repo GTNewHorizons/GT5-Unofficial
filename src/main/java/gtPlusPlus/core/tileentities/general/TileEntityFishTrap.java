@@ -284,7 +284,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.fishtrap";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockFishTrap.name";
     }
 
     @Override

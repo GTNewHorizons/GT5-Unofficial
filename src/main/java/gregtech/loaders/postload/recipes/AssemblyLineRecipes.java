@@ -952,6 +952,7 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
+
         // Exothermic Hearth
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
@@ -976,5 +977,50 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
+
+        // Mega Distillation Tower
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Distillation_Tower.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+            .itemInputs(
+                ItemList.Distillation_Tower.get(64),
+                GregtechItemList.Machine_Adv_DistillationTower.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                ItemList.CasingNaquadahReinforcedDistillation.get(8),
+                ItemList.Electric_Pump_LuV.get(4),
+                ItemList.FluidRegulator_LuV.get(4),
+                ItemList.Machine_IV_Distillery.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
+            .fluidInputs(
+                Materials.Lubricant.getFluid(16_000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Naquadah.getMolten(4 * INGOTS))
+            .itemOutputs(ItemList.MegaDistillationTower.get(1))
+            .eut(TierEU.RECIPE_LuV / 2)
+            .duration(1 * MINUTES)
+            .addTo(AssemblyLine);
+
+        // Mega Chemical Reactor
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_LargeChemicalReactor.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+            .itemInputs(
+                ItemList.Machine_Multi_LargeChemicalReactor.get(64),
+                GregtechItemList.ChemicalPlant_Controller.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                ItemList.Casing_Chemically_Inert.get(8),
+                ItemList.Electric_Pump_LuV.get(4),
+                ItemList.FluidRegulator_LuV.get(4),
+                ItemList.Machine_IV_ChemicalReactor.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
+            .fluidInputs(
+                Materials.Lubricant.getFluid(16_000),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Naquadah.getMolten(4 * INGOTS))
+            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
+            .eut(TierEU.RECIPE_LuV / 2)
+            .duration(1 * MINUTES)
+            .addTo(AssemblyLine);
+
     }
 }

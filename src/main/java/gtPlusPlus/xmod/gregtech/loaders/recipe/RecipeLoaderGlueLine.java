@@ -351,7 +351,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(200))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(

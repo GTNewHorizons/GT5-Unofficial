@@ -32,11 +32,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -153,7 +151,17 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsFluidRefill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E');
+            return;
+        }
         checkCasingMin(errors, casingAmount, 50);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
@@ -252,7 +260,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();
@@ -274,31 +282,22 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
                         int wx = controllerX + xyz[0];
                         int wy = controllerY + xyz[1];
                         int wz = controllerZ + xyz[2];
-
-                        Block existing = world.getBlock(wx, wy, wz);
-                        boolean isReplaceable;
+                        Block block = world.getBlock(wx, wy, wz);
 
                         if (c == 'E') {
-                            boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-                                && (existing instanceof BlockWater || existing instanceof BlockTickingWater);
-                            boolean isFlowing = existing == Blocks.flowing_water;
-                            boolean isWater = isFlowing || existing == Blocks.water || isCOFHCore;
-                            isFlowing = isFlowing || (isWater && world.getBlockMetadata(wx, wy, wz) > 0);
-                            isReplaceable = isFlowing || existing == Blocks.air;
-
-                            if (existing != Blocks.water && !isCOFHCore) {
-                                if (isReplaceable) {
-                                    world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                                } else allFilled = false;
+                            if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                            } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                                allFilled = false;
                             }
                         } else {
-                            isReplaceable = existing == Blocks.air || existing == Blocks.flowing_lava
-                                || existing.isReplaceable(world, wx, wy, wz);
-
-                            if (existing != Blocks.lava) {
-                                if (isReplaceable) {
+                            if (block != Blocks.lava) {
+                                if (block == Blocks.air || block == Blocks.flowing_lava
+                                    || block.isReplaceable(world, wx, wy, wz)) {
                                     world.setBlock(wx, wy, wz, Blocks.lava, 0, 3);
-                                } else allFilled = false;
+                                } else {
+                                    allFilled = false;
+                                }
                             }
                         }
                     }
@@ -306,6 +305,5 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             }
             if (allFilled) needsFluidRefill = false;
         }
-
     }
 }

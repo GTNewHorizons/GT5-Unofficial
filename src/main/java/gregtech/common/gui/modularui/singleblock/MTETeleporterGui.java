@@ -61,8 +61,8 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
         // input field
         row.child(
             new TextFieldWidget().value(value)
-                .setFormatAsInteger(true)
-                .setNumbers()
+                .formatAsInteger(true)
+                .numbersInt()
                 .setMaxLength(11)
                 .size(80, 12));
 
