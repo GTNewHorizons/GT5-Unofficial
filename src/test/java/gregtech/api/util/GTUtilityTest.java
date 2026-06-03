@@ -167,6 +167,20 @@ public class GTUtilityTest {
     }
 
     @Test
+    void testDivMul() {
+        assertEquals(300_000, GTUtility.fastDivMul(300_000, 10_000, 10_000));
+        assertEquals(30, GTUtility.fastDivMul(300_000, 10_000, 1));
+        assertEquals(300_000, GTUtility.fastDivMul(30, 1, 10_000));
+
+        assertEquals(1, GTUtility.fastDivMul(1, 1, 1));
+        assertEquals(2, GTUtility.fastDivMul(7, 3, 1));
+        assertEquals(6, GTUtility.fastDivMul(7, 3, 3));
+
+        assertEquals(Long.MAX_VALUE, GTUtility.fastDivMul(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE));
+        assertEquals(Long.MIN_VALUE, GTUtility.fastDivMul(Long.MIN_VALUE, Long.MIN_VALUE, Long.MIN_VALUE));
+    }
+
+    @Test
     public void testGetAmperageForTier() {
         assertEquals(1L, GTUtility.getAmperageForTier(TierEU.UIV, (byte) VoltageIndex.UIV));
         assertEquals(274877906944L, GTUtility.getAmperageForTier(Long.MAX_VALUE, (byte) VoltageIndex.UIV));

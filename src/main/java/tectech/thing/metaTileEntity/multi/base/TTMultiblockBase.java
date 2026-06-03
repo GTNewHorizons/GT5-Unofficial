@@ -506,7 +506,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         long maxEfficiency = 10_000;
         long efficiency = Math.max(1_000, mEfficiency);
 
-        return GTUtility.fastLongDivMul(base, maxEfficiency, efficiency);
+        return GTUtility.fastDivMul(base, maxEfficiency, efficiency);
     }
 
     /**

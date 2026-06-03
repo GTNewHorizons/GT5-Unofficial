@@ -248,7 +248,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
-            // Should be cleared elsewhere, but just to be sure let's do it again here
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
             storedCondensate.clear();
             return;
         }
@@ -262,7 +262,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
-            // Should be cleared elsewhere, but just to be sure let's do it again here
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
             storedCondensate.clear();
             return false;
         }

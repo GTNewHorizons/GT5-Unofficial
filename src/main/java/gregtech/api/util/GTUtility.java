@@ -237,8 +237,11 @@ public class GTUtility {
         return (int) Math.min(Integer.MAX_VALUE, number);
     }
 
-    /// Performs a fast X / Y * Z operation, without causing long overflows or allocations.
-    public static long fastLongDivMul(long value, long div, long mult) {
+    /// Performs a fast X / Y * Z operation, without causing long overflows in the intermediate operations.
+    /// If the result is too large for a long, overflows will still occur.
+    /// Note that this method does not truncate like standard integer math - it tries to get as close to the exact
+    /// mathematical answer as it can. `7 / 3 * 3` equals 7, not 6.
+    public static long fastDivMul(long value, long div, long mult) {
         if (div == mult) {
             return mult == 0 ? 0 : value;
         }
