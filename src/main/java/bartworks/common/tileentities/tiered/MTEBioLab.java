@@ -35,7 +35,6 @@ import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -44,7 +43,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
@@ -224,8 +222,9 @@ public class MTEBioLab extends MTEBasicMachine {
      * @param itemWithBioData from 0 up to {@code predicate#size()}, {@link #getInputSlot()} offset will be applied.
      */
     private int processGenericModuleLogic(final FluidStack fluid, final int recipeFluidAmount,
-        final List<Predicate<ItemStack>> predicates, final boolean[] isNC, final int recipeTierOffset, final int itemWithBioData,
-        final Function<ItemStack, BioData> bioDataGetter, final BioLabRecipeOutputSupplier blOutputSupplier) {
+        final List<Predicate<ItemStack>> predicates, final boolean[] isNC, final int recipeTierOffset,
+        final int itemWithBioData, final Function<ItemStack, BioData> bioDataGetter,
+        final BioLabRecipeOutputSupplier blOutputSupplier) {
         final int inputSlot = this.getInputSlot();
         int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
@@ -288,7 +287,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
             (BioDataEnum::getDNASampleFlask),
-            (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
+            (() -> ItemList.Cell_Empty.get(1)));
 
         return processGenericModuleLogic(
             GTModHandler.getDistilledWater(1_000),
