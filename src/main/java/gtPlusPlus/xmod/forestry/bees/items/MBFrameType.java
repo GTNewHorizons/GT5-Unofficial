@@ -17,7 +17,7 @@ public enum MBFrameType implements IBeeModifier {
     // Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
     ACCELERATED("Accelerated", 175, 1f, 1.2f, 0.9f, 0.8f, 1f), // production was 1.8x, now +0.8
     VOID("Void", 20, 1f, 1f, 0.0001f, 9f, 1f), // production was 10x, now +9
-    MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 9f, 1f), // production was 10x, now +9
+    MUTAGENIC("Mutagenic", 20, 1f, 5f, 0.0001f, 9f, 1f), // production was 10x, now +9
     BUSY("Busy", 2000, 1f, 0f, 3f, 3f, 1f), // production was 4x, now +3
     USELESS("Useless", 100, 1f, 0f, 1f, 0f, 1f), // production was 1x, now +0
 
