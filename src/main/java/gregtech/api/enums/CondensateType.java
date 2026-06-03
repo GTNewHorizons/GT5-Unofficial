@@ -29,6 +29,21 @@ import tectech.recipe.TecTechRecipeMaps;
 public enum CondensateType {
 
     // spotless:off
+    NETHERITE(
+        "netherite",
+        () -> Materials.ActivatedNetherite,
+        144,
+        recipe  -> recipe.fluidInputs(Materials.ActivatedNetherite.getFluid(144)).duration(20).eut(TierEU.RECIPE_UHV)),
+    NEUTRONIUM(
+        "neutronium",
+        () -> Materials.Neutronium,
+        144,
+        recipe -> recipe.fluidInputs(Materials.Neutronium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UHV)),
+    BEDROCKIUM(
+        "neutronium",
+        () -> Materials.Bedrockium,
+        144,
+        recipe -> recipe.fluidInputs(Materials.Bedrockium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UEV)),
     ChromaticGlass(
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
@@ -74,11 +89,6 @@ public enum CondensateType {
         () -> Materials.Space,
         144,
         recipe -> recipe.fluidInputs(Materials.Space.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
-    Hexanite(
-        "hexanite",
-        () -> Materials.Hexanite,
-        144,
-        recipe -> recipe.fluidInputs(Materials.UnformedHexanite.getFluid(144)).duration(60).eut(TierEU.RECIPE_UMV)),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
