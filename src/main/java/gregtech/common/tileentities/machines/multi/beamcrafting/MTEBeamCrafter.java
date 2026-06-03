@@ -419,6 +419,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
+    public boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.currentRecipeMaxAmountA = 0;
         this.currentRecipeMaxAmountB = 0;
