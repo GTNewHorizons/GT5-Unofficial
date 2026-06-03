@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
@@ -33,7 +32,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
@@ -87,22 +85,14 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamSplitter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             'D',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (splitter, te, casingIndex) -> splitter
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
-                .build()) // adv beamline output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTEBeamSplitter.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.All))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -208,8 +198,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
     }
 
@@ -240,8 +228,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                             inputInfo.getRate() / numValidOutputs,
                             inputInfo.getParticleId(),
                             inputInfo.getFocus());
-                        BeamLinePacket packet = new BeamLinePacket(outputInfo);
-                        o.dataPacket = packet;
+                        o.dataPacket = new BeamLinePacket(outputInfo);
                     }
                 }
             }

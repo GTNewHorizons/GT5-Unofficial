@@ -413,10 +413,10 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
             .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
-            .addDynamoHatch("Any bottom layer casing, only accept ONE!")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addDynamoHatch("Any bottom layer Casing, only accept ONE!")
+            .addInputHatch("Any bottom layer Casing")
+            .addOutputHatch("Any bottom layer Casing")
+            .addMaintenanceHatch("Any bottom layer Casing")
             .toolTipFinisher();
         return tt;
     }

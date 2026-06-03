@@ -25,8 +25,8 @@ public class MTEHatchWirelessComputationInputGui extends MTEHatchBaseGui<MTEHatc
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         LongSyncValue computationSyncer = new LongSyncValue(
-            hatch::getRequiredComputation,
-            hatch::setRequiredComputation);
+            machine::getRequiredComputation,
+            machine::setRequiredComputation).allowC2S();
 
         Flow mainColumn = Flow.column()
             .horizontalCenter()
@@ -43,10 +43,10 @@ public class MTEHatchWirelessComputationInputGui extends MTEHatchBaseGui<MTEHatc
             new TextFieldWidget().value(computationSyncer)
                 .width(75)
                 .setMaxLength(10)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .setTextAlignment(Alignment.Center)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true));
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true));
 
         return super.createContentSection(panel, syncManager).child(mainColumn);
     }

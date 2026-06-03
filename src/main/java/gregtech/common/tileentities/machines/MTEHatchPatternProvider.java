@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.items.misc.ItemEncodedPattern;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -73,16 +74,20 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isValidPattern(itemStack) && super.isValidSlot(index);
+    }
+
+    public boolean isValidPattern(ItemStack itemStack) {
         if (itemStack == null) return false;
         if (!(itemStack.getItem() instanceof ItemEncodedPattern patItem)) return false;
 
-        final var pattern = patItem.getPatternForItem(
+        final ICraftingPatternDetails pattern = patItem.getPatternForItem(
             itemStack,
             this.getBaseMetaTileEntity()
                 .getWorld());
         if (pattern == null) return false;
 
-        return super.isValidSlot(index) && pattern.isCraftable();
+        return pattern.isCraftable();
     }
 
     @Override

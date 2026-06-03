@@ -158,15 +158,15 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
-            .addController("Middle of the third layer")
+            .addController("Middle of the 3rd layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
             .addCasingInfoExactly("Field Restriction Glass", 8, false)
-            .addInputHatch("The casings adjacent to field restriction glass.")
-            .addInputBus("The casings adjacent to field restriction glass.", 1)
-            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
-            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
-            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
+            .addInputHatch("Any Casing adjacent to Field Restriction Glass.")
+            .addInputBus("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addOutputHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addEnergyHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addDynamoHatch("Any Casing adjacent to Field Restriction Glass.", 1)
             .toolTipFinisher();
         return tt;
     }

@@ -10,12 +10,7 @@ public class MTETieredTankGui extends MTEBasicTankBaseGui<MTETieredTank> {
     }
 
     @Override
-    protected boolean supportsMuffler() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsPowerSwitch() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 }

@@ -19,10 +19,10 @@ bw.werkstoffblocks.01.name=Block
 bw.werkstoffblockscasing.01.name=Bolted Casing
 bw.werkstoffblockscasingadvanced.01.name=Rebolted Casing
 
-GT5U.gui.text.no_imprint=Missing imprint
-GT5U.gui.text.not_enough_length=Multiblock Too Short
-GT5U.gui.text.wrong_sievert_exactly=§7Wrong sievert. Requires exactly: %s §7Sv
-GT5U.gui.text.wrong_sievert_min=§7Wrong sievert. Requires at least: %s §7Sv
+GT5U.gui.text.recipe_result.no_imprint=Missing imprint
+GT5U.gui.text.recipe_result.not_enough_length=Multiblock Too Short
+GT5U.gui.text.wrong_sievert_exactly=§7Wrong Sievert. Requires exactly: %s §7Sv
+GT5U.gui.text.wrong_sievert_min=§7Wrong Sievert. Requires at least: %s §7Sv
 GT5U.gui.config.general.mixins=Mixins
 GT5U.gui.config.general.crossmodinteractions=CrossMod Interactions
 GT5U.gui.config.general.multiblocks=Multiblocks
@@ -158,7 +158,7 @@ tooltip.labparts.2.name=An empty Plasmid Cell.
 tooltip.labparts.3.name=A special washing powder for Bio Engineering.
 tooltip.labparts.4.name=A powder for the separation of DNA by electrophoresis.
 tooltip.labparts.5.name=A Petri Dish containing: %s
-tooltip.labparts.6.name=This is a weak culture, it can not be bred in the Bacterial Vat!
+tooltip.labparts.6.name=This is a weak culture, it cannot be bred in the Bacterial Vat!
 tooltip.labparts.7.name=A DNA Flask containing: %s
 tooltip.labparts.8.name=A Plasmid Cell containing: %s
 
@@ -248,14 +248,14 @@ solarsystem.Ross128System=Ross128-System
 itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul Items
 
 # info data
-BW.infoData.BioVat.expectedProduction=Expected Production
-BW.infoData.BioVat.production=Production
+BW.infoData.BioVat.expectedProduction.s=Expected Production: §a %s §r%%
+BW.infoData.BioVat.production.s=Production: §a %s §r%%
 
 BW.infoData.htr.helium_level=Helium-Level: %sL / %sL
 BW.infoData.htr.problems=Problems: %s
 
-BW.infoData.thtr.progress=Progress: %ssecs / %ssecs
-BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %spcs. / %spcs.
+BW.infoData.thtr.progress=Progress: %s secs / %s secs
+BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %s pcs. / %s pcs.
 BW.infoData.thtr.coolant=Coolant/t: %sL/t
 
 BW.infoData.wind_mill.progress=Progress: %d Grindings of %d needed Grindings
@@ -298,7 +298,7 @@ bw.bioname.latin.format=%s (%s)
 bw.bioname.saccharomyces_cerevisiae.latin=Saccharomyces cerevisiae
 bw.bioname.saccharomyces_cerevisiae=Common Yeast
 bw.bioname.saccharomyces_cerevisiae_var_bayanus.latin=Saccharomyces cerevisiae var bayanus
-bw.bioname.saccharomyces_cerevisiae_var_bayanus=Whine Yeast
+bw.bioname.saccharomyces_cerevisiae_var_bayanus=Wine Yeast
 bw.bioname.saccharomyces_cerevisiae_var_cerevisiae.latin=Saccharomyces cerevisiae var cerevisiae
 bw.bioname.saccharomyces_cerevisiae_var_cerevisiae=Beer Yeast
 bw.bioname.escherichia_cadaver.latin=Escherichia cadaver
@@ -306,7 +306,7 @@ bw.bioname.escherichia_cadaver=Rotten Flesh Bacteria
 bw.bioname.beta-lactamase=beta-Lactamase
 bw.bioname.escherichia_koli.latin=Escherichia koli
 bw.bioname.escherichia_koli=eColi Bacteria
-bw.bioname.pseudomonas_veronii.latin=Pseudomonas Veronii
+bw.bioname.pseudomonas_veronii.latin=Pseudomonas veronii
 bw.bioname.pseudomonas_veronii=Anaerobic Oil Bacteria
 bw.bioname.saccharomyces_escherichia.latin=Saccharomyces escherichia
 bw.bioname.saccharomyces_escherichia=General Purpose Fermenting Bacteria

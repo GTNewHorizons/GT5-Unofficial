@@ -10,11 +10,10 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
@@ -1153,7 +1152,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { aTextWireCoil, "EMD", "CWP", 'M', MTEBasicMachineWithRecipe.X.HULL, 'E',
                 MTEBasicMachineWithRecipe.X.MOTOR, 'P', MTEBasicMachineWithRecipe.X.PISTON, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'D',
-                OreDictNames.craftingIndustrialDiamond },
+                OrePrefixes.gemExquisite.get(Materials.Diamond) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -1626,15 +1625,6 @@ public class MTERecipeLoader implements Runnable {
             BUFFERED,
             new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
                 ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
-        // Mega Chemical Reactor
-        // todo: tweak this recipe
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
-            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
-            .duration(1 * HOURS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
 
         // Industrial Mixer
         GTModHandler.addCraftingRecipe(
@@ -1703,6 +1693,11 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { GregtechItemList.Industrial_WireFactory });
 
+        // Industrial 3D Copying Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPrinter.get(1),
+            new Object[] { GregtechItemList.Controller_IndustrialAutoChisel });
+
         // Industrial Extruder Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialExtruder.get(1),
@@ -1752,6 +1747,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Boldarnator.get(1),
             new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
+
+        // Industrial Cutting Machine Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCuttingMachine.get(1),
+            new Object[] { GregtechItemList.Industrial_CuttingFactoryController });
 
         // Amazon Packager Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
@@ -1911,6 +1911,33 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
+
+        // Mega Distillation Tower Conversion Recipe
+        // Assembler to avoid accidental softlocks
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[2]))
+            .itemOutputs(ItemList.MegaDistillationTower.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // Mega Vacuum Freezer -> Endothermic Fridge Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[1]))
+            .itemOutputs(ItemList.EndothermicFridge.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[0]))
+            .itemOutputs(ItemList.ExothermicHearth.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
 
         // Industrial Arc Furnace Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(

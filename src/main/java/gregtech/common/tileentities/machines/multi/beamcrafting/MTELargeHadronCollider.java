@@ -61,7 +61,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
@@ -78,6 +77,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.3F;
+    public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -86,8 +86,16 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
+
+    public double calcInputBeamEnergyeV = 0;
+    public int calcInputBeamRate = 1;
+    public double calcTargetBeamEnergyeV = 0;
+    public int calcNumCycles = 1;
+
+    public double probTableCollisionEnergyeV = 0;
 
     public BeamInformation initialParticleInfo = null;
     public BeamInformation cachedOutputParticle = null;
@@ -116,6 +124,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
         aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
+        aNBT.setDouble("calcInputBeamEnergyeV", calcInputBeamEnergyeV);
+        aNBT.setInteger("calcInputBeamRate", calcInputBeamRate);
+        aNBT.setDouble("calcTargetBeamEnergyeV", calcTargetBeamEnergyeV);
+        aNBT.setInteger("calcNumCycles", calcNumCycles);
+        aNBT.setDouble("probTableCollisionEnergyeV", probTableCollisionEnergyeV);
         aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
     }
 
@@ -141,6 +154,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
         playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
+        calcInputBeamEnergyeV = aNBT.getDouble("calcInputBeamEnergyeV");
+        calcInputBeamRate = aNBT.getInteger("calcInputBeamRate");
+        calcTargetBeamEnergyeV = aNBT.getDouble("calcTargetBeamEnergyeV");
+        calcNumCycles = aNBT.getInteger("calcNumCycles");
+        probTableCollisionEnergyeV = aNBT.getDouble("probTableCollisionEnergyeV");
         accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
     }
 
@@ -196,49 +214,35 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return ofBlockAnyMeta(Blocks.air);
             }
         }))
-        .addElement(
-            'F',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             '1',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .build()) // EM beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
         .addElement(
             '2',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(4)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .build()) // Weak beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
         .addElement(
             '3',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(5)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .build()) // Strong beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
         .addElement(
             '4',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(6)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .build()) // Grav beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())
@@ -434,9 +438,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
-
         // Ignore the structure error during module checks
         List<StructureError> tmp = new ArrayList<>();
 
@@ -487,12 +488,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         float outEnergy = inputEnergy;
         int outRate = inputRate;
 
-        long machineVoltage = getAverageInputVoltage();
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
-            outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
-                * machineVoltage
-                * keV_EU_RATIO);
+            outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
                     MAXIMUM_PARTICLE_ENERGY_keV,
@@ -509,10 +507,45 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
+        return -perCyclePowerCost(particle.getRate(), accelerationCycleCounter);
+    }
+
+    public static long perCyclePowerCost(int rate, int cycleIndex) {
         // counter starts at 0, so +1
         // start at 1A UV power cost
-        return (long) -(GTValues.V[8] * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
+        return (long) (GTValues.V[8] * Math.pow(cycleIndex + 1, 2) * rate);
+    }
 
+    public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
+        // rate conceptually is parallels, so use rate 1 for this determination
+        return perCyclePowerCost(1, cycleIndex) * progressTime * keV_EU_RATIO;
+    }
+
+    public static double[] simulateAccelerator(double inputEnergyKeV, int inputRate, double targetEnergyKeV,
+        int numCycles, int progressTime) {
+
+        if (numCycles < 0) numCycles = 0;
+        if (inputRate < 1) inputRate = 1;
+
+        // mirrors accelerateParticle
+
+        double outEnergy = inputEnergyKeV;
+        int outRate = inputRate;
+        long EUtCost = 0;
+
+        for (int c = 0; c < numCycles; c++) {
+            if (outEnergy <= targetEnergyKeV) {
+                outEnergy += perCycleEnergyGainKeV(c, progressTime);
+                if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                    outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
+                }
+            } else {
+                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            }
+            EUtCost = perCyclePowerCost(outRate, c + 1);
+        }
+
+        return new double[] { outEnergy, (double) outRate, (double) EUtCost };
     }
 
     private void resetLHCState() {
@@ -657,11 +690,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 continue;
             }
 
-            double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
+            double thresholdMeV = max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
             // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
 
-            if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
+            if (w < 0 || Double.isInfinite(w)) w = 0.0;
 
             weights[i] = w;
             totalWeight += w;
@@ -683,6 +716,31 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         return idx;
 
+    }
+
+    public static double particleProbability(Particle target, LHCModule module, double collisionEnergyKeV) {
+        if (!module.acceptedParticles.contains(target)) return 0.0;
+
+        double collisionEnergyMeV = collisionEnergyKeV / 1000.0; // restmass is in MeV
+
+        double targetThresholdMeV = Math.max(target.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+        if (collisionEnergyMeV < targetThresholdMeV) return 0.0;
+
+        double targetWeight = target.getLHCWeight();
+        if (targetWeight <= 0 || Double.isInfinite(targetWeight)) return 0.0;
+
+        double totalWeight = 0.0;
+        for (Particle p : module.acceptedParticles) {
+            double thresholdMeV = Math.max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+            if (collisionEnergyMeV < thresholdMeV) continue;
+            double w = p.getLHCWeight();
+            if (w > 0 && !Double.isInfinite(w)) {
+                totalWeight += w;
+            }
+        }
+
+        if (totalWeight <= 0.0) return 0.0;
+        return targetWeight / totalWeight;
     }
 
     private void outputPacketAfterRecipe(int rate) {

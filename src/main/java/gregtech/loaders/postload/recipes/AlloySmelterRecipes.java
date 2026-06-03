@@ -115,7 +115,7 @@ public class AlloySmelterRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
 
         // Bartworks Glass Tube
@@ -125,7 +125,7 @@ public class AlloySmelterRecipes implements Runnable {
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
 
         // From ProcessingDye - glass dyeing
@@ -136,7 +136,7 @@ public class AlloySmelterRecipes implements Runnable {
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(alloySmelterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -145,7 +145,7 @@ public class AlloySmelterRecipes implements Runnable {
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(alloySmelterRecipes);
         }
     }

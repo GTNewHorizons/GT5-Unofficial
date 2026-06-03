@@ -11,7 +11,9 @@ import net.minecraft.util.MathHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.math.LongMath;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
+import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -129,6 +131,12 @@ public class ForgeOfGodsData {
 
     public void setGravitonShardsAvailable(int gravitonShardsAvailable) {
         this.gravitonShardsAvailable = gravitonShardsAvailable;
+    }
+
+    public void setGravitonShardsAvailableDebug(int gravitonShardsAvailable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            this.gravitonShardsAvailable = gravitonShardsAvailable;
     }
 
     public int getGravitonShardsSpent() {
