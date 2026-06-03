@@ -89,6 +89,7 @@ public class AdditionalRecipes {
     private static void runBWRecipes() {
 
         for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
+            //TODO Fix
             BioData DNA = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("DNA"));
@@ -169,6 +170,7 @@ public class AdditionalRecipes {
 
         long energyUsageWithTransformModule = 1;
         for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
+            //TODO Fix
             BioData DNA = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("DNA"));
