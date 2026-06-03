@@ -359,7 +359,7 @@ public class MTEBioLab extends MTEBasicMachine {
         int polymeraseSlot = -1;
         int recipeFluidAmount = 1_000;
         for (int i = 0; i < this.mInputSlotCount; i++) {
-            if (this.mInventory[inputSlot + i] == null && !isValidLabPart(this.mInventory[inputSlot + i])) {
+            if (this.mInventory[inputSlot + i] == null || !isValidLabPart(this.mInventory[inputSlot + i])) {
                 continue;
             }
             if (flaskSlot == -1 && isDNAFlask(this.mInventory[inputSlot + i], true)) {
