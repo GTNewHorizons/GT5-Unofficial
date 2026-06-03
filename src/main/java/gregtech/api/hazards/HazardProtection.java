@@ -80,7 +80,7 @@ public class HazardProtection {
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {
         if (stack == null) return false;
-        for (Hazard hazard : Hazard.VALUES) {
+        for (Hazard hazard : HazardProtectionTooltip.STANDARD_HAZARDS) {
             if (protectsAgainstHazardFully(null, stack, hazard)) {
                 continue;
             }

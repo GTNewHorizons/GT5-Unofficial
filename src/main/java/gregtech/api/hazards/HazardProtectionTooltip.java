@@ -23,6 +23,7 @@ public class HazardProtectionTooltip {
 
     public static final Set<Hazard> CBRN_HAZARDS = cbrnHazards();
     public static final Set<Hazard> TEMPERATURE_HAZARDS = temperatureHazards();
+    public static final Set<Hazard> STANDARD_HAZARDS = standardHazards();
 
     private static HashSet<Hazard> cbrnHazards() {
         HashSet<Hazard> set = new HashSet<>();
@@ -36,6 +37,14 @@ public class HazardProtectionTooltip {
         HashSet<Hazard> set = new HashSet<>();
         set.add(Hazard.FROST);
         set.add(Hazard.HEAT);
+        return set;
+    }
+
+    private static HashSet<Hazard> standardHazards() {
+        HashSet<Hazard> set = new HashSet<>();
+        set.addAll(cbrnHazards());
+        set.addAll(temperatureHazards());
+        set.add(Hazard.ELECTRICAL);
         return set;
     }
 }
