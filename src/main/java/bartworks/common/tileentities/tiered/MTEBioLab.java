@@ -248,18 +248,21 @@ public class MTEBioLab extends MTEBasicMachine {
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
+            var temp = blOutputSupplier.chanced()
+                .apply(cultureDNABioData);
+            if (temp == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+            // 100_00 because it's % and not 10k
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(100_00)) {
+                this.mOutputItems[0] = temp;
+            }
+            this.mOutputItems[1] = blOutputSupplier.nonChanced()
+                .get();
+
             for (int i = 0; i < inputSlotIndices.length; i++) {
                 if (!isNC[i]) {
                     this.mInventory[inputSlotIndices[i]].stackSize--;
                 }
             }
-
-            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
-                this.mOutputItems[0] = blOutputSupplier.chanced()
-                    .apply(cultureDNABioData);
-            }
-            this.mOutputItems[1] = blOutputSupplier.nonChanced()
-                .get();
             this.mFluid.amount -= recipeFluidAmount;
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
 
@@ -525,14 +528,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 this.mInventory[slot].stackSize--;
             }
 
-            this.mFluid.amount -= recipeFluidAmount;
-
-
-            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
-            return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
-        }
-        return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+    private record BioLabRecipeOutputSupplier(Function<BioData, ItemStack> chanced, Supplier<ItemStack> nonChanced) {
+        private static final Supplier<ItemStack> EMPTY = () -> null;
     }
-
-    private record BioLabRecipeOutputSupplier(Function<BioData, ItemStack> chanced, Supplier<ItemStack> nonChanced) {}
 }
