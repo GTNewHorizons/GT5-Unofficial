@@ -438,7 +438,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .fluids(inputFluids)
             .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> (recipe.getMetadata(BEAMCRAFTER_METADATA) != null))
-            .cachedRecipe(this.lastRecipe)
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
