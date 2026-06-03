@@ -40,7 +40,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -48,6 +47,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class MTEBioLab extends MTEBasicMachine {
 
@@ -59,67 +60,43 @@ public class MTEBioLab extends MTEBasicMachine {
     private static final int INCUBATION_MODULE = 5;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            1,
-            (String) null,
-            6,
-            2,
+        // spotless:off
+        ITexture[] overlays = new ITexture[]{
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW")).glow().build()
+            ),
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
-                    .glow()
-                    .build() /* this is topactive */),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build() /* this is topactive */
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
-                    .glow()
-                    .build() /* this is top */),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW")).glow().build() /* this is top */
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW")).glow().build()
+            ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW"))
-                    .glow()
-                    .build()));
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW")).glow().build()
+            )
+        };
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, overlays);
+        // spotless:on
     }
 
     public MTEBioLab(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures) {
@@ -277,7 +254,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 }
             }
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = blOutputSupplier.chanced()
                     .apply(cultureDNABioData);
             }
@@ -301,7 +278,7 @@ public class MTEBioLab extends MTEBasicMachine {
         boolean[] isNC = new boolean[] { false, false, false, false };
 
         BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
-            (BioDataEnum::getPlasmidCell),
+            (BioDataEnum::getDNASampleFlask),
             (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
 
         return processGenericModuleLogic(
@@ -317,64 +294,6 @@ public class MTEBioLab extends MTEBasicMachine {
             blOutputSupplier);
     }
 
-    private int processDNAModuleLogic2() {
-        int inputSlot = this.getInputSlot();
-        int cultureSlot = -1;
-        int flaskSlot = -1;
-        int detergentSlot = -1;
-        int cellSlot = -1;
-        int recipeFluidAmount = 1_000;
-        for (int i = 0; i < this.mInputSlotCount; i++) {
-            if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[inputSlot + i])) {
-                continue;
-            }
-            if (cultureSlot == -1 && isValidCulture(this.mInventory[inputSlot + i])) {
-                cultureSlot = inputSlot + i;
-                continue;
-            }
-            if (flaskSlot == -1 && isDNAFlask(this.mInventory[inputSlot + i], false)) {
-                flaskSlot = inputSlot + i;
-                continue;
-            }
-            if (detergentSlot == -1 && isDetergentPowder(this.mInventory[inputSlot + i])) {
-                detergentSlot = inputSlot + i;
-                continue;
-            }
-            if (cellSlot == -1 && isEthanolCell(this.mInventory[inputSlot + i])) {
-                cellSlot = inputSlot + i;
-            }
-        }
-
-        boolean hasItems = cultureSlot != -1 && flaskSlot != -1 && detergentSlot != -1 && cellSlot != -1;
-
-        if (hasItems && hasFluid(GTModHandler.getDistilledWater(1_000), recipeFluidAmount)) {
-
-            BioCulture culture = BioCulture.getBioCulture(
-                this.mInventory[cultureSlot].getTagCompound()
-                    .getString("Name"));
-            BioData cultureDNABioData = culture.getdDNA(); // Can't be null because it comes from the BioCultureEnum
-
-            int effectiveRecipeTier = cultureDNABioData.getTier();
-
-            if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-
-            for (int slot : new int[] { cultureSlot, flaskSlot, detergentSlot, cellSlot }) {
-                this.mInventory[slot].stackSize--;
-            }
-
-            this.mFluid.amount -= recipeFluidAmount;
-
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
-                this.mOutputItems[0] = BioDataEnum.getDNASampleFlask(cultureDNABioData);
-            }
-            this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1);
-            this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
-
-            return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
-        }
-        return MTEBasicMachine.DID_NOT_FIND_RECIPE;
-    }
-
     private int processPCRModuleLogic() {
         int inputSlot = this.getInputSlot();
         int orbSlot1 = -1;
@@ -383,7 +302,7 @@ public class MTEBioLab extends MTEBasicMachine {
         int polymeraseSlot = -1;
         int recipeFluidAmount = 1_000;
         for (int i = 0; i < this.mInputSlotCount; i++) {
-            if (this.mInventory[inputSlot + i] == null && !isValidLabPart(this.mInventory[inputSlot + i])) {
+            if (this.mInventory[inputSlot + i] == null || !isValidLabPart(this.mInventory[inputSlot + i])) {
                 continue;
             }
             if (flaskSlot == -1 && isDNAFlask(this.mInventory[inputSlot + i], true)) {
@@ -426,7 +345,7 @@ public class MTEBioLab extends MTEBasicMachine {
             BehaviourDataOrb.setDataTitle(DNAOrb, "DNA Sample");
             BehaviourDataOrb.setDataName(DNAOrb, cultureDNABioData.getName());
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = DNAOrb;
             } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1);
             this.mOutputItems[1] = ItemList.Cell_Empty.get(2);
@@ -490,7 +409,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = BioDataEnum.getPlasmidCell(cultureDNABioData);
             }
 
@@ -541,7 +460,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
             bioCulture = bioCulture.setPlasmid(cultureDNABioData);
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = BioCultureEnum.getPetriDish(bioCulture);
             }
             this.mOutputItems[1] = ItemList.Cell_Empty.get(1);
@@ -596,17 +515,19 @@ public class MTEBioLab extends MTEBasicMachine {
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10000)) {
+                BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
+                if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+                this.mOutputItems[0] = BioCultureEnum.getPetriDish(out.setPlasmid(cultureDNABioData));
+            }
+
             for (int slot : new int[] { stemcellSlot, membraneSlot, dishSlot }) {
                 this.mInventory[slot].stackSize--;
             }
 
             this.mFluid.amount -= recipeFluidAmount;
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
-                if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
-                this.mOutputItems[0] = BioCultureEnum.getPetriDish(out.setPlasmid(cultureDNABioData));
-            }
+
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
             return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
