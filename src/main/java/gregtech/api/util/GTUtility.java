@@ -222,7 +222,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
-    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+    private static Block DISTILLED_WATER_BLOCK;
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -4320,10 +4320,19 @@ public class GTUtility {
         return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
     }
 
+    private static boolean isDistilledWater(Block block) {
+        if (DISTILLED_WATER_BLOCK == null) {
+            Block b = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+            if (b != null) {
+                DISTILLED_WATER_BLOCK = b;
+            }
+        }
+        return DISTILLED_WATER_BLOCK != null
+            && Block.getIdFromBlock(block) == Block.getIdFromBlock(DISTILLED_WATER_BLOCK);
+    }
+
     public static boolean isWater(Block block) {
-        return block == Blocks.flowing_water || block == Blocks.water
-            || block == DISTILLED_WATER_BLOCK
-            || isCOFHWater(block);
+        return block == Blocks.flowing_water || block == Blocks.water || isDistilledWater(block) || isCOFHWater(block);
     }
 
     public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {

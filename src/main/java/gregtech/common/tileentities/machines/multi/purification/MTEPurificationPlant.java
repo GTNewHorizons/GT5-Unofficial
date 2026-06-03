@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -20,15 +21,17 @@ import static gregtech.common.tileentities.machines.multi.purification.MTEPurifi
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +64,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
@@ -89,20 +91,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      * for players to more easily debug their automation setups.
      */
     private boolean debugMode = false;
+    private boolean needsWaterFill = false;
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
 
     private static final IStructureDefinition<MTEPurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-        // Create an identical structure for survival autobuild, with water replaced with air
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("F", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Superplasticizer-treated high strength concrete
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 3))
         // Sterile Water Plant Casing
@@ -111,7 +105,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        .addElement('F', ofAnyWater())
+        .addElement('F', ofChain(isAir(), ofAnyWater(false)))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -141,12 +135,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
-        if (built == -1) {
-            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
-            return 0;
-        }
-        return built;
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -304,10 +294,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
+        needsWaterFill = false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                PurificationPlantStructureString.STRUCTURE_STRING,
+                3,
+                6,
+                0,
+                'F');
+            return;
+        }
 
         checkOneMaintenanceHatch(errors);
         checkExoticAndNormalEnergyHatches(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     public boolean debugModeOn() {
@@ -319,6 +322,39 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (needsWaterFill && aTick % 20 == 0) {
+                World world = aBaseMetaTileEntity.getWorld();
+                boolean allFilled = true;
+                int controllerX = aBaseMetaTileEntity.getXCoord();
+                int controllerY = aBaseMetaTileEntity.getYCoord();
+                int controllerZ = aBaseMetaTileEntity.getZCoord();
+
+                for (int sliceZ = 0; sliceZ < PurificationPlantStructureString.STRUCTURE_STRING.length; sliceZ++) {
+                    String[] layers = PurificationPlantStructureString.STRUCTURE_STRING[sliceZ];
+                    for (int layerY = 0; layerY < layers.length; layerY++) {
+                        String row = layers[layerY];
+                        for (int charX = 0; charX < row.length(); charX++) {
+                            if (row.charAt(charX) != 'F') continue;
+
+                            int[] abc = new int[] { charX - 3, layerY - 6, sliceZ - 0 };
+                            int[] xyz = new int[] { 0, 0, 0 };
+                            this.getExtendedFacing()
+                                .getWorldOffset(abc, xyz);
+                            int wx = controllerX + xyz[0];
+                            int wy = controllerY + xyz[1];
+                            int wz = controllerZ + xyz[2];
+                            Block block = world.getBlock(wx, wy, wz);
+                            if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                            } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                                allFilled = false;
+                            }
+                        }
+                    }
+                }
+
+                if (allFilled) needsWaterFill = false;
+            }
             // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
             for (int i = 0; i < linkedUnits.size(); ++i) {
                 if (aTick % CYCLE_TIME_TICKS == i) {

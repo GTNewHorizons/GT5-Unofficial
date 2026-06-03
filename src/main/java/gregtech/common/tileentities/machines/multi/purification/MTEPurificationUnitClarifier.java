@@ -251,7 +251,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(
+        if (mMachine) return -1;
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -259,12 +260,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             STRUCTURE_Z_OFFSET,
             elementBudget,
             env,
+            false,
             true);
-        if (built == -1) {
-            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
-            return 0;
-        }
-        return built;
     }
 
     @Override
