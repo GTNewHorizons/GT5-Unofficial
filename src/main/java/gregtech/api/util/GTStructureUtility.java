@@ -548,6 +548,12 @@ public class GTStructureUtility {
             }
 
             @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(placeCasing, placeCasingMeta);
+            }
+
+            @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
                 return true;
