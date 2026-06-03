@@ -219,7 +219,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createFilterSlotGroup(PanelSyncManager syncManager) {
-        GenericSyncValue<ItemStackHandler> filterSyncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("filter");
 
         // Update cache if parametrizer card was used to paste config
@@ -636,8 +636,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private Flow createTierInputRow(PanelSyncManager syncManager) {
@@ -652,8 +652,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierFilterSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private SlotLikeButtonWidget createUtilityPanelDroneSelector(PanelSyncManager syncManager) {
@@ -1091,10 +1091,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         ModularPanel parent) {
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
         AtomicInteger distance = new AtomicInteger(0);
-        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set);
+        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set).allowC2S();
 
         AtomicInteger moduleTier = new AtomicInteger(0);
-        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set);
+        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set).allowC2S();
 
         IntSyncValue droneSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         droneSelectorButtonCalculator = new SlotLikeButtonWidget(
@@ -1163,8 +1163,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private IWidget createCalculatorTierInput(IntSyncValue moduleTierSyncer) {
@@ -1178,8 +1178,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private IWidget createCalculatorDroneInput(IPanelHandler droneSelectorPanel, IntSyncValue distanceSyncer,
@@ -1296,7 +1296,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        GenericSyncValue<ItemStackHandler> filterSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.filterInventory,
             handler -> multiblock.filterInventory = handler,
@@ -1308,7 +1308,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         BooleanSyncValue isWhiteListedSyncer = new BooleanSyncValue(
             () -> multiblock.isWhitelisted,
-            val -> multiblock.isWhitelisted = val);
+            val -> multiblock.isWhitelisted = val).allowC2S();
         syncManager.syncValue("isWhiteListed", isWhiteListedSyncer);
 
         IntSyncValue droneTierSyncer = new IntSyncValue(
@@ -1317,7 +1317,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTier", droneTierSyncer);
 
         AtomicInteger droneFilter = new AtomicInteger(-1);
-        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set);
+        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set).allowC2S();
         syncManager.syncValue("droneFilter", droneFilterSyncer);
 
         AtomicInteger targetDroneTier = new AtomicInteger(-1);
@@ -1325,19 +1325,19 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTarget", targetDroneTierSyncer);
 
         AtomicInteger selectedAsteroid = new AtomicInteger(0);
-        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set);
+        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set).allowC2S();
         syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
 
         AtomicReference<String> oreFilter = new AtomicReference<>("");
-        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set);
+        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set).allowC2S();
         syncManager.syncValue("oreFilter", oreFilterSyncer);
 
         AtomicInteger distanceFilter = new AtomicInteger(0);
-        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set);
+        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set).allowC2S();
         syncManager.syncValue("distanceFilter", distanceFilterSyncer);
 
         AtomicInteger moduleTierFilter = new AtomicInteger(0);
-        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
+        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set).allowC2S();
         syncManager.syncValue("moduleTierFilter", moduleTierFilterSyncer);
 
     }

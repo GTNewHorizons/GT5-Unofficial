@@ -49,7 +49,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
@@ -221,13 +220,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .hint(1)
                 .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamCrafter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamCrafter.class, ShieldedAccCasingTextureID, 2))
         .addElement('D', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -367,7 +360,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mInputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
@@ -427,6 +419,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
+    public boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.currentRecipeMaxAmountA = 0;
         this.currentRecipeMaxAmountB = 0;
@@ -446,7 +443,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .fluids(inputFluids)
             .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> (recipe.getMetadata(BEAMCRAFTER_METADATA) != null))
-            .cachedRecipe(this.lastRecipe)
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 

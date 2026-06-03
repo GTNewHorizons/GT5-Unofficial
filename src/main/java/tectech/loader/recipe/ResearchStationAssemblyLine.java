@@ -610,8 +610,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 4096,
                 (int) TierEU.RECIPE_UIV,
                 1,
-                new Object[] { ItemList.Casing_Dim_Bridge.get(4),
-                    GTUtility.copyAmount(16, ItemRegistry.megaMachines[0]), ItemList.Hatch_Energy_UEV.get(4L),
+                new Object[] { ItemList.Casing_Dim_Bridge.get(4), ItemList.ExothermicHearth.get(16),
+                    ItemList.Hatch_Energy_UEV.get(4L),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -2845,7 +2845,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             300 * SECONDS,
             (int) TierEU.RECIPE_UHV);
 
-        // Advanced Beamline Output Hatch
+        // Advanced Beam Output Hatch
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH,
             128_000,
@@ -3107,17 +3107,15 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
-        ItemStack megaEBF = GTUtility.copyAmount(64, ItemRegistry.megaMachines[0]);
-
         // Smelting Module Controller
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             // mega ebf controller
-            ItemRegistry.megaMachines[0],
+            ItemList.ExothermicHearth.get(1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), ItemList.ExothermicHearth.get(64),
                 ItemList.Machine_Multi_Furnace.get(64), ItemList.ZPM4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
                 ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
@@ -3139,7 +3137,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), ItemList.ExothermicHearth.get(64),
                 GregtechItemList.Mega_AlloyBlastSmelter.get(64), ItemList.ZPM4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
                 ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),

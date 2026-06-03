@@ -278,7 +278,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public String getInventoryName() {
-        return "L.E.S.U.";
+        return getLocalNameKey();
     }
 
     @Override
@@ -391,7 +391,7 @@ public class MTELESU extends MTEMultiBlockBase {
             this.mStorage = 0;
             this.mMaxProgresstime = 0;
             this.mProgresstime = 0;
-            errors.add(StructureErrors.of("GT5U.gui.text.lesu_error"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.lesu_error"));
             return;
         }
 

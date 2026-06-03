@@ -46,6 +46,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -116,13 +117,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
         GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
 
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }
 
     /**
@@ -130,13 +125,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -190,8 +179,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
     }
 
     @Override
@@ -553,7 +542,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
      * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
      */
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
 
     }
 

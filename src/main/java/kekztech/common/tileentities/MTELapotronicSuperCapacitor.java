@@ -72,7 +72,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
+import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -478,11 +478,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addStructureInfo(
                 "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
             .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any casing")
-            .addDynamoHatch("Any casing")
+            .addEnergyHatch("Any Casing")
+            .addDynamoHatch("Any Casing")
             .addOtherStructurePart(
                 "Laser Target/Source Hatches",
-                "Any casing, must be using " + GTValues.TIER_COLORS[8]
+                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
                     + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
@@ -492,7 +492,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 GTStructureChannels.LSC_CAPACITOR,
                 "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any casing")
+            .addMaintenanceHatch("Any Casing")
             .toolTipFinisher();
         return tt;
     }
@@ -600,7 +600,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             + getUEVCapacitorCount()
             + getUIVCapacitorCount()
             + getUMVCapacitorCount()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.lsc_cap"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.lsc_cap"));
             return;
         }
 
@@ -1155,7 +1155,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTELapotronicSuperCapacitorgui(this);
+        return new MTELapotronicSuperCapacitorGui(this);
     }
 
     @Override

@@ -427,7 +427,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> contents = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
                 .getter(() -> storedCondensate)
                 .adapter(new CondensateListAdapter())
                 .build();
@@ -475,7 +475,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         @Override
         protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot) {
+            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
             return SettingsPanel.builder()
                 .setDividerPosition(50)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
@@ -483,7 +483,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     IKey.lang("GT5U.gui.text.bec-field-strength"),
                     () -> fieldStrength,
                     l -> fieldStrength = l,
-                    (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
+                    (panel1, syncManager1, widget) -> { widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
                     IKey.lang("GT5U.gui.text.bec-stored"),
                     new DoubleSyncValue(MTEBECStorage.this::getAmountStored),

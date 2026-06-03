@@ -143,7 +143,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+        return DescTextLocalization.addText("UniversalChemicalFuelEngineLegacy.hint", 11);
     }
 
     @Override
@@ -187,10 +187,10 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
             .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
             .addCasingInfoExactly("Titanium Pipe Casing", 14, false)
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 2 (fill all slots with mufflers)")
-            .addInputHatch("Hint Block Number 3 (fill all slots with input hatches)")
-            .addDynamoHatch("Hint Block Number 4")
+            .addMaintenanceHatch("Hint block number 1")
+            .addMufflerHatch("Hint block number 2 (fill all slots with mufflers)")
+            .addInputHatch("Hint block number 3 (fill all slots with input hatches)")
+            .addDynamoHatch("Hint block number 4")
             .toolTipFinisher();
         return tt;
     }

@@ -94,7 +94,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemInputs(material.getOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         // Macerate raw ore to Crushed
@@ -102,7 +102,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemInputs(material.getRawOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         // Macerate Centrifuged to Pure Dust
@@ -111,7 +111,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemOutputs(matDust, matDustA)
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -144,7 +144,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustPurified(1))
             .itemOutputs(matDust, tinyDustA)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 
@@ -152,7 +152,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
             .itemOutputs(matDust, tinyDustB)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 

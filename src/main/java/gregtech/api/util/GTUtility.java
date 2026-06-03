@@ -20,7 +20,6 @@ import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -57,10 +56,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -118,7 +115,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -126,7 +122,6 @@ import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
-
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
@@ -137,7 +132,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
-
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
@@ -195,6 +189,10 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -210,7 +208,6 @@ public class GTUtility {
      * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
     private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
-
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GTPlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
@@ -219,6 +216,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
+    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -633,10 +631,10 @@ public class GTUtility {
                         .append(code);
                 } else if (code == 's') {
                     // Push, save the current format and don't emit to the output buffer
-                    stack.push(currentFormat);
+                    stack.push(currentFormat.isEmpty() ? "§r" : currentFormat);
                 } else if (code == 't') {
                     // Pop, restore the top format and don't emit to the output buffer
-                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    currentFormat = stack.isEmpty() ? "§r" : stack.pop();
                     out.append(currentFormat);
                 }
 
@@ -646,6 +644,14 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static void addSeparatorIfNeeded(List<String> tooltip) {
+        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1)
+            .trim()
+            .isEmpty()) {
+            tooltip.add("");
+        }
     }
 
     public static String wrapStack(String message) {
@@ -732,6 +738,9 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+
     /**
      * Compacts an inventory like this:
      * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
@@ -742,8 +751,8 @@ public class GTUtility {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
-        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
-            GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = slotsSupplier.get();
+        slots.clear();
 
         for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
@@ -822,6 +831,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        slots.clear();
 
         return didSomething.booleanValue();
     }
@@ -3485,6 +3496,15 @@ public class GTUtility {
         return ((value % divisor) + divisor) % divisor;
     }
 
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
+    }
+
     /**
      * Computes base raised to the power of an integer exponent. Typically faster than
      * {@link java.lang.Math#pow(double, double)} when {@code exp} is an integer.
@@ -4302,5 +4322,30 @@ public class GTUtility {
         // Convert to degrees for consistency
         axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
         return axisAngle;
+    }
+
+    public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        boolean isFlowing = isFlowingWater(block, world, x, y, z);
+        boolean isAir = block == Blocks.air;
+        return (isFlowing || isAir);
+    }
+
+    public static boolean isCOFHWater(Block block) {
+        return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
+    }
+
+    public static boolean isWater(Block block) {
+        return block == Blocks.flowing_water || block == Blocks.water
+            || block == DISTILLED_WATER_BLOCK
+            || isCOFHWater(block);
+    }
+
+    public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
+    }
+
+    public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
+        return isWater(block) && !isFlowingWater(block, world, x, y, z);
     }
 }

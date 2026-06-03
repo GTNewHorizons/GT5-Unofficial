@@ -57,12 +57,12 @@ public class FuelConfigPanel {
 
         // Textbox
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.FUEL_FACTOR.create(hypervisor))
                 .setTooltipOverride(true)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .size(70, 18)
                 .marginLeft(4)
                 .marginTop(3));
@@ -91,7 +91,7 @@ public class FuelConfigPanel {
                 .marginTop(5));
 
         // Fuel selector
-        EnumSyncValue<Fuels> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
+        EnumSyncValue<Fuels, ?> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
         Flow fuelRow = Flow.row()
             .coverChildren()
             .marginTop(5)
@@ -127,7 +127,7 @@ public class FuelConfigPanel {
         SyncValues.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
-    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels> syncer,
+    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels, ?> syncer,
         Fuels option) {
         return new ParentWidget<>().coverChildrenWidth()
             .size(18)
@@ -143,7 +143,6 @@ public class FuelConfigPanel {
                     .disableThemeBackground(true)
                     .disableHoverThemeBackground(true)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {
                         if (hypervisor.isClient()) {

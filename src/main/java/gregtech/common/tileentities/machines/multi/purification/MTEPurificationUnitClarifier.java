@@ -307,8 +307,17 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         needsWaterFill = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W');
             return;
+        }
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         checkHasInputBus(errors);
@@ -319,7 +328,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();
@@ -341,16 +350,11 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                         int wx = controllerX + xyz[0];
                         int wy = controllerY + xyz[1];
                         int wz = controllerZ + xyz[2];
-
                         Block block = world.getBlock(wx, wy, wz);
-                        if (block != Blocks.water) {
-                            boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
-                                || block.isReplaceable(world, wx, wy, wz);
-                            if (isReplaceable) {
-                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                            } else {
-                                allFilled = false;
-                            }
+                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                            allFilled = false;
                         }
                     }
                 }

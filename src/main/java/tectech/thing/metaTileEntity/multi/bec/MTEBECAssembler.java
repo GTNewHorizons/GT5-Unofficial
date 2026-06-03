@@ -430,7 +430,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> condensate = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> condensate = GenericSyncValue.builder(CondensateList.class)
                 .getter(
                     () -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECAssembler.this))
                 .adapter(new CondensateListAdapter())

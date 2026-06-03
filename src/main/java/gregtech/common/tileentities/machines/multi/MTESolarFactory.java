@@ -233,13 +233,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             mTier = 2;
             checkCasingMin(errors, casingAmount, 35);
             if (casingTier < -1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.solar_factory_precise"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
             }
         } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, null)) {
             mTier = 3;
             checkCasingMin(errors, casingAmount, 50);
             if (casingTier < -1) {
-                errors.add(StructureErrors.of("GT5U.gui.text.solar_factory_precise"));
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
             }
         } else {
             errors.add(UNKNOWN_TIER);
@@ -436,7 +436,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
             .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
+            .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
             .addInputHatch("Any Machine Casing")
             .addInputBus("Any Machine Casing")
             .addOutputBus("Any Machine Casing")
@@ -502,6 +502,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {

@@ -435,7 +435,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         checkHasOutputBus(errors);
         checkHasEnergyHatch(errors);
         if (heliumInputHatch == null) {
-            errors.add(StructureErrors.of("GT5U.gui.text.htgr_missing_helium_hatch"));
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.htgr_missing_helium_hatch"));
         }
     }
 
