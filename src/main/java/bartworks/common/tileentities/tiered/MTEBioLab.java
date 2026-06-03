@@ -40,7 +40,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -48,6 +47,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class MTEBioLab extends MTEBasicMachine {
 
@@ -253,7 +254,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 }
             }
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = blOutputSupplier.chanced()
                     .apply(cultureDNABioData);
             }
@@ -344,7 +345,7 @@ public class MTEBioLab extends MTEBasicMachine {
             BehaviourDataOrb.setDataTitle(DNAOrb, "DNA Sample");
             BehaviourDataOrb.setDataName(DNAOrb, cultureDNABioData.getName());
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = DNAOrb;
             } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1);
             this.mOutputItems[1] = ItemList.Cell_Empty.get(2);
@@ -408,7 +409,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = BioDataEnum.getPlasmidCell(cultureDNABioData);
             }
 
@@ -459,7 +460,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
             bioCulture = bioCulture.setPlasmid(cultureDNABioData);
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
                 this.mOutputItems[0] = BioCultureEnum.getPetriDish(bioCulture);
             }
             this.mOutputItems[1] = ItemList.Cell_Empty.get(1);
@@ -514,7 +515,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10000)) {
                 BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
                 if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
                 this.mOutputItems[0] = BioCultureEnum.getPetriDish(out.setPlasmid(cultureDNABioData));
