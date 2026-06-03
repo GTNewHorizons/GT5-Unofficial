@@ -277,7 +277,7 @@ public class MTEBioLab extends MTEBasicMachine {
         boolean[] isNC = new boolean[] { false, false, false, false };
 
         BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
-            (BioDataEnum::getPlasmidCell),
+            (BioDataEnum::getDNASampleFlask),
             (() -> GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1)));
 
         return processGenericModuleLogic(
