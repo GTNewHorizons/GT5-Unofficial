@@ -169,16 +169,16 @@ public enum CondensateType {
         return null;
     }
 
-    /// Resolves the color to render a condensate fluid with. Condensates of a gtPlusPlus material that uses a dynamic
-    /// render mode (the glow or rainbow hue cycle, e.g. Celestial Tungsten and Chromatic Glass) reuse that material's
-    /// animated color, so the condensate matches how the material is drawn on its blocks/items/fluids. This mirrors
-    /// the approach added for those materials in PR #6649. Any other fluid keeps the provided fallback color.
-    public static int getRenderColor(Fluid fluid, int fallbackColor) {
+    /// Resolves the color to render a condensate fluid with. Used for chromatic glass and celestial tungsten
+    /// to use their custom tinting methods, matching other items/fluids of the same material.
+    /// </p>
+    /// Returns 0xFFFFFF for all other materials.
+    public static int getRenderColor(Fluid fluid) {
         CondensateType type = getCondensateType(fluid);
         if (type != null && type.getMaterial() instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
             return BaseItemComponent.getMaterialCustomColor(gtppMaterial);
         }
-        return fallbackColor;
+        return 0xFFFFFF;
     }
 
     /// Gets the name for a given fluid. This will usually be the condensate name, but non-condensate fluids will

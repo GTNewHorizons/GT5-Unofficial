@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.color.RGBColor;
 import com.gtnewhorizon.gtnhlib.itemrendering.IItemTexture;
@@ -59,7 +58,7 @@ public class GTItemCell extends Item implements ItemWithTextures {
 
     @Override
     public IItemTexture[] getTextures(ItemStack stack) {
-        int fluidColor = CondensateType.getRenderColor(fluid, fluid.getColor(new FluidStack(fluid, 1)));
+        int fluidColor = CondensateType.getRenderColor(fluid);
         return new IItemTexture[] { new ItemTexture(
             ItemList.Cell_Empty.get(1)
                 .getIconIndex(),

@@ -55,8 +55,10 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             int tint;
             if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
                 tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+            } else if (CondensateType.getCondensateType(fluid) != null) {
+                tint = CondensateType.getRenderColor(fluid);
             } else {
-                tint = CondensateType.getRenderColor(fluid, fluid != null ? fluid.getColor() : 0xFFFFFF);
+                tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
             }
             GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;
