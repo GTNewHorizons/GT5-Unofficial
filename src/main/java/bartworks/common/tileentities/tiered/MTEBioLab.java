@@ -514,17 +514,19 @@ public class MTEBioLab extends MTEBasicMachine {
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
+            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
+                BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
+                if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+                this.mOutputItems[0] = BioCultureEnum.getPetriDish(out.setPlasmid(cultureDNABioData));
+            }
+
             for (int slot : new int[] { stemcellSlot, membraneSlot, dishSlot }) {
                 this.mInventory[slot].stackSize--;
             }
 
             this.mFluid.amount -= recipeFluidAmount;
 
-            if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
-                if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
-                this.mOutputItems[0] = BioCultureEnum.getPetriDish(out.setPlasmid(cultureDNABioData));
-            }
+
             this.calculateOverclockedNess(GTUtility.safeInt(GTValues.V[effectiveRecipeTier]), 500);
             return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
