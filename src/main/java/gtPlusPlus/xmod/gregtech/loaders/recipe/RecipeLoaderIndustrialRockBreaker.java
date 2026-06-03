@@ -72,7 +72,8 @@ public class RecipeLoaderIndustrialRockBreaker {
 
         if (Mods.ThaumicBases.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 0, 2))
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 1, 2))
+                .inputChances(1000)
                 .circuit(6)
                 .itemOutputs(
                     new ItemStack(Blocks.netherrack, 1),
@@ -84,7 +85,8 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .addTo(multiblockRockBreakerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 0, 3))
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 1, 3))
+                .inputChances(1000)
                 .circuit(7)
                 .itemOutputs(new ItemStack(Blocks.end_stone, 1), new ItemStack(Blocks.obsidian, 1))
                 .outputChances(9000, 1000)
