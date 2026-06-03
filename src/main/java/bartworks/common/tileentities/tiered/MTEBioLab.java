@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.tiered;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -46,8 +48,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
-
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class MTEBioLab extends MTEBasicMachine {
 
@@ -117,54 +117,58 @@ public class MTEBioLab extends MTEBasicMachine {
         return this.mTier * 1000;
     }
 
-    private boolean isValidCulture(ItemStack stack) {
+    private final boolean isValidCulture(ItemStack stack) {
         // hyp: if it has a NBT then the Name field exist and is correct
         return GTUtility.areStacksEqual(stack, BioCultureEnum.NullBioCulture.culture.get(1), true)
             && stack.getTagCompound() != null;
     }
 
-    private boolean isDNAFlask(ItemStack stack, boolean isFilled) {
+    private final boolean isDNAFlask(ItemStack stack, boolean isFilled) {
         return GTUtility.areStacksEqual(stack, ItemList.EmptyDNAFlask.get(1), isFilled)
             && isFilled == (stack.getTagCompound() != null);
     }
 
-    private boolean isPlasmidFlask(ItemStack stack, boolean isFilled) {
+    private final boolean isPlasmidFlask(ItemStack stack, boolean isFilled) {
         return GTUtility.areStacksEqual(stack, ItemList.EmptyPlasmid.get(1), isFilled)
             && isFilled == (stack.getTagCompound() != null);
     }
 
-    private boolean isEmptyDataOrb(ItemStack stack) {
+    private final boolean isEmptyDataOrb(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.Tool_DataOrb.get(1));
     }
 
-    private boolean isValidDNASampleOrb(ItemStack stack) {
+    private final boolean isValidDNASampleOrb(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.Tool_DataOrb.get(1L), true)
             && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(stack))
             && !BehaviourDataOrb.getDataName(stack)
                 .isEmpty();
     }
 
-    private boolean isDetergentPowder(ItemStack stack) {
+    private final boolean isDetergentPowder(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.DetergentPowder.get(1), false);
     }
 
-    private boolean isEthanolCell(ItemStack stack) {
+    private final boolean isEmptyPetriDish(ItemStack stack) {
+        return GTUtility.areStacksEqual(stack, ItemList.EmptyPetriDish.get(1));
+    }
+
+    private final boolean isEthanolCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, Materials.Ethanol.getCells(1));
     }
 
-    private boolean isFluorescentDNACell(ItemStack stack) {
+    private final boolean isFluorescentDNACell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.FLUORESCENT_DNA.get());
     }
 
-    private boolean isEnzymeSolutionCell(ItemStack stack) {
+    private final boolean isEnzymeSolutionCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.ENZYME_SOLUTION.get());
     }
 
-    private boolean isPenicillinCell(ItemStack stack) {
+    private final boolean isPenicillinCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.PENICILLIN.get());
     }
 
-    private boolean isPolymeraseCell(ItemStack stack) {
+    private final boolean isPolymeraseCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.POLYMERASE.get());
     }
 
@@ -193,12 +197,12 @@ public class MTEBioLab extends MTEBasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private boolean hasModuleInstalled() {
+    private final boolean hasModuleInstalled() {
         return this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule;
     }
 
-    private boolean hasFluid(FluidStack fluid, int atLeast) {
+    private final boolean hasFluid(FluidStack fluid, int atLeast) {
         return this.mFluid != null && this.mFluid.isFluidEqual(fluid) && this.mFluid.amount >= atLeast;
     }
 
@@ -219,13 +223,15 @@ public class MTEBioLab extends MTEBasicMachine {
      *
      * @param itemWithBioData from 0 up to {@code predicate#size()}, {@link #getInputSlot()} offset will be applied.
      */
-    private int processGenericModuleLogic(FluidStack fluid, int recipeFluidAmount,
-        List<Predicate<ItemStack>> predicates, boolean[] isNC, int recipeTierOffset, int itemWithBioData,
-        Function<ItemStack, BioData> bioDataGetter, BioLabRecipeOutputSupplier blOutputSupplier) {
-        int inputSlot = this.getInputSlot();
+    private int processGenericModuleLogic(final FluidStack fluid, final int recipeFluidAmount,
+        final List<Predicate<ItemStack>> predicates, final boolean[] isNC, final int recipeTierOffset, final int itemWithBioData,
+        final Function<ItemStack, BioData> bioDataGetter, final BioLabRecipeOutputSupplier blOutputSupplier) {
+        final int inputSlot = this.getInputSlot();
         int[] inputSlotIndices = new int[predicates.size()];
         Arrays.fill(inputSlotIndices, -1);
+
         if (itemWithBioData < 0 || itemWithBioData >= predicates.size()) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
+
         for (int i = 0; i < this.mInputSlotCount; i++) {
             if (this.mInventory[inputSlot + i] == null || !GTUtility.isStackValid(this.mInventory[inputSlot + i])) {
                 continue;
@@ -243,10 +249,7 @@ public class MTEBioLab extends MTEBasicMachine {
             .allMatch(i -> i != -1);
 
         if (hasItems && hasFluid(fluid, recipeFluidAmount)) {
-            // TODO: think about a good api interface here
-
             BioData cultureDNABioData = bioDataGetter.apply(this.mInventory[inputSlotIndices[itemWithBioData]]);
-
             int effectiveRecipeTier = recipeTierOffset + cultureDNABioData.getTier();
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -281,7 +284,7 @@ public class MTEBioLab extends MTEBasicMachine {
             (stack) -> isDNAFlask(stack, false),
             this::isDetergentPowder,
             this::isEthanolCell);
-        final boolean[] isNC = new boolean[] { false, false, false, false };
+        boolean[] isNC = new boolean[] { false, false, false, false };
 
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
             (BioDataEnum::getDNASampleFlask),
@@ -331,18 +334,19 @@ public class MTEBioLab extends MTEBasicMachine {
     private int processSynthesisModuleLogic() {
         final ItemStack inp2 = ItemList.Tool_DataOrb.get(1);
         BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-        //spotless:off
+        // spotless:off
         BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.name);
         //spotless:on
         final List<Predicate<ItemStack>> predicates = List.of(
             this::isValidDNASampleOrb,
             (stack -> GTUtility.areStacksEqual(stack, inp2)),
             this::isEnzymeSolutionCell,
-            (stack -> isPlasmidFlask(stack, false))
-        );
+            (stack -> isPlasmidFlask(stack, false)));
         final boolean[] isNC = new boolean[] { true, true, false, false };
 
-        BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(BioDataEnum::getPlasmidCell, (() -> ItemList.Cell_Empty.get(1)));
+        final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
+            BioDataEnum::getPlasmidCell,
+            (() -> ItemList.Cell_Empty.get(1)));
 
         return processGenericModuleLogic(
             GTModHandler.getLiquidDNA(1_000),
@@ -408,12 +412,8 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private int processClonalCellularModule() {
-        final List<Predicate<ItemStack>> predicates = List.of(
-            this::isValidDNASampleOrb,
-            this::isEmptyPetriDish,
-            this::isPlasmaMembrane,
-            this::areTwoStemCells
-        );
+        final List<Predicate<ItemStack>> predicates = List
+            .of(this::isValidDNASampleOrb, this::isEmptyPetriDish, this::isPlasmaMembrane, this::areTwoStemCells);
         final boolean[] isNC = new boolean[] { true, false, false, false };
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier((bioData -> {
             BioCulture out = BioCulture.getBioCulture(bioData);
@@ -428,13 +428,14 @@ public class MTEBioLab extends MTEBasicMachine {
             isNC,
             3,
             0,
-            //spotless:off
+            // spotless:off
             (stack -> BioDataEnum.LOOKUPS_BY_NAME.get(BehaviourDataOrb.getDataName(stack)).getBioData()),
             //spotless:on
             blOutputSupplier);
     }
 
     private record BioLabRecipeOutputSupplier(Function<BioData, ItemStack> chanced, Supplier<ItemStack> nonChanced) {
+
         private static final Supplier<ItemStack> EMPTY = () -> null;
     }
 }
