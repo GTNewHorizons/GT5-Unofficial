@@ -310,7 +310,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .fluidOutputs(Materials.OilHeavy.getFluid(1_000))
                             .duration(33 * SECONDS)
-                            .eut(8)
+                            .eut(TierEU.RECIPE_ULV)
                             .addTo(centrifugeRecipes);
                         break;
                     case "HydratedCoal":

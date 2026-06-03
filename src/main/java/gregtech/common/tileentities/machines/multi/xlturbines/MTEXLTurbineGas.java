@@ -34,6 +34,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEXLTurbineGas extends MTEXLTurbineBase {
 
@@ -193,11 +194,12 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
             .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
             .addCasingInfoExactly("Turbine Shaft", 16, false)
             .addCasingInfoExactly("Steel Gear Box", 7, false)
-            .addInputBus("Any Turbine Casing (Min 1)", 1)
+            .addInputBus("Any Turbine Casing", 1)
             .addInputHatch("Any Turbine Casing (Min 1)", 1)
             .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
             .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
             .addMufflerHatch("Any Turbine Casing (x4)", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;

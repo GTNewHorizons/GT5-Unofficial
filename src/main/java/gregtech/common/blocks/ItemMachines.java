@@ -264,12 +264,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null) {
                 tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);
-                tTileEntity.setFrontFacing(
-                    BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));
                 if (aPlayer != null) {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
+                tTileEntity.setFrontFacing(
+                    BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
