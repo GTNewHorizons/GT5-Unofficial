@@ -18,7 +18,7 @@ import gregtech.api.enums.ItemList;
 
 public enum BioCultureEnum {
 
-    NullBioCulture("", 0, EnumRarity.epic, false, BioDataEnum.NullBioData, BioDataEnum.NullBioData,
+    NullBioCulture("Null", 0, EnumRarity.epic, false, BioDataEnum.NullBioData, BioDataEnum.NullBioData,
         new Color(0, 0, 255), ItemList.CultureNullBioCulture),
     SaccharomycesCerevisiae("Saccharomyces cerevisiae", 1, EnumRarity.common, true, BioDataEnum.SaccharomycesCerevisiae,
         BioDataEnum.SaccharomycesCerevisiae, new Color(255, 248, 200), ItemList.CultureSaccharomycesCerevisiae),

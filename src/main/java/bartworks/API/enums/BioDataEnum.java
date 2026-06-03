@@ -22,7 +22,7 @@ public enum BioDataEnum {
         ItemList.PlasmidBetaLactamase),
     SaccharomycesCerevisiae("Saccharomyces cerevisiae", 1, EnumRarity.common, 75_00, VoltageIndex.HV,
         ItemList.DNASaccharomycesCerevisiae, ItemList.PlasmidSaccharomycesCerevisiae),
-    NullBioData("", 2, EnumRarity.epic, 75_00, VoltageIndex.HV, ItemList.DNANull, ItemList.PlasmidNull),
+    NullBioData("Null", 2, EnumRarity.epic, 75_00, VoltageIndex.HV, ItemList.DNANull, ItemList.PlasmidNull),
     SaccharomycesCerevisiaeVarBayanus("Saccharomyces cerevisiae var bayanus", 3, EnumRarity.uncommon, 75_00,
         VoltageIndex.HV, ItemList.DNASaccharomycesCerevisiaeVarBayanus,
         ItemList.PlasmidSaccharomycesCerevisiaeVarBayanus),

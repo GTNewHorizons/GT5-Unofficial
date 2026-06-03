@@ -18,9 +18,9 @@ import java.util.Objects;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import bartworks.API.enums.BioDataEnum;
-import gregtech.api.util.GTLanguageManager;
 
 public class BioData {
 
@@ -47,7 +47,7 @@ public class BioData {
     }
 
     public String getLocalisedName() {
-        return GTLanguageManager.getTranslation(this.getName());
+        return StatCollector.translateToLocal(this.getName());
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {

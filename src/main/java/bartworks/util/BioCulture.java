@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.Fluid;
 import bartworks.API.enums.BioCultureEnum;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
@@ -33,10 +32,6 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return StatCollector.translateToLocal(
             "bw.bioname." + getName().toLowerCase()
                 .replace(" ", "_"));
-    }
-
-    public void setLocalisedName(String localisedName) {
-        GTLanguageManager.addStringLocalization(this.getName(), localisedName);
     }
 
     Color color;
