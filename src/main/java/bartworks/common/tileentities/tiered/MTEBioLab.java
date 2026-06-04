@@ -432,9 +432,9 @@ public class MTEBioLab extends MTEBasicMachine {
 
             if (this.mTier < effectiveRecipeTier) return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
-            for (int slot : new int[] { cellSlot, plasmidSlot, cultureSlot }) {
-                this.mInventory[slot].stackSize--;
-            }
+            this.mInventory[cellSlot].stackSize--;
+            this.mInventory[plasmidSlot].stackSize--;
+            this.mInventory[cultureSlot].stackSize--;
 
             this.mFluid.amount -= recipeFluidAmount;
             bioCulture = bioCulture.setPlasmid(cultureDNABioData);
