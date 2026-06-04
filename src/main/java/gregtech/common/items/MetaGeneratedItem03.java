@@ -252,9 +252,9 @@ import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus3;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
-import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveGate1;
-import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveGate2;
-import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveGate3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve3;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
@@ -2032,14 +2032,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.MetaMaterial_EnergyConduit3,
             MetaMaterial_EnergyConduit3.ID);
         registerMetaMaterialTiered(
-            "wave_gate",
+            "electrogravitic_valve",
             adj3,
-            ItemList.MetaMaterial_WaveGate1,
-            MetaMaterial_WaveGate1.ID,
-            ItemList.MetaMaterial_WaveGate2,
-            MetaMaterial_WaveGate2.ID,
-            ItemList.MetaMaterial_WaveGate3,
-            MetaMaterial_WaveGate3.ID);
+            ItemList.MetaMaterial_ElectrograviticValve1,
+            MetaMaterial_ElectrograviticValve1.ID,
+            ItemList.MetaMaterial_ElectrograviticValve2,
+            MetaMaterial_ElectrograviticValve2.ID,
+            ItemList.MetaMaterial_ElectrograviticValve3,
+            MetaMaterial_ElectrograviticValve3.ID);
         registerMetaMaterialTiered(
             "wave_focus",
             adj4,
