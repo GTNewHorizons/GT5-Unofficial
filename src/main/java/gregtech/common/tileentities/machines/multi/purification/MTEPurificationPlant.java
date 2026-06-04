@@ -105,7 +105,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        .addElement('F', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('F', ofChain(ofAnyWater(false), isAir()))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(

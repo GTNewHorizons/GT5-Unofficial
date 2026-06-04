@@ -133,7 +133,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
                         onElementPass(x -> ++x.casingAmount, Casings.AquaticCasing.asElement())))
                 .addElement('A', ofFrame(Materials.StainlessSteel))
                 .addElement('B', ofSheetMetal(Materials.StainlessSteel))
-                .addElement('D', ofChain(isAir(), ofAnyWater(false)))
+                .addElement('D', ofChain(ofAnyWater(false), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;

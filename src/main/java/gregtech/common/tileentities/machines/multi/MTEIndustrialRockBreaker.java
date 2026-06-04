@@ -80,8 +80,8 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
                 .casingIndex(Casings.ThermalProcessingCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
-        .addElement('D', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1)))
-        .addElement('E', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('D', ofChain(ofBlockAnyMeta(Blocks.lava, 1), isAir()))
+        .addElement('E', ofChain(ofAnyWater(false), isAir()))
         .build();
 
     public MTEIndustrialRockBreaker(final int aID, final String aName, final String aNameRegional) {

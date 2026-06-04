@@ -142,7 +142,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AlgaeCasing.asElement())))
                 .addElement('C', Casings.FilterMachineCasing.asElement())
                 .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofChain(isAir(), ofAnyWater(false)))
+                .addElement('E', ofChain(ofAnyWater(false), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;

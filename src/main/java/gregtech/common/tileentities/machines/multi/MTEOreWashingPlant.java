@@ -91,7 +91,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
                 .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
-        .addElement('D', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('D', ofChain(ofAnyWater(false), isAir()))
         .build();
 
     public MTEOreWashingPlant(final int aID, final String aName, final String aNameRegional) {

@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
@@ -58,7 +57,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
@@ -144,27 +142,6 @@ public class GTStructureUtility {
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(Blocks.water, 0);
-            }
-        };
-    }
-
-    public static <T> IStructureElement<T> correctlyChainedWaterAir(boolean allowFlowing) {
-        IStructureElement<T> water = ofAnyWater(allowFlowing);
-        IStructureElement<T> air = isAir();
-        // noinspection unchecked
-        IStructureElement<T>[] chain = (IStructureElement<T>[]) new IStructureElement[] { water, air };
-        return new IStructureElementChain<>() {
-
-            @Override
-            public IStructureElement<T>[] fallbacks() {
-                return chain;
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                // Patched survivalPlaceBlock to not place air
-                return water.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
     }

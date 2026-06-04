@@ -99,7 +99,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
         .addElement('E', Casings.InconelReinforcedCasing.asElement())
         .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
         .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
-        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .build();
 
     public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
