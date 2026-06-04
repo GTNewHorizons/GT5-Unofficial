@@ -115,66 +115,66 @@ public class MTEBioLab extends MTEBasicMachine {
         return this.mTier * 1000;
     }
 
-    private final boolean isValidCulture(ItemStack stack) {
+    private boolean isValidCulture(ItemStack stack) {
         // hyp: if it has a NBT then the Name field exist and is correct
         return GTUtility.areStacksEqual(stack, BioCultureEnum.NullBioCulture.culture.get(1), true)
             && stack.getTagCompound() != null;
     }
 
-    private final boolean isDNAFlask(ItemStack stack, boolean isFilled) {
+    private boolean isDNAFlask(ItemStack stack, boolean isFilled) {
         return GTUtility.areStacksEqual(stack, ItemList.EmptyDNAFlask.get(1), isFilled)
             && isFilled == (stack.getTagCompound() != null);
     }
 
-    private final boolean isPlasmidFlask(ItemStack stack, boolean isFilled) {
+    private boolean isPlasmidFlask(ItemStack stack, boolean isFilled) {
         return GTUtility.areStacksEqual(stack, ItemList.EmptyPlasmid.get(1), isFilled)
             && isFilled == (stack.getTagCompound() != null);
     }
 
-    private final boolean isEmptyDataOrb(ItemStack stack) {
+    private boolean isEmptyDataOrb(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.Tool_DataOrb.get(1));
     }
 
-    private final boolean isValidDNASampleOrb(ItemStack stack) {
+    private boolean isValidDNASampleOrb(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.Tool_DataOrb.get(1L), true)
             && "DNA Sample".equals(BehaviourDataOrb.getDataTitle(stack))
             && !BehaviourDataOrb.getDataName(stack)
                 .isEmpty();
     }
 
-    private final boolean isDetergentPowder(ItemStack stack) {
+    private boolean isDetergentPowder(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.DetergentPowder.get(1), false);
     }
 
-    private final boolean isEmptyPetriDish(ItemStack stack) {
+    private boolean isEmptyPetriDish(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.EmptyPetriDish.get(1));
     }
 
-    private final boolean isEthanolCell(ItemStack stack) {
+    private boolean isEthanolCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, Materials.Ethanol.getCells(1));
     }
 
-    private final boolean isFluorescentDNACell(ItemStack stack) {
+    private boolean isFluorescentDNACell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.FLUORESCENT_DNA.get());
     }
 
-    private final boolean isEnzymeSolutionCell(ItemStack stack) {
+    private boolean isEnzymeSolutionCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.ENZYME_SOLUTION.get());
     }
 
-    private final boolean isPenicillinCell(ItemStack stack) {
+    private boolean isPenicillinCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.PENICILLIN.get());
     }
 
-    private final boolean isPolymeraseCell(ItemStack stack) {
+    private boolean isPolymeraseCell(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, MetaGeneratedItem98.FluidCell.POLYMERASE.get());
     }
 
-    private final boolean isPlasmaMembrane(ItemStack stack) {
+    private boolean isPlasmaMembrane(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.PlasmaMembrane.get(1));
     }
 
-    private final boolean areTwoStemCells(ItemStack stack) {
+    private boolean areTwoStemCells(ItemStack stack) {
         return GTUtility.areStacksEqual(stack, ItemList.Circuit_Chip_Stemcell.get(2L));
     }
 
@@ -195,12 +195,12 @@ public class MTEBioLab extends MTEBasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private final boolean hasModuleInstalled() {
+    private boolean hasModuleInstalled() {
         return this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule;
     }
 
-    private final boolean hasFluid(FluidStack fluid, int atLeast) {
+    private boolean hasFluid(FluidStack fluid, int atLeast) {
         return this.mFluid != null && this.mFluid.isFluidEqual(fluid) && this.mFluid.amount >= atLeast;
     }
 
