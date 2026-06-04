@@ -43,19 +43,19 @@ import it.unimi.dsi.fastutil.chars.CharList;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
-public class MTEBasicMachineBaseGui extends MTETieredMachineBlockBaseGui<MTEBasicMachine> {
+public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETieredMachineBlockBaseGui<T> {
 
     BasicUIProperties properties;
     BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
     protected boolean mAddGregTechLogo = false;
 
-    public MTEBasicMachineBaseGui(MTEBasicMachine machine, BasicUIProperties properties) {
+    public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
         this.slotOverlayFunction = properties.slotOverlaysMUI2;
     }
 
-    public MTEBasicMachineBaseGui useGregTechLogo(boolean addLogo) {
+    public MTEBasicMachineBaseGui<T> useGregTechLogo(boolean addLogo) {
         this.mAddGregTechLogo = addLogo;
         return this;
     }
