@@ -97,8 +97,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(panel, syncManager).child(createCalculatorButton(syncManager, panel))
-            .child(createProbTableButton(syncManager, panel));
+        return super.createRightPanelGapRow(panel, syncManager).child(createProbTableButton(syncManager, panel))
+            .child(createCalculatorButton(syncManager, panel));
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -449,11 +449,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         return EnumChatFormatting.GREEN + format(collisionEnergyeV)
             + "eV"
-            + EnumChatFormatting.WHITE
+            + EnumChatFormatting.RESET
             + " | "
             + EnumChatFormatting.YELLOW
             + finalRate
-            + EnumChatFormatting.WHITE
+            + EnumChatFormatting.RESET
             + " | "
             + EnumChatFormatting.GOLD
             + format(finalEUt)
