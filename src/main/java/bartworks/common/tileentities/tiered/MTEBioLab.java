@@ -400,7 +400,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
             this.mFluid.amount -= recipeFluidAmount;
             bioCulture = bioCulture.setPlasmid(cultureDNABioData);
-            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(10_000)) {
+            if (cultureDNABioData.getChance() > XSTR_INSTANCE.nextInt(100_00)) {
                 this.mOutputItems[0] = BioCultureEnum.getPetriDish(bioCulture);
             }
             this.mOutputItems[1] = ItemList.Cell_Empty.get(1);
