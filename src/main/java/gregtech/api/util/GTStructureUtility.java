@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -34,7 +33,6 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -60,6 +58,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
@@ -142,8 +141,8 @@ public class GTStructureUtility {
             }
 
             @Override
-            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z,
-                ItemStack trigger, AutoPlaceEnvironment env) {
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(Blocks.water, 0);
             }
         };
@@ -153,8 +152,9 @@ public class GTStructureUtility {
         IStructureElement<T> water = ofAnyWater(allowFlowing);
         IStructureElement<T> air = isAir();
         // noinspection unchecked
-        IStructureElement<T>[] chain = (IStructureElement<T>[]) new IStructureElement[] {water, air};
+        IStructureElement<T>[] chain = (IStructureElement<T>[]) new IStructureElement[] { water, air };
         return new IStructureElementChain<>() {
+
             @Override
             public IStructureElement<T>[] fallbacks() {
                 return chain;
@@ -162,7 +162,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 // Patched survivalPlaceBlock to not place air
                 return water.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
