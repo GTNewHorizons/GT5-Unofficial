@@ -4,7 +4,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -14,7 +13,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
@@ -71,11 +69,6 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                         .asWidget()
                         .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
                         .paddingTop(3)));
-    }
-
-    @Override
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.PICTURE_NANOCHIP_LOGO;
     }
 
     @Override
