@@ -884,7 +884,7 @@ public class Godforge implements Runnable {
 
             builder.addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
         }
-        
+
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.InfusedGold.getDust(1), ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
             .fluidInputs(Materials.Boron.getPlasma(2L))
