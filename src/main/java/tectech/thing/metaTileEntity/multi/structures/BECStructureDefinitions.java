@@ -557,7 +557,7 @@ public class BECStructureDefinitions {
         "        CAC        ",
         "      DC   CD      ",
         "      AA   AA      ",
-        "      DD   CD      ",
+        "      DD   DD      ",
         "        DAC        ",
         "        DAD        ",
         "                   ",
@@ -1168,7 +1168,7 @@ public class BECStructureDefinitions {
         "     F    GA     HC       CH     AG    F     ",
         " D         H     HC       CH     H         D ",
         " AG        H     HC       CH     H        GA ",
-        " H         H     HC       CH     H           ",
+        " H         H     HC       CH     H         H ",
         " H        GA     HC       CH     AG        H ",
         " H         H     HC       CH     H         H ",
         " AG        H     HC       CH     H        GA ",
@@ -1921,7 +1921,7 @@ public class BECStructureDefinitions {
         "  E                                                       E  ",
         "  A      F     F     F     F     F     F     F     F      A  ",
         "   E     C     C     C     C     C     C     C     C     E   ",
-        "    B C           C           C           C           CCB    ",
+        "    B C           C           C           C           C B    ",
         "     DB  A  C  A  B  A  C  A  B  A  C  A  B  A  C  A  BD     ",
         "            E           E           E           E            "
     },{
@@ -2113,7 +2113,7 @@ public class BECStructureDefinitions {
         "  E                                                       E  ",
         "  A      F     F     F     F     F     F     F     F      A  ",
         "   E     C     C     C     C     C     C     C     C     E   ",
-        "    BCC           C           C           C           C B    ",
+        "    B C           C           C           C           C B    ",
         "     DB  A  C  A  B  A  C  A  B  A  C  A  B  A  C  A  BD     ",
         "            E           E           E           E            "
     },{
