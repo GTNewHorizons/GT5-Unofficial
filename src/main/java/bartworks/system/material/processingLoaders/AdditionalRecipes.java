@@ -88,7 +88,7 @@ public class AdditionalRecipes {
 
     private static void runBWRecipes() {
 
-        for (var culture : BioCultureEnum.values()) {
+        for (BioCultureEnum culture : BioCultureEnum.values()) {
             BioData DNA = culture.dna.getBioData();
             ItemStack Detergent = ItemList.DetergentPowder.get(1);
             ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
@@ -164,12 +164,9 @@ public class AdditionalRecipes {
         }
 
         long energyUsageWithTransformModule = 1;
-        for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
-            // TODO Fix
-            if (true) continue;
-            BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
-            BioData Plasmid = BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(DNA, BioCultureEnum.NullBioCulture).plasmid
-                .getBioData();
+        for (BioCultureEnum culture : BioCultureEnum.values()) {
+            BioData DNA = culture.dna.getBioData();
+            BioData Plasmid = culture.plasmid.getBioData();
             if (BioDataEnum.NullBioData.getBioData()
                 .equals(DNA)) continue;
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
@@ -183,7 +180,7 @@ public class AdditionalRecipes {
                         BioCultureEnum.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
                         BioDataEnum.getPlasmidCell(Plasmid),
                         FluidLoader.BioLabFluidCells[2])
-                    .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
+                    .itemOutputs(BioCultureEnum.getPetriDish(culture.bioCulture), ItemList.Cell_Empty.get(1L))
                     .outputChances(Plasmid.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .special(BioItemList.mBioLabParts[3])
