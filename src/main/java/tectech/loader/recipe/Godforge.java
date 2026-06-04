@@ -886,7 +886,7 @@ public class Godforge implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Gold.getDust(1), ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
+            .itemInputs(Materials.InfusedGold.getDust(1), ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
             .fluidInputs(Materials.Boron.getPlasma(2L))
             .fluidOutputs(Materials.ActivatedNetherite.getMolten(144L), Materials.Boron.getMolten(2L))
             .duration(8 * SECONDS)
