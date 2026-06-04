@@ -513,7 +513,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Cobalt)
             .addOreByproduct(() -> Materials.Gold)
             .addOreByproduct(() -> Materials.Nickel)
-            .setArcSmeltingInto(() -> Materials.AnnealedCopper)
+            .setArcSmeltingIntoWithGas(() -> Materials.Oxygen, () -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MORTAR_GRINDABLE)
             .addSubTag(SubTag.MULTI_PLATE)
@@ -2269,7 +2269,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SHINY)
             .setSmeltingInto(() -> Materials.Copper)
             .setMaceratingInto(() -> Materials.Copper)
-            .setArcSmeltingInto(() -> Materials.AnnealedCopper)
+            .setArcSmeltingIntoWithGas(() -> Materials.Oxygen, () -> Materials.AnnealedCopper)
             .addSubTag(SubTag.METAL)
             .constructMaterial();
     }
