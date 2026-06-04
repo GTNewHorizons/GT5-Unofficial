@@ -13,4 +13,6 @@ public enum SteamVariant {
     public String toString() {
         return super.toString().toLowerCase(Locale.ENGLISH);
     }
+
+    public static SteamVariant[] variants = { BRONZE, STEEL, PRIMITIVE };
 }
