@@ -197,7 +197,7 @@ public class EM2MetaMaterialRecipes implements Runnable {
     private void registerElectrograviticValve() {
         // 3-tier UIV/UMV/UXV 300s. Nanites: T4 T1 T1 T3 T1, +2 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_ElectrograviticValve1, ItemList.MetaMaterial_ElectrograviticValve2,
-            ItemList.MetaMaterial_ElectrograviticValve3};
+            ItemList.MetaMaterial_ElectrograviticValve3 };
         int[] chromaticAmts = { 4, 8, 16 };
         int[] dimShiftedAmts = { 2, 4, 8 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
