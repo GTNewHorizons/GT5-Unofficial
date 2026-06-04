@@ -142,7 +142,7 @@ import ic2.api.recipe.RecipeOutput;
 @Mod(
     modid = "gregtech",
     name = "GregTech",
-    version = GT_Version.VERSION,
+    version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.6.35,);"

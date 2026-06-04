@@ -884,6 +884,15 @@ public class Godforge implements Runnable {
 
             builder.addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Gold.getDust(1), ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
+            .fluidInputs(Materials.Boron.getPlasma(2L))
+            .fluidOutputs(Materials.ActivatedNetherite.getFluid(144L), Materials.Boron.getMolten(2L))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 18000)
+            .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
     }
 
     private static FluidStack convertToMolten(ItemStack stack) {
