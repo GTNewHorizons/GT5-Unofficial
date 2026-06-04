@@ -858,10 +858,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             protected @NotNull Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 Stream<GTRecipe> str = super.findRecipeMatches(map).limit(1);
                 if (mode == ArcFurnaceMode.Normal) return str;
-                GTRecipe found = str.findAny()
-                    .orElse(null);
-                if (found == null) return Stream.of();
                 if (mode == ArcFurnaceMode.Blast) {
+                    GTRecipe found = str.findAny()
+                        .orElse(null);
+                    if (found == null) return Stream.of();
                     GTRecipe copy = found.copy()
                         .setEUt(
                             (int) Math
