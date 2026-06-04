@@ -30,7 +30,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -518,11 +517,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
     }
 
     @Override

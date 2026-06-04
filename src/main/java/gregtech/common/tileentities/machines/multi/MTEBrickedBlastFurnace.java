@@ -45,7 +45,6 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
@@ -581,11 +580,6 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.PRIMITIVE;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
     }
 
     @Override

@@ -13,7 +13,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -283,11 +282,6 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.DEFAULT;
     }
 
     @Override
