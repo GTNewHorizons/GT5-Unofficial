@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
@@ -53,9 +54,10 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
             int tint;
+            CondensateType condensate = CondensateType.getCondensateType(fluid);
             if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
                 tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
-            } else if (CondensateType.getCondensateType(fluid) != null) {
+            } else if (condensate != null) {
                 tint = CondensateType.getRenderColor(fluid);
             } else {
                 tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
@@ -73,6 +75,21 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             tess.addVertexWithUV(16, 0, 0, x_max, y_min);
             tess.addVertexWithUV(0, 0, 0, x_min, y_min);
             tess.draw();
+
+            if (condensate != null) {
+                Minecraft.getMinecraft()
+                    .getTextureManager()
+                    .bindTexture(CondensateAnimationTickHandler.texture);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                final float vMin = CondensateAnimationTickHandler.currentFrame / 64f;
+                final float vMax = (CondensateAnimationTickHandler.currentFrame + 1) / 64f;
+                tess.startDrawingQuads();
+                tess.addVertexWithUV(0, 16, 0, 0, vMax);
+                tess.addVertexWithUV(16, 16, 0, 1, vMax);
+                tess.addVertexWithUV(16, 0, 0, 1, vMin);
+                tess.addVertexWithUV(0, 0, 0, 0, vMin);
+                tess.draw();
+            }
         }
 
         if (item.getTagCompound() == null) {

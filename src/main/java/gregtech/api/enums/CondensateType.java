@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
@@ -9,9 +8,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.interfaces.fluid.IGTFluidBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
+import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
@@ -33,102 +33,107 @@ public enum CondensateType {
         "netherite",
         () -> Materials.ActivatedNetherite,
         144,
-        recipe  -> recipe.fluidInputs(Materials.ActivatedNetherite.getFluid(144)).duration(20).eut(TierEU.RECIPE_UHV)),
+        () -> Materials.ActivatedNetherite.getFluid(144), 20, TierEU.RECIPE_UHV),
     NEUTRONIUM(
         "neutronium",
         () -> Materials.Neutronium,
         144,
-        recipe -> recipe.fluidInputs(Materials.Neutronium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UHV)),
+        () -> Materials.Neutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
     BEDROCKIUM(
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
-        recipe -> recipe.fluidInputs(Materials.Bedrockium.getMolten(144)).duration(20).eut(TierEU.RECIPE_UEV)),
+        () -> Materials.Bedrockium.getMolten(144), 20, TierEU.RECIPE_UEV),
     ChromaticGlass(
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
         144,
-        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144)).duration(20).eut(TierEU.RECIPE_UEV)),
+        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144), 20, TierEU.RECIPE_UEV),
     CelestialTungsten(
         "celestialtungsten",
         () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
         144,
-        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144)).duration(20).eut(TierEU.RECIPE_UEV)),
+        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 20, TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
         144,
-        recipe -> recipe.fluidInputs(Materials.Infinity.getMolten(144)).duration(20).eut(TierEU.RECIPE_UEV)),
+        () -> Materials.Infinity.getMolten(144), 20, TierEU.RECIPE_UEV),
     Hypogen(
         "hypogen",
         () -> MaterialsElements.STANDALONE.HYPOGEN,
         144,
-        recipe -> recipe.fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144)).duration(40).eut(TierEU.RECIPE_UIV)),
+        () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 40, TierEU.RECIPE_UIV),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,
         144,
-        recipe -> recipe.fluidInputs(Materials.TranscendentMetal.getMolten(144)).duration(40).eut(TierEU.RECIPE_UIV)),
+        () -> Materials.TranscendentMetal.getMolten(144), 40, TierEU.RECIPE_UIV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
         () -> Materials.DimensionallyShiftedSuperfluid,
         144,
-        recipe -> recipe.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(144)).duration(40).eut(TierEU.RECIPE_UIV)),
+        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(144), 40, TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        recipe -> recipe.fluidInputs(Materials.SpaceTime.getMolten(144)).duration(40).eut(TierEU.RECIPE_UIV)),
+        () -> Materials.SpaceTime.getMolten(144), 40, TierEU.RECIPE_UIV),
     Time(
         "time",
         () -> Materials.Time,
         144,
-        recipe -> recipe.fluidInputs(Materials.Time.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
+        () -> Materials.Time.getMolten(144), 60, TierEU.RECIPE_UMV),
     Space(
         "space",
         () -> Materials.Space,
         144,
-        recipe -> recipe.fluidInputs(Materials.Space.getMolten(144)).duration(60).eut(TierEU.RECIPE_UMV)),
+        () -> Materials.Space.getMolten(144), 60, TierEU.RECIPE_UMV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         144,
-        recipe -> recipe.fluidInputs(Materials.BoundlessCosmicSolder.getFluid(144)).duration(60).eut(TierEU.RECIPE_UMV)),
+        () -> Materials.BoundlessCosmicSolder.getFluid(144), 60, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,
         144,
-        recipe -> recipe.fluidInputs(Materials.MHDCSM.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
+        () -> Materials.MHDCSM.getMolten(144), 80, TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
         () -> Materials.MagMatter,
         144,
-        recipe -> recipe.fluidInputs(Materials.MagMatter.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
+        () -> Materials.MagMatter.getMolten(144), 80, TierEU.RECIPE_UXV),
     Universium(
         "universium",
         () -> Materials.Universium,
         144,
-        recipe -> recipe.fluidInputs(Materials.Universium.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
+        () -> Materials.Universium.getMolten(144), 80, TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        recipe -> recipe.fluidInputs(Materials.Eternity.getMolten(144)).duration(80).eut(TierEU.RECIPE_UXV)),
+        () -> Materials.Eternity.getMolten(144), 80, TierEU.RECIPE_UXV),
     // spotless:on
     ;
 
     private final String id;
     private final Lazy<IOreMaterial> material;
     private final int unit;
-    private final Consumer<GTRecipeBuilder> recipe;
+    private final Supplier<FluidStack> source;
+    private final int duration;
+    private final long eut;
     private Fluid entangledFluid;
     private GTItemCell entangledCell;
 
-    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Consumer<GTRecipeBuilder> recipe) {
+    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Supplier<FluidStack> source, int duration,
+        long eut) {
         this.id = id;
         this.material = new Lazy<>(mat);
         this.unit = unit;
-        this.recipe = recipe;
+        this.source = source;
+        this.duration = duration;
+        this.eut = eut;
     }
 
     public IOreMaterial getMaterial() {
@@ -145,13 +150,34 @@ public enum CondensateType {
 
     public static void registerFluids() {
         for (CondensateType type : values()) {
-            type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
-                .withTextures(new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"), null)
+            IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
                 .withColorRGBA(
                     type.getMaterial()
                         .getRGBA())
-                .withStateAndTemperature(FluidState.GAS, 0)
-                .buildAndRegister()
+                .withStateAndTemperature(FluidState.GAS, 0);
+
+            ResourceLocation ownTexture = new ResourceLocation(
+                "gregtech:fluids/condensate/fluid." + type.id + "_entangled");
+
+            switch (type) {
+                // Chromatic glass and celestial tungsten keep their bespoke condensate textures.
+                case ChromaticGlass, CelestialTungsten -> builder.withTextures(ownTexture, null);
+                // Hypogen's source is a gtPlusPlus fluid (can't share via withIconsFrom), so point at its molten
+                // texture.
+                case Hypogen -> builder
+                    .withTextures(new ResourceLocation("miscutils", "fluids/fluid.molten.hypogen"), null);
+                // Everything else reuses the source fluid's stitched icon when it's a GTFluid.
+                default -> {
+                    FluidStack src = type.source.get();
+                    if (src != null && src.getFluid() instanceof GTFluid) {
+                        builder.withIconsFrom(src.getFluid());
+                    } else {
+                        builder.withTextures(ownTexture, null);
+                    }
+                }
+            }
+
+            type.entangledFluid = builder.buildAndRegister()
                 .asFluid();
 
             type.entangledCell = new GTItemCell("entangled_" + type.id, "entangled_condensate", type.entangledFluid);
@@ -160,12 +186,12 @@ public enum CondensateType {
 
     public static void registerRecipes() {
         for (CondensateType type : values()) {
-            GTRecipeBuilder generate = GTValues.RA.stdBuilder()
-                .fluidOutputs(new FluidStack(type.entangledFluid, type.unit));
-
-            type.recipe.accept(generate);
-
-            generate.addTo(TecTechRecipeMaps.condensateGeneratorRecipes);
+            GTValues.RA.stdBuilder()
+                .fluidInputs(type.source.get())
+                .fluidOutputs(new FluidStack(type.entangledFluid, type.unit))
+                .duration(type.duration)
+                .eut(type.eut)
+                .addTo(TecTechRecipeMaps.condensateGeneratorRecipes);
         }
     }
 
@@ -185,10 +211,16 @@ public enum CondensateType {
     /// Returns 0xFFFFFF for all other materials.
     public static int getRenderColor(Fluid fluid) {
         CondensateType type = getCondensateType(fluid);
-        if (type != null && type.getMaterial() instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
+        if (type == null) {
+            return 0xFFFFFF;
+        }
+        if (type.getMaterial() instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
             return BaseItemComponent.getMaterialCustomColor(gtppMaterial);
         }
-        return 0xFFFFFF;
+        // Shared fluid textures are tinted, so match the source fluid's own render color.
+        FluidStack src = type.source.get();
+        return src != null ? src.getFluid()
+            .getColor() : 0xFFFFFF;
     }
 
     /// Gets the name for a given fluid. This will usually be the condensate name, but non-condensate fluids will
