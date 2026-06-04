@@ -61,10 +61,13 @@ public class MTEBioLab extends MTEBasicMachine {
     private static final boolean[] IS_NC_SYNTHESIS = new boolean[] { true, true, false, false };
     private static final boolean[] IS_NC_CLONAL = new boolean[] { true, false, false, false };
 
+    private ItemStack DNASampleOrb;
+
     private List<Predicate<ItemStack>> predicatesDNA;
     private List<Predicate<ItemStack>> predicatesPCR;
     private List<Predicate<ItemStack>> predicatesSynthesis;
     private List<Predicate<ItemStack>> predicatesClonal;
+
     private BioLabRecipeOutputSupplier outputSupplierDNA;
     private BioLabRecipeOutputSupplier outputSupplierPCR;
     private BioLabRecipeOutputSupplier outputSupplierSynthesis;
@@ -116,6 +119,15 @@ public class MTEBioLab extends MTEBasicMachine {
         initPredicatesAndOutputSuppliers();
     }
 
+    private ItemStack getDNASampleOrb(){
+        if (DNASampleOrb == null){
+            DNASampleOrb = ItemList.Tool_DataOrb.get(1);
+            BehaviourDataOrb.setDataTitle(DNASampleOrb, "DNA Sample");
+            BehaviourDataOrb.setDataName(DNASampleOrb, BioDataEnum.BetaLactamase.name);
+        }
+        return DNASampleOrb;
+    }
+
     private void initPredicatesAndOutputSuppliers() {
         predicatesDNA = List.of(
             this::isValidCulture,
@@ -140,14 +152,9 @@ public class MTEBioLab extends MTEBasicMachine {
             return DNAOrb;
         }), (() -> ItemList.Cell_Empty.get(2)));
 
-        // todo: check if this is called too early, and postpone the registration in case it is
-        final ItemStack inp2 = ItemList.Tool_DataOrb.get(1);
-        BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-        BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.name);
-
         predicatesSynthesis = List.of(
             this::isValidDNASampleOrb,
-            (stack -> GTUtility.areStacksEqual(stack, inp2)),
+            (stack -> GTUtility.areStacksEqual(stack, getDNASampleOrb())),
             this::isEnzymeSolutionCell,
             (stack -> isPlasmidFlask(stack, false)));
 
