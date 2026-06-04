@@ -14137,11 +14137,12 @@ public class MaterialsInit {
     }
 
     private static Materials loadActivatedNetherite() {
+        // The corresponding fluid is registered manually in LoaderGTBlockFluid so it can use a molten texture and a
+        // custom temperature, so addFluid() is intentionally omitted here to avoid a duplicate registration.
         return new MaterialBuilder().setName("activatednetherite")
             .setDefaultLocalName("Activated Netherite")
             .setIconSet(TextureSet.SET_METALLIC)
             .setARGB(0x009c575a)
-            .addFluid()
             .addCell()
             .constructMaterial();
     }

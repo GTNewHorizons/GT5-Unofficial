@@ -33,7 +33,7 @@ public enum CondensateType {
         "netherite",
         () -> Materials.ActivatedNetherite,
         144,
-        () -> Materials.ActivatedNetherite.getFluid(144), 20, TierEU.RECIPE_UHV),
+        () -> Materials.ActivatedNetherite.getMolten(144), 20, TierEU.RECIPE_UHV),
     NEUTRONIUM(
         "neutronium",
         () -> Materials.Neutronium,
