@@ -7631,9 +7631,9 @@ abbrev.entangled_time=Tachyon Rich
 abbrev.entangled_transcendentmetal=Transcendent Metal
 abbrev.entangled_universium=Universium
 
-fluid.entangled_netherite.name=Entangled Netherite Bose-Einstein Condensate
-fluid.entangled_neutronium.name=Entangled Neutronium Bose-Einstein Condensate
-fluid.entangled_bedrockium.name=Entangled Bedrockium Bose-Einstein Condensate
+fluid.entangled_netherite=Entangled Netherite Bose-Einstein Condensate
+fluid.entangled_neutronium=Entangled Neutronium Bose-Einstein Condensate
+fluid.entangled_bedrockium=Entangled Bedrockium Bose-Einstein Condensate
 fluid.entangled_celestialtungsten=Entangled Celestial Tungsten Bose-Einstein Condensate
 fluid.entangled_chromaticglass=Entangled Chromatic Glass Bose-Einstein Condensate
 fluid.entangled_cosmicsolder=Entangled Cosmic Solder Bose-Einstein Condensate
