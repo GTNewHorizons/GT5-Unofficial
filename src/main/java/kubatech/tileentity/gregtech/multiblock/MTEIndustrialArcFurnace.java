@@ -210,12 +210,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement(
-            'C',
-            GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil((te, level) -> {
-                te.coilTier = level;
-                return true;
-            }, te -> te.coilTier))))
+        .addElement('C', GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil((te, level) -> {
+            te.coilTier = level;
+            return true;
+        }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
         .addElement('E', Casings.BoltedNaquadahCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
