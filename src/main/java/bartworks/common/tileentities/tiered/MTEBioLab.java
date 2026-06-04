@@ -56,6 +56,11 @@ public class MTEBioLab extends MTEBasicMachine {
     private static final int CLONAL_CELLULAR_SYNTHESIS_MODULE = 4;
     private static final int INCUBATION_MODULE = 5;
 
+    private static final boolean[] IS_NC_DNA = new boolean[] { false, false, false, false };
+    private static final boolean[] IS_NC_PCR = new boolean[] { false, false, false, false };
+    private static final boolean[] IS_NC_SYNTHESIS = new boolean[] { true, true, false, false };
+    private static final boolean[] IS_NC_CLONAL = new boolean[] { true, false, false, false };
+
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         // spotless:off
         ITexture[] overlays = new ITexture[]{
@@ -283,7 +288,6 @@ public class MTEBioLab extends MTEBasicMachine {
             (stack) -> isDNAFlask(stack, false),
             this::isDetergentPowder,
             this::isEthanolCell);
-        boolean[] isNC = new boolean[] { false, false, false, false };
 
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
             (BioDataEnum::getDNASampleFlask),
@@ -293,7 +297,7 @@ public class MTEBioLab extends MTEBasicMachine {
             GTModHandler.getDistilledWater(1_000),
             1_000,
             predicates,
-            isNC,
+            IS_NC_DNA,
             0,
             0,
             // spotless:off
@@ -308,7 +312,6 @@ public class MTEBioLab extends MTEBasicMachine {
             this::isEmptyDataOrb,
             this::isFluorescentDNACell,
             this::isPolymeraseCell);
-        final boolean[] isNC = new boolean[] { false, false, false, false };
 
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier((bioData -> {
             ItemStack DNAOrb = ItemList.Tool_DataOrb.get(1);
@@ -321,7 +324,7 @@ public class MTEBioLab extends MTEBasicMachine {
             GTModHandler.getLiquidDNA(1_000),
             1_000,
             predicates,
-            isNC,
+            IS_NC_PCR,
             1,
             0,
             // spotless:off
@@ -341,7 +344,6 @@ public class MTEBioLab extends MTEBasicMachine {
             (stack -> GTUtility.areStacksEqual(stack, inp2)),
             this::isEnzymeSolutionCell,
             (stack -> isPlasmidFlask(stack, false)));
-        final boolean[] isNC = new boolean[] { true, true, false, false };
 
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier(
             BioDataEnum::getPlasmidCell,
@@ -351,7 +353,7 @@ public class MTEBioLab extends MTEBasicMachine {
             GTModHandler.getLiquidDNA(1_000),
             1_000,
             predicates,
-            isNC,
+            IS_NC_SYNTHESIS,
             1,
             0,
             // spotless:off
@@ -413,7 +415,7 @@ public class MTEBioLab extends MTEBasicMachine {
     private int processClonalCellularModule() {
         final List<Predicate<ItemStack>> predicates = List
             .of(this::isValidDNASampleOrb, this::isEmptyPetriDish, this::isPlasmaMembrane, this::areTwoStemCells);
-        final boolean[] isNC = new boolean[] { true, false, false, false };
+
         final BioLabRecipeOutputSupplier blOutputSupplier = new BioLabRecipeOutputSupplier((bioData -> {
             BioCulture out = BioCulture.getBioCulture(bioData);
             if (out == null) return null;
@@ -424,7 +426,7 @@ public class MTEBioLab extends MTEBasicMachine {
             GTModHandler.getLiquidDNA(1_000),
             8_000,
             predicates,
-            isNC,
+            IS_NC_CLONAL,
             3,
             0,
             // spotless:off
