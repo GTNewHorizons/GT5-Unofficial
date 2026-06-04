@@ -21,6 +21,7 @@ import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
+import gregtech.loaders.postload.recipes.EM2MetaMaterialRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
 import gregtech.loaders.postload.recipes.ElectromagneticSeparatorRecipes;
 import gregtech.loaders.postload.recipes.ExtractorRecipes;
@@ -115,6 +116,7 @@ public class MachineRecipeLoader implements Runnable {
         new VacuumFreezerRecipes().run();
         new WiremillRecipes().run();
         new TranscendentPlasmaMixerRecipes().run();
+        new EM2MetaMaterialRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();
