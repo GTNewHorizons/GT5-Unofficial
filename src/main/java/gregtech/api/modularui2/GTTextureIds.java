@@ -96,6 +96,8 @@ public final class GTTextureIds {
 
     public static final String OVERLAY_SLOT_MINING_PIPE_STANDARD = "gregtech:overlay_slot_mining_pipe_standard";
 
+    public static final String PROGRESSBAR_WINDMILL_GRINDSTONE = "gregtech:progressbar_windmill_grindstone";
+
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
     public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";

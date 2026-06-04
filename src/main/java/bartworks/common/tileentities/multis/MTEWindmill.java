@@ -86,6 +86,9 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implements ISurvivalConstructable {
 
+    // TODO: redo structure checking
+    // TODO: clean up class
+
     private static final IIcon[] iIcons = new IIcon[2];
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
     private static final ITexture[] iTextures = new ITexture[3];
@@ -235,6 +238,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
+    // TODO: remake/stylize tooltip
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -282,6 +286,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return true;
     }
 
+    // TODO: remove
     private float multiplierRecipe(ItemStack itemStack) {
         final Item item = itemStack.getItem();
         if (item == Items.wheat || item == Items.reeds) {
@@ -318,6 +323,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return 1f;
     }
 
+    // TODO: redo this function/clean up
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack itemStack = getControllerSlot();
@@ -471,6 +477,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
                 .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
+    // TODO: i dont think this is needed anymore
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
