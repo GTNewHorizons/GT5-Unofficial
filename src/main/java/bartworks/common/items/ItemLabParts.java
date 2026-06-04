@@ -33,11 +33,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLabParts extends SimpleSubItemClass {
 
-    private static final int PETRI_DISH = 0;
-    private static final int DNA_FLASK = 1;
-    private static final int PLASMID_CELL = 2;
-    private static final int DETERGENT = 3;
-    private static final int AGAROSE = 4;
+    public static final int PETRI_DISH = 0;
+    public static final int DNA_FLASK = 1;
+    public static final int PLASMID_CELL = 2;
+    public static final int DETERGENT = 3;
+    public static final int AGAROSE = 4;
 
     public ItemLabParts(String[] tex) {
         super(tex);
