@@ -451,7 +451,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
     private static final int MAX_PATTERN_COUNT = 4 * 9;
     private static final int SLOT_MANUAL_SIZE = 9;
-    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
+    public static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
     public static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
     private static final int MANUAL_SLOT_WINDOW = 10;

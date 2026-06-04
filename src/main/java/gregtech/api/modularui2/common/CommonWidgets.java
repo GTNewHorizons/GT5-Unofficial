@@ -50,8 +50,20 @@ public final class CommonWidgets {
      */
     public static Widget<?> createMachineTitle(IMetaTileEntity mte, int panelWidth) {
         if (NetworkUtils.isClient()) {
-            String title = mte.getLocalName();
+            return createMachineTitle(mte.getLocalName(), panelWidth);
+        }
+        return null;
+    }
 
+    /**
+     * Returns a title widget positioned on the top left above the panel. Client only!
+     *
+     * @param title      - The title
+     * @param panelWidth - The width of the machine's main panel
+     * @return machine title widget on the client, null otherwise
+     */
+    public static Widget<?> createMachineTitle(String title, int panelWidth) {
+        if (NetworkUtils.isClient()) {
             int borderRadius = 5;
             int maxWidth = panelWidth - borderRadius * 2;
 

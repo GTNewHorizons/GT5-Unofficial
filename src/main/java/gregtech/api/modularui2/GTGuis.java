@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
+import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputSlaveGui;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.panel.GTPopUpPanel;
 
@@ -57,5 +58,6 @@ public final class GTGuis {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
         GuiManager.registerFactory(CoverUIFactory.INSTANCE);
         GuiManager.registerFactory(ToolboxSelectGuiFactory.INSTANCE);
+        GuiManager.registerFactory(MTEHatchCraftingInputSlaveGui.GUI);
     }
 }
