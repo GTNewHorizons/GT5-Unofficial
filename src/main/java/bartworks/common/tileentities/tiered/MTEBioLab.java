@@ -65,10 +65,10 @@ public class MTEBioLab extends MTEBasicMachine {
     private List<Predicate<ItemStack>> predicatesPCR;
     private List<Predicate<ItemStack>> predicatesSynthesis;
     private List<Predicate<ItemStack>> predicatesClonal;
-    BioLabRecipeOutputSupplier outputSupplierDNA;
-    BioLabRecipeOutputSupplier outputSupplierPCR;
-    BioLabRecipeOutputSupplier outputSupplierSynthesis;
-    BioLabRecipeOutputSupplier outputSupplierClonal;
+    private BioLabRecipeOutputSupplier outputSupplierDNA;
+    private BioLabRecipeOutputSupplier outputSupplierPCR;
+    private BioLabRecipeOutputSupplier outputSupplierSynthesis;
+    private BioLabRecipeOutputSupplier outputSupplierClonal;
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         // spotless:off
