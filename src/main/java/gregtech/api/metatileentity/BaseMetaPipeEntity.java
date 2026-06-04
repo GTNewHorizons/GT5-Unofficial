@@ -785,6 +785,20 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
+                if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
+                    if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                        if (mWorks) disableWorking();
+                        else enableWorking();
+                        mMetaTileEntity.markDirty();
+                        GTUtility.sendChatTrans(
+                            aPlayer,
+                            isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                : "GT5U.chat.machine.processing.disable");
+                        sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
+                    }
+                    return true;
+                }
+
                 if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
                     if (mMetaTileEntity
                         .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {

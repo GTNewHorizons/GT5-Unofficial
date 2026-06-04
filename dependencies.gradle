@@ -34,7 +34,7 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:99.99.99:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.4.37:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.98-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.10.3:dev")
@@ -46,9 +46,6 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-951-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.85-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.5:dev")
-    api("com.github.GTNewHorizons:NewHorizonsCoreMod:2.8.272:dev"){
-        exclude group: "com.github.GTNewHorizons", module: "GT5-Unofficial"
-         }
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.22:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.14-GTNH:dev")
