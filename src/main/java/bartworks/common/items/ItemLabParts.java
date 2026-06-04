@@ -33,6 +33,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLabParts extends SimpleSubItemClass {
 
+    private static final int PETRI_DISH = 0;
+    private static final int DNA_FLASK = 1;
+    private static final int PLASMID_CELL = 2;
+    private static final int DETERGENT = 3;
+    private static final int AGAROSE = 4;
+
     public ItemLabParts(String[] tex) {
         super(tex);
         this.setCreativeTab(MainMod.BIO_TAB);
@@ -44,11 +50,11 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         return switch (itemStack.getItemDamage()) {
-            case 0 -> BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(
+            case PETRI_DISH -> BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(
                 itemStack.getTagCompound()
                     .getString("Name"),
                 BioCultureEnum.NullBioCulture).rarity;
-            case 1, 2 -> BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(
+            case DNA_FLASK, PLASMID_CELL -> BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(
                 itemStack.getTagCompound()
                     .getString("Name"),
                 BioDataEnum.NullBioData).rarity;
@@ -59,7 +65,7 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null) {
+        if (stack.getItemDamage() == PETRI_DISH && stack.getTagCompound() != null) {
             Color color = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(
                 stack.getTagCompound()
                     .getString("Name"),
@@ -75,19 +81,19 @@ public class ItemLabParts extends SimpleSubItemClass {
 
         if (itemStack.getTagCompound() == null) {
             switch (itemStack.getItemDamage()) {
-                case 0:
+                case PETRI_DISH:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.0.name"));
                     break;
-                case 1:
+                case DNA_FLASK:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.1.name"));
                     break;
-                case 2:
+                case PLASMID_CELL:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.2.name"));
                     break;
-                case 3:
+                case DETERGENT:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.3.name"));
                     break;
-                case 4:
+                case AGAROSE:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.4.name"));
                     break;
                 default:
@@ -100,7 +106,7 @@ public class ItemLabParts extends SimpleSubItemClass {
         String name = itemStack.getTagCompound()
             .getString("Name");
         switch (itemStack.getItemDamage()) {
-            case 0:
+            case PETRI_DISH:
                 BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME
                     .getOrDefault(name, BioCultureEnum.NullBioCulture).bioCulture;
                 list.add(
@@ -109,13 +115,13 @@ public class ItemLabParts extends SimpleSubItemClass {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
-            case 1:
+            case DNA_FLASK:
                 BioData DNAFlask = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData)
                     .getBioData();
                 list.add(
                     StatCollector.translateToLocalFormatted("tooltip.labparts.7.name", DNAFlask.getLocalisedName()));
                 break;
-            case 2:
+            case PLASMID_CELL:
                 BioData plasmidCell = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData)
                     .getBioData();
                 list.add(

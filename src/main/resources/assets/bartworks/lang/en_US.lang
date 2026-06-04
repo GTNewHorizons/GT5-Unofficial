@@ -310,20 +310,16 @@ bw.bioname.pseudomonas_veronii.latin=Pseudomonas veronii
 bw.bioname.pseudomonas_veronii=Anaerobic Oil Bacteria
 bw.bioname.saccharomyces_escherichia.latin=Saccharomyces escherichia
 bw.bioname.saccharomyces_escherichia=General Purpose Fermenting Bacteria
-
 # This literally means something like barnad'ric tree trimmer
 bw.bioname.barnadafis_arboriatoris.latin=Barnadafis arboriatoris
 bw.bioname.barnadafis_arboriatoris=Barnadric Tree Cutter
-
 # how do we call this algae from the north sea on another planet? i like "TCetie's serrated water fruit"
 bw.bioname.tcetieis_fucus_serratus.latin=TCetieis fucus serratus
-bw.bioname.tcetieis_fucus_serratus=TCetieis fucus serratus
-
+bw.bioname.tcetieis_fucus_serratus=TCetie's serrated tang
 # this should mean its sludge of corynebacterium from mars but correct me if i'm wrong
 bw.bioname.corynebacterium_sludge_marsensis.latin=Limus corynebacterii marsensis
 bw.bioname.corynebacterium_sludge_marsensis=Martian corynebacterium sludge
-
-#
+# this means something like "foreign guest's foreign act"
 bw.bioname.xenoxene_xenoxsis.latin=Xenoxene xenoxsis
 bw.bioname.xenoxene_xenoxsis=Xenoxene xenoxsis
 bw.bioname.ova_evolutionis.latin=Ova evolutionis
@@ -337,6 +333,6 @@ bw.bioname.binni_growth_medium=Binni growth medium
 bw.bioname.binni_bacteria.latin=Binni bacteria
 bw.bioname.binni_bacteria=Binni bacteria
 bw.bioname.mutagen_bacteria_a_spatio.latin=Mutagen bacteria a spatio
-bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria a spatio
+bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria from space
 bw.bioname.null.latin=Cimex remotum
 bw.bioname.null=Debug
