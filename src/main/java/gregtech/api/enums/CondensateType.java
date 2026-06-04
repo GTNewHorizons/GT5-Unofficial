@@ -29,16 +29,16 @@ import tectech.recipe.TecTechRecipeMaps;
 public enum CondensateType {
 
     // spotless:off
-    NETHERITE(
-        "netherite",
-        () -> Materials.ActivatedNetherite,
-        144,
-        () -> Materials.ActivatedNetherite.getMolten(144), 20, TierEU.RECIPE_UHV),
     NEUTRONIUM(
         "neutronium",
         () -> Materials.Neutronium,
         144,
         () -> Materials.Neutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
+    COSMICNEUTRONIUM(
+        "cosmicneutronium",
+        () -> Materials.CosmicNeutronium,
+        144,
+        () -> Materials.CosmicNeutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
     BEDROCKIUM(
         "bedrockium",
         () -> Materials.Bedrockium,

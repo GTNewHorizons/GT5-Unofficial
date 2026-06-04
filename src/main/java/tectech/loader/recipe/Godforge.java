@@ -891,7 +891,7 @@ public class Godforge implements Runnable {
             .fluidOutputs(Materials.ActivatedNetherite.getMolten(144L), Materials.Boron.getMolten(2L))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(COIL_HEAT, 18000)
+            .metadata(COIL_HEAT, 50000)
             .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
     }
 
