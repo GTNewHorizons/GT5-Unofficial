@@ -1062,6 +1062,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+    public static final UITexture PROGRESSBAR_WINDMILL_GRINDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/windmill_grindstone")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WINDMILL_GRINDSTONE)
+        .build();
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()

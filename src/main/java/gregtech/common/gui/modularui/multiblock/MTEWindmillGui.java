@@ -1,18 +1,20 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import bartworks.common.tileentities.multis.MTEWindmill;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
+import gregtech.common.modularui2.widget.GTProgressWidget;
 
 public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
@@ -22,84 +24,30 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
     @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        registerSyncValues(syncManager);
 
-        return super.build(guiData, syncManager, uiSettings);
+        final ProgressWidget progressGrinder = new GTProgressWidget()
+            .value(new DoubleSyncValue(() -> (double) multiblock.mProgresstime / multiblock.mMaxProgresstime))
+            .texture(GTGuiTextures.PROGRESSBAR_WINDMILL_GRINDSTONE, 64)
+            .size(64, 64);
+
+        final ItemSlot inputSlot = new ItemSlot()
+            .slot(
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CRUSHED_ORE);
+
+        return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).moveGregtechLogoPos(8, 63)
+            .build()
+            .child(
+                Flow.column()
+                    .child(createMachineRow(progressGrinder, inputSlot)));
     }
 
-    @Override
-    protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot) {
         return Flow.row()
-            .fullWidth()
-            .height(76)
-            .childIf(
-                multiblock.doesBindPlayerInventory(),
-                () -> SlotGroupWidget.playerInventory(false)
-                    .center());
-    }
-
-    @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        return Flow.row()
-            .fullWidth()
-            .paddingRight(2)
-            .paddingLeft(4)
-            .height(getTextBoxToInventoryGap())
-            .child(createRightButtons(syncManager))
-            .child(createSlots());
-    }
-
-    protected Flow createRightButtons(PanelSyncManager syncManager) {
-        return Flow.row()
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-            .reverseLayout(true)
-            .heightRel(1f)
-            .rightRel(0)
-            .coverChildrenWidth()
-            .child(createPowerSwitchButton())
-            .child(createStructureUpdateButton(syncManager));
-    }
-
-    private Flow createSlots() {
-        return Flow.row()
-            .heightRel(1f)
-            .verticalCenter()
-            .coverChildrenWidth()
-            .child(createInvSlot());
-    }
-
-    private IWidget createInvSlot() {
-        return new ItemSlot().slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
-
-            @Override
-            public int getSlotStackLimit() {
-                return multiblock.getInventoryStackLimit();
-            }
-        }.singletonSlotGroup());
-    }
-
-    @Override
-    protected boolean shouldDisplayVoidExcess() {
-        return false;
-    }
-
-    @Override
-    protected boolean shouldDisplayInputSeparation() {
-        return false;
-    }
-
-    @Override
-    protected boolean shouldDisplayBatchMode() {
-        return false;
-    }
-
-    @Override
-    protected boolean shouldDisplayRecipeLock() {
-        return false;
-    }
-
-    @Override
-    protected int getTextBoxToInventoryGap() {
-        return 30;
+            .horizontalCenter()
+            .size(72, 76)
+            .child(progressGrinder.center())
+            .child(inputSlot.center());
     }
 }
