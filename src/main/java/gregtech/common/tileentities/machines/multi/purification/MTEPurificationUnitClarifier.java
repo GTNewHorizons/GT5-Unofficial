@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GTStructureUtility.correctlyChainedWaterAir;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -108,7 +109,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('W', correctlyChainedWaterAir(false))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();
