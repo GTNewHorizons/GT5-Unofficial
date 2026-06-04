@@ -88,29 +88,24 @@ public class AdditionalRecipes {
 
     private static void runBWRecipes() {
 
-        for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
-            //TODO Fix
-            BioData DNA = BioData.getBioDataFromNBTTag(
-                stack.getTagCompound()
-                    .getCompoundTag("DNA"));
-            if (DNA != null) {
-                ItemStack Detergent = ItemList.DetergentPowder.get(1);
-                ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
-                ItemStack EthanolCell = Materials.Ethanol.getCells(1);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
-                    .itemOutputs(
-                        BioDataEnum.getDNASampleFlask(DNA),
-                        GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
-                    .outputChances(DNA.getChance(), 100_00)
-                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
-                    .special(BioItemList.mBioLabParts[0])
-                    .duration(25 * SECONDS)
-                    .eut(GTValues.VP[DNA.getTier()])
-                    .ignoreCollision()
-                    .fake()
-                    .addTo(bioLabRecipes);
-            }
+        for (var culture : BioCultureEnum.values()) {
+            BioData DNA = culture.dna.getBioData();
+            ItemStack Detergent = ItemList.DetergentPowder.get(1);
+            ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
+            ItemStack EthanolCell = Materials.Ethanol.getCells(1);
+            GTValues.RA.stdBuilder()
+                .itemInputs(BioCultureEnum.getPetriDish(culture.bioCulture), DNAFlask, Detergent, EthanolCell)
+                .itemOutputs(
+                    BioDataEnum.getDNASampleFlask(DNA),
+                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .outputChances(DNA.getChance(), 100_00)
+                .fluidInputs(GTModHandler.getDistilledWater(1_000))
+                .special(BioItemList.mBioLabParts[0])
+                .duration(25 * SECONDS)
+                .eut(GTValues.VP[DNA.getTier()])
+                .ignoreCollision()
+                .fake()
+                .addTo(bioLabRecipes);
 
         }
 
@@ -171,13 +166,12 @@ public class AdditionalRecipes {
         long energyUsageWithTransformModule = 1;
         for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
             //TODO Fix
-            BioData DNA = BioData.getBioDataFromNBTTag(
-                stack.getTagCompound()
-                    .getCompoundTag("DNA"));
-            BioData Plasmid = BioData.getBioDataFromNBTTag(
-                stack.getTagCompound()
-                    .getCompoundTag("Plasmid"));
-            if (DNA == null) continue;
+            if (true) continue;
+            BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
+            BioData Plasmid = BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(DNA, BioCultureEnum.NullBioCulture).plasmid
+                .getBioData();
+            if (BioDataEnum.NullBioData.getBioData()
+                .equals(DNA)) continue;
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
                 if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;
