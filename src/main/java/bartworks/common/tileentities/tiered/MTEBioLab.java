@@ -309,8 +309,14 @@ public class MTEBioLab extends MTEBasicMachine {
                 }
             }
         }
-        boolean hasItems = Arrays.stream(inputSlotIndices)
-            .allMatch(i -> i != -1);
+
+        boolean hasItems = true;
+        for (int inputSlotIndice : inputSlotIndices) {
+            if (inputSlotIndice == -1) {
+                hasItems = false;
+                break;
+            }
+        }
 
         if (hasItems && hasFluid(fluid, recipeFluidAmount)) {
             BioData cultureDNABioData = bioDataGetter.apply(this.mInventory[inputSlotIndices[itemWithBioData]]);
