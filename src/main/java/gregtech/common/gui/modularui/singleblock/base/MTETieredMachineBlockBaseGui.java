@@ -48,10 +48,7 @@ import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
  */
 public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
-    public static final int BASE_WIDTH = 176;
-    public static final int BASE_HEIGHT = 166;
     public static final int SLOT_SIZE = 18;
-    public static final int BORDER_RADIUS = 4;
 
     protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
@@ -61,6 +58,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
 
+    private final int borderRadius = 4;
+
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         registerSyncValues(syncManager);
 
@@ -69,7 +68,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return panel.child(
             Flow.column()
                 .full()
-                .padding(BORDER_RADIUS)
+                .padding(borderRadius)
                 .child(createContentHolder(panel, syncManager))
                 .childIf(this.supportsTopRightCornerFlow(), this::createTopRightCornerFlow)
                 .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
@@ -99,11 +98,11 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected int getBasePanelWidth() {
-        return BASE_WIDTH;
+        return 176;
     }
 
     protected int getBasePanelHeight() {
-        return BASE_HEIGHT;
+        return 166;
     }
 
     protected boolean supportsBottomRowOverlap() {
@@ -146,11 +145,11 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected int getContentHolderWidth() {
-        return getBasePanelWidth() - 2 * BORDER_RADIUS;
+        return getBasePanelWidth() - 2 * borderRadius;
     }
 
     protected int getContentHolderHeight() {
-        return (getBasePanelHeight() - BORDER_RADIUS * 2) - (machine.doesBindPlayerInventory() ? 80 : 0);
+        return (getBasePanelHeight() - borderRadius * 2) - (machine.doesBindPlayerInventory() ? 80 : 0);
     }
 
     /**
