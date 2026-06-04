@@ -119,8 +119,8 @@ public class MTEBioLab extends MTEBasicMachine {
         initPredicatesAndOutputSuppliers();
     }
 
-    private ItemStack getDNASampleOrb(){
-        if (DNASampleOrb == null){
+    private ItemStack getDNASampleOrb() {
+        if (DNASampleOrb == null) {
             DNASampleOrb = ItemList.Tool_DataOrb.get(1);
             BehaviourDataOrb.setDataTitle(DNASampleOrb, "DNA Sample");
             BehaviourDataOrb.setDataName(DNASampleOrb, BioDataEnum.BetaLactamase.name);

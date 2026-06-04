@@ -165,7 +165,7 @@ public class AdditionalRecipes {
 
         long energyUsageWithTransformModule = 1;
         for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
-            //TODO Fix
+            // TODO Fix
             if (true) continue;
             BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
             BioData Plasmid = BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(DNA, BioCultureEnum.NullBioCulture).plasmid
