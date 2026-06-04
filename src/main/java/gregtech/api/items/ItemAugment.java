@@ -61,10 +61,6 @@ public class ItemAugment extends ItemAugmentAbstract {
             addSeparatorIfNeeded(desc);
         }
 
-        if (augment.hasTooltip()) {
-            desc.add(augment.getTooltip());
-        }
-
         addSeparatorIfNeeded(desc);
 
         super.addAdditionalToolTips(desc, augmentStack, player);

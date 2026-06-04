@@ -1123,7 +1123,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         BooleanSyncValue alwaysMaxParallelSyncer, IntSyncValue powerPanelMaxParallelSyncer) {
         return new TextFieldWidget().value(powerPanelMaxParallelSyncer)
             .setTextAlignment(Alignment.Center)
-            .setNumbers(
+            .numbersInt(
                 () -> alwaysMaxParallelSyncer.getValue() ? maxParallelSyncer.getValue() : 1,
                 maxParallelSyncer::getValue)
             .tooltipBuilder(
@@ -1317,14 +1317,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue(
             "shutdownDisplayString",
             new StringSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .getLastShutDownReason()
+                () -> baseMetaTileEntity.getLastShutDownReason()
                     .getDisplayString()));
         syncManager.syncValue(
             "shutdownReasonKey",
             new StringSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .getLastShutDownReason()
+                () -> baseMetaTileEntity.getLastShutDownReason()
                     .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
