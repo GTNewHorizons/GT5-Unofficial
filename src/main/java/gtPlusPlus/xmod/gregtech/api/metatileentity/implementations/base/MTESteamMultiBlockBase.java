@@ -180,7 +180,12 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return isHighPressure() ? GTGuiThemes.STEEL : GTGuiThemes.BRONZE;
+        return GTGuiThemes.STEAM.apply(getSteamVariant());
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return isHighPressure() ? SteamVariant.STEEL : SteamVariant.BRONZE;
     }
 
     @Override

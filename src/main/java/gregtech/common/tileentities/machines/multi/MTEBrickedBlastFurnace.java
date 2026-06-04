@@ -569,7 +569,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.PRIMITIVE;
+        return GTGuiThemes.STEAM.apply(getSteamVariant());
     }
 
     @Override

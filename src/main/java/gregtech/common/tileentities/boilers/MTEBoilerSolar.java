@@ -277,7 +277,7 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
+        return GTGuiThemes.STEAM.apply(getSteamVariant());
     }
 
     @Override
