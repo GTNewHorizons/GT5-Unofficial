@@ -34,7 +34,7 @@ import tectech.recipe.TecTechRecipeMaps;
 /// The 3-tier items have 5 ingredients: a base and 4 tiered materials
 /// The 4-tier items have 4 ingredients: a base and 3 tiered materials
 /// To ensure consistency among the items, they are autogenned. Thus, there are arrays for the tiered materials.
-public class EM2MetaMaterialRecipes implements Runnable {
+public class BECMetaMaterialRecipes implements Runnable {
 
     private static final NaniteTier[] TIER_TO_NANITE = { NaniteTier.Carbon, NaniteTier.Silver, NaniteTier.Gold,
         NaniteTier.Transcendent, NaniteTier.SixPhasedCopper, NaniteTier.WhiteDwarf, NaniteTier.BlackDwarf,
