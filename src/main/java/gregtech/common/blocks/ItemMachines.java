@@ -40,6 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -274,21 +275,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
                     connectable.connect(oppositeSide);
-                    if (aPlayer != null && connectable instanceof MTEFluidPipe
-                        && ItemMachines.getMetaTileEntity(aPlayer.inventory.getCurrentItem()) instanceof MTEFluidPipe) {
-                        ItemStack offHand = Backhand.getOffhandItem(aPlayer);
-                        if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
-                            if (aPlayer.isSneaking()) {
-                                IGregTechTileEntity adjTile = (IGregTechTileEntity) tTileEntity
-                                    .getTileEntityAtSide(oppositeSide);
-                                if (adjTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
-                                    adjPipe.mDisableInput |= (byte) side.flag;
-                                }
-                            } else {
-                                ((MTEFluidPipe) connectable).mDisableInput |= (byte) oppositeSide.flag;
-                            }
-                            GTModHandler.damageOrDechargeItem(offHand, 1, 1000, aPlayer);
-                        }
+                    if (aPlayer != null && Mods.Backhand.isModLoaded() && connectable instanceof MTEFluidPipe pipe) {
+                        // tTileEntity and pipe are both passed since pipe doesn't have getTileEntityAtSide()
+                        pipeDirectionOffhand(aPlayer, pipe, side, tTileEntity);
                     }
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
@@ -308,6 +297,23 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
         return true;
+    }
+
+    private void pipeDirectionOffhand(EntityPlayer player, MTEFluidPipe pipe, ForgeDirection side,
+        IGregTechTileEntity tileEntity) {
+        ItemStack offHand = Backhand.getOffhandItem(player);
+        if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
+            ForgeDirection oppositeSide = side.getOpposite();
+            if (player.isSneaking()) {
+                IGregTechTileEntity adjTile = (IGregTechTileEntity) tileEntity.getTileEntityAtSide(oppositeSide);
+                if (adjTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
+                    adjPipe.mDisableInput |= (byte) side.flag;
+                }
+            } else {
+                (pipe).mDisableInput |= (byte) oppositeSide.flag;
+            }
+            GTModHandler.damageOrDechargeItem(offHand, 1, 1000, player);
+        }
     }
 
     @Override
