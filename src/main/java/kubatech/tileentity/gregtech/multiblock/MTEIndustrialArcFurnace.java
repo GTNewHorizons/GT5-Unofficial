@@ -4,10 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -89,6 +89,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
@@ -204,15 +205,17 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     OutputHatch,
                     Maintenance,
                     Energy,
-                    ExoticEnergy)
+                    MultiAmpEnergy)
                 .casingIndex(Casings.SolidSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement('C', activeCoils(ofCoil((te, level) -> {
-            te.coilTier = level;
-            return true;
-        }, te -> te.coilTier)))
+        .addElement(
+            'C',
+            GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil((te, level) -> {
+                te.coilTier = level;
+                return true;
+            }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
         .addElement('E', Casings.BoltedNaquadahCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
@@ -385,7 +388,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + (ORE_MODE_STARTUP_TICKS / 20)
                     + EnumChatFormatting.GRAY
                     + " seconds")
-            .addInfo("Consumes all ores and raw ores from input hatches")
+            .addInfo("Consumes all ores and raw ores from input buses")
             .addInfo("Only furnace-smeltable ores, no blasting")
             .addInfo("If queued ore exceeds capacity, startup ends immediately")
             .addInfo(
@@ -407,6 +410,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
             .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
