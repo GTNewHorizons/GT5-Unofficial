@@ -26,12 +26,12 @@ public class BioItemList {
 
     private static final Item mItemBioLabParts = new ItemLabModule(
         new String[] { "DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule",
-            "TransformationModule", "ClonalCellularSynthesisModule" });
+            "TransformationModule", "ClonalCellularSynthesisModule", "IncubationModule" });
     public static final ItemStack[] mBioLabParts = { new ItemStack(BioItemList.mItemBioLabParts),
         new ItemStack(BioItemList.mItemBioLabParts, 1, 1), new ItemStack(BioItemList.mItemBioLabParts, 1, 2),
-        new ItemStack(BioItemList.mItemBioLabParts, 1, 3), new ItemStack(BioItemList.mItemBioLabParts, 1, 4) };
+        new ItemStack(BioItemList.mItemBioLabParts, 1, 3), new ItemStack(BioItemList.mItemBioLabParts, 1, 4), new ItemStack(BioItemList.mItemBioLabParts, 1, 5) };
     public static final Item vanillaBioLabParts = new ItemLabParts(
-        new String[] { "petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule",
+        new String[] { "petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose",
             "PlasmaMembrane" });
 
     public static void registerBioItems() {

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import bartworks.common.items.ItemLabParts;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
@@ -96,7 +97,7 @@ public enum BioCultureEnum {
 
     public static void registerAllCultures() {
         for (BioCultureEnum culture : BioCultureEnum.values()) {
-            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 0);
+            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PETRI_DISH);
             stack.setTagCompound(BioCulture.getNBTTagFromCulture(culture.bioCulture));
             culture.culture.set(stack);
         }

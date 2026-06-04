@@ -38,6 +38,7 @@ public class ItemLabParts extends SimpleSubItemClass {
     public static final int PLASMID_CELL = 2;
     public static final int DETERGENT = 3;
     public static final int AGAROSE = 4;
+    public static final int PLASMA_MEMBRANE = 5;
 
     public ItemLabParts(String[] tex) {
         super(tex);

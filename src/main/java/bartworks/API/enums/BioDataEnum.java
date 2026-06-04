@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import bartworks.common.items.ItemLabParts;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
@@ -86,7 +87,7 @@ public enum BioDataEnum {
 
     public static void registerAllDNAItemStacks() {
         for (BioDataEnum data : BioDataEnum.values()) {
-            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
+            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.DNA_FLASK);
             stack.setTagCompound(BioData.getNBTTagFromBioData(data.getBioData()));
             data.DNASampleFlask.set(stack);
         }
@@ -94,7 +95,7 @@ public enum BioDataEnum {
 
     public static void registerAllPlasmidItemStacks() {
         for (BioDataEnum data : BioDataEnum.values()) {
-            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
+            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PLASMID_CELL);
             stack.setTagCompound(BioData.getNBTTagFromBioData(data.getBioData()));
             data.plasmidCell.set(stack);
         }

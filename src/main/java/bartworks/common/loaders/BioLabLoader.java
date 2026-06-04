@@ -13,6 +13,7 @@
 
 package bartworks.common.loaders;
 
+import bartworks.common.items.ItemLabParts;
 import net.minecraft.item.ItemStack;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -29,13 +30,12 @@ public class BioLabLoader {
         BioDataEnum.registerAllDNAItemStacks();
         BioDataEnum.registerAllPlasmidItemStacks();
 
-        ItemList.EmptyPetriDish.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 0));
-        ItemList.EmptyDNAFlask.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 1));
-        ItemList.EmptyPlasmid.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 2));
-        ItemList.DetergentPowder.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 3));
-        ItemList.Agarose.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 4));
-        ItemList.IncubationModule.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 5));
-        ItemList.PlasmaMembrane.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 6));
+        ItemList.EmptyPetriDish.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PETRI_DISH));
+        ItemList.EmptyDNAFlask.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.DNA_FLASK));
+        ItemList.EmptyPlasmid.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PLASMID_CELL));
+        ItemList.DetergentPowder.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.DETERGENT));
+        ItemList.Agarose.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.AGAROSE));
+        ItemList.PlasmaMembrane.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PLASMA_MEMBRANE));
         BioRecipeLoader.run();
     }
 }
