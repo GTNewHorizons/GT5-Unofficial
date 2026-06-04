@@ -35,7 +35,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
- * We must not sync the value to the corresponding TileEntity of the client as it may not be loaded
+ * On the client side, the mte is completely fictional
  * On the server side, the value should be synced to the actual tile entity
  */
 @FieldsAreNonnullByDefault
