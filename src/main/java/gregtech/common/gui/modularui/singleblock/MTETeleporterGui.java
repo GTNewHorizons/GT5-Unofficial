@@ -21,28 +21,21 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX);
-        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY);
-        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ);
-        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD);
+        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX).allowC2S();
+        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY).allowC2S();
+        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ).allowC2S();
+        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD).allowC2S();
 
         Flow mainColumn = Flow.column()
             .coverChildren()
             .childPadding(2)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginTop(4)
-            .marginLeft(4);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         mainColumn.child(createInputRow("x", xSyncer, false));
         mainColumn.child(createInputRow("y", ySyncer, false));
@@ -68,8 +61,8 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
         // input field
         row.child(
             new TextFieldWidget().value(value)
-                .setFormatAsInteger(true)
-                .setNumbers()
+                .formatAsInteger(true)
+                .numbersInt()
                 .setMaxLength(11)
                 .size(80, 12));
 

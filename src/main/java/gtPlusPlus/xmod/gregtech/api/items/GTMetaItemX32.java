@@ -136,17 +136,17 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
+    public final void getSubItems(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
                 this.mGeneratedPrefixList[i / 1000],
                 GregTechAPI.sGeneratedMaterials[i % 1000])) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
-                aList.add(tStack);
+                list.add(tStack);
             }
         }
-        super.getSubItems(var1, aCreativeTab, aList);
+        super.getSubItems(item, tab, list);
     }
 
     @Override

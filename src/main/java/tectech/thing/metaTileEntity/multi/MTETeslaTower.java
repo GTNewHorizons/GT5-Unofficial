@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,8 +63,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -128,8 +129,8 @@ public class MTETeslaTower extends TTMultiblockBase
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
     private long outputCurrentLastTick;
-    private LinkedList<Double> outputCurrentHistory = new LinkedList<>();
     private int historySize = 30;
+    private RingBuffer outputCurrentHistory = new RingBuffer(historySize);
     private int ticksBetweenDataPoints = 5;
     private int dataPointTick = 0;
     private int dataPointSum = 0;
@@ -450,7 +451,8 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
@@ -459,39 +461,37 @@ public class MTETeslaTower extends TTMultiblockBase
 
         mTier = -1;
 
-        if (structureCheck_EM("main", 3, 16, 0)) {
-            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
-                cap.getBaseMetaTileEntity()
-                    .setActive(iGregTechTileEntity.isActive());
-            }
-
-            // Only recalculate offsets on orientation or rotation change
-            if (oldRotation != getExtendedFacing().ordinal()
-                || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
-                oldRotation = (byte) getExtendedFacing().ordinal();
-                oldOrientation = iGregTechTileEntity.getFrontFacing();
-
-                Vec3Impl posBMTE = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
-
-                // Calculate coordinates of the middle bottom
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
-                    .add(posBMTE);
-
-                // Calculate coordinates of the top sphere
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
-                    .add(posBMTE);
-            }
-            // Generate node map
-            if (!getBaseMetaTileEntity().isClientSide()) {
-                TeslaUtil.teslaSimpleNodeSetAdd(this);
-                TeslaUtil.generateTeslaNodeMap(this);
-            }
-            return true;
+        if (!checkPiece("main", 3, 16, 0, errors)) return;
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
+            cap.getBaseMetaTileEntity()
+                .setActive(iGregTechTileEntity.isActive());
         }
-        return false;
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+
+        // Only recalculate offsets on orientation or rotation change
+        if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
+            oldRotation = (byte) getExtendedFacing().ordinal();
+            oldOrientation = iGregTechTileEntity.getFrontFacing();
+
+            Vec3Impl posBMTE = new Vec3Impl(
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
+
+            // Calculate coordinates of the middle bottom
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
+                .add(posBMTE);
+
+            // Calculate coordinates of the top sphere
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
+                .add(posBMTE);
+        }
+        // Generate node map
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            TeslaUtil.teslaSimpleNodeSetAdd(this);
+            TeslaUtil.generateTeslaNodeMap(this);
+        }
     }
 
     @Override
@@ -587,6 +587,15 @@ public class MTETeslaTower extends TTMultiblockBase
                                                                                                       // Hatch: Any
                                                                                                       // outer Tesla
                                                                                                       // Base Casing
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any
+                                                                                                // outer Tesla Base
+                                                                                                // Casing
+            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any
+                                                                                                 // outer Tesla Base
+                                                                                                 // Casing
+            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any
+                                                                                                 // outer Tesla Base
+                                                                                                 // Casing
             .toolTipFinisher();
         return tt;
     }
@@ -814,12 +823,7 @@ public class MTETeslaTower extends TTMultiblockBase
         dataPointSum += usedAmps;
         dataPointTick++;
         if (dataPointTick >= ticksBetweenDataPoints) {
-            outputCurrentHistory.addLast((double) dataPointSum / dataPointTick);
-            // Users are allowed to change this variable, so if it decreases everything outside of it
-            // Has to be removed
-            while (outputCurrentHistory.size() > historySize) {
-                outputCurrentHistory.removeFirst();
-            }
+            outputCurrentHistory.add((double) dataPointSum / dataPointTick);
             dataPointSum = 0;
             dataPointTick = 0;
         }
@@ -872,21 +876,21 @@ public class MTETeslaTower extends TTMultiblockBase
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
@@ -906,7 +910,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 3, 16, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 3, 16, 0);
     }
 
     @Override
@@ -1044,6 +1048,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     public void setHistorySize(int historySize) {
         this.historySize = historySize;
+        outputCurrentHistory.resize(historySize);
     }
 
     public int getTicksBetweenDataPoints() {
@@ -1117,4 +1122,5 @@ public class MTETeslaTower extends TTMultiblockBase
             return MTETeslaTower.eCapacitorHatches.size();
         }
     }
+
 }

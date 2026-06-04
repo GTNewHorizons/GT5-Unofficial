@@ -4,10 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -17,7 +17,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
@@ -43,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -55,6 +58,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
@@ -69,6 +73,11 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -80,6 +89,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
@@ -154,6 +164,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private int didOres = 0;
     private int didOCs = 0;
     private final Map<Fluid, Long> oreOutputs = new Object2LongOpenHashMap<>();
+    private HeatingCoilLevel coilTier; // unused
 
     private static final int OFFSET_H = 6;
     private static final int OFFSET_V = 7;
@@ -194,12 +205,15 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     OutputHatch,
                     Maintenance,
                     Energy,
-                    ExoticEnergy)
+                    MultiAmpEnergy)
                 .casingIndex(Casings.SolidSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement('C', Casings.CupronickelCoilBlock.asElement())
+        .addElement('C', GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil((te, level) -> {
+            te.coilTier = level;
+            return true;
+        }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
         .addElement('E', Casings.BoltedNaquadahCasing.asElement())
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
@@ -232,18 +246,25 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
-        if (mCasing < 10) return false;
-        if (electrodeHatch == null) return false;
-        if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
-        if (electrodeDetectorHatch != null) {
-            if (electrode != null)
-                updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
-            else updateDetectorHatches(0);
+        coilTier = null;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) return;
+        checkCasingMin(errors, mCasing, 10);
+        if (coilTier == null || coilTier == HeatingCoilLevel.None)
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        if (electrodeHatch == null) {
+            errors
+                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, TranslatableText.literal("Electrode Hatch"), 0, 1));
+        } else {
+            if (!errors.isEmpty()) return;
+            if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
+            if (electrodeDetectorHatch != null) {
+                if (electrode != null)
+                    updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
+                else updateDetectorHatches(0);
+            }
         }
-        return true;
     }
 
     @Override
@@ -365,7 +386,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + (ORE_MODE_STARTUP_TICKS / 20)
                     + EnumChatFormatting.GRAY
                     + " seconds")
-            .addInfo("Consumes all ores and raw ores from input hatches")
+            .addInfo("Consumes all ores and raw ores from input buses")
             .addInfo("Only furnace-smeltable ores, no blasting")
             .addInfo("If queued ore exceeds capacity, startup ends immediately")
             .addInfo(
@@ -387,6 +408,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addMaintenanceHatch("Any Casing", 1)
             .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
             .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -446,23 +468,27 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         switch (aIndex) {
             case START_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
+                if (getBaseMetaTileEntity().isMuffled()) return;
+                Vector3f position = getSoundPosition().getPosition();
                 GTUtility.doSoundAtClient(
                     SoundResource.GT_MACHINES_ARC_FURNACE_STARTUP,
                     STARTUP_DURATION_TICKS,
                     1.0F,
-                    aX,
-                    aY,
-                    aZ);
+                    position.x,
+                    position.y,
+                    position.z);
             }
             case STOP_ARC_SOUND_INDEX -> {
                 phase = ArcFurnacePhase.Standby;
+                if (getBaseMetaTileEntity().isMuffled()) return;
+                Vector3f position = getSoundPosition().getPosition();
                 GTUtility.doSoundAtClient(
                     SoundResource.GT_MACHINES_ARC_FURNACE_SHUTDOWN,
                     SHUTDOWN_DURATION_TICKS,
                     1.0F,
-                    aX,
-                    aY,
-                    aZ);
+                    position.x,
+                    position.y,
+                    position.z);
             }
             case LOOP_ARC_SOUND_INDEX -> phase = ArcFurnacePhase.Processing;
             default -> super.doSound(aIndex, aX, aY, aZ);

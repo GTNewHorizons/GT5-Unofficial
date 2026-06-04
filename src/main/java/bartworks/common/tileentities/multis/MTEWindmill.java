@@ -83,6 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -236,16 +238,16 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill")
+        tt.addMachineType("Macerator")
             .addInfo("A primitive Grinder powered by Kinetic energy")
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
+            .addCasingInfoMin("Hardened Clay Block", 40, false)
+            .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
+            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
@@ -429,15 +431,19 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-
-        return this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) && !this.tileEntityDispensers.isEmpty()
-            && this.mDoor <= 2
-            && this.mHardenedClay >= 40;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
+        if (this.tileEntityDispensers.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+        }
+        if (this.mDoor > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+        }
+        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override

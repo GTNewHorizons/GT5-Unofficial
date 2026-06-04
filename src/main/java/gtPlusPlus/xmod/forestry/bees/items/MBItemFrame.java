@@ -43,11 +43,12 @@ public class MBItemFrame extends Item implements IHiveFrame {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         if (!this.toolTipKey.isEmpty()) {
             list.add(EnumChatFormatting.GRAY + GTUtility.translate(this.toolTipKey));
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, aPlayer, list, adv);
     }
 
     @Override

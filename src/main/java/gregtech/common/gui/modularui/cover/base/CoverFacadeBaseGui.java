@@ -37,28 +37,30 @@ public class CoverFacadeBaseGui extends CoverBaseGui<CoverFacadeBase> {
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
                 .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getRedstonePass, cover::setRedstonePass))
+                    new ToggleButton()
+                        .value(new BooleanSyncValue(cover::getRedstonePass, cover::setRedstonePass).allowC2S())
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
                     IKey.lang("gt.interact.desc.facade.Redstone")
                         .asWidget())
                 .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass))
+                    new ToggleButton()
+                        .value(new BooleanSyncValue(cover::getEnergyPass, cover::setEnergyPass).allowC2S())
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
                     IKey.lang("gt.interact.desc.facade.Energy")
                         .asWidget())
                 .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass))
+                    new ToggleButton().value(new BooleanSyncValue(cover::getFluidPass, cover::setFluidPass).allowC2S())
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
                     IKey.lang("gt.interact.desc.facade.Fluids")
                         .asWidget())
                 .row(
-                    new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass))
+                    new ToggleButton().value(new BooleanSyncValue(cover::getItemPass, cover::setItemPass).allowC2S())
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),

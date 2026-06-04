@@ -48,7 +48,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
-            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage));
+            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());
 
         syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.fillTank());
         syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.flushTank());
@@ -164,9 +164,9 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             .childPadding(4)
             .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto") + ":"))
             .child(
-                new TextFieldWidget().setNumbers(1, 100)
+                new TextFieldWidget().numbersInt(1, 100)
                     .setTextAlignment(Alignment.CENTER)
-                    .setDefaultNumber(100)
+                    .defaultNumber(100)
                     .value(automationPercentage)
                     .size(60, 18))
             .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.impurity")));

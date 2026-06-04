@@ -154,7 +154,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             generationFeatures,
             mID,
             materials.mIconSet,
-            (List) materials.mOreByProducts,
+            materials.mOreByProducts,
             Pair.of(materials, 1));
         if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
@@ -165,7 +165,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.stats.durOverride = materials.mDurability;
         this.stats.qualityOverride = materials.mToolQuality;
         this.stats.setGas(materials.mHasGas);
-        this.stats.setRadioactive(materials.isRadioactive());
+        this.stats.setRadioactive(false);
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
         this.stats.setMeltingVoltage(120);
         this.stats.isProxy = true;
@@ -212,7 +212,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
@@ -229,7 +229,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
@@ -245,7 +245,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             toolTip,
@@ -262,7 +262,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
@@ -278,7 +278,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);

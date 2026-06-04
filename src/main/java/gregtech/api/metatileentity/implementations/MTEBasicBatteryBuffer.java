@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.common.modularui2.util.CommonGuiComponents.*;
 
 import java.util.List;
 
@@ -20,33 +19,20 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEBasicBatteryBufferGui;
 import ic2.api.item.IElectricItem;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
- * Machine
- */
-public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAddUIWidgets {
+public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     public boolean mCharge = false, mDecharge = false;
     public int mBatteryCount = 0, mChargeableCount = 0;
@@ -350,108 +336,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mInventory.length) {
-            case 4 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2)
-                    .startFromSlot(0)
-                    .endAtSlot(3)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(70, 25));
-            case 9 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(8)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(61, 16));
-            case 16 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4)
-                    .startFromSlot(0)
-                    .endAtSlot(15)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(52, 7));
-            default -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 1)
-                    .startFromSlot(0)
-                    .endAtSlot(0)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(79, 34));
-        }
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        int rowSize = (int) Math.floor(Math.sqrt(mInventory.length));
-
-        syncManager.registerSlotGroup("battery_inv", rowSize);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(switch (rowSize) {
-            case 2 -> gridTemplate2by2(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }.slotGroup("battery_inv")));
-            case 3 -> gridTemplate3by3(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }.slotGroup("battery_inv")));
-            case 4 -> gridTemplate4by4(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }.slotGroup("battery_inv")));
-            default -> gridTemplate1by1(i -> new ItemSlot().slot(new ModularSlot(inventoryHandler, i) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }.slotGroup("battery_inv")));
-            });
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
+        return new MTEBasicBatteryBufferGui(this).build(data, syncManager, uiSettings);
     }
 }

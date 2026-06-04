@@ -973,6 +973,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials StagnantWasteWater;
     public static Materials ActivatedWasteWater;
     public static Materials ChlorosulfonicAcid;
+    public static Materials PoisonousSlurry;
     // endregion
 
     // region Magic Materials
@@ -1099,6 +1100,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials BiocatalyzedPropulsionFluid;
     public static Materials Shijima;
     public static Materials Churitsu;
+    public static Materials InactiveCosmicSolder;
+    public static Materials BoundlessCosmicSolder;
     // endregion
 
     // region GTNH Materials
@@ -1790,12 +1793,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
+    /**
+     * @deprecated Always returns false, apparently.
+     */
+    @Deprecated
     public boolean isRadioactive() {
-        if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
-
-        return mMaterialList.stream()
-            .map(stack -> stack.mMaterial)
-            .anyMatch(Materials::isRadioactive);
+        return false;
     }
 
     public long getProtons() {

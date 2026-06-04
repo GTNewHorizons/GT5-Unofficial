@@ -7,14 +7,21 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.material.Material;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
@@ -39,11 +46,23 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
+        Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
+        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(fluid);
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
+            int tint;
+            CondensateType condensate = CondensateType.getCondensateType(fluid);
+            if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
+                tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
+            } else if (condensate != null) {
+                tint = CondensateType.getRenderColor(fluid);
+            } else {
+                tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
+            }
+            GL11.glColor3ub((byte) (tint >> 16 & 0xFF), (byte) (tint >> 8 & 0xFF), (byte) (tint & 0xFF));
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             // draw a simple rectangle for the inventory icon
@@ -56,6 +75,21 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             tess.addVertexWithUV(16, 0, 0, x_max, y_min);
             tess.addVertexWithUV(0, 0, 0, x_min, y_min);
             tess.draw();
+
+            if (condensate != null) {
+                Minecraft.getMinecraft()
+                    .getTextureManager()
+                    .bindTexture(CondensateAnimationTickHandler.texture);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                final float vMin = CondensateAnimationTickHandler.currentFrame / 64f;
+                final float vMax = (CondensateAnimationTickHandler.currentFrame + 1) / 64f;
+                tess.startDrawingQuads();
+                tess.addVertexWithUV(0, 16, 0, 0, vMax);
+                tess.addVertexWithUV(16, 16, 0, 1, vMax);
+                tess.addVertexWithUV(16, 0, 0, 1, vMin);
+                tess.addVertexWithUV(0, 0, 0, 0, vMin);
+                tess.draw();
+            }
         }
 
         if (item.getTagCompound() == null) {

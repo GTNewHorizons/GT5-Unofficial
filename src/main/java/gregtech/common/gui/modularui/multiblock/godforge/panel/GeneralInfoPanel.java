@@ -95,7 +95,8 @@ public class GeneralInfoPanel {
             textList.childIf(inversionSyncer.getBoolValue(), () -> inversionText);
 
             return textList;
-        });
+        })
+            .allowC2S();
 
         inversionSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
 

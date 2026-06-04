@@ -70,8 +70,7 @@ public class DroneRemoteInterfaceGUI {
                             .coverChildren()
                             .childPadding(4)
                             .child(
-                                new ButtonWidget<>().size(18)
-                                    .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
+                                new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
                                     .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_open_list")))
                                     .setEnabledIf(var -> multiblock == null || !multiblock.isValid())
                                     .onMousePressed(mouseButton -> {

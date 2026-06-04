@@ -27,14 +27,14 @@ kubatech.command.tea.success_add=Игрок %s теперь имеет %d Чай
 kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
 #GUI
-GT5U.gui.text.EEC_nospawner=Нет электрического спаунера!
-GT5U.gui.text.EEC_invalidspawner=Неверный спаунер!
-GT5U.gui.text.EEC_peaceful=Вставленный моб не может заспавнится в мирном режиме!
-GT5U.gui.text.MegaApiary_slotoverflow=Внутри слишком много пчёл!
+GT5U.gui.text.recipe_result.EEC_nospawner=Нет электрического спаунера!
+GT5U.gui.text.recipe_result.EEC_invalidspawner=Неверный спаунер!
+GT5U.gui.text.recipe_result.EEC_peaceful=Вставленный моб не может заспавнится в мирном режиме!
+GT5U.gui.text.recipe_result.MegaApiary_slotoverflow=Внутри слишком много пчёл!
 GT5U.gui.text.MegaApiary_noflowers=Отсутствуют цветы!
-GT5U.gui.text.EIG_slotoverflow=Внутри слишком много видов семян!
-GT5U.gui.text.EIG_seedOverflow=Внутри слишком много семян!
-GT5U.gui.text.EIG_missingwater=Нет воды!
+GT5U.gui.text.recipe_result.EIG_slotoverflow=Внутри слишком много видов семян!
+GT5U.gui.text.recipe_result.EIG_seedOverflow=Внутри слишком много семян!
+GT5U.gui.text.recipe_result.EIG_missingwater=Нет воды!
 GT5U.gui.text.EIG_ic2glass=Недостаточный тир стекла!
 
 # info data

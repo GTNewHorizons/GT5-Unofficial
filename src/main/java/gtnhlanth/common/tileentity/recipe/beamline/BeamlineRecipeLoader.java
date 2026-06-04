@@ -4,6 +4,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.sourceChamberRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.targetChamberRecipes;
+import static gtnhlanth.common.beamline.Particle.OMEGA;
 import static gtnhlanth.common.beamline.Particle.PHOTON;
 
 import java.util.Arrays;
@@ -157,6 +158,24 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_UV)
             .addTo(sourceChamberRecipes);
 
+        /*
+         * OMEGA
+         */
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Unstable.getDust(1))
+            .itemOutputs(Materials.Ash.getDust(1))
+            .outputChances(500)
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(OMEGA.ordinal())
+                    .rate(60)
+                    .energy(1_700_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(sourceChamberRecipes);
         /*
          * TARGET CHAMBER
          */

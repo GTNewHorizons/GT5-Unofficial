@@ -11,6 +11,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
+import com.gtnewhorizon.gtnhlib.color.RGBColor;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.Dyes;
@@ -62,6 +64,9 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                 .toArray(GTValues.emptyStringArray));
     }
 
+    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0xd3ebed);
+    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0x3d3e41);
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,
         boolean aConnected, boolean aRedstone) {
@@ -71,16 +76,14 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         textures.add(
             TextureFactory.builder()
                 .addIcon(EM_PIPE)
-                .setRGBA(Dyes.getModulation(colorIndex, new short[] { 0x81, 0xCA, 0xED, 0 }))
+                .setRGBA(BACKGROUND.toShorts())
                 .build());
 
-        if (getActive()) {
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(EM_BAR)
-                    .setRGBA(Dyes.getModulation(colorIndex, new short[] { 0x81, 0xCA, 0xED, 0 }))
-                    .build());
-        }
+        textures.add(
+            TextureFactory.builder()
+                .addIcon(getActive() ? EM_BAR_ACTIVE : EM_BAR)
+                .setRGBA(Dyes.getModulation(colorIndex, BASE_FG.toShorts()))
+                .build());
 
         return textures.toArray(new ITexture[0]);
     }

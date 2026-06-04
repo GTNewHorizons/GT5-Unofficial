@@ -3,12 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,6 +31,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -56,7 +58,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         .addElement(
             'D',
             buildHatchAdder(MTEIndustrialBendingMachine.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(Casings.MaterialPressCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
@@ -78,7 +80,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bending Machine")
+        tt.addMachineType("Bending Machine, IBM")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 3, 3, false)
@@ -87,7 +89,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
             .addCasingInfoExactly("Titanium Gear Box Casing", 3, false)
             .addCasingInfoExactly("Forming Core", 9, false)
             .addCasingInfoExactly("Titanium Frame Box", 6, false)
-            .addInputHatch("Any Metalworking Machine Casing", 1)
             .addInputBus("Any Metalworking Machine Casing", 1)
             .addOutputBus("Any Metalworking Machine Casing", 1)
             .addEnergyHatch("Any Metalworking Machine Casing", 1)
@@ -124,13 +125,15 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 4 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mEnergyHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 4);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

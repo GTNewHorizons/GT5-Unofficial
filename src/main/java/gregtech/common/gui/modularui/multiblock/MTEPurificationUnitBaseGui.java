@@ -26,7 +26,8 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel);
+        IntSyncValue parallelSyncer = new IntSyncValue(multiblock::getMaxParallel, multiblock::setMaxParallel)
+            .allowC2S();
         syncManager.syncValue("maximumParallels", parallelSyncer);
     }
 
@@ -41,8 +42,7 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
             true,
             (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent));
 
-        return new ButtonWidget<>().size(18)
-            .overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+        return new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.tpm.parallelwindow")))
             .onMousePressed(mouseButton -> {
                 if (!parallelSelectPanel.isPanelOpen()) {
@@ -73,10 +73,10 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
                 .asWidget()
                 .marginBottom(4));
         holdingColumn.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, Integer.MAX_VALUE)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
                 .setTextAlignment(Alignment.CENTER)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .value(parallelSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18));
 
