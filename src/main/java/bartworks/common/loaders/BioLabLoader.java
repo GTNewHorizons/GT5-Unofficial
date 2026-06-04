@@ -13,11 +13,11 @@
 
 package bartworks.common.loaders;
 
-import bartworks.common.items.ItemLabParts;
 import net.minecraft.item.ItemStack;
 
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
+import bartworks.common.items.ItemLabParts;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.ItemList;
 

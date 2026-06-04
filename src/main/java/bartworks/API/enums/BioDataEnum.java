@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import bartworks.common.items.ItemLabParts;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
