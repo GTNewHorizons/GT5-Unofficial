@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -32,6 +33,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -45,14 +47,22 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETieredMachineBlockBaseGui<T> {
 
-    BasicUIProperties properties;
-    BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected final BasicUIProperties properties;
+    protected final BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected final UITexture progressBarTexture;
     protected boolean mAddGregTechLogo = false;
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
-        this.slotOverlayFunction = properties.slotOverlaysMUI2;
+
+        SteamVariant steamVariant = machine.getSteamVariant();
+        this.slotOverlayFunction = steamVariant == SteamVariant.NONE ? properties.slotOverlaysMUI2
+            : (index, isFluid, isOutput, isSpecial) -> properties.slotOverlaysSteamMUI2
+                .apply(index, isFluid, isOutput, isSpecial)
+                .get(steamVariant);
+        this.progressBarTexture = steamVariant == SteamVariant.NONE ? properties.progressBarMUI2
+            : properties.progressBarTextureSteamMUI2.get(steamVariant);
     }
 
     public MTEBasicMachineBaseGui<T> useGregTechLogo(boolean addLogo) {
@@ -217,9 +227,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         // the fluid output slot is positioned under the first item output slot, which is 0.5 slots over in the gui.
     }
 
+    protected boolean supportsChargerSlot() {
+        return true;
+    }
+
     @Override
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
+        return super.createBottomSection(panel, syncManager)
+            .childIf(supportsChargerSlot(), () -> createChargerSlot().horizontalCenter());
     }
 
     @Override
@@ -252,7 +267,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         return new GTProgressWidget()
             .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
-            .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
+            .texture(progressBarTexture, properties.progressBarWidthMUI2)
             .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)
             .direction(properties.progressBarDirectionMUI2)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -270,7 +285,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                 new Grid().coverChildren()
                     .gridOfElements(
                         mapInSlotsToMatrix(),
-                        ($x, $y, i,
+                        (_, _, i,
                             key) -> key == 'c'
                                 ? new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, false, false))
                                     .slot(
@@ -306,7 +321,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                 new Grid().coverChildren()
                     .gridOfElements(
                         mapOutSlotsToMatrix(),
-                        ($x, $y, i,
+                        (_, _, i,
                             key) -> key == 'c'
                                 ? new ItemSlot().backgroundOverlay(slotOverlayFunction.apply(i, false, true, false))
                                     .slot(
