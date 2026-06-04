@@ -16,7 +16,7 @@ public class CondensateAnimationTickHandler {
     public static int currentFrame = 0;
     public static final ResourceLocation texture = new ResourceLocation(
         GregTech.resourceDomain,
-        "textures/items/iconsets/bec_condensate_over.png");
+        "textures/blocks/fluids/condensate/bec_condensate_over.png");
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
