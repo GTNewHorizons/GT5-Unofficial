@@ -363,7 +363,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
-                "Multi I/O Hatches",
+                "1x Multi I/O Hatch",
                 "Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
