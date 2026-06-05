@@ -2978,7 +2978,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // Condensate Guidance Coil
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.MetaMaterial_Waveguide1.get(1),
+            ItemList.UIV_Coil.get(1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
@@ -3024,12 +3024,12 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // Electromagnetic Waveguide
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.GlassQuarkContainment.get(1),
+            ItemRefer.AntimatterContainmentCasing.get(1),
             48_000_000,
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { ItemList.GlassQuarkContainment.get(12), ItemList.Field_Generator_UEV.get(1) },
+            new Object[] { ItemRefer.AntimatterContainmentCasing.get(12), ItemList.Field_Generator_UEV.get(1) },
             new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(6144 * INGOTS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(384 * INGOTS),
                 Materials.SpaceTime.getMolten(144 * INGOTS) },
