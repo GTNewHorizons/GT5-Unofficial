@@ -38,6 +38,7 @@ tooltip.detrav.scanner.distance.0=next to you (0 chunks away), close to you (1-2
 tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), far away (9+)
 
 gui.detrav.scanner.pollution=Pollution
+gui.detrav.scanner.pollution.amount=Pollution: %s gibbl
 gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
 
 gui.detrav.scanner.tooltip.fluid_name=Fluid Name: 

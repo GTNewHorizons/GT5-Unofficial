@@ -9,6 +9,16 @@ itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
+# Face names
+gt.lang.face.any=Any Side
+gt.lang.face.bottom=Bottom
+gt.lang.face.top=Top
+gt.lang.face.left=Left
+gt.lang.face.front=Front
+gt.lang.face.right=Right
+gt.lang.face.back=Back
+gt.lang.face.none=None
+
 # Components
 gt.oreprefix.block_of_material=Block of %s
 gt.oreprefix.centrifuged_material=Centrifuged %s
@@ -2655,6 +2665,13 @@ GT5U.structure.water=Water
 GT5U.structure.tiered_glass=Tiered Glass
 GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.text.powerfail_events=Powerfail Events
+GT5U.gui.text.maintenance.pipe_loose=Pipe is loose. (Wrench)
+GT5U.gui.text.maintenance.screws_loose=Screws are loose. (Screwdriver)
+GT5U.gui.text.maintenance.stuck=Something is stuck. (Soft Mallet)
+GT5U.gui.text.maintenance.platings_dented=Platings are dented. (Hammer)
+GT5U.gui.text.maintenance.circuit_burned=Circuitry burned out. (Soldering)
+GT5U.gui.text.maintenance.crowbar=That doesn't belong there. (Crowbar)
+GT5U.gui.text.missing_turbine_rotor=Missing Turbine Rotor
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
@@ -2779,6 +2796,8 @@ GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Qua
 GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
+GT5U.tooltip.sneak_rightclick_switch_mode=Sneak Rightclick to switch Mode
 
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
@@ -3364,6 +3383,7 @@ GT5U.chat.hatch.output.fluid.locked_to=Successfully locked Fluid to %s
 
 GT5U.chat.wet_transformer.half_mode.enable=Transformer is now running at 8A:32A in/out ratio.
 GT5U.chat.wet_transformer.half_mode.disable=Transformer is now running at 16A:64A in/out ratio.
+GT5U.chat.cover.connectable=Connectable: %s
 
 GT5U.chat.soldering_iron.not_enough=Not enough soldering material!
 GT5U.chat.ore.set_ore_natural_flag=Set ore natural flag to %s
@@ -3743,6 +3763,17 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
+GT5U.nei.recipe.needs_low_gravity=Needs Low Gravity
+GT5U.nei.recipe.needs_cleanroom=Needs Cleanroom
+GT5U.nei.recipe.scan_assembly_line=Scan for Assembly Line
+GT5U.nei.recipe.needs_cleanroom_low_gravity=Needs Cleanroom & LowGrav
+GT5U.nei.recipe.deprecated=Deprecated Recipe
+GT5U.nei.recipe.pcb_factory_tier=PCB Factory Tier: %s
+GT5U.nei.recipe.upgrade_required=Upgrade Required: %s
+GT5U.nei.recipe.upgrade.bio=Bio
+GT5U.nei.recipe.requires_hip_unit=Requires HIP Unit
+GT5U.nei.recipe.requires_stabilized_black_hole=Requires Stabilized Black Hole
+GT5U.nei.recipe.tier_required=Tier required: %s
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
@@ -3997,6 +4028,10 @@ gt.interact.desc.Energy_Detector.average_out=§8Avg. Output
 gt.interact.desc.Energy_Detector.average_out.tooltip=§fAverage Electric Output
 gt.interact.desc.Energy_Detector.eu_stored=§8EU stored
 gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fElectricity Storage(Including Batteries)
+
+## Transformer
+gt.interact.desc.transformer.mode.step_down=Step Down, In: %dV %dA, Out: %dV %dA
+gt.interact.desc.transformer.mode.step_up=Step Up, In: %dV %dA, Out: %dV %dA
 
 # MetaItem01
 ## GT Credit

@@ -51,9 +51,6 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     @Override
     public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
-
-        // recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
-
         recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
         recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
         recipeInfo.drawText(getAmperageString(recipeInfo.calculator));

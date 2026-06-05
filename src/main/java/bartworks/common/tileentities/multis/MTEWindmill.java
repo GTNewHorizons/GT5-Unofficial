@@ -659,7 +659,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     val -> this.getBaseMetaTileEntity()
                         .setActive(val)))
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.incomplete"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get())
                     .setMaxWidth(150)
                     .setEnabled(widget -> !this.mMachine)

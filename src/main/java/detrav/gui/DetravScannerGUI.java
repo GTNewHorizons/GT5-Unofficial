@@ -130,9 +130,9 @@ public class DetravScannerGUI extends GuiScreen {
 
                 if (amount > 0) {
                     info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
-                            + formatNumber(amount)
-                            + GTUtility.trans("203", " gibbl"));
+                        StatCollector.translateToLocalFormatted(
+                            "gui.detrav.scanner.pollution.amount",
+                            formatNumber(amount)));
                 }
 
                 func_146283_a(info, x, y);

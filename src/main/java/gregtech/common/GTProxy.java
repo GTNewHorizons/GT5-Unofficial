@@ -1099,7 +1099,6 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLanguageManager.writePlaceholderStrings();
     }
 
     public void onPostInitialization(FMLPostInitializationEvent event) {

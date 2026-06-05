@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.XSTR;
@@ -43,7 +45,7 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("756", "Connectable: ") + getConnectionState());
+        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.chat.cover.connectable", getConnectionState()));
         return super.onCoverRightClick(aPlayer, aX, aY, aZ);
     }
 
