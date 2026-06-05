@@ -120,12 +120,12 @@ public class BECRecipes implements Runnable {
             new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4), ItemList.MetaMaterial_Waveguide1.get(4),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 4),
                 ItemList.Field_Generator_UEV.get(1) },
-            nanites(3),
+            nanites(3, 4, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
                 CondensateType.Infinity.getEntangled(128 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(32 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(16 * INGOTS) },
-            300 * SECONDS,
+            240 * SECONDS,
             TierEU.RECIPE_UIV);
     }
 
