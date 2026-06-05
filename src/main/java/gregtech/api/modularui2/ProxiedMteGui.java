@@ -1,8 +1,5 @@
 package gregtech.api.modularui2;
 
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,11 +22,12 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
@@ -43,13 +41,13 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
     public static final ProxiedMteGuiFactory GUI = new ProxiedMteGuiFactory();
 
-    private final MTEHatchCraftingInputME mte;
+    private final MetaTileEntity mte;
 
-    public ProxiedMteGui(MTEHatchCraftingInputME mte) {
+    public ProxiedMteGui(MetaTileEntity mte) {
         this.mte = mte;
     }
 
-    public static void open(MTEHatchCraftingInputME mte, EntityPlayerMP player) {
+    public static void open(MetaTileEntity mte, EntityPlayerMP player) {
         GuiManager.open(GUI, new ProxiedMteGuiData(player, mte), player);
     }
 
@@ -68,37 +66,37 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
     final public static class ProxiedMteGuiData extends GuiData {
 
-        final private @Nullable MTEHatchCraftingInputME serverMTE;
-        final private boolean supportsFluids;
+        final private @Nullable MetaTileEntity serverMTE;
+        final private int mid;
         final private int x;
         final private int y;
         final private int z;
 
-        public ProxiedMteGuiData(EntityPlayer player, MTEHatchCraftingInputME serverMTE) {
+        public ProxiedMteGuiData(EntityPlayer player, MetaTileEntity serverMTE) {
             super(player);
             this.serverMTE = serverMTE;
-            this.supportsFluids = serverMTE.supportsFluids();
             IGregTechTileEntity base = serverMTE.getBaseMetaTileEntity();
+            this.mid = base.getMetaTileID();
             this.x = base.getXCoord();
             this.y = base.getYCoord();
             this.z = base.getZCoord();
         }
 
-        public ProxiedMteGuiData(EntityPlayer player, boolean supportsFluids, int x, int y, int z) {
+        public ProxiedMteGuiData(EntityPlayer player, int mid, int x, int y, int z) {
             super(player);
             this.serverMTE = null;
-            this.supportsFluids = supportsFluids;
+            this.mid = mid;
             this.x = x;
             this.y = y;
             this.z = z;
         }
 
-        public @Nullable MTEHatchCraftingInputME getServerMTE() {
+        public @Nullable MetaTileEntity getServerMTE() {
             return serverMTE;
         }
 
-        public boolean supportsFluids() {
-            return supportsFluids;
+        public int getMetaId() {
+            return mid;
         }
 
         public int getX() {
@@ -122,15 +120,13 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
         @Override
         public IGuiHolder<ProxiedMteGuiData> getGuiHolder(ProxiedMteGuiData data) {
-            MTEHatchCraftingInputME mte = data.getServerMTE();
+            MetaTileEntity mte = data.getServerMTE();
             if (mte == null) {
                 // On the server, we must sync to the real MTE. A check that the real MTE is supplied.
                 assert NetworkUtils.isClient();
                 // Create empty fake MTE on client
                 BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
-                fakeBase.setInitialValuesAsNBT(
-                    null,
-                    (short) (data.supportsFluids() ? CRAFTING_INPUT_ME.ID : CRAFTING_INPUT_ME_BUS.ID));
+                fakeBase.setInitialValuesAsNBT(null, (short) data.getMetaId());
                 NBTTagCompound tag = new NBTTagCompound();
                 fakeBase.writeToNBT(tag);
                 tag.setInteger("x", data.getX());
@@ -138,7 +134,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 tag.setInteger("z", data.getZ());
                 BaseMetaTileEntity newBase = new BaseMetaTileEntity();
                 newBase.readFromNBT(tag);
-                mte = (MTEHatchCraftingInputME) newBase.getMetaTileEntity();
+                mte = (MetaTileEntity) newBase.getMetaTileEntity();
                 assert mte != null;
             }
             return new ProxiedMteGui(mte);
@@ -146,14 +142,17 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
         @Override
         public boolean canInteractWith(EntityPlayer player, ProxiedMteGuiData guiData) {
-            // Note: seems only called server side and accessing the server only mte is safe
-            return super.canInteractWith(player, guiData) && guiData.getServerMTE()
-                .isValid();
+            IMetaTileEntity mte = guiData.getServerMTE();
+            // Note: seems only called server side and accessing the server only mte is safe, and we can assume it is
+            // never null
+            assert mte != null;
+            IGregTechTileEntity base = mte.getBaseMetaTileEntity();
+            return super.canInteractWith(player, guiData) && base != null && base.canAccessData();
         }
 
         @Override
         public void writeGuiData(ProxiedMteGuiData guiData, PacketBuffer buffer) {
-            buffer.writeBoolean(guiData.supportsFluids());
+            buffer.writeInt(guiData.getMetaId());
             buffer.writeInt(guiData.getX());
             buffer.writeInt(guiData.getY());
             buffer.writeInt(guiData.getZ());
@@ -163,7 +162,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
         public ProxiedMteGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
             return new ProxiedMteGuiData(
                 player,
-                buffer.readBoolean(),
+                buffer.readInt(),
                 buffer.readInt(),
                 buffer.readInt(),
                 buffer.readInt());
