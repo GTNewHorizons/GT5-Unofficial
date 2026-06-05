@@ -2,7 +2,6 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.NW;
-import static gregtech.api.util.GTLanguageManager.FACES;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
@@ -67,6 +66,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         .mapToObj(i -> "mCoverData" + i)
         .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
+    private static final String[] FACE_KEYS = {
+        "gt.lang.face.bottom", "gt.lang.face.top", "gt.lang.face.left",
+        "gt.lang.face.front", "gt.lang.face.right", "gt.lang.face.back",
+        "gt.lang.face.none" };
 
     // New Cover Information
     protected final Cover[] covers = new Cover[] { CoverRegistry.NO_COVER, CoverRegistry.NO_COVER,
@@ -546,7 +549,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        StatCollector.translateToLocal(FACES[sideValue]),
+                        StatCollector.translateToLocal(FACE_KEYS[sideValue]),
                         coverStack.getDisplayName()));
             }
         }
