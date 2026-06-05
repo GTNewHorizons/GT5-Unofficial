@@ -5,7 +5,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.cleanroommc.modularui.network.NetworkUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +17,7 @@ import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -148,7 +148,8 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         @Override
         public boolean canInteractWith(EntityPlayer player, ProxyGuiData guiData) {
             // Note: seems only called server side and accessing the server only mte is safe
-            return super.canInteractWith(player, guiData) && guiData.getServerMTE().isValid();
+            return super.canInteractWith(player, guiData) && guiData.getServerMTE()
+                .isValid();
         }
 
         @Override
@@ -161,12 +162,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
 
         @Override
         public ProxyGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
-            return new ProxyGuiData(
-                player,
-                buffer.readBoolean(),
-                buffer.readInt(),
-                buffer.readInt(),
-                buffer.readInt());
+            return new ProxyGuiData(player, buffer.readBoolean(), buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
     }
 }
