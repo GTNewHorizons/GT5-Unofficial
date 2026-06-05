@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
+
 import gregtech.api.util.GTUtility;
 
 public class EnchantmentRadioactivity extends EnchantmentDamage {
@@ -16,7 +16,6 @@ public class EnchantmentRadioactivity extends EnchantmentDamage {
 
     public EnchantmentRadioactivity() {
         super(GTConfig.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14), 0, -1);
-        GTLanguageManager.addStringLocalization(getName(), "Radioactivity");
         INSTANCE = this;
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.potion.PotionEffect;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
+
 
 public class EnchantmentEnderDamage extends EnchantmentDamage {
 
@@ -18,7 +18,6 @@ public class EnchantmentEnderDamage extends EnchantmentDamage {
 
     public EnchantmentEnderDamage() {
         super(GTConfig.addIDConfig(ConfigCategories.IDs.enchantments, "Disjunction", 15), 2, -1);
-        GTLanguageManager.addStringLocalization(getName(), "Disjunction");
         INSTANCE = this;
     }
 

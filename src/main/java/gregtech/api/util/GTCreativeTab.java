@@ -11,7 +11,6 @@ public class GTCreativeTab extends CreativeTabs {
 
     public GTCreativeTab(String aName, String aLocalName) {
         super("GregTech." + aName);
-        GTLanguageManager.addStringLocalization("itemGroup.GregTech." + aName, aLocalName);
     }
 
     @Override

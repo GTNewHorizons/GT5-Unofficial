@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
+
 
 public class EnchantmentHazmat extends Enchantment {
 
@@ -15,7 +15,6 @@ public class EnchantmentHazmat extends Enchantment {
 
     public EnchantmentHazmat() {
         super(GTConfig.addIDConfig(ConfigCategories.IDs.enchantments, "Hazmat", 13), 0, EnumEnchantmentType.armor);
-        GTLanguageManager.addStringLocalization(getName(), "Hazmat");
         INSTANCE = this;
     }
 

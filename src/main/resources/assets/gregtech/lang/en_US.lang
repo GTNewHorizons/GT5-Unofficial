@@ -5,6 +5,7 @@ itemGroup.GregTech.GTPP_MISC=GT++ Misc
 itemGroup.GregTech.GTPP_OTHER=GT++ Other
 itemGroup.GregTech.GTPP_OTHER_2=GT++ Other II
 itemGroup.GregTech.GTPP_TOOLS=GT++ Tools
+itemGroup.GregTech.Casings=Casings
 itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
@@ -18,6 +19,14 @@ gt.lang.face.front=Front
 gt.lang.face.right=Right
 gt.lang.face.back=Back
 gt.lang.face.none=None
+
+# Blocks
+tile.LaserPlate.name=Laser Resistant Plate
+
+# Enchantments
+enchantment.damage.radioactivity=Radioactivity
+enchantment.protection.hazmat=Hazmat
+enchantment.damage.endermen=Disjunction
 
 # Components
 gt.oreprefix.block_of_material=Block of %s
@@ -7721,6 +7730,34 @@ prefix.lens.name=%s Lens
 material.ThermalCont1.name=UHV-Q-624 Thermal Containment
 
 #override.plateTest2.name=Test 2 Overridden Plate
+
+# Thaumcraft Research
+gt.research.page.1.GT_WOOD_TO_CHARCOAL=You have discovered a way of making charcoal magically instead of using regular ovens for this purpose.<BR><BR>To create charcoal from wood you first need an air-free environment, some vacuus essentia is needed for that, then you need to incinerate the wood using ignis essentia and wait until all the water inside the wood is burned away.<BR><BR>This method however doesn't create creosote oil as byproduct.
+gt.research.page.1.GT_FILL_WATER_BUCKET=You have discovered a way of filling a bucket with aqua essentia in order to simply get water.
+gt.research.page.1.GT_TRANSZINC=You have discovered a way to multiply zinc by steeping zinc nuggets in metallum harvested from other metals.
+gt.research.page.1.GT_TRANSANTIMONY=You have discovered a way to multiply antimony by steeping antimony nuggets in metallum harvested from other metals.
+gt.research.page.1.GT_TRANSNICKEL=You have discovered a way to multiply nickel by steeping nickel nuggets in metallum harvested from other metals.
+gt.research.page.1.GT_TRANSCOBALT=You have discovered a way to multiply cobalt by steeping cobalt nuggets in metallum harvested from other metals.
+gt.research.page.1.GT_TRANSBISMUTH=You have discovered a way to multiply bismuth by steeping bismuth nuggets in metallum harvested from other metals.
+gt.research.page.1.GT_IRON_TO_STEEL=You have discovered a way of making Iron harder by just re-ordering its components.<BR><BR>This Method can be used to create a Material called Steel, which is used in many non-Thaumaturgic applications.
+gt.research.page.1.GT_TRANSBRONZE=You have discovered a way of creating Alloys using the already known transmutations of Copper and Tin.<BR><BR>This Method can be used to create a Bronze directly without having to go through an alloying process.
+gt.research.page.1.GT_TRANSELECTRUM=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Electrum as well.
+gt.research.page.1.GT_TRANSBRASS=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Brass as well.
+gt.research.page.1.GT_TRANSINVAR=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Invar as well.
+gt.research.page.1.GT_TRANSCUPRONICKEL=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Cupronickel as well.
+gt.research.page.1.GT_TRANSBATTERYALLOY=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Battery Alloy as well.
+gt.research.page.1.GT_TRANSSOLDERINGALLOY=Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Soldering Alloy as well.
+gt.research.page.1.GT_ADVANCEDMETALLURGY=Now that you have discovered all the basic metals, you can finally move on to the next Level of magic metallurgy and create more advanced metals
+gt.research.page.1.GT_TRANSALUMINIUM=You have discovered a way to multiply aluminium by steeping aluminium nuggets in metallum harvested from other metals.<BR><BR>This transmutation is slightly harder to achieve, because aluminium has special properties, which require more order to achieve the desired result.
+gt.research.page.1.GT_TRANSSKYSTONE=You have discovered a way to convert obsidian to skystone.<BR><BR>Not sure why you'd want to do this, unless skystone is somehow unavailable in your world.
+gt.research.page.1.GT_TRANSMINERAL=You have discovered a way to convert basaltic mineral sand to granitic mineral sand and vice versa.<BR><BR>Handy for people living in the sky who can't access it normally, or if you really want one or the other.
+gt.research.page.1.GT_CRYSTALLISATION=Sometimes when processing your Crystal Shards they become a pile of Dust instead of the mostly required Shard.<BR><BR>You have finally found a way to reverse this Process by using Vitreus Essentia for recrystallising the Shards.
+gt.research.page.1.GT_MAGICENERGY=While trying to find new ways to integrate magic into your industrial factories, you have discovered a way to convert magical energy into electrical power.
+gt.research.page.1.GT_MAGICENERGY2=Attempts to increase the output of your Magic Energy generators have resulted in significant improvements.
+gt.research.page.1.GT_MAGICENERGY3=Attempts to further increase the output of your Magic Energy generators have resulted in great improvements.
+gt.research.page.1.GT_MAGICABSORB=Research into magical energy conversion methods has identified a way to convert surrounding energies into electrical power.
+gt.research.page.1.GT_MAGICABSORB2=Moar output! Drain all the Magic!
+gt.research.page.1.GT_HAZMATENCH=You have discovered a way to magically enchant a mundane piece of armor with the protective properties of a Hazmat suite.
 
 # Thaumcraft Aspects
 tc.aspect.custom1.name=Aequalitas

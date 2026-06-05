@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
+
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 
 public class BlockLaser extends Block implements ITileEntityProvider {
@@ -26,7 +26,6 @@ public class BlockLaser extends Block implements ITileEntityProvider {
         super(Material.iron);
         setBlockName("LaserPlate");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".name", "Laser Resistant Plate");
         GregTechAPI.registerMachineBlock(this, -1);
         GameRegistry.registerBlock(this, ItemBlockLaser.class, getUnlocalizedName());
         ItemList.Laser_Plate.set(new ItemStack(this, 1));

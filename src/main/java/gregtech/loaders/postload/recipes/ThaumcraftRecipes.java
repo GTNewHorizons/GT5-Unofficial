@@ -16,7 +16,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.MachineRecipeLoader;
@@ -40,10 +39,6 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L)));
 
         tKey = "GT_WOOD_TO_CHARCOAL";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way of making charcoal magically instead of using regular ovens for this purpose.<BR><BR>To create charcoal from wood you first need an air-free environment, some vacuus essentia is needed for that, then you need to incinerate the wood using ignis essentia and wait until all the water inside the wood is burned away.<BR><BR>This method however doesn't create creosote oil as byproduct.");
-
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Charcoal Transmutation",
@@ -70,9 +65,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
 
         tKey = "GT_FILL_WATER_BUCKET";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way of filling a bucket with aqua essentia in order to simply get water.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Water Transmutation",
@@ -111,9 +103,6 @@ public class ThaumcraftRecipes implements Runnable {
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))) });
 
         tKey = "GT_TRANSZINC";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply zinc by steeping zinc nuggets in metallum harvested from other metals.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Zinc Transmutation",
@@ -140,9 +129,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.SANO, 1L))) });
 
         tKey = "GT_TRANSANTIMONY";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply antimony by steeping antimony nuggets in metallum harvested from other metals.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Antimony Transmutation",
@@ -169,9 +155,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L))) });
 
         tKey = "GT_TRANSNICKEL";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply nickel by steeping nickel nuggets in metallum harvested from other metals.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Nickel Transmutation",
@@ -198,9 +181,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
 
         tKey = "GT_TRANSCOBALT";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply cobalt by steeping cobalt nuggets in metallum harvested from other metals.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Cobalt Transmutation",
@@ -227,9 +207,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
 
         tKey = "GT_TRANSBISMUTH";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply bismuth by steeping bismuth nuggets in metallum harvested from other metals.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Bismuth Transmutation",
@@ -256,9 +233,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
 
         tKey = "GT_IRON_TO_STEEL";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way of making Iron harder by just re-ordering its components.<BR><BR>This Method can be used to create a Material called Steel, which is used in many non-Thaumaturgic applications.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Steel Transmutation",
@@ -283,9 +257,6 @@ public class ThaumcraftRecipes implements Runnable {
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L))) });
 
         tKey = "GT_TRANSBRONZE";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way of creating Alloys using the already known transmutations of Copper and Tin.<BR><BR>This Method can be used to create a Bronze directly without having to go through an alloying process.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Bronze Transmutation",
@@ -312,9 +283,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
 
         tKey = "GT_TRANSELECTRUM";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Electrum as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Electrum Transmutation",
@@ -341,9 +309,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L))) });
 
         tKey = "GT_TRANSBRASS";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Brass as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Brass Transmutation",
@@ -370,9 +335,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
 
         tKey = "GT_TRANSINVAR";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Invar as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Invar Transmutation",
@@ -399,9 +361,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L))) });
 
         tKey = "GT_TRANSCUPRONICKEL";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Cupronickel as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Cupronickel Transmutation",
@@ -430,9 +389,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
 
         tKey = "GT_TRANSBATTERYALLOY";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Battery Alloy as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Battery Alloy Transmutation",
@@ -461,9 +417,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L))) });
 
         tKey = "GT_TRANSSOLDERINGALLOY";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Your discovery of Bronze Transmutation has lead you to the conclusion it works with other Alloys such as Soldering Alloy as well.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Soldering Alloy Transmutation",
@@ -492,9 +445,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L))) });
 
         tKey = "GT_ADVANCEDMETALLURGY";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Now that you have discovered all the basic metals, you can finally move on to the next Level of magic metallurgy and create more advanced metals");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Advanced Metallurgic Transmutation",
@@ -518,9 +468,6 @@ public class ThaumcraftRecipes implements Runnable {
             new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey });
 
         tKey = "GT_TRANSALUMINIUM";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to multiply aluminium by steeping aluminium nuggets in metallum harvested from other metals.<BR><BR>This transmutation is slightly harder to achieve, because aluminium has special properties, which require more order to achieve the desired result.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Aluminium Transmutation",
@@ -551,9 +498,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
 
         tKey = "GT_TRANSSKYSTONE";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to convert obsidian to skystone.<BR><BR>Not sure why you'd want to do this, unless skystone is somehow unavailable in your world.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Skystone Transmutation",
@@ -585,9 +529,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 1L))) });
 
         tKey = "GT_TRANSMINERAL";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to convert basaltic mineral sand to granitic mineral sand and vice versa.<BR><BR>Handy for people living in the sky who can't access it normally, or if you really want one or the other.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Basaltic Mineral Transmutation",
@@ -627,9 +568,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1L))) });
 
         tKey = "GT_CRYSTALLISATION";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Sometimes when processing your Crystal Shards they become a pile of Dust instead of the mostly required Shard.<BR><BR>You have finally found a way to reverse this Process by using Vitreus Essentia for recrystallising the Shards.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Shard Recrystallisation",
@@ -684,9 +622,6 @@ public class ThaumcraftRecipes implements Runnable {
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))) });
 
         tKey = "GT_MAGICENERGY";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "While trying to find new ways to integrate magic into your industrial factories, you have discovered a way to convert magical energy into electrical power.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Magic Energy Conversion",
@@ -720,9 +655,6 @@ public class ThaumcraftRecipes implements Runnable {
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L))) });
 
         tKey = "GT_MAGICENERGY2";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Attempts to increase the output of your Magic Energy generators have resulted in significant improvements.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Adept Magic Energy Conversion",
@@ -758,9 +690,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L))) });
 
         tKey = "GT_MAGICENERGY3";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Attempts to further increase the output of your Magic Energy generators have resulted in great improvements.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Master Magic Energy Conversion",
@@ -795,9 +724,6 @@ public class ThaumcraftRecipes implements Runnable {
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L))) });
 
         tKey = "GT_MAGICABSORB";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "Research into magical energy conversion methods has identified a way to convert surrounding energies into electrical power.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Magic Energy Absorption",
@@ -832,8 +758,6 @@ public class ThaumcraftRecipes implements Runnable {
                     new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4L))) });
 
         tKey = "GT_MAGICABSORB2";
-        GTLanguageManager
-            .addStringLocalization(MachineRecipeLoader.aTextTCGTPage + tKey, "Moar output! Drain all the Magic!");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Improved Magic Energy Absorption",
@@ -909,9 +833,6 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 64L))) });
 
         tKey = "GT_HAZMATENCH";
-        GTLanguageManager.addStringLocalization(
-            MachineRecipeLoader.aTextTCGTPage + tKey,
-            "You have discovered a way to magically enchant a mundane piece of armor with the protective properties of a Hazmat suite.");
         GregTechAPI.sThaumcraftCompat.addResearch(
             tKey,
             "Hazmat Protection",
