@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -285,5 +286,27 @@ public class FormingPressRecipes implements Runnable {
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
+
+        // Peace Enforcement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GGMaterial.tairitsu.get(OrePrefixes.frameGt, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
+            .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(fluidSolidifierRecipes);
+
+        // Conflict Inducement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.ConflictInducementCasing.get(1))
+            .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(fluidSolidifierRecipes);
     }
 }

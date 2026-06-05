@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -323,30 +322,6 @@ public class FluidSolidifierRecipes implements Runnable {
             .addTo(fluidSolidifierRecipes);
 
         this.HexaniteRecipes();
-        this.withBEC();
-    }
-
-    /**
-     * BEC block fluid solidifier recipes.
-     */
-    private void withBEC() {
-        // Peace Enforcement Casing
-        GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.tairitsu.get(OrePrefixes.frameGt, 1))
-            .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
-            .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(fluidSolidifierRecipes);
-
-        // Conflict Inducement Casing
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1))
-            .itemOutputs(ItemList.ConflictInducementCasing.get(1))
-            .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(fluidSolidifierRecipes);
     }
 
     private void HexaniteRecipes() {
