@@ -116,14 +116,18 @@ public class BECRecipes implements Runnable {
 
         // Electromagnetic Waveguide
         addBec(
-            ItemList.ElectromagneticWaveguide.get(1),
-            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(1) },
+            ItemList.ElectromagneticWaveguide.get(4),
+            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4),
+                ItemList.MetaMaterial_Waveguide1.get(4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 4),
+                ItemList.Field_Generator_UEV.get(1)
+            },
             nanites(3),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
                 CondensateType.Infinity.getEntangled(128 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(32 * INGOTS),
-                CondensateType.SpaceTime.getEntangled(12 * INGOTS) },
-            60 * SECONDS,
+                CondensateType.SpaceTime.getEntangled(16 * INGOTS) },
+            300 * SECONDS,
             TierEU.RECIPE_UIV);
     }
 
