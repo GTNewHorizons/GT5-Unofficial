@@ -28,7 +28,7 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
-/// EM2 Meta Material recipes
+/// BEC Meta Material recipes
 /// </p>
 /// There are two groups, four 3-tier items and four 4-tier items.
 /// The 3-tier items have 5 ingredients: a base and 4 tiered materials
@@ -425,7 +425,7 @@ public class BECMetaMaterialRecipes implements Runnable {
         for (int i = 0; i < inputs.length; i++) {
             if (inputs[i] == null) {
                 throw new IllegalStateException(
-                    "EM2 Meta Material recipe for " + output.getDisplayName()
+                    "BEC Meta Material recipe for " + output.getDisplayName()
                         + " has null input at index "
                         + i
                         + " — an ore prefix is missing for the material in that slot.");
