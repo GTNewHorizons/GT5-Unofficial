@@ -50,6 +50,8 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -65,7 +67,7 @@ public class BWUtil {
 
     public static String translateGTItemStack(ItemStack itemStack) {
         if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
-        String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
+        String ret = StatCollector.translateToLocal(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack))

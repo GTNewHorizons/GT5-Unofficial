@@ -18,7 +18,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTLanguageManager;
+import net.minecraft.util.StatCollector;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 @Optional.InterfaceList(
@@ -47,10 +47,10 @@ public class BaseBauble extends Item implements IBauble {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         String key = "gtplusplus." + getUnlocalizedName() + ".name";
-        if (key.equals(GTLanguageManager.getTranslation(key))) {
+        if (!StatCollector.canTranslate(key)) {
             return super.getItemStackDisplayName(tItem).replaceAll(".name", "");
         }
-        return GTLanguageManager.getTranslation(key);
+        return StatCollector.translateToLocal(key);
     }
 
     @Override

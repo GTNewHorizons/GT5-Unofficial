@@ -21,7 +21,7 @@ import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.IPollinatable;
 import forestry.api.genetics.ISpeciesRoot;
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTLanguageManager;
+import net.minecraft.util.StatCollector;
 
 public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeType {
 
@@ -56,7 +56,7 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
 
     @Override
     public String getDescription() {
-        return GTLanguageManager.getTranslation("for.flowers." + name().toLowerCase());
+        return StatCollector.translateToLocal("for.flowers." + name().toLowerCase());
     }
 
     public void register() {

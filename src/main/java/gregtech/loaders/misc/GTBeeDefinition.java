@@ -94,6 +94,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -2754,7 +2756,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
 
-        String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
             authority = "GTNH";
         }
@@ -2786,7 +2788,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String name = "for.bees.species." + lowercaseName;
         GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, locName);
 
-        String authority = GTLanguageManager.getTranslation("for.bees.authority." + lowercaseName);
+        String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
             authority = "GTNH";
         }

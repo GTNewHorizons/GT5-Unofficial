@@ -24,7 +24,8 @@ import net.minecraft.world.World;
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLanguageManager;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.GTUtility;
 
 public class BWItemMetaGeneratedBlock extends BWItemBlocks {
@@ -42,7 +43,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
             return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
         }
-        return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
+        return StatCollector.translateToLocal(this.getUnlocalizedName(aStack) + ".name");
     }
 
     @Override

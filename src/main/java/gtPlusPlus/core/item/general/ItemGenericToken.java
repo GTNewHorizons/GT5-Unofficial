@@ -16,6 +16,8 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
@@ -101,20 +103,16 @@ public class ItemGenericToken extends CoreItem {
     public void addInformation(ItemStack stack, EntityPlayer aPlayer, List<String> list, boolean adv) {
         super.addInformation(stack, aPlayer, list, adv);
         for (int i = 0;; i++) {
-            String tooltip = GTLanguageManager.getTranslation(
-                "gtplusplus." + this
-                    .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i);
-            if (!("gtplusplus." + this
-                .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i)
-                    .equals(tooltip)) {
-                list.add(tooltip);
-            } else break;
+            String key = "gtplusplus." + this.getUnlocalizedNameInefficiently(stack) + "."
+                + stack.getItemDamage() + ".tooltip." + i;
+            if (!StatCollector.canTranslate(key)) break;
+            list.add(StatCollector.translateToLocal(key));
         }
     }
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        String ret = GTLanguageManager.getTranslation(
+        String ret = StatCollector.translateToLocal(
             "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
         EnumChatFormatting format = mCustomNameColours.get(tItem.getItemDamage());
         if (format != null) {

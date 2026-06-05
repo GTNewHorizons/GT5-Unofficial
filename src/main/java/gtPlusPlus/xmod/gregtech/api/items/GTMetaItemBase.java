@@ -18,7 +18,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
@@ -48,7 +47,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public final void addInformation(final ItemStack stack, final EntityPlayer player, List<String> tooltip,
         final boolean aF3_H) {
         final String tKey = this.getUnlocalizedName(stack) + ".tooltip",
-            tString = GTLanguageManager.getTranslation(tKey);
+            tString = StatCollector.translateToLocal(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
             tooltip.add(tString);
         }
