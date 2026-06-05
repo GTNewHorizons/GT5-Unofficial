@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -39,7 +41,6 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
@@ -57,7 +58,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         super(new MaterialMachines());
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
-        GTLanguageManager.addAnySubBlockLocalization(getUnlocalizedName());
+        HashMap<String, String> anySubEntry = new HashMap<>();
+        anySubEntry.put(getUnlocalizedName() + ".32767.name", "Any Sub Block of this");
+        LanguageRegistry.instance().injectLanguage("en_US", anySubEntry);
 
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
