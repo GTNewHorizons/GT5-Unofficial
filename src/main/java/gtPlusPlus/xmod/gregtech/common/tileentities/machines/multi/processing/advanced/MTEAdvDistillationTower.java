@@ -190,7 +190,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Right click the controller with screwdriver to change mode.")
             .addSeparator()
             .addInfo("Distillery Mode")
-            .addInfo(TooltipHelper.parallelText("(2 * floor(height / 3)) * Voltage Tier") + " Parallels")
+            .addInfo(TooltipHelper.parallelText("(2 * floor(Height / 3)) * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
