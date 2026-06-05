@@ -321,7 +321,7 @@ public class BECRecipes implements Runnable {
                 shielding[NON_BOLT_TIER[t] - 1].get(4L * tp1),
                 resonanceChamber[BOLT_TIER[t] - 1].get(resonanceQty[BOLT_POS[t]]),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, tp1),
-                Casings.SingularityReinforcedStellarShieldingCasing.toStack(4 * tp1),
+                CustomItemList.Godforge_SingularityShieldingCasing.get(4 * tp1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Hexanite, tp1),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Hexanite, 2L * tp1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Hexanite, tp1),
