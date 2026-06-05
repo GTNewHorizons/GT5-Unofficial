@@ -51,7 +51,7 @@ public final class GTWidgetThemes {
         .register();
     public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_GRAY = themeApi
         .widgetThemeKeyBuilder("displayTextGray", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, null, Color.GRAY.main, 0x404040, false, 0))
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.GREY.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
 
