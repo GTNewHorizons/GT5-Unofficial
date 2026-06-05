@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.google.common.collect.HashMultimap;
@@ -18,7 +19,6 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
-import net.minecraft.util.StatCollector;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 @Optional.InterfaceList(

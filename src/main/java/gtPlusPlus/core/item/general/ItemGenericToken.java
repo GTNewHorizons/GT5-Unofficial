@@ -13,11 +13,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
@@ -103,8 +102,8 @@ public class ItemGenericToken extends CoreItem {
     public void addInformation(ItemStack stack, EntityPlayer aPlayer, List<String> list, boolean adv) {
         super.addInformation(stack, aPlayer, list, adv);
         for (int i = 0;; i++) {
-            String key = "gtplusplus." + this.getUnlocalizedNameInefficiently(stack) + "."
-                + stack.getItemDamage() + ".tooltip." + i;
+            String key = "gtplusplus." + this
+                .getUnlocalizedNameInefficiently(stack) + "." + stack.getItemDamage() + ".tooltip." + i;
             if (!StatCollector.canTranslate(key)) break;
             list.add(StatCollector.translateToLocal(key));
         }

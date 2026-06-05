@@ -96,7 +96,8 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
                 StringBuilder tl = new StringBuilder();
-                for (String part : aCard.getString("mString" + i).split("\\\\")) tl.append(translateToLocal(part));
+                for (String part : aCard.getString("mString" + i)
+                    .split("\\\\")) tl.append(translateToLocal(part));
                 line.textLeft = tl.toString();
                 rList.add(line);
             }

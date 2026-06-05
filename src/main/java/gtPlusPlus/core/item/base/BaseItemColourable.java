@@ -44,9 +44,10 @@ public class BaseItemColourable extends Item {
         this.setMaxDamage(maxDmg);
         this.setHasSubtypes(true);
         this.rarity = regRarity;
-        LanguageRegistry.instance().injectLanguage(
-            "en_US",
-            Collections.singletonMap("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description));
+        LanguageRegistry.instance()
+            .injectLanguage(
+                "en_US",
+                Collections.singletonMap("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description));
         this.descColour = colour;
         this.hasEffect = Effect;
         this.componentColour = rgb;

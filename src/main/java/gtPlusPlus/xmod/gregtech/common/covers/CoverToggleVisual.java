@@ -6,10 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -45,7 +44,9 @@ public class CoverToggleVisual extends CoverLegacyData {
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.chat.cover.connectable", getConnectionState()));
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("GT5U.chat.cover.connectable", getConnectionState()));
         return super.onCoverRightClick(aPlayer, aX, aY, aZ);
     }
 

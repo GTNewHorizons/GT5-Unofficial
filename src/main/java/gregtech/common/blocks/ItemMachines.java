@@ -200,10 +200,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
         if (StatCollector.canTranslate(key)) {
-            LanguageRegistry.instance().injectLanguage("en_US", Collections.singletonMap(key + "." + damage, tDescription));
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", Collections.singletonMap(key + "." + damage, tDescription));
             return;
         }
-        LanguageRegistry.instance().injectLanguage("en_US", Collections.singletonMap(key, tDescription));
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", Collections.singletonMap(key, tDescription));
     }
 
     @Override

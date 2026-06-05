@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 
 public class BlockLaser extends Block implements ITileEntityProvider {

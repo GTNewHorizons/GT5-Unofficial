@@ -46,8 +46,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer player, List<String> tooltip,
         final boolean aF3_H) {
-        final String tKey = this.getUnlocalizedName(stack) + ".tooltip",
-            tString = StatCollector.translateToLocal(tKey);
+        final String tKey = this.getUnlocalizedName(stack) + ".tooltip", tString = StatCollector.translateToLocal(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
             tooltip.add(tString);
         }

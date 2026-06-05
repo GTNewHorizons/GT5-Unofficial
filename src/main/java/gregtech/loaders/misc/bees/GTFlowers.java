@@ -7,6 +7,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
@@ -21,7 +22,6 @@ import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.IPollinatable;
 import forestry.api.genetics.ISpeciesRoot;
 import gregtech.api.enums.GTValues;
-import net.minecraft.util.StatCollector;
 
 public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeType {
 

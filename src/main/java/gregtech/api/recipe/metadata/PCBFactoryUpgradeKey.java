@@ -26,9 +26,10 @@ public class PCBFactoryUpgradeKey extends RecipeMetadataKey<PCBFactoryUpgrade> {
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         PCBFactoryUpgrade upgrade = cast(value);
         if (upgrade == PCBFactoryUpgrade.BIO) {
-            recipeInfo.drawText(StatCollector.translateToLocalFormatted(
-                "GT5U.nei.recipe.upgrade_required",
-                StatCollector.translateToLocal("GT5U.nei.recipe.upgrade.bio")));
+            recipeInfo.drawText(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.recipe.upgrade_required",
+                    StatCollector.translateToLocal("GT5U.nei.recipe.upgrade.bio")));
         }
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
-
 import gregtech.api.util.GTUtility;
 
 public class EnchantmentRadioactivity extends EnchantmentDamage {

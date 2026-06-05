@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
 
-
 public class EnchantmentHazmat extends Enchantment {
 
     public static EnchantmentHazmat INSTANCE;

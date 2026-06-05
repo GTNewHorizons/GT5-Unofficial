@@ -15,7 +15,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -130,9 +129,8 @@ public class DetravScannerGUI extends GuiScreen {
 
                 if (amount > 0) {
                     info.add(
-                        StatCollector.translateToLocalFormatted(
-                            "gui.detrav.scanner.pollution.amount",
-                            formatNumber(amount)));
+                        StatCollector
+                            .translateToLocalFormatted("gui.detrav.scanner.pollution.amount", formatNumber(amount)));
                 }
 
                 func_146283_a(info, x, y);

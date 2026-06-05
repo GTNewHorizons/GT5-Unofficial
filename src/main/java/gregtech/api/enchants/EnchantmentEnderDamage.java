@@ -11,7 +11,6 @@ import net.minecraft.potion.PotionEffect;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GTConfig;
 
-
 public class EnchantmentEnderDamage extends EnchantmentDamage {
 
     public static EnchantmentEnderDamage INSTANCE;

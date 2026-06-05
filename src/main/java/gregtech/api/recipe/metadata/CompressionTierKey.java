@@ -27,7 +27,8 @@ public class CompressionTierKey extends RecipeMetadataKey<Integer> {
         int tier = cast(value, 1);
         switch (tier) {
             case 1 -> recipeInfo.drawText(StatCollector.translateToLocal("GT5U.nei.recipe.requires_hip_unit"));
-            case 2 -> recipeInfo.drawText(StatCollector.translateToLocal("GT5U.nei.recipe.requires_stabilized_black_hole"));
+            case 2 -> recipeInfo
+                .drawText(StatCollector.translateToLocal("GT5U.nei.recipe.requires_stabilized_black_hole"));
         }
     }
 }
