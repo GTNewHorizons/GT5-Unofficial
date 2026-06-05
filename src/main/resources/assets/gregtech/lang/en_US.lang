@@ -8538,7 +8538,7 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 gt.item.planck_manifold.name=Planck-Scale Manifold
 gt.item.planck_manifold.tooltip=The smallest there can be
 
-# EM2 Meta Materials
+# BEC Meta Materials
 gt.item.meta_material.energy_conduit.perfected.name=Perfected Energy Conduit
 gt.item.meta_material.energy_conduit.primitive.name=Primitive Energy Conduit
 gt.item.meta_material.energy_conduit.pristine.name=Pristine Energy Conduit
