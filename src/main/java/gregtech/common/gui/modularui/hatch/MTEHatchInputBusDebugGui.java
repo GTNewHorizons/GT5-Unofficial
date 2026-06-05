@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -44,14 +43,10 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
 
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
-        BooleanSyncValue finiteModeSyncer = new BooleanSyncValue(() -> hatch.finiteMode, val -> hatch.finiteMode = val);
+        BooleanSyncValue finiteModeSyncer = new BooleanSyncValue(
+            () -> machine.finiteMode,
+            val -> machine.finiteMode = val).allowC2S();
         syncManager.syncValue("finiteMode", finiteModeSyncer);
-    }
-
-    @Override
-    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomLeftCornerFlow(panel, syncManager).child(createInfoButton())
-            .child(createFiniteModePanelButton(syncManager, panel));
     }
 
     protected IWidget createFiniteModePanelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -114,8 +109,8 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
 
     private IWidget makeStackSizeParseConfigurator() {
         IntSyncValue stackSizeParseSyncer = new IntSyncValue(
-            () -> hatch.stackSizeParseAs,
-            val -> hatch.stackSizeParseAs = val);
+            () -> machine.stackSizeParseAs,
+            val -> machine.stackSizeParseAs = val).allowC2S();
         return Flow.row()
             .widthRel(1)
             .marginBottom(4)
@@ -141,8 +136,11 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
             .bottom(5)
             .right(5)
             .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.button.finite_mode_info")));
+    }
+
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomLeftCornerFlow(panel, syncManager).child(createInfoButton());
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(createInfoButton())
+            .child(createFiniteModePanelButton(syncManager, panel));
     }
 
     private IDrawable.DrawableWidget createInfoButton() {
