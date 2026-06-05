@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_PATTERN_PROVIDER;
 
-import gregtech.api.util.GTSplit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,18 +18,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchPatternProviderGui;
 
 public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     public MTEHatchPatternProvider(int id, String name, String nameRegional, int tier) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            getSlots(tier),
-          null);
+        super(id, name, nameRegional, tier, getSlots(tier), null);
         this.disableSort = true;
     }
 
@@ -41,10 +35,8 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted(
-            "GT5U.gui.tooltip.hatch.crafting_pattern_provider",
-            this.mInventory.length
-        );
+        return GTSplit
+            .splitLocalizedFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider", this.mInventory.length);
     }
 
     @Override
