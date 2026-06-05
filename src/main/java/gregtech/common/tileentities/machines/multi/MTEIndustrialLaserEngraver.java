@@ -569,7 +569,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors.put("gt.bwMetaGeneratedlens10023", Colors.Red);
         lensColors.put("gt.bwMetaGeneratedlens11499", Colors.Green);
         lensColors.put("gt.bwMetaGeneratedlens11358", Colors.Red);
-        lensColors.put("MU-metaitem.0132140", Colors.Purple);
+        lensColors.put("gt.metaitem.laser_lens_woodsglass", Colors.Purple);
 
         //
     }

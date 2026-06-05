@@ -5,6 +5,8 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.formatStringSafe;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +38,6 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -1133,6 +1134,19 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
+    /** Maps mName -> the Java field name in Materials (e.g. "1,1Dimethylhydrazine" -> "Dimethylhydrazine"). */
+    private static final Map<String, String> FIELD_NAME_MAP = new HashMap<>();
+
+    /** Called once at the end of MaterialsInit.load() to populate FIELD_NAME_MAP via reflection. */
+    public static void buildLangKeyMap() {
+        for (Field f : Materials.class.getDeclaredFields()) {
+            if (!Modifier.isStatic(f.getModifiers()) || f.getType() != Materials.class) continue;
+            try {
+                Materials m = (Materials) f.get(null);
+                if (m != null) FIELD_NAME_MAP.putIfAbsent(m.mName, f.getName());
+            } catch (IllegalAccessException ignored) {}
+        }
+    }
 
     static {
         MaterialsInit.load();
@@ -1202,7 +1216,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
     private String mChemicalFormula = "?";
-    private boolean isFormulaNeededLocalized = false;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1855,29 +1868,16 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mDensity;
     }
 
-    /**
-     * Set material's chemical formula.
-     *
-     * @param aChemicalFormula     the Chemical Formula want to set
-     * @param isNeededLocalization if it's true, will generate a localized key.
-     */
     public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
         this.mChemicalFormula = aChemicalFormula;
-        if (isNeededLocalization) {
-            this.isFormulaNeededLocalized = true;
-            HashMap<String, String> tLang = new HashMap<>();
-            tLang.put(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
-            GTLanguageManager.injectLanguage(tLang);
-        }
     }
 
     public void setChemicalFormula(String aChemicalFormula) {
-        setChemicalFormula(aChemicalFormula, false);
+        this.mChemicalFormula = aChemicalFormula;
     }
 
     public String getChemicalFormula() {
-        return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
-            : mChemicalFormula;
+        return mChemicalFormula;
     }
 
     public String getChemicalTooltip() {
@@ -2100,6 +2100,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     @Override
     public String getInternalName() {
         return mName;
+    }
+
+    @Override
+    public String getLocalizedNameKey() {
+        String fieldName = FIELD_NAME_MAP.get(mName);
+        return "gt.material." + (fieldName != null ? fieldName : mName);
     }
 
     @Override

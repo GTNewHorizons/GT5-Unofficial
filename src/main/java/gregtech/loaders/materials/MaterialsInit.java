@@ -63,6 +63,7 @@ public class MaterialsInit {
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
+        Materials.buildLangKeyMap();
     }
 
     private static void loadElements() {

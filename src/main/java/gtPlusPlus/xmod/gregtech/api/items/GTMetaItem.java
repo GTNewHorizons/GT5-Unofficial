@@ -26,6 +26,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs;
 
 public abstract class GTMetaItem extends GTMetaItemBase {
 
@@ -46,6 +47,16 @@ public abstract class GTMetaItem extends GTMetaItemBase {
 
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
     public final HashMap<Short, Long[]> mFluidContainerStats = new HashMap<>();
+
+    /**
+     * Maps item damage -> semantic unlocalized-name base for items registered via
+     * {@link #addItem(MetaGeneratedItemIDs, String, Object[])}.
+     */
+    private final HashMap<Integer, String> mSemanticKeys = new HashMap<>();
+    /**
+     * Maps item damage -> runtime prefix prepended to the lang-file display name (e.g. superscript isotope numbers).
+     */
+    private final HashMap<Integer, String> mNamePrefixes = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -137,6 +148,34 @@ public abstract class GTMetaItem extends GTMetaItemBase {
             return rStack;
         }
         return null;
+    }
+
+    /**
+     * Registers an item whose base display name comes from {@code en_US.lang}.
+     * {@code aNamePrefix} is prepended to the translated name at display time (pass {@code ""} for none).
+     */
+    public final ItemStack addItem(final MetaGeneratedItemIDs idEnum, final String aNamePrefix,
+        final Object... aRandomData) {
+        int damage = this.mOffset + idEnum.ID;
+        mSemanticKeys.put(damage, idEnum.toLangKey());
+        if (aNamePrefix != null && !aNamePrefix.isEmpty()) {
+            mNamePrefixes.put(damage, aNamePrefix);
+        }
+        return addItem(idEnum.ID, null, null, aRandomData);
+    }
+
+    @Override
+    public String getItemStackDisplayName(final ItemStack stack) {
+        String prefix = mNamePrefixes.get(stack.getItemDamage());
+        String base = super.getItemStackDisplayName(stack);
+        return prefix != null ? prefix + base : base;
+    }
+
+    @Override
+    public String getUnlocalizedName(final ItemStack stack) {
+        String semantic = mSemanticKeys.get(stack.getItemDamage());
+        if (semantic != null) return semantic;
+        return super.getUnlocalizedName(stack);
     }
 
     /**

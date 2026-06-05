@@ -1,7 +1,6 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.function.Supplier;
 import net.minecraft.enchantment.Enchantment;
 
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLanguageManager;
 
 public class MaterialBuilder {
 
@@ -39,7 +37,6 @@ public class MaterialBuilder {
     private String defaultLocalName;
     private Element element;
     private String chemicalFormula;
-    private boolean isFormulaNeededLocalized = false;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -148,7 +145,7 @@ public class MaterialBuilder {
         for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
         for (OrePrefixes prefix : orePrefixWhitelist) prefix.mGeneratedItems.add(material);
 
-        if (isFormulaNeededLocalized) material.setChemicalFormula(chemicalFormula, true);
+        if (chemicalFormula != null) material.setChemicalFormula(chemicalFormula);
 
         return material;
     }
@@ -171,23 +168,19 @@ public class MaterialBuilder {
     }
 
     /**
-     * Set the chemical formula of the material. This overrides auto-generated formulas. A translation key will be
-     * generated if localization is required.
+     * Set the chemical formula of the material. This overrides auto-generated formulas.
      */
     public MaterialBuilder setChemicalFormula(String chemicalFormula, boolean isNeedLocalized) {
         this.chemicalFormula = chemicalFormula;
-        this.isFormulaNeededLocalized = isNeedLocalized;
         return this;
     }
 
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
-        return setChemicalFormula(chemicalFormula, false);
+        this.chemicalFormula = chemicalFormula;
+        return this;
     }
 
     public MaterialBuilder setFlavorText(String flavorText) {
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put("Material." + name.toLowerCase() + ".flavorText", flavorText);
-        GTLanguageManager.injectLanguage(tLang);
         return this;
     }
 
