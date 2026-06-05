@@ -421,7 +421,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public boolean canDumpFluidToME() {
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch./
+        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
