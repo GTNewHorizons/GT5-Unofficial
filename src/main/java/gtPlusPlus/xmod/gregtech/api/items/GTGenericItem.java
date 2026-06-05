@@ -23,11 +23,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -45,14 +45,13 @@ public class GTGenericItem extends Item implements IProjectileItem {
         super();
         this.mName = aUnlocalized;
         HashMap<String, String> tLang = new HashMap<>();
-        tLang.put(this.mName + ".name", aEnglish);
+        tLang.put(this.mName + ".name", aEnglish != null ? aEnglish : "");
         if (GTUtility.isStringValid(aEnglishTooltip)) {
             tLang.put(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
             this.mTooltip = null;
         }
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerItem(this, this.mName, GTPlusPlus.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());

@@ -18,7 +18,6 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -34,6 +33,7 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBeeDefinition;
@@ -109,8 +109,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
         String name = "for.bees.species." + lowercaseName;
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("for.bees.species." + lowercaseName, species);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         GTPP_Bees.sMaterialMappings.put(
             binomial.toLowerCase()
                 .replaceAll(" ", ""),

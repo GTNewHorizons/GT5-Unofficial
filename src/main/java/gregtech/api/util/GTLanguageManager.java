@@ -1,10 +1,15 @@
 package gregtech.api.util;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Retained solely as a holder for the GregTech.lang config-file handle and a few flags that external code still reads.
@@ -55,6 +60,20 @@ public class GTLanguageManager {
         FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
 
     public static String[] FACES = { FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE };
+
+    /**
+     * Null-safe wrapper around {@link LanguageRegistry#injectLanguage}.
+     * Entries with null values are silently dropped so that any existing translation for that key is preserved.
+     * Use this everywhere instead of calling {@link LanguageRegistry#injectLanguage} directly.
+     */
+    @Deprecated
+    public static void injectLanguage(HashMap<String, String> tLang) {
+        tLang.values()
+            .removeIf(Objects::isNull);
+        if (!tLang.isEmpty()) {
+            GTLanguageManager.injectLanguage(tLang);
+        }
+    }
 
     @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {

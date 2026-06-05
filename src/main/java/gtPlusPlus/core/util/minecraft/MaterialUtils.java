@@ -11,11 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -289,8 +289,7 @@ public class MaterialUtils {
     public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(getMaterialLocalizedNameKey(materialNameForKey), materialDefaultLocalName);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 
     public static void generateMaterialLocalizedName(String name) {

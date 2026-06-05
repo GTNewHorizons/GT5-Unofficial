@@ -7,8 +7,8 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
 
@@ -261,8 +261,7 @@ public enum CombType {
         this.name = pName;
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 
     public void setHidden() {

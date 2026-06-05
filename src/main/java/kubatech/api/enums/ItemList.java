@@ -14,8 +14,8 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -195,8 +195,7 @@ public enum ItemList implements IItemContainer {
 
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(tKey, aDisplayName);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }

@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
@@ -183,8 +183,7 @@ public final class LanthItemList {
 
             HashMap<String, String> tLang = new HashMap<>();
             tLang.put(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", tLang);
+            GTLanguageManager.injectLanguage(tLang);
 
             maskMap.put(mask, maskItem);
 

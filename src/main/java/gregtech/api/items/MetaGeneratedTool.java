@@ -45,7 +45,6 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
@@ -57,6 +56,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -225,8 +225,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             tLang.put(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
             tLang.put(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
             tLang.put(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", tLang);
+            GTLanguageManager.injectLanguage(tLang);
             mToolStats.put((short) aID, aToolStats);
             mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);

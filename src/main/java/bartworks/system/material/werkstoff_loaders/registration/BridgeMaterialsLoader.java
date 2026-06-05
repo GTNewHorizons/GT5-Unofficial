@@ -23,11 +23,11 @@ import net.minecraft.util.StatCollector;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
+import gregtech.api.util.GTLanguageManager;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -73,8 +73,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
             HashMap<String, String> tLang = new HashMap<>();
             tLang.put(werkstoffBridgeMaterial.getLocalizedNameKey(), werkstoffBridgeMaterial.mDefaultLocalName);
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", tLang);
+            GTLanguageManager.injectLanguage(tLang);
         }
         if (Thaumcraft.isModLoaded()) {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();

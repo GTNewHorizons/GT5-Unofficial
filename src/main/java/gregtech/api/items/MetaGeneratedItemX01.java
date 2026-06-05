@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -63,15 +62,12 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 HashMap<String, String> tLang = new HashMap<>();
-                tLang.put(
-                    getUnlocalizedName(tStack) + ".name",
-                    GTLanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
-                        : getDefaultLocalization(tPrefix, tMaterial, i));
-                tLang.put(
-                    getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
-                LanguageRegistry.instance()
-                    .injectLanguage("en_US", tLang);
+                String tName = GTLanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
+                    : getDefaultLocalization(tPrefix, tMaterial, i);
+                String tTooltip = tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M);
+                tLang.put(getUnlocalizedName(tStack) + ".name", tName != null ? tName : "");
+                tLang.put(getUnlocalizedName(tStack) + ".tooltip", tTooltip != null ? tTooltip : "");
+                GTLanguageManager.injectLanguage(tLang);
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {

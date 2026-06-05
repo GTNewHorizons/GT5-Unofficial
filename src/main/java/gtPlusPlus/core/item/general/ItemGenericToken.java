@@ -15,9 +15,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 
@@ -70,8 +70,7 @@ public class ItemGenericToken extends CoreItem {
         for (int i = 0; i < aDescript.length; i++) {
             tLang.put("gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i, aDescript[i]);
         }
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         mMaxStackSizes.put(id, aMaxStack);
         mDescriptionArrays.put(id, aDescript);
         mRarities.put(id, aRarity);

@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.GGConstants;
@@ -26,6 +25,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -61,8 +61,7 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(getUnlocalizedName(rStack) + ".name", aEnglish);
         tLang.put(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         List<TCAspects.TC_AspectStack> tAspects = new ArrayList<>();
         // Important Stuff to do first
         for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {

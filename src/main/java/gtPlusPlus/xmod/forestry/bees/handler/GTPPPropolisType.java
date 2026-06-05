@@ -5,7 +5,7 @@ import java.util.HashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -44,8 +44,7 @@ public enum GTPPPropolisType {
                 .replaceAll(" ", ""));
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 
     public String getLocalizedName() {

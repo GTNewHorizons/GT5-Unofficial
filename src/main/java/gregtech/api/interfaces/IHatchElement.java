@@ -16,9 +16,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 
@@ -33,8 +33,7 @@ public interface IHatchElement<T> {
     default String getDisplayName() {
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("hatch_type_" + name().toLowerCase(), name());
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         return StatCollector.translateToLocal("hatch_type_" + name().toLowerCase());
     }
 

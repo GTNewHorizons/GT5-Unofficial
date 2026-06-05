@@ -10,8 +10,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTLanguageManager;
 
 public class MaterialBuilder {
 
@@ -187,8 +187,7 @@ public class MaterialBuilder {
     public MaterialBuilder setFlavorText(String flavorText) {
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("Material." + name.toLowerCase() + ".flavorText", flavorText);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         return this;
     }
 

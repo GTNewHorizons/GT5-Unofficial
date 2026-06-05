@@ -16,9 +16,9 @@ import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -3310,8 +3310,7 @@ public enum ItemList implements IItemContainer {
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(tKey, aDisplayName);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }

@@ -6,8 +6,8 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GTLanguageManager;
 
 public enum DropType {
 
@@ -34,8 +34,7 @@ public enum DropType {
         this.showInList = show;
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 
     public void setHidden() {

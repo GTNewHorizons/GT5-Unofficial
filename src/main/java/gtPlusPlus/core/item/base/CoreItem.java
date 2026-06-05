@@ -15,9 +15,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTLanguageManager;
 
 public class CoreItem extends Item {
 
@@ -108,7 +108,6 @@ public class CoreItem extends Item {
         for (int i = 0; i < description.length; i++) {
             tLang.put("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i, description[i]);
         }
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 }

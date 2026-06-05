@@ -25,10 +25,10 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 
 public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
@@ -48,8 +48,7 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
         setUnlocalizedName(aUnlocalized);
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(getUnlocalizedName() + ".name", aEnglish);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
         mCharge = Math.max(1, aCharge);
         mTransfer = Math.max(1, aTransfer);
         mTier = Math.max(1, aTier);

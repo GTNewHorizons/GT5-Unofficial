@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -17,6 +16,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -66,8 +66,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                 tLang.put(
                     this.getUnlocalizedName(tStack) + ".tooltip",
                     tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
-                LanguageRegistry.instance()
-                    .injectLanguage("en_US", tLang);
+                GTLanguageManager.injectLanguage(tLang);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {

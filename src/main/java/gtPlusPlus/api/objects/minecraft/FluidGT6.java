@@ -8,9 +8,9 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
 
 public class FluidGT6 extends Fluid implements Runnable {
@@ -51,8 +51,7 @@ public class FluidGT6 extends Fluid implements Runnable {
         if (generateLocalizedNameHasOreprefix(aLocalName, "%s Plasma")) return;
         HashMap<String, String> tLang = new HashMap<>();
         tLang.put(this.getUnlocalizedName(), aLocalName);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
     }
 
     private boolean generateLocalizedNameHasOreprefix(String aLocalName, String oreprefixFormat) {

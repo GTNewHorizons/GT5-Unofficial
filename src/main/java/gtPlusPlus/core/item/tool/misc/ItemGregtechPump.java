@@ -31,7 +31,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -45,6 +44,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -551,8 +551,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             HashMap<String, String> tLang = new HashMap<>();
             tLang.put("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".name", aEnglish);
             tLang.put("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".tooltip", aToolTip);
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", tLang);
+            GTLanguageManager.injectLanguage(tLang);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {

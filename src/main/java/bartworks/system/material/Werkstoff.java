@@ -61,6 +61,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -300,8 +301,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         GregTechAPI.sAfterGTPreload.add(() -> {
             HashMap<String, String> tLang = new HashMap<>();
             tLang.put(getLocalizedNameKey(), this.defaultName);
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", tLang);
+            GTLanguageManager.injectLanguage(tLang);
         });
         this.stats = stats;
         this.type = type;

@@ -13,11 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
@@ -53,8 +53,7 @@ public class StabilisationFieldCasing extends BlockCasingsAbstract {
                 WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
             GTStructureChannels.EOH_STABILISATION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang);
+        GTLanguageManager.injectLanguage(tLang);
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.StabilisationFieldGeneratorTier1.set(new ItemStack(this, 1, 1));
