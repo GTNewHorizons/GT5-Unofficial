@@ -39,6 +39,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -51,7 +52,6 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -66,7 +66,9 @@ public class BWUtil {
 
     public static String translateGTItemStack(ItemStack itemStack) {
         if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
-        String ret = StatCollector.translateToLocal(GTLanguageManager.getTranslateableItemStackName(itemStack));
+        String tName = ItemStackNBT.getDisplayName(itemStack);
+        String key = GTUtility.isStringValid(tName) ? tName : itemStack.getUnlocalizedName() + ".name";
+        String ret = StatCollector.translateToLocal(key);
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack))
