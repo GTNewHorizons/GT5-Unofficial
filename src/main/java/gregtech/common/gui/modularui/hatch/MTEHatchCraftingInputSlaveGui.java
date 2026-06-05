@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.modularui2.GTModularScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +54,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
 
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(RemoteGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(GregTech.ID, mainPanel);
+        return new GTModularScreen(mainPanel, mte.getColoredTheme());
     }
 
     public ModularPanel buildUI(RemoteGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
