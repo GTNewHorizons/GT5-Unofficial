@@ -5,6 +5,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.cleanroommc.modularui.network.NetworkUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +35,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
  * On the client side, the mte is completely fictional
- * On the server side, the value should be synced to the actual tile entity
+ * On the server side, the value must be synced to the actual tile entity
  */
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -124,6 +125,8 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         public IGuiHolder<ProxyGuiData> getGuiHolder(ProxyGuiData data) {
             MTEHatchCraftingInputME mte = data.getServerMTE();
             if (mte == null) {
+                // On the server, we must sync to the real MTE. A check that the real MTE is supplied.
+                assert NetworkUtils.isClient();
                 // Create empty fake MTE on client
                 BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
                 fakeBase.setInitialValuesAsNBT(
@@ -140,6 +143,12 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
                 assert mte != null;
             }
             return new MTEHatchCraftingInputSlaveGui(mte);
+        }
+
+        @Override
+        public boolean canInteractWith(EntityPlayer player, ProxyGuiData guiData) {
+            // Note: seems only called server side and accessing the server only mte is safe
+            return super.canInteractWith(player, guiData) && guiData.getServerMTE().isValid();
         }
 
         @Override
