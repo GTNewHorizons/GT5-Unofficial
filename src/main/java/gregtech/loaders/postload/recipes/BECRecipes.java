@@ -30,10 +30,10 @@ public class BECRecipes implements Runnable {
 
     @Override
     public void run() {
-        addBECMultiRecipes();
+        addBECCasingRecipes();
     }
 
-    private void addBECMultiRecipes() {
+    private void addBECCasingRecipes() {
         // Electromagnetically-isolated Casing
         addBec(
             ItemList.ElectromagneticallyIsolatedCasing.get(8),
