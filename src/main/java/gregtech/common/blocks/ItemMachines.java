@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -52,7 +53,6 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -199,11 +199,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (GTLanguageManager.hasGTLocalizationKey(key)) {
-            GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
+        if (StatCollector.canTranslate(key)) {
+            LanguageRegistry.instance().injectLanguage("en_US", Collections.singletonMap(key + "." + damage, tDescription));
             return;
         }
-        GTLanguageManager.addStringLocalization(key, tDescription);
+        LanguageRegistry.instance().injectLanguage("en_US", Collections.singletonMap(key, tDescription));
     }
 
     @Override

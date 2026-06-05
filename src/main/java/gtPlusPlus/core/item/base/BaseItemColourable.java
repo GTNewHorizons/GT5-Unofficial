@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,11 +11,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.StatCollector;
 
 public class BaseItemColourable extends Item {
 
@@ -42,7 +44,9 @@ public class BaseItemColourable extends Item {
         this.setMaxDamage(maxDmg);
         this.setHasSubtypes(true);
         this.rarity = regRarity;
-        GTLanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description);
+        LanguageRegistry.instance().injectLanguage(
+            "en_US",
+            Collections.singletonMap("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description));
         this.descColour = colour;
         this.hasEffect = Effect;
         this.componentColour = rgb;
