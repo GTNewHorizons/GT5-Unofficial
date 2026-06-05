@@ -1,11 +1,8 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
-import java.util.HashMap;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -34,9 +31,6 @@ public enum GTPPPollenType {
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put("gtplusplus.pollen." + this.mNameUnlocal, aName + " Pollen");
-        GTLanguageManager.injectLanguage(tLang);
     }
 
     public String getLocalizedName() {

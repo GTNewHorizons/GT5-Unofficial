@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -41,7 +40,6 @@ import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
@@ -115,10 +113,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         super(aID, aBasicName, aInvSlotCount);
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
-
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put("gt.blockmachines." + mName + ".name", aRegionalName != null ? aRegionalName : "");
-        GTLanguageManager.injectLanguage(tLang);
 
         inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }

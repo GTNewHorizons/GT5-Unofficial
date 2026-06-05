@@ -17,17 +17,12 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 
-import java.util.HashMap;
-
-import net.minecraft.util.StatCollector;
-
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GTLanguageManager;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -70,11 +65,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         werkstoffBridgeMaterial.mName = werkstoff.getVarName();
         werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
         werkstoffBridgeMaterial.setChemicalFormula(werkstoff.getFormulaTooltip(), werkstoff.isFormulaNeededLocalized());
-        if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
-            HashMap<String, String> tLang = new HashMap<>();
-            tLang.put(werkstoffBridgeMaterial.getLocalizedNameKey(), werkstoffBridgeMaterial.mDefaultLocalName);
-            GTLanguageManager.injectLanguage(tLang);
-        }
         if (Thaumcraft.isModLoaded()) {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
         }

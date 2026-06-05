@@ -1,14 +1,10 @@
 package gregtech.common.items;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import net.minecraft.util.StatCollector;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
 
@@ -259,9 +255,6 @@ public enum CombType {
         this.showInList = show;
         this.color = new int[] { color1, color2 };
         this.name = pName;
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
-        GTLanguageManager.injectLanguage(tLang);
     }
 
     public void setHidden() {
@@ -269,7 +262,7 @@ public enum CombType {
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal("comb." + name);
+        return StatCollector.translateToLocal("gt.combType." + name);
     }
 
     public int[] getColours() {

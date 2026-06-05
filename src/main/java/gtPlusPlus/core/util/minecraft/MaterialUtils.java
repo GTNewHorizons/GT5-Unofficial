@@ -15,7 +15,6 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -286,11 +285,7 @@ public class MaterialUtils {
             || aGregtechMaterial.mName.equals(Materials._NULL.mName);
     }
 
-    public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put(getMaterialLocalizedNameKey(materialNameForKey), materialDefaultLocalName);
-        GTLanguageManager.injectLanguage(tLang);
-    }
+    public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {}
 
     public static void generateMaterialLocalizedName(String name) {
         generateMaterialLocalizedName(name, name);
@@ -301,7 +296,7 @@ public class MaterialUtils {
     }
 
     public static String getMaterialLocalizedNameKey(String materialName) {
-        return "Material." + materialName.toLowerCase()
+        return "gt.material." + materialName.toLowerCase()
             .replaceAll("[^a-zA-Z0-9]", "");
     }
 }

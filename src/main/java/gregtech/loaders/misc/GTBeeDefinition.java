@@ -60,7 +60,6 @@ import static gregtech.loaders.misc.GTBeeDefinitionReference.MAGICBEES;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -73,7 +72,6 @@ import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.text.WordUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeEffect;
@@ -2754,11 +2752,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String uid = "gregtech.bee.species" + species;
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
-        HashMap<String, String> tLang1 = new HashMap<>();
-        tLang1.put("for.bees.species." + lowercaseName, species);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang1);
-
         String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
             authority = "GTNH";
@@ -2789,11 +2782,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String uid = "gregtech.bee.species" + species;
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
-        HashMap<String, String> tLang2 = new HashMap<>();
-        tLang2.put("for.bees.species." + lowercaseName, locName);
-        LanguageRegistry.instance()
-            .injectLanguage("en_US", tLang2);
-
         String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
             authority = "GTNH";

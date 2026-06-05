@@ -1,13 +1,8 @@
 package gregtech.common.items;
 
-import java.util.HashMap;
-
 import net.minecraft.util.StatCollector;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 
 public enum DropType {
 
@@ -32,9 +27,6 @@ public enum DropType {
     DropType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
-        HashMap<String, String> tLang = new HashMap<>();
-        tLang.put("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
-        GTLanguageManager.injectLanguage(tLang);
     }
 
     public void setHidden() {
@@ -42,7 +34,7 @@ public enum DropType {
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal("drop." + this.name);
+        return StatCollector.translateToLocal("gt.dropType." + this.name.replace(' ', '_'));
     }
 
     public int[] getColours() {

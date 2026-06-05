@@ -43,4 +43,8 @@ public enum MetaGeneratedItemIDs {
     MetaGeneratedItemIDs(int ID) {
         this.ID = ID;
     }
+
+    public String toLangKey() {
+        return "gt.metaitem." + name().toLowerCase();
+    }
 }

@@ -49,7 +49,6 @@ import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -61,7 +60,6 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -297,12 +295,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
         this.mID = (short) mID;
         this.defaultName = defaultName;
-        // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> {
-            HashMap<String, String> tLang = new HashMap<>();
-            tLang.put(getLocalizedNameKey(), this.defaultName);
-            GTLanguageManager.injectLanguage(tLang);
-        });
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
