@@ -32,7 +32,7 @@ public final class NEIRecipePropertiesBuilder {
     private UnaryOperator<HandlerInfo.Builder> handlerInfoCreator;
 
     private Size recipeBackgroundSize = new Size(170, 82);
-    private Pos2d recipeBackgroundOffset = new Pos2d(3, 5);
+    private Pos2d recipeBackgroundOffset = new Pos2d(3, 3);
 
     private INEISpecialInfoFormatter neiSpecialInfoFormatter = DefaultSpecialValueFormatter.INSTANCE;
 
