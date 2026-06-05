@@ -70,6 +70,7 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
+import gregtech.common.blocks.BlockDecorativeFrame;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
@@ -883,6 +884,11 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",
+            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            Short.MAX_VALUE);
+
+        GregTechAPI.sBlockFramesBW = new BlockDecorativeFrame(
+            "bw.frames",
             meta -> Werkstoff.werkstoffHashMap.get((short) meta),
             Short.MAX_VALUE);
 

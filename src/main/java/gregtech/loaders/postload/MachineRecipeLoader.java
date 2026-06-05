@@ -9,6 +9,8 @@ import gregtech.loaders.postload.recipes.ArcFurnaceRecipes;
 import gregtech.loaders.postload.recipes.AssemblerRecipes;
 import gregtech.loaders.postload.recipes.AssemblyLineRecipes;
 import gregtech.loaders.postload.recipes.AutoclaveRecipes;
+import gregtech.loaders.postload.recipes.BECMetaMaterialRecipes;
+import gregtech.loaders.postload.recipes.BECRecipes;
 import gregtech.loaders.postload.recipes.BenderRecipes;
 import gregtech.loaders.postload.recipes.BlastFurnaceRecipes;
 import gregtech.loaders.postload.recipes.BreweryRecipes;
@@ -21,7 +23,6 @@ import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
-import gregtech.loaders.postload.recipes.EM2MetaMaterialRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
 import gregtech.loaders.postload.recipes.ElectromagneticSeparatorRecipes;
 import gregtech.loaders.postload.recipes.ExtractorRecipes;
@@ -116,7 +117,8 @@ public class MachineRecipeLoader implements Runnable {
         new VacuumFreezerRecipes().run();
         new WiremillRecipes().run();
         new TranscendentPlasmaMixerRecipes().run();
-        new EM2MetaMaterialRecipes().run();
+        new BECMetaMaterialRecipes().run();
+        new BECRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();

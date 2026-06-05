@@ -2367,7 +2367,7 @@ channels.gregtech.solenoid=Decides the tier of Solenoid Superconductor Coil. Sta
 channels.gregtech.capacitor=Decides the tier of Lapotronic Capacitor. Starts at §6Empty§r at value 1 and ends at §6UMV§r at value 10.
 channels.gregtech.height=Decides the height of repeatable slices. Valid range varies from multi to multi.
 channels.gregtech.length=Decides the length of repeatable slices. Valid range varies from multi to multi.
-channels.gregtech.pipe=Decides the tier of Pipe Casing. Starts at §6Bronze Pipe Casing§r at value 1 and ends at §6Tungsten Steel Pipe Casing§r at value 4.
+channels.gregtech.pipe=Decides the tier of Pipe Casing. Starts at §6Bronze Pipe Casing§r at value 1 and ends at §6Tungstensteel Pipe Casing§r at value 4.
 channels.gregtech.item_pipe=Decides the tier of Item Pipe Casing. Starts at §6Tin Item Pipe Casing§r at value 1 and ends at §6Black Plutonium Item Pipe Casing§r at value 8.
 channels.gregtech.cell=Decides the tier of Vanadium Redox Power Cell. Starts at §6EV§r at value 1 and ends at §6UHV§r at value 6.
 channels.gregtech.antenna=Decides the tier of Antenna Casing. Starts at §6T1§r at value 1 and ends at §6T2§r at value 2.
@@ -8538,7 +8538,7 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 gt.item.planck_manifold.name=Planck-Scale Manifold
 gt.item.planck_manifold.tooltip=The smallest there can be
 
-# EM2 Meta Materials
+# BEC Meta Materials
 gt.item.meta_material.energy_conduit.perfected.name=Perfected Energy Conduit
 gt.item.meta_material.energy_conduit.primitive.name=Primitive Energy Conduit
 gt.item.meta_material.energy_conduit.pristine.name=Pristine Energy Conduit
