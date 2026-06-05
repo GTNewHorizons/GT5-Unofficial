@@ -60,7 +60,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         setBlockName(this.mUnlocalizedName);
         HashMap<String, String> anySubEntry = new HashMap<>();
         anySubEntry.put(getUnlocalizedName() + ".32767.name", "Any Sub Block of this");
-        LanguageRegistry.instance().injectLanguage("en_US", anySubEntry);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", anySubEntry);
 
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 

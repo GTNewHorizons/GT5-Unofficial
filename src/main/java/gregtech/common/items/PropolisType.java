@@ -1,9 +1,11 @@
 package gregtech.common.items;
 
+import java.util.HashMap;
+
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 
 public enum PropolisType {
 
@@ -28,10 +30,13 @@ public enum PropolisType {
     PropolisType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
-        GTLanguageManager.addStringLocalization(
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(
             "propolis." + this.name,
             this.name.substring(0, 1)
                 .toUpperCase() + this.name.substring(1) + " Propolis");
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
     }
 
     public void setHidden() {

@@ -19,6 +19,7 @@ public class GTGenericBlock extends Block {
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         HashMap<String, String> entry = new HashMap<>();
         entry.put(getUnlocalizedName() + ".32767.name", "Any Sub Block of this");
-        LanguageRegistry.instance().injectLanguage("en_US", entry);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", entry);
     }
 }

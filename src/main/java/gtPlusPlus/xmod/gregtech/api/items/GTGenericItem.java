@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.items;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.BlockDispenser;
@@ -22,11 +23,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -43,12 +44,15 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
         super();
         this.mName = aUnlocalized;
-        GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
+            tLang.put(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
             this.mTooltip = null;
         }
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerItem(this, this.mName, GTPlusPlus.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());

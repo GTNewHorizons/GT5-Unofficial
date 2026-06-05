@@ -60,6 +60,7 @@ import static gregtech.loaders.misc.GTBeeDefinitionReference.MAGICBEES;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -72,6 +73,7 @@ import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.text.WordUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeEffect;
@@ -95,7 +97,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.JubilanceMegaApiary;
@@ -2753,7 +2754,10 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String uid = "gregtech.bee.species" + species;
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
-        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species);
+        HashMap<String, String> tLang1 = new HashMap<>();
+        tLang1.put("for.bees.species." + lowercaseName, species);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang1);
 
         String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {
@@ -2785,7 +2789,10 @@ public enum GTBeeDefinition implements IBeeDefinition {
         String uid = "gregtech.bee.species" + species;
         String description = "for.description." + lowercaseName;
         String name = "for.bees.species." + lowercaseName;
-        GTLanguageManager.addStringLocalization("for.bees.species." + lowercaseName, locName);
+        HashMap<String, String> tLang2 = new HashMap<>();
+        tLang2.put("for.bees.species." + lowercaseName, locName);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang2);
 
         String authority = StatCollector.translateToLocal("for.bees.authority." + lowercaseName);
         if (authority.equals("for.bees.authority." + lowercaseName)) {

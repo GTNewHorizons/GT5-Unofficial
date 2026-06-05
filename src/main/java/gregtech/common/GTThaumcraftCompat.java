@@ -2,6 +2,7 @@ package gregtech.common;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,9 +13,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -190,8 +191,11 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             aComplexity,
             aIcon);
         ArrayList<ResearchPage> tPages = new ArrayList<>(aPages.length);
-        GTLanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
-        GTLanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT] " + aText);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put("tc.research_name." + aResearch, aName);
+        tLang.put("tc.research_text." + aResearch, "[GT] " + aText);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         for (Object tPage : aPages) {
             if ((tPage instanceof String)) {
                 tPages.add(new ResearchPage((String) tPage));

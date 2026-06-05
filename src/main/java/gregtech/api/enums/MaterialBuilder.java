@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLanguageManager;
 
 public class MaterialBuilder {
 
@@ -184,7 +185,10 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder setFlavorText(String flavorText) {
-        GTLanguageManager.addStringLocalization("Material." + name.toLowerCase() + ".flavorText", flavorText);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put("Material." + name.toLowerCase() + ".flavorText", flavorText);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         return this;
     }
 

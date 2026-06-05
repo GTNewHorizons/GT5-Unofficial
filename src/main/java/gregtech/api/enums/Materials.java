@@ -8,6 +8,7 @@ import static gregtech.api.util.GTUtility.formatStringSafe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -35,7 +37,6 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -1864,7 +1865,10 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         this.mChemicalFormula = aChemicalFormula;
         if (isNeededLocalization) {
             this.isFormulaNeededLocalized = true;
-            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
         }
     }
 

@@ -2,6 +2,7 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GTValues.M;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -60,13 +62,16 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
             if (tMaterial == null) continue;
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
+                HashMap<String, String> tLang = new HashMap<>();
+                tLang.put(
                     getUnlocalizedName(tStack) + ".name",
                     GTLanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
                         : getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
+                tLang.put(
                     getUnlocalizedName(tStack) + ".tooltip",
                     tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
+                LanguageRegistry.instance()
+                    .injectLanguage("en_US", tLang);
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {

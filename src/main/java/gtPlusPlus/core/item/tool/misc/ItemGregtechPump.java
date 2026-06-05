@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -44,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -146,8 +146,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         // aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
         int aOffsetMeta = getCorrectMetaForItemstack(aStack);
         aList.add(
-            GTLanguageManager
-                .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
+            StatCollector
+                .translateToLocal("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
 
         FluidStack f = getFluid(aStack);
         aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.0"));
@@ -548,11 +548,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             GTModHandler.registerBoxableItemToToolBox(rStack);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GTLanguageManager
-                .addStringLocalization("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(
-                "gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".tooltip",
-                aToolTip);
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".name", aEnglish);
+            tLang.put("gtplusplus." + this.getUnlocalizedName(rStack) + "." + aID + ".tooltip", aToolTip);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {
@@ -610,8 +610,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public String getItemStackDisplayName(final ItemStack aStack) {
         int keyValue = (getCorrectMetaForItemstack(aStack));
         keyValue = GTUtility.clamp(keyValue, 0, 4);
-        return GTLanguageManager
-            .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
+        return StatCollector
+            .translateToLocal("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
     }
 
     /**

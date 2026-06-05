@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
-import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -44,21 +43,16 @@ public class MetaGTProxy {
                 .addStringLocalization("fluidHotWater", aNewHeatedWaterName);
             LanguageRegistry.instance()
                 .addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
-            GTLanguageManager.addStringLocalization("fluidHotWater", aNewHeatedWaterName);
-            GTLanguageManager.addStringLocalization("ic2.fluidHotWater", aNewHeatedWaterName);
-
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
                 LanguageRegistry.addName(new ItemStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
-                GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
             }
             Fluid f = BlocksItems.getFluid(InternalName.fluidHotWater);
             if (f != null) {
                 LanguageRegistry.instance()
                     .addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
-                GTLanguageManager.addStringLocalization(f.getUnlocalizedName(), aNewHeatedWaterName);
                 int aDam = FluidRegistry.getFluidID(f);
                 ItemStack s = ItemList.Display_Fluid.getWithDamage(1, aDam);
                 if (s != null) {

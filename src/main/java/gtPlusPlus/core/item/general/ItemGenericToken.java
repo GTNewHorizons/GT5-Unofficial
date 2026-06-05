@@ -15,9 +15,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 
@@ -65,15 +65,15 @@ public class ItemGenericToken extends CoreItem {
         sizes[0][4] = mCustomNameColours.size();
         // sizes[0][5] = mIcons.size();
         mLocalNames.put(id, aLocalName);
-        GTLanguageManager
-            .addStringLocalization("gtplusplus." + this.getUnlocalizedName() + "." + id + ".name", aLocalName);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put("gtplusplus." + this.getUnlocalizedName() + "." + id + ".name", aLocalName);
+        for (int i = 0; i < aDescript.length; i++) {
+            tLang.put("gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i, aDescript[i]);
+        }
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         mMaxStackSizes.put(id, aMaxStack);
         mDescriptionArrays.put(id, aDescript);
-        for (int i = 0; i < aDescript.length; i++) {
-            GTLanguageManager.addStringLocalization(
-                "gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i,
-                aDescript[i]);
-        }
         mRarities.put(id, aRarity);
         mCustomNameColours.put(id, aCustomNameColour);
         sizes[1][0] = mLocalNames.size();

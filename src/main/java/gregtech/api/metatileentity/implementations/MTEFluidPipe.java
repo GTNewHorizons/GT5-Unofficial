@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.MutableTriple;
 
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -62,7 +63,6 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -1040,7 +1040,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public MTEFluidPipe renameMaterial(String newName) {
         if (newName == null) return this;
         final String key = mMaterial.getLocalizedNameKey() + ".fluidpipe.newname";
-        GTLanguageManager.addStringLocalization(key, newName);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(key, newName);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         this.materialKeyOverride = key;
         return this;
     }

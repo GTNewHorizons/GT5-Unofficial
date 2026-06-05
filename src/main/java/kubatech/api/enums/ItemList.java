@@ -3,6 +3,7 @@ package kubatech.api.enums;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import net.minecraft.block.Block;
@@ -13,8 +14,8 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -192,7 +193,10 @@ public enum ItemList implements IItemContainer {
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
 
-        GTLanguageManager.addStringLocalization(tKey, aDisplayName);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(tKey, aDisplayName);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }

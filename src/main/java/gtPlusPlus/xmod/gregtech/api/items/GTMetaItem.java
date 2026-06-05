@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -22,7 +23,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -85,8 +85,11 @@ public abstract class GTMetaItem extends GTMetaItemBase {
             final ItemStack rStack = new ItemStack(this, 1, this.mOffset + aID);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put(this.getUnlocalizedName(rStack) + ".name", aEnglish);
+            tLang.put(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {

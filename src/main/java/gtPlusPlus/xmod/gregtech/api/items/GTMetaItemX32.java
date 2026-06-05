@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -15,7 +17,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -59,12 +60,14 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             }
             if (this.doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
-                    this.getUnlocalizedName(tStack) + ".name",
-                    this.getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
+                HashMap<String, String> tLang = new HashMap<>();
+                tLang
+                    .put(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(tPrefix, tMaterial, i));
+                tLang.put(
                     this.getUnlocalizedName(tStack) + ".tooltip",
                     tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
+                LanguageRegistry.instance()
+                    .injectLanguage("en_US", tLang);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {

@@ -3,6 +3,7 @@ package gregtech.common.fluid;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -14,6 +15,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
@@ -22,7 +24,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runnable {
@@ -179,7 +180,10 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     @Override
     public IGTRegisteredFluid addLocalizedName() {
-        GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalName);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(getUnlocalizedName(), defaultLocalName);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         return this;
     }
 

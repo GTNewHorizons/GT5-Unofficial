@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
+import java.util.HashMap;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -40,7 +42,10 @@ public enum GTPPDropType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GTLanguageManager.addStringLocalization("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
     }
 
     public String getLocalizedName() {

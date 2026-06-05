@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -36,7 +37,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -457,7 +457,10 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public MTEItemPipe renameMaterial(@Nullable String newName) {
         if (newName == null) return this;
         final String key = mMaterial.getLocalizedNameKey() + ".itempipe.newname";
-        GTLanguageManager.addStringLocalization(key, newName);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(key, newName);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         this.materialKeyOverride = key;
         return this;
     }

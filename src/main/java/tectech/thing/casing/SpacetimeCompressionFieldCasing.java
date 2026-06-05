@@ -3,6 +3,7 @@ package tectech.thing.casing;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,11 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
@@ -45,12 +46,15 @@ public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = TextureFactory.of(this, b);
         }
 
+        HashMap<String, String> tLang = new HashMap<>();
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
-            GTLanguageManager.addStringLocalization(
+            tLang.put(
                 getUnlocalizedName() + "." + i + ".name",
                 WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
             GTStructureChannels.EOH_COMPRESSION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
 
         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier1.set(new ItemStack(this, 1, 1));

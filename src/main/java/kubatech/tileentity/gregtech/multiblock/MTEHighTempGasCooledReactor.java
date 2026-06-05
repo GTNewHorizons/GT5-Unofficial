@@ -61,6 +61,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -84,7 +85,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -1136,8 +1136,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         public static void registeraTHR_Materials() {
-            for (LangEntry_ iName : aHTGR_Localizations)
-                GTLanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
+            HashMap<String, String> tLang = new HashMap<>();
+            for (LangEntry_ iName : aHTGR_Localizations) tLang.put(iName.sName, iName.sEnglish);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
             GameRegistry.registerItem(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, "bw.HTGRMaterials");
         }
     }

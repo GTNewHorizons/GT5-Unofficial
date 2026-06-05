@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
+import java.util.HashMap;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -38,7 +40,10 @@ public enum GTPPCombType {
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
                 .replaceAll(" ", ""));
-        GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, aName + " Comb");
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put("gtplusplus.comb." + this.mNameUnlocal, aName + " Comb");
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
     }
 
     public String getLocalizedName() {

@@ -2,6 +2,7 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,10 +25,10 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 
 public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
@@ -45,7 +46,10 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
         setMaxDamage(100);
         setNoRepair();
         setUnlocalizedName(aUnlocalized);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".name", aEnglish);
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(getUnlocalizedName() + ".name", aEnglish);
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
         mCharge = Math.max(1, aCharge);
         mTransfer = Math.max(1, aTransfer);
         mTier = Math.max(1, aTier);

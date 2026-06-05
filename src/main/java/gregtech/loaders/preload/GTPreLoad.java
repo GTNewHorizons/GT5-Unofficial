@@ -12,7 +12,9 @@ import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +30,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -114,15 +117,14 @@ public class GTPreLoad {
         }
         GTLanguageManager.sEnglishFile.load();
 
+        Map<String, String> tMaterialNames = new HashMap<>();
         Materials.getMaterialsMap()
             .values()
             .parallelStream()
             .filter(Objects::nonNull)
-            .forEach(
-                aMaterial -> {
-                    GTLanguageManager
-                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
-                });
+            .forEach(aMaterial -> tMaterialNames.put(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName));
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", new HashMap<>(tMaterialNames));
     }
 
     public static void getConfiguration(File configDir) {

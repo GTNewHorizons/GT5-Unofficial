@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -27,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtil;
@@ -289,10 +289,13 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         FluidContainerRegistry
             .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
-        GTLanguageManager.addStringLocalization(
+        HashMap<String, String> tLang = new HashMap<>();
+        tLang.put(
             getUnlocalizedName(aCell.mStack) + ".name",
             cellType.prefix.getMaterialPrefix() + fluid.getLocalizedName(fluidStack)
                 + cellType.prefix.getMaterialPostfix());
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);

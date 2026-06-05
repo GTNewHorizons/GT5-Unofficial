@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,12 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLanguageManager;
 
 public class CoreItem extends Item {
 
@@ -51,11 +53,9 @@ public class CoreItem extends Item {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
         final boolean adv) {
         for (int i = 0;; i++) {
-            String tooltip = GTLanguageManager
-                .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);
-            if (!("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i).equals(tooltip)) {
-                list.add(tooltip);
-            } else break;
+            String key = "gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i;
+            if (!StatCollector.canTranslate(key)) break;
+            list.add(StatCollector.translateToLocal(key));
         }
     }
 
@@ -104,10 +104,11 @@ public class CoreItem extends Item {
     }
 
     public void setItemDescription(String[] description) {
+        HashMap<String, String> tLang = new HashMap<>();
         for (int i = 0; i < description.length; i++) {
-            GTLanguageManager.addStringLocalization(
-                "gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i,
-                description[i]);
+            tLang.put("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i, description[i]);
         }
+        LanguageRegistry.instance()
+            .injectLanguage("en_US", tLang);
     }
 }

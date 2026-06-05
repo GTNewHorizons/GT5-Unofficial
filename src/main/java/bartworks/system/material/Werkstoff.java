@@ -48,6 +48,7 @@ import bartworks.util.MurmurHash3;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
@@ -60,7 +61,6 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -297,8 +297,12 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload
-            .add(() -> GTLanguageManager.addStringLocalization(getLocalizedNameKey(), this.defaultName));
+        GregTechAPI.sAfterGTPreload.add(() -> {
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put(getLocalizedNameKey(), this.defaultName);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
+        });
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -333,7 +337,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         } else {
             this.toolTip = toolTip;
             this.isFormulaNeededLocalized = true;
-            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
+            HashMap<String, String> tLangFormula = new HashMap<>();
+            tLangFormula.put(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLangFormula);
         }
         // if (this.toolTip.length() > 25)
         // this.toolTip = "The formula is to long...";

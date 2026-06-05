@@ -45,6 +45,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
@@ -56,7 +57,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -220,12 +220,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            tLang.put(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
+            tLang.put(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
+            tLang.put(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
             mToolStats.put((short) aID, aToolStats);
             mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);

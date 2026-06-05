@@ -66,10 +66,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         .mapToObj(i -> "mCoverData" + i)
         .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
-    private static final String[] FACE_KEYS = {
-        "gt.lang.face.bottom", "gt.lang.face.top", "gt.lang.face.left",
-        "gt.lang.face.front", "gt.lang.face.right", "gt.lang.face.back",
-        "gt.lang.face.none" };
+    private static final String[] FACE_KEYS = { "gt.lang.face.bottom", "gt.lang.face.top", "gt.lang.face.left",
+        "gt.lang.face.front", "gt.lang.face.right", "gt.lang.face.back", "gt.lang.face.none" };
 
     // New Cover Information
     protected final Cover[] covers = new Cover[] { CoverRegistry.NO_COVER, CoverRegistry.NO_COVER,
