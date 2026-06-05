@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -44,10 +44,10 @@ public class BaseItemColourable extends Item {
         this.setMaxDamage(maxDmg);
         this.setHasSubtypes(true);
         this.rarity = regRarity;
+        HashMap<String, String> entry = new HashMap<>();
+        entry.put("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description);
         LanguageRegistry.instance()
-            .injectLanguage(
-                "en_US",
-                Collections.singletonMap("gtplusplus." + this.getUnlocalizedName() + ".tooltip", description));
+            .injectLanguage("en_US", entry);
         this.descColour = colour;
         this.hasEffect = Effect;
         this.componentColour = rgb;

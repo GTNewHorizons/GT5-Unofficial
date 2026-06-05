@@ -8,6 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -199,13 +200,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (StatCollector.canTranslate(key)) {
-            LanguageRegistry.instance()
-                .injectLanguage("en_US", Collections.singletonMap(key + "." + damage, tDescription));
-            return;
-        }
+        String registrationKey = StatCollector.canTranslate(key) ? key + "." + damage : key;
+        HashMap<String, String> entry = new HashMap<>();
+        entry.put(registrationKey, tDescription);
         LanguageRegistry.instance()
-            .injectLanguage("en_US", Collections.singletonMap(key, tDescription));
+            .injectLanguage("en_US", entry);
     }
 
     @Override
