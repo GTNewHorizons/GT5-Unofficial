@@ -31,6 +31,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private boolean hasInputFluidSlot = false;
         private boolean hasOutputFluidSlot = false;
         private int fluidTankCapacityOverride = 0;
+        private int machineAmperageOverride = 0;
+        private int machineEUtMultiplier = 1;
         private SpecialEffects specialEffect = SpecialEffects.NONE;
 
         public Builder(int id) {
@@ -111,9 +113,24 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         @Override
+        public OptionalStep setMachineAmperage(int amperage) {
+            if (amperage < 1) throw new IllegalArgumentException("Machine amperage must be at least 1");
+            this.machineAmperageOverride = amperage;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setMachineEUtMultiplier(int multiplier) {
+            if (multiplier < 1) throw new IllegalArgumentException("Machine EU/t multiplier must be at least 1");
+            this.machineEUtMultiplier = multiplier;
+            return this;
+        }
+
+        @Override
         public MTEBasicMachineWithRecipe build() {
+            MTEBasicMachineWithRecipe machine;
             if (fluidTankCapacityOverride == 0) {
-                return new MTEBasicMachineWithRecipe(
+                machine = new MTEBasicMachineWithRecipe(
                     id,
                     unlocalizedName,
                     englishName,
@@ -127,23 +144,27 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     sound,
                     specialEffect,
                     overlays);
+            } else {
+                machine = new MTEBasicMachineWithRecipe(
+                    id,
+                    unlocalizedName,
+                    englishName,
+                    tier,
+                    description,
+                    recipes,
+                    inputSlotCount,
+                    outputSlotCount,
+                    hasInputFluidSlot,
+                    hasOutputFluidSlot,
+                    fluidTankCapacityOverride,
+                    sound,
+                    specialEffect,
+                    overlays);
             }
-
-            return new MTEBasicMachineWithRecipe(
-                id,
-                unlocalizedName,
-                englishName,
-                tier,
-                description,
-                recipes,
-                inputSlotCount,
-                outputSlotCount,
-                hasInputFluidSlot,
-                hasOutputFluidSlot,
-                fluidTankCapacityOverride,
-                sound,
-                specialEffect,
-                overlays);
+            if (machineAmperageOverride != 0) {
+                machine.setMachineAmperage(machineAmperageOverride);
+            }
+            return machine.setMachineEUtMultiplier(machineEUtMultiplier);
         }
     }
 
@@ -191,6 +212,10 @@ public final class MTEBasicMachineWithRecipeBuilder {
         OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput, int capacityOverride);
 
         OptionalStep setSpecialEffect(SpecialEffects specialEffect);
+
+        OptionalStep setMachineAmperage(int amperage);
+
+        OptionalStep setMachineEUtMultiplier(int multiplier);
 
         MTEBasicMachineWithRecipe build();
     }

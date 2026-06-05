@@ -115,7 +115,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
-    public final int mInputSlotCount, mAmperage;
+    public final int mInputSlotCount;
+    public int mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
         mStuttering = false, mCharge = false, mDecharge = false;
     private int errorDisplayID;
@@ -124,7 +125,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    protected final OverclockDescriber overclockDescriber;
+    protected OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
 
