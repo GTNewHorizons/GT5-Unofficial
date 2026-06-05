@@ -20,23 +20,18 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdd
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,30 +48,22 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.MainMod;
 import bartworks.common.items.ItemStonageRotors;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -88,10 +75,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
     // TODO: redo structure checking
     // TODO: clean up class
-
-    private static final IIcon[] iIcons = new IIcon[2];
-    private static final IIconContainer[] iIconContainers = new IIconContainer[2];
-    private static final ITexture[] iTextures = new ITexture[3];
 
     private static final int MAX_PARALLELS = 16;
 
@@ -286,43 +269,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return true;
     }
 
-    // TODO: remove
-    private float multiplierRecipe(ItemStack itemStack) {
-        final Item item = itemStack.getItem();
-        if (item == Items.wheat || item == Items.reeds) {
-            return 1.5f;
-        }
-        if (item == Items.clay_ball) {
-            return 1.25f;
-        }
-        final Block block = Block.getBlockFromItem(item);
-        if (block == Blocks.gravel || block == Blocks.cobblestone
-            || block == Blocks.stone
-            || block == Blocks.sandstone
-            || block == Blocks.wool
-            || block == Blocks.netherrack
-            || block == Blocks.log
-            || block == Blocks.log2) {
-            return 1.5f;
-        }
-        if (block == Blocks.clay || block == Blocks.hardened_clay || block == Blocks.stained_hardened_clay) {
-            return 1.25f;
-        }
-        final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-        final OrePrefixes prefix = association == null ? null : association.mPrefix;
-        if (OrePrefixes.stone == prefix || OrePrefixes.stoneBricks == prefix
-            || OrePrefixes.stoneChiseled == prefix
-            || OrePrefixes.stoneCobble == prefix
-            || OrePrefixes.stoneCracked == prefix
-            || OrePrefixes.stoneMossy == prefix
-            || OrePrefixes.stoneMossyBricks == prefix
-            || OrePrefixes.stoneSmooth == prefix
-            || OrePrefixes.cobblestone == prefix) {
-            return 1.5f;
-        }
-        return 1f;
-    }
-
     // TODO: redo this function/clean up
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
@@ -357,8 +303,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             }
             this.updateSlots();
             this.mOutputItems[0] = tRecipe.getOutput(0);
-            float multiplier = getMultiplier(this.rotorBlock, itemStack);
-            int amount = (int) Math.floor(multiplier * (this.mOutputItems[0].stackSize * parallels));
+            int amount = this.mOutputItems[0].stackSize * parallels;
 
             // Split ItemStack --by gtpp
             List<ItemStack> splitStacks = new ArrayList<>();
@@ -477,82 +422,21 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
                 .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
-    // TODO: i dont think this is needed anymore
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        MTEWindmill.iIcons[0] = Blocks.brick_block.getIcon(0, 0);
-        MTEWindmill.iIconContainers[0] = new IIconContainer() {
-
-            @Override
-            public IIcon getIcon() {
-                return MTEWindmill.iIcons[0];
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return null;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return new ResourceLocation("brick");
-            }
-        };
-
-        MTEWindmill.iIcons[1] = aBlockIconRegister.registerIcon(MainMod.MOD_ID + ":windmill_top");
-        MTEWindmill.iIconContainers[1] = new IIconContainer() {
-
-            @Override
-            public IIcon getIcon() {
-                return MTEWindmill.iIcons[1];
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return null;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return new ResourceLocation(MainMod.MOD_ID + ":windmill_top");
-            }
-        };
-    }
-
+    // TODO: new textures for controller maybe
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
 
-        ITexture[] ret = new ITexture[6];
-
-        if (this.isClientSide()) {
-
-            if (facing == side || side == ForgeDirection.DOWN) {
-                MTEWindmill.iTextures[0] = TextureFactory.of(MTEWindmill.iIconContainers[0]);
-                Arrays.fill(ret, MTEWindmill.iTextures[0]);
-            } else if (side == ForgeDirection.UP) {
-                MTEWindmill.iTextures[1] = TextureFactory.of(MTEWindmill.iIconContainers[1]);
-                Arrays.fill(ret, MTEWindmill.iTextures[1]);
-            } else {
-                MTEWindmill.iTextures[2] = TextureFactory.of(Textures.BlockIcons.COVER_WOOD_PLATE);
-                Arrays.fill(ret, MTEWindmill.iTextures[2]);
-            }
+        if (facing == side) {
+            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_STEAM_MACERATOR) // placeholder
+                    .extFacing()
+                    .build() };
+        } else {
+            // texture is a placeholder for now
+            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING) };
         }
-        return ret;
-    }
-
-    public boolean isClientSide() {
-        if (this.getBaseMetaTileEntity()
-            .getWorld() != null)
-            return this.getBaseMetaTileEntity()
-                .getWorld().isRemote
-                    ? FMLCommonHandler.instance()
-                        .getSide() == Side.CLIENT
-                    : FMLCommonHandler.instance()
-                        .getEffectiveSide() == Side.CLIENT;
-        return FMLCommonHandler.instance()
-            .getEffectiveSide() == Side.CLIENT;
     }
 
     @Override
@@ -570,19 +454,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         windLevel wind = getWindLevel(rotorBlock);
         if (invalidWindLevel()) return 0;
         return (int) Math.pow(2, wind.ordinal());
-    }
-
-    private float getMultiplier(TileEntityRotorBlock rotorBlock, ItemStack itemStack) {
-        if (invalidWindLevel()) return 0;
-        return multiplierRecipe(itemStack) * rotorMultiplier(rotorBlock);
-    }
-
-    private float rotorMultiplier(TileEntityRotorBlock rotorBlock) {
-        ItemStack stack = rotorBlock.rotorSlot.get();
-        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
-            return 1;
-        }
-        return rotor.getmRotor();
     }
 
     private windLevel getWindLevel(TileEntityRotorBlock rotorBlock) {
