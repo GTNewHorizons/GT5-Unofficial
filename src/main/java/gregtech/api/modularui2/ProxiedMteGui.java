@@ -4,7 +4,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.Nullable;
@@ -126,15 +125,11 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 assert NetworkUtils.isClient();
                 // Create empty fake MTE on client
                 BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
+                fakeBase.xCoord = data.getX();
+                fakeBase.yCoord = data.getY();
+                fakeBase.zCoord = data.getZ();
                 fakeBase.setInitialValuesAsNBT(null, (short) data.getMetaId());
-                NBTTagCompound tag = new NBTTagCompound();
-                fakeBase.writeToNBT(tag);
-                tag.setInteger("x", data.getX());
-                tag.setInteger("y", data.getY());
-                tag.setInteger("z", data.getZ());
-                BaseMetaTileEntity newBase = new BaseMetaTileEntity();
-                newBase.readFromNBT(tag);
-                mte = (MetaTileEntity) newBase.getMetaTileEntity();
+                mte = (MetaTileEntity) fakeBase.getMetaTileEntity();
                 assert mte != null;
             }
             return new ProxiedMteGui(mte);
