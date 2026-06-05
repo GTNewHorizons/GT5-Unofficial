@@ -75,11 +75,10 @@ public class MTEBioLab extends MTEBasicMachine {
 
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         // spotless:off
-        ITexture[] overlays = new ITexture[]{
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
-            ),
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, TextureFactory.of(
+            TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
+            TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
+        ),
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE")),
                 TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW")).glow().build()
@@ -107,9 +106,7 @@ public class MTEBioLab extends MTEBasicMachine {
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM")),
                 TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW")).glow().build()
-            )
-        };
-        super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, overlays);
+            ));
         // spotless:on
         initPredicatesAndOutputSuppliers();
     }
