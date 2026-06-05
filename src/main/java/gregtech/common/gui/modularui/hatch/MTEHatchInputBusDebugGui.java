@@ -18,13 +18,13 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
 public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDebug> {
 
@@ -35,22 +35,11 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
-            SlotGroupWidget.builder()
-                .matrix("IIII", "IIII", "IIII", "IIII")
-                .key(
-                    'I',
-                    index -> new PhantomItemSlot().slot(
-                        new ModularSlot(hatch.phantomHolder, index).singletonSlotGroup(50 + index)
-                            .accessibility(true, false)))
+            new ItemSlotGridBuilder(machine.phantomHolder, syncManager).size(4)
+                .itemSlotSupplier(PhantomItemSlot::new)
+                .canTake(false)
                 .build()
-                .marginTop(4)
-                .topRel(0)
-                .horizontalCenter());
-    }
-
-    @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
+                .center());
     }
 
     @Override
@@ -60,8 +49,8 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createLeftCornerFlow(panel, syncManager).child(createInfoButton())
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(createInfoButton())
             .child(createFiniteModePanelButton(syncManager, panel));
     }
 
@@ -152,14 +141,19 @@ public class MTEHatchInputBusDebugGui extends MTEHatchBaseGui<MTEHatchInputBusDe
             .bottom(5)
             .right(5)
             .tooltip(t -> t.addLine(IKey.lang("GT5U.gui.button.finite_mode_info")));
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(createInfoButton());
     }
 
     private IDrawable.DrawableWidget createInfoButton() {
         return new IDrawable.DrawableWidget(GuiTextures.BUBBLE).background(GTGuiTextures.BUTTON_STANDARD)
             .size(18)
-            .tooltip(t -> {
-                t.addLine("Drag Items into the Item Slots");
-                t.addLine("Items in the slots will not be consumed");
-            });
+            .addTooltipLine("Drag Items into the Item Slots")
+            .addTooltipLine("Items in the slots will not be consumed");
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

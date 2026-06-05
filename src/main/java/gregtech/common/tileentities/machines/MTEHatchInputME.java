@@ -365,6 +365,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
+        return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
@@ -374,7 +379,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, fluid.amount);
+            int toDrain = Math.min(slot.extracted.amount, amount);
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
@@ -389,6 +394,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (slot == null) return null;
 
             IAEFluidStack request = AEFluidStack.create(fluid);
+            request.setStackSize(amount);
 
             IMEMonitor<IAEFluidStack> sg;
             IEnergyGrid energy;
@@ -794,6 +800,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     for (int i = 0; i < c; i++) {
                         NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
                         FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
+                        if (fluidStack == null) continue;
 
                         Slot slot = new Slot(fluidStack);
                         slots[i] = slot;
@@ -854,7 +861,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                slots[i] = new Slot(GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i)));
+                final FluidStack fs = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                if (fs == null) continue;
+                slots[i] = new Slot(fs);
             }
         }
 
@@ -996,7 +1005,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         public Slot copy() {
-            Slot copy = new Slot(this.config);
+            Slot copy = new Slot(this.config.copy());
 
             copy.extracted = this.extracted;
             copy.extractedAmount = this.extractedAmount;

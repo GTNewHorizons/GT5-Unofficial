@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
@@ -50,6 +51,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -74,6 +76,8 @@ import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -104,6 +108,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private float mRoughnessMultiplier = 1;
     private byte mTier = 1;
     private int mMaxParallel = 0;
+    private int casingAmount;
 
     // for backwards compatibility (upgrades don't need a controller in this mode)
     private CompatMode compatMode = new CompatMode();
@@ -174,7 +179,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
                     {"       ", "  III  ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", " I   I ", "  III  ", "       "},
-                    {" II~II ", "IIJJJII", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IJJJJJI", "IIJJJII", " IIIII "}
+                    {" II~II ", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", "IIIIIII", " IIIII "}
                     //spotless:on
                 }))
         .addShape(
@@ -182,8 +187,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             transpose(
                 new String[][] {
                     // spotless:off
-                {"     ", "     ","  L  ","     ","     "}
-                //spotless:on
+                    {"     ", "     ","  L  ","     ","     "}
+                    //spotless:on
                 }))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
@@ -193,9 +198,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('H', ofFrame(Materials.Duranium))
-        .addElement('I', ofBlock(GregTechAPI.sBlockCasings8, 13))
         .addElement(
-            'J',
+            'I',
             buildHatchAdder(MTEPCBFactory.class)
                 .atLeast(
                     InputHatch,
@@ -206,15 +210,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     SpecialHatchElement.NaniteBus)
                 .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
-                .buildAndChain(GregTechAPI.sBlockCasings8, 13))
+                .buildAndChain(
+                    onElementPass(
+                        MTEPCBFactory::onCasingAdded,
+                        Casings.RadiationProofPhotolithographicFrameworkCasing.asElement())))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement(
             'L',
-            buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEPCBFactory::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 12))
+            InputHatch.withAdder(MTEPCBFactory::addCoolantInputToMachineList)
+                .newAny(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12), 2))
         .addElement(
             'P',
             buildHatchAdder(MTEPCBFactory.class)
@@ -240,6 +244,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             return;
         }
         buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
+    }
+
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     @Override
@@ -326,28 +334,28 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
 
         byte newTier = checkForNewTier();
-        if (newTier == 0) return false;
+        if (newTier == 0) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
         if (newTier != mTier) {
             mTier = newTier;
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
 
-        if (mMaintenanceHatches.size() != 1) {
-            return false;
-        }
-
-        if (!checkExoticAndNormalEnergyHatches()) {
-            return false;
-        }
-
         if (compatMode.isSet && compatMode.OCTier != 0) {
-            if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ)) return false;
+            if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ, errors)) return;
         }
-
-        return true;
+        if (newTier == 3) checkCasingMin(errors, casingAmount, 256); // 292 - 36
+        checkOneMaintenanceHatch(errors);
+        checkExoticAndNormalEnergyHatches(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     /**
@@ -360,11 +368,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (mTier < 3) {
             byte tier1Or2 = getTier1Or2();
             if (tier1Or2 > 0) return tier1Or2;
-            return (byte) (checkPiece(tier3, 3, 21, 0) ? 3 : 0);
+            return (byte) (checkPiece(tier3, 3, 21, 0, null) ? 3 : 0);
         }
 
         // mTier == 3
-        return checkPiece(tier3, 3, 21, 0) ? 3 : getTier1Or2();
+        return checkPiece(tier3, 3, 21, 0, null) ? 3 : getTier1Or2();
     }
 
     /**
@@ -373,8 +381,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
      * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
      */
     private byte getTier1Or2() {
-        if (checkPiece(tier1, 3, 5, 0)) {
-            return (byte) (checkPiece(tier2, 7, 6, 2) ? 2 : 1);
+        if (checkPiece(tier1, 3, 5, 0, null)) {
+            return (byte) (checkPiece(tier2, 7, 6, 2, null) ? 2 : 1);
         }
         return 0;
     }
@@ -819,7 +827,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
+                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithographic Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
             .addStructureInfo(
@@ -836,13 +844,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "158"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.BLUE + ":")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "292"
                     + EnumChatFormatting.GRAY
-                    + " Radiation Proof Photolithography Framework Casing")
+                    + " Radiation Proof Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
             .addStructureInfo(EnumChatFormatting.BLUE + "Biochamber Upgrade")
@@ -863,9 +871,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "21"
+                EnumChatFormatting.GOLD + "19"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Thermosink Radiator(Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -874,9 +882,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "):")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "41"
+                EnumChatFormatting.GOLD + "39"
                     + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithography Framework Casing")
+                    + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")

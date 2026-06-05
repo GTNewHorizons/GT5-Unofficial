@@ -24,7 +24,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     public List<TLayer> list;
     public int minY = -1, maxY = -1;
     public boolean checkWeight = true;
-    public Set<String> dimensions;
+    public String dimension;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
     public boolean defaultStoneCategories = true;
 
@@ -56,33 +56,24 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     }
 
     public WorldgenQuery<TLayer> inDimension(String dimName) {
-        if (dimensions == null) dimensions = new HashSet<>();
-
-        dimensions.add(dimName);
-
+        dimension = dimName;
         return this;
     }
 
     public WorldgenQuery<TLayer> inDimension(World world) {
-        if (dimensions == null) dimensions = new HashSet<>();
-
-        dimensions.add(DimensionDef.getDimensionName(world));
+        dimension = DimensionDef.getDimensionName(world);
 
         return this;
     }
 
     public WorldgenQuery<TLayer> inDimension(ModDimensionDef def) {
-        if (dimensions == null) dimensions = new HashSet<>();
-
-        dimensions.add(def.getDimensionName());
+        dimension = def.getDimensionName();
 
         return this;
     }
 
     public WorldgenQuery<TLayer> inDimension(DimensionDef def) {
-        if (dimensions == null) dimensions = new HashSet<>();
-
-        dimensions.add(def.modDimensionDef.getDimensionName());
+        dimension = def.modDimensionDef.getDimensionName();
 
         return this;
     }
@@ -154,18 +145,11 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     }
 
     public boolean matches(TLayer layer) {
-        if (minY != -1 && minY < layer.getMinY()) return false;
-        if (maxY != -1 && maxY > layer.getMaxY()) return false;
+        if (minY != -1 && minY < layer.getMinY(dimension)) return false;
+        if (maxY != -1 && maxY > layer.getMaxY(dimension)) return false;
 
-        if (dimensions != null) {
-            boolean any = false;
-
-            for (String dimName : dimensions) {
-                if (layer.canGenerateIn(dimName)) {
-                    any = true;
-                    break;
-                }
-            }
+        if (dimension != null) {
+            boolean any = layer.canGenerateIn(dimension);
 
             if (!any) return false;
         }

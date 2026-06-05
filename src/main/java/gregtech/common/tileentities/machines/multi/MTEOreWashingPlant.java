@@ -9,14 +9,13 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +28,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,13 +37,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -56,11 +51,9 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -68,20 +61,18 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
     implements ISurvivalConstructable {
 
     private int casingAmount;
+    private boolean needsWaterFill = false;
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
-    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
     private static final String[][] structure = new String[][] { { "     ", " CCC ", " C~C ", " CCC " },
         { "   B ", "CDADC", "CBDDC", "CCCCC" }, { "  B  ", "CDADC", "CDBDC", "CCCCC" },
         { " B   ", "CDADC", "CDDBC", "CCCCC" }, { "C   C", "CBABC", "CDBDC", "CCCCC" },
@@ -96,7 +87,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         .addElement(
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)
-                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
@@ -119,12 +110,9 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Washer, Simple Washer")
+        tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
-            .addInfo("Always requires an Input Hatch full of water to refill structure")
-            .addInfo("Need to be filled with water")
-            .addInfo("Will automatically fill water from Input Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
@@ -134,7 +122,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputBus("Any Wash Plant Casing", 1)
             .addOutputBus("Any Wash Plant Casing", 1)
             .addInputHatch("Any Wash Plant Casing", 1)
-            .addOutputHatch("Any Wash Plant Casing", 1)
             .addEnergyHatch("Any Wash Plant Casing", 1)
             .addMaintenanceHatch("Any Wash Plant Casing", 1)
             .addMufflerHatch("Any Wash Plant Casing", 1)
@@ -169,13 +156,28 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 70 && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mInputHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'D');
+            return;
+        }
+        checkCasingMin(errors, casingAmount, 70);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     @Override
@@ -236,17 +238,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (checkForWater()) {
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
-                }
-                return SimpleCheckRecipeResult.ofFailure("no_water");
-            }
-        }.noRecipeCaching()
+        return new ProcessingLogic().noRecipeCaching()
             .setSpeedBonus(1F / 5F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -261,81 +253,41 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
-    public boolean checkForWater() {
-        IGregTechTileEntity base = this.getBaseMetaTileEntity();
-        boolean allFilled = true;
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            World world = aBaseMetaTileEntity.getWorld();
+            boolean allFilled = true;
+            int controllerX = aBaseMetaTileEntity.getXCoord();
+            int controllerY = aBaseMetaTileEntity.getYCoord();
+            int controllerZ = aBaseMetaTileEntity.getZCoord();
 
-        for (int localZ = 0; localZ < structure.length; localZ++) {
-            String[] rows = structure[localZ];
-            for (int localY = 0; localY < rows.length; localY++) {
-                String row = rows[localY];
-                for (int localX = 0; localX < row.length(); localX++) {
+            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+                String[] layers = structure[sliceZ];
+                for (int layerY = 0; layerY < layers.length; layerY++) {
+                    String row = layers[layerY];
+                    for (int charX = 0; charX < row.length(); charX++) {
+                        if (row.charAt(charX) != 'D') continue;
 
-                    if (row.charAt(localX) != 'D') continue;
-
-                    int[] abc = new int[] { localX - OFFSET_X, localY - OFFSET_Y, localZ - OFFSET_Z };
-
-                    int[] xyz = new int[] { 0, 0, 0 };
-
-                    this.getExtendedFacing()
-                        .getWorldOffset(abc, xyz);
-
-                    int worldX = base.getXCoord() + xyz[0];
-                    int worldY = base.getYCoord() + xyz[1];
-                    int worldZ = base.getZCoord() + xyz[2];
-
-                    Block block = base.getWorld()
-                        .getBlock(worldX, worldY, worldZ);
-
-                    if (block == DISTILLED_WATER_BLOCK) {
-                        continue;
-                    }
-
-                    allFilled = false;
-
-                    boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
-                    boolean isCOFHWater = Mods.COFHCore.isModLoaded()
-                        && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                    boolean isWater = block == Blocks.water || isCOFHWater;
-
-                    if (!isAir && !isWater) {
-                        return false;
-                    }
-
-                    ArrayList<FluidStack> stored = this.getStoredFluids();
-                    if (stored == null) {
-                        return false;
-                    }
-
-                    boolean processed = false;
-
-                    for (FluidStack fs : stored) {
-
-                        if (!fs.isFluidEqual(Materials.Water.getFluid(1))) {
-                            continue;
+                        int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
+                        int[] xyz = new int[] { 0, 0, 0 };
+                        this.getExtendedFacing()
+                            .getWorldOffset(abc, xyz);
+                        int wx = controllerX + xyz[0];
+                        int wy = controllerY + xyz[1];
+                        int wz = controllerZ + xyz[2];
+                        Block block = world.getBlock(wx, wy, wz);
+                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                            allFilled = false;
                         }
-
-                        if (fs.amount < 1000) {
-                            continue;
-                        }
-
-                        fs.amount -= 1000;
-
-                        base.getWorld()
-                            .setBlock(worldX, worldY, worldZ, isAir ? Blocks.water : DISTILLED_WATER_BLOCK);
-
-                        processed = true;
-                        break;
-                    }
-
-                    if (!processed) {
-                        allFilled = false;
-                        continue;
                     }
                 }
             }
+            if (allFilled) needsWaterFill = false;
         }
-        return allFilled;
     }
 
     @Override

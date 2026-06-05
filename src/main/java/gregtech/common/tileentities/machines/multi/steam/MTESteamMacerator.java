@@ -47,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -231,66 +233,48 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tierMachineCasing = -1;
         tierGearboxCasing = -1;
         tierFrame = -1;
         casingAmount = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0)) {
-
-            if (tierMachineCasing == 1 && casingAmount >= 14 && checkHatches()) {
+        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
+            // Legacy structure shape matched — commit to it
+            checkCasingMin(errors, casingAmount, 14);
+            if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
+                tierMachine = tierMachineCasing;
                 updateHatchTexture();
-                tierMachine = 1;
-                return true;
+            } else {
+                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+                return;
             }
-
-            if (tierMachineCasing == 2 && casingAmount >= 14 && checkHatches()) {
-                updateHatchTexture();
-                tierMachine = 2;
-                return true;
-            }
-
-            return false;
+            checkHasSteamInput(errors);
+            checkHasSteamInputBus(errors);
+            checkHasSteamOutputBus(errors);
+            return;
         }
 
+        // Try new structure
         tierMachineCasing = -1;
         tierGearboxCasing = -1;
         tierFrame = -1;
         casingAmount = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
-        if (tierFrame == 1 && tierMachineCasing == 1
-            && tierGearboxCasing == 1
-            && casingAmount >= 14
-            && checkHatches()) {
-
+        checkCasingMin(errors, casingAmount, 14);
+        if (tierFrame >= 1 && tierFrame <= 2 && tierFrame == tierMachineCasing && tierFrame == tierGearboxCasing) {
+            tierMachine = tierFrame;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
 
-        if (tierFrame == 2 && tierMachineCasing == 2
-            && tierGearboxCasing == 2
-            && casingAmount >= 14
-            && checkHatches()) {
-
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        checkHasSteamInput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override
@@ -346,14 +330,14 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " Any casing")
+                    + " Any Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "14-20x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")

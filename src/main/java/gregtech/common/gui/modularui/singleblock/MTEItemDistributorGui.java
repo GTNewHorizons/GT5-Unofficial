@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
 import java.util.stream.IntStream;
 
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,15 +16,13 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
 
 public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> {
@@ -44,48 +44,42 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
-            new Grid().coverChildren()
-                .gridOfWidthHeight(
-                    9,
-                    3,
-                    ($x, $y, index) -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("item_inv")))
-                .horizontalCenter());
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(9, 3)
+                .build());
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         IPanelHandler sideConfigPanel = syncManager
             .syncedPanel("sideConfigPanel", true, (p_syncManager, syncHandler) -> openSideConfigPanel(panel));
 
-        return super.createLeftCornerFlow(panel, syncManager).child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            if (!sideConfigPanel.isPanelOpen()) sideConfigPanel.openPanel();
-            else sideConfigPanel.closePanel();
-            return true;
-        })
-            .overlay(GuiTextures.GEAR)
-            .tooltip(t -> t.addLine(GTUtility.translate("GT5U.machines.item_distributor.open_config_panel.tooltip")))
-            .tooltipShowUpTimer(TOOLTIP_DELAY))
+        return super.createBottomLeftCornerFlow(panel, syncManager)
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+                if (!sideConfigPanel.isPanelOpen()) sideConfigPanel.openPanel();
+                else sideConfigPanel.closePanel();
+                return true;
+            })
+                .overlay(GuiTextures.GEAR)
+                .addTooltipLine(GTUtility.translate("GT5U.machines.item_distributor.open_config_panel.tooltip"))
+                .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(
                 GTGuiTextures.PICTURE_ARROW_22_RED.asWidget()
                     .size(68, 22)
-                    .marginBottom(1)
                     .marginLeft(1));
     }
 
     private ModularPanel openSideConfigPanel(ModularPanel parent) {
         ModularPanel panel = GTGuis.createPopUpPanel("sideConfigPanel")
             .relative(parent)
-            .size(120, 150)
+            .coverChildren()
+            .padding(5)
             .topRel(0)
             .leftRel(1);
 
         Flow textColumn = Flow.column()
             .coverChildren()
             .childPadding(2)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginTop(5)
-            .marginLeft(5);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         // header
         textColumn.child(
@@ -105,7 +99,7 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
     private Flow createConfigRow(int index) {
         ByteSyncValue itemsPerSideSyncer = new ByteSyncValue(
             () -> machine.getItemsPerSide(index),
-            val -> machine.setItemsPerSide(index, val));
+            val -> machine.setItemsPerSide(index, val)).allowC2S();
 
         Flow configRow = Flow.row()
             .coverChildren()
@@ -123,7 +117,7 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
         configRow.child(
             new TextFieldWidget().width(35)
                 .value(itemsPerSideSyncer)
-                .setNumbers(0, 127)
+                .numbersInt(0, 127)
                 .setMaxLength(3));
 
         // front/back label
@@ -140,9 +134,7 @@ public class MTEItemDistributorGui extends MTEBufferBaseGui<MTEItemDistributor> 
     }
 
     @Override
-    protected void registerSyncValues(PanelSyncManager syncManager) {
-        super.registerSyncValues(syncManager);
-
-        syncManager.registerSlotGroup("item_inv", 3);
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + 4;
     }
 }

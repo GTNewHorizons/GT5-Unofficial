@@ -62,12 +62,12 @@ public class CompositeParameter extends Parameter<@UnmodifiableView List<Paramet
     }
 
     @Override
-    public SyncHandler createSyncHandler() {
+    public SyncHandler<?> createSyncHandler() {
         throw new UnsupportedOperationException("This parameter type does not have a sync handler!");
     }
 
     @Override
-    public void registerSyncValue(PanelSyncManager syncManager) {
-        for (Parameter<?> parameter : getValue()) parameter.registerSyncValue(syncManager);
+    public void registerSyncValue(PanelSyncManager syncManager, String prefix) {
+        for (Parameter<?> parameter : getValue()) parameter.registerSyncValue(syncManager, prefix + getNbtKey() + ".");
     }
 }

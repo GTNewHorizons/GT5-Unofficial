@@ -32,7 +32,8 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "playerTargetBeamRate",
-            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i));
+            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i)
+                .allowC2S());
         syncManager.syncValue("inputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
     }
 
@@ -88,12 +89,12 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                                                 .textAlign(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                                    .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
                                     .width(120)
                                     .height(14)
                                     .marginRight(2)
                                     .value(playerTargetBeamRateSync)
-                                    .setDefaultNumber(100))));
+                                    .defaultNumber(100))));
     }
 
 }

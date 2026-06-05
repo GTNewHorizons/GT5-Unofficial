@@ -57,6 +57,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -343,7 +346,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
             .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
             .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
+            .addInfo("Fluid storage amount and running cost depends on the Storage Field Block used")
             .addSeparator()
             .addInfo("Note on hatch locking:")
             .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
@@ -351,17 +354,17 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Front center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
+            .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+            .addMaintenanceHatch("Any top or bottom Casing")
+            .addEnergyHatch("Any top or bottom Casing")
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
                 "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
+                "Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.TFFT_FIELD)
@@ -406,7 +409,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(FIELDS, 0);
 
         this.capacity = BigInteger.ZERO;
@@ -415,33 +418,49 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         this.runningCost = 0;
         this.glassTier = -1;
 
-        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
 
         int layer = 1;
-        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer)) layer++;
-        if (layer - 1 > MAX_LAYER_AMOUNT || layer - 1 < DEFAULT_LAYER_AMOUNT) return false;
-        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
-        if (casingAmount >= MIN_CASING_AMOUNT
-            && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
-            BigInteger tempCap = BigInteger.ZERO;
-            for (int i = 0; i < this.FIELDS.length; i++) {
-                tempCap = tempCap.add(
-                    BigInteger.valueOf(Field.VALUES[i].getCapacity())
-                        .multiply(BigInteger.valueOf(this.FIELDS[i])));
-                this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
-            }
-            this.setCapacity(tempCap);
-
-            if (tfftHatch != null) tfftHatch.bind(this);
-
-            if (this.runningCost == 0) {
-                return true;
-            }
-
-            return !mEnergyHatches.isEmpty() && this.glassTier >= VoltageIndex.EV;
+        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer, errors)) layer++;
+        errors.clear();
+        if (layer - 1 > MAX_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
-        return false;
+        if (layer - 1 < DEFAULT_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;
+        checkCasingMin(errors, casingAmount, MIN_CASING_AMOUNT);
+        checkHasMaintenanceHatch(errors);
+        if (tfftHatch == null) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+        if (mInputHatches.size() + mOutputHatches.size() > MAX_DISTINCT_FLUIDS * 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.tfft_too_many_hatch"));
+        }
+        if (!errors.isEmpty()) return;
+        BigInteger tempCap = BigInteger.ZERO;
+        for (int i = 0; i < this.FIELDS.length; i++) {
+            tempCap = tempCap.add(
+                BigInteger.valueOf(Field.VALUES[i].getCapacity())
+                    .multiply(BigInteger.valueOf(this.FIELDS[i])));
+            this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
+        }
+        this.setCapacity(tempCap);
+
+        if (tfftHatch != null) tfftHatch.bind(this);
+
+        if (this.runningCost == 0) {
+            // skip later check
+            return;
+        }
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override

@@ -61,6 +61,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -281,13 +282,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 + EnumChatFormatting.RESET
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.chunks") };
-    }
-
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -612,12 +606,12 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes, optional, any base casing", 1)
-            .addInputHatch("Drilling Fluid, any base casing", 1)
-            .addOutputBus("Any base casing", 1)
+            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch(VN[getMinTier()] + "+, any base Casing", 1)
+            .addMaintenanceHatch("Any base Casing", 1)
+            .addInputBus("Mining Pipes, optional, any base Casing", 1)
+            .addInputHatch("Drilling Fluid, any base Casing", 1)
+            .addOutputBus("Any base Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -970,6 +964,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             veinName = VisualProspectingDatabase.getVeinName(base.getWorld().provider.dimensionId, coords)
                 .orElse(null);
         }
+    }
+
+    @Override
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {

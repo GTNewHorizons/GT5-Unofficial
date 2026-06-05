@@ -98,7 +98,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
 import static kubatech.loaders.HTGRLoader.HTGRRecipes;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
@@ -1176,10 +1175,6 @@ public class PlatinumSludgeOverHaul {
             return true;
         }
         if (item == HTGRItem.BURNED_TRISO) {
-            return true;
-        }
-        if (item == WHITE_METAL.getDust(1)
-            .getItem()) {
             return true;
         }
         if (Railcraft.isModLoaded()) {

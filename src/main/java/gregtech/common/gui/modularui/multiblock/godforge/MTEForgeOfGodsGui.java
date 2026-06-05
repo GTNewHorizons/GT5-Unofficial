@@ -24,9 +24,9 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -126,35 +126,53 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ListWidget<>().fullWidth()
-            .topRel(0)
-            .horizontalCenter()
-            .child(IKey.dynamic(() -> {
-                if (data.getInternalBattery() == 0) {
-                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
-                }
-                return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
-            })
-                .color(Color.WHITE.main)
-                .alignment(Alignment.CENTER)
-                .asWidget()
-                .marginTop(1)
-                .fullWidth())
-            .child(IKey.dynamic(() -> {
-                Formatters formatter = data.getFormatter();
-                if (data.getInternalBattery() == 0) {
-                    return formatter.format(data.getStellarFuelAmount()) + "/"
-                        + formatter.format(data.getNeededStartupFuel());
-                }
-                return formatter.format(data.getInternalBattery()) + "/" + formatter.format(data.getMaxBatteryCharge());
-            })
-                .color(Color.WHITE.main)
-                .alignment(Alignment.CENTER)
-                .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
-                .marginTop(2)
-                .horizontalCenter()
-                .fullWidth());
+        return super.createTerminalTextWidget(syncManager, parent).child(
+            Flow.column()
+                .mainAxisAlignment(Alignment.MainAxis.START)
+                .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+                .paddingTop(4)
+                .expanded()
+                .fullWidth()
+                .setEnabledIf(w -> multiblock.mMachine)
+                .child(IKey.dynamic(() -> {
+                    if (data.getInternalBattery() == 0) {
+                        return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");
+                    }
+                    return translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel");
+                })
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CENTER)
+                    .asWidget()
+                    .fullWidth())
+                .child(IKey.dynamic(() -> {
+                    Formatters formatter = data.getFormatter();
+                    if (data.getInternalBattery() == 0) {
+                        return formatter.format(data.getStellarFuelAmount()) + "/"
+                            + formatter.format(data.getNeededStartupFuel());
+                    }
+                    return formatter.format(data.getInternalBattery()) + "/"
+                        + formatter.format(data.getMaxBatteryCharge());
+                })
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CENTER)
+                    .asWidget()
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .marginTop(4)
+                    .fullWidth()));
+    }
+
+    @Override
+    protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
+        return IKey.str("")
+            .asWidget()
+            .size(0, 0);
+    }
+
+    @Override
+    protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
+        return IKey.str("")
+            .asWidget()
+            .size(0, 0);
     }
 
     @Override
@@ -164,7 +182,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     @Override
     protected ToggleButton createMuffleButton() {
-        return CommonWidgets.createMuffleButton("mufflerSyncer")
+        return CommonButtons.createMuffleButton("mufflerSyncer")
             .size(7)
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
@@ -345,8 +363,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
 
     private IWidget createGeneralInfoPanelButton() {
         IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(Panels.MAIN, hypervisor);
-        return new ButtonWidget<>().size(18)
-            .overlay(IDrawable.EMPTY)
+        return new ButtonWidget<>().overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
             .disableHoverBackground()
             .onMousePressed(d -> {

@@ -1100,6 +1100,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials BiocatalyzedPropulsionFluid;
     public static Materials Shijima;
     public static Materials Churitsu;
+    public static Materials InactiveCosmicSolder;
+    public static Materials BoundlessCosmicSolder;
     // endregion
 
     // region GTNH Materials
@@ -1213,6 +1215,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public Materials mMacerateInto = this;
     private Supplier<Materials> mPendingArcSmeltingInto;
     public Materials mArcSmeltInto = this;
+    private Map<Supplier<Materials>, Supplier<Materials>> mPendingArcSmeltingIntoWithGas;
+    public final Map<Materials, Materials> mArcSmeltIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> mPendingDirectSmelting;
     public Materials mDirectSmelting = this;
     public Materials mHandleMaterial = this;
@@ -1275,6 +1279,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Supplier<Materials> pendingSmeltingInto,
         Supplier<Materials> pendingMaceratingInto,
         Supplier<Materials> pendingArcSmeltingInto,
+        Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
         LinkedHashSet<SubTag> subTags
         // spotless:on
@@ -1361,6 +1366,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         mPendingSmeltingInto = pendingSmeltingInto;
         mPendingMaceratingInto = pendingMaceratingInto;
         mPendingArcSmeltingInto = pendingArcSmeltingInto;
+        mPendingArcSmeltingIntoWithGas = pendingArcSmeltingIntoWithGas;
         mPendingDirectSmelting = pendingDirectSmelting;
 
         // Set material density
@@ -1448,9 +1454,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     private static void setArcSmeltingInto() {
         for (Materials material : MATERIALS_MAP.values()) {
-            if (material.mPendingArcSmeltingInto == null) continue;
-            material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
-            material.mPendingArcSmeltingInto = null;
+            if (material.mPendingArcSmeltingInto != null) {
+                material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
+                material.mPendingArcSmeltingInto = null;
+            }
+            if (material.mPendingArcSmeltingIntoWithGas != null) {
+                for (Map.Entry<Supplier<Materials>, Supplier<Materials>> entry : material.mPendingArcSmeltingIntoWithGas
+                    .entrySet()) {
+                    material.mArcSmeltIntoWithGas.put(
+                        entry.getKey()
+                            .get().mMaterialInto,
+                        entry.getValue()
+                            .get().mMaterialInto.mArcSmeltInto);
+                }
+                material.mPendingArcSmeltingIntoWithGas = null;
+            }
         }
     }
 
@@ -1791,12 +1809,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
+    /**
+     * @deprecated Always returns false, apparently.
+     */
+    @Deprecated
     public boolean isRadioactive() {
-        if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
-
-        return mMaterialList.stream()
-            .map(stack -> stack.mMaterial)
-            .anyMatch(Materials::isRadioactive);
+        return false;
     }
 
     public long getProtons() {

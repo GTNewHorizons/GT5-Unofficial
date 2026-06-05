@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.StringValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -24,6 +23,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.StatColorSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
@@ -190,7 +190,7 @@ public class StarColorImportPanel {
             new ButtonWidget<>().size(37, 15)
                 .onMousePressed(d -> {
                     if (color.getValue() != null) {
-                        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+                        StatColorSyncValue starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
                             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
                         starColorClickedSyncer.setValue(color.getValue());
                         hypervisor.getModularPanel(Panels.STAR_COLOR_IMPORT)

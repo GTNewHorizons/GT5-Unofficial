@@ -136,7 +136,8 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     }
 
     private IWidget makeMaxFluidConfigurator() {
-        IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse);
+        IntSyncValue maxFluidUseSyncer = new IntSyncValue(multiblock::getMaxFluidUse, multiblock::setMaxFluidUse)
+            .allowC2S();
         return Flow.row()
             .widthRel(1)
             .marginBottom(4)
@@ -151,7 +152,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
     private IWidget makeMaxFluidConfiguratorTextFieldWidget(IntSyncValue maxFluidUseSyncer) {
         return new TextFieldWidget().value(maxFluidUseSyncer)
             .setTextAlignment(Alignment.Center)
-            .setNumbers(0, 300000)
+            .numbersInt(0, 300000)
             .size(70, 14)
             .marginBottom(4)
             .marginRight(16)

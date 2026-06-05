@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -34,6 +35,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -78,8 +81,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         // Laser Source hatch
         .addElement(
             'H',
-            buildHatchAdder(MTEEtchingArrayModule.class).adder(MTEEtchingArrayModule::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
+            buildHatchAdder(MTEEtchingArrayModule.class).anyOf(HatchElement.LaserSource)
+                .adder(MTEEtchingArrayModule::addLaserSource)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .hint(1)
                 .build())
@@ -165,9 +168,12 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        return laserSource != null;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        if (laserSource == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.etching_array_no_laser"));
+        }
     }
 
     @Override
@@ -211,6 +217,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addCasingInfoExactly(translateToLocal("gt.blockglass1.3.name"), 4, false)
             // Laser Source Hatch
             .addCasingInfoExactly(translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), 1, true)
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .addStructureInfoSeparator()

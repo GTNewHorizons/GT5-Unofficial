@@ -278,6 +278,34 @@ public final class GTGuiTextures {
         .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
         .build();
 
+    public static final UITexture SLOT_ITEM_GOLD = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_gold")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_GOLD)
+        .build();
+    public static final UITexture SLOT_ITEM_GREEN = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_green")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_GREEN)
+        .build();
+    public static final UITexture SLOT_ITEM_PURPLE = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_purple")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_PURPLE)
+        .build();
+    public static final UITexture SLOT_ITEM_PRISMATIC = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_prismatic")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_PRISMATIC)
+        .build();
     public static final UITexture SLOT_ITEM_NANOCHIP = UITexture.builder()
         .location(GregTech.ID, "gui/slot/item_nanochip")
         .imageSize(18, 18)
@@ -357,6 +385,9 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
+    public static final UITexture OVERLAY_SLOT_ARMOR = fullImageColorableGT("overlay_slot/armor");
+    public static final UITexture OVERLAY_SLOT_ARMOR_CORE = fullImageColorableGT("overlay_slot/armor_core");
+    public static final UITexture OVERLAY_SLOT_ARMOR_FRAME = fullImageColorableGT("overlay_slot/armor_frame");
     public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/data_orb")
         .canApplyTheme()
@@ -477,6 +508,38 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/arrow_me")
         .fullImage()
         .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_side")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_SIDE_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_front")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_FRONT_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/drawer_trim")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DRAWER_TRIM_STANDARD)
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MINING_PIPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/mining_pipe")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_MINING_PIPE_STANDARD)
         .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
@@ -1186,6 +1249,7 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/steam_fill_steel")
         .build();
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture.builder()
+        .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/progressbar/name_remover")
         .build();
@@ -1603,6 +1667,63 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_CRYOTHEUM_ON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mvf_cryo_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_PYROTHEUM_ON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mebf_pyro_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_CRYOTHEUM_OFF = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mvf_cryo_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_PYROTHEUM_OFF = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mebf_pyro_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_LEFT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_left")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_UP = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_up")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_RIGHT = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_right")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_DOWN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_down")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SIDE_SELECTION_BACK = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/side_selection_back")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
     // endregion button overlay
 
     // region picture
