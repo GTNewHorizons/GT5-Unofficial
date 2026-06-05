@@ -296,7 +296,7 @@ public class FormingPressRecipes implements Runnable {
             .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .addTo(fluidSolidifierRecipes);
+            .addTo(formingPressRecipes);
 
         // Conflict Inducement Casing
         GTValues.RA.stdBuilder()
@@ -307,6 +307,6 @@ public class FormingPressRecipes implements Runnable {
             .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .addTo(fluidSolidifierRecipes);
+            .addTo(formingPressRecipes);
     }
 }
