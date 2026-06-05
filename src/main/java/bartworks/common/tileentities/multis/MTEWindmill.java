@@ -73,8 +73,14 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implements ISurvivalConstructable {
 
-    // TODO: redo structure checking
-    // TODO: clean up class
+    /* TODO: redo structure
+     * TODO: add custom recipes system
+     * TODO: add machine modes (mixer, grinder) with different housings
+     * TODO: NEI handler
+     * TODO: possible wind rework
+     * TODO: world gen (???)
+     * TODO: clean up class
+     */
 
     private static final int MAX_PARALLELS = 16;
 
@@ -355,29 +361,26 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             if (GTUtility.isStackInvalid(stack)) continue;
 
             for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
-                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            ItemStack merge = tHatch.getStackInSlot(i)
-                                .copy();
-                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                            tHatch.setInventorySlotContents(i, merge);
-                        } else {
-                            tHatch.setInventorySlotContents(i, stack.copy());
-                        }
+                if (stack.stackSize == 0) break;
 
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            return true;
-                        }
-                        tHatch.setInventorySlotContents(i, null);
-                        return false;
+                for (int i = 0; i < tHatch.getSizeInventory(); i++) {
+                    if (stack.stackSize == 0) break;
+
+                    if (tHatch.getStackInSlot(i) == null) {
+                        tHatch.setInventorySlotContents(i, stack.copy());
+                        stack.stackSize = 0;
+                        break;
+                    }
+                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && (tHatch.getStackInSlot(i).stackSize < stack.getMaxStackSize())) {
+                        int tmp = tHatch.getStackInSlot(i).stackSize + stack.stackSize;
+                        stack.stackSize = Math.max(tmp - stack.getMaxStackSize(), 0);
+                        tHatch.getStackInSlot(i).stackSize = Math.min(tmp, stack.getMaxStackSize());
                     }
                 }
             }
         }
-
-        return false;
+        return true;
     }
 
     @Override
