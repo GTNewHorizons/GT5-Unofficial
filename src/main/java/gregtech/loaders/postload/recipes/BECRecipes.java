@@ -50,7 +50,7 @@ public class BECRecipes implements Runnable {
     // The old EoH recipes were gated by the material of their bolt, following the tier of BOLT_TIER
     // This same tiering pattern is used through the 4-tier BEC Metamaterials.
     // "Bolt" is used for brevity. Non-bolt means not forming the primary gating.
-    private static final int[] NON_BOLT_TIER = { 1, 1, 1, 1, 1, 1, 2, 2, 3 };
+    private static final int[] NON_BOLT_TIER = { 1, 1, 1, 1, 1, 1, 2, 2, 2 };
     private static final int[] BOLT_TIER = { 1, 2, 2, 2, 3, 3, 3, 4, 4 };
     private static final int[] BOLT_POS = { 0, 0, 1, 2, 0, 1, 2, 0, 1 };
 
