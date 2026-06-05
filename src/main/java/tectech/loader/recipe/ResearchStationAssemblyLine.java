@@ -52,6 +52,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -146,6 +147,34 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
+            (int) TierEU.RECIPE_UMV);
+
+        // EOH Controller Recipe.
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Machine_Multi_PlasmaForge.get(1),
+            512_000_000, // total comp
+            2 * 16_384, // comp/s
+            (int) TierEU.RECIPE_MAX, // eu/t
+            64, // amperage
+            new Object[] { ItemList.SpaceElevatorController.get(16), CustomItemList.Machine_Multi_ForgeOfGods.get(4),
+                ItemList.Machine_Multi_PlasmaForge.get(4),
+
+                CustomItemList.EOH_Infinite_Energy_Casing.get(1),
+                CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
+                CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
+                CustomItemList.StabilisationFieldGeneratorTier0.get(1),
+
+                CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(64),
+                ItemList.Quantum_Chest_IV.get(64),
+                // Void miner III.
+                GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.InfiniteFluidDrillingRig.get(64),
+
+                ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+            new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
+                GGMaterial.metastableOganesson.getMolten(16 * STACKS), GGMaterial.shirabon.getMolten(16 * STACKS), },
+            CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
+            400 * MINUTES,
             (int) TierEU.RECIPE_UMV);
 
         // UHV-UMV Energy Hatch & Dynamo
