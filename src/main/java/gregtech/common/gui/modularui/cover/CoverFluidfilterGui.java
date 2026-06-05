@@ -129,7 +129,7 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                     })
                         .color(0x404040)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)));
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)));
     }
 
 }

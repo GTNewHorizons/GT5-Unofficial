@@ -85,7 +85,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     () -> " " + voltageSyncer.getValue()
                         .toString())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     // Minecraft &a equivalent
                     .color(0x55FF55));
     }

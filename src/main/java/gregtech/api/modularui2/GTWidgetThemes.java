@@ -42,10 +42,16 @@ public final class GTWidgetThemes {
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
+
     // Use for plain/unlocalized display strings and dynamic values (numbers, status text, mode text)
-    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT = themeApi
-        .widgetThemeKeyBuilder("displayText", WidgetTheme.class)
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_WHITE = themeApi
+        .widgetThemeKeyBuilder("displayTextWhite", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_GRAY = themeApi
+        .widgetThemeKeyBuilder("displayTextGray", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.GRAY.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
 
