@@ -3008,7 +3008,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             64,
             new Object[] { ItemList.CondensateGuidanceCoil.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUIV, 6),
-                ItemList.Circuit_Chip_YPIC.get(6), ItemList.Sensor_UHV.get(12),
+                ItemList.Circuit_Chip_APIC.get(6), ItemList.Sensor_UHV.get(12),
                 GGMaterial.tairitsu.get(OrePrefixes.plate, 12),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 6),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Shijima, 64), ItemList.Field_Generator_UHV.get(3),

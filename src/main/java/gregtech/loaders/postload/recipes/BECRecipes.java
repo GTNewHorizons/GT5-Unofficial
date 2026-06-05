@@ -105,7 +105,7 @@ public class BECRecipes implements Runnable {
             ItemList.CondensateTransformativeCoil.get(1),
             new ItemStack[] { ItemList.CondensateGuidanceCoil.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUIV, 4),
-                ItemList.Circuit_Chip_YPIC.get(4), ItemList.MetaMaterial_SensorArray1.get(4),
+                ItemList.Circuit_Chip_APIC.get(4), ItemList.MetaMaterial_SensorArray1.get(4),
                 ItemList.MetaMaterial_FieldManipulator1.get(2) },
             nanites(3, 1, 4, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
