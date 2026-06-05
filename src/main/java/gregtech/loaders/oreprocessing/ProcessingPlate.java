@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -40,7 +41,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -371,8 +371,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(benderRecipes);
         }
     }
-
-    final CompressionTierKey COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     private void registerPlateSuperdense(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing,
         final long aMaterialMass) {
