@@ -10,11 +10,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
+import static gregtech.api.util.GTUtility.isFlowingWater;
+import static gregtech.api.util.GTUtility.isWater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -22,6 +27,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
@@ -38,6 +45,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -45,6 +53,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -53,13 +62,10 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import bartworks.system.material.Werkstoff;
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -75,8 +81,6 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.Material;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class GTStructureUtility {
@@ -102,17 +106,19 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
         return new IStructureElement<>() {
 
-            final Block distilledWater = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (block == Blocks.water || block == distilledWater) return true;
-                if (allowFlowing && block == Blocks.flowing_water) return true;
-                if (Mods.COFHCore.isModLoaded()) {
-                    return block instanceof BlockWater || block instanceof BlockTickingWater;
-                }
+                boolean isWater = isWater(block);
+                boolean isFlowing = isFlowingWater(block, world, x, y, z);
+                if (isWater && !isFlowing) return true;
+                if (allowFlowing && isFlowing) return true;
                 return false;
+            }
+
+            @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList("GT5U.structure.water");
             }
 
             @Override
@@ -140,14 +146,57 @@ public class GTStructureUtility {
         };
     }
 
+    public static boolean hasWaterAtStructurePosition(IGregTechTileEntity tile, ExtendedFacing facing,
+        String[][] structure, int offsetX, int offsetY, int offsetZ, char waterChar) {
+        if (tile == null || facing == null || structure == null) return false;
+        World world = tile.getWorld();
+        int cx = tile.getXCoord(), cy = tile.getYCoord(), cz = tile.getZCoord();
+        for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+            String[] layers = structure[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    if (row.charAt(charX) != waterChar) continue;
+                    int[] abc = new int[] { charX - offsetX, layerY - offsetY, sliceZ - offsetZ };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    facing.getWorldOffset(abc, xyz);
+                    if (isWater(world.getBlock(cx + xyz[0], cy + xyz[1], cz + xyz[2]))) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
-        return ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID);
+        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticleTinted(
+                    world,
+                    x,
+                    y,
+                    z,
+                    sBlockSheetmetalGT,
+                    material.mMetaItemSubID,
+                    material.getRGBA());
+                return true;
+            }
+        };
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
-        return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
+        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI
+                    .hintParticleTinted(world, x, y, z, sBlockSheetmetalBW, werkstoff.getmID(), werkstoff.getRGBA());
+                return true;
+            }
+        };
     }
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
@@ -496,6 +545,12 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aHintBlock, hintMeta);
                 return true;
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(placeCasing, placeCasingMeta);
             }
 
             @Override
@@ -1041,6 +1096,30 @@ public class GTStructureUtility {
                 return result;
             }
         };
+    }
+
+    /**
+     * Builds a block->metas map from an OreDict entry, suitable for use with
+     * {@link StructureUtility#ofBlocksMap}.
+     */
+    public static Map<Block, Collection<Integer>> ofOreDictBlockMap(String oreDictName) {
+        Map<Block, Collection<Integer>> map = new HashMap<>();
+        for (ItemStack stack : OreDictionary.getOres(oreDictName)) {
+            Block block = Block.getBlockFromItem(stack.getItem());
+            if (block == null || block == Blocks.air) continue;
+            int meta = stack.getItemDamage();
+            if (meta == OreDictionary.WILDCARD_VALUE) {
+                map.computeIfAbsent(block, k -> new ArrayList<>())
+                    .addAll(
+                        IntStream.rangeClosed(0, 15)
+                            .boxed()
+                            .collect(Collectors.toList()));
+            } else {
+                map.computeIfAbsent(block, k -> new ArrayList<>())
+                    .add(meta);
+            }
+        }
+        return map;
     }
 
     /**

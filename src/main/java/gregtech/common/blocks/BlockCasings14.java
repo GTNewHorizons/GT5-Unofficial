@@ -20,6 +20,7 @@ public class BlockCasings14 extends BlockCasingsAbstract {
         // IDs 0 - 2 are currently reserved for the CGC
         register(3, ItemList.CasingHearth);
         register(4, ItemList.CasingFridge);
+        register(5, ItemList.CasingNaquadahReinforcedDistillation);
     }
 
     @Override
@@ -36,6 +37,7 @@ public class BlockCasings14 extends BlockCasingsAbstract {
                 if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_TOP.getIcon();
                 yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_SIDE.getIcon();
             }
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

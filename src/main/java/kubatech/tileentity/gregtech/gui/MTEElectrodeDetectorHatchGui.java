@@ -36,8 +36,8 @@ public class MTEElectrodeDetectorHatchGui extends MTEHatchBaseGui<MTEElectrodeDe
     public Flow createThresholdFieldRow() {
         return Flow.row()
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, 10000)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, 10000)
                     .size(77, 12)
                     .value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))

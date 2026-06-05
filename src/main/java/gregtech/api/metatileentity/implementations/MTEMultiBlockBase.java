@@ -179,7 +179,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0, efficiencyDecrease = 1000;
     public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
@@ -811,7 +811,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             }
-            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - efficiencyDecrease);
         }
     }
 
@@ -1153,6 +1153,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
             if (isInputSeparationEnabled()) {
                 if (mInputBusses.isEmpty()) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems);
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) return foundResult;
                     // Recipe failed in interesting way, so remember that and continue searching
@@ -2362,7 +2367,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 : seconds > 0 ? "GT5U.multiblock.scanner.totalRunSeconds"
                 : "GT5U.multiblock.scanner.totalRunTicks";
 
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        for (MTEHatch tHatch : getExoticAndNormalEnergyHatchList()) {
             final IGregTechTileEntity te = tHatch.getBaseMetaTileEntity();
             if (te != null) {
                 storedEnergy += te.getStoredEU();
@@ -3939,5 +3944,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean hasRunningText() {
         return true;
+    }
+
+    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
+        List<MTEHatch> tHatches = new ArrayList<>();
+        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
+        tHatches.addAll(filterValidMTEs(mEnergyHatches));
+        return tHatches;
     }
 }
