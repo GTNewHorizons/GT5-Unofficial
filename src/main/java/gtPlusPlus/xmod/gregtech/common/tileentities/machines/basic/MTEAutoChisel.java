@@ -30,8 +30,6 @@ public class MTEAutoChisel extends MTEBasicMachine {
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
 
-    private static final int SLOT_TEMPLATE = 3;
-
     public MTEAutoChisel(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -222,6 +220,6 @@ public class MTEAutoChisel extends MTEBasicMachine {
 
     @Override
     public int getSlotLimit(int slot) {
-        return slot == SLOT_TEMPLATE ? 1 : super.getSlotLimit(slot);
+        return slot == getSpecialSlotIndex() ? 1 : super.getSlotLimit(slot);
     }
 }
