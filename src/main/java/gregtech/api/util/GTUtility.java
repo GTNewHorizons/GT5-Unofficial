@@ -237,6 +237,21 @@ public class GTUtility {
         return (int) Math.min(Integer.MAX_VALUE, number);
     }
 
+    /// Performs a fast X / Y * Z operation, without causing long overflows in the intermediate operations.
+    /// If the result is too large for a long, overflows will still occur.
+    /// Note that this method does not truncate like standard integer math - it tries to get as close to the exact
+    /// mathematical answer as it can. `7 / 3 * 3` equals 7, not 6.
+    public static long fastDivMul(long value, long div, long mult) {
+        if (div == mult) {
+            return mult == 0 ? 0 : value;
+        }
+
+        long integral = value / div * mult;
+        long decimal = value % div * mult / div;
+
+        return integral + decimal;
+    }
+
     public static Field getField(Object aObject, String aField) {
         Field rField = null;
         try {
@@ -3434,27 +3449,36 @@ public class GTUtility {
         return k > (double) l ? l + 1 : l;
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static int ceilDiv(int lhs, int rhs) {
-        return (lhs + rhs - 1) / rhs;
-    }
-
-    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
-    public static int ceilDiv2(int lhs, int rhs) {
-        int sign = Integer.signum(lhs) * Integer.signum(rhs);
-
-        if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
 
-        lhs = Math.abs(lhs);
-        rhs = Math.abs(rhs);
-
-        int unsigned = 1 + ((lhs - 1) / rhs);
-
-        return unsigned * sign;
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static long ceilDiv(long lhs, long rhs) {
-        return (lhs + rhs - 1) / rhs;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(int, int)] otherwise.
+    public static int ceilDiv2(int lhs, int rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(long, long)] otherwise.
+    public static long ceilDiv2(long lhs, long rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
     }
 
     /** @deprecated Use {@link Integer#signum(int)} instead.} */
