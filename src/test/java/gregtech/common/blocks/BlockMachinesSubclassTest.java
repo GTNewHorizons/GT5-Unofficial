@@ -3,6 +3,8 @@ package gregtech.common.blocks;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -17,13 +19,13 @@ import org.mockito.MockedStatic;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 
 /**
@@ -77,7 +79,10 @@ public class BlockMachinesSubclassTest {
                                 // METATILEENTITIES.
 
             // Other init stuff here.
-            GTLanguageManager.addStringLocalization("my.mte.name", "The localized name");
+            HashMap<String, String> tLang = new HashMap<>();
+            tLang.put("my.mte.name", "The localized name");
+            LanguageRegistry.instance()
+                .injectLanguage("en_US", tLang);
         }
 
         /** Copy constructor for newMetaEntity as to not duplicate args */
