@@ -2,11 +2,9 @@ package gregtech.common.gui.modularui.hatch;
 
 import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME;
 import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
-import static gregtech.api.enums.Mods.GregTech;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.modularui2.GTModularScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,11 +24,10 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.FieldsAreNonnullByDefault;
-import gregtech.api.util.Lazy;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
@@ -42,7 +39,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchCraftingInputSlaveGui.RemoteGuiData> {
+public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchCraftingInputSlaveGui.ProxyGuiData> {
 
     public static final CraftingInputGuiFactory GUI = new CraftingInputGuiFactory();
 
@@ -53,11 +50,11 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
     }
 
     @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(RemoteGuiData data, ModularPanel mainPanel) {
+    public ModularScreen createScreen(ProxyGuiData data, ModularPanel mainPanel) {
         return new GTModularScreen(mainPanel, mte.getColoredTheme());
     }
 
-    public ModularPanel buildUI(RemoteGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+    public ModularPanel buildUI(ProxyGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
         return mte.buildUI(
             new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord()),
@@ -65,7 +62,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
             uiSettings);
     }
 
-    final public static class RemoteGuiData extends GuiData {
+    final public static class ProxyGuiData extends GuiData {
 
         final private @Nullable MTEHatchCraftingInputME serverMTE;
         final private boolean supportsFluids;
@@ -73,7 +70,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         final private int y;
         final private int z;
 
-        public RemoteGuiData(EntityPlayer player, MTEHatchCraftingInputME serverMTE) {
+        public ProxyGuiData(EntityPlayer player, MTEHatchCraftingInputME serverMTE) {
             super(player);
             this.serverMTE = serverMTE;
             this.supportsFluids = serverMTE.supportsFluids();
@@ -83,7 +80,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
             this.z = base.getZCoord();
         }
 
-        public RemoteGuiData(EntityPlayer player, boolean supportsFluids, int x, int y, int z) {
+        public ProxyGuiData(EntityPlayer player, boolean supportsFluids, int x, int y, int z) {
             super(player);
             this.serverMTE = null;
             this.supportsFluids = supportsFluids;
@@ -113,23 +110,25 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         }
     }
 
-    final public static class CraftingInputGuiFactory extends AbstractUIFactory<RemoteGuiData> {
+    final public static class CraftingInputGuiFactory extends AbstractUIFactory<ProxyGuiData> {
 
         CraftingInputGuiFactory() {
             super("gregtech:crafting_input");
         }
 
         public void open(MTEHatchCraftingInputME mte, EntityPlayerMP player) {
-            GuiManager.open(this, new RemoteGuiData(player, mte), player);
+            GuiManager.open(this, new ProxyGuiData(player, mte), player);
         }
 
         @Override
-        public IGuiHolder<RemoteGuiData> getGuiHolder(RemoteGuiData data) {
+        public IGuiHolder<ProxyGuiData> getGuiHolder(ProxyGuiData data) {
             MTEHatchCraftingInputME mte = data.getServerMTE();
             if (mte == null) {
                 // Create empty fake MTE on client
                 BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
-                fakeBase.setInitialValuesAsNBT(null, (short) (data.supportsFluids() ? CRAFTING_INPUT_ME.ID : CRAFTING_INPUT_ME_BUS.ID));
+                fakeBase.setInitialValuesAsNBT(
+                    null,
+                    (short) (data.supportsFluids() ? CRAFTING_INPUT_ME.ID : CRAFTING_INPUT_ME_BUS.ID));
                 NBTTagCompound tag = new NBTTagCompound();
                 fakeBase.writeToNBT(tag);
                 tag.setInteger("x", data.getX());
@@ -144,7 +143,7 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         }
 
         @Override
-        public void writeGuiData(RemoteGuiData guiData, PacketBuffer buffer) {
+        public void writeGuiData(ProxyGuiData guiData, PacketBuffer buffer) {
             buffer.writeBoolean(guiData.supportsFluids());
             buffer.writeInt(guiData.getX());
             buffer.writeInt(guiData.getY());
@@ -152,8 +151,13 @@ public final class MTEHatchCraftingInputSlaveGui implements IGuiHolder<MTEHatchC
         }
 
         @Override
-        public MTEHatchCraftingInputSlaveGui.RemoteGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
-            return new RemoteGuiData(player, buffer.readBoolean(), buffer.readInt(), buffer.readInt(), buffer.readInt());
+        public ProxyGuiData readGuiData(EntityPlayer player, PacketBuffer buffer) {
+            return new ProxyGuiData(
+                player,
+                buffer.readBoolean(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readInt());
         }
     }
 }
