@@ -197,7 +197,7 @@ public class BECRecipes implements Runnable {
 
         // Reinforced Temporal Structure Casing
         addBec(
-            CustomItemList.EOH_Reinforced_Temporal_Casing.get(1),
+            CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
@@ -214,7 +214,7 @@ public class BECRecipes implements Runnable {
 
         // Reinforced Spatial Structure Casing
         addBec(
-            CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
+            CustomItemList.EOH_Reinforced_Spatial_Casing.get(4),
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
