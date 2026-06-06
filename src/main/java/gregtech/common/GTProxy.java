@@ -143,6 +143,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
@@ -726,8 +727,8 @@ public class GTProxy implements IFuelHandler {
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
-    private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
-    private Map<String, UUID> UUID_BY_NAME;
+    private static Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+    private static Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
@@ -802,9 +803,6 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-        if (Thaumcraft.isModLoaded()) {
-            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
-        }
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
@@ -829,6 +827,9 @@ public class GTProxy implements IFuelHandler {
         // spotless:off
         GTLog.out.println("GTMod: Preload-Phase started!");
 
+        if (Thaumcraft.isModLoaded()) {
+            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
+        }
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
@@ -1867,7 +1868,7 @@ public class GTProxy implements IFuelHandler {
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
-                                                        .eut(8)
+                                                        .eut(TierEU.RECIPE_ULV)
                                                         .addTo(cutterRecipes);
                                                 }
                                     }
@@ -1999,11 +2000,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
-                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
-                RunnableMachineUpdate.onAfterTickLockReleased();
+                RunnableMachineUpdate.endTick();
+                RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
         }

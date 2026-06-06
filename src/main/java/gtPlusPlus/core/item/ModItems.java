@@ -6,6 +6,7 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
@@ -357,6 +358,7 @@ public final class ModItems {
     }
 
     private static void runMaterialGenerator() {
+        Material.registerAllPending();
         // Just an unusual plate needed for some black magic.
         new BaseItemPlate(MaterialsOther.CLAY);
         new BaseItemPlateDouble(MaterialsOther.CLAY);
@@ -405,6 +407,9 @@ public final class ModItems {
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
+
+        // Small Gear
+        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);

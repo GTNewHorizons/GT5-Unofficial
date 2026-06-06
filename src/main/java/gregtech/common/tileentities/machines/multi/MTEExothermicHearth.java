@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -190,7 +191,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Hearth, MEBF, MBF")
+        tt.addMachineType("Blast Furnace, ExH, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
@@ -304,6 +305,13 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -398,6 +406,23 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     public int getMaxParallelRecipes() {
         return (int) Math.floor(parallelModifier * Configuration.Multiblocks.megaMachinesMax);
+    }
+
+    @Override
+    public void getExtraInfoData(List<String> info) {
+        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(this.heatingCapacity)));
+        info.add(
+            StatCollector.translateToLocal(
+                this.isPyroSupplied ? "GT5U.gui.text.button.pyrotheum.enabled"
+                    : "GT5U.gui.text.button.pyrotheum.disabled"));
+        info.add(
+            StatCollector.translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(this.parallelModifier)));
+        if (this.isPyroSupplied) {
+            info.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.mebf.pyrotheum",
+                    formatFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * this.parallelModifier))));
+        }
     }
 
     private static final int pollutionPerSecond = 400 * 256;
@@ -525,7 +550,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
+            this.heatingCapacity = (int) getCoilLevel().getHeat()
+                + 100 * (GTUtility.getTierExtended(this.getMaxInputEu()) - 2);
         }
     }
 

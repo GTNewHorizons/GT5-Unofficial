@@ -50,7 +50,7 @@ public class BlockLoader implements IWerkstoffRunnable {
                 .fluidOutputs(werkstoff.getMolten(9 * INGOTS))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .duration(14 * SECONDS + 8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
 
         }

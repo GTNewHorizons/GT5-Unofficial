@@ -39,9 +39,9 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.98-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.10.3:dev")
     api("com.falsepattern:chunkapi-mc1.7.10:0.8.3:dev")
-    api("com.falsepattern:endlessids-mc1.7.10:1.7.1:dev")
+    api("com.falsepattern:endlessids-mc1.7.10:1.7.3:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.4:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.66-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.70-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.29:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-951-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.85-gtnh:dev")
@@ -153,6 +153,11 @@ dependencies {
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Horizon-QA:0.4.0:dev")
+    // jvmDowngrader
+    compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
+
+    // For building structures faster
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.35-GTNH')
 }
 
 afterEvaluate {

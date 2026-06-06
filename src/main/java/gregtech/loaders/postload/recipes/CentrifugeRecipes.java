@@ -80,7 +80,7 @@ public class CentrifugeRecipes implements Runnable {
             .fluidInputs(Materials.Air.getGas(10_000))
             .fluidOutputs(Materials.Nitrogen.getGas(3_900))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
