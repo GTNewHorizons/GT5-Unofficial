@@ -42,9 +42,9 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .itemOutputs(werkstoff.get(plateDouble))
                 .duration(
                     (int) Math.max(
-                            werkstoff.getStats()
-                                .getMass() * 2,
-                            1L))
+                        werkstoff.getStats()
+                            .getMass() * 2,
+                        1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
                 .addTo(benderRecipes);
 

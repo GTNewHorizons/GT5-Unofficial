@@ -5,13 +5,13 @@ import static bartworks.util.BWUtil.superscriptNumbers;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.TierEU;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 
 public class WerkstoffMaterialPool implements Runnable {
 

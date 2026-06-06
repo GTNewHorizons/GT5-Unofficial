@@ -1355,7 +1355,7 @@ public class WerkstoffLoader {
             .setBlastFurnace(true)
             .setMeltingPoint(4500)
             .setMeltingVoltage(480)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_IV),
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

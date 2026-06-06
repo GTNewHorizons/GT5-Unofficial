@@ -11,13 +11,12 @@ import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
