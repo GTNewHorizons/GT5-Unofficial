@@ -4058,9 +4058,8 @@ gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
 gtpp.gui.multiblock.duration.text=Duration: %s ticks
 gtpp.gui.multiblock.max_voltage.txt=%s EU/t(*2A) Tier: %s
 gtpp.gui.multiblock.pollution.txt=Pollution: %s/sec
-gtpp.gui.atmospheric_reconditioner.slot.rotor=Rotor Slot
-gtpp.gui.atmospheric_reconditioner.slot.filter=Filter Slot
 gtpp.gui.atmospheric_reconditioner.slot.conveyor=Conveyor Slot
+gtpp.gui.atmospheric_reconditioner.slot.conveyor.1=§7Insert an equal tier Conveyor Module to enable automation
 
 gtpp.chat.wireless_charger.mode_change=Now in %s %s.
 gtpp.chat.wireless_charger.mode_info=Current: %s %s

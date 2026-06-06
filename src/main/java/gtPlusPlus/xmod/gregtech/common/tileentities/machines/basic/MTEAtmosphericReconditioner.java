@@ -15,11 +15,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -28,6 +30,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -47,11 +51,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     protected int mBaseEff = 2500;
     protected int mOptimalAirFlow = 0;
     protected boolean mHasPollution = false;
-    public static final int SLOT_ROTOR = 5;
-    public static final int SLOT_FILTER = 6;
-    public static final int SLOT_CONVEYOR = 7;
+    public static final int SLOT_ROTOR = OTHER_SLOT_COUNT;
+    public static final int SLOT_FILTER = SLOT_ROTOR + 1;
 
     protected boolean mSaveRotor = false;
+    protected int progress;
 
     public MTEAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -62,7 +66,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             2,
             "Making sure you don't live in Gwalior - Uses 2A",
             2,
-            0,
+            1,
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                 TextureFactory.builder()
@@ -104,7 +108,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 2, aDescription, aTextures, 2, 0);
+        super(aName, aTier, 2, aDescription, aTextures, 2, 1);
     }
 
     public int getPollutionReduction() {
@@ -117,6 +121,10 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public void setSaveRotor(boolean saveRotor) {
         this.mSaveRotor = saveRotor;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 
     @Override
@@ -206,8 +214,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 this.sendSound((byte) -122);
             }
 
+            progress = Math.toIntExact(aTick % 20);
             // Only try once/sec.
-            if (!isIdle && aTick % 20L == 0L) {
+            if (!isIdle && progress == 0) {
 
                 // Check if machine can work.
                 if ((aBaseMetaTileEntity.isAllowedToWork())) {
@@ -372,8 +381,13 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 int maxDurability = ItemBasicScrubberTurbine.getMaxDurability(rotorStack);
 
                 if (currentUse >= maxDurability - 10) {
-                    // Remove broken rotor if in HE mode
-                    if (!mSaveRotor) this.mInventory[SLOT_ROTOR] = null;
+                    // Delete broken rotor if in HE mode
+                    if (!mSaveRotor) mInventory[SLOT_ROTOR] = null;
+                    else if (mInventory[getOutputSlot()] == null) {
+                        // Move damaged rotor to output if not occupied if in LE mode
+                        mInventory[getOutputSlot()] = mInventory[SLOT_ROTOR];
+                        this.mInventory[SLOT_ROTOR] = null;
+                    }
                     return false;
                 } else {
                     // Do Damage
@@ -615,7 +629,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             }
         }
         if (aIndex == SLOT_ROTOR) {
-            if (this.mInventory[SLOT_CONVEYOR] != null) {
+            if (isCorrectConveyor(mInventory[getSpecialSlotIndex()])) {
                 if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
                     return true;
                 }
@@ -724,7 +738,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEAtmosphericReconditionerGui(this).build(data, syncManager, uiSettings);
+        return new MTEAtmosphericReconditionerGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_SIFT)
+            .slotOverlaysMUI2(
+                (index, _, isOutput, isSpecial) -> isSpecial || isOutput ? IDrawable.NONE
+                    : index == 0 ? GTGuiTextures.OVERLAY_SLOT_TURBINE : GTGuiTextures.OVERLAY_SLOT_RECYCLE)
+            .useSpecialSlot(true)
+            .build();
     }
 
     @Override
@@ -748,5 +773,20 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     @Override
     public int getSlotLimit(int slot) {
         return 1;
+    }
+
+    private boolean isCorrectConveyor(ItemStack stack) {
+        return (switch (mTier) {
+            case 1 -> ItemList.Conveyor_Module_LV;
+            case 2 -> ItemList.Conveyor_Module_MV;
+            case 3 -> ItemList.Conveyor_Module_HV;
+            case 4 -> ItemList.Conveyor_Module_EV;
+            case 5 -> ItemList.Conveyor_Module_IV;
+            case 6 -> ItemList.Conveyor_Module_LuV;
+            case 7 -> ItemList.Conveyor_Module_ZPM;
+            case 8 -> ItemList.Conveyor_Module_UV;
+            case 9 -> ItemList.Conveyor_Module_UHV;
+            default -> throw new IllegalArgumentException("Tier not allowed for Atmospheric Reconditioner!");
+        }).isStackEqual(stack, false, true);
     }
 }

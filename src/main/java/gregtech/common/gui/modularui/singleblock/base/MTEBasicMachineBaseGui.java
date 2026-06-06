@@ -21,7 +21,6 @@ import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -45,8 +44,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETieredMachineBlockBaseGui<T> {
 
-    BasicUIProperties properties;
-    BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected BasicUIProperties properties;
+    protected BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
     protected boolean mAddGregTechLogo = false;
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
@@ -77,17 +76,17 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentSection(panel, syncManager).child(createItemRecipeArea());
+        return super.createContentSection(panel, syncManager).child(createItemRecipeArea(panel, syncManager));
     }
 
-    protected Flow createItemRecipeArea() {
+    protected Flow createItemRecipeArea(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.row()
             .coverChildren()
             .horizontalCenter()
             .childPadding((2 * SLOT_SIZE - properties.progressBarWidthMUI2) / 2)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .child(createItemInputSlots())
-            .child(createProgressBar())
+            .child(createProgressBar(panel, syncManager))
             .child(createItemOutputSlots());
     }
 
@@ -223,7 +222,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     @Override
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
+    protected ItemSlot createSpecialSlot() {
         String[] tooltipKeys = new String[2];
         if (properties.useSpecialSlot) {
             tooltipKeys[0] = "GT5U.machines.special_slot.tooltip";
@@ -248,7 +247,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected ProgressWidget createProgressBar() {
+    protected ProgressWidget createProgressBar(ModularPanel panel, PanelSyncManager syncManager) {
         return new GTProgressWidget()
             .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))

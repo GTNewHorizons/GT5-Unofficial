@@ -1,115 +1,88 @@
 package gregtech.common.gui.modularui.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner.SLOT_CONVEYOR;
-import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner.SLOT_FILTER;
-import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner.SLOT_ROTOR;
-
-import net.minecraft.item.ItemStack;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
 
-public class MTEAtmosphericReconditionerGui extends MTETieredMachineBlockBaseGui<MTEAtmosphericReconditioner> {
+public class MTEAtmosphericReconditionerGui extends MTEBasicMachineBaseGui<MTEAtmosphericReconditioner> {
 
-    public MTEAtmosphericReconditionerGui(MTEAtmosphericReconditioner machine) {
-        super(machine);
-    }
-
-    @Override
-    protected boolean supportsBottomRowOverlap() {
-        return true;
+    public MTEAtmosphericReconditionerGui(MTEAtmosphericReconditioner machine, BasicUIProperties properties) {
+        super(machine, properties);
+        useGregTechLogo(true);
     }
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow mainRow = Flow.row()
-            .coverChildren()
-            .childPadding(SLOT_SIZE)
-            .center();
-
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, SLOT_ROTOR).filter(machine::hasRotor)
-                    .singletonSlotGroup())
-                .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_TURBINE)
-                .addTooltipLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.rotor")));
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, SLOT_FILTER).filter(machine::hasAirFilter)
-                    .singletonSlotGroup())
-                .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_RECYCLE)
-                .addTooltipLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.filter")));
-        mainRow
-            .child(
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, SLOT_CONVEYOR).filter(this::isCorrectConveyor)
-                            .singletonSlotGroup())
-                    .addTooltipLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.conveyor")));
-
-        return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    @Override
-    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         IntSyncValue reductionSyncer = new IntSyncValue(machine::getPollutionReduction);
         syncManager.syncValue("pollutionReduction", reductionSyncer);
 
-        return super.createBottomLeftCornerFlow(panel, syncManager).childPadding(6)
-            .child(
-                GTGuiTextures.INFORMATION_SYMBOL.asWidget()
-                    .size(7, 18)
-                    .marginLeft(5)
-                    .tooltipAutoUpdate(true)
-                    .tooltipDynamic(
-                        t -> t.addLine(
-                            GTUtility.translate(
-                                "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
-                                formatNumber(reductionSyncer.getIntValue())))))
-            .child(
-                new CycleButtonWidget().stateCount(2)
-                    .value(new BooleanSyncValue(machine::isSaveRotor, machine::setSaveRotor).allowC2S())
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
-                    .tooltip(
-                        0,
-                        t -> t.addLine(
-                            GTUtility.translate(
-                                "gtpp.chat.atmospheric_reconditioner.efficiency",
-                                GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.low"))))
-                    .tooltip(
-                        1,
-                        t -> t.addLine(
-                            GTUtility.translate(
-                                "gtpp.chat.atmospheric_reconditioner.efficiency",
-                                GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.high")))));
+        return super.createContentSection(panel, syncManager).child(
+            GTGuiTextures.INFORMATION_SYMBOL.asWidget()
+                .topRel(0)
+                .leftRel(0)
+                .size(7, 18)
+                .tooltipAutoUpdate(true)
+                .tooltipDynamic(
+                    t -> t.addLine(
+                        GTUtility.translate(
+                            "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
+                            formatNumber(reductionSyncer.getIntValue())))));
     }
 
-    private boolean isCorrectConveyor(ItemStack stack) {
-        return (switch (machine.mTier) {
-            case 1 -> ItemList.Conveyor_Module_LV;
-            case 2 -> ItemList.Conveyor_Module_MV;
-            case 3 -> ItemList.Conveyor_Module_HV;
-            case 4 -> ItemList.Conveyor_Module_EV;
-            case 5 -> ItemList.Conveyor_Module_IV;
-            case 6 -> ItemList.Conveyor_Module_LuV;
-            case 7 -> ItemList.Conveyor_Module_ZPM;
-            case 8 -> ItemList.Conveyor_Module_UV;
-            case 9 -> ItemList.Conveyor_Module_UHV;
-            default -> throw new IllegalArgumentException("Tier not allowed for Atmospheric Reconditioner!");
-        }).isStackEqual(stack, false, true);
+    @Override
+    protected ProgressWidget createProgressBar(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue isActiveSyncer = new BooleanSyncValue(baseMetaTileEntity::isActive);
+        syncManager.syncValue("isActive", isActiveSyncer);
+
+        return new ProgressWidget()
+            .value(new DoubleSyncValue(() -> isActiveSyncer.getBoolValue() ? (double) machine.getProgress() / 20 : 0))
+            .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
+            .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)
+            .direction(properties.progressBarDirectionMUI2)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    @Override
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomRightCornerFlow(panel, syncManager).child(
+            new CycleButtonWidget().stateCount(2)
+                .value(new BooleanSyncValue(machine::isSaveRotor, machine::setSaveRotor).allowC2S())
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                .tooltip(
+                    0,
+                    t -> t.addLine(
+                        GTUtility.translate(
+                            "gtpp.chat.atmospheric_reconditioner.efficiency",
+                            GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.low"))))
+                .tooltip(
+                    1,
+                    t -> t.addLine(
+                        GTUtility.translate(
+                            "gtpp.chat.atmospheric_reconditioner.efficiency",
+                            GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.high")))));
+    }
+
+    @Override
+    protected ItemSlot createSpecialSlot() {
+        return super.createSpecialSlot().tooltip(
+            t -> t.clearText()
+                .addLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.conveyor"))
+                .addLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.conveyor.1")));
     }
 }
