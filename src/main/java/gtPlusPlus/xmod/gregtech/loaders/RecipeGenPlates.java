@@ -42,11 +42,11 @@ public class RecipeGenPlates extends RecipeGenBase {
         final ItemStack ingotStackTwo = material.getIngot(2);
         final ItemStack ingotStackThree = material.getIngot(3);
         final ItemStack ingotStackNine = material.getIngot(9);
-        final ItemStack plateStack64 = material.getPlate(64);
         final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
         final ItemStack plate_Single = material.getPlate(1);
         final ItemStack plate_SingleTwo = material.getPlate(2);
         final ItemStack plate_SingleNine = material.getPlate(9);
+        final ItemStack plate_Stack64 = material.getPlate(64);
         final ItemStack plate_Double = material.getPlateDouble(1);
         final ItemStack plate_Dense = material.getPlateDense(1);
         final ItemStack plate_Superdense = material.getPlateSuperdense(1);
@@ -161,9 +161,9 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Making Superdense Plates
-        if (plateStack64 != null && plate_Superdense != null) {
+        if (plate_Stack64 != null && plate_Superdense != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(plateStack64)
+                .itemInputs(plate_Stack64)
                 .itemOutputs(plate_Superdense)
                 .duration(Math.max(material.getMass() * 32L, 1L))
                 .eut(material.vVoltageMultiplier)
