@@ -151,7 +151,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             List<Ellipsoid> positive = new ArrayList<>();
             List<Ellipsoid> negative = new ArrayList<>();
 
-            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1);
+            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MaxSize - asteroidConfig.MinSize + 1);
             positive.add(new Ellipsoid(0, 0, 0, radius));
 
             if (asteroidConfig.PositiveEllipsoids > 0) {
