@@ -623,6 +623,30 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/chunkloading");
+    public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/chunkloading_off");
+    public static final UITexture OVERLAY_BUTTON_WORK_AREA = fullImage(GregTech.ID, "gui/overlay_button/work_area");
+    public static final UITexture OVERLAY_BUTTON_SHOW_WORK_AREA = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/show_work_area");
+    public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/replace_cobble_on");
+    public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/replace_cobble_off");
+    public static final UITexture OVERLAY_BUTTON_RETRACT_PIPE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/retract_pipes");
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/LiquidMode_off");
+    public static final UITexture OVERLAY_BUTTON_LOCKED = fullImage(GregTech.ID, "gui/overlay_button/locked");
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
     public static final UITexture OVERLAY_BUTTON_COPY = fullImage(GregTech.ID, "gui/overlay_button/copy_to_clipboard");

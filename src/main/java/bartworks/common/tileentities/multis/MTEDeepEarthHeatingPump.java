@@ -43,6 +43,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
@@ -336,8 +337,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDrillerBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
