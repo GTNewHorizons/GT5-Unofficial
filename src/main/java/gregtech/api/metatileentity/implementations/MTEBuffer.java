@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -438,6 +439,8 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
                 transfer.setMaxTotalTransferred(toTransfer);
             } else {
+                if (!hasTargetRoomForTransfer(igte)) return;
+
                 transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize);
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
@@ -452,6 +455,24 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
                 GTUtility.compactInventory(this, 0, end);
             }
         }
+    }
+
+    private boolean hasTargetRoomForTransfer(IGregTechTileEntity igte) {
+        var target = igte.getTileEntityAtSide(igte.getBackFacing());
+        if (!(target instanceof IInventory targetInv)) return true;
+
+        for (int i = 0; i < targetInv.getSizeInventory(); i++) {
+            ItemStack existing = targetInv.getStackInSlot(i);
+            int available;
+            if (existing == null) {
+                available = targetInv.getInventoryStackLimit();
+            } else {
+                available = Math.min(existing.getMaxStackSize(), targetInv.getInventoryStackLimit())
+                    - existing.stackSize;
+            }
+            if (available >= mTargetStackSize) return true;
+        }
+        return false;
     }
 
     protected int getMovableInventoryEnd() {
