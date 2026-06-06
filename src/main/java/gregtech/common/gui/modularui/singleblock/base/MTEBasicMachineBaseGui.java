@@ -18,12 +18,16 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -38,6 +42,7 @@ import com.gtnewhorizons.modularui.api.widget.Interactable;
 
 import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -79,6 +84,11 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return super.build(guiData, syncManager, uiSettings).child(createBatteryWidget(syncManager).leftRel(0, 0, 1));
+    }
+
+    @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         BooleanSyncValue itemSync = new BooleanSyncValue(
@@ -91,6 +101,19 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("fluidAutoOutput", fluidSync);
 
         syncManager.registerSlotGroup("item_inv", 1 + ((properties.maxItemInputs - 1) / 3));
+
+        syncManager.syncValue("storedEu", new LongSyncValue(machine::getEUVar));
+        syncManager.syncValue("maxEu", new LongSyncValue(machine::maxEUStore));
+        syncManager.syncValue("eut", new IntSyncValue(() -> machine.mEUt));
+
+        LongSyncValue averageInputSyncer = new LongSyncValue(() -> {
+            BaseMetaTileEntity metaTileEntity = ((BaseMetaTileEntity) machine.getBaseMetaTileEntity());
+            return metaTileEntity.getAverageElectricInput();
+        });
+        syncManager.syncValue("averageInput", averageInputSyncer);
+        syncManager.syncValue("maxEuInput", new LongSyncValue(machine::maxEUInput));
+        syncManager
+            .syncValue("maxAllowedInput", new LongSyncValue(() -> machine.maxAmperesIn() * machine.maxEUInput()));
 
         initErrors(syncManager);
     }
@@ -106,6 +129,87 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
                 GTUtility.translate("GT5U.machines.powersource.power")));
+    }
+
+    private ParentWidget<?> createBatteryWidget(PanelSyncManager syncManager) {
+
+        return new ParentWidget<>().size(31, 75)
+            .child(createEnergyStorageBar(syncManager))
+            .child(createEnergyConsumptionBar(syncManager))
+            .child(createEnergyUsageBar(syncManager))
+            .child(createEnergyPanel(syncManager));
+    }
+
+    private ProgressWidget createEnergyStorageBar(PanelSyncManager syncManager) {
+        LongSyncValue euSyncer = syncManager.findSyncHandler("storedEu", LongSyncValue.class);
+        LongSyncValue maxEuSyncer = syncManager.findSyncHandler("maxEu", LongSyncValue.class);
+
+        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
+            () -> euSyncer.getValue() / (double) Math.max(1, maxEuSyncer.getValue()));
+
+        return new ProgressWidget()
+            .texture(GTGuiTextures.PROGRESSBAR_ENERGY_EMPTY, GTGuiTextures.PROGRESSBAR_ENERGY_FULL, 45)
+            .size(14, 45)
+            .top(15)
+            .left(6)
+            .direction(ProgressWidget.Direction.UP)
+            .value(percentageSyncer)
+            .tooltipDynamic(
+                t -> t.addLine(String.format("Stored EU: %d/%d", euSyncer.getValue(), maxEuSyncer.getValue())));
+    }
+
+    private ProgressWidget createEnergyConsumptionBar(PanelSyncManager syncManager) {
+        IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
+
+        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
+            () -> eutSyncer.getValue() / (double) GTValues.V[machine.mTier]);
+
+        return new ProgressWidget().texture(GTGuiTextures.TRANSPARENT, GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION, 45)
+            .size(5, 45)
+            .top(15)
+            .left(11)
+            .direction(ProgressWidget.Direction.UP)
+            .value(percentageSyncer);
+    }
+
+    private ProgressWidget createEnergyUsageBar(PanelSyncManager syncManager) {
+        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
+        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
+
+        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
+            () -> averageInputSyncer.getValue() / (double) maxAllowedInputSyncer.getValue());
+
+        return new ProgressWidget().texture(GTGuiTextures.TRANSPARENT, GTGuiTextures.PROGRESSBAR_ENERGY_USAGE, 45)
+            .size(5, 45)
+            .top(15)
+            .left(16)
+            .direction(ProgressWidget.Direction.UP)
+            .value(percentageSyncer);
+    }
+
+    private IWidget createEnergyPanel(PanelSyncManager syncManager) {
+        LongSyncValue euSyncer = syncManager.findSyncHandler("storedEu", LongSyncValue.class);
+        LongSyncValue maxEuSyncer = syncManager.findSyncHandler("maxEu", LongSyncValue.class);
+        IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
+        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
+        LongSyncValue maxEuInputSyncer = syncManager.findSyncHandler("maxEuInput", LongSyncValue.class);
+        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
+
+        return GTGuiTextures.ENERGY_GAUGE_PANEL.asWidget()
+            .sizeRel(1)
+            .tooltipDynamic(
+                t -> t.addLine(String.format("Stored EU: %d/%d", euSyncer.getValue(), maxEuSyncer.getValue()))
+                    .addLine(
+                        String.format(
+                            "Recipe EU consumption: %d/%d eu/t",
+                            eutSyncer.getValue(),
+                            maxEuInputSyncer.getValue()))
+                    .addLine(
+                        String.format(
+                            "Average EU usage: %d/%d eu/t",
+                            averageInputSyncer.getValue(),
+                            maxAllowedInputSyncer.getValue())))
+            .tooltipAutoUpdate(true);
     }
 
     @Override

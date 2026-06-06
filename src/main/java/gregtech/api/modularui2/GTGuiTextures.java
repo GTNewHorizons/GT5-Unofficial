@@ -1349,6 +1349,22 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/meter_rose")
         .fullImage()
         .build();
+    public static final UITexture PROGRESSBAR_ENERGY_EMPTY = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_gauge_empty")
+        .fullImage()
+        .build();
+    public static final UITexture PROGRESSBAR_ENERGY_FULL = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_gauge_full")
+        .fullImage()
+        .build();
+    public static final UITexture PROGRESSBAR_ENERGY_CONSUMPTION = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_consumption_gauge")
+        .fullImage()
+        .build();
+    public static final UITexture PROGRESSBAR_ENERGY_USAGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_usage_gauge")
+        .fullImage()
+        .build();
 
     // endregion progressbar
 
@@ -2221,6 +2237,12 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .nonOpaque()
+        .build();
+
+    public static final UITexture ENERGY_GAUGE_PANEL = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/energy_gauge_panel")
+        .fullImage()
+        .canApplyTheme()
         .build();
     // endregion picture
 
