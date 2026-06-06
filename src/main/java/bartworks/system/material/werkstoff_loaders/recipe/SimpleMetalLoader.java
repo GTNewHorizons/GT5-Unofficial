@@ -19,12 +19,15 @@ import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.plateSuperdense;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
@@ -37,6 +40,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 
@@ -118,6 +122,18 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(24)
                 .addTo(benderRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 64))
+                .itemOutputs(werkstoff.get(plateSuperdense))
+                .metadata(COMPRESSION_TIER, 1)
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(24)
+                .addTo(compressorRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
