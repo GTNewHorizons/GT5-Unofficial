@@ -51,6 +51,14 @@ import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
+import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
+import static gregtech.loaders.ExtraIcons.forceFieldAugment;
+import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
+import static gregtech.loaders.ExtraIcons.jetpackAugment;
+import static gregtech.loaders.ExtraIcons.nightVisionAugment;
+import static gregtech.loaders.ExtraIcons.rebreatherAugment;
+import static gregtech.loaders.ExtraIcons.revealingAugment;
+
 public class MechArmorAugmentRegistries {
 
     public static final HashMap<String, Frames> framesMap = new HashMap<>();
