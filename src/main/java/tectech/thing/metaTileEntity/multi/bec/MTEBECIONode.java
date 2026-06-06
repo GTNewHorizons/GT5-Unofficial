@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
@@ -126,7 +127,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         NaniteTierTooLow,
         PausedStep,
         PausedImmediate,
-        Crafting
+        Crafting,
+        InternalError,
     }
 
     @Desugar
@@ -466,35 +468,47 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     protected void incrementProgressTime() {
+        RecipeStep step = getCurrentStep();
+
+        // sanity check, these first four should never happen
+        if (step == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        this.requiredTier = step.nanite;
+        setRequiredTier(this.requiredTier);
+
+        if (this.requiredTier == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.requiredCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.consumedCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        // Assembler is missing or not running
+        if (this.assembler == null || this.assembler.mMaxProgresstime <= 0) {
+            state = NodeState.AssemblerOffline;
+            return;
+        }
+
         // Assembler can't deliver enough power; stall crafting
         if (!this.powered) {
             state = NodeState.Unpowered;
             return;
         }
 
-        RecipeStep step = getCurrentStep();
-
-        if (step == null) {
-            throw new IllegalStateException("current step was null");
-        }
-
-        this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
-
-        // sanity check, this should never happen
-        if (this.requiredTier == null) return;
-        if (this.assembler == null) return;
-        if (this.requiredCondensate == null) return;
-        if (this.consumedCondensate == null) return;
-
-        // if the provided tier is insufficient, do nothing
+        // if the provided tier is insufficient; do nothing
         if (this.providedTier == null || this.providedTier.tier < this.requiredTier.tier) {
             state = NodeState.NaniteTierTooLow;
-            return;
-        }
-
-        if (this.assembler.mMaxProgresstime <= 0) {
-            state = NodeState.AssemblerOffline;
             return;
         }
 
@@ -516,7 +530,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         int divisor = this.parallelRecipesInProgress
-            * (1 + Math.max(this.slowdowns, this.speedDivisorParameter.getValue()));
+            * Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
         this.subtickCounter += availableNanites;
 
@@ -811,6 +825,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             case PausedStep -> "paused-step";
             case PausedImmediate -> "paused-immediate";
             case Crafting -> "crafting";
+            case InternalError -> "internal-error";
         };
     }
 
@@ -825,8 +840,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @OCMethod
-    public void setManualSlowdown(int manualSlowdown) {
-        this.speedDivisorParameter.setValue(manualSlowdown);
+    public void setSpeedDivisor(int speedDivisor) {
+        this.speedDivisorParameter.setValue(Math.max(1, speedDivisor));
     }
 
     @Override
@@ -1131,10 +1146,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             }
         };
         speedDivisorParameter = new IntegerParameter(
-            0,
+            1,
             "GT5U.gui.text.bec-speed-divisor",
             SPEED_DIVISOR_PARAMETER,
-            () -> 0,
+            () -> 1,
             () -> Integer.MAX_VALUE);
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,8 +32,11 @@ import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import team.chisel.carving.Carving;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class ChiselBackend extends RecipeMapBackend {
 
     private static final int MAX_CIRCUIT_CONFIGURATION = 24;
@@ -44,7 +48,7 @@ public class ChiselBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected boolean doesOverwriteFindRecipe() {
+    public boolean doesOverwriteFindRecipe() {
         return true;
     }
 

@@ -902,6 +902,10 @@ public class Material implements IOreMaterial {
         return getComponentByPrefix(OrePrefixes.gearGt, stacksize);
     }
 
+    public final ItemStack getGearSmall(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.gearGtSmall, stacksize);
+    }
+
     public final ItemStack getRod(final int stacksize) {
         return getComponentByPrefix(OrePrefixes.stick, stacksize);
     }

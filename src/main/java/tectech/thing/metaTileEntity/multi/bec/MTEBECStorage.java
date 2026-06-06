@@ -235,6 +235,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public void addCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return;
+        }
+
         storedCondensate.addTo(stack.getFluid(), stack.getStackSize());
         stack.setStackSize(0);
 
@@ -243,6 +249,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public boolean removeCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return false;
+        }
+
         long stored = storedCondensate.getLong(stack.getFluid());
 
         if (stored <= 0) {
@@ -338,7 +350,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @OCMethod
     public void setFieldStrength(long strength) {
-        fieldStrengthParameter.setValue(strength);
+        fieldStrengthParameter.setValue(Math.max(1, strength));
     }
 
     @OCMethod
