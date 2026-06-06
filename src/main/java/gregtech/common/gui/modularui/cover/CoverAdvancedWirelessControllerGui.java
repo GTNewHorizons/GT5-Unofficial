@@ -56,10 +56,12 @@ public class CoverAdvancedWirelessControllerGui
             .getUniqueID();
         column.crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
-                Flow.row().coverChildren()
+                Flow.row()
+                    .coverChildren()
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child(
-                        Flow.column().coverChildren()
+                        Flow.column()
+                            .coverChildren()
                             .crossAxisAlignment(Alignment.CrossAxis.START)
                             .child(makeFrequencyRow(frequencySyncer))
                             .child(makeButtonRow(uuid))

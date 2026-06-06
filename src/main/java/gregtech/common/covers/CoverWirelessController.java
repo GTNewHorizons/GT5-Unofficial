@@ -2,7 +2,6 @@ package gregtech.common.covers;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
