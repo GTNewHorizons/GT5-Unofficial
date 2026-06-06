@@ -205,23 +205,17 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     + EnumChatFormatting.DARK_AQUA
                     + "Subspace Cooling")
             .addInfo(
-                "Will further multiply " + EnumChatFormatting.GREEN
-                    + "speed bonus "
+                "Will apply " + EnumChatFormatting.GREEN
+                    + "perfect overclocks "
                     + EnumChatFormatting.GRAY
                     + "by "
                     + EnumChatFormatting.GOLD
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "exotic coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Infinity", 200))
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", 400))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", 800))
-            .addInfo(
-                EnumChatFormatting.AQUA + "Cryotheum"
-                    + EnumChatFormatting.GRAY
-                    + " drain rate is further multiplied by the "
-                    + EnumChatFormatting.GREEN
-                    + "speed bonus")
+            .addInfo(getCoolantTextFormatted("Molten Infinity", 1))
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", 3))
             .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
@@ -273,7 +267,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private String getCoolantTextFormatted(String fluidType, int speedBoost) {
         return String.format(
-            "%s%d L/s%s : %s%d%% %s: %s%s",
+            "%s%d L/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GOLD,
             BOOSTER_DRAIN,
             EnumChatFormatting.GRAY,
