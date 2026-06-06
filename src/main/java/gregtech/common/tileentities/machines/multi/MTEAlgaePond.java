@@ -59,6 +59,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -123,6 +124,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
