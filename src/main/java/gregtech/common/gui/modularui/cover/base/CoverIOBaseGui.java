@@ -52,7 +52,8 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getMachineProcessingCondition,
             cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        IWidget conditionButtons = new EnumSeriesBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+        IWidget conditionButtons = new EnumSeriesBuilder<>(MachineProcessingCondition.class)
+            .value(conditionModeSyncValue)
             .overlay(
                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,

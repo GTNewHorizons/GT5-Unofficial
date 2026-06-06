@@ -70,24 +70,23 @@ public class EnumSeriesBuilder<E extends Enum<E>> {
             throw new IllegalArgumentException("Number of tooltips must be " + enumClass.getEnumConstants().length);
         }
 
-            Flow flow = (direction == GuiAxis.X ? Flow.row() : Flow.column())
-                .childPadding(2)
-                .coverChildren();
-            for (E enumVal : this.enumClass.getEnumConstants()) {
-                ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
-                    .size(16);
-                if (this.overlay != null) {
-                    button.overlay(this.overlay[enumVal.ordinal()]);
-                }
-                if (this.tooltip != null) {
-                    button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
-                }
-                if (enumVal instanceof KeyProvider keyProvider) {
-                    button.addTooltipLine(IKey.lang(keyProvider.getKey()));
-                }
-                flow.child(button);
+        Flow flow = (direction == GuiAxis.X ? Flow.row() : Flow.column()).childPadding(2)
+            .coverChildren();
+        for (E enumVal : this.enumClass.getEnumConstants()) {
+            ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
+                .size(16);
+            if (this.overlay != null) {
+                button.overlay(this.overlay[enumVal.ordinal()]);
             }
+            if (this.tooltip != null) {
+                button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
+            }
+            if (enumVal instanceof KeyProvider keyProvider) {
+                button.addTooltipLine(IKey.lang(keyProvider.getKey()));
+            }
+            flow.child(button);
+        }
 
-            return flow;
+        return flow;
     }
 }
