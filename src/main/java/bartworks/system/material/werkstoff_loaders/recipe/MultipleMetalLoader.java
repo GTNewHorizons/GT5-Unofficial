@@ -14,15 +14,20 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.plateSuperdense;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 
@@ -43,6 +48,20 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .duration(duration)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_MV / 2)))
                 .addTo(benderRecipes);
+
+            int compressionTier = (werkstoff.getStats()
+                .getProcessingMaterialTierEU() >= TierEU.RECIPE_UEV || werkstoff.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 64))
+                .itemOutputs(werkstoff.get(plateSuperdense))
+                .metadata(COMPRESSION_TIER, compressionTier)
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 4,
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
+                .addTo(compressorRecipes);
 
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plateDouble),

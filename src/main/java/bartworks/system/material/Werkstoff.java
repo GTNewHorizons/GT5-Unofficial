@@ -859,7 +859,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
             prefixLogic.put(OrePrefixes.plateDouble, DOUBLE_DENSE_PLATES);
             prefixLogic.put(OrePrefixes.plateDense, DOUBLE_DENSE_PLATES);
-            prefixLogic.put(OrePrefixes.plateSuperdense, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.plateSuperdense, DOUBLE_DENSE_PLATES);
 
             prefixLogic.put(OrePrefixes.plateTriple, MULTI_PLATES);
             prefixLogic.put(OrePrefixes.plateQuadruple, MULTI_PLATES);

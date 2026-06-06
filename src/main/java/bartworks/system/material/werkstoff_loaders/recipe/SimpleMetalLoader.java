@@ -19,15 +19,12 @@ import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.plateSuperdense;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
@@ -38,7 +35,6 @@ import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
@@ -123,20 +119,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(benderRecipes);
-
-            int compressionTier = (werkstoff.getStats()
-                .getProcessingMaterialTierEU() >= TierEU.RECIPE_UEV || werkstoff.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate, 64))
-                .itemOutputs(werkstoff.get(plateSuperdense))
-                .metadata(COMPRESSION_TIER, compressionTier)
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 4,
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(compressorRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
