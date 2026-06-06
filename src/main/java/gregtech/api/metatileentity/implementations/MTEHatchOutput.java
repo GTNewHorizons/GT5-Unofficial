@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -30,6 +32,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 
 import gregtech.GTMod;
+import gregtech.api.enums.OutputHatchType;
+import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
@@ -43,7 +48,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2 {
+public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2, IOutputHatch {
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -400,5 +405,88 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return isFluidLocked();
+    }
+
+    @Override
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        if (lockedFluid == null) return false;
+
+        return id.matches(lockedFluid);
+    }
+
+    @Override
+    public OutputHatchType getHatchType() {
+        return lockedFluid == null ? OutputHatchType.StandardUnfiltered : OutputHatchType.StandardFiltered;
+    }
+
+    @Override
+    public boolean storePartial(FluidStack stack, boolean simulate) {
+        int amount = fill(stack, !simulate);
+        stack.amount -= amount;
+        return stack.amount == 0;
+    }
+
+    @Override
+    public IOutputHatchTransaction createTransaction() {
+        return new StandardOutputHatchTransaction();
+    }
+
+    class StandardOutputHatchTransaction implements IOutputHatchTransaction {
+
+        private FluidStack fluid = null;
+        private int availableSpace;
+        private boolean active = true;
+
+        StandardOutputHatchTransaction() {
+            if (getFillableStack() != null) {
+                fluid = getFillableStack().copy();
+                availableSpace = getCapacity() - fluid.amount;
+            } else {
+                availableSpace = getCapacity();
+            }
+        }
+
+        @Override
+        public IOutputHatch getHatch() {
+            return MTEHatchOutput.this;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+            int amount = Math.min(availableSpace, stack.amount);
+            if (amount <= 0) return false;
+            if (fluid != null && !fluid.isFluidEqual(stack)) return false;
+            if (fluid == null) {
+                fluid = stack.copy();
+                fluid.amount = amount;
+            } else {
+                fluid.amount += amount;
+            }
+            stack.amount -= amount;
+            availableSpace -= amount;
+            return stack.amount == 0;
+        }
+
+        @Override
+        public void completeFluid(GTUtility.FluidId id) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return availableSpace != 0;
+        }
+
+        @Override
+        public void commit() {
+            setFillableStack(fluid);
+            active = false;
+        }
     }
 }

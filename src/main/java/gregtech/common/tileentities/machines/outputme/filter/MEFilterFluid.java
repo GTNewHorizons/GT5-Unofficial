@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.outputme.filter;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,17 +10,17 @@ import net.minecraftforge.fluids.FluidStack;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.util.item.AEFluidStack;
+import gregtech.api.util.GTUtility;
 
-public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStack> {
+public class MEFilterFluid extends MEFilterBase<IAEFluidStack, GTUtility.FluidId, FluidStack> {
 
     public MEFilterFluid() {
-        super(new ArrayList<String>());
+        super(new HashSet<>());
     }
 
     @Override
-    protected String extractElement(FluidStack stack) {
-        return stack.getFluid()
-            .getName();
+    protected GTUtility.FluidId extractElement(FluidStack stack) {
+        return GTUtility.FluidId.create(stack);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
         if (lockedFluidsTag instanceof NBTTagList lockedFluidsList) {
             for (int i = 0; i < lockedFluidsList.tagCount(); i++) {
                 NBTTagCompound fluidTag = lockedFluidsList.getCompoundTagAt(i);
-                lockedElements.add(fluidTag.getString("fluid"));
+                lockedElements.add(GTUtility.FluidId.create(GTUtility.loadFluid(fluidTag)));
             }
         }
     }
@@ -44,9 +44,10 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
     public void onSaveNBTData(NBTTagCompound aNBT) {
         NBTTagList lockedFluidsTag = new NBTTagList();
 
-        for (String fluid : lockedElements) {
+        for (GTUtility.FluidId fluid : lockedElements) {
             NBTTagCompound fluidTag = new NBTTagCompound();
-            fluidTag.setString("fluid", fluid);
+            fluid.getFluidStack()
+                .writeToNBT(fluidTag);
             lockedFluidsTag.appendTag(fluidTag);
         }
 
@@ -71,5 +72,12 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, String, FluidStac
     @Override
     public IAEFluidStack fromNative(FluidStack stack) {
         return AEFluidStack.create(stack);
+    }
+
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        if (!isFiltered()) {
+            return true;
+        }
+        return isBlacklist ^ lockedElements.contains(id);
     }
 }

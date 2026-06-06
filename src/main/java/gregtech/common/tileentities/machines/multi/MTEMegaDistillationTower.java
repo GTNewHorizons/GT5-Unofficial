@@ -443,12 +443,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i].copy();
-            if (!dumpFluid(this.outputHatchesPerLayer.get(i), tStack, true))
-                dumpFluid(this.outputHatchesPerLayer.get(i), tStack, false);
+            FluidStack stack = outputFluids[i].copy();
+            addOutputPartial(stack, outputHatchesPerLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
