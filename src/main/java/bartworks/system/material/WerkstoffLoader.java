@@ -47,6 +47,7 @@ import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.plateQuadruple;
 import static gregtech.api.enums.OrePrefixes.plateQuintuple;
+import static gregtech.api.enums.OrePrefixes.plateSuperdense;
 import static gregtech.api.enums.OrePrefixes.plateTriple;
 import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.enums.OrePrefixes.ring;
@@ -1969,6 +1970,9 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
             WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
             WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
+        }
+        if ((WerkstoffLoader.toGenerateGlobal & 0b10000000000) != 0) {
+            WerkstoffLoader.items.put(plateSuperdense, new BWMetaGeneratedItems(plateSuperdense));
         }
         ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
