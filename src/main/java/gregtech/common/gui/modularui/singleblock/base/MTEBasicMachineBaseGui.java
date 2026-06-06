@@ -45,8 +45,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETieredMachineBlockBaseGui<T> {
 
-    BasicUIProperties properties;
-    BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected BasicUIProperties properties;
+    protected BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
     protected boolean mAddGregTechLogo = false;
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
