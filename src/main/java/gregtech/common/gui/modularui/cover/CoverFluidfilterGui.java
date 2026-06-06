@@ -127,9 +127,8 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                         }
                         return StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Empty");
                     })
-                        .color(0x404040)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)));
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)));
     }
 
 }
