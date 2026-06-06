@@ -24,7 +24,7 @@ import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedWirelessRedstoneBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverAdvancedWirelessControllerGui
     extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedWirelessController> {
@@ -120,7 +120,7 @@ public class CoverAdvancedWirelessControllerGui
             .child(new TextWidget(translateToLocal("gt.interact.desc.gatemode")))
             .childPadding(10)
             .child(
-                new EnumRowBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
+                new EnumSeriesBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
                     .overlay(
                         GTGuiTextures.OVERLAY_BUTTON_GATE_AND,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_NAND,

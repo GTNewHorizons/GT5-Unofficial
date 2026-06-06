@@ -18,7 +18,7 @@ import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
 
@@ -41,7 +41,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getIOMode,
             cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
+        IWidget exportImportButtons = new EnumSeriesBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
             .build(GuiAxis.X);
         IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
@@ -52,7 +52,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getMachineProcessingCondition,
             cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        IWidget conditionButtons = new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+        IWidget conditionButtons = new EnumSeriesBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
             .overlay(
                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
@@ -66,7 +66,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getBlockMode,
             cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
-        IWidget blockingButtons = new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
+        IWidget blockingButtons = new EnumSeriesBuilder<>(BlockMode.class).value(blockModeSyncValue)
             .overlay(
                 new DynamicDrawable(
                     () -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT

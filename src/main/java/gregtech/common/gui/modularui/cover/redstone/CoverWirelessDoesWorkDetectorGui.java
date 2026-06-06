@@ -14,7 +14,7 @@ import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverWirelessDoesWorkDetectorGui
     extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessDoesWorkDetector> {
@@ -47,7 +47,7 @@ public class CoverWirelessDoesWorkDetectorGui
                     .coverChildren(0, 18)
                     .leftRel(0)
                     .child(
-                        new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
+                        new EnumSeriesBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
                             .overlay(
                                 GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,

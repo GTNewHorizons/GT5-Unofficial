@@ -26,7 +26,7 @@ import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
 
@@ -77,19 +77,19 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
                 .row(
-                    new EnumRowBuilder<>(FilterDirectionMode.class).value(ioModeSyncValue)
+                    new EnumSeriesBuilder<>(FilterDirectionMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_IMPORT, GTGuiTextures.OVERLAY_BUTTON_EXPORT)
                         .build(GuiAxis.X),
                     IKey.lang("gt.interact.desc.FluidFilter.Direction")
                         .asWidget())
                 .row(
-                    new EnumRowBuilder<>(FilterType.class).value(filterTypeSyncValue)
+                    new EnumSeriesBuilder<>(FilterType.class).value(filterTypeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                         .build(GuiAxis.X),
                     IKey.lang("gt.interact.desc.FluidFilter.Type")
                         .asWidget())
                 .row(
-                    new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
+                    new EnumSeriesBuilder<>(BlockMode.class).value(blockModeSyncValue)
                         .overlay(
                             new DynamicDrawable(
                                 () -> ioModeSyncValue.getValue() == FilterDirectionMode.INPUT

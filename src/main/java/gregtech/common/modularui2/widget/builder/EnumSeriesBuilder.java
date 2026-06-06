@@ -20,14 +20,14 @@ import gregtech.common.modularui2.widget.SelectButton;
  * <p>
  * In order to add tooltip, you can either call {@link #tooltip(IKey...)} or implement {@link KeyProvider} for the enum.
  */
-public class EnumRowBuilder<E extends Enum<E>> {
+public class EnumSeriesBuilder<E extends Enum<E>> {
 
     private EnumSyncValue<E, ?> syncValue;
     private @NotNull final Class<E> enumClass;
     private IDrawable[] overlay;
     private IKey[] tooltip;
 
-    public EnumRowBuilder(@NotNull Class<E> enumClass) {
+    public EnumSeriesBuilder(@NotNull Class<E> enumClass) {
         this.enumClass = Objects.requireNonNull(enumClass);
     }
 
@@ -35,17 +35,17 @@ public class EnumRowBuilder<E extends Enum<E>> {
      * This method wraps supplied value with {@link LinkedBoolValue} to be bound to each button, so you still need to
      * manually register it to {@link com.cleanroommc.modularui.value.sync.PanelSyncManager}.
      */
-    public EnumRowBuilder<E> value(EnumSyncValue<E, ?> syncValue) {
+    public EnumSeriesBuilder<E> value(EnumSyncValue<E, ?> syncValue) {
         this.syncValue = syncValue;
         return this;
     }
 
-    public EnumRowBuilder<E> overlay(IDrawable... overlay) {
+    public EnumSeriesBuilder<E> overlay(IDrawable... overlay) {
         this.overlay = overlay;
         return this;
     }
 
-    public EnumRowBuilder<E> overlay(int size, IDrawable... overlay) {
+    public EnumSeriesBuilder<E> overlay(int size, IDrawable... overlay) {
         this.overlay = new IDrawable[overlay.length];
         for (int i = 0; i < overlay.length; i++) {
             this.overlay[i] = overlay[i].asIcon()
@@ -54,7 +54,7 @@ public class EnumRowBuilder<E extends Enum<E>> {
         return this;
     }
 
-    public EnumRowBuilder<E> tooltip(IKey... tooltip) {
+    public EnumSeriesBuilder<E> tooltip(IKey... tooltip) {
         this.tooltip = tooltip;
         return this;
     }
@@ -70,8 +70,7 @@ public class EnumRowBuilder<E extends Enum<E>> {
             throw new IllegalArgumentException("Number of tooltips must be " + enumClass.getEnumConstants().length);
         }
 
-        if (direction == GuiAxis.X) {
-            Flow row = Flow.row()
+            Flow flow = (direction == GuiAxis.X ? Flow.row() : Flow.column())
                 .childPadding(2)
                 .coverChildren();
             for (E enumVal : this.enumClass.getEnumConstants()) {
@@ -86,33 +85,9 @@ public class EnumRowBuilder<E extends Enum<E>> {
                 if (enumVal instanceof KeyProvider keyProvider) {
                     button.addTooltipLine(IKey.lang(keyProvider.getKey()));
                 }
-                row.child(button);
+                flow.child(button);
             }
 
-            return row;
-
-        } else if (direction == GuiAxis.Y) {
-            Flow column = Flow.column()
-                .childPadding(2)
-                .coverChildren();
-            for (E enumVal : this.enumClass.getEnumConstants()) {
-                ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
-                    .size(16);
-                if (this.overlay != null) {
-                    button.overlay(this.overlay[enumVal.ordinal()]);
-                }
-                if (this.tooltip != null) {
-                    button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
-                }
-                if (enumVal instanceof KeyProvider keyProvider) {
-                    button.addTooltipLine(IKey.lang(keyProvider.getKey()));
-                }
-                column.child(button);
-            }
-
-            return column;
-        } else
-
-            return null; // no idea what else should go here except for null
+            return flow;
     }
 }

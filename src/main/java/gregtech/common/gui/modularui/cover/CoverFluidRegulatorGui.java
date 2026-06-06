@@ -22,7 +22,7 @@ import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
@@ -60,7 +60,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
         return Flow.row()
             .child(
                 new ParentWidget<>().child(
-                    new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
+                    new EnumSeriesBuilder<>(TransferMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
                         .build(GuiAxis.X))
                     .width(80))
@@ -75,7 +75,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
             .child(
                 new ParentWidget<>()
                     .child(
-                        new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+                        new EnumSeriesBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
                             .overlay(
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,

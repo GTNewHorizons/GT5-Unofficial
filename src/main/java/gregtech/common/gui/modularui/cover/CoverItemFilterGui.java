@@ -14,7 +14,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.modes.FilterType;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
@@ -45,7 +45,7 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
                         .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
-                            new EnumRowBuilder<>(FilterType.class).value(filterTypeSyncValue)
+                            new EnumSeriesBuilder<>(FilterType.class).value(filterTypeSyncValue)
                                 .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                                 .build(GuiAxis.X))
                         .child(

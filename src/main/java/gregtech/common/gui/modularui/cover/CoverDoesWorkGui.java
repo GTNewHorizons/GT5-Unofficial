@@ -18,7 +18,7 @@ import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
 
@@ -52,7 +52,7 @@ public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
                 .row(
-                    new EnumRowBuilder<>(DetectionMode.class).value(detectionModeSyncValue)
+                    new EnumSeriesBuilder<>(DetectionMode.class).value(detectionModeSyncValue)
                         .overlay(
                             GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
                             GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,

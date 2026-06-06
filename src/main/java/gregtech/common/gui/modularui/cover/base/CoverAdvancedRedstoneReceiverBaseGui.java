@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverAdvancedRedstoneReceiverBaseGui
     extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedRedstoneReceiverBase> {
@@ -38,7 +38,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
             .size(140, 18)
 
             .child(
-                new EnumRowBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
+                new EnumSeriesBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
                     .overlay(
                         GTGuiTextures.OVERLAY_BUTTON_GATE_AND,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_NAND,
