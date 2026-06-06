@@ -152,7 +152,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 
-    private boolean isBlackHoleRecipe;
+    private boolean isNotBlackHoleRecipe;
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
@@ -409,6 +409,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
+            .addInfo(
+                "Below " + EnumChatFormatting.RED
+                    + "20"
+                    + EnumChatFormatting.GRAY
+                    + " stability, parallels are "
+                    + EnumChatFormatting.RED
+                    + "uncapped"
+                    + EnumChatFormatting.GRAY
+                    + " for recipes that do not require a black hole.")
             .addTecTechHatchInfo()
             .addInfo(
                 EnumChatFormatting.RED
@@ -588,6 +597,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                isNotBlackHoleRecipe = false;
                 int mode = getModeFromCircuit(inputItems);
 
                 if (mode == -1) {
@@ -621,12 +631,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                isBlackHoleRecipe = false;
+                isNotBlackHoleRecipe = false;
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 CheckRecipeResult result = super.validateRecipe(recipe);
                 if (result != CheckRecipeResultRegistry.SUCCESSFUL) return result;
                 int comp_tier = recipe.getMetadataOrDefault(COMPRESSION_TIER, 0);
-                isBlackHoleRecipe = comp_tier >= 2;
+                isNotBlackHoleRecipe = comp_tier < 2;
                 // Forces a recalculation of the parallels right after the attribute is set
                 maxParallel = maxParallelSupplier.get();
                 return result;
@@ -749,12 +759,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public int getMaxParallelRecipes() {
-        if (!isBlackHoleRecipe) return Integer.MAX_VALUE;
         int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
-        if (blackHoleStatus == 4) parallels *= 4;
-        else if (blackHoleStability < 50) {
+        if (blackHoleStatus == 4) {
+            if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+            parallels *= 4;
+        } else if (blackHoleStability < 50) {
             parallels *= 2;
-            if (blackHoleStability < 20) parallels *= 2;
+            if (blackHoleStability < 20) {
+                if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+                parallels *= 2;
+            }
         }
         return parallels;
     }
