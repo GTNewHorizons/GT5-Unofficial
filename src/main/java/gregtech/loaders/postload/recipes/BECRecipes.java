@@ -49,8 +49,7 @@ public class BECRecipes implements Runnable {
 
     // The old EoH recipes were gated by the material of their bolt, following the tier of BOLT_TIER
     // This same tiering pattern is used through the 4-tier BEC Metamaterials.
-    // "Bolt" is used for brevity. Non-bolt means not forming the primary gating.
-    private static final int[] NON_BOLT_TIER = { 1, 1, 1, 1, 1, 1, 1, 2, 2 };
+    // "Bolt" is used for brevity.
     private static final int[] BOLT_TIER = { 1, 2, 2, 2, 3, 3, 3, 4, 4 };
     private static final int[] BOLT_POS = { 0, 0, 1, 2, 0, 1, 2, 0, 1 };
 
@@ -256,12 +255,6 @@ public class BECRecipes implements Runnable {
     }
 
     private void addTimeDilation() {
-        ItemList[] energyConduit = { ItemList.MetaMaterial_EnergyConduit1, ItemList.MetaMaterial_EnergyConduit2,
-            ItemList.MetaMaterial_EnergyConduit3 };
-        ItemList[] electrograviticValve = { ItemList.MetaMaterial_ElectrograviticValve1,
-            ItemList.MetaMaterial_ElectrograviticValve2, ItemList.MetaMaterial_ElectrograviticValve3 };
-        ItemList[] waveguide = { ItemList.MetaMaterial_Waveguide1, ItemList.MetaMaterial_Waveguide2,
-            ItemList.MetaMaterial_Waveguide3 };
         ItemList[] waveFocus = { ItemList.MetaMaterial_WaveFocus1, ItemList.MetaMaterial_WaveFocus2,
             ItemList.MetaMaterial_WaveFocus3, ItemList.MetaMaterial_WaveFocus4 };
         CustomItemList[] outputs = { CustomItemList.TimeAccelerationFieldGeneratorTier0,
@@ -278,9 +271,9 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, tp1), ItemList.Energy_Cluster.get(tp1),
                 getModItem(SuperSolarPanels.ID, "redcomponent", 64),
                 getModItem(SuperSolarPanels.ID, "greencomponent", 64),
-                getModItem(SuperSolarPanels.ID, "bluecomponent", 64), energyConduit[NON_BOLT_TIER[t] - 1].get(tp1),
+                getModItem(SuperSolarPanels.ID, "bluecomponent", 64), ItemList.MetaMaterial_EnergyConduit1.get(tp1),
                 waveFocus[BOLT_TIER[t] - 1].get(focusQty[BOLT_POS[t]]),
-                electrograviticValve[NON_BOLT_TIER[t] - 1].get(2L * tp1), waveguide[NON_BOLT_TIER[t] - 1].get(tp1),
+                ItemList.MetaMaterial_ElectrograviticValve1.get(2L * tp1), ItemList.MetaMaterial_Waveguide1.get(tp1),
                 CustomItemList.Godforge_GravitonFlowModulatorTier2.get(2L * tp1),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Hexanite, 4L * tp1),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Hexanite, tp1),
@@ -294,8 +287,6 @@ public class BECRecipes implements Runnable {
     }
 
     private void addSpacetimeCompression() {
-        ItemList[] shielding = { ItemList.MetaMaterial_Shielding1, ItemList.MetaMaterial_Shielding2,
-            ItemList.MetaMaterial_Shielding3 };
         ItemList[] resonanceChamber = { ItemList.MetaMaterial_ResonanceChamber1,
             ItemList.MetaMaterial_ResonanceChamber2, ItemList.MetaMaterial_ResonanceChamber3,
             ItemList.MetaMaterial_ResonanceChamber4 };
@@ -318,7 +309,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Machine_Multi_BlackHoleCompressor.get(tp1),
                 getModItem(AppliedEnergistics2.ID, "item.ItemExtremeStorageCell.Singularity", 1),
                 getModItem(AE2FluidCraft.ID, "fluid_storage.singularity", 1), manipulators[t / 3].get(t % 3 + 1),
-                shielding[NON_BOLT_TIER[t] - 1].get(4L * tp1),
+                ItemList.MetaMaterial_Shielding1.get(4L * tp1),
                 resonanceChamber[BOLT_TIER[t] - 1].get(resonanceQty[BOLT_POS[t]]),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, tp1),
                 CustomItemList.Godforge_SingularityShieldingCasing.get(4 * tp1),
