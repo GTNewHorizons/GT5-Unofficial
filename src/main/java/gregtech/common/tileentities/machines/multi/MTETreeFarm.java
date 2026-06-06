@@ -81,6 +81,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -154,6 +155,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
             .addEnergyHatch("Any Sterile Farm Casing", 1)
             .addMaintenanceHatch("Any Sterile Farm Casing", 1)
             .addMufflerHatch("Any Sterile Farm Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
