@@ -42,6 +42,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -258,12 +259,14 @@ public class DustLoader implements IWerkstoffRunnable {
                                             .getValue()
                                             .size())))
                             .eut(
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 30)
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 30))
                             .addTo(GTRecipeConstants.UniversalChemical);
                     }
                     if (werkstoff.getGenerationFeatures()
@@ -325,35 +328,35 @@ public class DustLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_Dust.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_Dust.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_3by3.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_2by2.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
                 .itemOutputs(werkstoff.get(dustSmall, 4))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             if (werkstoff.hasItemType(ingot) && !werkstoffStats.isBlastFurnace()) {
@@ -418,14 +421,14 @@ public class DustLoader implements IWerkstoffRunnable {
                     .itemInputs(werkstoff.get(ingot))
                     .itemOutputs(werkstoff.get(dust))
                     .duration(20 * SECONDS)
-                    .eut(2)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
                     .duration(20 * SECONDS)
-                    .eut(2)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
             }

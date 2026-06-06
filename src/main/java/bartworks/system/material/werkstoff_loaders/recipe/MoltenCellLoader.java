@@ -41,6 +41,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -63,7 +64,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dust))
                 .fluidOutputs(werkstoff.getMolten(1 * INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -71,7 +72,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustSmall))
                 .fluidOutputs(werkstoff.getMolten(1 * QUARTER_INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -79,7 +80,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustTiny))
                 .fluidOutputs(werkstoff.getMolten(1 * NUGGETS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -89,7 +90,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot))
                 .fluidOutputs(werkstoff.getMolten(1 * INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -97,7 +98,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(nugget))
                 .fluidOutputs(werkstoff.getMolten(1 * NUGGETS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -111,8 +112,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                         (int) werkstoff.getStats()
                             .getMass()))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -125,8 +128,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                         (int) ((double) werkstoff.getStats()
                             .getMass() / 9D)))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             if (!werkstoff.hasItemType(plate)) {
@@ -137,7 +142,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(stickLong))
                 .fluidOutputs(werkstoff.getMolten(1 * INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -145,7 +150,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(plate))
                 .fluidOutputs(werkstoff.getMolten(1 * INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -153,7 +158,7 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(stick))
                 .fluidOutputs(werkstoff.getMolten(1 * HALF_INGOTS))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
         }
@@ -175,8 +180,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass(),
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -189,8 +196,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() / 2,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -203,8 +212,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass(),
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
         }
@@ -225,8 +236,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() / 8,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -239,8 +252,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() / 4,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -253,8 +268,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass(),
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -267,8 +284,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() / 8,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -281,8 +300,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() / 4,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -295,8 +316,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                             .getMass() * 4.25,
                         1L))
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
         }

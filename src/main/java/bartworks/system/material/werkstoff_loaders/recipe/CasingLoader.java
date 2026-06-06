@@ -27,6 +27,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -60,7 +61,7 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
             .itemOutputs(werkstoff.get(blockCasing))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
             .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
@@ -73,7 +74,7 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
             .itemOutputs(werkstoff.get(blockCasingAdvanced))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
             .addTo(assemblerRecipes);
     }
 }

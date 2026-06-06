@@ -27,6 +27,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTModHandler;
@@ -47,7 +48,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(rawOre))
                 .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
                 .duration(16 * TICKS)
-                .eut(10)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 10))
                 .addTo(hammerRecipes);
 
             RA.stdBuilder()
@@ -57,7 +58,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
                     werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
                     Materials.Stone.getDust(1))
                 .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
-                .eut(2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .duration(20 * SECONDS)
                 .addTo(maceratorRecipes);
         }

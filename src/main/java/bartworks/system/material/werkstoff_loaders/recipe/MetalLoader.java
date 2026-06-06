@@ -19,6 +19,7 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategories;
@@ -36,8 +37,10 @@ public class MetalLoader implements IWerkstoffRunnable {
                     (int) werkstoff.getStats()
                         .getMass())
                 .eut(
-                    8 * werkstoff.getStats()
-                        .getMeltingPoint() >= 2800 ? 60 : 15)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        8 * werkstoff.getStats()
+                            .getMeltingPoint() >= 2800 ? 60 : 15))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -47,8 +50,10 @@ public class MetalLoader implements IWerkstoffRunnable {
                     (int) (werkstoff.getStats()
                         .getMass() / 2))
                 .eut(
-                    4 * werkstoff.getStats()
-                        .getMeltingPoint() >= 2800 ? 60 : 15)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        4 * werkstoff.getStats()
+                            .getMeltingPoint() >= 2800 ? 60 : 15))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(RecipeMaps.alloySmelterRecipes);
         }

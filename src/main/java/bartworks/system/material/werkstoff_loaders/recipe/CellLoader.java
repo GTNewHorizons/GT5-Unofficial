@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -240,8 +241,10 @@ public class CellLoader implements IWerkstoffRunnable {
                     werkstoff.getStats()
                         .getMass())
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -253,8 +256,10 @@ public class CellLoader implements IWerkstoffRunnable {
                     (int) werkstoff.getStats()
                         .getMass())
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
         }
@@ -290,7 +295,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 .itemOutputs(scannerOutput)
                 .special(ItemList.Tool_DataOrb.get(1L))
                 .duration(werkstoffBridgeMaterial.getMass() * 8192)
-                .eut(TierEU.RECIPE_LV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);

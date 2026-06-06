@@ -43,6 +43,7 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -855,7 +856,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass() / 2 * 20)
-                .eut(TierEU.RECIPE_MV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_MV))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -865,7 +866,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass() * 20)
-                .eut(TierEU.RECIPE_MV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_MV))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -874,7 +875,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (werkstoff.getStats()
                         .getMass() / 4) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -887,7 +888,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Magnalium,
                         null))
                 .duration(8 * SECONDS)
-                .eut(100)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 100))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -900,7 +901,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Titanium,
                         null))
                 .duration(16 * SECONDS)
-                .eut(400)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 400))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -915,7 +916,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.TungstenSteel,
                         null))
                 .duration(32 * SECONDS)
-                .eut(1600)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 1600))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -928,7 +929,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Americium,
                         null))
                 .duration(1 * MINUTES + 4 * SECONDS)
-                .eut(6400)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 6400))
                 .addTo(assemblerRecipes);
         }
 
