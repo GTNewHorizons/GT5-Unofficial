@@ -75,7 +75,7 @@ public class FluidEjectionHelper {
         List<FluidParallelData> outputParallels = new ArrayList<>(outputs.size());
 
         PriorityQueue<FluidParallelData> pendingOutputs = new PriorityQueue<>(
-            Comparator.comparingDouble(output -> -output.remaining.amount / (double) output.perParallel));
+            Comparator.comparingDouble(output -> -output.remainingAmount / (double) output.perParallel));
 
         for (var e : Object2LongMaps.fastIterable(GTUtility.getFluidStackHistogram(outputs))) {
             if (e.getLongValue() <= 0) continue;
@@ -83,14 +83,11 @@ public class FluidEjectionHelper {
             GTUtility.FluidId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
-            FluidParallelData parallelData = new FluidParallelData(
-                id,
-                GTUtility.longToInt(amount * (long) startingParallels),
-                amount);
+            FluidParallelData parallelData = new FluidParallelData(id, amount * (long) startingParallels, amount);
 
             outputParallels.add(parallelData);
 
-            if (parallelData.remaining.amount <= 0) continue;
+            if (parallelData.remainingAmount <= 0) continue;
 
             List<IOutputHatchTransaction> transactions = new ArrayList<>(8);
 
@@ -120,7 +117,7 @@ public class FluidEjectionHelper {
             PeekingIterator<IOutputHatchTransaction> outputHatches = output.outputs;
 
             // Loop until there are no more output hatches for this fluid, or until all of its stacks have been ejected.
-            while (outputHatches.hasNext() && output.remaining.amount > 0) {
+            while (outputHatches.hasNext() && output.remainingAmount > 0) {
                 IOutputHatchTransaction transaction = outputHatches.peek();
 
                 // If this hatch is completely full, don't bother checking it.
@@ -130,8 +127,19 @@ public class FluidEjectionHelper {
                     continue;
                 }
 
+                boolean insertAnything = false;
+                while (output.remainingAmount > 0) {
+                    int amount = (int) Math.min(output.remainingAmount, Integer.MAX_VALUE);
+                    FluidStack tmp = output.id.getFluidStack(amount);
+                    transaction.storePartial(output.id, tmp);
+                    long actuallyInsert = amount - tmp.amount;
+                    output.remainingAmount -= actuallyInsert;
+                    if (actuallyInsert > 0) insertAnything = true;
+                    if (tmp.amount > 0) break;
+                }
+
                 // Fill at most one slot with the remaining fluids
-                if (transaction.storePartial(output.id, output.remaining)) {
+                if (insertAnything) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
@@ -141,7 +149,7 @@ public class FluidEjectionHelper {
 
             // If there are still hatches available and there are still fluids to eject, insert this fluid back into the
             // queue. It will be put into its proper spot in the priority queue automatically.
-            if (outputHatches.hasNext() && output.remaining.amount > 0) {
+            if (outputHatches.hasNext() && output.remainingAmount > 0) {
                 pendingOutputs.add(output);
             }
         }
@@ -152,9 +160,9 @@ public class FluidEjectionHelper {
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (FluidParallelData parallelData : outputParallels) {
-                int ejected = parallelData.initialAmount - parallelData.remaining.amount;
+                long ejected = parallelData.initialAmount - parallelData.remainingAmount;
 
-                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
             }
         }
 
@@ -170,13 +178,13 @@ public class FluidEjectionHelper {
     private static class FluidParallelData {
 
         public final GTUtility.FluidId id;
-        public final FluidStack remaining;
-        public int perParallel, initialAmount;
+        public long initialAmount, remainingAmount;
+        public int perParallel;
         public PeekingIterator<IOutputHatchTransaction> outputs;
 
-        private FluidParallelData(GTUtility.FluidId id, int amount, int perParallel) {
+        private FluidParallelData(GTUtility.FluidId id, long amount, int perParallel) {
             this.id = id;
-            this.remaining = id.getFluidStack(amount);
+            this.remainingAmount = amount;
             this.perParallel = perParallel;
             this.initialAmount = amount;
         }
