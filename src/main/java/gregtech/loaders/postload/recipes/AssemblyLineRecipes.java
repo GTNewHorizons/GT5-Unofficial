@@ -980,7 +980,7 @@ public class AssemblyLineRecipes implements Runnable {
 
         // Mega Distillation Tower
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Distillation_Tower.get(1))
+            .metadata(RESEARCH_ITEM, GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.Distillation_Tower.get(64),
