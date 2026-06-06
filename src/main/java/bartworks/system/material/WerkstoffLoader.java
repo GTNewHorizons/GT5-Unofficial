@@ -118,6 +118,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1032,7 +1033,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setBlastFurnace(true)
             .setMeltingPoint(2607)
             .setMass(Element.Ru.getMass())
-            .setProtons(Element.Ru.mProtons),
+            .setProtons(Element.Ru.mProtons)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
@@ -1198,7 +1200,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setProtons(Element.Rh.mProtons)
             .setMass(Element.Rh.getMass())
             .setBlastFurnace(true)
-            .setMeltingPoint(2237),
+            .setMeltingPoint(2237)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1312,7 +1315,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(4500)
-            .setMeltingVoltage(480),
+            .setMeltingVoltage(480)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1350,7 +1354,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(4500)
-            .setMeltingVoltage(480),
+            .setMeltingVoltage(480)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_IV),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
