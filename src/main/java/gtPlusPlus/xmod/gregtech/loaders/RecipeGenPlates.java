@@ -1,14 +1,18 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.covers.CoverRegistry;
@@ -160,11 +164,16 @@ public class RecipeGenPlates extends RecipeGenBase {
 
         }
 
+        int tier = Math.max(1, material.vTier);
+        long aVoltage = VP[tier];
+
         // Making Superdense Plates
         if (plate_Stack64 != null && plate_Superdense != null) {
+            int compressionTier = aVoltage >= TierEU.RECIPE_UEV ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_Stack64)
                 .itemOutputs(plate_Superdense)
+                .metadata(COMPRESSION_TIER, compressionTier)
                 .duration(Math.max(material.getMass() * 4L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(compressorRecipes);

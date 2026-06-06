@@ -36,16 +36,15 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
-            int duration = (int) Math.max(
-                werkstoff.getStats()
-                    .getMass() * 2,
-                1L);
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 2))
                 .circuit(2)
                 .itemOutputs(werkstoff.get(plateDouble))
-                .duration(duration)
+                .duration(
+                    (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass() * 2,
+                            1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
                 .addTo(benderRecipes);
 
