@@ -122,9 +122,11 @@ public class WorldgenStone extends GTWorldgen {
 
         boolean result = !stones.isEmpty();
         // Now process each oreseed vs this requested chunk
-        for (; !stones.isEmpty(); stones.remove(0)) {
-            int x = stones.get(0).mX * 16;
-            int z = stones.get(0).mZ * 16;
+        for (; !stones.isEmpty(); stones.removeFirst()) {
+            int seedChunkX = stones.getFirst().mX;
+            int seedChunkZ = stones.getFirst().mZ;
+            int x = seedChunkX * 16;
+            int z = seedChunkZ * 16;
 
             stoneRNG.setSeed(
                 aWorld.getSeed()
@@ -172,10 +174,11 @@ public class WorldgenStone extends GTWorldgen {
                             mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, tMinY, tMaxY);
                     // spotless:on
                     long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
-                        | (((long) x & 0x000000000fffffffL) << 28)
-                        | ((long) z & 0x000000000fffffffL));
+                        | (((long) seedChunkX & 0x000000000fffffffL) << 28)
+                        | ((long) seedChunkZ & 0x000000000fffffffL));
                     validStoneSeeds.remove(hash);
                     validStoneSeeds.put(hash, new StoneSeeds(false));
+                    continue;
                 }
 
                 // Chop the boundaries by the parts that intersect with the current chunk
