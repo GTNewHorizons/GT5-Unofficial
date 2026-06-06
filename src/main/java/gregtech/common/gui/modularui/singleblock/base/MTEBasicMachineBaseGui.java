@@ -128,9 +128,10 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     private ProgressWidget createEnergyConsumptionBar(PanelSyncManager syncManager) {
         IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
+        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
 
         DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> eutSyncer.getValue() / (double) GTValues.V[machine.mTier]);
+            () -> eutSyncer.getValue() / (double) maxAllowedInputSyncer.getValue());
 
         return new ProgressWidget().texture(GTGuiTextures.TRANSPARENT, GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION, 45)
             .size(5, 45)
