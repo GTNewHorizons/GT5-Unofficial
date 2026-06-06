@@ -137,16 +137,10 @@ public enum MachineType {
             + EnumChatFormatting.RESET;
         if (this == ARC_FURNACE) {
             return new String[] { description(), machineType,
-                EnumChatFormatting.GRAY + GTUtility.translate(TT_powerUsage)
-                    + ": "
-                    + EnumChatFormatting.RED
-                    + "300%"
-                    + EnumChatFormatting.RESET,
-                EnumChatFormatting.GRAY + GTUtility.translate(TT_maxAmperage)
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + "3A"
-                    + EnumChatFormatting.RESET };
+                EnumChatFormatting.GRAY + GTUtility
+                    .translate(TT_powerUsage) + ": " + EnumChatFormatting.RED + "300%" + EnumChatFormatting.RESET,
+                EnumChatFormatting.GRAY + GTUtility
+                    .translate(TT_maxAmperage) + ": " + EnumChatFormatting.YELLOW + "3A" + EnumChatFormatting.RESET };
         }
         return new String[] { description(), machineType };
     }
