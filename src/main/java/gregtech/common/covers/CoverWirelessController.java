@@ -18,7 +18,7 @@ import gregtech.common.gui.modularui.cover.CoverWirelessControllerGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
+public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
 
     private enum State {
         ENABLE_WITH_SIGNAL,
@@ -33,6 +33,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
 
     public CoverWirelessController(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.setMode(GateMode.SINGLE_SOURCE);
     }
 
     @Override
@@ -64,8 +65,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        byte signal = CoverAdvancedWirelessRedstoneBase
-            .getSignalAt(uuid, frequency, CoverAdvancedRedstoneReceiverBase.GateMode.SINGLE_SOURCE);
+        byte signal = CoverAdvancedWirelessRedstoneBase.getSignalAt(uuid, frequency, getGateMode());
 
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {
