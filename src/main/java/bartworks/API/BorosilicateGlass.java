@@ -60,22 +60,19 @@ public class BorosilicateGlass {
         if (allLevels == null) {
             SetMultimap<Byte, Pair<Block, Integer>> ret = LinkedHashMultimap.create();
             Block block = getGlassBlock();
-            doRegister((byte) 3, block, 0, ret);
-            doRegister((byte) 4, block, 1, ret);
-            doRegister((byte) 5, block, 12, ret);
-            doRegister((byte) 5, block, 2, ret);
-            doRegister((byte) 6, block, 3, ret);
-            doRegister((byte) 7, block, 4, ret);
-            doRegister((byte) 8, block, 5, ret);
-            for (int i = 6; i < 13; i++) {
-                doRegister((byte) 3, block, i, ret);
-            }
-            doRegister((byte) 9, block, 13, ret);
-            doRegister((byte) 10, block, 14, ret);
-            doRegister((byte) 11, block, 15, ret);
+            doRegister((byte) 3, block, 0, ret); // Borosilicate = hv
+            doRegister((byte) 4, block, 1, ret); // Titanium = ev
+            doRegister((byte) 5, block, 2, ret); // Tungstensteel = iv
+            doRegister((byte) 6, block, 3, ret); // Rhodium-Plated Palladium = luv
+            doRegister((byte) 7, block, 4, ret); // Iridium = zpm
+            doRegister((byte) 8, block, 5, ret); // Osmium = uv
+            doRegister((byte) 9, block, 6, ret); // Neutronium = uhv
+            doRegister((byte) 10, block, 7, ret); // Infinity = uev
+            doRegister((byte) 11, block, 8, ret); // Transcendent = uiv
+            doRegister((byte) 12, block, 9, ret); // Hexanite = umv
+            doRegister((byte) 13, block, 10, ret); // Universium = uxv
             block = getGlassBlock2();
-            doRegister((byte) 12, block, 0, ret);
-            doRegister((byte) 13, block, 1, ret);
+            doRegister((byte) 5, block, 0, ret); // Thorium Yttrium = iv
             allLevels = ret;
         }
         return allLevels;

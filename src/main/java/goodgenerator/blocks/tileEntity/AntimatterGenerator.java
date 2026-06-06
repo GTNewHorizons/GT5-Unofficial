@@ -579,11 +579,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     public Block getGlassBlock() {
-        return ItemRegistry.bw_realglas2;
+        return ItemRegistry.bw_realglas;
     }
 
     public int getGlassMeta() {
-        return 0;
+        return 8;
     }
 
     public int textureIndex(int type) {

@@ -151,20 +151,17 @@ public class ItemRegistry {
             MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
-            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
-            MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock", },
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlock", },
 
         MainMod.BIO_TAB);
 
     public static final Block bw_realglas2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
-        new String[] { MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlock", },
-
+        new String[] { MainMod.MOD_ID + ":ThoriumYttriumGlass" },
         MainMod.BIO_TAB);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };

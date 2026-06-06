@@ -3007,7 +3007,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { new ItemStack(BlockQuantumGlass.INSTANCE, 8),
-                new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
+                new ItemStack(ItemRegistry.bw_glasses[0], 8, 8), GregtechItemList.ForceFieldGlass.get(8),
                 ItemList.StableBosonContainmentUnit.get(4), getNHCoreModItem("RadoxPolymerLens", 6),
                 getNHCoreModItem("ChromaticLens", 6), getNHCoreModItem("MysteriousCrystalLens", 6),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),

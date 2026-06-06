@@ -116,7 +116,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
     @Override
     public int getGlassMeta() {
-        return 14;
+        return 7;
     }
 
     @Override

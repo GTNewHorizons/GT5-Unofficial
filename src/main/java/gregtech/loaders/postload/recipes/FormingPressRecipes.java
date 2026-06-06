@@ -292,7 +292,7 @@ public class FormingPressRecipes implements Runnable {
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 12),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
             .fluidInputs(Materials.UnformedHexanite.getFluid(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

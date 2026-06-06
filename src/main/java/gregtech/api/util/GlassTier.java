@@ -177,7 +177,7 @@ public class GlassTier {
             // --- IV ---
             addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
             // Thorium-Yttrium
-            addCustomGlass(ItemRegistry.bw_realglas, 12, 5, 1);
+            addCustomGlass(ItemRegistry.bw_realglas2, 0, 5, 1);
             if (Botania.isModLoaded()) {
                 addCustomGlass(Botania.ID, "elfGlass", 0, 5, 2);
                 addCustomGlass(Botania.ID, "bifrostPerm", 0, 5, 3);
@@ -194,28 +194,28 @@ public class GlassTier {
             addCustomGlass(BlockQuantumGlass.INSTANCE, 0, 8, 1);
 
             // --- UHV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 13, 9, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 6, 9, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 2);
 
             // --- UEV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 14, 10, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 7, 10, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 7, 10, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 2);
 
             // --- UIV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 8, 11, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 9, 11, 1);
 
             // --- UMV ---
-            addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 9, 12, 0);
             addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
             addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
             addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
 
             // --- UXV ---
-            addCustomGlass(ItemRegistry.bw_realglas2, 1, 13, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 10, 13, 0);
         }
 
         private static void registerGlassOreDicts() {
