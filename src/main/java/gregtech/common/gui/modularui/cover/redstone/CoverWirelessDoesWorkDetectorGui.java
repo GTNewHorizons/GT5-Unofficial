@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover.redstone;
 
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -51,7 +52,7 @@ public class CoverWirelessDoesWorkDetectorGui
                                 GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                            .build()
+                            .build(GuiAxis.X)
                             .marginRight(2)
                             .child(
                                 new TextWidget<>(

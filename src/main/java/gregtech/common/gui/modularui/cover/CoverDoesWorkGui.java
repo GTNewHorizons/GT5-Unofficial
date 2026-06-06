@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BinaryEnumSyncValue;
@@ -56,7 +57,7 @@ public class CoverDoesWorkGui extends CoverBaseGui<CoverDoesWork> {
                             GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
                             GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                             GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                        .build(),
+                        .build(GuiAxis.X),
                     IKey.dynamic(() -> {
                         DetectionMode mode = detectionModeSyncValue.getValue();
                         if (mode == DetectionMode.MACHINE_ENABLED) {

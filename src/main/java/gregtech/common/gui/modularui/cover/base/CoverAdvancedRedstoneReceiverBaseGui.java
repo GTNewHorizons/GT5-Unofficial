@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -44,7 +45,7 @@ public class CoverAdvancedRedstoneReceiverBaseGui
                         GTGuiTextures.OVERLAY_BUTTON_GATE_OR,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_NOR,
                         GTGuiTextures.OVERLAY_BUTTON_ANALOG)
-                    .build()
+                    .build(GuiAxis.X)
                     .width(120)
                     .marginRight(2))
             .child(new TextWidget(translateToLocal("gt.interact.desc.gatemode")));

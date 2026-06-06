@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -58,7 +59,7 @@ public class EnumRowBuilder<E extends Enum<E>> {
         return this;
     }
 
-    public Flow build() {
+    public Flow build(GuiAxis direction) {
         if (this.syncValue == null) {
             throw new IllegalArgumentException("Sync value cannot be null");
         }
@@ -68,24 +69,50 @@ public class EnumRowBuilder<E extends Enum<E>> {
         if (this.tooltip != null && this.tooltip.length != enumClass.getEnumConstants().length) {
             throw new IllegalArgumentException("Number of tooltips must be " + enumClass.getEnumConstants().length);
         }
-        Flow row = Flow.row()
-            .childPadding(2)
-            .coverChildren();
-        for (E enumVal : this.enumClass.getEnumConstants()) {
-            ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
-                .size(16);
-            if (this.overlay != null) {
-                button.overlay(this.overlay[enumVal.ordinal()]);
-            }
-            if (this.tooltip != null) {
-                button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
-            }
-            if (enumVal instanceof KeyProvider keyProvider) {
-                button.addTooltipLine(IKey.lang(keyProvider.getKey()));
-            }
-            row.child(button);
-        }
 
-        return row;
+        if (direction == GuiAxis.X) {
+            Flow row = Flow.row()
+                .childPadding(2)
+                .coverChildren();
+            for (E enumVal : this.enumClass.getEnumConstants()) {
+                ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
+                    .size(16);
+                if (this.overlay != null) {
+                    button.overlay(this.overlay[enumVal.ordinal()]);
+                }
+                if (this.tooltip != null) {
+                    button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
+                }
+                if (enumVal instanceof KeyProvider keyProvider) {
+                    button.addTooltipLine(IKey.lang(keyProvider.getKey()));
+                }
+                row.child(button);
+            }
+
+            return row;
+
+        } else if (direction == GuiAxis.Y) {
+            Flow column = Flow.column()
+                .childPadding(2)
+                .coverChildren();
+            for (E enumVal : this.enumClass.getEnumConstants()) {
+                ToggleButton button = new SelectButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
+                    .size(16);
+                if (this.overlay != null) {
+                    button.overlay(this.overlay[enumVal.ordinal()]);
+                }
+                if (this.tooltip != null) {
+                    button.addTooltipLine(this.tooltip[enumVal.ordinal()]);
+                }
+                if (enumVal instanceof KeyProvider keyProvider) {
+                    button.addTooltipLine(IKey.lang(keyProvider.getKey()));
+                }
+                column.child(button);
+            }
+
+            return column;
+        } else
+
+            return null; // no idea what else should go here except for null
     }
 }

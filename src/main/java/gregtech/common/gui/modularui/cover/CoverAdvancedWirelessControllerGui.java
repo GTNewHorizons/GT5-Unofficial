@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -23,7 +24,7 @@ import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedWirelessRedstoneBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
-import gregtech.common.modularui2.widget.builder.EnumColumnBuilder;
+import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverAdvancedWirelessControllerGui
     extends CoverAdvancedWirelessRedstoneBaseGui<CoverAdvancedWirelessController> {
@@ -119,14 +120,14 @@ public class CoverAdvancedWirelessControllerGui
             .child(new TextWidget(translateToLocal("gt.interact.desc.gatemode")))
             .childPadding(10)
             .child(
-                new EnumColumnBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
+                new EnumRowBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
                     .overlay(
                         GTGuiTextures.OVERLAY_BUTTON_GATE_AND,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_NAND,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_OR,
                         GTGuiTextures.OVERLAY_BUTTON_GATE_NOR,
                         GTGuiTextures.OVERLAY_BUTTON_ANALOG)
-                    .build()
+                    .build(GuiAxis.Y)
                     .width(18)
                     .marginRight(1)
 

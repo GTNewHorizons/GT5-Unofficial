@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.covers.gui;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -71,14 +72,14 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
                     .tooltip(
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"),
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
-                    .build())
+                    .build(GuiAxis.X))
             .child(
                 new EnumRowBuilder<>(BlockMode.class).value(inputModeSyncValue)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT, GTGuiTextures.OVERLAY_BUTTON_BLOCK_INPUT)
                     .tooltip(
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"),
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
-                    .build());
+                    .build(GuiAxis.X));
     }
 
 }

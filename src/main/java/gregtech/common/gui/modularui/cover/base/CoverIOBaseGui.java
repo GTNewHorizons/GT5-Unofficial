@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover.base;
 
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -42,7 +43,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
         syncManager.syncValue("io_mode", ioModeSyncValue);
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
-            .build();
+            .build(GuiAxis.X);
         IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
@@ -56,7 +57,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-            .build();
+            .build(GuiAxis.X);
         IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
@@ -82,7 +83,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                     () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
-            .build();
+            .build(GuiAxis.X);
 
         String inputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock");
         String outputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock");

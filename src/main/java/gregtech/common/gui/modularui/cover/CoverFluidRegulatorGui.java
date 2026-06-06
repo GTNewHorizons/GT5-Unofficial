@@ -5,6 +5,7 @@ import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -61,7 +62,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                 new ParentWidget<>().child(
                     new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
-                        .build())
+                        .build(GuiAxis.X))
                     .width(80))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.ExpImp")
@@ -79,7 +80,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .build())
+                            .build(GuiAxis.X))
                     .width(80))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Conditional")
