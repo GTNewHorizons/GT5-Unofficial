@@ -1,3 +1,12 @@
+# ================================================================================
+# ================================================================================
+#
+# Notice to whomever might work on this file, localization or on material rework.
+# Please read thru docs\FutureLocalization.md
+#
+# ================================================================================
+# ================================================================================
+
 # Creative ItemGroup Tab
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
@@ -8646,3 +8655,170 @@ GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer f
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
+
+
+# ================================================================================
+# ================================================================================
+# New lang system according to docs\FutureLocalization.md
+# Insert new keys under
+# ================================================================================
+# ================================================================================
+
+#### Creative Tab
+
+#### Items
+### Meta Items
+## Batteries
+## Battery Hulls
+## Circuits
+## Circuit Boards & Parts
+## Electronic Components (SMD / XSMD)
+## Wafers & Chips
+## Electric Motors
+## Electric Pistons
+## Electric Pumps
+## Robot Arms
+## Conveyor Modules
+## Sensors
+## Emitters
+## Field Generators
+## Cover Items
+## Solar Panels
+## Electromagnets
+## Wireless Energy Covers
+## Quantum Items
+## Black Hole Items
+## Shapes (Mold / Extruder / Slicer)
+## Steam Valves & Regulators
+## Fluid Filters & Regulators
+## Item Filters
+## Fuel Cans
+## Spray Cans
+## Thermos
+## Large Fluid Cells
+### Tools
+## Hand Tools
+## Chainsaw
+## Drill
+## Wrench
+## Vajra
+### Armor
+## Modular Armor
+## Power Goggles
+## Charger Packs
+## Healing Bauble
+## Mob Killing Baubles
+## Mag-Lev Harness
+## Wireless Headphones
+### Food
+## Drinks
+## Snacks & Fast Food
+## Bread & Sandwiches
+## Baguettes & Large Sandwiches
+## Pizzas
+## Misc Food
+### Misc Items
+## Sensor Cards
+## Neutron Reflector
+## Coolant Cells
+## Breeder Cells
+## Depleted Cells
+## Radioactive Cells
+## Drones
+## Volumetric Flask
+## Circuit Components (Fake / Integrated)
+## Quark Catalysts
+## Optical CPU
+## Timepiece
+## Transdimensional Alignment Matrix
+## Thermal Items
+## Netherite Items
+## Manafly
+## Match & Lighter
+## Manuals & Books
+
+#### Blocks
+### Machines
+## Basic Machines
+## Multiblock Machines
+## Hatches & Buses
+## Transformers & Cables
+## Pipes (in-world blocks)
+## Frame Boxes
+### Special Machines
+## NAC (Nano-scale Assembly Complex)
+## LHC & Beamcrafting
+## Exo-Foundry
+## Void Miner
+## BEC Machines
+## Spinmatron
+## Test Factory
+### Casings
+### Misc Blocks
+## Granites
+## Concretes
+## Reinforced Blocks
+## Stone Variants
+## Long Distance Pipe
+
+#### Elements / Materials
+### Ore Prefixes & Components
+### Fluids
+## Standard Fluids
+## Fission Fuels
+## Condensate Fluids
+### Dyes
+### Potions
+### BEC Material System
+
+#### GUI
+### Machine GUI
+### Cover GUI
+## Redstone Receiver
+## Arm
+## Machine Controller
+## Conveyor
+## EU Meter
+## Facade
+## Fluid Filter
+## Fluid Regulator
+## Item Filter
+## Item Meter
+## Liquid Meter
+## Player Detector
+## Pump
+## Redstone Wireless
+## Shutter
+## Wireless Activity
+## Wireless Fluid Detector
+## Wireless Item Detector
+## Energy Detector
+## Overflow Valve
+### NEI GUI
+### WAILA
+### Space Projects GUI
+### Armor Config GUI
+### BEC GUI
+
+#### Tooltips
+### Multiblock Tooltip Builder Keywords
+### Machine Types
+### Recipe Categories & Maps
+### Structure Hints
+### Tool Tooltips
+### Generic / Shared Tooltips
+## Generic Words
+## Time Words
+
+#### Scanner & Info Data
+
+#### Chat
+### Errors
+### Warnings
+### Info
+
+#### Entities
+
+#### Achievements
+
+#### Config
