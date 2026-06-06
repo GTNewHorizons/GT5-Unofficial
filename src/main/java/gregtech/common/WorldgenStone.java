@@ -22,19 +22,8 @@ import gregtech.common.ores.OreManager;
 
 public class WorldgenStone extends GTWorldgen {
 
-    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
-                                                                                                                         // the
-                                                                                                                         // sizes
-                                                                                                                         // towards
-                                                                                                                         // skinnier
-                                                                                                                         // boulders,
-                                                                                                                         // ie
-                                                                                                                         // more
-                                                                                                                         // "shafts"
-                                                                                                                         // than
-                                                                                                                         // dikes
-                                                                                                                         // or
-                                                                                                                         // sills.
+    // Bias the sizes towards skinnier boulders, ie more "shafts" than dikes or sills.
+    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 
     public final int mBlockMeta, mAmount, mSize, mMinY, mMaxY, mProbability, mDimensionType;
     public final Block mBlock;
@@ -177,26 +166,11 @@ public class WorldgenStone extends GTWorldgen {
                 // If the (tY-ySize) of the stoneseed is air in the current chunk, mark the seed empty and move on.
                 if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8)
                     .isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
-                    if (debugStones) GTLog.out.println(
-                        mWorldGenName + " tX="
-                            + tX
-                            + " tY="
-                            + tY
-                            + " tZ="
-                            + tZ
-                            + " realSize="
-                            + realSize
-                            + " xSize="
-                            + realSize / xSize
-                            + " ySize="
-                            + realSize / ySize
-                            + " zSize="
-                            + realSize / zSize
-                            + " tMinY="
-                            + tMinY
-                            + " tMaxY="
-                            + tMaxY
-                            + " - Skipped because first requesting chunk would not contain this stone");
+                    // spotless:off
+                    if (debugStones)
+                        GTLog.out.printf("%s tX=%d tY=%d tZ=%d realSize=%s xSize=%s ySize=%s zSize=%s tMinY=%d tMaxY=%d - Skipped because first requesting chunk would not contain this stone%n",
+                            mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, tMinY, tMaxY);
+                    // spotless:on
                     long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
                         | (((long) x & 0x000000000fffffffL) << 28)
                         | ((long) z & 0x000000000fffffffL));
@@ -211,35 +185,11 @@ public class WorldgenStone extends GTWorldgen {
                 int sZ = Math.max(tMinZ, aChunkZ + 8);
                 int nZ = Math.min(tMaxZ, aChunkZ + 8 + 16);
 
-                if (debugStones) {
-                    GTLog.out.println(
-                        mWorldGenName + " tX="
-                            + tX
-                            + " tY="
-                            + tY
-                            + " tZ="
-                            + tZ
-                            + " realSize="
-                            + realSize
-                            + " xSize="
-                            + realSize / xSize
-                            + " ySize="
-                            + realSize / ySize
-                            + " zSize="
-                            + realSize / zSize
-                            + " wX="
-                            + wX
-                            + " eX="
-                            + eX
-                            + " tMinY="
-                            + tMinY
-                            + " tMaxY="
-                            + tMaxY
-                            + " sZ="
-                            + sZ
-                            + " nZ="
-                            + nZ);
-                }
+                // spotless:off
+                if (debugStones)
+                    GTLog.out.printf("%s tX=%d tY=%d tZ=%d realSize=%s xSize=%s ySize=%s zSize=%s wX=%d eX=%d tMinY=%d tMaxY=%d sZ=%d nZ=%d%n",
+                        mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, wX, eX, tMinY, tMaxY, sZ, nZ);
+                // spotless:on
 
                 double rightHandSide = realSize * realSize + 1; // Precalc the right hand side
                 for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom up layer up. Maybe better on
