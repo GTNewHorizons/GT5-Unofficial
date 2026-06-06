@@ -3695,6 +3695,8 @@ GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
 GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
+GT5U.hatch.chisel.configure.singleton=Configure Template
+GT5U.hatch.chisel.configure.grid=Configure Templates
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
