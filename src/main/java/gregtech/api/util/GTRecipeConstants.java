@@ -191,8 +191,7 @@ public class GTRecipeConstants {
     /**
      * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
-        .create(Integer.class, "compression");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     /**
      * Dissolution Tank Ratio.

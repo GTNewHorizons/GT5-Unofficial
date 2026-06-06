@@ -133,7 +133,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass(),
+                            .getMass() * 4,
                         1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(compressorRecipes);
