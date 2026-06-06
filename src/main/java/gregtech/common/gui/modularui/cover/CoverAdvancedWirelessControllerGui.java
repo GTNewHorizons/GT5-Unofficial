@@ -12,10 +12,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -40,39 +38,30 @@ public class CoverAdvancedWirelessControllerGui
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 256;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 148;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
-            cover::setRedstoneCondition);
+            cover::setRedstoneCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateModeSync = new EnumSyncValue<>(
+        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?> gateModeSync = new EnumSyncValue<>(
             CoverAdvancedRedstoneReceiverBase.GateMode.class,
             cover::getGateMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("gateMode", gateModeSync);
-        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
-        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
+        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode).allowC2S();
+        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
         syncManager.syncValue("frequency", frequencySyncer);
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
-                new Row().coverChildren()
+                Flow.row().coverChildren()
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child(
-                        new Column().coverChildren()
-                            .child(makeFrequencyRow())
+                        Flow.column().coverChildren()
+                            .crossAxisAlignment(Alignment.CrossAxis.START)
+                            .child(makeFrequencyRow(frequencySyncer))
                             .child(makeButtonRow(uuid))
                             .child(
                                 new Grid().coverChildren()
@@ -113,20 +102,20 @@ public class CoverAdvancedWirelessControllerGui
                                             .size(16),
                                         IKey.lang("gt.interact.desc.MachContr.SafeMode")
                                             .asWidget())))
-                    .childPadding(40)
+                    .childPadding(20)
                     .child(makeThirdFlow(syncManager, data)));
     }
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode>) syncManager
+        EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?> gateMode = (EnumSyncValue<CoverAdvancedRedstoneReceiverBase.GateMode, ?>) syncManager
             .getSyncHandlerFromMapKey("gateMode:0");
         return Flow.column()
-            .size(50, 102)
+            .size(50, 110)
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .child(new TextWidget(translateToLocal("gt.interact.desc.gatemode")))
-            .childPadding(2)
+            .childPadding(10)
             .child(
                 new EnumColumnBuilder<>(CoverAdvancedRedstoneReceiverBase.GateMode.class).value(gateMode)
                     .overlay(

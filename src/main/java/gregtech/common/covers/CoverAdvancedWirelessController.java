@@ -25,7 +25,7 @@ public class CoverAdvancedWirelessController extends CoverAdvancedRedstoneReceiv
         DISABLE_WITH_SIGNAL,
         DISABLED,
         ENABLE_WITH_SIGNAL_SAFE,
-        DISABLE_WITH_SIGNAL_SAFE;
+        DISABLE_WITH_SIGNAL_SAFE
     }
 
     private State state = State.DISABLED;
