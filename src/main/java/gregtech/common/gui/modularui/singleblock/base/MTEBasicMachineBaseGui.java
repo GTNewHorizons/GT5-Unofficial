@@ -238,8 +238,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                     .changeListener(
                         (newItem, onlyAmountChanged, client, init) -> {
                             if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
-                        })
-                    .singletonSlotGroup(1000))
+                        }))
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
