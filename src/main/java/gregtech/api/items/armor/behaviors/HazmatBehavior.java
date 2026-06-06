@@ -13,7 +13,6 @@ public class HazmatBehavior implements IArmorBehavior {
 
     @Override
     public boolean protectsAgainstFully(@NotNull ArmorContext context, Hazard hazard) {
-        // Protect against non-space and non-temperature hazards
         return hazard != Hazard.SPACE;
     }
 
