@@ -70,9 +70,7 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
         return (ToggleButton) new ToggleButton().size(18, 18)
             .value(liquidSyncer)
             .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE)))
-            .overlay(
-                false,
-                new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF)))
+            .overlay(false, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF)))
             .tooltipBuilder(true, t -> {
                 t.addLine(StatCollector.translateToLocal("GT5U.gui.button.liquid_filling"));
                 t.addLine(

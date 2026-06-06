@@ -125,9 +125,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
 
         return new ToggleButton().size(18, 18)
             .value(cobbleSyncer)
-            .overlay(
-                true,
-                new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON)))
+            .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON)))
             .overlay(
                 false,
                 new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF)))
