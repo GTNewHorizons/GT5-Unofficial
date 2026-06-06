@@ -20,7 +20,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -28,8 +27,6 @@ import gregtech.common.tileentities.machines.multi.MTEDrillerBase.WorkState;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlantBase;
 
 public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrillingPlantBase> {
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTEOreDrillingPlantBaseGui(MTEOreDrillingPlantBase base) {
         super(base);
@@ -69,7 +66,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_ores_left_chunk",
-                        numberFormat.format(oreListSizeSync.getValue())))
+                        formatNumber(oreListSizeSync.getValue())))
                     .asWidget()
                     .fullWidth()
                     .marginBottom(2)
@@ -80,8 +77,8 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_ores_left_layer",
-                        numberFormat.format(yHeadSync.getValue()),
-                        numberFormat.format(oreListSizeSync.getValue())))
+                        formatNumber(yHeadSync.getValue()),
+                        formatNumber(oreListSizeSync.getValue())))
                     .asWidget()
                     .fullWidth()
                     .marginBottom(2)
@@ -92,8 +89,8 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_chunks_left",
-                        numberFormat.format(currentChunkSync.getValue()),
-                        numberFormat.format(totalChunksSync.getValue())))
+                        formatNumber(currentChunkSync.getValue()),
+                        formatNumber(totalChunksSync.getValue())))
                     .asWidget()
                     .fullWidth()
                     .marginBottom(2)

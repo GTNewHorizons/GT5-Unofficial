@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -16,7 +17,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -24,8 +24,6 @@ import gregtech.common.tileentities.machines.multi.MTEConcreteBackfillerBase;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase.WorkState;
 
 public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteBackfillerBase> {
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTEConcreteBackfillerBaseGui(MTEConcreteBackfillerBase base) {
         super(base);
@@ -51,7 +49,7 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
             IKey.dynamic(
                 () -> StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.backfiller_current_area",
-                    numberFormat.format(yHeadSync.getValue())))
+                    formatNumber(yHeadSync.getValue())))
                 .asWidget()
                 .fullWidth()
                 .marginBottom(2)

@@ -18,15 +18,12 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase.WorkState;
 import gregtech.common.tileentities.machines.multi.MTEOilDrillBase;
 
 public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTEOilDrillBaseGui(MTEOilDrillBase base) {
         super(base);
@@ -67,7 +64,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                     () -> EnumChatFormatting.GRAY
                         + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.pump_rate.1",
-                            EnumChatFormatting.AQUA + numberFormat.format(flowPerTickSync.getValue()))
+                            EnumChatFormatting.AQUA + formatNumber(flowPerTickSync.getValue()))
                         + EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .asWidget()
@@ -81,7 +78,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                     () -> EnumChatFormatting.GRAY
                         + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.pump_recovery.1",
-                            EnumChatFormatting.AQUA + numberFormat.format(flowPerOpSync.getValue()))
+                            EnumChatFormatting.AQUA + formatNumber(flowPerOpSync.getValue()))
                         + EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .asWidget()
