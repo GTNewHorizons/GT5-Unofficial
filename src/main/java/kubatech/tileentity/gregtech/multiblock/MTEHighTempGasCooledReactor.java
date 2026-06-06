@@ -494,7 +494,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (!hatch.canStoreFluid(fluidStack)) return false;
 
         if (hatch instanceof MTEHatchOutputME tMEHatch) {
-            if (!tMEHatch.canFillFluid()) return false;
+            if (!tMEHatch.canAcceptAllForOutput()) return false;
         }
 
         int tAmount = hatch.fill(fluidStack, false);

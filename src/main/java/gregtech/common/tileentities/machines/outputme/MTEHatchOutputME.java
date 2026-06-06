@@ -153,15 +153,15 @@ public class MTEHatchOutputME extends MTEHatchOutput
     /**
      * Check if the internal cache can still fit more fluids in it for a recipe check
      */
-    public boolean canAcceptFluid() {
-        return provider.hasAvailableSpace();
+    public boolean canAcceptAllForRecipe() {
+        return provider.canAcceptAllForRecipe();
     }
 
     /**
      * Check if there is space for fluids or if we can overfill.
      */
-    public boolean canFillFluid() {
-        return provider.canAcceptAnyInput();
+    public boolean canAcceptAllForOutput() {
+        return provider.canAcceptAllForOutput();
     }
 
     @Override
@@ -514,17 +514,19 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return new MEOutputHatchTransaction();
     }
 
-    class MEOutputHatchTransaction implements IOutputHatchTransaction {
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
-        private final long tick, availableSpace;
+        private final long availableSpace;
         private boolean active = true;
+        private boolean isRecipeCheck = false;
 
         public MEOutputHatchTransaction() {
-            long initialStored = provider.getCachedAmount();
-            long capacity = provider.getCacheCapacity();
-            tick = initialStored >= capacity ? provider.getLastInputTick() : provider.getTickCounter();
-            availableSpace = capacity - initialStored;
+            availableSpace = provider.getAvailableSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
         }
 
         @Override
@@ -534,19 +536,19 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
         @Override
         public boolean hasAvailableSpace() {
-            return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
+            return !isRecipeCheck || cache.getTotal() < availableSpace;
         }
 
         public boolean canStore(GTUtility.FluidId id, FluidStack stack) {
-            if (provider.shouldCheck()) {
-                return provider.canStore(stack, stack.amount + cache.get(id));
+            if (isRecipeCheck && provider.shouldCheck()) {
+                return provider.canStore(stack, stack.amount + cache.get(id), isRecipeCheck);
             }
             return hasAvailableSpace() && provider.getFilter()
                 .isFilteredToFluid(id);
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (!canStore(id, stack)) return false;
@@ -566,7 +568,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
         public void commit() {
             cache.iterateAll(
                 (id, amount) -> {
-                    provider.storeToCache(
+                    provider.addToCache(
                         provider.getFilter()
                             .fromNative(id.getFluidStack())
                             .setStackSize(amount));
@@ -576,5 +578,4 @@ public class MTEHatchOutputME extends MTEHatchOutput
             active = false;
         }
     }
-
 }

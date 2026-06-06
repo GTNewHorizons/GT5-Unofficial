@@ -187,17 +187,19 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction {
+    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
-        private final long tick, availableSpace;
+        private final long availableSpace;
         private boolean active = true;
+        private boolean isRecipeCheck = false;
 
         public MEOutputBusTransaction() {
-            long initialStored = provider.getCachedAmount();
-            long capacity = provider.getCacheCapacity();
-            tick = initialStored >= capacity ? provider.getLastInputTick() : provider.getTickCounter();
-            availableSpace = capacity - initialStored;
+            availableSpace = provider.getAvailableSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
         }
 
         @Override
@@ -207,12 +209,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
         @Override
         public boolean hasAvailableSpace() {
-            return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
+            return !isRecipeCheck || cache.getTotal() < availableSpace;
         }
 
         public boolean canStore(GTUtility.ItemId id, ItemStack stack) {
-            if (provider.shouldCheck()) {
-                return provider.canStore(stack, stack.stackSize + cache.get(id));
+            if (isRecipeCheck && provider.shouldCheck()) {
+                return provider.canStore(stack, stack.stackSize + cache.get(id), isRecipeCheck);
             }
             return hasAvailableSpace() && provider.getFilter()
                 .isFilteredToItem(id);
@@ -239,7 +241,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         public void commit() {
             cache.iterateAll(
                 (id, amount) -> {
-                    provider.storeToCache(
+                    provider.addToCache(
                         provider.getFilter()
                             .fromNative(id.getItemStack())
                             .setStackSize(amount));
@@ -315,8 +317,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return false;
     }
 
-    public boolean canAcceptAnyItem() {
-        return provider.canAcceptAnyInput();
+    public boolean canAcceptAllForRecipe() {
+        return provider.canAcceptAllForRecipe();
+    }
+
+    public boolean canAcceptAllForOutput() {
+        return provider.canAcceptAllForOutput();
     }
 
     @Override

@@ -427,7 +427,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
             for (IFluidStore tHatch : tLayerOutputHatches) {
                 if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
+                    if (tMEHatch.canAcceptAllForRecipe()) {
                         foundMEHatch = true;
                         break;
                     }

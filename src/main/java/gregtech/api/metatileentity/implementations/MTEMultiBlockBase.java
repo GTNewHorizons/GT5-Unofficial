@@ -3025,7 +3025,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             for (MTEHatchOutputBusME busME : meBusses) {
                 // If the bus has reached its max capacity, it can't accept anything
-                if (!busME.canAcceptAnyItem()) continue;
+                if (!busME.canAcceptAllForRecipe()) continue;
 
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
@@ -3049,7 +3049,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
+                if (((MTEHatchOutputME) tHatch).canAcceptAllForRecipe()) {
                     return true;
                 }
             }
