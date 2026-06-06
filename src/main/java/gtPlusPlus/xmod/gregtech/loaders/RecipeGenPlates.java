@@ -165,7 +165,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_Stack64)
                 .itemOutputs(plate_Superdense)
-                .duration(Math.max(material.getMass() * 32L, 1L))
+                .duration(Math.max(material.getMass() * 4L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(compressorRecipes);
         }

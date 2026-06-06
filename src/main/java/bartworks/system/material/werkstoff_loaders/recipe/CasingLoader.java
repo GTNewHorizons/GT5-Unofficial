@@ -61,7 +61,7 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
             .itemOutputs(werkstoff.get(blockCasing))
             .duration(10 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
             .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
@@ -74,7 +74,7 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
             .itemOutputs(werkstoff.get(blockCasingAdvanced))
             .duration(10 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
             .addTo(assemblerRecipes);
     }
 }

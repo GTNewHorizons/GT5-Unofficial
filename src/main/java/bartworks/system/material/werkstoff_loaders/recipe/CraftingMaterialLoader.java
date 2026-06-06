@@ -199,7 +199,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
                 .itemOutputs(werkstoff.get(rotor))
                 .duration(10 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_MV / 2)))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
                 .addTo(extruderRecipes);
         }
     }

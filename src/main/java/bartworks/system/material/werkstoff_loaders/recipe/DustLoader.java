@@ -411,7 +411,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     .itemInputs(werkstoff.get(ingotHot))
                     .itemOutputs(werkstoff.get(ingot))
                     .duration((int) Math.max(werkstoffStats.getMass() * 3L, 1L))
-                    .eut(TierEU.RECIPE_MV)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 128))
                     .addTo(vacuumFreezerRecipes);
             }
 

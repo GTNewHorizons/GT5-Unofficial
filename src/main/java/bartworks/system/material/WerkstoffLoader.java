@@ -1387,7 +1387,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(9000)
-            .setMeltingVoltage(7680),
+            .setMeltingVoltage(7680)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_LuV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1452,7 +1453,8 @@ public class WerkstoffLoader {
             .setMeltingPoint(1800)
             .setSpeedOverride(12)
             .setQualityOverride((byte) 4)
-            .setMeltingVoltage(1920),
+            .setMeltingVoltage(1920)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_IV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()

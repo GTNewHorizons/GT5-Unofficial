@@ -5,6 +5,7 @@ import static bartworks.util.BWUtil.superscriptNumbers;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.TierEU;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
@@ -1823,7 +1824,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats().setBlastFurnace(true)
             .setCentrifuge(true)
             .setMass(180)
-            .setSpeedOverride(3),
+            .setSpeedOverride(3)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

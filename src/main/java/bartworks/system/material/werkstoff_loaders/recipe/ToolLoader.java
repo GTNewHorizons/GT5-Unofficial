@@ -856,7 +856,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass() / 2 * 20)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_MV))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 128))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -866,7 +866,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass() * 20)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_MV))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 128))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -875,7 +875,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (werkstoff.getStats()
                         .getMass() / 4) * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 32))
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()

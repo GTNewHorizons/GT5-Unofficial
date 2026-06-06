@@ -46,7 +46,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .circuit(2)
                 .itemOutputs(werkstoff.get(plateDouble))
                 .duration(duration)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_MV / 2)))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
                 .addTo(benderRecipes);
 
             int compressionTier = (werkstoff.getStats()

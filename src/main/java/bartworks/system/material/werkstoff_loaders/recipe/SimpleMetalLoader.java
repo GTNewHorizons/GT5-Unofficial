@@ -56,7 +56,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass() * 5L,
                             1L))
-                    .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(latheRecipes);
 
                 GTModHandler.addCraftingRecipe(
@@ -76,7 +76,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass(),
                             1L))
-                    .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
@@ -128,7 +128,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
 
             CoverRegistry.registerDecorativeCover(
@@ -143,7 +143,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 5L,
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(latheRecipes);
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
@@ -180,7 +180,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
