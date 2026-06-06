@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -44,8 +45,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -160,6 +163,11 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         transformed = aNBT.getBoolean("transformed");
         if (aNBT.hasKey("hotName", Constants.NBT.TAG_STRING)) {
@@ -191,47 +199,77 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mCooledFluidHatch = null;
         mHotFluidHatch = null;
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
-        return structureCheck_EM(mName, 2, 5, 0) && mMaintenanceHatches.size() == 1 && casingAmount >= 25;
+        if (!checkPiece(mName, 2, 5, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 25);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo("Outputs SH steam by cooling hot fluids with distilled water")
-            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
-            .addInfo("producing SC steam instead")
-            .addInfo(EnumChatFormatting.YELLOW + "Plasma always produces SC steam")
-            .addInfo("Maximum input and output values per second are shown in NEI")
-            .addInfo("Actual output is proportional to the amount of hot fluid inserted")
-            .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc4"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc5"))
+            .addSeparator()
+            .addInfo(
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.lava",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addInfo(
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addInfo(
+                GTUtility.translate(
+                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addSeparator()
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma2"))
+            .addSeparator()
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle1"))
+            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle2"))
             .addController("Front bottom center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-            .addCasingInfoExactly("Any Tiered Glass", 72, false)
+            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 25, 120, false)
+            .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water",
+                "Hot fluid, front center Casing",
+                3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Distilled water, any bottom layer Casing",
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SC Steam/SH Steam",
-                2)
+                "Cold fluid, back center Casing",
+                4)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid or plasma",
-                3)
-            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
+                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
+                "SH Steam/SC Steam, any top layer Casing",
+                2)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .toolTipFinisher();
         return tt;
@@ -326,7 +364,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 5, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 2, 5, 0);
     }
 
     @Override

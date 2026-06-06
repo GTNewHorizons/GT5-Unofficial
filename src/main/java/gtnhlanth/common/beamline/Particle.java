@@ -15,9 +15,9 @@ public enum Particle {
 
     // Gauge Bosons
     PHOTON(false, 0, 0, 0, "photon", "\u03B3", 0, null, 1000, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PHOTON),
-    ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 15, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ZBOSON),
-    WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 0, null, 20, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
-    HIGGS(false, 3, 125110.00f, 0, "higgs", "H\u2070", 0, null, 5, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_HIGGS),
+    ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 110, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ZBOSON),
+    WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 1, null, 110, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
+    HIGGS(false, 3, 125110.00f, 0, "higgs", "H\u2070", 0, null, 15, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_HIGGS),
     GRAVITON(false, 4, 0, 0, "graviton", "G", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_GRAVITON),
     // Leptons
     ELECTRON(true, 5, 0.511f, 5000, "electron", "e\u207B", -1, null, 800,
@@ -36,7 +36,8 @@ public enum Particle {
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_NEUTRON),
     LAMBDA(false, 13, 1115.68f, 0, "lambda", "\u039B \u2070", 0, null, 80,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_LAMBDA),
-    OMEGA(true, 14, 1672.45f, 0, "omega", "\u03A9 \u207B", -1, null, 60, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
+    OMEGA(true, 14, 1672.45f, 1700000, "omega", "\u03A9 \u207B", -1, null, 60,
+        GTGuiTextures.OVERLAY_BUTTON_PARTICLE_OMEGA),
     // Mesons
     ETA(false, 15, 547.86f, 0, "eta", "\u03B7", 0, null, 400, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ETA),
     JPSI(false, 16, 3096.92f, 0, "jpsi", "J/\u03C8", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_JPSI),
@@ -119,7 +120,7 @@ public enum Particle {
 
     public static Particle getParticleFromId(int id) {
         if (id >= VALUES.length || id < 0) {
-            throw new IllegalArgumentException("Invalid particleId");
+            throw new IllegalArgumentException("Invalid particleId: " + id);
         }
         return VALUES[id];
     }

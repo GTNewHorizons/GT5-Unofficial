@@ -34,7 +34,7 @@ public class LanthanidesRecipeMaps {
         .create(SourceChamberMetadata.class, "source_chamber_metadata");
 
     public static final RecipeMap<RecipeMapBackend> digesterRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.digester")
-        .maxIO(1, 1, 1, 1)
+        .maxIO(3, 1, 1, 1)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
@@ -58,24 +58,21 @@ public class LanthanidesRecipeMaps {
             SourceChamberMetadata metadata = recipeInfo.recipe.getMetadata(SOURCE_CHAMBER_METADATA);
             if (metadata == null) return Collections.emptyList();
 
-            float focus = metadata.focus;
-            float maxEnergy = metadata.maxEnergy;
-
-            int amount = metadata.rate;
-
             Particle particle = Particle.getParticleFromId(metadata.particleID);
 
             return Arrays.asList(
 
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
-
-                StatCollector.translateToLocal("beamline.energy") + ": <="
-                    + formatNumber(Math.min(maxEnergy, particle.maxSourceEnergy()))
+                StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(metadata.focus),
+                StatCollector.translateToLocal("beamline.rate") + ": " + formatNumber(metadata.rate),
+                " ",
+                StatCollector.translateToLocal("beamline.materialenergy") + ": "
+                    + formatNumber(metadata.maxEnergy)
                     + " keV",
-
-                StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(focus),
-
-                StatCollector.translateToLocal("beamline.rate") + ": " + formatNumber(amount)
+                StatCollector.translateToLocal("beamline.particleenergy") + ": "
+                    + formatNumber(particle.maxSourceEnergy())
+                    + " keV",
+                StatCollector.translateToLocal("beamline.energyratio") + ": " + formatNumber(metadata.energyRatio)
 
         );
         })
@@ -98,28 +95,16 @@ public class LanthanidesRecipeMaps {
             TargetChamberMetadata metadata = recipeInfo.recipe.getMetadata(TARGET_CHAMBER_METADATA);
             if (metadata == null) return Collections.emptyList();
 
-            float minEnergy = metadata.minEnergy;
-            float maxEnergy = metadata.maxEnergy;
-
-            float minFocus = metadata.minFocus;
-
-            float amount = metadata.amount;
-
-            Particle particle = Particle.getParticleFromId(metadata.particleID);
-
             return Arrays.asList(
 
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
-
                 StatCollector.translateToLocal("beamline.energy") + ": "
-                    + formatNumber(minEnergy * 1000)
+                    + formatNumber(metadata.minEnergy * 1000)
                     + "-"
-                    + formatNumber(maxEnergy * 1000)
+                    + formatNumber(metadata.maxEnergy * 1000)
                     + " eV", // Note the eV unit
-
-                StatCollector.translateToLocal("beamline.focus") + ": >=" + formatNumber(minFocus),
-
-                StatCollector.translateToLocal("beamline.amount") + ": " + formatNumber(amount)
+                StatCollector.translateToLocal("beamline.focus") + ": >=" + formatNumber(metadata.minFocus),
+                StatCollector.translateToLocal("beamline.amount") + ": " + formatNumber(metadata.amount)
 
         );
         }))
@@ -132,6 +117,7 @@ public class LanthanidesRecipeMaps {
             ret.addAll(Arrays.asList(recipe.mInputs));
             return ret.toArray(new ItemStack[0]);
         })
+        .neiHandlerInfo(builder -> builder.setHeight(140))
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)

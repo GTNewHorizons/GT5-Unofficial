@@ -13,7 +13,7 @@ import gregtech.common.covers.Invertable;
 public class RowHelper {
 
     public static Flow makeInvertRedstoneRow(Invertable cover) {
-        BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted);
+        BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
         return Flow.row()
             .name("invert_redstone")
             .child(
@@ -23,8 +23,8 @@ public class RowHelper {
                     .size(16))
             .child(
                 IKey.dynamic(
-                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
-                        : translateToLocal("gt.interact.desc.inverted"))
+                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
                     .asWidget());
     }
 }

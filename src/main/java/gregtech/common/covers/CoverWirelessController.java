@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -85,6 +86,20 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
                     if (machine.wasShutdown() && machine.getLastShutDownReason()
                         .wasCritical() && !handledShutdown) {
+                        if (!mPlayerNotified) {
+                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
+                            if (player != null) {
+                                lastPlayer = null;
+                                mPlayerNotified = true;
+                                GTUtility.sendChatTrans(
+                                    player,
+                                    "GT5U.chat.cover.wireless_controller.shutdown_at",
+                                    new ChatComponentTranslation(coverable.getInventoryName()),
+                                    new ChatComponentNumber(coverable.getXCoord()),
+                                    new ChatComponentNumber(coverable.getYCoord()),
+                                    new ChatComponentNumber(coverable.getZCoord()));
+                            }
+                        }
                         handledShutdown = true;
                         state = State.DISABLED;
                     } else {

@@ -46,7 +46,6 @@ public class BauxiteRefineChain {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .circuit(1)
             .fluidInputs(Materials.BauxiteSlurry.getFluid(2_000))
             .fluidOutputs(Materials.HeatedBauxiteSlurry.getFluid(2_000))
             .duration(2 * SECONDS)

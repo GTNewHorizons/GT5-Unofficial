@@ -61,7 +61,7 @@ public class ForgeOfGodsStarColor {
         .setCycleSpeed(1)
         .setCustomDrawable(
             new Rectangle()
-                .setColor(Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(0, 0, 0), Color.rgb(0, 255, 255)))
+                .color(Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(0, 0, 0), Color.rgb(0, 255, 255)))
         .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
@@ -72,7 +72,7 @@ public class ForgeOfGodsStarColor {
         .addColor(255, 172, 210, 1.0f)
         .setCycleSpeed(1)
         .setCustomDrawable(
-            new Rectangle().setColor(
+            new Rectangle().color(
                 Color.rgb(255, 172, 210),
                 Color.rgb(255, 255, 255),
                 Color.rgb(0, 0, 0),
@@ -174,6 +174,7 @@ public class ForgeOfGodsStarColor {
     }
 
     public void removeColor(int index) {
+        if (index >= settings.size()) return;
         settings.remove(index);
     }
 
@@ -186,8 +187,7 @@ public class ForgeOfGodsStarColor {
     public IDrawable getDrawable() {
         if (drawable == null) {
             StarColorSetting setting = settings.get(0);
-            drawable = new Rectangle()
-                .setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
+            drawable = new Rectangle().color(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
         }
         return drawable;
     }

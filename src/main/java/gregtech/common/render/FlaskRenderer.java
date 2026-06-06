@@ -32,36 +32,42 @@ public final class FlaskRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        ItemVolumetricFlask cell = (ItemVolumetricFlask) item.getItem();
-        IIcon icon = item.getIconIndex();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        ItemRenderUtil.applyStandardItemTransform(type);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT);
 
-        FluidStack fs = cell != null ? cell.getFluid(item) : null;
-        if (fs != null) {
-            IIcon iconWindow = cell.iconWindow;
-            Fluid fluid = fs.getFluid();
-            IIcon fluidIcon = fluid.getIcon(fs);
-            int fluidColor = fluid.getColor(fs);
+        try {
+            ItemVolumetricFlask cell = (ItemVolumetricFlask) item.getItem();
+            IIcon icon = item.getIconIndex();
+
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+            ItemRenderUtil.applyStandardItemTransform(type);
+
+            FluidStack fs = cell != null ? cell.getFluid(item) : null;
+            if (fs != null) {
+                IIcon iconWindow = cell.iconWindow;
+                Fluid fluid = fs.getFluid();
+                IIcon fluidIcon = fluid.getIcon(fs);
+                int fluidColor = fluid.getColor(fs);
+
+                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+                GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
+                ItemRenderUtil.renderItem(type, iconWindow);
+
+                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GL11.glDepthFunc(GL11.GL_EQUAL);
+                GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
+                ItemRenderUtil.renderItem(type, fluidIcon);
+                GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
+                GL11.glDepthFunc(GL11.GL_LEQUAL);
+            }
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-            GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
-            ItemRenderUtil.renderItem(type, iconWindow);
-
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glDepthFunc(GL11.GL_EQUAL);
-            GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            ItemRenderUtil.renderItem(type, fluidIcon);
-            GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
-            GL11.glDepthFunc(GL11.GL_LEQUAL);
+            ItemRenderUtil.renderItem(type, icon);
+        } finally {
+            GL11.glPopAttrib();
         }
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        ItemRenderUtil.renderItem(type, icon);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
     }
 }

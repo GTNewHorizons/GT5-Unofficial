@@ -2,14 +2,12 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Amazon_Warehouse_Controller;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc.MTEAmazonPackagerLegacy;
 
 public class GregtechAmazonWarehouse {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Amazon Warehouse Multiblock.");
         run1();
     }
 

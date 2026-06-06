@@ -10,6 +10,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,6 +28,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -69,7 +72,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
-            .addCasingInfoMin("TPV-Alloy Coils", 16, false)
+            .addCasingInfoMin("TPV-Alloy Coil", 16, false)
             .addCasingInfoMin("Molecular Containment Casing", 52, false)
             .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
             .addCasingInfoMin("Particle Containment Casing", 4, false)
@@ -132,14 +135,14 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        if (this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
+        checkHatchExact(errors, OutputBus, 1);
+        checkHatchExact(errors, Energy, 1);
         // there are 16 slot that only allow casing, so we subtract this from the grand total required
-        return aDidBuild && mCasing >= 40 - 16 && checkHatch();
+        checkCasingMin(errors, mCasing, 40 - 16);
+        checkHatch(errors);
     }
 
     protected static int getCasingTextureIndex() {
@@ -205,7 +208,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
 
     @Override
     protected int getCasingTextureId() {
-        return 44;
+        return 113;
     }
 
     @Override

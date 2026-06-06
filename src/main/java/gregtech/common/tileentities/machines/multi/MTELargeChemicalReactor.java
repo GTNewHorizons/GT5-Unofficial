@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -51,6 +52,8 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeChemicalReactor>
@@ -113,12 +116,12 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
                 "Adjacent to the PTFE Pipe Machine Casing",
                 1)
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2)
-            .addInputBus("Any casing", 1, 2)
-            .addInputHatch("Any casing", 1, 2)
-            .addOutputBus("Any casing", 1, 2)
-            .addOutputHatch("Any casing", 1, 2)
+            .addEnergyHatch("Any Casing", 1, 2)
+            .addMaintenanceHatch("Any Casing", 1, 2)
+            .addInputBus("Any Casing", 1, 2)
+            .addInputHatch("Any Casing", 1, 2)
+            .addOutputBus("Any Casing", 1, 2)
+            .addOutputHatch("Any Casing", 1, 2)
             .addStructureInfo("You can have multiple hatches/buses")
             .toolTipFinisher();
         return tt;
@@ -151,11 +154,6 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.multiblockChemicalReactorRecipes;
     }
@@ -175,13 +173,18 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mCoilAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 8
-            && mCoilAmount == 1
-            && !mEnergyHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 8);
+        if (mCoilAmount != 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_coil"));
+        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

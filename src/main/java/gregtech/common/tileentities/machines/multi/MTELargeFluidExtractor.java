@@ -15,11 +15,13 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
+import static gregtech.api.util.GTUtility.min;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -46,8 +48,9 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -174,27 +177,24 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0)) {
-            return false;
-        }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
-        if (casingAmount < (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)) {
-            structureBadCasingCount = true;
-        }
-
+        checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
 
             if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
-                structureBadGlassTier = true;
-                break;
+                errors
+                    .add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UEV, energyHatch.getTierForStructure())));
+                return;
             }
         }
-
-        return !structureBadGlassTier && !structureBadCasingCount;
     }
 
     @Override
@@ -210,17 +210,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEUMultiplier());
-                setSpeedBonus(1.0f / getSpeedBonus());
-                return super.process();
-            }
-        }.noRecipeCaching()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEUMultiplier)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -304,7 +297,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
             .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
-            .addCasingInfoExactly("Heating Coils", 8 * 3, true)
+            .addCasingInfoExactly("Heating Coil", 8 * 3, true)
             .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
             .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
             .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
@@ -350,11 +343,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
@@ -371,7 +359,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             StatCollector.translateToLocalFormatted(
                 "Total Speed Multiplier: %s%.0f%s %%",
                 YELLOW,
-                getSpeedBonus() * 100,
+                (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
                 RESET));
         data.add(
             StatCollector.translateToLocalFormatted(
@@ -392,14 +380,14 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
     }
 
-    public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
+    public double getSpeedBonus() {
+        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
-    public float getEUMultiplier() {
+    public double getEUMultiplier() {
         double heatingBonus = (coilLevel == null ? 0
             : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
-        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
+        return (BASE_EU_MULTIPLIER * heatingBonus);
     }
 }

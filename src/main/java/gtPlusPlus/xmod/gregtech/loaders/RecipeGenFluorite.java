@@ -19,14 +19,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 public class RecipeGenFluorite extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -38,25 +37,40 @@ public class RecipeGenFluorite extends RecipeGenBase {
 
         GTModHandler.addCraftingRecipe(
             material.getDustPurified(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
         GTModHandler.addCraftingRecipe(
             material.getDustImpure(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
         GTModHandler.addCraftingRecipe(
             material.getDust(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack normalDust = material.getDust(1);
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
-        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-        GTModHandler.addCraftingRecipe(material.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
+        GTModHandler.addCraftingRecipe(
+            normalDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+        GTModHandler.addCraftingRecipe(
+            material.getTinyDust(9),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
-        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-        GTModHandler.addCraftingRecipe(material.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
+        GTModHandler.addCraftingRecipe(
+            normalDust,
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+        GTModHandler.addCraftingRecipe(
+            material.getSmallDust(4),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { " D ", "   ", "   ", 'D', normalDust });
     }
 
     @Override
@@ -80,7 +94,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemInputs(material.getOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         // Macerate raw ore to Crushed
@@ -88,7 +102,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemInputs(material.getRawOre(1))
             .itemOutputs(material.getCrushed(2))
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         // Macerate Centrifuged to Pure Dust
@@ -97,7 +111,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             .itemOutputs(matDust, matDustA)
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -130,7 +144,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustPurified(1))
             .itemOutputs(matDust, tinyDustA)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 
@@ -138,7 +152,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
             .itemOutputs(matDust, tinyDustB)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 

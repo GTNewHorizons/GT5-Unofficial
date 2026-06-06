@@ -17,9 +17,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -37,21 +37,18 @@ public class AchievementHandler {
     private static final String aBaseAchievementName = "gtpp.start";
 
     public AchievementHandler() {
-
-        Logger.INFO("Initializing GT++ achievements");
-        GTLog.out.println("Initializing GT++ achievements");
-
         // register first
         this.registerAchievement(
             aBaseAchievementName,
             0,
             0,
-            MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                1,
-                Materials.Osmium,
-                Materials.Osmium,
-                null),
+            MetaGeneratedGregtechTools.getInstance()
+                .getToolWithStats(
+                    MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                    1,
+                    Materials.Osmium,
+                    Materials.Osmium,
+                    null),
             "",
             true);
 
@@ -131,34 +128,10 @@ public class AchievementHandler {
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
         this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.sifter",
-            -14,
-            -7,
-            GregtechItemList.Industrial_Sifter.get(1),
-            "dust.eglin",
-            false);
-        this.registerAchievement(
-            "multi.cokeoven",
-            -13,
-            -7,
-            GregtechItemList.Industrial_CokeOven.get(1),
-            "multi.abs",
-            false);
-        this.registerAchievement(
-            "multi.boiler.thermal",
-            -12,
-            -7,
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
-            "multi.abs",
-            false);
-        this.registerAchievement(
-            "multi.zhuhai",
-            -11,
-            -7,
-            GregtechItemList.Industrial_FishingPond.get(1),
-            aBaseAchievementName,
-            false);
+        this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
+        this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
+        this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
+        this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(

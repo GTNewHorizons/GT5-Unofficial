@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -56,7 +54,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
 public class MaterialGenerator {
 
-    public static final ArrayList<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new ArrayList<>();
+    public static final ArrayList<Set<Runnable>> mRecipeMapsToGenerate = new ArrayList<>();
 
     public static void generate(final Material matInfo) {
         generate(matInfo, true);
@@ -155,15 +153,10 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
 
-        } catch (final Exception t) {
-            Logger.MATERIALS(matInfo.getDefaultLocalName() + " failed to generate.");
-
-        }
+        } catch (final Exception ignored) {}
     }
 
     public static void generateDusts(final Material matInfo) {
-        final String materialName = matInfo.getDefaultLocalName();
-
         if (matInfo.getState() == MaterialState.SOLID) {
             new BaseItemDust(matInfo);
         }
@@ -174,8 +167,6 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
-            Logger.MATERIALS("Failed to generate some recipes for " + materialName);
-            Logger.ERROR("Failed to generate some recipes for " + materialName);
             t.printStackTrace();
         }
         // RecipeGen_Recycling.generateRecipes(matInfo);
@@ -195,13 +186,6 @@ public class MaterialGenerator {
                 .eut(matInfo.vVoltageMultiplier)
                 .duration(10 * (matInfo.vVoltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
-        } else {
-            Logger.INFO(
-                "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getDefaultLocalName()
-                    + " | Null Fluid? "
-                    + (matInfo.getFluid() == null)
-                    + " | Null Dust? "
-                    + (matInfo.getDust(0) == null));
         }
     }
 
@@ -250,9 +234,7 @@ public class MaterialGenerator {
             new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
             new RecipeGenPlasma(matInfo);
 
-        } catch (final Throwable t) {
-            Logger.MATERIALS(matInfo.getDefaultLocalName() + " failed to generate.");
-        }
+        } catch (final Throwable ignored) {}
     }
 
     public static void generateOreMaterial(final Material matInfo) {
@@ -262,15 +244,6 @@ public class MaterialGenerator {
     public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust,
         boolean generateSmallTinyDusts) {
         try {
-
-            if (matInfo == null) {
-                Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
-            }
-
-            int sRadiation = 0;
-            if (matInfo.vRadiationLevel > 0) {
-                sRadiation = matInfo.vRadiationLevel;
-            }
 
             if (generateOre) {
                 new BlockBaseOre(matInfo, BlockTypes.ORE);
@@ -297,10 +270,6 @@ public class MaterialGenerator {
             new BaseItemPurifiedDust(matInfo);
             new BaseItemRawOre(matInfo);
 
-            Logger.MATERIALS(
-                "Generated all ore components for " + matInfo.getDefaultLocalName()
-                    + ", now generating processing recipes.");
-
             if (matInfo == MaterialsFluorides.FLUORITE) {
                 new RecipeGenFluorite(matInfo);
             } else {
@@ -308,9 +277,6 @@ public class MaterialGenerator {
             }
 
         } catch (final Exception t) {
-            Logger.MATERIALS(
-                "[Error] " + (matInfo != null ? matInfo.getDefaultLocalName() : "Null Material")
-                    + " failed to generate.");
             t.printStackTrace();
         }
     }
@@ -318,7 +284,6 @@ public class MaterialGenerator {
     public static void generateOreMaterialWithAllExcessComponents(final Material matInfo) {
         try {
             if (matInfo == null) {
-                Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
                 return;
             }
 
@@ -338,10 +303,6 @@ public class MaterialGenerator {
             new BaseItemPurifiedDust(matInfo);
             new BaseItemRawOre(matInfo);
 
-            Logger.MATERIALS(
-                "Generated all ore & base components for " + matInfo.getDefaultLocalName()
-                    + ", now generating processing recipes.");
-
             new RecipeGenOre(matInfo, true);
             new RecipeGenAlloySmelter(matInfo);
             new RecipeGenAssembler(matInfo);
@@ -356,7 +317,6 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
-            Logger.MATERIALS(matInfo.getDefaultLocalName() + " failed to generate.");
             t.printStackTrace();
         }
     }

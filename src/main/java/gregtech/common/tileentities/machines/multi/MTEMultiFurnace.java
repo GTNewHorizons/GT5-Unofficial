@@ -47,6 +47,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
@@ -109,13 +111,13 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-            .addOtherStructurePart("Heating Coils", "Middle layer")
-            .addEnergyHatch("Any bottom casing", 1)
+            .addCasingInfoRange("Heat Proof Machine Casing", 7, 14, false)
+            .addOtherStructurePart("Heating Coil", "Middle layer")
+            .addEnergyHatch("Any bottom Casing", 1)
             .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
             .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addInputBus("Any bottom Casing", 1)
+            .addOutputBus("Any bottom Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
@@ -281,20 +283,19 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mLevel = 0;
-
         setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1) return false;
-
-        this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
-
-        return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        } else {
+            this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -382,5 +383,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

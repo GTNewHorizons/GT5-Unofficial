@@ -19,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -55,12 +54,10 @@ public class BaseItemDustUnique extends Item {
         GameRegistry.registerItem(this, unlocalizedName);
 
         String temp = "";
-        Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
         if (this.getUnlocalizedName()
             .contains("item.")) {
             temp = this.getUnlocalizedName()
                 .replace("item.", "");
-            Logger.WARNING("Generating OreDict Name: " + temp);
         } else {
             temp = this.getUnlocalizedName();
         }
@@ -72,7 +69,6 @@ public class BaseItemDustUnique extends Item {
             this.typeLoc = "gt.oreprefix.material_dust";
         }
         temp = temp.replace("itemD", "d");
-        Logger.WARNING("Generating OreDict Name: " + temp);
         if (!temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
@@ -93,12 +89,9 @@ public class BaseItemDustUnique extends Item {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
             Material.mComponentMap.put(aName, aMap);
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -119,9 +112,9 @@ public class BaseItemDustUnique extends Item {
         return GregTech.ID + ":" + "materialicons/SHINY/dust";
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (Client.tooltip.showFormula) {
             if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
                 list.add(this.chemicalNotation);
@@ -132,7 +125,7 @@ public class BaseItemDustUnique extends Item {
                 list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     public final String getMaterialName() {

@@ -24,10 +24,10 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityModeSync = new EnumSyncValue<>(
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityModeSync = new EnumSyncValue<>(
             CoverWirelessDoesWorkDetector.ActivityMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("activityMode", activityModeSync);
 
         super.addUIWidgets(syncManager, column, data);
@@ -35,16 +35,16 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode>) syncManager
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?>) syncManager
             .getSyncHandlerFromMapKey("activityMode:0");
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()
             .child(
                 Flow.row()
                     .marginBottom(4)
-                    .size(140, 18)
-
+                    .coverChildren(0, 18)
+                    .leftRel(0)
                     .child(
                         new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
                             .overlay(
@@ -52,7 +52,6 @@ public class CoverWirelessDoesWorkDetectorGui
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                             .build()
-                            .width(120)
                             .marginRight(2)
                             .child(
                                 new TextWidget<>(

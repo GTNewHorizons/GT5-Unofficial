@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.ItemList;
@@ -31,6 +32,8 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEPCBUpgradeBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -88,6 +91,11 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     @Override
     public boolean supportsPowerPanel() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPCBUpgradeBaseGui(this);
     }
 
     @Override
@@ -158,8 +166,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     public void removeController(MTEPCBFactory factory) {
         IGregTechTileEntity BMTE = factory.getBaseMetaTileEntity();
         controllerCoords.removeIf(
-            controllerCoord -> controllerCoord.get(1) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord()
-                && controllerCoord.get(1) == BMTE.getZCoord());
+            controllerCoord -> controllerCoord.get(0) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord()
+                && controllerCoord.get(2) == BMTE.getZCoord());
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -193,7 +201,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PCBFactory")) {
             return false;
         }
@@ -265,8 +273,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.pcb_upgrade_base.linked_at",
                         controllerCoord.get(0),
-                        controllerCoord.get(0),
-                        controllerCoord.get(0)));
+                        controllerCoord.get(1),
+                        controllerCoord.get(2)));
             }
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.pcb_upgrade_base.not_linked"));
         return ret.toArray(new String[0]);

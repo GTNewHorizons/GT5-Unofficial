@@ -267,10 +267,4 @@ public final class MaterialsNuclides {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsFluorides.URANIUM_HEXAFLUORIDE, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
-
-    private static final MaterialsNuclides INSTANCE = new MaterialsNuclides();
-
-    public static MaterialsNuclides getInstance() {
-        return INSTANCE;
-    }
 }

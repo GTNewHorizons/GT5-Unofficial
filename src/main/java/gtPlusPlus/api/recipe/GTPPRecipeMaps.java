@@ -33,7 +33,7 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class GTPPRecipeMaps {
 
@@ -42,6 +42,8 @@ public class GTPPRecipeMaps {
         .minInputs(0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_SIFT, ProgressWidget.Direction.DOWN)
+        // from the recently deceased AddGregtechRecipe.java
+        .recipeTransformer(recipe -> { recipe.mDuration = (int) (recipe.mDuration * 0.8); })
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockMassFabricatorRecipes = RecipeMapBuilder
         .of("gtpp.recipe.matterfab2")
@@ -234,10 +236,6 @@ public class GTPPRecipeMaps {
         .frontend(SpargeTowerFrontend::new)
         .maxIO(0, 0, 9, 9)
         .build();
-    public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder
-        .of("gtpp.recipe.cryogenicfreezer")
-        .maxIO(1, 1, 2, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multicentrifuge")
         .maxIO(6, 6, 6, 6)
@@ -285,7 +283,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> treeGrowthSimulatorFakeRecipes = RecipeMapBuilder
         .of("gtpp.recipe.treefarm")
-        .maxIO(MTETreeFarm.Mode.values().length, MTETreeFarm.Mode.values().length, 0, 0)
+        .maxIO(MTETreeFarmLegacy.Mode.values().length, MTETreeFarmLegacy.Mode.values().length, 0, 0)
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)

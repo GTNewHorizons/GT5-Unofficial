@@ -15,6 +15,7 @@ import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static tectech.thing.CustomItemList.holder_Hatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +60,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
@@ -185,13 +188,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         unlockHolders();
         eHolders.clear();
 
-        if (!structureCheck_EM("main", 1, 3, 4)) {
-            return false;
-        }
+        if (!checkPiece("main", 1, 3, 4, errors)) return;
+        checkHasAnyEnergy(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
 
         if (iGregTechTileEntity.isActive()) {
             lockHolders();
@@ -199,12 +204,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             unlockHolders();
         }
 
-        return eHolders.size() == 1;
+        if (eHolders.size() != 1) {
+            errors.add(StructureErrors.missingHatch(holder_Hatch.get(1)));
+        }
+        checkHasDataInput(errors);
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 3, 4, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 3, 4);
     }
 
     @Override
@@ -256,6 +264,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            .addController("Front center on the frontside of the main body")
             // Object Holder: Center of the front pillar
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -336,8 +345,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     private static String getMachineModeKey(int mode) {
-        if (mode == MODE_RESEARCH_STATION) return "gt.blockmachines.multimachine.em.research.mode.Assembly_line";
-        return "gt.blockmachines.multimachine.em.research.mode.Scanner";
+        return "gt.blockmachines.multimachine.em.research.mode." + mode;
     }
 
     // endregion machine mode
@@ -817,6 +825,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     // endregion gui
 
     // region MUI2
@@ -850,7 +863,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setInteger("machineMode", this.machineMode);
+        tag.setString("mode", getMachineModeName());
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());
     }
@@ -860,7 +873,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",

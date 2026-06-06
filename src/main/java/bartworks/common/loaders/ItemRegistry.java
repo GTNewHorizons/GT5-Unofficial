@@ -42,13 +42,13 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
+import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
+import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
+import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
@@ -255,7 +255,7 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new MTEElectricImplosionCompressor(
+        ItemRegistry.eic = new MTEElectricImplosionCompressorLegacy(
             LegacyElectricImplosionCompressor.ID,
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
@@ -375,11 +375,11 @@ public class ItemRegistry {
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
+        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnaceLegacy(
             LegacyMegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
+        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
             LegacyMegaVacuumFreezer.ID,
             "MegaVacuumFreezer",
             StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
@@ -399,7 +399,7 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTower(
+        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
             LegacyMegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);

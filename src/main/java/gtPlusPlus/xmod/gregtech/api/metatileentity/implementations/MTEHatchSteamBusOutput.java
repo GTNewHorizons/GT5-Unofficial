@@ -2,8 +2,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -13,6 +15,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -140,11 +143,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        getBaseMetaTileEntity().add2by2Slots(builder);
-    }
-
-    @Override
     public boolean isFiltered() {
         return false;
     }
@@ -162,5 +160,17 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     @Override
     public String[] getDescription() {
         return Utils.splitLocalizedWithAlkalus("gt.blockmachines.output_bus_steam.desc");
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this) {
+
+            // steam input buses don't follow into the common formula that others do, so its changed here,
+            @Override
+            protected int getDimension() {
+                return 2;
+            }
+        }.build(guiData, syncManager, uiSettings);
     }
 }

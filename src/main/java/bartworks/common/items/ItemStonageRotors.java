@@ -23,9 +23,10 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
@@ -33,7 +34,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
-import ic2.core.util.StackUtil;
 
 public class ItemStonageRotors extends Item implements IKineticRotor {
 
@@ -45,7 +45,6 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     private final int speed;
     private final float mRotor;
     private final int maxDamageEx;
-    private int dura;
 
     public ItemStonageRotors(int diameter, float eff, int speed, float mRotor, int min, int max, int durability,
         IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
@@ -133,8 +132,7 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     }
 
     public void setDamageForStack(ItemStack stack, int advDmg) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        nbtData.setInteger("DmgEx", advDmg);
+        ItemStackNBT.setInteger(stack, "DmgEx", advDmg);
         if (this.maxDamageEx > 0) {
             double p = (double) advDmg / (double) this.maxDamageEx;
             int newDmg = (int) (stack.getMaxDamage() * p);
@@ -142,14 +140,11 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
                 newDmg = stack.getMaxDamage() - 1;
             }
             stack.setItemDamage(newDmg);
-            this.dura = newDmg;
         }
     }
 
     public int getDamageOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        this.dura = nbtData.getInteger("DmgEx");
-        return this.dura;
+        return ItemStackNBT.getInteger(stack, "DmgEx");
     }
 
     public int getMaxDamageEx() {
