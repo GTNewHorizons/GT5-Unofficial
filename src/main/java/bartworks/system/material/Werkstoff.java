@@ -1125,6 +1125,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         private float speedOverride;
         private int meltingPoint;
         private int meltingVoltage;
+        private int processingMaterialTierEU;
         private long protons;
         private long neutrons;
         private long electrons;
@@ -1287,6 +1288,15 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
         public int getMeltingVoltage() {
             return this.meltingVoltage;
+        }
+
+        public Werkstoff.Stats setProcessingMaterialTierEU(long processingMaterialTierEU) {
+            this.processingMaterialTierEU = (int) processingMaterialTierEU;
+            return this;
+        }
+
+        public int getProcessingMaterialTierEU() {
+            return this.processingMaterialTierEU;
         }
 
         public boolean isElektrolysis() {
