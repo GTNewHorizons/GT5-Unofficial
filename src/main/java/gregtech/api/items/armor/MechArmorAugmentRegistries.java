@@ -524,6 +524,7 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentforcefield")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(ForceFieldBehavior.INSTANCE)
+            .setMinimumCore(3)
             .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.epic)
         ),
