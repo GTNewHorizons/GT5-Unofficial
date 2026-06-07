@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.debugStones;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -19,6 +18,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class WorldgenStone extends GTWorldgen {
 
@@ -30,7 +30,7 @@ public class WorldgenStone extends GTWorldgen {
     public final Collection<String> mBiomeList;
     public final boolean mAllowToGenerateinVoid;
 
-    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
+    public Long2ObjectOpenHashMap<StoneSeeds> validStoneSeeds = new Long2ObjectOpenHashMap<>(1024);
 
     static class StoneSeeds {
 
