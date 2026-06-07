@@ -21,7 +21,10 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -48,10 +51,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -192,63 +193,63 @@ public class DustLoader implements IWerkstoffRunnable {
                     input.stackSize = werkstoff.getContents()
                         .getKey();
                     if (werkstoffStats.isElektrolysis()) {
-                        GTRecipe tRecipe = new GTRecipe(
-                            new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
-                            stOutputs.toArray(new ItemStack[0]),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            new FluidStack[] { null },
-                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
-                            (int) Math.max(
-                                1L,
-                                Math.abs(
-                                    werkstoffStats.getProtons() / werkstoff.getContents()
-                                        .getValue()
-                                        .size())),
-                            Math.min(
-                                4,
-                                werkstoff.getContents()
-                                    .getValue()
-                                    .size())
-                                * 30,
-                            0);
-                        RecipeMaps.electrolyzerRecipes.add(tRecipe);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                cells > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { input })
+                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .fluidOutputs(
+                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                            .duration(
+                                (int) Math.max(
+                                    1L,
+                                    Math.abs(
+                                        werkstoffStats.getProtons() / werkstoff.getContents()
+                                            .getValue()
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 30))
+                            .addTo(electrolyzerRecipes);
                     }
                     if (werkstoffStats.isCentrifuge()) {
-                        RecipeMaps.centrifugeRecipes.add(
-                            new GTRecipe(
-                                new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
-                                stOutputs.toArray(new ItemStack[0]),
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                new FluidStack[] { null },
-                                new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                cells > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { input })
+                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .fluidOutputs(
+                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                            .duration(
                                 (int) Math.max(
                                     1L,
                                     Math.abs(
                                         werkstoffStats.getMass() / werkstoff.getContents()
                                             .getValue()
-                                            .size())),
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 5,
-                                0));
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 5))
+                            .addTo(centrifugeRecipes);
                     }
                     if (werkstoff.getGenerationFeatures()
                         .hasChemicalRecipes()) {
                         if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
                         GTValues.RA.stdBuilder()
-                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
-                            .itemOutputs(input)
+                            .itemInputs(input)
+                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                             .fluidInputs(flOutputs.toArray(new FluidStack[0]))
                             .duration(
                                 (int) Math.max(
@@ -274,30 +275,28 @@ public class DustLoader implements IWerkstoffRunnable {
                         short circuitID = werkstoff.getMixCircuit();
                         ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
                         if (circuit != null) stOutputs.add(circuit);
-                        RecipeMaps.mixerRecipes.add(
-                            new GTRecipe(
-                                stOutputs.toArray(new ItemStack[0]),
-                                new ItemStack[] { input },
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
-                                null,
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(input)
+                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .fluidInputs(
+                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                            .duration(
                                 (int) Math.max(
                                     1L,
                                     Math.abs(
                                         werkstoffStats.getMass() / werkstoff.getContents()
                                             .getValue()
-                                            .size())),
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 5,
-                                0));
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 5))
+                            .addTo(mixerRecipes);
                     }
                 } else {
                     GTLog.err.println(
