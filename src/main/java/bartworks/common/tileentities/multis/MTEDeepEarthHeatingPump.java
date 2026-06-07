@@ -26,6 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -187,8 +188,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && fluidStack.getFluid()
                 .equals(f)) ret += ih.getFluidAmount();
         }
         return ret;
@@ -201,12 +202,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluidStack.getFluid()
                 .equals(toConsume1)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(toConsume2))
+                || fluidStack.getFluid()
+                    .equals(toConsume2)))
                 ret += ih.getFluidAmount();
         }
         return ret;
@@ -274,22 +274,20 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     private boolean consumeFluid(Fluid fluid, long ammount) {
+        Fluid distilledWater = GTModHandler.getDistilledWater(1)
+            .getFluid();
         if (ammount > Integer.MAX_VALUE) {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
                 for (MTEHatchInput ih : this.mInputHatches) {
-                    if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                        .getFluid()
+                    FluidStack fluidStack = ih.getFluid();
+                    if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                         .equals(fluid)
-                        || ih.getFluid()
-                            .getFluid()
-                            .equals(
-                                GTModHandler.getDistilledWater(1)
-                                    .getFluid())
-                        : ih.getFluid()
-                            .getFluid()
-                            .equals(fluid))
+                        || fluidStack.getFluid()
+                            .equals(distilledWater)
+                        : fluidStack.getFluid()
+                            .equals(fluid)))
                         tmp[i] -= ih.drain((int) ammount, true).amount;
                     if (tmp[i] <= 0) break;
                 }
@@ -300,17 +298,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         long tmp = ammount;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                 .equals(fluid)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(
-                        GTModHandler.getDistilledWater(1)
-                            .getFluid())
-                : ih.getFluid()
-                    .getFluid()
-                    .equals(fluid))
+                || fluidStack.getFluid()
+                    .equals(distilledWater)
+                : fluidStack.getFluid()
+                    .equals(fluid)))
                 tmp -= ih.drain((int) ammount, true).amount;
             if (tmp <= 0) return true;
         }

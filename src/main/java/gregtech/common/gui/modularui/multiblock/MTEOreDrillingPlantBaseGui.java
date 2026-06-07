@@ -8,6 +8,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -122,10 +123,11 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
         BooleanSyncValue cobbleSyncer = syncManager.findSyncHandler("oreReplaceCobble", BooleanSyncValue.class);
 
         return new ToggleButton().value(cobbleSyncer)
-            .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON)))
-            .overlay(
-                false,
-                new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF)))
+            .overlay(new DynamicDrawable(() -> {
+                IDrawable base = cobbleSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON
+                    : GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF;
+                return getLockedOverlay(base);
+            }))
             .tooltipBuilder(true, t -> {
                 t.addLine(StatCollector.translateToLocal("GT5U.gui.button.ore_drill_cobblestone"));
                 t.addLine(

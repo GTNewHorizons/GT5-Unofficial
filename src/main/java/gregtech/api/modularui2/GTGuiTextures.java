@@ -661,7 +661,7 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture OVERLAY_BUTTON_LOCKED = UITexture.builder()
         .canApplyTheme()
-        .location(GregTech.ID, "gui/overlay_button/locked")
+        .location(GregTech.ID, "gui/overlay_button/lock_small")
         .build();
     public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");

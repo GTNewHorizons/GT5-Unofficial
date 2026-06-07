@@ -7,6 +7,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -67,8 +68,11 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
         BooleanSyncValue liquidSyncer = syncManager.findSyncHandler("backfillerLiquidEnabled", BooleanSyncValue.class);
 
         return new ToggleButton().value(liquidSyncer)
-            .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE)))
-            .overlay(false, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF)))
+            .overlay(new DynamicDrawable(() -> {
+                IDrawable base = liquidSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE
+                    : GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF;
+                return getLockedOverlay(base);
+            }))
             .tooltipBuilder(true, t -> {
                 t.addLine(StatCollector.translateToLocal("GT5U.gui.button.liquid_filling"));
                 t.addLine(

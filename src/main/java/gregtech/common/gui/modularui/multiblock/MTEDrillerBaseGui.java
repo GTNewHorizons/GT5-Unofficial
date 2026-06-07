@@ -90,8 +90,11 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
         BooleanSyncValue chunkLoadingSyncer = syncManager
             .findSyncHandler("chunkLoadingEnabled", BooleanSyncValue.class);
         return new ToggleButton().value(chunkLoadingSyncer)
-            .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING)))
-            .overlay(false, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF)))
+            .overlay(new DynamicDrawable(() -> {
+                IDrawable base = chunkLoadingSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING
+                    : GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF;
+                return getLockedOverlay(base);
+            }))
             .tooltipBuilder(true, t -> {
                 t.addLine(StatCollector.translateToLocal("GT5U.gui.button.chunk_loading"));
                 t.addLine(
