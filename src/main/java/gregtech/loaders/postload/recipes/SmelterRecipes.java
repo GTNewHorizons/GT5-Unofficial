@@ -39,7 +39,7 @@ public class SmelterRecipes implements Runnable {
 
         GTModHandler.addSmeltingRecipe(ItemList.Food_Raw_Cookie.get(1L), new ItemStack(Items.cookie, 1));
 
-        GTModHandler.addSmeltingRecipe(new ItemStack(Items.slime_ball, 1), ItemList.IC2_Resin.get(1L));
+        GTModHandler.addSmeltingRecipe(new ItemStack(Items.slime_ball, 1), ItemList.Sticky_Resin.get(1L));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L),

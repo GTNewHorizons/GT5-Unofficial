@@ -100,6 +100,8 @@ import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.blocks.rubbertree.RenderRubberTreeTap;
+import gregtech.common.blocks.rubbertree.TileEntityRubberLogTapped;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
@@ -333,6 +335,7 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityBlackhole.class, new BlackholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityNanoForge.class, new NanoForgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new BaseMetaTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRubberLogTapped.class, new RenderRubberTreeTap());
 
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
             metaItemRenderer.registerItem(item);

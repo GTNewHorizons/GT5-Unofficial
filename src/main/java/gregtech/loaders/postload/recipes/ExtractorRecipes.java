@@ -32,7 +32,7 @@ public class ExtractorRecipes implements Runnable {
             new ItemStack(Items.slime_ball, 1),
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 2L));
         addExtractionRecipe(
-            ItemList.IC2_Resin.get(1L),
+            ItemList.Sticky_Resin.get(1L),
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L));
         addExtractionRecipe(
             getIC2Item("rubberSapling", 1L),
