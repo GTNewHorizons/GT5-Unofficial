@@ -7,10 +7,10 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -153,11 +153,11 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     Textures.BlockIcons
                         .getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -166,11 +166,11 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     Textures.BlockIcons
                         .getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
+                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
