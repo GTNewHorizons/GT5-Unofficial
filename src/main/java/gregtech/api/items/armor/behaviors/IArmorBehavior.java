@@ -96,7 +96,7 @@ public interface IArmorBehavior {
      * Checks if this behavior provides protection against a hazard.
      */
     default boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
-        return false;
+        return protectsAgainstFully(context, hazard);
     }
 
     /**
