@@ -339,7 +339,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -349,7 +349,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                             + data.getParallelsString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -358,7 +358,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -368,7 +368,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                             + data.getOCFactorString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2)))
                             .child(createPairHoldingColumn(calculatorData, true)))
@@ -390,7 +390,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     })
                         .scale(0.9f)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                         .size(120, 20)));
     }
 
