@@ -1205,7 +1205,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getStoredEU() {
-        if (canAccessData()) return Math.min(mMetaTileEntity.getEUVar(), getEUCapacity());
+        if (canAccessData()) {
+            final long cap = mMetaTileEntity.maxEUStore();
+            final long stored = mMetaTileEntity.getEUVar();
+            return stored > cap ? cap : stored;
+        }
         return 0;
     }
 

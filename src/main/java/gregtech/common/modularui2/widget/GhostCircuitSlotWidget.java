@@ -80,6 +80,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     public PhantomItemSlot slot(ModularSlot slot) {
         circuitSyncHandler = new GhostCircuitSyncHandler(slot, mte);
         setSyncOrValue(circuitSyncHandler);
+        circuitSyncHandler.registerIndexSync(syncManager, "ghostCircuitIndex");
         return this;
     }
 
@@ -142,6 +143,6 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     @NotNull
     @Override
     public GhostCircuitSyncHandler getSyncHandler() {
-        return (GhostCircuitSyncHandler) super.getSyncHandler();
+        return circuitSyncHandler;
     }
 }

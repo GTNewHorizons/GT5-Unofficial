@@ -191,7 +191,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Hearth, MEBF, MBF")
+        tt.addMachineType("Blast Furnace, ExH, MEBF, MBF")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo(
                 TooltipHelper.effText("-5%") + " EU Usage per "
@@ -302,6 +302,13 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     private boolean checkFluid(int amount) {
         final FluidStack fluidToDrain = new FluidStack(TFFluids.fluidPyrotheum, amount);
         return this.depleteInput(fluidToDrain, true);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
