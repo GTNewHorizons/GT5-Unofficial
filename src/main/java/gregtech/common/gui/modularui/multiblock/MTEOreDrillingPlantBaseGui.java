@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -57,7 +58,8 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
         IntSyncValue oreListSizeSync = syncManager.findSyncHandler("oreListSize", IntSyncValue.class);
         IntSyncValue totalChunksSync = syncManager.findSyncHandler("oreTotalChunks", IntSyncValue.class);
         IntSyncValue currentChunkSync = syncManager.findSyncHandler("oreCurrentChunk", IntSyncValue.class);
-        IntSyncValue workStateSync = syncManager.findSyncHandler("drillerWorkState", IntSyncValue.class);
+        EnumSyncValue<WorkState, ?> workStateSync = syncManager
+            .findSyncHandler("drillerWorkState", EnumSyncValue.class);
         IntSyncValue yHeadSync = syncManager.findSyncHandler("oreYHead", IntSyncValue.class);
         StringSyncValue veinNameSync = syncManager.findSyncHandler("oreVeinName", StringSyncValue.class);
 
@@ -72,7 +74,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                     .marginBottom(2)
                     .setEnabledIf(
                         w -> baseMetaTileEntity.isActive() && oreListSizeSync.getValue() > 0
-                            && workStateSync.getValue() == WorkState.AT_BOTTOM.ordinal()))
+                            && workStateSync.getValue() == WorkState.AT_BOTTOM))
             .child(
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
@@ -84,7 +86,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                     .marginBottom(2)
                     .setEnabledIf(
                         w -> baseMetaTileEntity.isActive() && yHeadSync.getValue() > 0
-                            && workStateSync.getValue() == WorkState.DOWNWARD.ordinal()))
+                            && workStateSync.getValue() == WorkState.DOWNWARD))
             .child(
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
@@ -96,7 +98,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                     .marginBottom(2)
                     .setEnabledIf(
                         w -> baseMetaTileEntity.isActive() && currentChunkSync.getValue() > 0
-                            && workStateSync.getValue() == WorkState.AT_BOTTOM.ordinal()))
+                            && workStateSync.getValue() == WorkState.AT_BOTTOM))
             .child(
                 IKey.dynamic(
                     () -> EnumChatFormatting.GRAY + StatCollector
@@ -105,9 +107,8 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                     .fullWidth()
                     .marginBottom(2)
                     .setEnabledIf(
-                        w -> veinNameSync.getValue() != null
-                            && (workStateSync.getValue() == WorkState.AT_BOTTOM.ordinal()
-                                || workStateSync.getValue() == WorkState.DOWNWARD.ordinal())));
+                        w -> veinNameSync.getValue() != null && (workStateSync.getValue() == WorkState.AT_BOTTOM
+                            || workStateSync.getValue() == WorkState.DOWNWARD)));
     }
 
     @Override
@@ -117,11 +118,10 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
             .child(createWorkAreaToggleButton(syncManager));
     }
 
-    protected IWidget createReplaceWithCobblestoneToggle(PanelSyncManager syncManager) {
+    protected ToggleButton createReplaceWithCobblestoneToggle(PanelSyncManager syncManager) {
         BooleanSyncValue cobbleSyncer = syncManager.findSyncHandler("oreReplaceCobble", BooleanSyncValue.class);
 
-        return new ToggleButton().size(18, 18)
-            .value(cobbleSyncer)
+        return new ToggleButton().value(cobbleSyncer)
             .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON)))
             .overlay(
                 false,
@@ -147,19 +147,18 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createChunkRadiusButton(PanelSyncManager syncManager) {
+    protected ButtonWidget<?> createChunkRadiusButton(PanelSyncManager syncManager) {
         IntSyncValue chunkRadiusSyncer = new IntSyncValue(
             multiblock::getChunkRadiusConfig,
             multiblock::setChunkRadiusConfig);
         syncManager.syncValue("oreChunkRadius", chunkRadiusSyncer);
 
-        return new ButtonWidget<>().size(18, 18)
-            .onMousePressed(mouseButton -> {
-                if (!baseMetaTileEntity.isActive()) {
-                    multiblock.adjustChunkRadius(mouseButton == 0);
-                }
-                return true;
-            })
+        return new ButtonWidget<>().onMousePressed(mouseButton -> {
+            if (!baseMetaTileEntity.isActive()) {
+                multiblock.adjustChunkRadius(mouseButton == 0);
+            }
+            return true;
+        })
             .overlay(new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_WORK_AREA)))
             .tooltipBuilder(t -> {
                 t.addLine(
@@ -175,14 +174,13 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createWorkAreaToggleButton(PanelSyncManager syncManager) {
+    protected ToggleButton createWorkAreaToggleButton(PanelSyncManager syncManager) {
         BooleanSyncValue showWorkAreaSyncer = new BooleanSyncValue(
             multiblock::isShowWorkArea,
             multiblock::setShowWorkArea).allowC2S();
         syncManager.syncValue("oreShowWorkArea", showWorkAreaSyncer);
 
-        return new ToggleButton().size(18, 18)
-            .value(showWorkAreaSyncer)
+        return new ToggleButton().value(showWorkAreaSyncer)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_SHOW_WORK_AREA)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_SHOW_WORK_AREA)
             .background(true, GTGuiTextures.BUTTON_STANDARD_PRESSED)

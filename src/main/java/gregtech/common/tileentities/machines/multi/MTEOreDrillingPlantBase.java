@@ -200,7 +200,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
 
         if (data.hasKey(NBT_WORK_STATE)) {
-            setWorkState(data.getInteger(NBT_WORK_STATE));
+            setWorkState(WorkState.fromOrdinal(data.getInteger(NBT_WORK_STATE)));
         }
 
         if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {

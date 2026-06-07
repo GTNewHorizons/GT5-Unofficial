@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -43,7 +44,8 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue yHeadSync = syncManager.findSyncHandler("backfillerYHead", IntSyncValue.class);
-        IntSyncValue workStateSync = syncManager.findSyncHandler("drillerWorkState", IntSyncValue.class);
+        EnumSyncValue<WorkState, ?> workStateSync = syncManager
+            .findSyncHandler("drillerWorkState", EnumSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
@@ -53,8 +55,7 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
                 .asWidget()
                 .fullWidth()
                 .marginBottom(2)
-                .setEnabledIf(
-                    w -> baseMetaTileEntity.isActive() && workStateSync.getValue() == WorkState.UPWARD.ordinal()));
+                .setEnabledIf(w -> baseMetaTileEntity.isActive() && workStateSync.getValue() == WorkState.UPWARD));
     }
 
     @Override
@@ -65,8 +66,7 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
     protected ToggleButton createLiquidFillingToggle(PanelSyncManager syncManager) {
         BooleanSyncValue liquidSyncer = syncManager.findSyncHandler("backfillerLiquidEnabled", BooleanSyncValue.class);
 
-        return (ToggleButton) new ToggleButton().size(18, 18)
-            .value(liquidSyncer)
+        return new ToggleButton().value(liquidSyncer)
             .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE)))
             .overlay(false, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF)))
             .tooltipBuilder(true, t -> {

@@ -175,8 +175,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         mChunkLoadingEnabled = enabled;
     }
 
-    public final void setWorkState(int ordinal) {
-        this.workState = WorkState.fromOrdinal(ordinal);
+    public final void setWorkState(WorkState state) {
+        this.workState = state;
     }
 
     protected void addOperatingMessages() {
@@ -232,7 +232,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.setWorkState(aNBT.getInteger("workState"));
+        this.setWorkState(WorkState.fromOrdinal(aNBT.getInteger("workState")));
         if (aNBT.hasKey("isPickingPipes"))
             workState = aNBT.getBoolean("isPickingPipes") ? WorkState.UPWARD : WorkState.DOWNWARD;
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");

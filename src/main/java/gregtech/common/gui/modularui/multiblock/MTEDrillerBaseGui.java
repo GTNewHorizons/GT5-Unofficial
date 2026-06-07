@@ -13,7 +13,7 @@ import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -43,10 +43,7 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
         }).allowC2S());
         syncManager.syncValue(
             "drillerWorkState",
-            new IntSyncValue(
-                () -> multiblock.getWorkState()
-                    .ordinal(),
-                multiblock::setWorkState));
+            new EnumSyncValue<>(WorkState.class, multiblock::getWorkState, multiblock::setWorkState));
         syncManager.syncValue(
             "drillerShutdownReason",
             new StringSyncValue(multiblock::getShutdownReason, multiblock::setShutdownReason));
@@ -68,7 +65,7 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
 
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createLeftPanelGapRow(parent, syncManager).child(createChunkLoadingToggle(syncManager));
+        return super.createLeftPanelGapRow(parent, syncManager).child(0, createChunkLoadingToggle(syncManager));
     }
 
     @Override
@@ -84,8 +81,7 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
     protected ToggleButton createChunkLoadingToggle(PanelSyncManager syncManager) {
         BooleanSyncValue chunkLoadingSyncer = syncManager
             .findSyncHandler("chunkLoadingEnabled", BooleanSyncValue.class);
-        return (ToggleButton) new ToggleButton().size(18, 18)
-            .value(chunkLoadingSyncer)
+        return new ToggleButton().value(chunkLoadingSyncer)
             .overlay(true, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING)))
             .overlay(false, new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF)))
             .tooltipBuilder(true, t -> {
@@ -109,20 +105,20 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected IWidget createRetractPipesButton(PanelSyncManager syncManager) {
-        IntSyncValue workStateSyncer = syncManager.findSyncHandler("drillerWorkState", IntSyncValue.class);
-        return new ButtonWidget<>().size(18, 18)
-            .onMousePressed(mouseButton -> {
-                multiblock.abortDrilling();
-                return true;
-            })
+    protected ButtonWidget<?> createRetractPipesButton(PanelSyncManager syncManager) {
+        EnumSyncValue<WorkState, ?> workStateSyncer = syncManager
+            .findSyncHandler("drillerWorkState", EnumSyncValue.class);
+        return new ButtonWidget<>().onMousePressed(mouseButton -> {
+            multiblock.abortDrilling();
+            return true;
+        })
             .overlay(
                 new DynamicDrawable(
-                    () -> workStateSyncer.getValue() == WorkState.ABORT.ordinal() ? new DrawableStack(
+                    () -> workStateSyncer.getValue() == WorkState.ABORT ? new DrawableStack(
                         GTGuiTextures.OVERLAY_BUTTON_RETRACT_PIPE,
                         GTGuiTextures.OVERLAY_BUTTON_LOCKED) : GTGuiTextures.OVERLAY_BUTTON_RETRACT_PIPE))
             .tooltipBuilder(t -> {
-                boolean aborting = workStateSyncer.getValue() == WorkState.ABORT.ordinal();
+                boolean aborting = workStateSyncer.getValue() == WorkState.ABORT;
                 t.addLine(
                     IKey.lang(
                         aborting ? "GT5U.gui.button.drill_retract_pipes_active"
