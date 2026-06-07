@@ -761,6 +761,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     public int rebalance() {
+        if (!canUseWireless()) {
+            return 1;
+        }
 
         balanced = true;
 
@@ -1115,7 +1118,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return true;
     }
 
-    protected boolean canUseWireless() {
+    public boolean canUseWireless() {
         return wirelessCapableCapacitors() != 0;
     }
 
