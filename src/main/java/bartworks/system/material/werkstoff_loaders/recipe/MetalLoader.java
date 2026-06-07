@@ -39,8 +39,8 @@ public class MetalLoader implements IWerkstoffRunnable {
                 .eut(
                     BWUtil.calculateRecipeEU(
                         werkstoff,
-                        8 * werkstoff.getStats()
-                            .getMeltingPoint() >= 2800 ? 60 : 15))
+                        werkstoff.getStats()
+                            .getMeltingPoint() >= 2800 ? 480 : 120))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -52,8 +52,8 @@ public class MetalLoader implements IWerkstoffRunnable {
                 .eut(
                     BWUtil.calculateRecipeEU(
                         werkstoff,
-                        4 * werkstoff.getStats()
-                            .getMeltingPoint() >= 2800 ? 60 : 15))
+                        werkstoff.getStats()
+                            .getMeltingPoint() >= 2800 ? 240 : 60))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(RecipeMaps.alloySmelterRecipes);
         }
