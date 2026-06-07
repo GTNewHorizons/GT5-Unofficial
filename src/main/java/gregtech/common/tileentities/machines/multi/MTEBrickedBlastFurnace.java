@@ -80,7 +80,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
                 new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
                     { "ccc", "ccc", "ccc" }, }))
         .addElement('c', lazy(t -> ofBlock(GregTechAPI.sBlockCasings4, 15)))
-        .addElement('l', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1)))
+        .addElement('l', ofChain(ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1), isAir()))
         .build();
     private static final ITexture[] FACING_SIDE = { TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS) };
     private static final ITexture[] FACING_FRONT = {

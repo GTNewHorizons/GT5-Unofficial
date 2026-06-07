@@ -51,6 +51,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
@@ -110,6 +111,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addEnergyHatch("Any Sturdy Printer Casing", 1)
             .addMaintenanceHatch("Any Sturdy Printer Casing", 1)
             .addMufflerHatch("Any Sturdy Printer Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
