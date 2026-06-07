@@ -111,8 +111,6 @@ public enum MachineType {
     }
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
-    private static final String TT_powerUsage = "GT5U.MBTT.PowerUsage";
-    private static final String TT_maxAmperage = "GT5U.MBTT.MaxAmperage";
 
     private final String name;
     private final String description;
@@ -135,13 +133,6 @@ public enum MachineType {
             + EnumChatFormatting.YELLOW
             + type()
             + EnumChatFormatting.RESET;
-        if (this == ARC_FURNACE) {
-            return new String[] { description(), machineType,
-                EnumChatFormatting.GRAY + GTUtility
-                    .translate(TT_powerUsage) + ": " + EnumChatFormatting.RED + "300%" + EnumChatFormatting.RESET,
-                EnumChatFormatting.GRAY + GTUtility
-                    .translate(TT_maxAmperage) + ": " + EnumChatFormatting.YELLOW + "3A" + EnumChatFormatting.RESET };
-        }
         return new String[] { description(), machineType };
     }
 }

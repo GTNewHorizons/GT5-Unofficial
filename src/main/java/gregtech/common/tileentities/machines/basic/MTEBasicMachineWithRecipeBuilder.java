@@ -1,11 +1,15 @@
 package gregtech.common.tileentities.machines.basic;
 
+import java.util.Arrays;
+
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTUtility;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -128,6 +132,30 @@ public final class MTEBasicMachineWithRecipeBuilder {
 
         @Override
         public MTEBasicMachineWithRecipe build() {
+            String[] finalDescription = description;
+            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0);
+            if (extraDescriptionLines > 0) {
+                finalDescription = Arrays.copyOf(description, description.length + extraDescriptionLines);
+                int descriptionIndex = description.length;
+                if (machineEUtMultiplier != 1) {
+                    finalDescription[descriptionIndex++] = EnumChatFormatting.GRAY
+                        + GTUtility.translate("GT5U.MBTT.PowerUsage")
+                        + ": "
+                        + EnumChatFormatting.RED
+                        + (machineEUtMultiplier * 100)
+                        + "%"
+                        + EnumChatFormatting.RESET;
+                }
+                if (machineAmperageOverride != 0) {
+                    finalDescription[descriptionIndex] = EnumChatFormatting.GRAY
+                        + GTUtility.translate("GT5U.MBTT.BaseAmperage")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + machineAmperageOverride
+                        + "A"
+                        + EnumChatFormatting.RESET;
+                }
+            }
             MTEBasicMachineWithRecipe machine;
             if (fluidTankCapacityOverride == 0) {
                 machine = new MTEBasicMachineWithRecipe(
@@ -135,7 +163,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     unlocalizedName,
                     englishName,
                     tier,
-                    description,
+                    finalDescription,
                     recipes,
                     inputSlotCount,
                     outputSlotCount,
@@ -150,7 +178,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     unlocalizedName,
                     englishName,
                     tier,
-                    description,
+                    finalDescription,
                     recipes,
                     inputSlotCount,
                     outputSlotCount,
