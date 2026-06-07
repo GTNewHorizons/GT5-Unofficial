@@ -254,14 +254,14 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         return ((Widget<?>) super.createMaintIssueHoverableTerminal(syncManager)).marginTop(1);
     }
 
-    private IWidget createSeedInventoryWidget() {
+    private DynamicSyncedWidget<?> createSeedInventoryWidget() {
         return new DynamicSyncedWidget<>().widthRel(1f)
             .expanded()
             .syncHandler(seedInventoryHandler);
     }
 
-    private IWidget createSeedSlotGrid(int activeCount) {
-        if (activeCount <= 0) return new EmptyWidget();
+    private ListWidget<IWidget, ?> createSeedSlotGrid(int activeCount) {
+        if (activeCount <= 0) return new ListWidget<>();
 
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(CrossAxis.START)
             .full();
@@ -278,7 +278,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         return listWidget;
     }
 
-    private IWidget createSeedSlot(int idx) {
+    private SlotLikeButtonWidget createSeedSlot(int idx) {
         SlotLikeButtonWidget slb = new SlotLikeButtonWidget(() -> getSeedStack(idx)) {
 
             @Override
@@ -473,7 +473,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         return false;
     }
 
-    private IWidget createInventoryToggleButton() {
+    private ButtonWidget<?> createInventoryToggleButton() {
         return new ButtonWidget<>()
             .overlay(
                 new DynamicDrawable(
@@ -490,7 +490,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createConfigurationButton(PanelSyncManager syncManager, ModularPanel parent) {
+    private ButtonWidget<?> createConfigurationButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler configPanel = syncManager.syncedPanel(
             "eigConfigPanel",
             true,
@@ -545,7 +545,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                     .child(createHumidityEntry(humiditySyncer)));
     }
 
-    private IWidget createConfigEntry(IntSyncValue syncer, String labelKey, int cycleLength,
+    private Flow createConfigEntry(IntSyncValue syncer, String labelKey, int cycleLength,
         java.util.function.IntFunction<String> textProvider) {
         return Flow.column()
             .widthRel(1)
@@ -583,7 +583,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                 .marginBottom(1));
     }
 
-    private IWidget createHumidityEntry(BooleanSyncValue syncer) {
+    private Flow createHumidityEntry(BooleanSyncValue syncer) {
         return Flow.column()
             .widthRel(1)
             .coverChildrenHeight()

@@ -152,7 +152,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             .child(createStructureUpdateButton(syncManager));
     }
 
-    private IWidget createPreserveWeaponButton() {
+    private ToggleButton createPreserveWeaponButton() {
         return new ToggleButton().value(preserveWeaponSyncer)
             .overlay(
                 new DynamicDrawable(
@@ -169,7 +169,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createCycleWeaponsButton() {
+    private ToggleButton createCycleWeaponsButton() {
         return new ToggleButton().value(cycleWeaponsSyncer)
             .overlay(
                 new DynamicDrawable(
@@ -189,7 +189,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private IWidget createVoidDamagedButton() {
+    private ButtonWidget<?> createVoidDamagedButton() {
         return createMachineStatusButton(
             voidDamagedSyncer,
             OVERLAY_EEC_VOID_DAMAGED_ON,
@@ -198,7 +198,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"));
     }
 
-    private IWidget createInfernalDropsButton() {
+    private ButtonWidget<?> createInfernalDropsButton() {
         return createMachineStatusButton(
             infernalDropsSyncer,
             GTGuiTextures.OVERLAY_EEC_SPAWN_INFERNALS_ON,
@@ -207,7 +207,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop_always"));
     }
 
-    private IWidget createRitualModeButton() {
+    private ButtonWidget<?> createRitualModeButton() {
         return createMachineStatusButton(
             ritualModeSyncer,
             GTGuiTextures.OVERLAY_EEC_RITUAL_MODE_ON,
@@ -216,7 +216,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             null);
     }
 
-    private IWidget createMachineStatusButton(BooleanSyncValue syncer, IDrawable onOverlay, IDrawable offOverlay,
+    private ButtonWidget<?> createMachineStatusButton(BooleanSyncValue syncer, IDrawable onOverlay, IDrawable offOverlay,
         String tooltipPrefix, String extraTooltip) {
         return new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
             IDrawable icon = syncer.getBoolValue() ? onOverlay : offOverlay;
