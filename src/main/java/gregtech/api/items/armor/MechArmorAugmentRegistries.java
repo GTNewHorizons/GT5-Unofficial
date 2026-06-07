@@ -558,7 +558,6 @@ public class MechArmorAugmentRegistries {
         HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
             .setId("HoloInventory")
             .setItemId("augmentholoinventory")
-            .fitsInto(ArmorType.Helmet)
             .providesBehaviors(HoloInventoryBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
