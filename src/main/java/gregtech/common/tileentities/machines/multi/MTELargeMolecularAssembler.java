@@ -288,6 +288,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return new MultiblockTooltipBuilder().addMachineType(MACHINE_TYPE)
             .addInfo("Needs a Data Orb to be placed in the controller")
             .addInfo(
+                "Uses " + EnumChatFormatting.YELLOW
+                    + "Crafting Pattern Providers"
+                    + EnumChatFormatting.RESET
+                    + " to store patterns")
+            .addInfo(
                 "Basic: " + EnumChatFormatting.GREEN
                     + EU_PER_TICK_BASIC
                     + EnumChatFormatting.GRAY
