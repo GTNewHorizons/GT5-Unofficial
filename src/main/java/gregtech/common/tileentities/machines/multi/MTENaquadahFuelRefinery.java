@@ -242,7 +242,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("FuelRefineFactory.hint", 8);
+        return DescTextLocalization.addText("NaquadahFuelRefinery.hint", 8);
     }
 
     @Override
@@ -354,5 +354,10 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

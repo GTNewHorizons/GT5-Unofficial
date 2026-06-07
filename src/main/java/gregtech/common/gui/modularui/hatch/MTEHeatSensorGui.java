@@ -37,8 +37,8 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
     public Flow createThresholdFieldRow() {
         return Flow.row()
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, 100)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, 100)
                     .size(77, 12)
                     .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
