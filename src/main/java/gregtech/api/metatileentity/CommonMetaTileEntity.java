@@ -676,7 +676,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return new GTModularScreen(mainPanel, getColoredTheme());
     }
 
-    private GTGuiTheme getColoredTheme() {
+    public final GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
         byte color = this.getBaseMetaTileEntity()
