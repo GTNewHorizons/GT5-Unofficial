@@ -461,7 +461,6 @@ public class MechArmorAugmentRegistries {
         Apiarist(ItemList.Augment_Apiarist, new AugmentBuilder()
             .setId("Apiarist")
             .setItemId("augmentapiarist")
-            .fitsInto(ArmorType.Leggings)
             .providesBehaviors(ApiaristBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
