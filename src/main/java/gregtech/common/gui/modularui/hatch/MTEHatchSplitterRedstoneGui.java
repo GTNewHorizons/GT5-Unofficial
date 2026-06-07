@@ -69,7 +69,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())
                         .alignment(Alignment.CENTER)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                         .paddingTop(3)));
     }
 
