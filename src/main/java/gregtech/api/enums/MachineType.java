@@ -129,10 +129,10 @@ public enum MachineType {
     }
 
     public String[] tooltipDescription() {
-        String machineType = GTUtility.translate(TT_machineType) + ": "
-            + EnumChatFormatting.YELLOW
-            + type()
-            + EnumChatFormatting.RESET;
-        return new String[] { description(), machineType };
+        return new String[] { description(),
+            GTUtility.translate(TT_machineType) + ": "
+                + EnumChatFormatting.YELLOW
+                + type()
+                + EnumChatFormatting.RESET };
     }
 }
