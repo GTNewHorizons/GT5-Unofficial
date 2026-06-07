@@ -38,7 +38,7 @@ public class BlockLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(ingot, 9))
-                .duration(32 * TICKS)
+                .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .metadata(GTRecipeConstants.RECYCLE, true)
                 .addTo(UniversalArcFurnace);
@@ -50,7 +50,7 @@ public class BlockLoader implements IWerkstoffRunnable {
                 .fluidOutputs(werkstoff.getMolten(9 * INGOTS))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .duration(14 * SECONDS + 8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
 
         }

@@ -74,8 +74,6 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet,
     ITileWithModularUI, IAddGregtechLogo, IGetGUITextureSet, IAddInventorySlots {
 
-    protected boolean mInventoryChanged = false;
-
     /**
      * Buffers adjacent TileEntities for faster access
      * <p/>
@@ -141,7 +139,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public ChunkCoordinates getCoords() {
+    public final ChunkCoordinates getCoords() {
         mReturnedCoordinates.posX = xCoord;
         mReturnedCoordinates.posY = yCoord;
         mReturnedCoordinates.posZ = zCoord;
@@ -182,12 +180,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public boolean isInvalidTileEntity() {
+    public final boolean isInvalidTileEntity() {
         return isInvalid();
     }
 
     @Override
-    public int getRandomNumber(int aRange) {
+    public final int getRandomNumber(int aRange) {
         return ThreadLocalRandom.current()
             .nextInt(aRange);
     }
@@ -472,7 +470,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public boolean isDead() {
+    public final boolean isDead() {
         return isDead || isInvalidTileEntity();
     }
 

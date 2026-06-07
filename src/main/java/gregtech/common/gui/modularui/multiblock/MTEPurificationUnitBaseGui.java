@@ -73,10 +73,10 @@ public class MTEPurificationUnitBaseGui extends MTEMultiBlockBaseGui<MTEPurifica
                 .asWidget()
                 .marginBottom(4));
         holdingColumn.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, Integer.MAX_VALUE)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
                 .setTextAlignment(Alignment.CENTER)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .value(parallelSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18));
 

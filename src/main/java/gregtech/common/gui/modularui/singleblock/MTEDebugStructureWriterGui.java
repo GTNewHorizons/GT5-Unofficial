@@ -91,8 +91,8 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                     .size(isOriginColumn ? 45 : 40, 14)
                     .marginRight(2)
                     .setMaxLength(isOriginColumn ? 6 : 5)
-                    .setFormatAsInteger(true)
-                    .setNumbers(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
+                    .formatAsInteger(true)
+                    .numbersInt(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
 
             // text widget for this coordinate
             coordinateRow.child(
