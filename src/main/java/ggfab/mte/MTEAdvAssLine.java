@@ -388,7 +388,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             slice.reset();
         }
         mMaxProgresstime = 0;
-        getBaseMetaTileEntity().issueClientUpdate();
     }
 
     @Override
@@ -612,10 +611,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         for (int i = slices.length - 1; i >= 0; i--) {
             slices[i].tick();
         }
-
-        if (oStuck != stuck)
-            // send the status as it has changed
-            getBaseMetaTileEntity().issueClientUpdate();
 
         if (getBaseMetaTileEntity().isAllowedToWork() && slices[0].progress < 0) {
             startRecipeProcessing();
