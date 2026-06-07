@@ -764,11 +764,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         public static final int ORES = 0b1 << 3;
         public static final int LIQUID_CELLS = 0b1 << 4;
         /// Unused
-        public static final int BOTTLES = 0b1 << 5;
+        public static final int PLASMA_CELLS = 0b1 << 5;
         public static final int MOLTEN_CELLS = 0b1 << 6;
         public static final int SIMPLE_METALWORKING = 0b1 << 7;
         public static final int CRAFTING_METALWORKING = 0b1 << 8;
-        /// Double and dense plates
+        /// Double, dense, and superdense plates
         public static final int DOUBLE_DENSE_PLATES = 0b1 << 9;
         /// Triple, quadruple, and quintuple plates
         public static final int MULTI_PLATES = 0b1 << 10;
@@ -832,7 +832,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.rawOre, ORES);
 
             prefixLogic.put(OrePrefixes.cell, LIQUID_CELLS);
-            // prefixLogic.put(OrePrefixes.bottle, BOTTLES);
 
             prefixLogic.put(OrePrefixes.cellMolten, MOLTEN_CELLS);
 
