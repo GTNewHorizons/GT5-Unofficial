@@ -114,9 +114,6 @@ public class GTPreLoad {
         }
         GTLanguageManager.sEnglishFile.load();
 
-        GTLanguageManager.addStringLocalization("GT5U.MBTT.PowerUsage", "Power Usage");
-        GTLanguageManager.addStringLocalization("GT5U.MBTT.BaseAmperage", "Base Amperage");
-
         Materials.getMaterialsMap()
             .values()
             .parallelStream()
