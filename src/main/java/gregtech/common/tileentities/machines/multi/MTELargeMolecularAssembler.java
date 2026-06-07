@@ -19,7 +19,6 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -696,11 +695,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", getStackForm(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            if (getBaseMetaTileEntity().getWorld() != null) {
-                EntityPlayer player = getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName());
-                gridProxy.setOwner(player);
-            }
         }
         return gridProxy;
     }
