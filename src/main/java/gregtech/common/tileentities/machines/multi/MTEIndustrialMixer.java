@@ -273,7 +273,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (glassTier < VoltageIndex.UIV) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.multi_amp_need_uiv"));
+                errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UIV));
             }
         } else {
             checkHasEnergyHatch(errors);
