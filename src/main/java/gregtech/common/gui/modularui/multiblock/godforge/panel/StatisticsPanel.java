@@ -222,7 +222,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Molten module
@@ -231,7 +231,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Plasma module
@@ -240,7 +240,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         // Exotic module
@@ -249,7 +249,7 @@ public class StatisticsPanel {
                 .style(EnumChatFormatting.GREEN)
                 .alignment(Alignment.CENTER)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(WIDTH_MINOR, HEIGHT_MAJOR));
 
         return returnList;

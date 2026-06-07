@@ -56,6 +56,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -126,6 +127,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addCasingInfoExactly("Steel Gear Box", 18, false)
             .addCasingInfoExactly("HSS-G Frame Box", 20, false)
             .addCasingInfoExactly("Any Tiered Glass", 8, false)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
