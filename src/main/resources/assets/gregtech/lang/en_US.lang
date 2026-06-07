@@ -3263,20 +3263,20 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §9Target Beam E
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §bEU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f2000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aPower§7 cost starts at §f1A§7 of §fUV§7 per §6Beam Rate§7 and increases quadratically
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§3Power§7 cost starts at §f1A§7 of §fUV§7 per §6Beam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§aP§7 = (§f1A UV§7) * §6R§7 * (§dN+1§7)^2
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§3P§7 = (§f1A UV§7) * §6R§7 * (§dN§7+1)^2
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Automatically switches to Collider mode when the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=§f§nCollider mode§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=then collide to generate new particles
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=The §3Collision Energy§7 is two times the §9Beam Energy§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=If the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=The §bCollision Energy§7 is two times the §9Beam Energy§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=If the §bCollision Energy§7 exceeds the rest mass of a particle, that particle will start
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=appearing in the outputs
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=A particle output can only appear in the modules that correspond to the forces that
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=interact with that particle
