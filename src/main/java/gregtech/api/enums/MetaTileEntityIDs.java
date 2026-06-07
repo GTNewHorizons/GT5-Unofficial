@@ -1906,6 +1906,7 @@ public enum MetaTileEntityIDs {
     CropsNHCropSynthesizerUEV(28052),
     CropsNHCropSynthesizerUIV(28053),
     CropsNHCropSynthesizerUMV(28054),
+    CropsNHIndustrialFarm(28055),
     MAGLEV_PYLON_MV(29990),
     MAGLEV_PYLON_HV(29991),
     MAGLEV_PYLON_EV(29992),
