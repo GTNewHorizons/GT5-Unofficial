@@ -20,7 +20,7 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
     // TODO: add back check structure button
     // TODO: show structure problems on gui
-    // TODO: different ProgressWidget depending on machine mode
+    // TODO: different gui depending on machine mode
 
     public MTEWindmillGui(MTEWindmill windmill) {
         super(windmill);

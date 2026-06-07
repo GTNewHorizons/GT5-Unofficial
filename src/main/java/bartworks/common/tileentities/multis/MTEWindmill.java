@@ -19,6 +19,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
 
@@ -68,16 +69,17 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implements ISurvivalConstructable {
 
-    /* TODO: redo structure
+    /*
      * TODO: add custom recipes system
-     * TODO: add machine modes (mixer, grinder) with different housings
      * TODO: NEI handler
      * TODO: possible wind rework
+     * TODO: textures
+     * TODO: add block names to lang
+     * TODO: add custom item output bus (and possibly input)
      * TODO: world gen (???)
      * TODO: clean up class
      */
@@ -87,6 +89,13 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
     private TileEntityRotorBlock rotorBlock;
     private int mDoor = 0;
     private int mHardenedClay = 0;
+    private int mShaftBlocks = 0;
+    private modes mode;
+
+    private enum modes {
+        grinder,
+        mixer
+    }
 
     private enum windLevel {
         NON_EXISTENT,
@@ -96,6 +105,16 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         VERY_STRONG,
         TOO_STRONG
     }
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
+
+    private static final int VERTICAL_OFFSET = 9;
+    private static final int HORIZONTAL_OFFSET = 3;
+    private static final int DEPTH_OFFSET = 0;
+
+    private static final int MILLSTONE_META = 4;
+    private static final int MIXER_META = 5;
 
     public MTEWindmill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -142,24 +161,74 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         }
     };
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureElement<MTEWindmill> HOUSING = new IStructureElement<>() {
+
+        @Override
+        public boolean check(MTEWindmill windmill, World world, int x, int y, int z) {
+            if (world.getBlock(x, y, z) == sBlockCasingsWindmill) {
+                int meta = world.getBlockMetadata(x, y, z);
+
+                if (meta == MILLSTONE_META) {
+                    windmill.mode = modes.grinder;
+                    return true;
+                }
+                if (meta == MIXER_META) {
+                    windmill.mode = modes.mixer;
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        @Override
+        public boolean spawnHint(MTEWindmill windmill, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, sBlockCasingsWindmill, MILLSTONE_META);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(MTEWindmill windmill, World world, int x, int y, int z, ItemStack trigger) {
+            return world.setBlock(x, y, z, sBlockCasingsWindmill, MILLSTONE_META, 3);
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(
+                new ItemStack((Block) ofBlock(sBlockCasingsWindmill, MILLSTONE_META), 1, 0),
+                new ItemStack((Block) ofBlock(sBlockCasingsWindmill, MIXER_META), 1, 0));
+        }
+    };
+
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
-                    { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
-                    { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-                    { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { " ppspp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }, }))
+        // spotless:off
+        .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
+            { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
+            { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
+            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { " pprpp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }}))
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
+            { "       ", "       ", "   p   ", "  ppp  ", "   p   ", "       ", "       " },
+            { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
+            { "       ", "  ppp  ", " p   p ", " p   p ", " p   p ", "  ppp  ", "       " },
+            { "       ", " pprpp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
+            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
+            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
+            { "       ", "  sss  ", " s   s ", " s h s ", " s   s ", "  sss  ", "       " },
+            { "  a~a  ", " aaaaa ", "aaaaaaa", "aaaaaaa", "aaaaaaa", " aaaaa ", "  aaa  " }}))
+        // spotless:on
         .addElement('p', ofBlockAnyMeta(Blocks.planks))
         .addElement(
             'c',
@@ -183,7 +252,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
                 })))
         .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
-        .addElement('s', new IStructureElement<>() {
+        .addElement('r', new IStructureElement<>() {
 
             @Override
             public boolean check(MTEWindmill t, World world, int x, int y, int z) {
@@ -215,6 +284,29 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
                 return BlocksToPlace.create(new ItemStack(ItemRegistry.ROTORBLOCK));
             }
         })
+        .addElement('a', ofBlock(sBlockCasingsWindmill, 0))
+        .addElement('h', HOUSING)
+        // TODO: maybe look at refactoring this
+        .addElement(
+            's',
+            ofChain(
+                onElementPass(t -> t.mShaftBlocks++, ofBlock(sBlockCasingsWindmill, 1)),
+                ofTileAdder(MTEWindmill::addDispenserToOutputSet, sBlockCasingsWindmill, 1),
+                onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+
+                    private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+
+                    @Override
+                    public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
+                        return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                    }
+
+                    @Override
+                    public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
+                        ItemStack trigger) {
+                        return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
+                    }
+                })))
         .build();
 
     @Override
@@ -278,8 +370,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
     // TODO: redo this function/clean up
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        ItemStack itemStack = getControllerSlot();
-        if (itemStack == null || itemStack.getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        ItemStack[] itemStack = getInputs();
+        if (itemStack[0].getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (getWindLevel(this.rotorBlock) == windLevel.NON_EXISTENT) {
             return CheckRecipeResultRegistry.WIND_LOW;
@@ -289,11 +381,18 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
-        GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
-            .caching(false)
-            .items(itemStack)
-            .voltage(V[1])
-            .find();
+        GTRecipe tRecipe = switch (this.mode) {
+            case grinder -> RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .caching(false)
+                .items(itemStack)
+                .voltage(V[1])
+                .find();
+            case mixer -> RecipeMaps.mixerRecipes.findRecipeQuery()
+                .caching(false)
+                .items(itemStack)
+                .voltage(V[1])
+                .find();
+        };
         if (tRecipe == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -326,6 +425,14 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         }
         this.mMaxProgresstime = tRecipe.mDuration * 2 * MAX_PARALLELS;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    // probably don't need, can probably just replace call with mInventory
+    private ItemStack[] getInputs() {
+        return switch (this.mode) {
+            case grinder -> new ItemStack[] { getControllerSlot() };
+            case mixer -> mInventory;
+        };
     }
 
     @Override
@@ -389,14 +496,32 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
-        if (this.tileEntityDispensers.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+
+        if (this.checkPiece(STRUCTURE_PIECE_LEGACY, 3, 11, 0, null)) {
+            this.mode = modes.grinder;
+            checkCasingMin(errors, this.mHardenedClay, 40);
+            if (this.tileEntityDispensers.isEmpty()) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+            }
+            if (this.mDoor > 2) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+            }
+            return;
         }
-        if (this.mDoor > 2) {
-            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+
+        this.tileEntityDispensers.clear();
+        this.mDoor = 0;
+        this.mHardenedClay = 0;
+
+        if (this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) {
+            checkCasingMin(errors, this.mShaftBlocks, 40);
+            if (this.tileEntityDispensers.isEmpty()) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+            }
+            if (this.mDoor > 2) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+            }
         }
-        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override
@@ -444,13 +569,22 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 11, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     private int getParallels(TileEntityRotorBlock rotorBlock) {
@@ -484,7 +618,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEWindmillGui(this);
+        return new MTEMultiBlockBaseGui<>(this);
     }
 
     @Override
