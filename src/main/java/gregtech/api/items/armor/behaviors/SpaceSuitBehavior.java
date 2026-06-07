@@ -17,6 +17,11 @@ public class SpaceSuitBehavior implements IArmorBehavior {
     }
 
     @Override
+    public boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
+        return hazard == Hazard.SPACE;
+    }
+
+    @Override
     public boolean protectsAgainstFully(@NotNull ArmorContext context, Hazard hazard) {
         return hazard == Hazard.SPACE;
     }
