@@ -329,7 +329,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             }
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }
