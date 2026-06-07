@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -147,5 +148,30 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack.getItemDamage() == 0 && itemStack.getTagCompound() != null)
             return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
         return super.getUnlocalizedName(itemStack);
+    }
+
+    private static String getTooltip(int meta, ItemStack stack) {
+        return StatCollector
+            .translateToLocalFormatted("tooltip.labparts." + meta + ".name", getLocalizedBioName(stack));
+    }
+
+    private static String getLocalizedBioName(ItemStack stack) {
+        final String name = stack.getTagCompound()
+            .getString("Name");
+        if (name == null || name.isEmpty()) {
+            return "";
+        }
+        final String key = "bw.bioname." + name.toLowerCase()
+            .replace(" ", "_");
+        final String keyLatin = key + ".latin";
+        if (StatCollector.canTranslate(keyLatin)) {
+            return StatCollector.translateToLocalFormatted(
+                "bw.bioname.latin.format",
+                StatCollector.translateToLocal(key),
+                EnumChatFormatting.ITALIC + StatCollector.translateToLocal(keyLatin)
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY);
+        }
+        return StatCollector.translateToLocal(key);
     }
 }

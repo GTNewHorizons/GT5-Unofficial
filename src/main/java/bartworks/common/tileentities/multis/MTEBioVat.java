@@ -157,7 +157,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+        .addElement('a', ofChain(ofBlockAnyMeta(FluidLoader.bioFluidBlock), isAir()))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
