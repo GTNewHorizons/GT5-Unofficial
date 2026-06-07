@@ -60,8 +60,10 @@ public class MTEElectrodeDetectorHatchGui extends MTEHatchBaseGui<MTEElectrodeDe
         return Flow.row()
             .child(
                 new TextFieldWidget().formatAsInteger(true)
-                    .numbersInt(() -> 0, () -> machine.getThresholdType()
-                        .getMaxCapacity())
+                    .numbersInt(
+                        () -> 0,
+                        () -> machine.getThresholdType()
+                            .getMaxCapacity())
                     .size(77, 12)
                     .value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))

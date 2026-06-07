@@ -260,10 +260,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (!errors.isEmpty()) return;
             if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
             if (electrodeDetectorHatch != null) {
-                if (electrode != null)
-                    updateDetectorHatches(
-                        ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
-                        electrode.durability);
+                if (electrode != null) updateDetectorHatches(
+                    ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                    electrode.durability);
                 else updateDetectorHatches(0, 0);
             }
         }
