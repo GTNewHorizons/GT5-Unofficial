@@ -198,7 +198,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 12,
                 EnumChatFormatting.GOLD,
                 false)
-            .addInputHatch("Coolant Hatch")
+            .addInputHatch("Bottom center")
             .addStructureInfo("Tier 2")
             .addController("Front bottom center")
             .addCasingInfoExactlyColored(
@@ -231,8 +231,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 8,
                 EnumChatFormatting.GOLD,
                 false)
-            .addInputHatch("Coolant Hatch")
-            .addStructureInfoSeparator()
+            .addInputHatch("Bottom center")
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
             .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;

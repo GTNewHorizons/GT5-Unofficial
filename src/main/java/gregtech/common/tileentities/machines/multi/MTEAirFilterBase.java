@@ -146,8 +146,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
     }
 
     @Override
@@ -214,8 +212,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
             .addEnergyHatch("Any bottom layer Casing", 1)
             .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addInputBus("Any bottom layer Casing", 1)
-            .addOutputBus("Any bottom layer Casing", 1)
+            .addInputBus("Any bottom layer Casing (optional)", 1)
+            .addOutputBus("Any bottom layer Casing (optional)", 1)
             .toolTipFinisher();
         return tt;
     }

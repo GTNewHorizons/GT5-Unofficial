@@ -37,7 +37,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,12 +46,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -464,7 +464,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Foundry")
+        tt.addMachineType("Fluid Solidifier")
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
@@ -647,13 +647,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            checkCasingMin(errors, casingAmount, MIN_CASINGS);
-            if (casingAmount >= MIN_CASINGS) { // Only check for extra error when casing check pass
-                if (casingAmount < MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0)) {
-                    errors.add(StructureErrors.of("GT5U.gui.text.structure_error.exo_foundry_too_many_hatch"));
-                }
-            }
+            foundryData.checkSolidifierModules(); // recalculate module flags with current tier
             checkModules(errors);
+            int requiredCasings = MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            checkCasingMin(errors, casingAmount, requiredCasings);
             checkHasInputHatch(errors);
             checkHasOutputBus(errors);
             checkHasAnyEnergy(errors);
@@ -895,13 +892,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // Render code
     private boolean shouldRender = true;
     private boolean renderInitialized;
-    private static IModelCustomExt ring;
+    private static IVertexArrayObject ring;
     private static ShaderProgram ringProgram;
     private int uRingColor;
 
     private void initializeRender() {
         // spotless:off
-        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
+        ring = WavefrontVBOBuilder.compileToVBO(
             new ResourceLocation(
                 GregTech.resourceDomain,
                 "textures/model/foundry_ring.obj"
@@ -1018,7 +1015,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ring.renderAllVAO();
+        ring.render();
         GL11.glPopMatrix();
     }
 

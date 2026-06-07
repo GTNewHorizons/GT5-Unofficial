@@ -75,7 +75,7 @@ public class AcidRecipes {
             .fluidInputs(Materials.Water.getFluid(1000L))
             .fluidOutputs(Materials.Hydrogen.getGas(1000L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
         // Chlorosulfonic Acid Line
         GTValues.RA.stdBuilder()

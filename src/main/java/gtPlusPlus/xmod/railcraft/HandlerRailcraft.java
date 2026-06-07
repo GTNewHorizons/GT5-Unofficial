@@ -162,7 +162,7 @@ public class HandlerRailcraft {
             .fluidInputs(Materials.Oxygen.getGas(500))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(500))
             .duration(4 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         // C + 2O = CO2
@@ -173,7 +173,7 @@ public class HandlerRailcraft {
             .fluidInputs(Materials.Oxygen.getGas(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(2 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         if (Railcraft.isModLoaded()) {

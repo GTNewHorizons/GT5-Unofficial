@@ -185,12 +185,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                boolean oActive = getBaseMetaTileEntity().isActive();
                 boolean active = isControllerActive();
                 getBaseMetaTileEntity().setActive(active);
-                if (active != oActive) {
-                    getBaseMetaTileEntity().issueClientUpdate();
-                }
             }
         } else if (this.mControllerLocation != null) {
             // Weird Invalid State

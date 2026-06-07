@@ -198,8 +198,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
     }
 
@@ -230,8 +228,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                             inputInfo.getRate() / numValidOutputs,
                             inputInfo.getParticleId(),
                             inputInfo.getFocus());
-                        BeamLinePacket packet = new BeamLinePacket(outputInfo);
-                        o.dataPacket = packet;
+                        o.dataPacket = new BeamLinePacket(outputInfo);
                     }
                 }
             }

@@ -52,6 +52,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.github.bsideup.jabel.Desugar;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
@@ -123,7 +124,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private boolean powered;
     private NodeState state = NodeState.Idle;
 
-    private int minParallel = 1, manualSlowdown = 0;
+    private int minParallel = 1, speedDivisor = 1;
 
     private final List<MTEHatchNaniteDetector> naniteDetectors = new ArrayList<>();
     private final List<MTEHatchIONodeController> controllerHatches = new ArrayList<>();
@@ -135,7 +136,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         NaniteTierTooLow,
         PausedStep,
         PausedImmediate,
-        Crafting
+        Crafting,
+        InternalError,
     }
 
     @Desugar
@@ -443,35 +445,47 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     protected void incrementProgressTime() {
+        RecipeStep step = getCurrentStep();
+
+        // sanity check, these first four should never happen
+        if (step == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        this.requiredTier = step.nanite;
+        setRequiredTier(this.requiredTier);
+
+        if (this.requiredTier == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.requiredCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        if (this.consumedCondensate == null) {
+            state = NodeState.InternalError;
+            return;
+        }
+
+        // Assembler is missing or not running
+        if (this.assembler == null || this.assembler.mMaxProgresstime <= 0) {
+            state = NodeState.AssemblerOffline;
+            return;
+        }
+
         // Assembler can't deliver enough power; stall crafting
         if (!this.powered) {
             state = NodeState.Unpowered;
             return;
         }
 
-        RecipeStep step = getCurrentStep();
-
-        if (step == null) {
-            throw new IllegalStateException("current step was null");
-        }
-
-        this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
-
-        // sanity check, this should never happen
-        if (this.requiredTier == null) return;
-        if (this.assembler == null) return;
-        if (this.requiredCondensate == null) return;
-        if (this.consumedCondensate == null) return;
-
-        // if the provided tier is insufficient, do nothing
+        // if the provided tier is insufficient; do nothing
         if (this.providedTier == null || this.providedTier.tier < this.requiredTier.tier) {
             state = NodeState.NaniteTierTooLow;
-            return;
-        }
-
-        if (this.assembler.mMaxProgresstime <= 0) {
-            state = NodeState.AssemblerOffline;
             return;
         }
 
@@ -492,7 +506,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
-        int divisor = this.parallelRecipesInProgress * (1 + Math.max(this.slowdowns, this.manualSlowdown));
+        int divisor = this.parallelRecipesInProgress * Math.max(this.slowdowns + 1, this.speedDivisor);
 
         this.subtickCounter += availableNanites;
 
@@ -768,8 +782,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @OCMethod
-    public int getManualSlowdown() {
-        return manualSlowdown;
+    public int getSpeedDivisor() {
+        return speedDivisor;
     }
 
     @OCMethod
@@ -787,6 +801,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             case PausedStep -> "paused-step";
             case PausedImmediate -> "paused-immediate";
             case Crafting -> "crafting";
+            case InternalError -> "internal-error";
         };
     }
 
@@ -801,8 +816,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @OCMethod
-    public void setManualSlowdown(int manualSlowdown) {
-        this.manualSlowdown = manualSlowdown;
+    public void setSpeedDivisor(int speedDivisor) {
+        this.speedDivisor = Math.max(1, speedDivisor);
     }
 
     @Override
@@ -881,8 +896,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                             translate(
                                 "GT5U.gui.text.remaining_condensate",
                                 CondensateType.getCondensateName(e.getKey()),
-                                consumed,
-                                e.getLongValue()));
+                                NumberFormatUtil.formatFluid(consumed),
+                                NumberFormatUtil.formatFluid(e.getLongValue())));
                     }
                 }
 
@@ -926,7 +941,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     () -> minParallel,
                     f -> minParallel = f,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(1, Integer.MAX_VALUE);
+                        widget.numbersInt(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -938,7 +953,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     () -> maxParallel,
                     f -> maxParallel = f,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(1, Integer.MAX_VALUE);
+                        widget.numbersInt(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -947,10 +962,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     })
                 .addIntEditor(
                     IKey.lang("GT5U.gui.text.bec-speed-divisor"),
-                    () -> manualSlowdown,
-                    i -> manualSlowdown = i,
+                    () -> speedDivisor,
+                    i -> speedDivisor = i,
                     (panel2, sync, widget) -> {
-                        widget.setNumbers(0, Integer.MAX_VALUE);
+                        widget.numbersInt(1, Integer.MAX_VALUE);
                         widget.tooltip(
                             t -> t.addStringLines(
                                 MarkdownTooltipLoader.STANDARD.loadStandardPath(
@@ -1026,6 +1041,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         aNBT.setInteger("minParallels", minParallel);
         aNBT.setInteger("maxParallels", maxParallel);
+        aNBT.setInteger("speedDivisor", speedDivisor);
 
         if (requiredNanites != null) {
             aNBT.setInteger("naniteCount", requiredNanites.length);
@@ -1068,6 +1084,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         minParallel = aNBT.getInteger("minParallels");
         maxParallel = aNBT.getInteger("maxParallels");
+        speedDivisor = aNBT.getInteger("speedDivisor");
 
         int count = aNBT.getInteger("naniteCount");
 
