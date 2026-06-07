@@ -384,7 +384,7 @@ public class GTRecipeRegistrator {
                 GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                 recipeBuilder.itemInputs(aStack)
                     .itemOutputs(outputs.toArray(new ItemStack[0]))
-                    .duration(((int) Math.max(32L, (tAmount / M) * 2L)) * TICKS)
+                    .duration(((int) Math.max(16L, tAmount / M)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .metadata(RECYCLE, isRecycle)
                     .addTo(universalArcFurnace);
