@@ -40,6 +40,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -197,7 +198,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addController("Front center, 2nd layer")
             .addCasingInfoMin("Mixer Containment Casing", 5, false)
             .addCasingInfoExactly("Titanium Turbine Casing", 5, false)
-            .addCasingInfoExactly("Any Tiered Glass", 30, true)
+            .addCasingInfoExactly("Any Tiered Glass", 30, false)
             .addCasingInfoExactly("Tungsten Sheetmetal", 24, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -274,6 +275,9 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (glassTier < VoltageIndex.UIV) {
+                errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UIV));
+            }
         } else {
             checkHasEnergyHatch(errors);
         }
