@@ -23,15 +23,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -323,37 +320,16 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         if (aBaseMetaTileEntity.isServerSide()) {
             if (needsWaterFill && aTick % 20 == 0) {
-                World world = aBaseMetaTileEntity.getWorld();
-                boolean allFilled = true;
-                int controllerX = aBaseMetaTileEntity.getXCoord();
-                int controllerY = aBaseMetaTileEntity.getYCoord();
-                int controllerZ = aBaseMetaTileEntity.getZCoord();
-
-                for (int sliceZ = 0; sliceZ < PurificationPlantStructureString.STRUCTURE_STRING.length; sliceZ++) {
-                    String[] layers = PurificationPlantStructureString.STRUCTURE_STRING[sliceZ];
-                    for (int layerY = 0; layerY < layers.length; layerY++) {
-                        String row = layers[layerY];
-                        for (int charX = 0; charX < row.length(); charX++) {
-                            if (row.charAt(charX) != 'F') continue;
-
-                            int[] abc = new int[] { charX - 3, layerY - 6, sliceZ - 0 };
-                            int[] xyz = new int[] { 0, 0, 0 };
-                            this.getExtendedFacing()
-                                .getWorldOffset(abc, xyz);
-                            int wx = controllerX + xyz[0];
-                            int wy = controllerY + xyz[1];
-                            int wz = controllerZ + xyz[2];
-                            Block block = world.getBlock(wx, wy, wz);
-                            if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
-                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                            } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
-                                allFilled = false;
-                            }
-                        }
-                    }
+                if (GTStructureUtility.fillStructureWithWater(
+                    aBaseMetaTileEntity,
+                    getExtendedFacing(),
+                    PurificationPlantStructureString.STRUCTURE_STRING,
+                    3,
+                    6,
+                    0,
+                    'F')) {
+                    needsWaterFill = false;
                 }
-
-                if (allFilled) needsWaterFill = false;
             }
             // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
             for (int i = 0; i < linkedUnits.size(); ++i) {

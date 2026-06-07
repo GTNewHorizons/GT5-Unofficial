@@ -167,6 +167,39 @@ public class GTStructureUtility {
         return false;
     }
 
+    public static boolean fillStructureWithWater(IGregTechTileEntity tile, ExtendedFacing facing, String[][] structure,
+        int offsetX, int offsetY, int offsetZ, char waterChar) {
+        World world = tile.getWorld();
+        boolean allFilled = true;
+        int controllerX = tile.getXCoord();
+        int controllerY = tile.getYCoord();
+        int controllerZ = tile.getZCoord();
+
+        for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+            String[] layers = structure[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    if (row.charAt(charX) != waterChar) continue;
+
+                    int[] abc = new int[] { charX - offsetX, layerY - offsetY, sliceZ - offsetZ };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    facing.getWorldOffset(abc, xyz);
+                    int wx = controllerX + xyz[0];
+                    int wy = controllerY + xyz[1];
+                    int wz = controllerZ + xyz[2];
+                    Block block = world.getBlock(wx, wy, wz);
+                    if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                        world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                    } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                        allFilled = false;
+                    }
+                }
+            }
+        }
+        return allFilled;
+    }
+
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
