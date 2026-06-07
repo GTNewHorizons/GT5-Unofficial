@@ -144,7 +144,7 @@ public class ItemRegistry {
     public static final Item PUMPPARTS = new SimpleSubItemClass("BWrawtube", "BWmotor");
 
     public static final Block bw_realglas = new BWBlocksGlass(
-        "BW_GlasBlocks",
+        "BW_TieredGlass",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
@@ -160,8 +160,28 @@ public class ItemRegistry {
         MainMod.BIO_TAB);
 
     public static final Block bw_realglas2 = new BWBlocksGlass2(
-        "BW_GlasBlocks2",
+        "BW_ExtraGlass",
         new String[] { MainMod.MOD_ID + ":ThoriumYttriumGlass" },
+        MainMod.BIO_TAB);
+
+    public static final Block bw_deprecatedglass = new BWBlocksGlass(
+        "BW_GlasBlocks",
+        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
+            MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
+            MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
+        MainMod.BIO_TAB);
+    public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
+        "BW_GlasBlocks2",
+        new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
         MainMod.BIO_TAB);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
