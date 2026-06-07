@@ -131,25 +131,25 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
     @Override
     protected Function<Parameter<?, ?>, WidgetConfigurator<?>> getParameterWidgetConfigurator() {
         return parameter -> (_, _, widget) -> {
-            TextFieldWidget textFieldWidget = (TextFieldWidget) widget;
-
-            switch (parameter.getNbtKey()) {
-                case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
-                    t -> t.addStringLines(
-                        MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
-                            Collections.emptyMap())));
-                case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
-                    t -> t.addStringLines(
-                        MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
-                            Collections.emptyMap())));
-                case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
-                    t -> t.addStringLines(
-                        MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                            new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
-                            Collections.emptyMap())));
-                default -> {}
+            if (widget instanceof TextFieldWidget textFieldWidget) {
+                switch (parameter.getNbtKey()) {
+                    case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
+                        t -> t.addStringLines(
+                            MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
+                                Collections.emptyMap())));
+                    case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
+                        t -> t.addStringLines(
+                            MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
+                                Collections.emptyMap())));
+                    case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
+                        t -> t.addStringLines(
+                            MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                                new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
+                                Collections.emptyMap())));
+                    default -> {}
+                }
             }
         };
     }

@@ -69,10 +69,9 @@ public class MTEBECMultiblockBaseGui<T extends MTEBECMultiblockBase<?>> extends 
     }
 
     protected TextWidget<?> createCondensateWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        BECFactoryNetwork network = multiblock.getNetwork();
-        return createCondensateWidget(
-            syncManager,
-            parent,
-            () -> network == null ? new CondensateList() : network.getStoredCondensate(multiblock));
+        return createCondensateWidget(syncManager, parent, () -> {
+            BECFactoryNetwork network = multiblock.getNetwork();
+            return network == null ? new CondensateList() : network.getStoredCondensate(multiblock);
+        });
     }
 }

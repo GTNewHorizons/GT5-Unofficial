@@ -22,11 +22,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.SettingsPanelParameterCompat;
 
 public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
 
@@ -146,7 +146,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .topRel(0)
             .leftRel(1)
             .padding(4)
-            .child(ButtonWidget.panelCloseButton());;
+            .child(ButtonWidget.panelCloseButton());
 
         Flow mainColumn = Flow.column()
             .coverChildren()
@@ -160,7 +160,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     protected SettingsPanelBuilder getSettingsPanelBuilder() {
-        return SettingsPanel.builder()
+        return SettingsPanelParameterCompat
             .addSettingsForParameters(((IParametrized) multiblock).getParameters(), getParameterWidgetConfigurator());
     }
 
