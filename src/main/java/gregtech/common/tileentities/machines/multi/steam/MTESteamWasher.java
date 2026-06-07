@@ -205,7 +205,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
                 .addElement('D', chainAllGlasses())
-                .addElement('E', ofChain(isAir(), ofAnyWater()))
+                .addElement('E', ofChain(ofAnyWater(false), isAir()))
                 .addElement(
                     'A',
                     ofChain(
