@@ -8553,7 +8553,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchCraftingInputSlave(
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
-                "Crafting Input Proxy").getStackForm(1L));
+                "Crafting Input Proxy",
+                true).getStackForm(1L));
+        ItemList.Hatch_CraftingInput_Bus_Slave_ItemOnly.set(
+            new MTEHatchCraftingInputSlave(
+                CRAFTING_INPUT_SLAVE_BUS.ID,
+                "hatch.crafting_input.proxy.item_only",
+                "Crafting Input Mirror",
+                false).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER.ID,

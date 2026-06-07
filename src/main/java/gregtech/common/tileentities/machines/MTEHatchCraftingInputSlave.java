@@ -26,6 +26,7 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -52,20 +53,33 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
     private boolean reverseRecipes = false; // if true, the slave will show the recipes in reverse order compared to the
                                             // master CRIB
+    private final boolean isUniversal; // if true, the slave will accept patterns with fluid inputs,
+                                       // else only accept patterns without fluid inputs
 
-    public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 11, 0, null);
-        disableSort = true;
+    protected int getTier() {
+        return getTier(this.isUniversal);
     }
 
-    public MTEHatchCraftingInputSlave(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    protected static int getTier(boolean isUniversal) {
+        return isUniversal ? VoltageIndex.UIV : VoltageIndex.UV;
+    }
+
+    public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional, boolean isUniversal) {
+        super(aID, aName, aNameRegional, getTier(isUniversal), 0, null);
+        disableSort = true;
+        this.isUniversal = isUniversal;
+    }
+
+    public MTEHatchCraftingInputSlave(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+        boolean isUniversal) {
         super(aName, aTier, 0, aDescription, aTextures);
         disableSort = true;
+        this.isUniversal = isUniversal;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchCraftingInputSlave(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchCraftingInputSlave(mName, mTier, mDescriptionArray, mTextures, isUniversal);
     }
 
     @Override
@@ -146,6 +160,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (master.getBaseMetaTileEntity() == null) { // master disappeared
             master = null;
             getBaseMetaTileEntity().enableTicking();
+        } else if (master.supportsFluids() && !this.isUniversal) {
+            // master changed to CRIBuffer, which is incompatible with this slave
+            master.removeProxyHatch(this);
+            master = null;
+            getBaseMetaTileEntity().enableTicking();
         }
         return master;
     }
@@ -199,6 +218,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (tileEntity == null) return null;
         if (!(tileEntity instanceof IGregTechTileEntity GTTE)) return null;
         if (!(GTTE.getMetaTileEntity() instanceof MTEHatchCraftingInputME newMaster)) return null;
+        if (!isUniversal && newMaster.supportsFluids()) return null; // incompatible master
         if (master != newMaster) {
             if (master != null) master.removeProxyHatch(this);
             master = newMaster;
@@ -213,13 +233,23 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     private boolean tryLinkDataStick(EntityPlayer aPlayer) {
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-
+        boolean linkType; // true for CRIBuffer, false for CRIBus
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             return false;
         }
-        if (!ItemStackNBT.getString(dataStick, "type")
-            .equals("CraftingInputBuffer")) {
+        String typeStr = ItemStackNBT.getString(dataStick, "type");
+        if (typeStr.equals("CraftingInputBuffer")) {
+            linkType = true;
+        } else if (typeStr.equals("CraftingInputBus")) {
+            linkType = false;
+        } else {
             return false;
+        }
+
+        if (linkType && !isUniversal) {
+            aPlayer.addChatMessage(
+                new ChatComponentText("You cannot link Crafting Input Buffer to Crafting Input Mirror!"));
+            return true;
         }
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
@@ -368,7 +398,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public String[] getDescription() {
-        return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_bus_crafting_slave.desc", TIER_COLORS[11] + VN[11]);
+        return GTSplit.splitLocalizedFormatted(
+            isUniversal ? "gt.blockmachines.input_bus_crafting_slave.support_fluid.desc"
+                : "gt.blockmachines.input_bus_crafting_slave.not_support_fluid.desc",
+            TIER_COLORS[getTier()] + VN[getTier()]);
     }
 }
