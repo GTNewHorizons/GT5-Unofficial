@@ -24,21 +24,31 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
+import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
-// For singleblock MUI2 guis.
+/**
+ * A base class for singleblock MUI2 guis. Has configurable corner panels and makes building ui's easier.
+ * The main overriding is done in
+ * {@link #createContentSection(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+ *
+ * For heavily custom UI's, override
+ * {@link #build(com.cleanroommc.modularui.factory.PosGuiData, com.cleanroommc.modularui.value.sync.PanelSyncManager, com.cleanroommc.modularui.screen.UISettings)}
+ * instead.
+ */
 public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
+
+    public static final int SLOT_SIZE = 18;
 
     protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
@@ -49,7 +59,6 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     private final int borderRadius = 4;
-    private final int buttonSize = 18;
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         registerSyncValues(syncManager);
@@ -58,28 +67,24 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
 
         return panel.child(
             Flow.column()
-                .child(createTopRightCornerColumn())
-                .sizeRel(1)
+                .full()
                 .padding(borderRadius)
-                .child(createContentHolderRow(panel, syncManager))
+                .child(createContentHolder(panel, syncManager))
+                .childIf(this.supportsTopRightCornerFlow(), this::createTopRightCornerFlow)
                 .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
-
-        syncManager.registerSlotGroup("item_inv", 1, false);
-
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(baseMetaTileEntity::isAllowedToWork, bool -> {
             if (bool) baseMetaTileEntity.enableWorking();
             else baseMetaTileEntity.disableWorking();
-        });
+        }).allowC2S();
         syncManager.syncValue("powerSwitch", powerSwitchSyncer);
 
         BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
             baseMetaTileEntity::isMuffled,
-            baseMetaTileEntity::setMuffler);
+            baseMetaTileEntity::setMuffler).allowC2S();
         syncManager.syncValue("mufflerSyncer", mufflerSyncer);
-
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -93,65 +98,104 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected int getBasePanelWidth() {
-        return 178;
+        return 176;
     }
 
     protected int getBasePanelHeight() {
         return 166;
     }
 
-    protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow contentFlow = Flow.row()
-            .size(getContentRowWidth(), getContentRowHeight());
-        contentFlow.child(createContentSection(panel, syncManager));
-        return contentFlow;
+    protected boolean supportsBottomRowOverlap() {
+        return false;
     }
 
+    private ParentWidget<?> createContentHolder(ModularPanel panel, PanelSyncManager syncManager) {
+        ParentWidget<?> holder = supportsBottomRowOverlap() ? new ParentWidget<>()
+            : Flow.column()
+                .childPadding(2);
+
+        return holder.size(getContentHolderWidth(), getContentHolderHeight())
+            .padding(getContentPaddingHorizontal(), getContentPaddingVertical())
+            .child(createContentSection(panel, syncManager))
+            .child(createBottomSection(panel, syncManager));
+    }
+
+    protected static ParentWidget<?> getEmptyContent() {
+        return new ParentWidget<>().expanded()
+            .fullWidth();
+    }
+
+    protected static ParentWidget<?> getOverlappingEmptyContent() {
+        return new ParentWidget<>().full();
+    }
+
+    /**
+     * Override this method to make a custom GUI.
+     */
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ParentWidget<>().sizeRel(1)
-            .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
-            .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
+        return supportsBottomRowOverlap() ? getOverlappingEmptyContent() : getEmptyContent();
     }
 
-    protected int getContentRowWidth() {
+    protected int getContentPaddingHorizontal() {
+        return 3;
+    }
+
+    protected int getContentPaddingVertical() {
+        return 2;
+    }
+
+    protected int getContentHolderWidth() {
         return getBasePanelWidth() - 2 * borderRadius;
     }
 
-    protected int getContentRowHeight() {
+    protected int getContentHolderHeight() {
         return (getBasePanelHeight() - borderRadius * 2) - (machine.doesBindPlayerInventory() ? 80 : 0);
     }
 
-    protected boolean supportsLeftCornerFlow() {
+    /**
+     * Contains the bottom left and bottom right corner flows. Usually the place for the logo, buttons,
+     * or extra slots.
+     * <p>
+     * Will not overlap with the main content section by default, override {@link #supportsBottomRowOverlap()}
+     * to change this behaviour.
+     */
+    protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
+        ParentWidget<?> bottomSection = new ParentWidget<>().fullWidth()
+            .coverChildrenHeight()
+            .childIf(this.supportsBottomLeftCornerFlow(), () -> createBottomLeftCornerFlow(panel, syncManager))
+            .childIf(this.supportsBottomRightCornerFlow(), () -> createBottomRightCornerFlow(panel, syncManager));
+
+        if (supportsBottomRowOverlap()) bottomSection.bottomRel(0);
+
+        return bottomSection;
+    }
+
+    protected boolean supportsBottomLeftCornerFlow() {
         return true;
     }
 
     // Row by default, going left to right
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.row()
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.row()
             .coverChildren()
-            .align(Alignment.BottomLeft)
-            .paddingLeft(4);
-        return cornerFlow;
+            .verticalCenter()
+            .leftRel(0);
     }
 
-    protected boolean supportsRightCornerFlow() {
+    protected boolean supportsBottomRightCornerFlow() {
         return true;
     }
 
-    // Row by default, going left to right
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow cornerFlow = Flow.row()
+    // Row by default, going right to left
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.row()
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .coverChildren()
-            .align(Alignment.BottomRight)
-            .paddingBottom(2)
-            .paddingRight(4);
-
-        cornerFlow.childIf(this.doesAddGregTechLogo(), this::createLogo)
+            .verticalCenter()
+            .rightRel(0)
+            .childIf(this.doesAddGregTechLogo(), this::createLogo)
             .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
-
-        return cornerFlow;
     }
 
     protected boolean doesAddGregTechLogo() {
@@ -163,13 +207,11 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().widthRel(1)
+        return Flow.row()
+            .fullWidth()
+            .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .height(76)
-            .alignX(0)
-            .childIf(
-                machine.doesBindPlayerInventory(),
-                () -> SlotGroupWidget.playerInventory(false)
-                    .marginLeft(4));
+            .childIf(machine.doesBindPlayerInventory(), () -> SlotGroupWidget.playerInventory(false));
     }
 
     protected boolean doesAddSpecialSlot() {
@@ -180,7 +222,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     // typically, this is used for the 'special slot' on singleblocks
     protected Widget<? extends Widget<?>> createSpecialSlot() {
         return IDrawable.EMPTY.asWidget()
-            .size(18)
+            .size(SLOT_SIZE)
             .marginTop(4);
     }
 
@@ -193,8 +235,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
-            .marginLeft(2);
+        return new IDrawable.DrawableWidget(getLogoTexture()).size(SLOT_SIZE);
     }
 
     // will add if the machine is an instance of IConfigurationCircuitSupport
@@ -207,37 +248,40 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    protected Flow createTopRightCornerColumn() {
+    protected boolean supportsTopRightCornerFlow() {
+        return true;
+    }
+
+    protected Flow createTopRightCornerFlow() {
         return Flow.column()
             .coverChildren()
-            .align(Alignment.TopRight)
+            .topRel(0)
+            .rightRel(0)
             .childIf(supportsMuffler(), this::createMufflerButton)
             .childIf(supportsPowerSwitch(), this::createPowerSwitchButton);
     }
 
     protected ToggleButton createMufflerButton() {
-        return CommonWidgets.createMuffleButton("mufflerSyncer")
+        return CommonButtons.createMuffleButton("mufflerSyncer")
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true);
     }
 
     protected ToggleButton createPowerSwitchButton() {
-        return CommonWidgets.createSmallPowerSwitchButton("powerSwitch", machine.getBaseMetaTileEntity())
+        return CommonButtons.createSmallPowerSwitchButton("powerSwitch")
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     protected ItemSlot createChargerSlot() {
-
         return new ItemSlot()
             .slot(
                 new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
                     (newItem, onlyAmountChanged, client, init) -> {
-                        if (!client && !init) machine.getBaseMetaTileEntity()
-                            .markInventoryBeenModified();
+                        if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
                     }))
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER)
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }

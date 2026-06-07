@@ -49,8 +49,7 @@ public class BlockComplexTextureCasing extends BlockCasing {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < Math.max(this.textureSide.length, this.textureTopAndDown.length); i++) {
             list.add(new ItemStack(item, 1, i));
         }

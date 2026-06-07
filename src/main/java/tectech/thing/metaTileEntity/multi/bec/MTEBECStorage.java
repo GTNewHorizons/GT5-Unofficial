@@ -1,9 +1,12 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
-import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
+import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
+import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -70,6 +73,7 @@ import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory {
@@ -79,7 +83,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     private boolean contentsChanged = false;
 
-    private long fieldStrength;
+    private long fieldStrength = 1;
     private GTSoundLoop pillar, torus, torusFar;
 
     public MTEBECStorage(int aID, String aName) {
@@ -106,8 +110,11 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
-        structure.addCasing('D', ElectromagneticWaveguide);
-        structure.addCasing('E', AdvancedFusionCoilII);
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
+        structure.addCasing('F', CondensateTransformativeCoil);
+        structure.addCasing('G', CondensateGuidanceCoil);
+        structure.addCasing('H', ElectromagneticWaveguide);
         structure.addCasing('1', FineStructureConstantManipulator)
             .withHatches(2, 4, Arrays.asList(BECHatches.Hatch));
 
@@ -155,8 +162,11 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 SuperconductivePlasmaEnergyConduit,
                 ElectromagneticallyIsolatedCasing,
                 FineStructureConstantManipulator,
-                ElectromagneticWaveguide,
-                AdvancedFusionCoilII),
+                ConflictInducementCasing,
+                PeaceEnforcementCasing,
+                CondensateTransformativeCoil,
+                CondensateGuidanceCoil,
+                ElectromagneticWaveguide),
             null);
 
         tt.toolTipFinisher(GTAuthors.AuthorPineapple);
@@ -237,6 +247,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public void addCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return;
+        }
+
         storedCondensate.addTo(stack.getFluid(), stack.getStackSize());
         stack.setStackSize(0);
 
@@ -245,6 +261,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public boolean removeCondensate(IAEFluidStack stack) {
+        if (mMaxProgresstime <= 0) {
+            // Should be cleared by stopMachine, but just to be sure let's do it again here
+            storedCondensate.clear();
+            return false;
+        }
+
         long stored = storedCondensate.getLong(stack.getFluid());
 
         if (stored <= 0) {
@@ -340,7 +362,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @OCMethod
     public void setFieldStrength(long strength) {
-        fieldStrength = strength;
+        fieldStrength = Math.max(1, strength);
     }
 
     @OCMethod
@@ -405,7 +427,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> contents = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
                 .getter(() -> storedCondensate)
                 .adapter(new CondensateListAdapter())
                 .build();
@@ -452,15 +474,16 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
+        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
+            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
             return SettingsPanel.builder()
                 .setDividerPosition(50)
                 .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
                 .addLongEditor(
                     IKey.lang("GT5U.gui.text.bec-field-strength"),
                     () -> fieldStrength,
-                    l -> fieldStrength = (long) l,
-                    (panel1, syncManager1, widget) -> { widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE); })
+                    l -> fieldStrength = l,
+                    (panel1, syncManager1, widget) -> { widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE); })
                 .addReadout(
                     IKey.lang("GT5U.gui.text.bec-stored"),
                     new DoubleSyncValue(MTEBECStorage.this::getAmountStored),

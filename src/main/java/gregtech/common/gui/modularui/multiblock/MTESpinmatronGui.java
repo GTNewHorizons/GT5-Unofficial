@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -21,14 +23,11 @@ import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 
@@ -45,7 +44,9 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
         syncManager.syncValue("Parallels", new IntSyncValue(multiblock::getTrueParallel));
         syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
         syncManager.syncValue("modeString", new StringSyncValue(multiblock::modeToString));
-        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub));
+        syncManager.syncValue(
+            "modeValue",
+            new DoubleSyncValue(() -> multiblock.mode, dub -> multiblock.mode = dub).allowC2S());
     }
 
     @Override
@@ -90,28 +91,41 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new Column().size(100, 120)
+                        Flow.column()
+                            .size(100, 120)
                             .paddingRight(40)
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20)
-                                    .color(0x404040)
-                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "GT5U.gui.multimachine.spinmatron.mode",
+                                            typeSTRSync.getValue()))).size(80, 20)
+                                                .color(0x404040))
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Speed: " + speedSync.getValue())).size(80, 20)
-                                    .color(0x404040)
-                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "GT5U.gui.multimachine.spinmatron.speed",
+                                            speedSync.getValue()))).size(80, 20)
+                                                .color(0x404040))
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
-                                    .size(80, 20)
-                                    .color(0x404040)
-                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT))
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "GT5U.gui.multimachine.spinmatron.rotational_power",
+                                            RPSync.getValue()))).size(80, 20)
+                                                .color(0x404040))
                             .child(
-                                new TextWidget<>(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)
-                                    .color(0x404040)
-                                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)))
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector.translateToLocalFormatted(
+                                            "GT5U.gui.multimachine.spinmatron.parallels",
+                                            paraSync.getValue()))).size(80, 20)
+                                                .color(0x404040)))
                     .child(
                         new SliderWidget().size(15, 110)
                             .background(GuiTextures.MC_BUTTON)
@@ -151,18 +165,20 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .padding(3)
                     .widgetTheme("backgroundPopup")
 
                     .child( // column that holds the turbines
-                        new Column().size(80, 120)
+                        Flow.column()
+                            .size(80, 120)
                             .padding(1)
                             .widgetTheme("backgroundPopup")
                             .marginRight(20)
                             .child(
                                 new TextWidget<>("Turbines").size(60, 18)
-                                    .alignment(Alignment.Center)
+                                    .textAlign(Alignment.Center)
                                     .marginBottom(5))
                             .child(
                                 SlotGroupWidget.builder()
@@ -179,12 +195,13 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
 
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child( // column that holds a button to toggle Tier1Fluid
-                        new Column().size(50, 60)
+                        Flow.column()
+                            .size(50, 60)
                             .padding(0, 3)
                             .widgetTheme("backgroundPopup")
                             .child(
                                 new TextWidget<>("T2\nFluid").size(40, 18)
-                                    .alignment(Alignment.Center))
+                                    .textAlign(Alignment.Center))
                             .marginBottom(5)
                             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
                             .child(
@@ -192,7 +209,7 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
                                     .value(
                                         new BooleanSyncValue(
                                             () -> multiblock.tier2Fluid,
-                                            bool -> multiblock.tier2Fluid = bool))
+                                            bool -> multiblock.tier2Fluid = bool).allowC2S())
                                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 

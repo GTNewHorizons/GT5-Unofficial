@@ -34,29 +34,18 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 204;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 148;
-    }
-
-    @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
-            cover::setRedstoneCondition);
+            cover::setRedstoneCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
-        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
-        syncManager.syncValue("frequency", frequencySyncer);
+        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode).allowC2S();
+        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(makeFrequencyRow())
+            .child(makeFrequencyRow(frequencySyncer))
             .child(makeButtonRow(uuid))
             .child(
                 new Grid().coverChildren()
@@ -94,11 +83,11 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
                             .asWidget()));
     }
 
-    protected Flow makeFrequencyRow() {
+    protected Flow makeFrequencyRow(StringSyncValue frequencySyncer) {
         return Flow.row()
             .height(16)
             .child(
-                new TextFieldWidget().syncHandler("frequency")
+                new TextFieldWidget().value(frequencySyncer)
                     .height(12)
                     .width(88)
                     .marginRight(2))
@@ -111,7 +100,8 @@ public class CoverWirelessControllerGui extends CoverBaseGui<CoverWirelessContro
             .height(20)
             .child(
                 new ToggleButton().size(16, 16)
-                    .value(new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)))
+                    .value(
+                        new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)).allowC2S())
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .marginRight(2))

@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +31,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -138,21 +143,24 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
+        if (!errors.isEmpty()) return;
         // Add coolant hatch
-        if (!findCoolantHatch()) return false;
-        return true;
+        findCoolantHatch(errors);
     }
 
-    private boolean findCoolantHatch() {
+    private void findCoolantHatch(List<StructureError> errors) {
         if (!mInputHatches.isEmpty()) {
             coolantInputHatch = mInputHatches.get(0);
-            return true;
+            if (mInputHatches.size() > 1) {
+                errors.add(
+                    StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.InputHatch, mInputHatches.size(), 1));
+            }
+        } else {
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
         }
-        return false;
-
     }
 
     private int ticker = 0;

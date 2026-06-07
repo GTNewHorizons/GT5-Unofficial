@@ -62,6 +62,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -402,6 +404,13 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
+     * @return True if the elevator has data input hatches, else false
+     */
+    public boolean hasDataHatches() {
+        return !eInputData.isEmpty();
+    }
+
+    /**
      * Get the chunk X coordinate in which the controller resides
      *
      * @return Chunk X coordinate
@@ -456,21 +465,21 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(
+        buildPiece(
             STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-            stackSize,
-            hintsOnly);
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET);
         if (isExtensionEnabled) {
-            structureBuild_EM(
+            buildPiece(
                 STRUCTURE_PIECE_EXTENDED,
+                stackSize,
+                hintsOnly,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
-                stackSize,
-                hintsOnly);
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
         }
     }
 
@@ -510,41 +519,42 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean isMachineValid = true;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mProjectModuleHatches.clear();
         elevatorCable = null;
         motorTier = 0;
         // Check structure
-        if (!structureCheck_EM(
+        if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET)) {
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
+            errors)) {
             if (elevatorCable != null) {
                 elevatorCable.setShouldRender(false);
             }
-            return false;
+            return;
         }
         if (motorTier > 2 && isExtensionEnabled) {
-            if (!structureCheck_EM(
+            if (!checkPiece(
                 STRUCTURE_PIECE_EXTENDED,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET)) {
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                errors)) {
                 if (elevatorCable != null) {
                     elevatorCable.setShouldRender(false);
                 }
-                return false;
+                return;
             }
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
-        isMachineValid = ElevatorUtil.getModuleSlotsUnlocked(motorTier) >= mProjectModuleHatches.size();
-        if (elevatorCable != null) {
-            elevatorCable.setShouldRender(isMachineValid);
-            return isMachineValid;
+        if (ElevatorUtil.getModuleSlotsUnlocked(motorTier) < mProjectModuleHatches.size()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.spelv_module_exceed"));
         }
-        return isMachineValid;
+        if (elevatorCable != null) {
+            elevatorCable.setShouldRender(errors.isEmpty());
+        }
     }
 
     /**
@@ -747,6 +757,10 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
             .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+            .addOtherStructurePart(
+                GTUtility.translate("ig.elevator.structure.DataInputHatch"),
+                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                1)
             .addSubChannelUsage(GTStructureChannels.SE_MOTOR)
             .toolTipFinisher(GTAuthors.Authorminecraft7771);
         return tt;

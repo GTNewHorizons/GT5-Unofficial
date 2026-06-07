@@ -1,6 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -17,10 +18,14 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -29,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,6 +45,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -68,7 +75,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(47)
                 .hint(1)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 0))
+                .buildAndChain(onElementPass(MTEDigester::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
@@ -86,8 +93,19 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 3, 3, 0) && !mMufflerHatches.isEmpty() && mMaintenanceHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(mName, 3, 3, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 40);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+    }
+
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -196,22 +214,23 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Digester")
-            .addInfo("Input ores and fluid, output water")
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.digester.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.digester.info1"))
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
+            .addCasingInfoMin(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 40, false)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 16, false)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 9, false)
             .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 1")
-            .addOutputBus("Hint Block Number 1")
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 1")
+            .addInputHatch(addHintNumber(1))
+            .addInputBus(addHintNumber(1))
+            .addOutputHatch(addHintNumber(1))
+            .addOutputBus(addHintNumber(1))
+            .addEnergyHatch(addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(1))
+            .addMufflerHatch(addHintNumber(1))
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

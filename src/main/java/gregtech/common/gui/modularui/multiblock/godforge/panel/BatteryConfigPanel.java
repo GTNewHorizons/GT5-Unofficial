@@ -31,19 +31,21 @@ public class BatteryConfigPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 8)
-                .align(Alignment.TopCenter)
+                .topRel(0)
+                .horizontalCenter()
                 .marginTop(5));
 
         // Textbox
         panel.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, Integer.MAX_VALUE)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.MAX_BATTERY_CHARGE.create(hypervisor))
                 .setTooltipOverride(true)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .size(SIZE_W - 8, 18)
-                .align(Alignment.BottomCenter)
+                .bottomRel(0)
+                .horizontalCenter()
                 .marginBottom(9));
 
         return panel;

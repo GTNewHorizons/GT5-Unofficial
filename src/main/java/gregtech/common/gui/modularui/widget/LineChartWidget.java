@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.Tessellator;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.value.ISyncOrValue;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -19,7 +21,6 @@ import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 
@@ -125,13 +126,13 @@ public class LineChartWidget extends Widget<LineChartWidget> {
     }
 
     @Override
-    public boolean isValidSyncHandler(SyncHandler syncHandler) {
-        return syncHandler instanceof GenericListSyncHandler<?>;
+    public boolean isValidSyncOrValue(@NotNull ISyncOrValue syncOrValue) {
+        return syncOrValue instanceof GenericListSyncHandler<?>;
     }
 
     public LineChartWidget syncHandler(GenericListSyncHandler<Double> dataSyncHandler) {
         this.dataSyncHandler = dataSyncHandler;
-        setSyncHandler(dataSyncHandler);
+        setSyncOrValue(dataSyncHandler);
         return this;
     }
 
