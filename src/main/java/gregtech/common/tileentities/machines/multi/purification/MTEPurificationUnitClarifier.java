@@ -19,11 +19,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -51,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPurificationUnitClarifier>
@@ -108,7 +104,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();
@@ -251,7 +247,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(
+        if (mMachine) return -1;
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -259,12 +256,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             STRUCTURE_Z_OFFSET,
             elementBudget,
             env,
+            false,
             true);
-        if (built == -1) {
-            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
-            return 0;
-        }
-        return built;
     }
 
     @Override
@@ -329,38 +322,16 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
-            World world = aBaseMetaTileEntity.getWorld();
-            boolean allFilled = true;
-            int controllerX = aBaseMetaTileEntity.getXCoord();
-            int controllerY = aBaseMetaTileEntity.getYCoord();
-            int controllerZ = aBaseMetaTileEntity.getZCoord();
-
-            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
-                String[] layers = structure[sliceZ];
-                for (int layerY = 0; layerY < layers.length; layerY++) {
-                    String row = layers[layerY];
-                    for (int charX = 0; charX < row.length(); charX++) {
-                        if (row.charAt(charX) != 'W') continue;
-
-                        int[] abc = new int[] { charX - STRUCTURE_X_OFFSET, layerY - STRUCTURE_Y_OFFSET,
-                            sliceZ - STRUCTURE_Z_OFFSET };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
-                        int wx = controllerX + xyz[0];
-                        int wy = controllerY + xyz[1];
-                        int wz = controllerZ + xyz[2];
-                        Block block = world.getBlock(wx, wy, wz);
-                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
-                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
-                            allFilled = false;
-                        }
-                    }
-                }
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W')) {
+                needsWaterFill = false;
             }
-
-            if (allFilled) needsWaterFill = false;
         }
     }
 
