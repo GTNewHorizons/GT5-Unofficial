@@ -211,7 +211,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge * 100, true, 0.0025d, 0.01d, 0.1d, "", "%")));
+                getModifierFormatted(this.startupSurge + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
