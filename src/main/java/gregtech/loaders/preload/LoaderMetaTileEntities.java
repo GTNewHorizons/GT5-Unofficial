@@ -7456,6 +7456,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7469,6 +7471,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7482,6 +7486,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7495,6 +7501,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7508,6 +7516,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7521,6 +7531,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7534,6 +7546,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7547,6 +7561,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7560,6 +7576,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7573,6 +7591,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7586,6 +7606,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7599,6 +7621,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
