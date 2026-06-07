@@ -216,8 +216,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             null);
     }
 
-    private ButtonWidget<?> createMachineStatusButton(BooleanSyncValue syncer, IDrawable onOverlay, IDrawable offOverlay,
-        String tooltipPrefix, String extraTooltip) {
+    private ButtonWidget<?> createMachineStatusButton(BooleanSyncValue syncer, IDrawable onOverlay,
+        IDrawable offOverlay, String tooltipPrefix, String extraTooltip) {
         return new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
             IDrawable icon = syncer.getBoolValue() ? onOverlay : offOverlay;
             if (maxProgressSyncer.getIntValue() > 0)
