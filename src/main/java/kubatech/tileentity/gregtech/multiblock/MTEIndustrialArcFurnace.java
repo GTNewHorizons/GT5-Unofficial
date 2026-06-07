@@ -260,9 +260,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (!errors.isEmpty()) return;
             if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
             if (electrodeDetectorHatch != null) {
-                if (electrode != null)
-                    updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
-                else updateDetectorHatches(0);
+                if (electrode != null) updateDetectorHatches(
+                    ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                    electrode.durability);
+                else updateDetectorHatches(0, 0);
             }
         }
     }
@@ -649,9 +650,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         sendSound(STOP_ARC_SOUND_INDEX);
     }
 
-    private void updateDetectorHatches(int durability) {
+    private void updateDetectorHatches(int durability, int maxDurability) {
         for (var hatch : electrodeDetectorHatch) {
-            hatch.updateRedstoneOutput(durability);
+            hatch.updateRedstoneOutput(durability, maxDurability);
         }
     }
 
@@ -667,10 +668,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (electrode != null) {
             electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
                 / (double) electrode.durability;
-            updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeStack));
+            updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeStack), electrode.durability);
             return;
         }
-        updateDetectorHatches(0);
+        updateDetectorHatches(0, 0);
     }
 
     @Override
@@ -818,7 +819,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
                             / (double) electrode.durability;
                         updateDetectorHatches(
-                            ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)));
+                            ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                            electrode.durability);
                     }
                 }
             }

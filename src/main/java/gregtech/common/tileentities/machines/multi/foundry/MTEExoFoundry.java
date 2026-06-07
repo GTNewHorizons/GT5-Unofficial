@@ -37,7 +37,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,12 +46,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -892,13 +892,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // Render code
     private boolean shouldRender = true;
     private boolean renderInitialized;
-    private static IModelCustomExt ring;
+    private static IVertexArrayObject ring;
     private static ShaderProgram ringProgram;
     private int uRingColor;
 
     private void initializeRender() {
         // spotless:off
-        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
+        ring = WavefrontVBOBuilder.compileToVBO(
             new ResourceLocation(
                 GregTech.resourceDomain,
                 "textures/model/foundry_ring.obj"
@@ -1015,7 +1015,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ring.renderAllVAO();
+        ring.render();
         GL11.glPopMatrix();
     }
 
