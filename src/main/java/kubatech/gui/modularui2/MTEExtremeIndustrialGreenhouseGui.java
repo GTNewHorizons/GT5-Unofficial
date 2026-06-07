@@ -19,7 +19,6 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
@@ -55,14 +54,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private static final int SLOTS_PER_ROW = 7;
     private static final int WARNING_ANIM_FRAMES = 63;
     private static final int WARNING_ANIM_TICK_MS = 50;
-    private static final UITexture OVERLAY_INVENTORY = UITexture.builder()
-        .canApplyTheme()
-        .location("kubatech", "gui/overlay_button/greenhouse_inventory")
-        .build();
-    private static final UITexture OVERLAY_INVENTORY_FULL_WARNING_SHEET = UITexture.builder()
-        .canApplyTheme()
-        .location("kubatech", "gui/icons/inventory_full_warning")
-        .build();
 
     private boolean isInInventory = false;
     private List<GTHelper.StackableItemSlot> seedSlots = new ArrayList<>();
@@ -249,9 +240,9 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             int frame = (int) ((System.currentTimeMillis() / WARNING_ANIM_TICK_MS) % WARNING_ANIM_FRAMES);
             float v0 = (float) frame / WARNING_ANIM_FRAMES;
             float v1 = (float) (frame + 1) / WARNING_ANIM_FRAMES;
-            return OVERLAY_INVENTORY_FULL_WARNING_SHEET.getSubArea(0f, v0, 1f, v1);
+            return GTGuiTextures.OVERLAY_EIG_INVENTORY_FULL_WARNING.getSubArea(0f, v0, 1f, v1);
         }).asWidget()
-            .size(18, 18)
+            .size(18)
             .marginBottom(4)
             .tooltipBuilder(t -> t.addLine(IKey.lang("kubatech.gui.text.eig.inventory_full_warning")))
             .tooltipAutoUpdate(true)
@@ -273,8 +264,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         if (activeCount <= 0) return new EmptyWidget();
 
         ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(CrossAxis.START)
-            .widthRel(1f)
-            .heightRel(1f);
+            .full();
 
         for (int rowStart = 0; rowStart < activeCount; rowStart += SLOTS_PER_ROW) {
             Flow row = Flow.row()
@@ -486,7 +476,8 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private IWidget createInventoryToggleButton() {
         return new ButtonWidget<>()
             .overlay(
-                new DynamicDrawable(() -> isInInventory ? GTGuiTextures.OVERLAY_BUTTON_WHITELIST : OVERLAY_INVENTORY))
+                new DynamicDrawable(
+                    () -> isInInventory ? GTGuiTextures.OVERLAY_BUTTON_WHITELIST : GTGuiTextures.OVERLAY_EIG_INVENTORY))
             .onMousePressed(button -> {
                 isInInventory = !isInInventory;
                 return true;
@@ -530,7 +521,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             .widgetTheme("backgroundPopup")
             .child(
                 Flow.column()
-                    .sizeRel(1)
+                    .full()
                     .padding(4)
                     .child(
                         new TextWidget<>(

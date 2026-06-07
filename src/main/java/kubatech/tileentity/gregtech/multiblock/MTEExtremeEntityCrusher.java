@@ -218,21 +218,77 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
-    public boolean isInRitualMode = false;
+    protected boolean isInRitualMode = false;
     private int mCasing = 0;
     private int glassTier = -1;
     private boolean mAnimationEnabled = true;
-    public boolean mIsProducingInfernalDrops = true;
-    public boolean voidAllDamagedAndEnchantedItems = false;
-    public boolean mPreserveWeapon;
-    public boolean mCycleWeapons;
+    protected boolean mIsProducingInfernalDrops = true;
+    protected boolean voidAllDamagedAndEnchantedItems = false;
+    protected boolean mPreserveWeapon;
+    protected boolean mCycleWeapons;
 
-    public boolean mIsRitualValid;
-    public boolean mIsPreventingGUIWeaponUse;
+    protected boolean mIsRitualValid;
+    protected boolean mIsPreventingGUIWeaponUse;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
     public EECFakePlayer EECPlayer = null;
+
+    public boolean isInRitualMode() {
+        return isInRitualMode;
+    }
+
+    public void setInRitualMode(boolean val) {
+        isInRitualMode = val;
+    }
+
+    public boolean isProducingInfernalDrops() {
+        return mIsProducingInfernalDrops;
+    }
+
+    public void setProducingInfernalDrops(boolean val) {
+        mIsProducingInfernalDrops = val;
+    }
+
+    public boolean isVoidAllDamagedAndEnchantedItems() {
+        return voidAllDamagedAndEnchantedItems;
+    }
+
+    public void setVoidAllDamagedAndEnchantedItems(boolean val) {
+        voidAllDamagedAndEnchantedItems = val;
+    }
+
+    public boolean isPreserveWeapon() {
+        return mPreserveWeapon;
+    }
+
+    public void setPreserveWeapon(boolean val) {
+        mPreserveWeapon = val;
+    }
+
+    public boolean isCycleWeapons() {
+        return mCycleWeapons;
+    }
+
+    public void setCycleWeapons(boolean val) {
+        mCycleWeapons = val;
+    }
+
+    public boolean isRitualValid() {
+        return mIsRitualValid;
+    }
+
+    public void setRitualValid(boolean val) {
+        mIsRitualValid = val;
+    }
+
+    public boolean isPreventingGUIWeaponUse() {
+        return mIsPreventingGUIWeaponUse;
+    }
+
+    public void setPreventingGUIWeaponUse(boolean val) {
+        mIsPreventingGUIWeaponUse = val;
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

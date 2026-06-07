@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -25,58 +24,13 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBaseGUI;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
 public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEExtremeEntityCrusher> {
 
-    private static final UITexture OVERLAY_EEC_WEAPON_PRESERVATION_ON = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_preservation_on")
-        .build();
-    private static final UITexture OVERLAY_EEC_WEAPON_PRESERVATION_OFF = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_preservation_off")
-        .build();
-    private static final UITexture OVERLAY_EEC_WEAPON_CYCLING_ON = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_cycling_on")
-        .build();
-    private static final UITexture OVERLAY_EEC_WEAPON_CYCLING_OFF = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_weapon_cycling_off")
-        .build();
     private static final IDrawable OVERLAY_EEC_VOID_DAMAGED_ON = new ItemDrawable(
         kubatech.api.enums.ItemList.KubaFakeItemEECVoid.get(1L));
-    private static final UITexture OVERLAY_EEC_VOID_DAMAGED_OFF = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_off")
-        .build();
-    private static final UITexture OVERLAY_EEC_SPAWN_INFERNALS_ON = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_on")
-        .build();
-    private static final UITexture OVERLAY_EEC_SPAWN_INFERNALS_OFF = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_spawn_infernals_off")
-        .build();
-    private static final UITexture OVERLAY_EEC_RITUAL_MODE_ON = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_on")
-        .build();
-    private static final UITexture OVERLAY_EEC_RITUAL_MODE_OFF = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/overlay_button/machine_mode_eec_ritual_mode_off")
-        .build();
-    private static final UITexture SLOT_EEC_SPAWNER = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/slot/gray_spawner")
-        .build();
-    private static final UITexture SLOT_EEC_SWORD = UITexture.builder()
-        .canApplyTheme()
-        .location(Tags.MODID, "gui/slot/gray_sword")
-        .build();
 
     private BooleanSyncValue preserveWeaponSyncer;
     private BooleanSyncValue cycleWeaponsSyncer;
@@ -95,42 +49,38 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        preserveWeaponSyncer = new BooleanSyncValue(
-            () -> multiblock.mPreserveWeapon,
-            val -> multiblock.mPreserveWeapon = val).allowC2S();
+        preserveWeaponSyncer = new BooleanSyncValue(multiblock::isPreserveWeapon, multiblock::setPreserveWeapon)
+            .allowC2S();
         syncManager.syncValue("eecPreserveWeapon", preserveWeaponSyncer);
 
-        cycleWeaponsSyncer = new BooleanSyncValue(() -> multiblock.mCycleWeapons, val -> multiblock.mCycleWeapons = val)
-            .allowC2S();
+        cycleWeaponsSyncer = new BooleanSyncValue(multiblock::isCycleWeapons, multiblock::setCycleWeapons).allowC2S();
         syncManager.syncValue("eecCycleWeapons", cycleWeaponsSyncer);
 
-        voidDamagedSyncer = new BooleanSyncValue(() -> multiblock.voidAllDamagedAndEnchantedItems, val -> {
+        voidDamagedSyncer = new BooleanSyncValue(multiblock::isVoidAllDamagedAndEnchantedItems, val -> {
             if (multiblock.mMaxProgresstime > 0) return;
-            multiblock.voidAllDamagedAndEnchantedItems = val;
+            multiblock.setVoidAllDamagedAndEnchantedItems(val);
         }).allowC2S();
         syncManager.syncValue("eecVoidDamaged", voidDamagedSyncer);
 
-        infernalDropsSyncer = new BooleanSyncValue(() -> multiblock.mIsProducingInfernalDrops, val -> {
+        infernalDropsSyncer = new BooleanSyncValue(multiblock::isProducingInfernalDrops, val -> {
             if (multiblock.mMaxProgresstime > 0) return;
-            multiblock.mIsProducingInfernalDrops = val;
+            multiblock.setProducingInfernalDrops(val);
         }).allowC2S();
         syncManager.syncValue("eecInfernalDrops", infernalDropsSyncer);
 
-        ritualModeSyncer = new BooleanSyncValue(() -> multiblock.isInRitualMode, val -> {
+        ritualModeSyncer = new BooleanSyncValue(multiblock::isInRitualMode, val -> {
             if (multiblock.mMaxProgresstime > 0) return;
-            multiblock.isInRitualMode = val;
+            multiblock.setInRitualMode(val);
             multiblock.checkRitualConnection();
         }).allowC2S();
         syncManager.syncValue("eecRitualMode", ritualModeSyncer);
 
-        ritualValidSyncer = new BooleanSyncValue(
-            () -> multiblock.mIsRitualValid,
-            val -> multiblock.mIsRitualValid = val);
+        ritualValidSyncer = new BooleanSyncValue(multiblock::isRitualValid, multiblock::setRitualValid);
         syncManager.syncValue("eecRitualValid", ritualValidSyncer);
 
         preventingGUIWeaponUseSyncer = new BooleanSyncValue(
-            () -> multiblock.mIsPreventingGUIWeaponUse,
-            val -> multiblock.mIsPreventingGUIWeaponUse = val);
+            multiblock::isPreventingGUIWeaponUse,
+            multiblock::setPreventingGUIWeaponUse);
         syncManager.syncValue("eecPreventGUIWeapon", preventingGUIWeaponUseSyncer);
 
         maxProgressSyncer = new IntSyncValue(
@@ -185,7 +135,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
                     .slot(
                         new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
                             .singletonSlotGroup())
-                    .background(GTGuiTextures.SLOT_ITEM_DARK, SLOT_EEC_SPAWNER)
+                    .background(GTGuiTextures.SLOT_ITEM_DARK, GTGuiTextures.SLOT_EEC_SPAWNER)
                     .marginTop(4))
             .child(
                 new ItemSlot().slot(
@@ -196,7 +146,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
                                 multiblock.updateWeaponCache();
                             }
                         }))
-                    .background(GTGuiTextures.SLOT_ITEM_DARK, SLOT_EEC_SWORD)
+                    .background(GTGuiTextures.SLOT_ITEM_DARK, GTGuiTextures.SLOT_EEC_SWORD)
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));
@@ -206,8 +156,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
         return new ToggleButton().value(preserveWeaponSyncer)
             .overlay(
                 new DynamicDrawable(
-                    () -> preserveWeaponSyncer.getBoolValue() ? OVERLAY_EEC_WEAPON_PRESERVATION_ON
-                        : OVERLAY_EEC_WEAPON_PRESERVATION_OFF))
+                    () -> preserveWeaponSyncer.getBoolValue() ? GTGuiTextures.OVERLAY_EEC_WEAPON_PRESERVATION_ON
+                        : GTGuiTextures.OVERLAY_EEC_WEAPON_PRESERVATION_OFF))
             .tooltipBuilder(t -> {
                 t.setAutoUpdate(true);
                 t.addLine(
@@ -223,8 +173,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
         return new ToggleButton().value(cycleWeaponsSyncer)
             .overlay(
                 new DynamicDrawable(
-                    () -> cycleWeaponsSyncer.getBoolValue() ? OVERLAY_EEC_WEAPON_CYCLING_ON
-                        : OVERLAY_EEC_WEAPON_CYCLING_OFF))
+                    () -> cycleWeaponsSyncer.getBoolValue() ? GTGuiTextures.OVERLAY_EEC_WEAPON_CYCLING_ON
+                        : GTGuiTextures.OVERLAY_EEC_WEAPON_CYCLING_OFF))
             .tooltipBuilder(t -> {
                 t.setAutoUpdate(true);
                 t.addLine(
@@ -243,7 +193,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
         return createMachineStatusButton(
             voidDamagedSyncer,
             OVERLAY_EEC_VOID_DAMAGED_ON,
-            OVERLAY_EEC_VOID_DAMAGED_OFF,
+            GTGuiTextures.OVERLAY_EEC_VOID_DAMAGED_OFF,
             "kubatech.gui.text.eec.void_all_damaged",
             StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"));
     }
@@ -251,8 +201,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
     private IWidget createInfernalDropsButton() {
         return createMachineStatusButton(
             infernalDropsSyncer,
-            OVERLAY_EEC_SPAWN_INFERNALS_ON,
-            OVERLAY_EEC_SPAWN_INFERNALS_OFF,
+            GTGuiTextures.OVERLAY_EEC_SPAWN_INFERNALS_ON,
+            GTGuiTextures.OVERLAY_EEC_SPAWN_INFERNALS_OFF,
             "kubatech.gui.text.eec.infernal_drop",
             StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop_always"));
     }
@@ -260,8 +210,8 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
     private IWidget createRitualModeButton() {
         return createMachineStatusButton(
             ritualModeSyncer,
-            OVERLAY_EEC_RITUAL_MODE_ON,
-            OVERLAY_EEC_RITUAL_MODE_OFF,
+            GTGuiTextures.OVERLAY_EEC_RITUAL_MODE_ON,
+            GTGuiTextures.OVERLAY_EEC_RITUAL_MODE_OFF,
             "kubatech.gui.text.eec.ritual_mode",
             null);
     }
