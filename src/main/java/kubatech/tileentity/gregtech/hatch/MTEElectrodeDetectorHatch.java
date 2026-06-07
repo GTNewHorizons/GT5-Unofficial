@@ -57,8 +57,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         isOn = aNBT.getBoolean("mIsOn");
-        thresholdType = ThresholdType.values()[Math
-            .max(Math.min(aNBT.getInteger("mThresholdType"), ThresholdType.values().length - 1), 0)];
+        thresholdType = ThresholdType.values[aNBT.getInteger("mThresholdType")];
         super.loadNBTData(aNBT);
     }
 
@@ -186,6 +185,8 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
 
         DURABILITY(10000, "kubatech.gui.text.electrode_detector.durability"),
         PERCENTAGE(100, "kubatech.gui.text.electrode_detector.percentage");
+
+        private static final ThresholdType[] values = values();
 
         private final int maxCapacity;
         private final String name;
