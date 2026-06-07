@@ -233,7 +233,8 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()) // Use .widgetTheme(GTWidgetThemes.DISPLAY_TEXT) when MUi2
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()) // Use .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE) when
+                                                             // MUi2
                     .setPos(10, 30));
     }
 

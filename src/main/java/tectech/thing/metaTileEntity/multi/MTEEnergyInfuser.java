@@ -96,8 +96,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             if (item instanceof IElectricItem) {
                 return ElectricItem.manager.getCharge(stack) >= ((IElectricItem) item).getMaxCharge(stack);
             } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
-                return ((IEnergyContainerItem) item).getEnergyStored(stack)
-                    >= ((IEnergyContainerItem) item).getMaxEnergyStored(stack);
+                IEnergyContainerItem rfItem = (IEnergyContainerItem) item;
+                return rfItem.getEnergyStored(stack) >= rfItem.getMaxEnergyStored(stack)
+                    || rfItem.receiveEnergy(stack, 1, true) == 0;
             }
         }
         return true;

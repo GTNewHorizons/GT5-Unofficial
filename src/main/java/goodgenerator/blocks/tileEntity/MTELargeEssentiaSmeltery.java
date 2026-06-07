@@ -170,7 +170,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         if (mEssentiaOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_essentia_output_hatch"));
         }
-        if (errors.isEmpty()) return;
+        if (!errors.isEmpty()) return;
         this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
     }
 
