@@ -6,8 +6,9 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.horizonqa.api.GameTestAssertException;
 import com.gtnewhorizons.horizonqa.api.GameTestHelper;
@@ -22,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTRecipeBuilder;
 
 @GameTestHolder(value = "gregtech", templatePrefix = "multiblock/electric_blast_furnace")
 public class ElectricBlastFurnaceFormationTests {
@@ -36,7 +38,6 @@ public class ElectricBlastFurnaceFormationTests {
     private static final TestPos MUFFLER_HATCH = at(1, 3, 1);
 
     private static final int HEAT_PROOF_CASING_META = 11;
-    private static final int MV_ENERGY_HATCH_ID = 42;
     private static final int LOW_HEAT = 1_200;
     private static final int EV_CUPRONICKEL_HEAT = 2_001;
     private static final int MV_CUPRONICKEL_HEAT = 1_801;
@@ -107,11 +108,33 @@ public class ElectricBlastFurnaceFormationTests {
         ItemStack input = stack(Blocks.dirt);
         ItemStack output = stack(Blocks.cobblestone);
 
-        addTestRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
         ebf.energyHatch(0)
             .supply(TierEU.EV, 1, 80);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
+    public static void recipeAtExactHeatLimitRuns(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.brick_block);
+        ItemStack output = stack(Blocks.hardened_clay);
+
+        addItemRecipe(helper, ebf, input, output, EV_CUPRONICKEL_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
 
         ebf.runRecipe(120);
 
@@ -129,7 +152,7 @@ public class ElectricBlastFurnaceFormationTests {
         ItemStack input = stack(Blocks.sand);
         ItemStack output = stack(Blocks.glass);
 
-        addTestRecipe(helper, ebf, input, output, EV_CUPRONICKEL_HEAT + 100, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, EV_CUPRONICKEL_HEAT + 100, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
         ebf.energyHatch(0)
@@ -145,13 +168,35 @@ public class ElectricBlastFurnaceFormationTests {
         helper.succeed();
     }
 
+    @GameTest(template = "valid", timeoutTicks = 160, batch = "gt5.ebf")
+    public static void recipeOneHeatAboveLimitDoesNotConsumeInput(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.sandstone);
+        ItemStack output = stack(Blocks.stonebrick);
+
+        addItemRecipe(helper, ebf, input, output, EV_CUPRONICKEL_HEAT + 1, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        helper.gtnh()
+            .fastForwardTicks(100);
+
+        ebf.inputBus(0)
+            .assertContains(input);
+        assertOutputMissing(helper, ebf, output, "EBF produced output one heat above its heat capacity");
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
     @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
     public static void evEnergyHatchAllowsVoltageHeatBonus(GameTestHelper helper) {
         Multiblock ebf = formedEbf(helper);
         ItemStack input = stack(Blocks.gravel);
         ItemStack output = stack(Blocks.stone);
 
-        addTestRecipe(helper, ebf, input, output, MV_CUPRONICKEL_HEAT + 1, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, MV_CUPRONICKEL_HEAT + 1, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
         ebf.energyHatch(0)
@@ -168,25 +213,111 @@ public class ElectricBlastFurnaceFormationTests {
     }
 
     @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
-    public static void mvEnergyHatchDoesNotProvideEvHeatBonus(GameTestHelper helper) {
-        setMetaTileEntityId(helper, ENERGY_HATCH, MV_ENERGY_HATCH_ID);
+    public static void formedWithOnlyInputBusRunsItemRecipe(GameTestHelper helper) {
+        replaceWithHeatProofCasing(helper, INPUT_HATCH);
 
-        Multiblock ebf = formedEbf(helper);
-        ItemStack input = stack(Blocks.sponge);
-        ItemStack output = stack(Blocks.mossy_cobblestone);
+        Multiblock ebf = formedEbfAfterMutation(helper);
+        ItemStack input = stack(Blocks.coal_block);
+        ItemStack output = stack(Blocks.iron_block);
 
-        addTestRecipe(helper, ebf, input, output, MV_CUPRONICKEL_HEAT + 1, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
         ebf.energyHatch(0)
-            .supply(TierEU.MV, 1, 100);
+            .supply(TierEU.EV, 1, 100);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", batch = "gt5.ebf")
+    public static void formedWithOnlyInputHatchStillForms(GameTestHelper helper) {
+        replaceWithHeatProofCasing(helper, INPUT_BUS);
+
+        Multiblock ebf = formedEbfAfterMutation(helper);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
+    public static void formedWithOnlyOutputBusRunsItemRecipe(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.redstone_block);
+        ItemStack output = stack(Blocks.quartz_block);
+
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
+    public static void itemAndFluidRecipeConsumesExactFluid(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack itemInput = stack(Blocks.lapis_block);
+        FluidStack fluidInput = fluid("water", 250);
+        ItemStack output = stack(Blocks.gold_block);
+
+        addItemAndFluidToItemRecipe(helper, ebf, itemInput, fluidInput, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(itemInput);
+        ebf.inputHatch(0)
+            .fill(fluidInput.copy());
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.inputHatch(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 160, batch = "gt5.ebf")
+    public static void insufficientFluidDoesNotConsumeItems(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack itemInput = stack(Blocks.diamond_block);
+        FluidStack fluidInput = fluid("water", 250);
+        FluidStack partialFluidInput = fluid("water", 100);
+        ItemStack output = stack(Blocks.emerald_block);
+
+        addItemAndFluidToItemRecipe(helper, ebf, itemInput, fluidInput, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(itemInput);
+        ebf.inputHatch(0)
+            .fill(partialFluidInput.copy());
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
 
         helper.gtnh()
             .fastForwardTicks(100);
 
         ebf.inputBus(0)
-            .assertContains(input);
-        assertOutputMissing(helper, ebf, output, "MV energy hatch unexpectedly allowed EV-boosted EBF heat");
+            .assertContains(itemInput);
+        ebf.inputHatch(0)
+            .assertContains(partialFluidInput);
+        assertOutputMissing(helper, ebf, output, "EBF consumed items or produced output without enough fluid");
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -197,7 +328,7 @@ public class ElectricBlastFurnaceFormationTests {
         ItemStack input = stack(Blocks.netherrack);
         ItemStack output = stack(Blocks.nether_brick);
 
-        addTestRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
 
@@ -215,7 +346,7 @@ public class ElectricBlastFurnaceFormationTests {
         ItemStack input = stack(Blocks.soul_sand);
         ItemStack output = stack(Blocks.obsidian);
 
-        addTestRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
         fillOutputBus(helper);
@@ -232,13 +363,118 @@ public class ElectricBlastFurnaceFormationTests {
         helper.succeed();
     }
 
+    @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
+    public static void outputBusWithOneFreeSlotAcceptsRecipe(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.mycelium);
+        ItemStack output = stack(Blocks.packed_ice);
+
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        fillOutputBusExceptOneSlot(helper);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 240, batch = "gt5.ebf")
+    public static void syntheticRecipeRunsTwice(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.stained_hardened_clay);
+        ItemStack output = stack(Blocks.stained_glass);
+
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input.copy(), input.copy());
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        assertBusContainsAmount(helper, OUTPUT_BUS, output, 2, "EBF did not process both queued synthetic inputs");
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 240, batch = "gt5.ebf")
+    public static void unmaintainedMachineDoesNotRunUntilFixed(GameTestHelper helper) {
+        Multiblock ebf = formedEbfWithoutMaintenance(helper);
+        ItemStack input = stack(Blocks.ice);
+        ItemStack output = stack(Blocks.clay);
+
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        helper.gtnh()
+            .fastForwardTicks(100);
+
+        ebf.inputBus(0)
+            .assertContains(input);
+        assertOutputMissing(helper, ebf, output, "EBF produced output while maintenance issues were present");
+
+        ebf.fixMaintenance();
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+        ebf.runRecipe(120);
+
+        ebf.inputBus(0)
+            .assertEmpty();
+        ebf.outputBus(0)
+            .assertContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 160, batch = "gt5.ebf")
+    public static void brokenStructureDoesNotRunRecipeAfterRescan(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.cactus);
+        ItemStack output = stack(Blocks.log);
+
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        helper.destroyBlock(ONE_COIL.x(), ONE_COIL.y(), ONE_COIL.z());
+        forceStructureRescan(helper);
+        helper.gtnh()
+            .supplyEU(ENERGY_HATCH, TierEU.EV, 1, 100);
+
+        helper.gtnh()
+            .fastForwardTicks(100);
+
+        assertBusContainsAmount(helper, INPUT_BUS, input, 1, "EBF consumed input after the structure was broken");
+        assertOutputMissing(helper, ebf, output, "EBF produced output after the structure was broken");
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
+    @GameTest(template = "valid", timeoutTicks = 60, batch = "gt5.ebf")
+    public static void wrongCoilBlockNeverForms(GameTestHelper helper) {
+        replaceWithHeatProofCasing(helper, ONE_COIL);
+        assertNeverForms(helper, "EBF formed with a heat-proof casing in a coil position");
+    }
+
     @GameTest(template = "valid", timeoutTicks = 900, batch = "gt5.ebf", required = false)
     public static void runningRecipeEmitsPollution(GameTestHelper helper) {
         Multiblock ebf = formedEbf(helper);
         ItemStack input = stack(Blocks.end_stone);
         ItemStack output = stack(Blocks.quartz_block);
 
-        addTestRecipe(helper, ebf, input, output, LOW_HEAT, 600, TierEU.RECIPE_EV);
+        addItemRecipe(helper, ebf, input, output, LOW_HEAT, 600, TierEU.RECIPE_EV);
         ebf.inputBus(0)
             .insert(input);
         ebf.energyHatch(0)
@@ -255,6 +491,21 @@ public class ElectricBlastFurnaceFormationTests {
     private static Multiblock formedEbf(GameTestHelper helper) {
         Multiblock ebf = ebf(helper);
         ebf.assertFormed();
+        return ebf;
+    }
+
+    private static Multiblock formedEbfAfterMutation(GameTestHelper helper) {
+        Multiblock ebf = ebf(helper);
+        forceStructureRescan(helper);
+        helper.assertTrue(ebf.isFormed(), "EBF did not form after structure mutation");
+        return ebf;
+    }
+
+    private static Multiblock formedEbfWithoutMaintenance(GameTestHelper helper) {
+        Multiblock ebf = helper.gtnh()
+            .multiblock(CONTROLLER);
+        ebf.assertFormed();
+        breakMaintenanceIssues(helper);
         return ebf;
     }
 
@@ -277,27 +528,53 @@ public class ElectricBlastFurnaceFormationTests {
         helper.setBlock(pos.x(), pos.y(), pos.z(), GregTechAPI.sBlockCasings1, HEAT_PROOF_CASING_META);
     }
 
-    private static void addTestRecipe(GameTestHelper helper, Multiblock ebf, ItemStack input, ItemStack output,
+    private static void addItemRecipe(GameTestHelper helper, Multiblock ebf, ItemStack input, ItemStack output,
         int heat, int duration, long eut) {
         helper.gtnh()
             .withTestRecipe(
                 ebf,
-                GTValues.RA.stdBuilder()
-                    .itemInputs(input.copy())
-                    .itemOutputs(output.copy())
-                    .duration(duration)
-                    .eut(eut)
-                    .metadata(COIL_HEAT, heat));
+                recipe(heat, duration, eut).itemInputs(input.copy())
+                    .itemOutputs(output.copy()));
+    }
+
+    private static void addItemAndFluidToItemRecipe(GameTestHelper helper, Multiblock ebf, ItemStack itemInput,
+        FluidStack fluidInput, ItemStack output, int heat, int duration, long eut) {
+        helper.gtnh()
+            .withTestRecipe(
+                ebf,
+                recipe(heat, duration, eut).itemInputs(itemInput.copy())
+                    .fluidInputs(fluidInput.copy())
+                    .itemOutputs(output.copy()));
+    }
+
+    private static GTRecipeBuilder recipe(int heat, int duration, long eut) {
+        return GTValues.RA.stdBuilder()
+            .duration(duration)
+            .eut(eut)
+            .metadata(COIL_HEAT, heat);
     }
 
     private static void assertOutputMissing(GameTestHelper helper, Multiblock ebf, ItemStack output, String message) {
         try {
             ebf.outputBus(0)
                 .assertContains(output);
-        } catch (GameTestAssertException expected) {
+        } catch (GameTestAssertException | IndexOutOfBoundsException expected) {
             return;
         }
         helper.fail(message);
+    }
+
+    private static void assertBusContainsAmount(GameTestHelper helper, TestPos pos, ItemStack expected, int amount,
+        String message) {
+        IMetaTileEntity bus = metaTileEntity(helper, pos, "bus");
+        int found = 0;
+        for (int slot = 0; slot < bus.getSizeInventory(); slot++) {
+            ItemStack inSlot = bus.getStackInSlot(slot);
+            if (matches(inSlot, expected)) {
+                found += inSlot.stackSize;
+            }
+        }
+        helper.assertTrue(found >= amount, message + " (found " + found + ")");
     }
 
     private static void fillOutputBus(GameTestHelper helper) {
@@ -305,6 +582,28 @@ public class ElectricBlastFurnaceFormationTests {
         for (int slot = 0; slot < outputBus.getSizeInventory(); slot++) {
             outputBus.setInventorySlotContents(slot, fullStack(Blocks.stone));
         }
+    }
+
+    private static void fillOutputBusExceptOneSlot(GameTestHelper helper) {
+        IMetaTileEntity outputBus = metaTileEntity(helper, OUTPUT_BUS, "output bus");
+        for (int slot = 0; slot < outputBus.getSizeInventory() - 1; slot++) {
+            outputBus.setInventorySlotContents(slot, fullStack(Blocks.stone));
+        }
+    }
+
+    private static void breakMaintenanceIssues(GameTestHelper helper) {
+        IMetaTileEntity metaTileEntity = metaTileEntity(helper, CONTROLLER, "EBF controller");
+        if (!(metaTileEntity instanceof MTEMultiBlockBase multiBlock)) {
+            helper.fail("EBF controller is not a multiblock controller");
+            return;
+        }
+
+        multiBlock.mWrench = false;
+        multiBlock.mScrewdriver = false;
+        multiBlock.mSoftMallet = false;
+        multiBlock.mHardHammer = false;
+        multiBlock.mSolderingTool = false;
+        multiBlock.mCrowbar = false;
     }
 
     private static void forceStructureRescan(GameTestHelper helper) {
@@ -335,10 +634,12 @@ public class ElectricBlastFurnaceFormationTests {
         return metaTileEntity;
     }
 
-    private static void setMetaTileEntityId(GameTestHelper helper, TestPos pos, int id) {
-        NBTTagCompound nbt = helper.getTileNBT(pos.x(), pos.y(), pos.z());
-        nbt.setInteger("mID", id);
-        helper.setTile(pos.x(), pos.y(), pos.z(), nbt);
+    private static FluidStack fluid(String fluidName, int amount) {
+        FluidStack fluid = FluidRegistry.getFluidStack(fluidName, amount);
+        if (fluid == null) {
+            throw new IllegalArgumentException("Unknown fluid: " + fluidName);
+        }
+        return fluid;
     }
 
     private static ItemStack stack(Block block) {
@@ -347,5 +648,9 @@ public class ElectricBlastFurnaceFormationTests {
 
     private static ItemStack fullStack(Block block) {
         return new ItemStack(block, 64);
+    }
+
+    private static boolean matches(ItemStack actual, ItemStack expected) {
+        return actual != null && actual.isItemEqual(expected) && ItemStack.areItemStackTagsEqual(actual, expected);
     }
 }
