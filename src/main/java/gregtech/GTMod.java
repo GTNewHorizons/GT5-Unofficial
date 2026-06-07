@@ -74,7 +74,6 @@ import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
-import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
@@ -143,7 +142,7 @@ import ic2.api.recipe.RecipeOutput;
 @Mod(
     modid = "gregtech",
     name = "GregTech",
-    version = "MC1710",
+    version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.6.35,);"
@@ -787,8 +786,6 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
-        // Interrupt IDLE Threads to close down cleanly
-        RunnableMachineUpdate.shutdownExecutorService();
     }
 
     @Mod.EventHandler

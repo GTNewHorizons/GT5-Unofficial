@@ -1,8 +1,10 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
@@ -83,6 +85,7 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingSmeltingInto;
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
+    private final Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> pendingDirectSmelting;
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
@@ -134,6 +137,7 @@ public class MaterialBuilder {
             pendingSmeltingInto,
             pendingMaceratingInto,
             pendingArcSmeltingInto,
+            pendingArcSmeltingIntoWithGas.isEmpty() ? null : pendingArcSmeltingIntoWithGas,
             pendingDirectSmelting,
             subTags
             // spotless:on
@@ -524,6 +528,12 @@ public class MaterialBuilder {
     /** Sets what this material arc smelts into. */
     public MaterialBuilder setArcSmeltingInto(Supplier<Materials> material) {
         pendingArcSmeltingInto = material;
+        return this;
+    }
+
+    /** Sets what this material arc smelts into when a specific gas is used. */
+    public MaterialBuilder setArcSmeltingIntoWithGas(Supplier<Materials> gas, Supplier<Materials> material) {
+        pendingArcSmeltingIntoWithGas.put(gas, material);
         return this;
     }
 

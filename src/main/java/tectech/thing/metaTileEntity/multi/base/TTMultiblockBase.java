@@ -502,7 +502,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected long getActualEnergyUsage() {
-        return -(useLongPower ? lEUt : mEUt) * eAmpereFlow * 10_000 / Math.max(1_000, mEfficiency);
+        long base = -(useLongPower ? lEUt : mEUt) * eAmpereFlow;
+        long maxEfficiency = 10_000;
+        long efficiency = Math.max(1_000, mEfficiency);
+
+        return GTUtility.fastDivMul(base, maxEfficiency, efficiency);
     }
 
     /**
