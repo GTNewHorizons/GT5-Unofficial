@@ -69,7 +69,7 @@ public class PositionedStructureError implements StructureError {
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         String text = buildDisplayText();
-        boolean multiLine = expectedBlocks.size() > 1;
+        boolean multiLine = expectedBlocks.size() > 1 || text.length() > 40;
 
         return Flow.row()
             .widthRel(1)

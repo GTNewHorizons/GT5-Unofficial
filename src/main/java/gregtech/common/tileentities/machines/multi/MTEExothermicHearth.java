@@ -305,6 +305,13 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 

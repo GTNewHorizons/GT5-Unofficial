@@ -34,7 +34,9 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.beamcrafting.LHCModule;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
+import gtnhlanth.common.beamline.Particle;
 
 public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadronCollider> {
 
@@ -58,6 +60,25 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             new IntSyncValue(
                 () -> multiblock.playerTargetAccelerationCycles,
                 i -> multiblock.playerTargetAccelerationCycles = i).allowC2S());
+        syncManager.syncValue(
+            "calcInputBeamEnergyeV",
+            new DoubleSyncValue(() -> multiblock.calcInputBeamEnergyeV, d -> multiblock.calcInputBeamEnergyeV = d)
+                .allowC2S());
+        syncManager.syncValue(
+            "calcInputBeamRate",
+            new IntSyncValue(() -> multiblock.calcInputBeamRate, i -> multiblock.calcInputBeamRate = i).allowC2S());
+        syncManager.syncValue(
+            "calcTargetBeamEnergyeV",
+            new DoubleSyncValue(() -> multiblock.calcTargetBeamEnergyeV, d -> multiblock.calcTargetBeamEnergyeV = d)
+                .allowC2S());
+        syncManager.syncValue(
+            "calcNumCycles",
+            new IntSyncValue(() -> multiblock.calcNumCycles, i -> multiblock.calcNumCycles = i).allowC2S());
+        syncManager.syncValue(
+            "probTableCollisionEnergyeV",
+            new DoubleSyncValue(
+                () -> multiblock.probTableCollisionEnergyeV,
+                d -> multiblock.probTableCollisionEnergyeV = d).allowC2S());
         syncManager.syncValue("cachedOutputBeamEnergy", new DoubleSyncValue(multiblock::getCachedBeamEnergy));
         syncManager.syncValue("cachedOutputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
         syncManager.syncValue(
@@ -72,6 +93,12 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createButtonColumn(panel, syncManager).child(createOverviewButton(syncManager, panel));
+    }
+
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createRightPanelGapRow(panel, syncManager).child(createProbTableButton(syncManager, panel))
+            .child(createCalculatorButton(syncManager, panel));
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -209,22 +236,22 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         outputWidget.child(
             new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
-                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine));
 
         return outputWidget;
@@ -237,7 +264,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .topRel(0)
-            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/fluid_regulation_panel"))
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
                     statsPanel.openPanel();
@@ -246,7 +273,45 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.machineinfo")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.text.LHC.setparams")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    protected IWidget createCalculatorButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler calcPanel = syncManager.syncedPanel(
+            "calculatorPanel",
+            true,
+            (p_syncManager, syncHandler) -> openCalculatorPanel(p_syncManager, parent, syncManager));
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/lhc_calculator"))
+            .onMousePressed(d -> {
+                if (!calcPanel.isPanelOpen()) {
+                    calcPanel.openPanel();
+                } else {
+                    calcPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.calculator")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    protected IWidget createProbTableButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler probTablePanel = syncManager.syncedPanel(
+            "probTablePanel",
+            true,
+            (p_syncManager, syncHandler) -> openProbTablePanel(p_syncManager, parent, syncManager));
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/lhc_probtable"))
+            .onMousePressed(d -> {
+                if (!probTablePanel.isPanelOpen()) {
+                    probTablePanel.openPanel();
+                } else {
+                    probTablePanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.probtable")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -274,11 +339,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                     .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
                             .size(120, 14)
                             .marginRight(2)
                             .value(playerTargetBeamEnergyeVSync)
-                            .setDefaultNumber(1_000_000_000))
+                            .defaultNumber(1_000_000_000))
                     .child(
                         new TextWidget<>(
                             IKey.dynamic(
@@ -287,11 +352,208 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                                         .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                            .setFormatAsInteger(true)
+                            .formatAsInteger(true)
                             .size(40, 14)
                             .marginRight(2)
                             .value(playerTargetAccelerationCyclesSync)
-                            .setDefaultNumber(10)));
+                            .defaultNumber(10)));
     }
 
+    private ModularPanel openCalculatorPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+
+        DoubleSyncValue calcInputBeamEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("calcInputBeamEnergyeV:0");
+        IntSyncValue calcInputBeamRateSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcInputBeamRate:0");
+        DoubleSyncValue calcTargetBeamEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("calcTargetBeamEnergyeV:0");
+        IntSyncValue calcNumCyclesSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcNumCycles:0");
+
+        IKey resultKey = IKey.dynamic(
+            () -> formatCalcResult(
+                calcInputBeamEnergyeVSync != null ? calcInputBeamEnergyeVSync.getDoubleValue()
+                    : multiblock.calcInputBeamEnergyeV,
+                calcInputBeamRateSync != null ? calcInputBeamRateSync.getIntValue() : multiblock.calcInputBeamRate,
+                calcTargetBeamEnergyeVSync != null ? calcTargetBeamEnergyeVSync.getDoubleValue()
+                    : multiblock.calcTargetBeamEnergyeV,
+                calcNumCyclesSync != null ? calcNumCyclesSync.getIntValue() : multiblock.calcNumCycles));
+
+        IKey resultHeaderKey = IKey.lang("GT5U.gui.text.LHC.calc.resultheader");
+
+        return new ModularPanel("calculatorPanel").relative(parent)
+            .rightRel(1)
+            .topRel(0)
+            .coverChildren()
+            .padding(6)
+            .widgetTheme("backgroundPopup")
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(4)
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.title")).textAlign(Alignment.CENTER))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.inputbeamenergyeV"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(calcInputBeamEnergyeVSync)
+                            .setDefaultNumber(0))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.calc.inputbeamrate")).textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setFormatAsInteger(true)
+                            .size(60, 14)
+                            .value(calcInputBeamRateSync)
+                            .setDefaultNumber(1))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.targetbeamenergyeV")).textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(calcTargetBeamEnergyeVSync)
+                            .setDefaultNumber(1_000_000_000))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.maxaccelerationcycles"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setFormatAsInteger(true)
+                            .size(40, 14)
+                            .value(calcNumCyclesSync)
+                            .setDefaultNumber(1))
+
+                    .child(new TextWidget<>(resultHeaderKey).textAlign(Alignment.CENTER))
+                    .child(new TextWidget<>(resultKey).textAlign(Alignment.CENTER)));
+    }
+
+    private String formatCalcResult(double inputEnergyeV, int inputRate, double targetEnergyeV, int numCycles) {
+        double[] result = MTELargeHadronCollider.simulateAccelerator(
+            inputEnergyeV / 1000.0, // eV -> keV
+            inputRate,
+            targetEnergyeV / 1000.0,
+            numCycles,
+            multiblock.mMaxProgresstime);
+        double finalBeamEnergyKeV = result[0];
+        int finalRate = (int) result[1];
+        long finalEUt = (long) result[2];
+
+        long collisionEnergyeV = (long) (finalBeamEnergyKeV * 2 * 1000); // x2 for collision, and conversion keV->eV
+
+        return EnumChatFormatting.GREEN + format(collisionEnergyeV)
+            + "eV"
+            + EnumChatFormatting.RESET
+            + " | "
+            + EnumChatFormatting.YELLOW
+            + finalRate
+            + EnumChatFormatting.RESET
+            + " | "
+            + EnumChatFormatting.GOLD
+            + format(finalEUt)
+            + "EU/t";
+    }
+
+    private ModularPanel openProbTablePanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+
+        DoubleSyncValue probTableCollisionEnergyeVSync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("probTableCollisionEnergyeV:0");
+
+        // one row per particle
+        ListWidget<IWidget, ?> tableBody = new ListWidget<>();
+
+        final LHCModule[] columns = new LHCModule[] { LHCModule.EM, LHCModule.Weak, LHCModule.Strong, LHCModule.Grav };
+
+        for (final Particle p : Particle.VALUES) {
+            Flow row = Flow.row()
+                .coverChildren();
+
+            row.child(
+                new ButtonWidget<>().size(18, 18)
+                    .overlay(p.getTexture())
+                    .tooltipBuilder(t -> t.addLine(IKey.str(p.getLocalisedName())))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY));
+
+            // one column per lhc module
+            for (final LHCModule module : columns) {
+                row.child(
+                    new TextWidget<>(
+                        IKey.dynamic(
+                            () -> formatProbability(
+                                p,
+                                module,
+                                probTableCollisionEnergyeVSync != null ? probTableCollisionEnergyeVSync.getDoubleValue()
+                                    : multiblock.probTableCollisionEnergyeV))).width(40)
+                                        .height(18)
+                                        .textAlign(Alignment.CENTER));
+            }
+
+            tableBody.child(row);
+        }
+
+        // headers
+        Flow headerRow = Flow.row()
+            .coverChildren()
+            .child(
+                new TextWidget<>(IKey.str("")).width(18)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("E")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("W")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("S")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER))
+            .child(
+                new TextWidget<>(IKey.str("G")).width(40)
+                    .height(14)
+                    .textAlign(Alignment.CENTER));
+
+        return new ModularPanel("probTablePanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
+            .coverChildren()
+            .padding(6)
+            .widgetTheme("backgroundPopup")
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .childPadding(4)
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.probtable.title")).textAlign(Alignment.CENTER))
+
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.probtable.collisionenergyeV"))
+                            .textAlign(Alignment.CENTER))
+                    .child(
+                        new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
+                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .size(120, 14)
+                            .value(probTableCollisionEnergyeVSync)
+                            .setDefaultNumber(0))
+
+                    .child(headerRow)
+                    .child(tableBody.size(196, 200)));
+    }
+
+    private String formatProbability(Particle particle, LHCModule module, double collisionEnergyeV) {
+        if (!module.acceptedParticles.contains(particle)) {
+            return "--";
+        }
+        double collisionEnergyKeV = collisionEnergyeV / 1000.0;
+        double prob = MTELargeHadronCollider.particleProbability(particle, module, collisionEnergyKeV);
+        return String.format(Locale.US, "%.2f%%", prob * 100.0);
+    }
 }

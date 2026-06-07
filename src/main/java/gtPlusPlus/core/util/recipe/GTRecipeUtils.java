@@ -10,6 +10,9 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe.GTRecipe_WithAlt;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
@@ -26,7 +29,19 @@ public class GTRecipeUtils {
             ItemStack savedCircuit = null;
             ArrayList<ItemStack> itemInputsWithoutProgrammableCircuit = new ArrayList<>();
 
-            for (ItemStack itemStack : recipeInput.mInputs) {
+            // For GTRecipe_WithAlt
+            List<ItemStack[]> oreDictList = null;
+            IntList oreDictIds = null;
+            GTRecipe_WithAlt altRecipe = null;
+
+            if (recipeInput instanceof GTRecipe_WithAlt alt) {
+                altRecipe = alt;
+                if (altRecipe.mOreDictAlt != null) oreDictList = new ArrayList<>(altRecipe.mOreDictAlt.length);
+                if (altRecipe.mOreDictIds != null) oreDictIds = new IntArrayList(altRecipe.mOreDictIds.length);
+            }
+
+            for (int i = 0; i < recipeInput.mInputs.length; i++) {
+                ItemStack itemStack = recipeInput.mInputs[i];
                 if (itemStack == null) {
                     continue;
                 }
@@ -34,24 +49,24 @@ public class GTRecipeUtils {
                     savedCircuit = itemStack;
                 } else {
                     itemInputsWithoutProgrammableCircuit.add(itemStack);
+                    if (altRecipe != null) {
+                        if (oreDictList != null && i < altRecipe.mOreDictAlt.length)
+                            oreDictList.add(altRecipe.mOreDictAlt[i]);
+                        if (oreDictIds != null && i < altRecipe.mOreDictIds.length)
+                            oreDictIds.add(altRecipe.mOreDictIds[i]);
+                    }
                 }
             }
 
             // itemInputsWithoutProgrammableCircuit can have smaller length when a circuit or null value is stripped
             if (itemInputsWithoutProgrammableCircuit.size() != recipeInput.mInputs.length) {
-                GTRecipe newRecipe = new GTRecipe(
-                    itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
-                    recipeInput.mOutputs,
-                    recipeInput.mSpecialItems,
-                    recipeInput.mInputChances,
-                    recipeInput.mOutputChances,
-                    recipeInput.mFluidInputChances,
-                    recipeInput.mFluidOutputChances,
-                    recipeInput.mFluidInputs,
-                    recipeInput.mFluidOutputs,
-                    recipeInput.mDuration,
-                    recipeInput.mEUt,
-                    recipeInput.mSpecialValue);
+                GTRecipe newRecipe = recipeInput.copyShallow();
+                newRecipe.setInputs(itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]));
+
+                if (newRecipe instanceof GTRecipe_WithAlt newAlt) {
+                    if (oreDictList != null) newAlt.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);
+                    if (oreDictIds != null) newAlt.mOreDictIds = oreDictIds.toIntArray();
+                }
 
                 recipesHashSet.add(newRecipe);
 
@@ -74,20 +89,9 @@ public class GTRecipeUtils {
             ItemStack circuit = circuitMap.get(filteredRecipe);
 
             if (circuit != null) {
-                GTRecipe recipeWithCircuit = new GTRecipe(
-                    // append the chosen circuit to the end of the inputs
-                    ArrayUtils.add(filteredRecipe.mInputs, circuit),
-                    filteredRecipe.mOutputs,
-                    filteredRecipe.mSpecialItems,
-                    filteredRecipe.mInputChances,
-                    filteredRecipe.mOutputChances,
-                    filteredRecipe.mFluidInputChances,
-                    filteredRecipe.mFluidOutputChances,
-                    filteredRecipe.mFluidInputs,
-                    filteredRecipe.mFluidOutputs,
-                    filteredRecipe.mDuration,
-                    filteredRecipe.mEUt,
-                    filteredRecipe.mSpecialValue);
+                GTRecipe recipeWithCircuit = filteredRecipe.copyShallow();
+                // append the chosen circuit to the end of the inputs
+                recipeWithCircuit.setInputs(ArrayUtils.add(filteredRecipe.mInputs, circuit));
 
                 recipeOutput.add(recipeWithCircuit);
             } else {
