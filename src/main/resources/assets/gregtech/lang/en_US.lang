@@ -228,7 +228,7 @@ gt.blockmachines.output_hatch_me.desc=Fluid Output for Multiblocks\nStores direc
 gt.blockmachines.output_hatch_void.desc=Voids fluids from Multiblocks\nMust be configured to work\nMimics behavior of restricted hatches
 gt.blockmachines.input_bus.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stacks
 gt.blockmachines.input_bus.singular.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stack
-gt.blockmachines.input_bus_chisel.desc=Item Input Bus for §eIndustrial Chisel§r\n%s + 1  Slots
+gt.blockmachines.input_bus_chisel.desc=Item Input Bus for §eIndustrial Chisel§r\n%s + %s Slots
 gt.blockmachines.input_bus_crafting_me.desc=Machine Type: §eCRIB§r\nAdvanced item input for Multiblocks\nHatch Tier: %s\nProcesses patterns directly from ME\n%sChange ME connection behavior by right-clicking with wire cutter\nIgnores the contents of other buses or hatches\nAlso ignores other patterns within the same bus
 gt.blockmachines.input_bus_crafting_me.support_fluid.desc=It supports patterns including fluids
 gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc=It does not support patterns including fluids
@@ -3697,6 +3697,8 @@ GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
 GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
+GT5U.hatch.chisel.configure.singleton=Configure Template
+GT5U.hatch.chisel.configure.grid=Configure Templates
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
