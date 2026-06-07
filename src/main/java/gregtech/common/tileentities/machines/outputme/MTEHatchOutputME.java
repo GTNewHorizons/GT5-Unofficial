@@ -5,7 +5,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,6 +28,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.AEApi;
+import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -130,8 +133,9 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        boolean ok = provider.storePartial(aFluid, !doFill);
-        return ok ? aFluid.amount : 0;
+        IAEFluidStack input = AEFluidStack.create(aFluid);
+        provider.storePartial(input, !doFill);
+        return aFluid.amount - (int) input.getStackSize();
     }
 
     @Override
@@ -520,6 +524,8 @@ public class MTEHatchOutputME extends MTEHatchOutput
         private final long availableSpace;
         private boolean active = true;
         private boolean isRecipeCheck = false;
+        private IMEInventoryHandler<IAEFluidStack> cell = null;
+        private Set<GTUtility.FluidId> initializedFluids = null;
 
         public MEOutputHatchTransaction() {
             availableSpace = provider.getAvailableSpace();
@@ -527,6 +533,13 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
+            if (isRecipeCheck && provider.shouldCheck()) {
+                cell = AEApi.instance()
+                    .registries()
+                    .cell()
+                    .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
+                initializedFluids = new HashSet<>();
+            }
         }
 
         @Override
@@ -539,23 +552,30 @@ public class MTEHatchOutputME extends MTEHatchOutput
             return !isRecipeCheck || cache.getTotal() < availableSpace;
         }
 
-        public boolean canStore(GTUtility.FluidId id, FluidStack stack) {
-            if (isRecipeCheck && provider.shouldCheck()) {
-                return provider.canStore(stack, stack.amount + cache.get(id), isRecipeCheck);
-            }
-            return hasAvailableSpace() && provider.getFilter()
-                .isFilteredToFluid(id);
-        }
-
         @Override
         public boolean storePartial(GTUtility.FluidId id, FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (!canStore(id, stack)) return false;
-
+            if (isRecipeCheck && provider.shouldCheck()) {
+                if (!initializedFluids.contains(id)) {
+                    IAEFluidStack input = AEFluidStack.create(stack);
+                    input.setStackSize(provider.getCachedAmount(input));
+                    cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    initializedFluids.add(id);
+                }
+                IAEFluidStack input = AEFluidStack.create(stack);
+                IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
+                cache.insert(id, inserted);
+                stack.amount -= inserted;
+                return stack.amount == 0;
+            }
+            if (!hasAvailableSpace() || !provider.getFilter()
+                .isFilteredToFluid(id)) {
+                return false;
+            }
             cache.insert(id, stack.amount);
             stack.amount = 0;
-
             return true;
         }
 

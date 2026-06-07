@@ -430,6 +430,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return cache.getTotal();
     }
 
+    public long getCachedAmount(T key) {
+        return cache.get(key);
+    }
+
     /**
      * Note: this may return {@link Long#MAX_VALUE} for void cells.
      *
@@ -490,27 +494,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         this.checkMode = cacheMode;
     }
 
-    private boolean simulateInject(T input, long size) {
-        input.setStackSize(size + cache.get(input));
-        final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
-        return returns == null || returns.getStackSize() == 0;
-    }
-
-    public boolean canStore(@NotNull I stack, boolean simulate) {
-        if (simulate && shouldCheck()) {
-            T input = filter.fromNative(stack);
-            return simulateInject(input, input.getStackSize());
-        }
-        return (!simulate || hasAvailableSpace()) && filter.isAllowed(stack);
-    }
-
-    public boolean canStore(@NotNull I stack, long size, boolean simulate) {
-        if (simulate && shouldCheck()) {
-            return simulateInject(filter.fromNative(stack), size);
-        }
-        return (!simulate || hasAvailableSpace()) && filter.isAllowed(stack);
-    }
-
     public void addToCache(@NotNull I stack) {
         addToCache(filter.fromNative(stack));
     }
@@ -521,14 +504,20 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
-    public boolean storePartial(@NotNull I stack, boolean simulate) {
-        if (!canStore(stack, simulate)) {
-            return false;
+    public boolean storePartial(@NotNull T input, boolean simulate) {
+        if (simulate && shouldCheck()) {
+            input.setStackSize(input.getStackSize() + cache.get(input));
+            final T rejected = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
+            input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
+            return input.getStackSize() == 0;
         }
+        if (simulate && !hasAvailableSpace()) return false;
+        if (!filter.isAllowed(input)) return false;
         if (!simulate) {
-            addToCache(stack);
+            addToCache(input);
             env.dispatchMarkDirty();
         }
+        input.setStackSize(0);
         return true;
     }
 
