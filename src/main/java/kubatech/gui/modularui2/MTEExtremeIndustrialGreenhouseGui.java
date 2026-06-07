@@ -57,7 +57,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private static final int WARNING_ANIM_TICK_MS = 50;
     private static final UITexture OVERLAY_INVENTORY = UITexture.builder()
         .canApplyTheme()
-        .location("kubatech", "gui/overlay_button/bee_list")
+        .location("kubatech", "gui/overlay_button/greenhouse_inventory")
         .build();
     private static final UITexture OVERLAY_INVENTORY_FULL_WARNING_SHEET = UITexture.builder()
         .canApplyTheme()
