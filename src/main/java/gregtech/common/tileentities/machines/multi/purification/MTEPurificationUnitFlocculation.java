@@ -50,7 +50,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
@@ -58,7 +57,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final int STRUCTURE_X_OFFSET = 4;
     private static final int STRUCTURE_Y_OFFSET = 3;
@@ -97,6 +95,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
      */
     private long inputFluidConsumed = 0;
 
+    private boolean needsWaterFill = false;
+
     private static final String[][] structure = new String[][]
     // spotless:off
         {
@@ -119,14 +119,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     private static final IStructureDefinition<MTEPurificationUnitFlocculation> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationUnitFlocculation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Filter machine casing
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .addElement(
@@ -208,20 +200,17 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
             STRUCTURE_Y_OFFSET,
             STRUCTURE_Z_OFFSET,
             elementBudget,
             env,
+            false,
             true);
-        if (built == -1) {
-            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.water");
-            return 0;
-        }
-        return built;
     }
 
     @Override
@@ -237,9 +226,19 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W');
             return;
+        }
 
         checkHasInputHatch(errors);
         // At most three input hatches allowed
@@ -249,6 +248,25 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // At most three output hatches allowed
         checkHatchMax(errors, OutputHatch, 3);
         checkCasingMin(errors, casingCount, MIN_CASING);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W')) {
+                needsWaterFill = false;
+            }
+        }
     }
 
     @Override
