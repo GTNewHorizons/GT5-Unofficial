@@ -158,6 +158,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 "Any Grate Machine Casing NOT on the first slice",
                 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         return tt;
     }
