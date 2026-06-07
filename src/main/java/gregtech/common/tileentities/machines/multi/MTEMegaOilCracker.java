@@ -186,7 +186,6 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
-            .addStructureDeprecatedLine()
             .addInfo(
                 TooltipHelper.coloredText(
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),

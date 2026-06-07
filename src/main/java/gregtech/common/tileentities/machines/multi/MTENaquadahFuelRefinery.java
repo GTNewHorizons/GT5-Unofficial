@@ -355,4 +355,9 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

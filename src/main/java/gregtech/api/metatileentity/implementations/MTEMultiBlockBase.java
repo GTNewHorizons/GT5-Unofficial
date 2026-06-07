@@ -179,10 +179,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0, efficiencyDecrease = 1000;
     public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
+    private boolean oldMufflerState = false;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public String mNEI;
@@ -621,7 +622,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     | (mMachine ? 0 : 64));
 
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-            setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
+            setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
 
             boolean isActive = mMaxProgresstime > 0;
 
@@ -811,7 +812,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             }
-            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - efficiencyDecrease);
         }
     }
 
@@ -2691,12 +2692,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
+        oldMufflerState = state;
         final int size = mMufflerHatches.size();
         for (int i = 0; i < size; i++) {
             final MTEHatchMuffler muffler = mMufflerHatches.get(i);
             final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
             if (tile == null || tile.isDead()) continue;
             tile.setActive(state);
+        }
+    }
+
+    protected void setMufflersIfChanged(boolean newState) {
+        if (newState != oldMufflerState) {
+            setMufflers(newState);
         }
     }
 
