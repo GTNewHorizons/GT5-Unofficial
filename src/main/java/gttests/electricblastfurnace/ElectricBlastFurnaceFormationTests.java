@@ -277,8 +277,8 @@ public class ElectricBlastFurnaceFormationTests {
         helper.setBlock(pos.x(), pos.y(), pos.z(), GregTechAPI.sBlockCasings1, HEAT_PROOF_CASING_META);
     }
 
-    private static void addTestRecipe(GameTestHelper helper, Multiblock ebf, ItemStack input, ItemStack output, int heat,
-        int duration, long eut) {
+    private static void addTestRecipe(GameTestHelper helper, Multiblock ebf, ItemStack input, ItemStack output,
+        int heat, int duration, long eut) {
         helper.gtnh()
             .withTestRecipe(
                 ebf,
