@@ -397,6 +397,7 @@ public class GTRecipeRegistrator {
                 if (gasOutputs == null || gasStack == null) continue;
                 GTRecipeBuilder gasRecipeBuilder = GTValues.RA.stdBuilder()
                     .itemInputs(aStack)
+                    .circuit(11)
                     .itemOutputs(gasOutputs)
                     .fluidInputs(gasStack)
                     .duration(gasAmount * TICKS)
