@@ -45,7 +45,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             uiPropertiesBuilder.logoPos(new Pos2d(8, yOrigin)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 117 + (itemRows + fluidRows - 4) * 18))
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 115 + (itemRows + fluidRows - 4) * 18))
                 .neiSpecialInfoFormatter(new EyeOfHarmonySpecialValueFormatter()));
     }
 

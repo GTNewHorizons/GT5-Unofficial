@@ -36,7 +36,7 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
                     .asWidget())
             .child(
                 new TextFieldWidget().value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
-                    .setNumbers(
+                    .numbersInt(
                         0,
                         machine.getThresholdType()
                             .getMaxCapacity())

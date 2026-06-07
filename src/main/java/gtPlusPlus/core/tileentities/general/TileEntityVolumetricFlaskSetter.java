@@ -336,7 +336,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.VolumetricFlaskSetter";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockVolumetricFlaskSetter.name";
     }
 
     @Override
