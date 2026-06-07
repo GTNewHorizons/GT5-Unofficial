@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.Localized;
 import gregtech.api.util.StringUtils;
 
 /// A loader that reads a pseudo-markdown file from a mod's jar or resource pack and converts it to text that can be
@@ -60,6 +61,8 @@ public class MarkdownTooltipLoader {
         addCommand("hr", new HRMarkdownCommand());
         addCommand("var", new VarMarkdownCommand(false));
         addCommand("var-eval", new VarMarkdownCommand(true));
+        addCommand("lang", new LangMarkdownCommand(false));
+        addCommand("lang-eval", new LangMarkdownCommand(true));
     }
 
     public void addCommand(String name, MarkdownCommand command) {
@@ -121,6 +124,40 @@ public class MarkdownTooltipLoader {
     }
 
     public void emit(String unparsed, StringBuilder out, Map<String, Object> vars) {
+        parseCommands(unparsed, new CommandVisitor() {
+
+            @Override
+            public void visitChar(char c) {
+                out.append(c);
+            }
+
+            @Override
+            public void visitCommand(String command) {
+                command = command.substring(1, command.length() - 1);
+
+                int colon = command.indexOf(':');
+                String commandName = colon == -1 ? command : command.substring(0, colon);
+                String arg = colon == -1 ? "" : command.substring(colon + 1);
+
+                MarkdownCommand commandHandler = MarkdownTooltipLoader.this.commands.get(commandName.trim());
+
+                if (commandHandler == null) {
+                    throw new IllegalStateException("Could not find command: " + commandName.trim());
+                }
+
+                commandHandler.process(MarkdownTooltipLoader.this, arg, out, vars);
+            }
+        });
+    }
+
+    public interface CommandVisitor {
+
+        void visitChar(char c);
+
+        void visitCommand(String command);
+    }
+
+    public static void parseCommands(String unparsed, CommandVisitor visitor) {
         final char[] chars = unparsed.toCharArray();
 
         for (int i = 0; i < chars.length; i++) {
@@ -128,7 +165,7 @@ public class MarkdownTooltipLoader {
 
             if (curr == '\\') {
                 if (i < chars.length - 1) {
-                    out.append(chars[i + 1]);
+                    visitor.visitChar(chars[i + 1]);
                     i++;
                 }
             } else if (curr == '{') {
@@ -167,23 +204,11 @@ public class MarkdownTooltipLoader {
                             + "': expected open + close brace that contains the command name and (optional) arguments");
                 }
 
-                command = command.substring(1, command.length() - 1);
-
-                int colon = command.indexOf(':');
-                String commandName = colon == -1 ? command : command.substring(0, colon);
-                String arg = colon == -1 ? "" : command.substring(colon + 1);
-
-                MarkdownCommand commandHandler = this.commands.get(commandName.trim());
-
-                if (commandHandler == null) {
-                    throw new IllegalStateException("Could not find command: " + commandName.trim());
-                }
-
-                commandHandler.process(this, arg, out, vars);
+                visitor.visitCommand(command);
 
                 i = end;
             } else {
-                out.append(chars[i]);
+                visitor.visitChar(chars[i]);
             }
         }
     }
@@ -395,6 +420,69 @@ public class MarkdownTooltipLoader {
                 loader.emit(value.toString(), lineOutput, vars);
             } else {
                 lineOutput.append(value);
+            }
+        }
+    }
+
+    public static class LangMarkdownCommand implements MarkdownCommand {
+
+        public final boolean eval;
+
+        public LangMarkdownCommand(boolean eval) {
+            this.eval = eval;
+        }
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+
+            Localized loc;
+
+            if (arg.contains(":")) {
+                List<Object> paramList = new ArrayList<>();
+                StringBuilder paramBuffer = new StringBuilder();
+
+                // We use the same parse for eval and no-eval to keep the syntax the same.
+                // If the command 'quoting' isn't desirable, the end-user can escape braces to split on colons within
+                // command-like structures.
+                parseCommands(arg, new CommandVisitor() {
+
+                    @Override
+                    public void visitChar(char c) {
+                        if (c == ':') {
+                            paramList.add(paramBuffer.toString());
+                            paramBuffer.setLength(0);
+                        } else {
+                            paramBuffer.append(c);
+                        }
+                    }
+
+                    @Override
+                    public void visitCommand(String command) {
+                        if (eval) {
+                            paramBuffer.append(loader.eval(command, vars));
+                        } else {
+                            paramBuffer.append(command);
+                        }
+                    }
+                });
+
+                if (paramBuffer.length() > 0) {
+                    paramList.add(paramBuffer.toString());
+                }
+
+                String key = paramList.remove(0)
+                    .toString();
+
+                loc = new Localized(key, paramList.toArray(new Object[0]));
+            } else {
+                loc = new Localized(arg);
+            }
+
+            if (eval) {
+                loader.emit(loc.toString(), lineOutput, vars);
+            } else {
+                lineOutput.append(loc);
             }
         }
     }

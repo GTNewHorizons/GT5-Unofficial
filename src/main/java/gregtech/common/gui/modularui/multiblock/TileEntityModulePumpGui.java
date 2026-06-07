@@ -24,7 +24,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             IKey.lang("gt.blockmachines.multimachine.ig.elevator.gui.config")
                 .asWidget()
                 .setEnabledIf(w -> baseMetaTileEntity.isAllowedToWork() || baseMetaTileEntity.isActive())
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .fullWidth()
                 .marginBottom(2));
 
@@ -42,7 +42,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                 .setEnabledIf(
                     w -> (baseMetaTileEntity.isAllowedToWork() || baseMetaTileEntity.isActive())
                         && multiblock.getPumpedFluid(index) != null)
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .fullWidth()
                 .marginBottom(2));
         }
