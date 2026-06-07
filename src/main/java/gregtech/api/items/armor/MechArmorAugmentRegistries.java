@@ -543,7 +543,7 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentwaterbreathing")
             .fitsInto(ArmorType.Helmet)
             .providesBehaviors(WaterBreathingBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Utility)
+            .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.uncommon)
         ),
         MilkInfusion(ItemList.Augment_MilkInfusion, new AugmentBuilder()
