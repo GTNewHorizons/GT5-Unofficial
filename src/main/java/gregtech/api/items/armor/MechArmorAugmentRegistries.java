@@ -93,7 +93,7 @@ public class MechArmorAugmentRegistries {
         Medium(ItemList.Armor_Frame_Medium, new FrameBuilder()
             .setId("Medium")
             .setItemId("armorframemedium")
-            .setSlotCounts(1, 1, 1, 0)
+            .setSlotCounts(1, 0, 2, 0)
             .setColor(Materials.Bronze.mRGBa)
             .setRarity(EnumRarity.common)
             .setProtection(11)
