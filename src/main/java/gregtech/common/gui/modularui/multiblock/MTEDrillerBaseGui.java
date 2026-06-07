@@ -65,7 +65,15 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
 
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createLeftPanelGapRow(parent, syncManager).child(0, createChunkLoadingToggle(syncManager));
+        return Flow.row()
+            .coverChildrenWidth()
+            .fullHeight()
+            .childIf(shouldDisplayVoidExcess(), () -> createVoidExcessButton(syncManager))
+            .childIf(shouldDisplayInputSeparation(), () -> createInputSeparationButton(syncManager))
+            .childIf(shouldDisplayBatchMode(), () -> createBatchModeButton(syncManager))
+            .childIf(shouldDisplayRecipeLock(), () -> createLockToSingleRecipeButton(syncManager))
+            .child(createChunkLoadingToggle(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), () -> createModeSwitchButton(syncManager));
     }
 
     @Override
