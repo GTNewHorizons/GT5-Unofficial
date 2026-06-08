@@ -85,6 +85,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -113,7 +114,7 @@ import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     /***
      * BALANCE OF THE IC2 MODE: (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER) All IC2 crops are simulated and all drops are
@@ -1101,7 +1102,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        final ITexture casingTexture = isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
+        final ITexture casingTexture = getCasingTexture();
         if (side == facing) {
             if (aActive) return new ITexture[] { casingTexture, TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
@@ -1123,6 +1124,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     .build() };
         }
         return new ITexture[] { casingTexture };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
     }
 
     @Override
