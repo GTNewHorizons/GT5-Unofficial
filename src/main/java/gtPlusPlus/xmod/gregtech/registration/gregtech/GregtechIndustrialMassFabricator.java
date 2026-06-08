@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_MassFab;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
