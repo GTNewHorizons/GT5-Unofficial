@@ -86,7 +86,7 @@ public class MechArmorAugmentRegistries {
             .setId("Light")
             .setItemId("armorframelight")
             .setSlotCounts(1, 2, 0, 0)
-            .setColor(Materials.Iron.mRGBa)
+            .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
             .setProtection(8)
         ),
@@ -94,7 +94,7 @@ public class MechArmorAugmentRegistries {
             .setId("Medium")
             .setItemId("armorframemedium")
             .setSlotCounts(1, 0, 2, 0)
-            .setColor(Materials.Bronze.mRGBa)
+            .setColor(new short[] {146, 153, 171, 0})
             .setRarity(EnumRarity.common)
             .setProtection(11)
         ),
@@ -102,7 +102,7 @@ public class MechArmorAugmentRegistries {
             .setId("Heavy")
             .setItemId("armorframeheavy")
             .setSlotCounts(2, 0, 1, 0)
-            .setColor(Materials.Steel.mRGBa)
+            .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
             .setProtection(15)
         ),
@@ -111,7 +111,7 @@ public class MechArmorAugmentRegistries {
             .setId("Nimble")
             .setItemId("armorframenimble")
             .setSlotCounts(1, 3, 1, 0)
-            .setColor(Materials.VibrantAlloy.mRGBa)
+            .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(10)
         ),
@@ -119,7 +119,7 @@ public class MechArmorAugmentRegistries {
             .setId("Adaptive")
             .setItemId("armorframeadaptive")
             .setSlotCounts(2, 1, 1, 1)
-            .setColor(Materials.Titanium.mRGBa)
+            .setColor(new short[] {93, 115, 35, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(13)
         ),
@@ -127,7 +127,7 @@ public class MechArmorAugmentRegistries {
             .setId("Tough")
             .setItemId("armorframetough")
             .setSlotCounts(3, 0, 2, 0)
-            .setColor(Materials.TungstenSteel.mRGBa)
+            .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(17)
         ),
@@ -136,7 +136,7 @@ public class MechArmorAugmentRegistries {
             .setId("Lightning")
             .setItemId("armorframelightning")
             .setSlotCounts(1, 4, 1, 1)
-            .setColor(Materials.Electrum.mRGBa)
+            .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(15)
         ),
@@ -144,7 +144,7 @@ public class MechArmorAugmentRegistries {
             .setId("Morphic")
             .setItemId("armorframemorphic")
             .setSlotCounts(2, 1, 2, 2)
-            .setColor(Materials.RedstoneAlloy.mRGBa)
+            .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(17)
         ),
@@ -152,7 +152,7 @@ public class MechArmorAugmentRegistries {
             .setId("Bulwark")
             .setItemId("armorframebulwark")
             .setSlotCounts(4, 1, 1, 1)
-            .setColor(Materials.RedSteel.mRGBa)
+            .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(20)
         ),
