@@ -6,6 +6,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -14,6 +16,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -89,7 +92,16 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
     protected ToggleButton createChunkLoadingToggle(PanelSyncManager syncManager) {
         BooleanSyncValue chunkLoadingSyncer = syncManager
             .findSyncHandler("chunkLoadingEnabled", BooleanSyncValue.class);
-        return new ToggleButton().value(chunkLoadingSyncer)
+        return new ToggleButton() {
+
+            @Override
+            public @NotNull Result onMousePressed(int mouseButton) {
+                if (baseMetaTileEntity.isActive()) {
+                    return Result.IGNORE;
+                }
+                return super.onMousePressed(mouseButton);
+            }
+        }.value(chunkLoadingSyncer)
             .overlay(new DynamicDrawable(() -> {
                 IDrawable base = chunkLoadingSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING
                     : GTGuiTextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF;
@@ -119,10 +131,8 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
     protected ButtonWidget<?> createRetractPipesButton(PanelSyncManager syncManager) {
         EnumSyncValue<WorkState, ?> workStateSyncer = syncManager
             .findSyncHandler("drillerWorkState", EnumSyncValue.class);
-        return new ButtonWidget<>().onMousePressed(mouseButton -> {
-            multiblock.abortDrilling();
-            return true;
-        })
+        return new ButtonWidget<>()
+            .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> { multiblock.abortDrilling(); }))
             .overlay(
                 new DynamicDrawable(
                     () -> workStateSyncer.getValue() == WorkState.ABORT ? new DrawableStack(

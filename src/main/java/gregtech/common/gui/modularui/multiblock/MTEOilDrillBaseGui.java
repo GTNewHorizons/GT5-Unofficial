@@ -101,9 +101,10 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
         syncManager.syncValue("oilChunkRange", chunkRangeSyncer);
 
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
-            if (!baseMetaTileEntity.isActive()) {
-                multiblock.adjustChunkRange(mouseButton == 0);
+            if (baseMetaTileEntity.isActive()) {
+                return false;
             }
+            multiblock.adjustChunkRange(mouseButton == 0);
             return true;
         })
             .overlay(new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_WORK_AREA)))

@@ -7,6 +7,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -67,7 +69,16 @@ public class MTEConcreteBackfillerBaseGui extends MTEDrillerBaseGui<MTEConcreteB
     protected ToggleButton createLiquidFillingToggle(PanelSyncManager syncManager) {
         BooleanSyncValue liquidSyncer = syncManager.findSyncHandler("backfillerLiquidEnabled", BooleanSyncValue.class);
 
-        return new ToggleButton().value(liquidSyncer)
+        return new ToggleButton() {
+
+            @Override
+            public @NotNull Result onMousePressed(int mouseButton) {
+                if (baseMetaTileEntity.isActive()) {
+                    return Result.IGNORE;
+                }
+                return super.onMousePressed(mouseButton);
+            }
+        }.value(liquidSyncer)
             .overlay(new DynamicDrawable(() -> {
                 IDrawable base = liquidSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE
                     : GTGuiTextures.OVERLAY_BUTTON_LIQUIDMODE_OFF;

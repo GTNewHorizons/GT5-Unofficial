@@ -8,6 +8,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -122,7 +124,16 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
     protected ToggleButton createReplaceWithCobblestoneToggle(PanelSyncManager syncManager) {
         BooleanSyncValue cobbleSyncer = syncManager.findSyncHandler("oreReplaceCobble", BooleanSyncValue.class);
 
-        return new ToggleButton().value(cobbleSyncer)
+        return new ToggleButton() {
+
+            @Override
+            public @NotNull Result onMousePressed(int mouseButton) {
+                if (baseMetaTileEntity.isActive()) {
+                    return Result.IGNORE;
+                }
+                return super.onMousePressed(mouseButton);
+            }
+        }.value(cobbleSyncer)
             .overlay(new DynamicDrawable(() -> {
                 IDrawable base = cobbleSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON
                     : GTGuiTextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF;
@@ -156,9 +167,10 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
         syncManager.syncValue("oreChunkRadius", chunkRadiusSyncer);
 
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
-            if (!baseMetaTileEntity.isActive()) {
-                multiblock.adjustChunkRadius(mouseButton == 0);
+            if (baseMetaTileEntity.isActive()) {
+                return false;
             }
+            multiblock.adjustChunkRadius(mouseButton == 0);
             return true;
         })
             .overlay(new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_WORK_AREA)))
