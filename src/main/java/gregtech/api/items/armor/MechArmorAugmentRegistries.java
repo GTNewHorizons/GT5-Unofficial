@@ -1,10 +1,19 @@
 package gregtech.api.items.armor;
 
+import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
+import static gregtech.loaders.ExtraIcons.forceFieldAugment;
+import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
+import static gregtech.loaders.ExtraIcons.jetpackAugment;
+import static gregtech.loaders.ExtraIcons.nightVisionAugment;
+import static gregtech.loaders.ExtraIcons.rebreatherAugment;
+import static gregtech.loaders.ExtraIcons.revealingAugment;
+
 import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -382,6 +391,7 @@ public class MechArmorAugmentRegistries {
             .setId("NightVision")
             .setItemId("augmentnightvision")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.common)
@@ -390,6 +400,7 @@ public class MechArmorAugmentRegistries {
             .setId("CreativeFlight")
             .setItemId("augmentcreativeflight")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() -> creativeFlightAugment)
             .providesBehaviors(CreativeFlightBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setCategory(AugmentCategory.Movement)
@@ -400,6 +411,7 @@ public class MechArmorAugmentRegistries {
             .setId("Jetpack")
             .setItemId("augmentjetpack")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() -> jetpackAugment)
             .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
             .setCategory(AugmentCategory.Movement)
@@ -437,6 +449,7 @@ public class MechArmorAugmentRegistries {
             .setId("GogglesOfRevealing")
             .setItemId("augmentgogglesofrevealing")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> revealingAugment)
             .providesBehaviors(GogglesOfRevealingBehavior.INSTANCE, new VisDiscountBehavior(7))
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
@@ -522,6 +535,7 @@ public class MechArmorAugmentRegistries {
             .setId("ForceField")
             .setItemId("augmentforcefield")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() ->forceFieldAugment)
             .providesBehaviors(ForceFieldBehavior.INSTANCE)
             .setMinimumCore(2)
             .setCategory(AugmentCategory.Protection)
@@ -541,6 +555,7 @@ public class MechArmorAugmentRegistries {
             .setId("WaterBreathing")
             .setItemId("augmentwaterbreathing")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> rebreatherAugment)
             .providesBehaviors(WaterBreathingBehavior.INSTANCE)
             .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.uncommon)
@@ -558,6 +573,7 @@ public class MechArmorAugmentRegistries {
             .setId("HoloInventory")
             .setItemId("augmentholoinventory")
             .providesBehaviors(HoloInventoryBehavior.INSTANCE)
+            .setTexture(() -> holoInventoryAugment)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
         );
@@ -623,6 +639,10 @@ public class MechArmorAugmentRegistries {
         @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        public IIcon getTexture() {
+            return this.builder.getTexture();
         }
 
         public AugmentCategory getCategory() {
