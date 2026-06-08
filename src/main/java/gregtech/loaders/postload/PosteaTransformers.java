@@ -19,6 +19,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.common.blocks.BlockFrameBox;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -63,7 +64,10 @@ public class PosteaTransformers implements Runnable {
             // This works because between the old and new frame systems, the TileEntity used for covered frames
             // is still the same
             if (tag.hasKey(GTValues.NBT.COVERS)) {
-                return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList, PosteaTransformers::passthrough);
+                return new BlockInfo(
+                    GregTechAPI.sBlockFrames,
+                    indexInMaterialList | BlockFrameBox.MTE_BIT,
+                    PosteaTransformers::passthrough);
             }
 
             // If this frame has no covers, simply return a block and delete the TileEntity

@@ -46,7 +46,7 @@ import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
+import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
 import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
@@ -392,7 +392,7 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTower(
+        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
             LegacyMegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);

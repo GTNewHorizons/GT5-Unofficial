@@ -297,5 +297,27 @@ public class FormingPressRecipes implements Runnable {
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
+
+        // Peace Enforcement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GGMaterial.tairitsu.get(OrePrefixes.frameGt, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
+            .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(formingPressRecipes);
+
+        // Conflict Inducement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.ConflictInducementCasing.get(1))
+            .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(formingPressRecipes);
     }
 }

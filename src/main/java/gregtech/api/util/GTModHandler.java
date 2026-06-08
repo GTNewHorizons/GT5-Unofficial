@@ -183,6 +183,7 @@ public class GTModHandler {
      *
      * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getWater(long aAmount) {
         return Materials.Water.getFluid(aAmount);
     }
@@ -225,6 +226,7 @@ public class GTModHandler {
      *
      * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getLava(long aAmount) {
         return Materials.Lava.getFluid(aAmount);
     }
