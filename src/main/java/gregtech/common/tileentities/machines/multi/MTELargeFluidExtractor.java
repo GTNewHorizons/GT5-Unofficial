@@ -189,9 +189,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 continue;
             }
 
-            if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
+            if (glassTier < VoltageIndex.UXV && energyHatch.getTierForStructure() > glassTier) {
                 errors
-                    .add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UEV, energyHatch.getTierForStructure())));
+                    .add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UXV, energyHatch.getTierForStructure())));
                 return;
             }
         }
@@ -291,7 +291,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
+            .addGlassEnergyLimitInfo(VoltageIndex.UXV)
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)

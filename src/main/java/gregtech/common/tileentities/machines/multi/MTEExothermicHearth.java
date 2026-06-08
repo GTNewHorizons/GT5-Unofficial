@@ -246,7 +246,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo(VoltageIndex.UXV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
@@ -510,7 +510,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 }
             }
         }
-        if (this.glassTier < VoltageIndex.UMV) {
+        if (this.glassTier < VoltageIndex.UXV) {
             for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
                 if (this.glassTier < mEnergyHatch.mTier) {
                     errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);

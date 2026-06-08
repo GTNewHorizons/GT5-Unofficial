@@ -231,7 +231,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UMV] + GTValues.VN[VoltageIndex.UMV]
+                GTValues.TIER_COLORS[VoltageIndex.UXV] + GTValues.VN[VoltageIndex.UXV]
                     + EnumChatFormatting.GRAY
                     + "-tier glass accepts all laser source hatches")
             .addInfo("Use screwdriver to disable laser rendering")
@@ -308,7 +308,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         checkHasAnyOutput(errors);
         checkHasAnyInput(errors);
 
-        int requiredGlassTier = min(VoltageIndex.UMV, laserSource.mTier);
+        int requiredGlassTier = min(VoltageIndex.UXV, laserSource.mTier);
         if (glassTier < requiredGlassTier) {
             errors.add(StructureErrors.glassTierNotEnough(requiredGlassTier));
         }
