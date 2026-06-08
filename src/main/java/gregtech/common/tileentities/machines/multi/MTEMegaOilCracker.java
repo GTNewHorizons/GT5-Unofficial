@@ -211,11 +211,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                "Multiplies EU Usage by " + TooltipHelper.effText("0.9x")
-                    + " per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier")
+            .addInfo("EU Usage = " + TooltipHelper.effText("0.9^") + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
             .addSeparator()
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
             .addInfo(
@@ -236,15 +232,15 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addController("Front bottom center")
             .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 145, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 84, false)
-            .addCasingInfoExactly("Coil", 77, true)
+            .addCasingInfoExactly("Heating Coil", 77, true)
             .addCasingInfoExactly("Any Tiered Glass", 162, true)
             .addCasingInfoExactly("Steel Pipe Casing", 9, false)
-            .addEnergyHatch("Hint block", 1)
-            .addMaintenanceHatch("Hint block", 1)
-            .addInputHatch("Hint block", 2, 3)
-            .addOutputHatch("Hint block", 2, 3)
-            .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
-            .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
+            .addInputBus("Any Base Naquadah Reinforced Distillation Machine Casing, for Programmed Circuits", 1)
+            .addEnergyHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
+            .addMaintenanceHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
+            .addInputHatch("Left Side Section, Uncracked Fluid Only", 2)
+            .addInputHatch("Top Side Section, Steam/Hydrogen Only", 3)
+            .addOutputHatch("Right Side Section", 4)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
@@ -462,6 +458,13 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifierSupplier(this::getEuModifier);
@@ -473,7 +476,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-        return 1.0F * Math.pow(0.9, this.heatLevel.getTier() + 1);
+        return Math.pow(0.9, this.heatLevel.getTier() + 1);
     }
 
     @Override
