@@ -12,6 +12,7 @@ import cpw.mods.fml.common.Optional;
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import gregtech.api.enums.Mods;
+import gregtech.common.config.Worldgen;
 import gregtech.common.worldgen.HEEIslandScanner;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import toxiceverglades.chunk.ChunkProviderModded;
@@ -31,7 +32,7 @@ public enum DimensionDef {
         DimNames.THE_END,
         ChunkProviderEnd.class,
         DimensionType.Planet)
-        .setGeneratesAsteroids()
+        .setGeneratesAsteroids(Worldgen.endAsteroids.generateEndAsteroids)
         .disableOreVeinHeightChecks()),
     EndAsteroids(new ModDimensionDef(
         DimNames.ENDASTEROID,

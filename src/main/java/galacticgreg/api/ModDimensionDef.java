@@ -187,8 +187,8 @@ public class ModDimensionDef {
         return this;
     }
 
-    public ModDimensionDef setGeneratesAsteroids() {
-        generatesAsteroids = true;
+    public ModDimensionDef setGeneratesAsteroids(boolean generate) {
+        generatesAsteroids = generate;
         return this;
     }
 
