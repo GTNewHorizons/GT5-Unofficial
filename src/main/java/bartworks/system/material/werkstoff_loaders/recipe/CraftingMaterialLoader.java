@@ -30,7 +30,6 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -190,15 +189,23 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
                 .itemOutputs(werkstoff.get(rotor))
                 .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
-                .duration(12 * SECONDS)
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
                 .itemOutputs(werkstoff.get(rotor))
-                .duration(10 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(extruderRecipes);
         }
     }

@@ -268,7 +268,7 @@ public class GGMaterial implements Runnable {
         "Orundum",
         "Or",
         new Werkstoff.Stats().setProtons(120)
-            .setMass(300),
+            .setMass(196),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().addGems()
             .addMolten(),
@@ -306,7 +306,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.Stats().setMeltingPoint(7000)
             .setBlastFurnace(true)
             .setProtons(200)
-            .setMass(450)
+            .setMass(245)
             .setRadioactive(true)
             .setDurOverride(180224)
             .setSpeedOverride(100f)
@@ -1247,7 +1247,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(5000)
-            .setMass(1200)
+            .setMass(392)
             .setProtons(1000)
             .setSpeedOverride(150F)
             .setDurOverride(204800)
@@ -1549,7 +1549,7 @@ public class GGMaterial implements Runnable {
         "Shirabon",
         "Sh" + CharExchanger.shifter(9191),
         new Werkstoff.Stats().setProtons(500)
-            .setMass(750)
+            .setMass(294)
             .setMeltingPoint(13000)
             .setSpeedOverride(640.0F)
             .setDurOverride(15728640)

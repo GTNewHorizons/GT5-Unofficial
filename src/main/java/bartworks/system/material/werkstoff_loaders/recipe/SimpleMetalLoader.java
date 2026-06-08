@@ -182,15 +182,18 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
 
+            int voltageMultiplier = werkstoff.getStats()
+                .getMeltingPoint() >= 2800 ? 60 : 15;
+
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
                 .itemOutputs(werkstoff.get(plate))
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass() * 2L,
+                            .getMass(),
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 45))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -201,7 +204,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 2L,
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 45))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * voltageMultiplier))
                 .addTo(extruderRecipes);
         }
     }

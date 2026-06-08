@@ -34,8 +34,8 @@ public class MetalLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
                 .itemOutputs(werkstoff.get(block))
                 .duration(
-                    (int) werkstoff.getStats()
-                        .getMass())
+                    (int) (werkstoff.getStats()
+                        .getMass() * 9))
                 .eut(
                     BWUtil.calculateRecipeEU(
                         werkstoff,
@@ -48,7 +48,7 @@ public class MetalLoader implements IWerkstoffRunnable {
                 .itemOutputs(werkstoff.get(block))
                 .duration(
                     (int) (werkstoff.getStats()
-                        .getMass() / 2))
+                        .getMass() * 9))
                 .eut(
                     BWUtil.calculateRecipeEU(
                         werkstoff,

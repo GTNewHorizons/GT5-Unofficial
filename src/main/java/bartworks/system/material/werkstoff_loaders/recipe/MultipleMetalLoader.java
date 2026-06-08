@@ -45,7 +45,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 2,
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 64))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 96))
                 .addTo(benderRecipes);
 
             int compressionTier = (werkstoff.getStats()
@@ -57,9 +57,9 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass() * 4,
+                            .getMass() * 32,
                         1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 96))
                 .addTo(compressorRecipes);
 
             CoverRegistry.registerDecorativeCover(

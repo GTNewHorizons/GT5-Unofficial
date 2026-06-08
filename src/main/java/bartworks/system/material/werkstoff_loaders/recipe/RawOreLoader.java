@@ -30,6 +30,7 @@ import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 
 public class RawOreLoader implements IWerkstoffRunnable {
@@ -47,8 +48,8 @@ public class RawOreLoader implements IWerkstoffRunnable {
             RA.stdBuilder()
                 .itemInputs(werkstoff.get(rawOre))
                 .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                .duration(16 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 10))
+                .duration(10 * TICKS)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
                 .addTo(hammerRecipes);
 
             RA.stdBuilder()
