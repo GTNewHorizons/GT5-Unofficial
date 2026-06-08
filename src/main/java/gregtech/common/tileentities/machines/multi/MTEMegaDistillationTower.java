@@ -47,6 +47,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -64,7 +65,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
@@ -559,7 +560,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
     }
 
@@ -624,31 +625,30 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()) };
+        return new ITexture[] { getCasingTexture() };
     }
 
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId());
+    }
 }
