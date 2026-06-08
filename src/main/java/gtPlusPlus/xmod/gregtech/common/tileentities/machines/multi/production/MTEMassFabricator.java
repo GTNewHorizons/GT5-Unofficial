@@ -177,10 +177,12 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         if (!checkPiece(mName, 2, 3, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 36);
+        checkCasingMin(errors, mCasing, 35);
         checkHatch(errors);
         checkHasEnergyHatch(errors);
-        checkHasOutputHatch(errors);
+        if (machineMode != MODE_SCRAP) {
+            checkHasOutputHatch(errors);
+        }
     }
 
     @Override
@@ -233,10 +235,12 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                                 .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
                             GTRecipe recipe = new GTRecipe(
                                 new ItemStack[] { GTUtility.copyAmount(1, item) },
-                                aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                                aPotentialOutput == null ? null
+                                    : new ItemStack[] { aPotentialOutput, aPotentialOutput },
                                 null,
                                 null,
-                                new int[] { 2000 },
+                                new int[] { 1250 + GTUtility.getTier(getMaxInputVoltage()) * 1000,
+                                    Math.max(1250 + GTUtility.getTier(getMaxInputVoltage()) * 1000 - 10000, 0) },
                                 null,
                                 null,
                                 null,
