@@ -3,6 +3,7 @@ package kubatech.tileentity.gregtech.hatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -28,6 +29,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     private int threshold = 0;
     private boolean inverted = false;
     private boolean isOn = false;
+    private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
     public MTEElectrodeDetectorHatch(int aID, String aName, String aNameRegional) {
         super(
@@ -55,6 +57,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         isOn = aNBT.getBoolean("mIsOn");
+        thresholdType = ThresholdType.values[aNBT.getInteger("mThresholdType")];
         super.loadNBTData(aNBT);
     }
 
@@ -63,11 +66,19 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         aNBT.setBoolean("mIsOn", isOn);
+        aNBT.setInteger("mThresholdType", thresholdType.ordinal());
         super.saveNBTData(aNBT);
     }
 
-    public void updateRedstoneOutput(int durability) {
-        isOn = (durability >= threshold) ^ inverted;
+    public void updateRedstoneOutput(int durability, int maxDurability) {
+        isOn = (getComparatorValue(durability, maxDurability) >= threshold) ^ inverted;
+    }
+
+    public int getComparatorValue(int durability, int maxDurability) {
+        if (thresholdType == ThresholdType.PERCENTAGE) {
+            return maxDurability == 0 ? 0 : (int) (((float) durability / maxDurability) * 100);
+        }
+        return durability;
     }
 
     @Override
@@ -153,11 +164,45 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
         this.threshold = threshold;
     }
 
+    public ThresholdType getThresholdType() {
+        return thresholdType;
+    }
+
+    public void setThresholdType(ThresholdType thresholdType) {
+        this.thresholdType = thresholdType;
+        this.threshold = Math.min(this.threshold, this.thresholdType.getMaxCapacity());
+    }
+
     public boolean isInverted() {
         return inverted;
     }
 
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
+    }
+
+    public enum ThresholdType {
+
+        DURABILITY(10000, "kubatech.gui.text.electrode_detector.durability"),
+        PERCENTAGE(100, "kubatech.gui.text.electrode_detector.percentage");
+
+        private static final ThresholdType[] values = values();
+
+        private final int maxCapacity;
+        private final String name;
+
+        ThresholdType(int maxCapacity, String name) {
+            this.maxCapacity = maxCapacity;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        public int getMaxCapacity() {
+            return maxCapacity;
+        }
     }
 }

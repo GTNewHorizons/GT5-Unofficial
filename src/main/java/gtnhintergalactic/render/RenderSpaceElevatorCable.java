@@ -13,8 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.joml.Math;
 import org.joml.Matrix4fStack;
@@ -24,7 +22,9 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -47,7 +47,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         "textures/models/climber.png");
 
     /** Model of the climber */
-    private static IModelCustom modelCustom;
+    private static IVertexArrayObject modelCustom;
     /** Offset of the climber from the Space Elevator Cable block */
     private static final int CLIMBER_OFFSET = 50;
     /** Min Y level that the climber should have */
@@ -93,8 +93,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * Create a new render for the space elevator cable
      */
     public RenderSpaceElevatorCable() {
-        modelCustom = AdvancedModelLoader
-            .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
+        modelCustom = WavefrontVBOBuilder
+            .compileToVBO(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
     }
 
     /**
@@ -144,7 +144,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         this.bindTexture(climberTexture);
         GL11.glScaled(4, 4, 4);
         // Draw the climber
-        modelCustom.renderAll();
+        modelCustom.render();
         // Reset open GL
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
