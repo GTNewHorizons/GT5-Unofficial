@@ -197,21 +197,22 @@ public class GlassTier {
             addCustomGlass(ItemRegistry.bw_realglas, 6, 9, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 9, 3);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 8, 9, 4);
 
             // --- UEV ---
             addCustomGlass(ItemRegistry.bw_realglas, 7, 10, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 10, 1);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 1);
 
             // --- UIV ---
             addCustomGlass(ItemRegistry.bw_realglas, 8, 11, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 11, 1);
+            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 11, 2);
 
             // --- UMV ---
             addCustomGlass(ItemRegistry.bw_realglas, 9, 12, 0);
             addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
-            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 12, 2);
             addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
 
             // --- UXV ---
