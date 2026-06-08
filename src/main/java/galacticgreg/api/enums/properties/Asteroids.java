@@ -2,12 +2,14 @@ package galacticgreg.api.enums.properties;
 
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.ModContainers;
+import gregtech.common.config.Worldgen;
 
 public enum Asteroids {
 
     // spotless:off
-    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(4)
-        .sizeRange(5, 15)
+    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder()
+        .probability(Worldgen.endAsteroids.EndAsteroidProbability)
+        .sizeRange(Worldgen.endAsteroids.EndAsteroidMinSize, Worldgen.endAsteroids.EndAsteroidMaxSize)
         .specialBlockChance(5)
         .oreDensityMultiplier(0.5f)
         .smallOreChance(10)
