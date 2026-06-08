@@ -2151,7 +2151,11 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME,
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
-    Hatch_PatternProvider_Crafting,
+    Hatch_PatternProvider_Crafting_IV,
+    Hatch_PatternProvider_Crafting_LuV,
+    Hatch_PatternProvider_Crafting_ZPM,
+    Hatch_PatternProvider_Crafting_UV,
+    Hatch_PatternProvider_Crafting_UHV,
     DebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,
@@ -2929,6 +2933,7 @@ public enum ItemList implements IItemContainer {
     IndustrialMixer,
     MegaChemicalReactor,
     InfiniteFluidDrillingRig,
+    MegaOilCracker,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
