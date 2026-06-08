@@ -2933,6 +2933,7 @@ public enum ItemList implements IItemContainer {
     IndustrialMixer,
     MegaChemicalReactor,
     InfiniteFluidDrillingRig,
+    MegaOilCracker,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
