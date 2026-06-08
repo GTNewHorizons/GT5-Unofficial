@@ -1524,7 +1524,7 @@ public class BECStructureDefinitions {
         "            E           E           E           E            ",
         "            E           E           E           E            ",
         "           EBE         EBE         EBE         EBE           ",
-        "          EBCBE       EBCBE       EBCBE       EBCBE          ",
+        "          EB2BE       EB2BE       EB2BE       EB2BE          ",
         "           EBE         EBE         EBE         EBE           ",
         "            E           E           E           E            ",
         "            E           E           E           E            ",
@@ -1989,7 +1989,7 @@ public class BECStructureDefinitions {
         "     DBDDADDCDDADDBDDADDCDDADDBDDADDCDDADDBDDADDCDDADDBD     ",
         "           EBE         EBE         EBE         EBE           "
     },{
-        "          EBCBE       EBCBE       EBCBE       EBCBE          ",
+        "          EB2BE       EB2BE       EB2BE       EB2BE          ",
         "     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ",
         "    A A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A A    ",
         "   A  A  C  A  C  A  C  A  C  A  C  A  C  A  C  A  C  A  A   ",
@@ -2019,7 +2019,7 @@ public class BECStructureDefinitions {
         "   A  A  C  A  C  A  C  A  C  A  C  A  C  A  C  A  C  A  A   ",
         "    A A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A  A A    ",
         "     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ",
-        "          EBCBE       EBCBE       EBCBE       EBCBE          "
+        "          EB2BE       EB2BE       EB2BE       EB2BE          "
     },{
         "           EBE         EBE         EBE         EBE           ",
         "     DBDDADDCDDADDBDDADDCDDADDBDDADDCDDADDBDDADDCDDADDBD     ",
@@ -2484,7 +2484,7 @@ public class BECStructureDefinitions {
         "            E           E           E           E            ",
         "            E           E           E           E            ",
         "           EBE         EBE         EBE         EBE           ",
-        "          EBCBE       EBCBE       EBCBE       EBCBE          ",
+        "          EB2BE       EB2BE       EB2BE       EB2BE          ",
         "           EBE         EBE         EBE         EBE           ",
         "            E           E           E           E            ",
         "            E           E           E           E            ",
@@ -2710,7 +2710,7 @@ public class BECStructureDefinitions {
         "  AAA  ",
         " AGEGA ",
         "AGEBEGA",
-        "AEBCBEA",
+        "AEB1BEA",
         "AGEBEGA",
         " AGEGA ",
         "  AAA  ",

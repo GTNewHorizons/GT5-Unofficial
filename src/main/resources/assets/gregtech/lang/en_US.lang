@@ -8573,6 +8573,7 @@ gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
 gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
+gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
 
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field

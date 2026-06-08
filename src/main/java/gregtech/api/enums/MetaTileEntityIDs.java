@@ -1738,6 +1738,7 @@ public enum MetaTileEntityIDs {
     TestFactoryPipe(15478),
     TestFactoryHatch(15479),
     Ownerdetector(15480),
+    LineOfSightConnectorHatch(15481),
     InsaneBuckConverter(15485),
     LudicrousBuckConverter(15486),
     ZPMVoltageBuckConverter(15487),
