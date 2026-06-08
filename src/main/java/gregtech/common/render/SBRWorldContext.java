@@ -49,8 +49,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     private static final double FLUSH_MAX = 0.999D;
 
-    private static final double LAYER_OFFSET = 0.001D;
-
     /**
      * Mixed Brightness cache
      * <p>
@@ -218,8 +216,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMinY = renderBlocks.renderMinY;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinY = Math.nextDown(renderBlocks.renderMinY);
             layer.renderYNeg(this);
-            renderBlocks.renderMinY -= LAYER_OFFSET;
         }
         renderBlocks.renderMinY = origMinY;
     }
@@ -233,8 +231,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMaxY = renderBlocks.renderMaxY;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxY = Math.nextUp(renderBlocks.renderMaxY);
             layer.renderYPos(this);
-            renderBlocks.renderMaxY += LAYER_OFFSET;
         }
         renderBlocks.renderMaxY = origMaxY;
     }
@@ -248,8 +246,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMinZ = renderBlocks.renderMinZ;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinZ = Math.nextDown(renderBlocks.renderMinZ);
             layer.renderZNeg(this);
-            renderBlocks.renderMinZ -= LAYER_OFFSET;
         }
         renderBlocks.renderMinZ = origMinZ;
     }
@@ -263,8 +261,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMaxZ = renderBlocks.renderMaxZ;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxZ = Math.nextUp(renderBlocks.renderMaxZ);
             layer.renderZPos(this);
-            renderBlocks.renderMaxZ += LAYER_OFFSET;
         }
         renderBlocks.renderMaxZ = origMaxZ;
     }
@@ -278,8 +276,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMinX = renderBlocks.renderMinX;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMinX = Math.nextDown(renderBlocks.renderMinX);
             layer.renderXNeg(this);
-            renderBlocks.renderMinX -= LAYER_OFFSET;
         }
         renderBlocks.renderMinX = origMinX;
     }
@@ -293,8 +291,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         final double origMaxX = renderBlocks.renderMaxX;
         for (ITexture layer : tex) {
             if (layer == null || !layer.isValidTexture()) continue;
+            renderBlocks.renderMaxX = Math.nextUp(renderBlocks.renderMaxX);
             layer.renderXPos(this);
-            renderBlocks.renderMaxX += LAYER_OFFSET;
         }
         renderBlocks.renderMaxX = origMaxX;
     }
