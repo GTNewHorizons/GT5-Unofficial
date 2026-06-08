@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -53,6 +54,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -89,11 +91,23 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addInfo(
+                "Parallel: Scrap = " + TooltipHelper.parallelText(64)
+                    + " | UU = "
+                    + TooltipHelper.parallelText(8)
+                    + " per "
+                    + TooltipHelper.tierText("Voltage")
+                    + " Tier")
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
             .addInfo("Produces UU-A, UU-M & Scrap")
             .addInfo("Change mode with screwdriver")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "+10%"
+                    + EnumChatFormatting.GRAY
+                    + " scrap chance per "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier in recycler mode")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
