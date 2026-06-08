@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -97,7 +98,10 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
                 .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                 .hint(1)
-                .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                .buildAndChain(
+                    onElementPass(
+                        MTEMegaOilCracker::onCasingAdded,
+                        Casings.NaquadahReinforcedDistillationCasing.asElement())))
         .addElement('C', Casings.SteelPipeCasing.asElement())
         .addElement('D', Casings.CleanStainlessSteelMachineCasing.asElement())
         .addElement(
@@ -111,21 +115,30 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
                 .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                 .hint(3)
-                .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                .buildAndChain(
+                    onElementPass(
+                        MTEMegaOilCracker::onCasingAdded,
+                        Casings.NaquadahReinforcedDistillationCasing.asElement())))
         .addElement(
             'L',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
                 .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                 .hint(2)
-                .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                .buildAndChain(
+                    onElementPass(
+                        MTEMegaOilCracker::onCasingAdded,
+                        Casings.NaquadahReinforcedDistillationCasing.asElement())))
         .addElement(
             'R',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
                 .casingIndex(Casings.NaquadahReinforcedDistillationCasing.textureId)
                 .hint(4)
-                .buildAndChain(Casings.NaquadahReinforcedDistillationCasing.asElement()))
+                .buildAndChain(
+                    onElementPass(
+                        MTEMegaOilCracker::onCasingAdded,
+                        Casings.NaquadahReinforcedDistillationCasing.asElement())))
         .build();
 
     public MTEMegaOilCracker(final int aID, final String aName, final String aNameRegional) {
@@ -144,6 +157,10 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMegaOilCracker(this.mName);
+    }
+
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     @Override
@@ -217,9 +234,11 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 8, 9, true)
             .addController("Front bottom center")
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
-            .addCasingInfoExactly("Coil", 92, true)
-            .addCasingInfoExactly("Any Tiered Glass", 196, true)
+            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 145, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 84, false)
+            .addCasingInfoExactly("Coil", 77, true)
+            .addCasingInfoExactly("Any Tiered Glass", 162, true)
+            .addCasingInfoExactly("Steel Pipe Casing", 9, false)
             .addEnergyHatch("Hint block", 1)
             .addMaintenanceHatch("Hint block", 1)
             .addInputHatch("Hint block", 2, 3)
@@ -266,16 +285,19 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     protected final List<MTEHatchInput> mMiddleInputHatches = new ArrayList<>();
     protected int mInputOnSide = -1;
     protected int mOutputOnSide = -1;
+    protected int casingAmount;
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
+        this.casingAmount = 0;
         this.mInputOnSide = -1;
         this.mOutputOnSide = -1;
         this.mMiddleInputHatches.clear();
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkCasingMin(errors, casingAmount, 145);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         if (this.glassTier < VoltageIndex.UV) {
