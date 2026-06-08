@@ -3588,6 +3588,7 @@ GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in a
 GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
+GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
