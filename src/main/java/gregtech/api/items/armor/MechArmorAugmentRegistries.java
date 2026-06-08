@@ -580,6 +580,7 @@ public class MechArmorAugmentRegistries {
         TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
             .setId("Travelers")
             .setItemId("augmenttravelers")
+            .fitsInto(ArmorType.Boots)
             .providesBehaviors(new JumpBoostBehavior(0.6F),
                 new SpeedBoostBehavior(0.15F),
                 StepAssistBehavior.INSTANCE,
