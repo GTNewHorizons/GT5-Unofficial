@@ -66,7 +66,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
             .addCasingInfoMin("Infinity Frame Box", 128, false)
-            .addCasingInfoMin("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63, false)
+            .addCasingInfoMin("Infinity Reinforced Borosilicate Glass Block", 63, false)
             .addEnergyHatch("1-32, Hint block number 2", 2)
             .addInputHatch("1-16, Hint block number 1", 1)
             .addOutputHatch("1-16, Hint block number 1", 1)
