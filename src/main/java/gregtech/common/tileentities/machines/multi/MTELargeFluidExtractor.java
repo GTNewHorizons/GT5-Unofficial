@@ -291,7 +291,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addGlassEnergyLimitInfo(VoltageIndex.UXV)
+            .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)

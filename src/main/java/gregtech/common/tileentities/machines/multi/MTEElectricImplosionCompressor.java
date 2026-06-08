@@ -38,7 +38,6 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.VoltageIndex;
@@ -138,11 +137,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
-            .addInfo("Energy Hatch Tier is limited by Glass Tier")
-            .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UXV] + GTValues.VN[VoltageIndex.UXV]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass unlocks all above energy tiers")
+            .addGlassEnergyLimitInfo()
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(15, 7, 7, false)

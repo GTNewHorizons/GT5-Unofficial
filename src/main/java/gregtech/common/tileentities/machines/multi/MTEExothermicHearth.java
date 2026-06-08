@@ -248,7 +248,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UXV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()

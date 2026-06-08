@@ -227,13 +227,15 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
             .addInfo(
-                "When using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo("Glass tier determines maximum laser source tier")
-            .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UXV] + GTValues.VN[VoltageIndex.UXV]
+                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
+                    + GTValues.VN[VoltageIndex.UEV]
                     + EnumChatFormatting.GRAY
-                    + "-tier glass accepts all laser source hatches")
+                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
+            .addInfo("Parallels equal to the cube root of laser source amperage input")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Glass "
+                    + EnumChatFormatting.GRAY
+                    + "tier determines maximum laser source tier")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)

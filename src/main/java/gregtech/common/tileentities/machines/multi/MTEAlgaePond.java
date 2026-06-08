@@ -107,11 +107,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
         tt.addMachineType("Algae Pond")
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
-            .addInfo("Machine tier is equal to the highest energy hatch tier, capped by glass tier")
-            .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UXV] + GTValues.VN[VoltageIndex.UXV]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass unlocks all above energy tiers")
+            .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
