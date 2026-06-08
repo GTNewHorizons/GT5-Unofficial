@@ -41,6 +41,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -62,7 +63,8 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> implements ISurvivalConstructable {
+public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 1;
     private static final int OFFSET_Y = 3;
@@ -216,7 +218,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCDAlgaePondBaseActive)
                 .extFacing()
                 .build(),
@@ -225,7 +227,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCDAlgaePondBase)
                 .extFacing()
                 .build(),
@@ -235,7 +237,12 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.AlgaeCasing.getCasingTexture() };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AlgaeCasing.getCasingTexture();
     }
 
     @Override

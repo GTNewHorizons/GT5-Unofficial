@@ -40,6 +40,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -75,8 +76,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorH
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues {
+public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>> extends
+    MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
@@ -741,21 +742,19 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
@@ -763,6 +762,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
     }
 
     @Override
