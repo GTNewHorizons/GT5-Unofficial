@@ -57,6 +57,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -79,7 +80,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int HORIZONTAL_OFFSET = 11;
@@ -553,22 +554,20 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_FRIDGE)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_FRIDGE_GLOW)
                         .extFacing()
@@ -576,9 +575,14 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID) };
+            rTexture = new ITexture[] { getCasingTexture() };
         }
         return rTexture;
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID);
     }
 
     @SideOnly(Side.CLIENT)
