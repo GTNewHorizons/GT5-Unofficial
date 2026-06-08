@@ -1,6 +1,9 @@
 package gregtech.api.items.armor;
 
+import java.util.function.Supplier;
+
 import net.minecraft.item.EnumRarity;
+import net.minecraft.util.IIcon;
 
 public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
 
@@ -17,6 +20,7 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
     private EnumRarity rarity;
+    private Supplier<IIcon> textureSupplier = () -> null;
 
     public AugmentBuilder setCategory(AugmentCategory category) {
         onMutated();
@@ -40,6 +44,16 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         onMutated();
         this.rarity = rarity;
         return this;
+    }
+
+    public AugmentBuilder setTexture(Supplier<IIcon> textureSupplier) {
+        onMutated();
+        this.textureSupplier = textureSupplier;
+        return this;
+    }
+
+    public IIcon getTexture() {
+        return textureSupplier.get();
     }
 
     public AugmentCategory getCategory() {
