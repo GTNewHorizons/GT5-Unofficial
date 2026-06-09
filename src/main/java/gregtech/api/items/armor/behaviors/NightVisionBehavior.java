@@ -1,14 +1,12 @@
 package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEYBIND;
-import static gregtech.loaders.ExtraIcons.nightVisionAugment;
 
 import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,11 +17,6 @@ import gregtech.api.items.armor.ArmorContext;
 public class NightVisionBehavior implements IArmorBehavior {
 
     public static final NightVisionBehavior INSTANCE = new NightVisionBehavior();
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return nightVisionAugment;
-    }
 
     protected NightVisionBehavior() {/**/}
 
