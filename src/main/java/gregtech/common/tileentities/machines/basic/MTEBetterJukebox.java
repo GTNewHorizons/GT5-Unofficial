@@ -5,12 +5,9 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_JUKEBOX;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_JUKEBOX;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -33,17 +30,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.api.MusicRecordMetadataProvider;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SliderWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.implementations.tiles.ISoundP2PHandler;
 import appeng.me.GridAccessException;
@@ -52,16 +38,13 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.p2p.PartP2PSound;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.gui.modularui.hatch.MTEBetterJukeboxGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
@@ -289,11 +272,10 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             final ResourceLocation resource, playPath;
             if (record instanceof MusicRecordMetadataProvider mrmp) {
                 resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
-                playPath = resource;
             } else {
                 resource = record.getRecordResource("records." + record.recordName);
-                playPath = resource;
             }
+            playPath = resource;
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
             discDurationMs = GTMusicSystem.getMusicRecordDurations()
@@ -381,11 +363,10 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
                     final ResourceLocation resource, playPath;
                     if (record instanceof MusicRecordMetadataProvider mrmp) {
                         resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
-                        playPath = resource;
                     } else {
                         resource = record.getRecordResource("records." + record.recordName);
-                        playPath = resource;
                     }
+                    playPath = resource;
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);
                     // Assume a safe disc duration of 500 seconds if not known in the registry
@@ -555,121 +536,6 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
         final double maxVolume = BalanceMath.listeningVolume(mTier);
         playbackVolume = Math.clamp(playbackVolume, 0.0f, maxVolume);
         p2pVolume = Math.clamp(p2pVolume, 0.0f, maxVolume);
-    }
-
-    @Override
-    protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .itemInputPositionsGetter(count -> UIHelper.getGridPositions(count, 7, 6, 7, 3))
-            .itemOutputPositionsGetter(count -> UIHelper.getGridPositions(count, 153, 24, 1))
-            .specialItemPositionGetter(() -> new Pos2d(115, 62))
-            .progressBarPos(Pos2d.cartesian(133, 24))
-            .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_ARROW))
-            .build();
-    }
-
-    @Override
-    protected void addProgressBar(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
-        builder.widget(
-            setNEITransferRect(
-                new ProgressBar().setProgress(() -> discProgressMs / (float) Math.max(1, discDurationMs))
-                    .setTexture(uiProperties.progressBarTexture.get(), uiProperties.progressBarImageSize)
-                    .setDirection(uiProperties.progressBarDirection)
-                    .setPos(uiProperties.progressBarPos)
-                    .setSize(uiProperties.progressBarSize)
-                    .setUpdateTooltipEveryTick(true)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(() -> this.discProgressMs, val -> this.discProgressMs = val),
-                        builder)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(() -> this.discDurationMs, val -> this.discDurationMs = val),
-                        builder)
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            String.format("%,.2f / %,.2f", discProgressMs / 1000.0f, discDurationMs / 1000.0f))),
-                uiProperties.neiTransferRectId));
-        addProgressBarSpecialTextures(builder, uiProperties);
-    }
-
-    @Override
-    protected SlotWidget createChargerSlot(int x, int y) {
-        return super.createChargerSlot(97, 62);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final BasicUIProperties props = getUIProperties();
-        final List<Pos2d> inputSlots = props.itemInputPositionsGetter.apply(mInputSlotCount);
-        // Loop
-        builder.widget(
-            new CycleButtonWidget().setToggle(() -> loopMode, val -> loopMode = val)
-                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.loop.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(153, 6)
-                .setSize(18, 18));
-        // Shuffle
-        builder.widget(new CycleButtonWidget().setToggle(() -> shuffleMode, val -> {
-            shuffleMode = val;
-            if (shuffleMode) {
-                playbackSlot = -1;
-            } else {
-                playbackSlot = 0;
-            }
-        })
-            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_SHUFFLE)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.shuffle.tooltip"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(153, 42)
-            .setSize(18, 18));
-        // Currently playing slot highlight using the hotbar active texture
-        final DrawableWidget slotHighlight = new DrawableWidget();
-        builder.widget(
-            slotHighlight
-                .setDrawable(
-                    new UITexture(
-                        new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                        0.0f,
-                        22.0f / 256.0f,
-                        24.0f / 256.0f,
-                        46.0f / 256.0f))
-                .setSize(24, 24)
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> this.playbackSlot, val -> {
-                    this.playbackSlot = val;
-                    slotHighlight.checkNeedsRebuild();
-                }), builder)
-                .setPosProvider(
-                    (screenSize, window, parent) -> inputSlots.get(Math.clamp(playbackSlot, 0, INPUT_SLOTS))
-                        .add(-3, -3)));
-        // Attenuation distance (controls internal "volume")
-        // Caching tooltip data caches the formatted p2p range value, so we have to use the uncached variant here.
-        builder.widget(
-            new SliderWidget()
-                .setBounds(0.0f, (float) BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(() -> (float) getPlaybackBlockRange())
-                .setSetter(this::setPlaybackBlockRange)
-                .dynamicTooltip(
-                    () -> mTooltipCache.getUncachedTooltipData(
-                        "GT5U.machines.betterjukebox.attenuationDistance.tooltip",
-                        (int) getPlaybackBlockRange()).text)
-                .setUpdateTooltipEveryTick(true)
-                .setPos(44, 63)
-                .setSize(52, 8));
-        builder.widget(
-            new SliderWidget()
-                .setBounds(0.0f, (float) BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(() -> (float) getP2PBlockRange())
-                .setSetter(this::setP2PBlockRange)
-                .dynamicTooltip(
-                    () -> mTooltipCache.getUncachedTooltipData(
-                        "GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip",
-                        (int) getP2PBlockRange()).text)
-                .setUpdateTooltipEveryTick(true)
-                .setPos(44, 71)
-                .setSize(52, 8));
     }
 
     public double getPlaybackBlockRange() {
