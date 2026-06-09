@@ -1,6 +1,11 @@
 package gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +26,9 @@ public class BlockCasings14 extends BlockCasingsAbstract {
         register(3, ItemList.CasingHearth);
         register(4, ItemList.CasingFridge);
         register(5, ItemList.CasingNaquadahReinforcedDistillation);
+        register(6, ItemList.Casing_Vat_T1);
+        register(7, ItemList.Casing_Vat_T2);
+        register(8, ItemList.Casing_Vat_T3);
     }
 
     @Override
@@ -38,8 +46,22 @@ public class BlockCasings14 extends BlockCasingsAbstract {
                 yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_SIDE.getIcon();
             }
             case 5 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION.getIcon();
+            case 6 -> Textures.BlockIcons.STERILE_VAT_CASING_T1.getIcon();
+            case 7 -> Textures.BlockIcons.STERILE_VAT_CASING_T2.getIcon();
+            case 8 -> Textures.BlockIcons.STERILE_VAT_CASING_T3.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        super.addInformation(stack, player, tooltip, advancedTooltips);
+
+        switch (stack.getItemDamage()) {
+            case 6 -> tooltip.add(StatCollector.translateToLocal("gt.casing.hazard-shielded"));
+            case 7 -> tooltip.add(StatCollector.translateToLocal("gt.casing.dynamic-bio-regulation"));
+            case 8 -> tooltip.add(StatCollector.translateToLocal("gt.casing.symbiotic-vat"));
+        }
     }
 
     @Override

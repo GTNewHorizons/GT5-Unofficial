@@ -169,7 +169,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SterilizationFluid;
     public static Materials NeuralFluid;
     public static Materials PsycofluxSubstrate;
-    //endregion
+    // endregion
 
     // region Random
     public static Materials AnyBronze;

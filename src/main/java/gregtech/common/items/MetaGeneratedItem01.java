@@ -3725,72 +3725,77 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         // AOs
         ItemList.Bio_Computing_Core.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bio_Computing_Core.ID,
-                "Bio-computing Core",
-                "Highly integrated core of neural computation and storage",
+                "gt.item.bio_computing_core.name",
+                "gt.item.bio_computing_core.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 4)));
         ItemList.Neural_Electronic_Interface.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Neural_Electronic_Interface.ID,
-                "Neural Interface",
-                "Living converter that interprets between neural impulses and logarithmic ones",
+                "gt.item.neural_interface.name",
+                "gt.item.neural_interface.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         ItemList.Axon_Bus.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Axon_Bus.ID,
-                "Axon Bus",
-                "Bio-synthetic neural backbone that transmits neural signals",
+                "gt.item.axon_bus.name",
+                "gt.item.axon_bus.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 4)));
         ItemList.Self_Healing_Conductor.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Self_Healing_Conductor.ID,
-                "Self Healing Conductor",
-                "Seaweed-based neural gel that repairs and transmits bioelectric signals",
+                "gt.item.self_healing_conductor.name",
+                "gt.item.self_healing_conductor.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)));
         ItemList.Circuit_Tissue.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Circuit_Tissue.ID,
-                "Circuit Tissue",
-                "Living flesh designed to hold biological circuit components",
+                "gt.item.circuit_tissue.name",
+                "gt.item.circuit_tissue.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.VICTUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 4)));
         ItemList.Neuron_Cell_Cluster.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Neuron_Cell_Cluster.ID,
-                "Neuron Cell Cluster",
-                "A collection of living brain cells",
+                "gt.item.neuron_cell_cluster.name",
+                "gt.item.neuron_cell_cluster.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)));
         ItemList.Skin_Cell_Cluster.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Skin_Cell_Cluster.ID,
-                "Skin Cell Cluster",
-                "Living skin tissue",
+                "gt.item.skin_cell_cluster.name",
+                "gt.item.skin_cell_cluster.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2)));
         ItemList.Muscle_Cell_Cluster.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Muscle_Cell_Cluster.ID,
-                "Muscle Cell Cluster",
-                "Living muscle tissue",
+                "gt.item.muscle_cell_cluster.name",
+                "gt.item.muscle_cell_cluster.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
         ItemList.Nutrient_Paste.set(
-            addItem(Nutrient_Paste.ID, "Nutrient Paste", "Tasty!", new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
+            addItemWithLocalizationKeys(
+                Nutrient_Paste.ID,
+                "gt.item.nutrient_paste.name",
+                "gt.item.nutrient_paste.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
         ItemList.Immortal_Cell.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Immortal_Cell.ID,
-                "Immortal Cell",
-                "Even better than Steve",
+                "gt.item.immortal_cell.name",
+                "gt.item.immortal_cell.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
         ItemList.Infinite_Evolution_Matrix.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Infinite_Evolution_Matrix.ID,
-                "Infinite Evolution Matrix",
-                "It learns. It mutates. It remembers what you forget",
+                "gt.item.infinite_evolution_matrix.name",
+                "gt.item.infinite_evolution_matrix.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 16)));
+
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
             addItemWithLocalizationKeys(

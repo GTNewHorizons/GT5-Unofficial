@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,15 +35,15 @@ import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
 
 public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
 
-    private static Textures.BlockIcons.CustomIcon pipeTexture;
-    private static Textures.BlockIcons.CustomIcon pipeTextureRuined;
+    private static IIconContainer pipeTexture;
+    private static IIconContainer pipeTextureRuined;
 
     private AOFactoryNetwork network;
     boolean isRuined = false;
     boolean queuedHavoc = false;
 
-    public MTEBioPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public MTEBioPipe(int aID, String aName) {
+        super(aID, aName);
     }
 
     public MTEBioPipe(MTEBioPipe prototype) {
@@ -88,8 +89,8 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipeTexture = new Textures.BlockIcons.CustomIcon("iconsets/BIOPIPE");
-        pipeTextureRuined = new Textures.BlockIcons.CustomIcon("iconsets/BIOPIPE_RUINED");
+        pipeTexture = Textures.BlockIcons.custom("iconsets/BIOPIPE");
+        pipeTextureRuined = Textures.BlockIcons.custom("iconsets/BIOPIPE_RUINED");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -207,7 +208,7 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
             disconnect(side);
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
         }
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -268,11 +269,6 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     }
 
     @Override
-    public void onNeighbourChanged(AOFactoryElement neighbour) {
-        mCheckConnections = true;
-    }
-
-    @Override
     public AOFactoryNetwork getNetwork() {
         return network;
     }
@@ -287,7 +283,7 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
 
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
     private AOFactoryNetwork network;
 
     public MTEHatchAOOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] { "Distributes Artificial Organisms" });
+        super(aID, aName, aTier, new String[] { "Distributes Artificial Organisms" });
     }
 
     public MTEHatchAOOutput(MTEHatchAOOutput prototype) {
@@ -137,7 +137,7 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -151,6 +151,6 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
     public void onFacingChange() {
         super.onFacingChange();
 
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 }

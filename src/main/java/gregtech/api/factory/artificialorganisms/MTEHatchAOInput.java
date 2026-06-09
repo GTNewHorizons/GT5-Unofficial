@@ -25,7 +25,7 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
     private AOFactoryNetwork network;
 
     public MTEHatchAOInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] { "Receives Artificial Organisms" });
+        super(aID, aName, aTier, new String[] { "Receives Artificial Organisms" });
     }
 
     public MTEHatchAOInput(MTEHatchAOInput prototype) {
@@ -121,7 +121,7 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -135,6 +135,6 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
     public void onFacingChange() {
         super.onFacingChange();
 
-        AOFactoryGrid.INSTANCE.addElement(this);
+        AOFactoryGrid.INSTANCE.updateElement(this);
     }
 }

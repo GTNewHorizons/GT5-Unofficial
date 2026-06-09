@@ -247,16 +247,16 @@ import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gregtech.common.tileentities.machines.multi.MTEUniversalChemicalFuelEngine;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAdvancedBioLab;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioProgrammer;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioSynthesizer;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAdvancedBioLab;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioProgrammer;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioSynthesizer;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -844,7 +844,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.evolutionchamber",
                 "Hyperaccelerated Macroevolution Chamber").getStackForm(1));
 
-        ItemList.Bio_Pipe.set(new MTEBioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
+        ItemList.Bio_Pipe.set(new MTEBioPipe(BIO_PIPE.ID, "pipe.bio").getStackForm(1));
         ItemList.Bio_Hatch_Output.set(
             new MTEHatchAOOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "AO Transmission Hatch", 8).getStackForm(1));
         ItemList.Bio_Hatch_Input

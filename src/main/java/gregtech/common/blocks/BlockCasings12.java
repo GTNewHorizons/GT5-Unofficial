@@ -1,11 +1,7 @@
 package gregtech.common.blocks;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,10 +28,6 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(5, ItemList.Casing_Strengthened_Inanimate);
         register(6, ItemList.Casing_Precise_Stationary);
         register(7, ItemList.Casing_Ultimately_Static);
-        register(6, ItemList.Casing_Vat_T1, "Hazard-Shielded Casing");
-        register(7, ItemList.Casing_Vat_T2, "Dynamic Bio-Regulation Casing");
-        register(8, ItemList.Casing_Vat_T3, "Symbiotic Vat Casing");
-
         register(9, ItemList.Spinmatron_Casing);
         register(10, ItemList.CasingThaumium);
         register(11, ItemList.CasingVoid);

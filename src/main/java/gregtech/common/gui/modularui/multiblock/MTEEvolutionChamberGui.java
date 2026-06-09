@@ -41,7 +41,7 @@ import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
@@ -126,7 +126,8 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
 
             // The icon of the culture's item, with tooltip naming it
             list.child(
-                new Row().height(16)
+                Flow.row()
+                    .height(16)
                     .childPadding(2)
                     .child(
                         new ItemDrawable(fakeItem).asWidget()
@@ -142,7 +143,8 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
 
             // Stat icons and text with the trait's value for each stat, aligned row-wise
             list.child(
-                new Row().height(10)
+                Flow.row()
+                    .height(10)
                     .childPadding(1)
                     .child(
                         intIcon.asWidget()
@@ -202,7 +204,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
         super.registerSyncValues(syncManager);
         syncManager.registerSlotGroup("culture_slot", 1);
 
-        GenericSyncValue<ArtificialOrganism> organismSyncer = GenericSyncValue.builder(ArtificialOrganism.class)
+        GenericSyncValue<ArtificialOrganism, ?> organismSyncer = GenericSyncValue.builder(ArtificialOrganism.class)
             .getter(() -> multiblock.currentSpecies)
             .setter(ao -> multiblock.currentSpecies = ao)
             .adapter(new ArtificialOrganismAdapter())
@@ -230,7 +232,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
 
         // This row displays the currently active traits
         // TODO: change members in the trait row to dynamic drawawbles or adjacent, stuttering bad
-        Row traitRow = new Row();
+        Flow traitRow = Flow.row();
         traitRow.pos(5, 41)
             .size(50, 10)
             .childPadding(6);
@@ -243,7 +245,8 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
             .syncedPanel("info_panel", true, (p_syncManager, syncHandler) -> getInfoPopup());
 
         // AO count Syncers
-        GenericSyncValue<ArtificialOrganism> organismSyncer = syncManager.findSyncHandler("ao", GenericSyncValue.class);
+        GenericSyncValue<ArtificialOrganism, ?> organismSyncer = syncManager
+            .findSyncHandler("ao", GenericSyncValue.class);
         IntSyncValue aoCapacitySyncer = syncManager.findSyncHandler("aoCapacity", IntSyncValue.class);
         for (ArtificialOrganism.Trait t : multiblock.currentSpecies.traits) {
             traitRow.child(
