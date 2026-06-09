@@ -137,7 +137,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
 
         tEU = totalFlow;
         // HP steam outputs regular steam instead of distilled water
-        addOutput(Materials.Steam.getGas(totalFlow));
+        addOutputPartial(Materials.Steam.getGas(totalFlow));
 
         if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility

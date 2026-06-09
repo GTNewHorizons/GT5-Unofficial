@@ -9,21 +9,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.OutputHatchType;
+import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchVoidGui;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchVoid extends MTEHatchOutput {
+public class MTEHatchVoid extends MTEHatchOutput implements IOutputHatch {
 
     public MTEHatchVoid(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 1, null, 1);
@@ -126,5 +132,62 @@ public class MTEHatchVoid extends MTEHatchOutput {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.output_hatch_void.desc");
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return true;
+    }
+
+    @Override
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        return lockedFluid != null && id.matches(lockedFluid);
+    }
+
+    @Override
+    public OutputHatchType getHatchType() {
+        return OutputHatchType.Void;
+    }
+
+    @Override
+    public boolean storePartial(FluidStack stack, boolean simulate) {
+        if (canStoreFluid(stack)) {
+            stack.amount = 0;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public IOutputHatchTransaction createTransaction() {
+        return new VoidingTransaction();
+    }
+
+    class VoidingTransaction implements IOutputHatchTransaction {
+
+        @Override
+        public IOutputHatch getHatch() {
+            return MTEHatchVoid.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return true;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+            return MTEHatchVoid.this.storePartial(stack, true);
+        }
+
+        @Override
+        public void completeFluid(GTUtility.FluidId id) {
+            // do nothing
+        }
+
+        @Override
+        public void commit() {
+            // do nothing
+        }
     }
 }
