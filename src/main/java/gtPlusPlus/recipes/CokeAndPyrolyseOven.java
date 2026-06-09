@@ -47,13 +47,12 @@ public class CokeAndPyrolyseOven {
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
-        // Cactus and Sugar charcoal/coke, copied over from the ICO and adjusted for pyrolyse (*20 input and output,
-        // duration*1.25 per item.)
-        addCokingRecipes(
+        // Cactus/sugar ×20 on Pyrolyse only; ×1 ICO chain lives in HandlerRailcraft
+        addPyrolyseCokingRecipes(
             new ItemStack(Blocks.cactus, 20),
             GregtechItemList.CactusCharcoal.get(20),
             GregtechItemList.CactusCoke.get(20));
-        addCokingRecipes(
+        addPyrolyseCokingRecipes(
             new ItemStack(Items.reeds, 20),
             GregtechItemList.SugarCharcoal.get(20),
             GregtechItemList.SugarCoke.get(20));
@@ -71,8 +70,7 @@ public class CokeAndPyrolyseOven {
             .addTo(cokeOvenRecipes);
     }
 
-    private static void addCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
-        // Plant to Charcoal
+    private static void addPyrolyseCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
             .circuit(3)
@@ -80,7 +78,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.Creosote.getFluid(2_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
@@ -90,9 +88,8 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(250 * TICKS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
 
-        // Charcoal to Coke
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
             .circuit(3)
@@ -100,7 +97,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.Creosote.getFluid(4_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * SECONDS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -110,9 +107,8 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(2_000))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
 
-        // Coke to Wood tar/Wood gas
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
             .circuit(5)
@@ -121,7 +117,7 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.WoodTar.getFluid(4_000))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
@@ -131,6 +127,6 @@ public class CokeAndPyrolyseOven {
             .fluidOutputs(Materials.WoodGas.getGas(6_000))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
-            .addTo(pyrolyseRecipes, cokeOvenRecipes);
+            .addTo(pyrolyseRecipes);
     }
 }

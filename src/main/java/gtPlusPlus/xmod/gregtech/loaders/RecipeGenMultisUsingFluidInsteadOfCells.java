@@ -131,6 +131,12 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 continue; // Skip this recipe entirely if we find an item we don't like
             }
 
+            for (ItemStack inputStack : aNewItemInputs) {
+                if (inputStack != null) {
+                    inputStack.stackSize = 1;
+                }
+            }
+
             GTRecipe aNewRecipe = recipe.copyShallow();
             aNewRecipe.setInputs(aNewItemInputs);
             aNewRecipe.setOutputs(aNewItemOutputs);

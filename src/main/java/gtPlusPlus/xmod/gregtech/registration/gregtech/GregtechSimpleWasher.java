@@ -11,6 +11,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
@@ -26,6 +29,8 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
+
+    private static final Set<String> sRegisteredWashInputs = new HashSet<>();
 
     public static void run() {
         generateDirtyDustRecipes();
@@ -166,6 +171,10 @@ public class GregtechSimpleWasher {
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
         if (aInput != null && aOutput != null) {
+            String inputKey = aInput.getItem() + ":" + aInput.getItemDamage();
+            if (!sRegisteredWashInputs.add(inputKey)) {
+                return;
+            }
             GTValues.RA.stdBuilder()
                 .itemInputs(aInput)
                 .itemOutputs(aOutput)
