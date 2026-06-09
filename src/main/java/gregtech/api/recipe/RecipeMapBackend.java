@@ -24,6 +24,7 @@ import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -460,7 +461,8 @@ public class RecipeMapBackend {
                     .filter(recipe -> recipe.mCanBeBuffered),
                 GTStreamUtil.ofSupplier(() -> cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE])
                     .filter(Objects::nonNull),
-                lookupCandidateStream(items, fluids))
+                Stream.<Supplier<Stream<GTRecipe>>>of(() -> lookupCandidateStream(items, fluids))
+                    .flatMap(Supplier::get))
                 .flatMap(Function.identity())
                 .distinct()
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
