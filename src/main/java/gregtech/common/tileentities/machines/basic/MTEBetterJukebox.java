@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4i;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.api.MusicRecordMetadataProvider;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
@@ -59,6 +62,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.gui.modularui.hatch.MTEBetterJukeboxGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -68,10 +72,10 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     public UUID jukeboxUuid = UNSET_UUID;
     public boolean loopMode = true;
     public boolean shuffleMode = false;
-    public int playbackSlot = 0;
-    public float playbackVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
-    public float p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
-    public long discProgressMs = 0;
+    private int playbackSlot = 0;
+    public double playbackVolume;
+    public double p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
+    private long discProgressMs = 0;
     /** Makes all music discs play for 4 seconds */
     public boolean superFastDebugMode = false;
     // Computed state
@@ -79,7 +83,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     private GTMusicSystem.MusicSource musicSource = null;
     private boolean powered = false;
     private long discStartMs = 0;
-    public long discDurationMs = 1;
+    private long discDurationMs = 1;
     private ItemRecord currentlyPlaying = null;
 
     // Constants
@@ -99,9 +103,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     public static final class BalanceMath {
 
         public static int MAX_TIER = VoltageIndex.IV;
-        public static float VANILLA_JUKEBOX_RANGE = 4.0f; // 64 blocks
+        public static double VANILLA_JUKEBOX_RANGE = 4.0f; // 64 blocks
 
-        private static final float[] LISTENING_VOLUME = new float[] { //
+        private static final double[] LISTENING_VOLUME = new double[] { //
             VANILLA_JUKEBOX_RANGE, // ULV (unpowered fallback)
             VANILLA_JUKEBOX_RANGE + 1.0f, // LV, 80 blocks
             VANILLA_JUKEBOX_RANGE + 2.0f, // MV, 96 blocks
@@ -119,13 +123,13 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             9002, // IV, already unlimited here - this value is ignored
         };
 
-        public static float listeningVolume(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+        public static double listeningVolume(int tier) {
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return LISTENING_VOLUME[tier];
         }
 
         public static int headphoneBlockRange(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return HEADPHONE_BLOCK_RANGE[tier];
         }
 
@@ -139,17 +143,17 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             }
         }
 
-        public static float volumeToAttenuationDistance(float range) {
+        public static double volumeToAttenuationDistance(double range) {
             // SoundManager.playSound logic
-            return 16.0f * range;
+            return 16 * range;
         }
 
-        public static float attenuationDistanceToVolume(float blockRange) {
-            return blockRange / 16.0f;
+        public static double attenuationDistanceToVolume(double blockRange) {
+            return blockRange / 16;
         }
 
         public static long eutUsage(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return V[tier] / 16;
         }
     }
@@ -198,6 +202,34 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     public MTEBetterJukebox(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, INPUT_SLOTS, 1);
         playbackVolume = BalanceMath.listeningVolume(aTier);
+    }
+
+    public boolean isLoopMode() {
+        return loopMode;
+    }
+
+    public void setLoopMode(boolean loopMode) {
+        this.loopMode = loopMode;
+    }
+
+    public boolean isShuffleMode() {
+        return shuffleMode;
+    }
+
+    public void setShuffleMode(boolean shuffleMode) {
+        this.shuffleMode = shuffleMode;
+    }
+
+    public long getDiscProgressMs() {
+        return discProgressMs;
+    }
+
+    public long getDiscDurationMs() {
+        return discDurationMs;
+    }
+
+    public int getPlaybackSlot() {
+        return playbackSlot;
     }
 
     @Override
@@ -380,7 +412,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     }
 
     private void pickNextSlot() {
-        playbackSlot = MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS);
+        playbackSlot = Math.clamp(playbackSlot, 0, INPUT_SLOTS);
         if (shuffleMode) {
             final int[] validSlots = new int[INPUT_SLOTS];
             int validSlotCount = 0;
@@ -488,8 +520,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             aNBT.setBoolean(NBTKEY_LOOP_MODE, loopMode);
             aNBT.setBoolean(NBTKEY_SHUFFLE_MODE, shuffleMode);
             aNBT.setInteger(NBTKEY_PLAYBACK_SLOT, playbackSlot);
-            aNBT.setFloat(NBTKEY_VOLUME_PLAY, playbackVolume);
-            aNBT.setFloat(NBTKEY_VOLUME_P2P, p2pVolume);
+            aNBT.setDouble(NBTKEY_VOLUME_PLAY, playbackVolume);
+            aNBT.setDouble(NBTKEY_VOLUME_P2P, p2pVolume);
             aNBT.setLong(NBTKEY_DISC_PROGRESS_MS, discProgressMs);
         }
     }
@@ -511,18 +543,18 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             playbackSlot = aNBT.getInteger(NBTKEY_PLAYBACK_SLOT);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_PLAY, Constants.NBT.TAG_ANY_NUMERIC)) {
-            playbackVolume = aNBT.getFloat(NBTKEY_VOLUME_PLAY);
+            playbackVolume = aNBT.getDouble(NBTKEY_VOLUME_PLAY);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_P2P, Constants.NBT.TAG_ANY_NUMERIC)) {
-            p2pVolume = aNBT.getFloat(NBTKEY_VOLUME_P2P);
+            p2pVolume = aNBT.getDouble(NBTKEY_VOLUME_P2P);
         }
         if (aNBT.hasKey(NBTKEY_DISC_PROGRESS_MS, Constants.NBT.TAG_ANY_NUMERIC)) {
             discProgressMs = aNBT.getLong(NBTKEY_DISC_PROGRESS_MS);
         }
 
-        final float maxVolume = BalanceMath.listeningVolume(mTier);
-        playbackVolume = MathHelper.clamp_float(playbackVolume, 0.0f, maxVolume);
-        p2pVolume = MathHelper.clamp_float(p2pVolume, 0.0f, maxVolume);
+        final double maxVolume = BalanceMath.listeningVolume(mTier);
+        playbackVolume = Math.clamp(playbackVolume, 0.0f, maxVolume);
+        p2pVolume = Math.clamp(p2pVolume, 0.0f, maxVolume);
     }
 
     @Override
@@ -610,14 +642,14 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
                     slotHighlight.checkNeedsRebuild();
                 }), builder)
                 .setPosProvider(
-                    (screenSize, window, parent) -> inputSlots.get(MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS))
+                    (screenSize, window, parent) -> inputSlots.get(Math.clamp(playbackSlot, 0, INPUT_SLOTS))
                         .add(-3, -3)));
         // Attenuation distance (controls internal "volume")
         // Caching tooltip data caches the formatted p2p range value, so we have to use the uncached variant here.
         builder.widget(
             new SliderWidget()
-                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(this::getPlaybackBlockRange)
+                .setBounds(0.0f, (float) BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
+                .setGetter(() -> (float) getPlaybackBlockRange())
                 .setSetter(this::setPlaybackBlockRange)
                 .dynamicTooltip(
                     () -> mTooltipCache.getUncachedTooltipData(
@@ -628,8 +660,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
                 .setSize(52, 8));
         builder.widget(
             new SliderWidget()
-                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(this::getP2PBlockRange)
+                .setBounds(0.0f, (float) BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
+                .setGetter(() -> (float) getP2PBlockRange())
                 .setSetter(this::setP2PBlockRange)
                 .dynamicTooltip(
                     () -> mTooltipCache.getUncachedTooltipData(
@@ -640,17 +672,17 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
                 .setSize(52, 8));
     }
 
-    private float getPlaybackBlockRange() {
+    public double getPlaybackBlockRange() {
         return BalanceMath.volumeToAttenuationDistance(playbackVolume);
     }
 
-    private float getP2PBlockRange() {
+    public double getP2PBlockRange() {
         return BalanceMath.volumeToAttenuationDistance(p2pVolume);
     }
 
-    private void setPlaybackBlockRange(float blockRange) {
-        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
-        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+    public void setPlaybackBlockRange(double blockRange) {
+        double volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = Math.clamp(volume, 0.0f, BalanceMath.listeningVolume(mTier));
         if (volume != playbackVolume) {
             playbackVolume = volume;
             if (getBaseMetaTileEntity().isServerSide()) {
@@ -659,9 +691,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
         }
     }
 
-    private void setP2PBlockRange(float blockRange) {
-        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
-        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+    public void setP2PBlockRange(double blockRange) {
+        double volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = Math.clamp(volume, 0.0f, BalanceMath.listeningVolume(mTier));
         if (volume != p2pVolume) {
             p2pVolume = volume;
             if (getBaseMetaTileEntity().isServerSide()) {
@@ -699,11 +731,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
         final Vector4i position = new Vector4i();
         target.resizeEmitterArray(1 + emitters.size());
         position.set(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getWorld().provider.dimensionId);
-        final float actualVolume = MathHelper
-            .clamp_float(playbackVolume, 0.0f, BalanceMath.listeningVolume(powered ? mTier : 0));
+        final double actualVolume = Math.clamp(playbackVolume, 0.0f, BalanceMath.listeningVolume(powered ? mTier : 0));
         target.setEmitter(0, position, actualVolume);
-        final float actualP2PVolume = MathHelper
-            .clamp_float(p2pVolume, 0.0f, powered ? BalanceMath.listeningVolume(mTier) : 0.0f);
+        final double actualP2PVolume = Math.clamp(p2pVolume, 0.0f, powered ? BalanceMath.listeningVolume(mTier) : 0.0f);
         for (int i = 0; i < emitters.size(); i++) {
             final PartP2PSound p2p = emitters.get(i);
             final AENetworkProxy proxy = p2p.getProxy();
@@ -741,4 +771,13 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
         updateEmitterList();
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBetterJukeboxGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
+    }
 }
