@@ -480,12 +480,14 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
         @Override
         public boolean hasAvailableSpace() {
-            return availableSpace != 0;
+            return availableSpace > 0;
         }
 
         @Override
         public void commit() {
             setFillableStack(fluid);
+            markDirty();
+            onEmptyingContainerWhenEmpty();
             active = false;
         }
     }
