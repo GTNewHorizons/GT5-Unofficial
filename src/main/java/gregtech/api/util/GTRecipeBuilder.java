@@ -47,7 +47,7 @@ public class GTRecipeBuilder {
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     public static final boolean PANIC_MODE_COLLISION;
 
-    // This should only be disabled in non stable instances with -Dgt.recipebuilder.disable_recipe_collision_check=true
+    // This should only be enabled in non stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
     public static final boolean ENABLE_COLLISION_CHECK;
 
     public static final int WILDCARD = 32767;
@@ -85,7 +85,7 @@ public class GTRecipeBuilder {
         PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
         PANIC_MODE_INVALID = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.invalid");
         PANIC_MODE_COLLISION = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.collision");
-        ENABLE_COLLISION_CHECK = !Boolean.getBoolean("gt.recipebuilder.disable_recipe_collision_check");
+        ENABLE_COLLISION_CHECK = Boolean.getBoolean("gt.recipebuilder.recipe_collision_check");
     }
 
     protected ItemStack[] inputsBasic = GTValues.emptyItemStackArray;
