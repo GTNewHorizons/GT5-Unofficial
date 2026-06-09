@@ -166,11 +166,6 @@ public class GTClient extends GTProxy {
     private final List<Materials> mMoltenNegB;
     private final List<Materials> mMoltenNegA = Collections.emptyList();
     private long mAnimationTick;
-    /**
-     * This is the place to def the value used below
-     **/
-    private long afterSomeTime;
-
     private boolean mAnimationDirection;
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
@@ -473,10 +468,6 @@ public class GTClient extends GTProxy {
                     .isSingleplayer()) {
                     GTModHandler.removeAllIC2Recipes();
                 }
-            }
-            afterSomeTime++;
-            if (afterSomeTime >= 100L) {
-                afterSomeTime = 0;
             }
             for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
                 .iterator(); iterator.hasNext();) {
