@@ -20,6 +20,7 @@ public enum LedStatus {
     STATUS_NEUTRAL(() -> EnumChatFormatting.WHITE + "Neutral", true),
     STATUS_WTF(() -> LedStatus.values()[TecTech.RANDOM.nextInt(9)].name.get(), false);
 
+    private static final LedStatus[] VALUES = values();
     public final Supplier<String> name;
     public final boolean isOk;
 
@@ -33,11 +34,10 @@ public enum LedStatus {
     }
 
     public static LedStatus getStatus(byte value) {
-        try {
-            return LedStatus.values()[value];
-        } catch (Exception e) {
-            return STATUS_UNDEFINED;
+        if (0 <= value && value < VALUES.length) {
+            return LedStatus.VALUES[value];
         }
+        return STATUS_UNDEFINED;
     }
 
     public static LedStatus[] makeArray(int count, LedStatus defaultValue) {

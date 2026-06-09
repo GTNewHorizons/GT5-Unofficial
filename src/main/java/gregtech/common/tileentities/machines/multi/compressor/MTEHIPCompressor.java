@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.Ollie;
+import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -49,8 +50,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -269,7 +270,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
             .beginStructureBlock(15, 10, 7, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
@@ -280,12 +281,13 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
                 "Any Electric Compressor Casing",
                 1)
-            .addInputBus("Pipe Casings on Side", 2)
-            .addInputHatch("Pipe Casings on Side", 2)
-            .addOutputBus("Pipe Casings on Side", 2)
+            .addInputBus("Pipe Casing on Side", 2)
+            .addInputHatch("Pipe Casing on Side", 2)
+            .addOutputBus("Pipe Casing on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -308,10 +310,15 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0) && mCasingAmount >= 95;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 95);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -372,7 +379,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 }
 
                 // If Black Hole required, no recipe
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 2) {
+                if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 2) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return super.validateRecipe(recipe);
@@ -382,7 +389,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 // If HIP required, check for overheat and potentially crash
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 1) {
+                if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 1) {
                     if (overheated) {
                         stopMachine(SimpleShutDownReason.ofCritical("overheated"));
                         return CheckRecipeResultRegistry.NO_RECIPE;
@@ -458,11 +465,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     public HeatingCoilLevel getCoilLevel() {
         return heatLevel;
     }
@@ -506,6 +508,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEHIPCompressor> adder() {
             return adder;
         }

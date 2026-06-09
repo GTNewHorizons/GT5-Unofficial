@@ -27,24 +27,25 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.ArrayUtils;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDiode extends MTEBasicHull {
 
     private long maxAmps;
     private long aAmps;
 
     public MTEDiode(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("tooltip.tile.diode.0.name"));
+        super(aID, aName, aNameRegional, aTier);
         this.maxAmps = this.getAmpsfromMeta(aID);
         this.aAmps = this.maxAmps;
     }
@@ -79,7 +80,7 @@ public class MTEDiode extends MTEBasicHull {
             ++this.aAmps;
             if (this.aAmps > this.maxAmps) this.aAmps = 0;
         }
-        GTUtility.sendChatTrans(aPlayer, "BW.chat.diode.max_amps", this.aAmps);
+        GTUtility.sendChatTrans(aPlayer, "BW.chat.diode.max_amps", new ChatComponentNumber(this.aAmps));
     }
 
     @Override
@@ -122,6 +123,6 @@ public class MTEDiode extends MTEBasicHull {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(this.mDescriptionArray);
+        return GTSplit.splitLocalized("tooltip.tile.diode.0.name");
     }
 }

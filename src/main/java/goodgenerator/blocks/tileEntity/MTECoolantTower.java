@@ -5,19 +5,19 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -29,12 +29,13 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
+public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTECoolantTower> multiDefinition = null;
     private static final int CASING_INDEX = 1539;
@@ -98,8 +99,10 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 5, 11, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(mName, 5, 11, 0, errors)) return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -107,7 +110,8 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water")
-            .addController("Front middle of the second layer")
+            .beginStructureBlock(11, 13, 11, true)
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Light Concrete", 277, false)
             .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
             .addInputHatch("Any Light Concrete of the second layer", 1)
@@ -118,7 +122,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 5, 11, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 5, 11, 0);
     }
 
     @Override
@@ -144,7 +148,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
-        addOutput(GTModHandler.getDistilledWater(steam / 160));
+        addOutputPartial(GTModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -200,6 +204,11 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

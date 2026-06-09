@@ -87,19 +87,19 @@ public class GemLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gem, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawed, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemChipped, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
 
             GTValues.RA.stdBuilder()
@@ -199,7 +199,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA()));
             CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary

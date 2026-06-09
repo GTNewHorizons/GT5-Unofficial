@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -21,7 +20,6 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 
     public RenderMiningExplosivesPrimed() {
         this.shadowSize = 0.5F;
-        Logger.WARNING("Rendering Mining Explosion. 1");
     }
 
     /**
@@ -31,8 +29,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     public void doRender(final EntityPrimedMiningExplosive entity, final double p_76986_2_, final double p_76986_4_,
-        final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
-        Logger.WARNING("Rendering Mining Explosion. 2");
+        final double p_76986_6_, final float p_76986_9_) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
         float f2;
@@ -78,17 +75,9 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(final EntityPrimedMiningExplosive p_110775_1_) {
-        return TextureMap.locationBlocksTexture;
-    }
-
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
     @Override
     protected ResourceLocation getEntityTexture(final Entity p_110775_1_) {
-        Logger.WARNING("Rendering Mining Explosion. 4");
-        return this.getEntityTexture((EntityPrimedMiningExplosive) p_110775_1_);
+        return TextureMap.locationBlocksTexture;
     }
 
     /**
@@ -100,13 +89,6 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
     @Override
     public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_,
         final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
-        Logger.WARNING("Rendering Mining Explosion. 3");
-        this.doRender(
-            (EntityPrimedMiningExplosive) p_76986_1_,
-            p_76986_2_,
-            p_76986_4_,
-            p_76986_6_,
-            p_76986_8_,
-            p_76986_9_);
+        this.doRender((EntityPrimedMiningExplosive) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_9_);
     }
 }

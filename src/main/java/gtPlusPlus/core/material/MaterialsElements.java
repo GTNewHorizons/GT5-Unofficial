@@ -3,7 +3,6 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -450,16 +449,11 @@ public final class MaterialsElements {
         144,
         false,
         StringUtils.superscript("238Pu"),
-        2,
-        false); // Not a GT Inherited Material
+        2); // Not a GT Inherited Material
 
     public final Material MAGIC = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });
     public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
-
-    static {
-        Logger.MATERIALS("Initialising Base Elements.");
-    }
 
     private static final MaterialsElements INSTANCE = new MaterialsElements();
 
@@ -478,7 +472,7 @@ public final class MaterialsElements {
         public static final Material CELESTIAL_TUNGSTEN = new Material(
             "Celestial Tungsten",
             MaterialState.SOLID,
-            TextureSet.SET_REFINED,
+            TextureSet.SET_CELESTIAL_TUNGSTEN,
             new short[] { 50, 50, 50, 2 },
             INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
             INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
@@ -490,7 +484,7 @@ public final class MaterialsElements {
         public static final Material ASTRAL_TITANIUM = new Material(
             "Astral Titanium",
             MaterialState.SOLID,
-            TextureSet.SET_REFINED,
+            TextureSet.SET_ASTRAL_TITANIUM,
             new short[] { 220, 160, 240, 2 },
             INSTANCE.TITANIUM.getMeltingPointC() + 7500,
             INSTANCE.TITANIUM.getBoilingPointC() + 7500,
@@ -502,6 +496,7 @@ public final class MaterialsElements {
         public static final Material CHRONOMATIC_GLASS = new Material(
             "Chromatic Glass",
             MaterialState.SOLID,
+            TextureSet.SET_CHROMATIC_GLASS,
             new short[] { 255, 255, 255, 3 },
             9200,
             17550,
@@ -526,8 +521,8 @@ public final class MaterialsElements {
             "Hypogen",
             MaterialState.SOLID,
             TextureSet.SET_HYPOGEN,
-            new short[] { 220, 120, 75, 2 },
-            11255,
+            new short[] { 255, 255, 255 },
+            10255,
             19377,
             240,
             251,
@@ -579,22 +574,6 @@ public final class MaterialsElements {
                                                           // GT
                                                           // Inherited
                                                           // Material
-        public static final Material WHITE_METAL = new Material(
-            "White Metal",
-            MaterialState.SOLID,
-            TextureSet.SET_METALLIC,
-            new short[] { 255, 255, 255 },
-            4560,
-            7580,
-            35,
-            41,
-            false,
-            "҉",
-            0,
-            new MaterialStack(getInstance().COPPER, 5),
-            new MaterialStack(getInstance().ANTIMONY, 10),
-            new MaterialStack(getInstance().PLATINUM, 10),
-            new MaterialStack(getInstance().TIN, 75)); // Not a GT Inherited Material
 
         public static final Material GRANITE = new Material(
             "Ancient Granite",
@@ -637,8 +616,8 @@ public final class MaterialsElements {
         public static final Material DRAGON_METAL = new Material(
             "Dragonblood",
             MaterialState.SOLID,
-            TextureSet.SET_SHINY,
-            new short[] { 220, 40, 20, 2 },
+            TextureSet.SET_HYPOGEN,
+            new short[] { 220, 40, 20 },
             10160,
             17850,
             96,

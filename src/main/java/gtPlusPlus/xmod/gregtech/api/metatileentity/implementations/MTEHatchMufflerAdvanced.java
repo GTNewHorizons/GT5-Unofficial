@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.GTMod;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -22,6 +21,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.hatch.MTEHatchMufflerAdvancedGui;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
@@ -29,7 +29,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
+public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
 
     protected int SLOT_FILTER = 0;
 
@@ -50,7 +50,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
 
     @Override
     public String[] getDescription() {
-        return mDescription;
+        return TooltipHelper.pollutionDisabledTooltip(mDescription);
     }
 
     @Override

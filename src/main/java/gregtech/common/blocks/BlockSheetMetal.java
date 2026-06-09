@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +34,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures, IFacadeControl {
 
-    private final Int2ObjectFunction<IOreMaterial> materials;
+    final Int2ObjectFunction<IOreMaterial> materials;
     private final int maxMeta;
 
     public BlockSheetMetal(String aName, Int2ObjectFunction<IOreMaterial> materials, int maxMeta) {
@@ -66,14 +67,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
         if (material == null) material = Materials._NULL;
 
-        Materials gt = material.getGTMaterial();
-
-        if (gt != null) {
-            return OrePrefixes.sheetmetal.getDefaultLocalNameForItem(gt);
-        }
-
-        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL)
-            .replace("%material", material.getLocalizedName());
+        return OrePrefixes.sheetmetal.getLocalizedNameForItem(material);
     }
 
     @Override
@@ -139,6 +133,14 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         while (textureCache.size() > 512) textureCache.removeLast();
 
         return cached;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        IOreMaterial material = materials.get(aMeta);
+        if (material == null) return null;
+        return material.getTextureSet().mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {

@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -43,7 +42,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
@@ -58,6 +56,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -68,15 +69,16 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
+public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEYottaFluidTank> multiDefinition = null;
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();
@@ -262,32 +264,41 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mYottaHatch.clear();
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mStorage = BigInteger.ZERO;
         glassTier = -1;
         maxCell = 0;
-        if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
+        if (!checkPiece(YOTTANK_BOTTOM, 2, 0, 0, errors)) return;
         int cnt = 0;
-        while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
+        while (checkPiece(YOTTANK_MID, 2, cnt + 1, 0, errors)) {
             cnt++;
         }
-        if (cnt > 15 || cnt < 1) return false;
-        if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
-        // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
-        if (maxCell + 3 <= glassTier) {
-            if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
-            if (mFluid == null) {
-                mStorageCurrent = BigInteger.ZERO;
-            }
-            return true;
+        errors.clear();
+        if (cnt > 15) {
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
-        return false;
+        if (cnt < 1) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
+        checkHasInputHatch(errors);
+        // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
+        if (maxCell + 3 > glassTier) {
+            errors.add(StructureErrors.glassTierNotEnough(maxCell + 3));
+        }
+        if (!errors.isEmpty()) return;
+        if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
+        if (mFluid == null) {
+            mStorageCurrent = BigInteger.ZERO;
+        }
     }
 
     @Override
@@ -451,13 +462,13 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
             .addInfo("The max height of the cell blocks is 15")
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
-            .addController("Front of the second layer")
+            .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)
             .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 3")
+            .addInputHatch("Hint block number 1")
+            .addOutputHatch("Hint block number 3 (optional)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -583,12 +594,12 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(YOTTANK_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
+        buildPiece(YOTTANK_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
         int height = stackSize.stackSize;
         if (height > 15) height = 15;
-        structureBuild_EM(YOTTANK_TOP, 2, height + 2, 0, stackSize, hintsOnly);
+        buildPiece(YOTTANK_TOP, stackSize, hintsOnly, 2, height + 2, 0);
         while (height > 0) {
-            structureBuild_EM(YOTTANK_MID, 2, height, 0, stackSize, hintsOnly);
+            buildPiece(YOTTANK_MID, stackSize, hintsOnly, 2, height, 0);
             height--;
         }
     }
@@ -776,6 +787,11 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -21,7 +21,6 @@ import static gregtech.common.tileentities.machines.multi.purification.MTEPurifi
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,9 +46,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -58,10 +59,9 @@ import gregtech.common.gui.modularui.multiblock.MTEPurificationPlantGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPurificationPlant>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
@@ -89,20 +89,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      * for players to more easily debug their automation setups.
      */
     private boolean debugMode = false;
+    private boolean needsWaterFill = false;
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
 
     private static final IStructureDefinition<MTEPurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-        // Create an identical structure for survival autobuild, with water replaced with air
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("F", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Superplasticizer-treated high strength concrete
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 3))
         // Sterile Water Plant Casing
@@ -111,7 +103,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        .addElement('F', ofAnyWater())
+        .addElement('F', ofChain(ofAnyWater(false), isAir()))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -141,14 +133,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
-        if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
-            return 0;
-        }
-        return built;
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -258,7 +244,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -271,33 +257,32 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            if (active) return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4));
     }
 
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
@@ -305,24 +290,24 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check self
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) {
-            return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                PurificationPlantStructureString.STRUCTURE_STRING,
+                3,
+                6,
+                0,
+                'F');
+            return;
         }
 
-        // Check hatches
-        if (!checkHatches()) {
-            return false;
-        }
-
-        // using nano forge method of detecting hatches.
-        return checkExoticAndNormalEnergyHatches();
-    }
-
-    private boolean checkHatches() {
-        // Exactly one maintenance hatch is required
-        return mMaintenanceHatches.size() == 1;
+        checkOneMaintenanceHatch(errors);
+        checkExoticAndNormalEnergyHatches(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     public boolean debugModeOn() {
@@ -334,12 +319,24 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (needsWaterFill && aTick % 20 == 0) {
+                if (GTStructureUtility.fillStructureWithWater(
+                    aBaseMetaTileEntity,
+                    getExtendedFacing(),
+                    PurificationPlantStructureString.STRUCTURE_STRING,
+                    3,
+                    6,
+                    0,
+                    'F')) {
+                    needsWaterFill = false;
+                }
+            }
             // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
             for (int i = 0; i < linkedUnits.size(); ++i) {
                 if (aTick % CYCLE_TIME_TICKS == i) {
                     LinkedPurificationUnit unit = linkedUnits.get(i);
                     boolean structure = unit.metaTileEntity()
-                        .checkStructure(true);
+                        .checkStructure(true, aBaseMetaTileEntity);
                     // If unit was active but deformed, set as inactive
                     if (unit.isActive() && !structure) {
                         unit.setActive(false);
@@ -417,8 +414,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
-            // Unit needs to be online to be considered active.
-            if (status == PurificationUnitStatus.ONLINE) {
+            // Unit needs to be idle at first before active if it is active it will only check if running recipes.
+            if (status == PurificationUnitStatus.IDLE || status == PurificationUnitStatus.ACTIVE) {
                 // Perform recipe check for unit and start it if successful
                 if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);
@@ -509,9 +506,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ONLINE -> {
+                case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                }
+                case IDLE -> {
+                    text = text + EnumChatFormatting.GREEN
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
@@ -564,4 +565,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.*;
 import static gregtech.api.render.ISBRWorldContext.MAX_BRIGHTNESS;
 
 import net.minecraft.client.renderer.RenderBlocks;
@@ -17,26 +18,22 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.ISBRContext;
 
-public class GTRenderedTexture extends GTTextureBase implements ITexture, IColorModulationContainer {
+public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer {
 
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
     private final boolean glow;
-    private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean stdOrient,
-        boolean extFacing) {
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
-        this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
     }
 
@@ -56,12 +53,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
             renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
             renderFaceXPos(ctx, overlayIcon, rotation);
         }
@@ -85,12 +84,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
             renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
             renderFaceXNeg(ctx, overlayIcon, rotation);
         }
@@ -114,12 +115,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
             renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
             renderFaceYPos(ctx, overlayIcon, rotation);
         }
@@ -143,12 +146,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
             renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(ctx, overlayIcon, rotation);
         }
@@ -172,12 +177,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
             renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
             renderFaceZPos(ctx, overlayIcon, rotation);
         }
@@ -201,12 +208,14 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        if (ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        final IIcon icon = mIconContainer.getIcon();
+        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
             renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = mIconContainer.getOverlayIcon();
-        if (overlayIcon != null && ctx.canRenderInPass(pass -> pass == 1)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
+            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
             renderFaceZNeg(ctx, overlayIcon, rotation);
         }
@@ -370,7 +379,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
+        if (!useExtFacing) return ExtendedFacing.DEFAULT;
 
         final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;

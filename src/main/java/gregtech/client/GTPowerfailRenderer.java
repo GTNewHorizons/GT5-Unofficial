@@ -19,13 +19,20 @@ import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.GTPowerfailTracker.Powerfail;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTPowerfailRenderer {
 
     public IIcon powerfailIcon;
 
-    public final Long2ObjectOpenHashMap<GTPowerfailTracker.Powerfail> powerfails = new Long2ObjectOpenHashMap<>();
+    public final Int2ObjectOpenHashMap<Long2ObjectOpenHashMap<Powerfail>> powerfails = new Int2ObjectOpenHashMap<>();
+
+    public Powerfail addPowerfail(Powerfail powerfail) {
+        return this.powerfails.computeIfAbsent(powerfail.dim, ignored -> new Long2ObjectOpenHashMap<>())
+            .put(powerfail.getCoord(), powerfail);
+    }
 
     @SubscribeEvent
     public void onTextureDiscover(TextureStitchEvent.Pre event) {
@@ -46,19 +53,38 @@ public class GTPowerfailRenderer {
         if (powerfails.isEmpty()) return;
         if (!Client.render.renderPowerfailNotifications) return;
 
-        Tessellator tessellator = Tessellator.instance;
-
-        tessellator.startDrawingQuads();
-
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
         Vec3 pos2 = player.getPosition(event.partialTicks);
         Vector3d pos = new Vector3d(pos2.xCoord, pos2.yCoord, pos2.zCoord);
         Vector3d temp = new Vector3d();
 
-        tessellator.setTranslation(0, 0, 0);
-
         long now = System.currentTimeMillis();
+
+        int dimId = player.getEntityWorld().provider.dimensionId;
+
+        Long2ObjectOpenHashMap<Powerfail> powerfails = this.powerfails.get(dimId);
+
+        if (powerfails == null) return;
+
+        GL11.glBindTexture(
+            GL11.GL_TEXTURE_2D,
+            Minecraft.getMinecraft()
+                .getTextureMapBlocks()
+                .getGlTextureId());
+
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.startDrawingQuads();
+
+        tessellator.setTranslation(0, 0, 0);
 
         for (GTPowerfailTracker.Powerfail p : powerfails.values()) {
             if (Client.render.powerfailNotificationTimeout > 0) {
@@ -67,21 +93,18 @@ public class GTPowerfailRenderer {
                 if (elapsed > Client.render.powerfailNotificationTimeout * 1000L) continue;
             }
 
-            if (player.dimension != p.dim) continue;
-
             double x = p.x + 0.5d;
             double y = p.y + 0.5d;
             double z = p.z + 0.5d;
 
             double dist = pos.distance(x, y, z);
 
-            if (dist < 4 || dist > 512) continue;
+            if (dist > 512) continue;
 
             double size = dist * 0.25 * Client.render.powerfailIconSize;
 
             if (dist < 16d) {
-                // Fade to zero when the player is less than 2 blocks away
-                size *= GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d);
+                size *= Math.max(0.25d, GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d));
             }
 
             if (dist > 48) {
@@ -104,16 +127,9 @@ public class GTPowerfailRenderer {
             tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMaxV());
         }
 
-        GL11.glBindTexture(
-            GL11.GL_TEXTURE_2D,
-            Minecraft.getMinecraft()
-                .getTextureMapBlocks()
-                .getGlTextureId());
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_ALPHA);
         tessellator.draw();
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        GL11.glPopAttrib();
     }
 
     @Desugar

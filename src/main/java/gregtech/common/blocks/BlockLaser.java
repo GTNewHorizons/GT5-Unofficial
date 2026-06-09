@@ -16,7 +16,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 
 public class BlockLaser extends Block implements ITileEntityProvider {
 
@@ -63,13 +63,11 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = Textures.BlockIcons.LASER_PLATE.getIcon();
-    }
+    public void registerBlockIcons(IIconRegister iconRegister) {}
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return blockIcon;
+        return Textures.BlockIcons.LASER_PLATE.getIcon();
     }
 
     @Override
@@ -99,6 +97,6 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityLaser();
+        return new RenderingTileEntityLaser();
     }
 }

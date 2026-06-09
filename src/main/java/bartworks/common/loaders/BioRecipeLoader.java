@@ -15,7 +15,6 @@ package bartworks.common.loaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
-import static gregtech.api.enums.Mods.CropsPlusPlus;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -30,10 +29,10 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BioRecipeLoader {
@@ -124,52 +123,18 @@ public class BioRecipeLoader {
     @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerWaterBasedBacterialVatRecipes() {
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
-        for (FluidStack fluidStack : easyFluids) {
-            if (CropsPlusPlus.isModLoaded()) {
+        for (ItemStack grape : GTOreDictUnificator.getOres("cropGrape")) {
+            for (FluidStack fluidStack : easyFluids) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(new ItemStack(Items.sugar, 64))
-                    .circuit(2)
-                    .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
+                    .itemInputs(GTUtility.copyAmount(16, grape))
+                    .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
-                    .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))
+                    .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
                     .metadata(GLASS, 3)
-                    .duration(17 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_EV)
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
                     .addTo(bacterialVatRecipes);
             }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Grapes.get(16))
-                .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
-                .metadata(GLASS, 3)
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(bacterialVatRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(Items.sugar, 4),
-                    ItemList.IC2_Hops.get(16L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L))
-                .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.beer", 5))
-                .metadata(GLASS, 3)
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(bacterialVatRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Hops.get(32L), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
-                .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
-                .fluidInputs(new FluidStack(fluidStack, 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("potion.darkbeer", 10))
-                .metadata(GLASS, 3)
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(bacterialVatRecipes);
         }
     }
 

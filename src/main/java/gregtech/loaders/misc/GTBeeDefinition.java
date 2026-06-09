@@ -34,7 +34,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.CropsPlusPlus;
+import static gregtech.api.enums.Mods.CropsNH;
 import static gregtech.api.enums.Mods.EnderStorage;
 import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.ExtraCells2;
@@ -274,7 +274,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
-        beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(WARM);
     }, template -> {
@@ -298,9 +297,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }),
     // Tea bee, Humidity: normal, Parents: Ash and Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(GTBranchDefinition.ORGANIC, "Tea", false, new Color(0x65D13A), new Color(0x9a9679), beeSpecies -> {
-        beeSpecies.addProduct(
-            GTModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)),
-            0.10f);
+        beeSpecies.addProduct(GTModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(NORMAL);
         beeSpecies.setHasEffect();
@@ -2721,7 +2718,9 @@ public enum GTBeeDefinition implements IBeeDefinition {
     // Endgame bees
     JAEGERMEISTER(GTBranchDefinition.ENDGAME, "JaegerMeister", false, new Color(0x05AD18), new Color(0xE7DAC3),
         beeSpecies -> {
-            beeSpecies.addProduct(GTModHandler.getModItem(CropsPlusPlus.ID, "BppPotions", 1L, 8), 0.01f);
+            if (CropsNH.isModLoaded()) {
+                beeSpecies.addProduct(GTModHandler.getModItem(CropsNH.ID, "bottledAlcohol", 1L, 8), 0.01f);
+            }
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();

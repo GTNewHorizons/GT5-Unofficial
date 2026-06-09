@@ -1,13 +1,20 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.StatCollector;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
+@Deprecated // Remove in 2.10
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -46,12 +53,13 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        String[] g;
-        g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-            "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-            GTPPCore.GT_Tooltip.get() };
-
-        return g;
+        return ArrayUtils.addAll(
+            Utils.splitLocalizedFormattedWithAlkalus(
+                "gt.blockmachines.dynamo_hatch_buffer.desc",
+                this.maxEUOutput() * this.maxAmperesIn()),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.MBTT.Deprecated",
+                StatCollector.translateToLocal("GT5U.MBTT.Deprecated.RemovalMachine")));
     }
 
     @Override

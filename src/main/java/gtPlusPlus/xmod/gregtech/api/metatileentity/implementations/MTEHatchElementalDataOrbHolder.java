@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -20,7 +17,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
 import gregtech.common.items.ItemIntegratedCircuit;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -79,12 +75,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         }
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length - 1; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
-    }
-
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
@@ -94,19 +84,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
@@ -115,19 +94,9 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    public ArrayList<ItemStack> getInventory() {
-        ArrayList<ItemStack> aContents = new ArrayList<>();
-        for (int i = getBaseMetaTileEntity().getSizeInventory() - 2; i >= 0; i--) {
-            if (getBaseMetaTileEntity().getStackInSlot(i) != null)
-                aContents.add(getBaseMetaTileEntity().getStackInSlot(i));
-        }
-        return aContents;
     }
 
     public ItemStack getOrbByCircuit() {
@@ -150,7 +119,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
-            Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
             return true;
         }
         return false;
@@ -159,7 +127,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
-            Logger.INFO("Pulling " + aStack.getDisplayName() + " from slot " + aIndex);
             return true;
         }
         return false;

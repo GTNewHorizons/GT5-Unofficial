@@ -17,10 +17,10 @@ public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
     public BlockTintedIndustrialGlass() {
         super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 4);
 
-        register(0, ItemList.GlassTintedIndustrialWhite, "Tinted Industrial Glass (White)");
-        register(1, ItemList.GlassTintedIndustrialLightGray, "Tinted Industrial Glass (Light Gray)");
-        register(2, ItemList.GlassTintedIndustrialGray, "Tinted Industrial Glass (Gray)");
-        register(3, ItemList.GlassTintedIndustrialBlack, "Tinted Industrial Glass (Black)");
+        register(0, ItemList.GlassTintedIndustrialWhite);
+        register(1, ItemList.GlassTintedIndustrialLightGray);
+        register(2, ItemList.GlassTintedIndustrialGray);
+        register(3, ItemList.GlassTintedIndustrialBlack);
 
         // Register tinted industrial glass as EV-Tier glass
         OreDictionary.registerOre("blockGlassEV", this);

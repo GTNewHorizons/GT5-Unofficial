@@ -21,6 +21,7 @@ import gregtech.api.enums.Dyes;
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer {
 
+    @Override
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
         JsonDeserializationContext context) {
         // Default values
@@ -71,6 +72,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
         return new JsonObject();
     }
 
+    @Override
     public String getSectionName() {
         return "colors";
     }

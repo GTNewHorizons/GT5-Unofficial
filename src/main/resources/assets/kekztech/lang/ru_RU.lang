@@ -119,7 +119,7 @@ gui.kekztech_lapotronicenergyunit.warning.text=Обязательно внима
 # -------- Tooltips
 tooltip.kekztech.crafting_component=Крафтовый компонент вещей KekzTech
 tooltip.kekztech.lapotronic_energy_unit.capacity=Ёмкость: §c%s§7 EU
-tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Поддерживает до §c%s§7 EU/t беспроводной передачи на %s§7 конденсатор.
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Поддерживает до §c%s§7 EU/t беспроводной передачи за каждый блок %s§7 конденсатора.
 tooltip.kekztech.lapotronic_energy_unit.capacity.none=Ёмкость: Нет
 tooltip.kekztech.tfft.capacity=Ёмкость: §9%s§7 Л
 tooltip.kekztech.tfft.capacity.per_fluid=По объему жидкости: §9%s§7 Л

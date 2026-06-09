@@ -1,14 +1,11 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
-
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 
 public class MTEBusInputFocusGui extends MTEHatchNbtConsumableGui {
@@ -18,20 +15,17 @@ public class MTEBusInputFocusGui extends MTEHatchNbtConsumableGui {
     }
 
     @Override
-    protected Flow createInputColumn(int amountPerSlotGroup) {
+    protected Flow createInputColumn(PanelSyncManager syncManager) {
         Flow inputColumn = Flow.column()
             .coverChildren();
+
         // fits 4 * 4 slots on screen, with scroll bar to go lower
-        ListWidget<IWidget, ?> list = new ListWidget<>().size(18 * 4, 18 * 4);
-        String[] matrix = new String[hatch.getInputSlotCount() / 4];
-        Arrays.fill(matrix, "cccc");
+        ListWidget<IWidget, ?> list = new ListWidget<>().size(4 * SLOT_SIZE);
         list.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'c',
-                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("input")))
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(4, machine.getInputSlotCount() / 4)
+                .slotGroupKey("input")
                 .build());
+
         return inputColumn.child(list);
     }
 
@@ -40,21 +34,21 @@ public class MTEBusInputFocusGui extends MTEHatchNbtConsumableGui {
         return false;
     }
 
-    protected Flow createOutputColumn(int amountPerSlotGroup) {
+    @Override
+    protected Flow createOutputColumn(PanelSyncManager syncManager) {
         Flow outputColumn = Flow.column()
             .coverChildren();
+
         // fits 4 * 4 slots on screen, with scroll bar out
-        ListWidget<IWidget, ?> list = new ListWidget<>().size(18 * 4, 18 * 4);
-        String[] matrix = new String[hatch.getInputSlotCount() / 4];
-        Arrays.fill(matrix, "cccc");
+        ListWidget<IWidget, ?> list = new ListWidget<>().size(4 * SLOT_SIZE);
+        int inputSlotCount = machine.getInputSlotCount();
         list.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'c',
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(hatch.inventoryHandler, index + hatch.getInputSlotCount()).slotGroup("output")))
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(4, inputSlotCount / 4)
+                .slotGroupKey("output")
+                .canPut(false)
+                .indexOffset(inputSlotCount)
                 .build());
+
         return outputColumn.child(list);
     }
 }

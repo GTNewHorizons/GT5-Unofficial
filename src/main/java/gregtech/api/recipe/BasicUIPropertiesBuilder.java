@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.IntFunction;
@@ -12,6 +13,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -22,6 +25,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
@@ -51,7 +55,7 @@ public final class BasicUIPropertiesBuilder {
 
     private boolean useSpecialSlot;
 
-    private final ImmutableList.Builder<Rectangle> neiTransferRect = ImmutableList.builder();
+    private final List<Rectangle> neiTransferRect = new ArrayList<>();
     @Nullable
     private String neiTransferRectId;
 
@@ -71,13 +75,21 @@ public final class BasicUIPropertiesBuilder {
 
     private int amperage = 1;
 
+    private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
+        index, isFluid, isOutput, isSpecial) -> com.cleanroommc.modularui.api.drawable.IDrawable.NONE;
+
+    private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
+    private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;
+    private int progressBarWidthMUI2 = 20;
+    private int progressBarHeightMUI2 = 36;
+
     BasicUIPropertiesBuilder() {}
 
     public BasicUIProperties build() {
         if (maxItemInputs == 0 && maxItemOutputs == 0 && maxFluidInputs == 0 && maxFluidOutputs == 0) {
             throw new IllegalArgumentException("Set either of max I/O count");
         }
-        List<Rectangle> builtNEITransferRect = neiTransferRect.build();
+        List<Rectangle> builtNEITransferRect = ImmutableList.copyOf(neiTransferRect);
         if (builtNEITransferRect.isEmpty()) {
             builtNEITransferRect = Collections.singletonList(
                 new Rectangle(
@@ -112,7 +124,12 @@ public final class BasicUIPropertiesBuilder {
             specialItemPositionGetter,
             fluidInputPositionsGetter,
             fluidOutputPositionsGetter,
-            amperage);
+            amperage,
+            slotOverlaysMUI2,
+            progressBarTextureMUI2,
+            progressBarDirectionMUI2,
+            progressBarWidthMUI2,
+            progressBarHeightMUI2);
     }
 
     public BasicUIPropertiesBuilder maxItemInputs(int maxItemInputs) {
@@ -179,6 +196,11 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder useSpecialSlot(boolean useSpecialSlot) {
         this.useSpecialSlot = useSpecialSlot;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder clearNEITransferRects() {
+        this.neiTransferRect.clear();
         return this;
     }
 
@@ -259,6 +281,28 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder amperage(int amperage) {
         this.amperage = amperage;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder slotOverlaysMUI2(
+        BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2) {
+        this.slotOverlaysMUI2 = slotOverlaysMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarTextureMUI2(UITexture progressBarTextureMUI2) {
+        this.progressBarTextureMUI2 = progressBarTextureMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarDirectionMUI2(ProgressWidget.Direction progressBarDirectionMUI2) {
+        this.progressBarDirectionMUI2 = progressBarDirectionMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {
+        this.progressBarWidthMUI2 = progressBarWidthMUI2;
+        this.progressBarHeightMUI2 = progressBarHeightMUI2;
         return this;
     }
 }

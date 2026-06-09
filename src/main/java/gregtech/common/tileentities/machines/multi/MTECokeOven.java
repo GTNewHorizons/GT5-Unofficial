@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorJulia;
+import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -51,6 +51,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -81,7 +82,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
             .addInfo("Turns coal into coke and produces creosote oil")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoRange("Coke Oven Casing", 0, 26, false)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch")
@@ -158,8 +159,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
     }
 
     @Override
@@ -320,7 +321,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
         // Polling updates.
         if (tick % 20 == 0) {
-            mMachine = checkMachine(baseMetaTileEntity, null);
+            mMachine = checkStructure(true, baseMetaTileEntity);
 
             // Sets "Incomplete Structure" text in WAILA
             setErrorDisplayID(mMachine ? 0 : 64);
@@ -448,6 +449,47 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         }
     }
 
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        ItemStack heldItem = aPlayer.getHeldItem();
+        if (heldItem != null && FluidContainerRegistry.isContainer(heldItem)) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                if (fluid != null && fluid.amount >= 1000 && !aPlayer.capabilities.isCreativeMode) {
+                    ItemStack singleHeldItem = heldItem.copy();
+                    singleHeldItem.stackSize = 1;
+                    FluidStack fluidBucket = fluid.copy();
+                    fluidBucket.amount = 1000;
+                    ItemStack filledFluidContainer = fillFluidContainer(fluidBucket, singleHeldItem);
+
+                    if (filledFluidContainer != null) {
+                        if (heldItem.stackSize == 1) {
+                            aPlayer.inventory
+                                .setInventorySlotContents(aPlayer.inventory.currentItem, filledFluidContainer);
+                        } else {
+                            aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
+                            if (!aPlayer.inventory.addItemStackToInventory(filledFluidContainer)) {
+                                aPlayer.worldObj.spawnEntityInWorld(
+                                    new EntityItem(
+                                        aPlayer.worldObj,
+                                        aPlayer.posX,
+                                        aPlayer.posY,
+                                        aPlayer.posZ,
+                                        filledFluidContainer));
+                            }
+                        }
+                        fluid.amount -= 1000;
+                        aPlayer.inventory.markDirty();
+                        aPlayer.inventoryContainer.detectAndSendChanges();
+                        return true;
+                    }
+                }
+                return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+            }
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
+
     private boolean addHatch(IGregTechTileEntity tileEntity, Short baseCasingIndex) {
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
@@ -457,48 +499,5 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             return hatches.add(hatch);
         }
         return false;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (FluidContainerRegistry.isContainer(aPlayer.getHeldItem())) {
-            if (fluid == null) {
-                return false;
-            }
-            if (aPlayer.capabilities.isCreativeMode) {
-                return false;
-            }
-            ItemStack heldItem = aPlayer.getHeldItem();
-            ItemStack singleHeldItem = heldItem.copy();
-            singleHeldItem.stackSize = 1;
-            if (fluid.amount < 1000) {
-                return false;
-            }
-            FluidStack fluidBucket = fluid.copy();
-            fluidBucket.amount = 1000;
-            ItemStack filledFluidContainer = fillFluidContainer(fluidBucket, singleHeldItem);
-            if (filledFluidContainer == null) {
-                return false;
-            }
-            if (heldItem.stackSize == 1) {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, filledFluidContainer);
-            } else {
-                aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
-                if (!aPlayer.inventory.addItemStackToInventory(filledFluidContainer)) {
-                    aPlayer.worldObj.spawnEntityInWorld(
-                        new EntityItem(
-                            aPlayer.worldObj,
-                            aPlayer.posX,
-                            aPlayer.posY,
-                            aPlayer.posZ,
-                            filledFluidContainer));
-                }
-            }
-            fluid.amount -= 1000;
-            aPlayer.inventory.markDirty();
-            aPlayer.inventoryContainer.detectAndSendChanges();
-            return true;
-        }
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 }

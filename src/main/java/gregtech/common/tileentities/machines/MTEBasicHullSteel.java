@@ -7,11 +7,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHullNonElectric;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicHullSteel extends MTEBasicHullNonElectric {
 
-    public MTEBasicHullSteel(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEBasicHullSteel(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEBasicHullSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -35,5 +37,10 @@ public class MTEBasicHullSteel extends MTEBasicHullNonElectric {
             rTextures[2][(i + 1)] = tmp2;
         }
         return rTextures;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.highpressure_hull.desc");
     }
 }

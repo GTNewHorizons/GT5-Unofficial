@@ -1,13 +1,16 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
 
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTLanguageManager;
 
 public class MaterialBuilder {
 
@@ -34,8 +37,8 @@ public class MaterialBuilder {
     private String name;
     private String defaultLocalName;
     private Element element;
-    private String flavorText;
     private String chemicalFormula;
+    private boolean isFormulaNeededLocalized = false;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
     private Dyes color = Dyes._NULL;
@@ -82,6 +85,7 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingSmeltingInto;
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
+    private final Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> pendingDirectSmelting;
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
@@ -96,7 +100,6 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
-            flavorText,
             unifiable,
             iconSet,
             color,
@@ -134,6 +137,7 @@ public class MaterialBuilder {
             pendingSmeltingInto,
             pendingMaceratingInto,
             pendingArcSmeltingInto,
+            pendingArcSmeltingIntoWithGas.isEmpty() ? null : pendingArcSmeltingIntoWithGas,
             pendingDirectSmelting,
             subTags
             // spotless:on
@@ -142,6 +146,8 @@ public class MaterialBuilder {
         for (SubTag subTag : subTags) subTag.addContainerToList(material);
         for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
         for (OrePrefixes prefix : orePrefixWhitelist) prefix.mGeneratedItems.add(material);
+
+        if (isFormulaNeededLocalized) material.setChemicalFormula(chemicalFormula, true);
 
         return material;
     }
@@ -163,14 +169,22 @@ public class MaterialBuilder {
         return this;
     }
 
-    /** Set the chemical formula of the material. This overrides auto-generated formulas. */
-    public MaterialBuilder setChemicalFormula(String chemicalFormula) {
+    /**
+     * Set the chemical formula of the material. This overrides auto-generated formulas. A translation key will be
+     * generated if localization is required.
+     */
+    public MaterialBuilder setChemicalFormula(String chemicalFormula, boolean isNeedLocalized) {
         this.chemicalFormula = chemicalFormula;
+        this.isFormulaNeededLocalized = isNeedLocalized;
         return this;
     }
 
+    public MaterialBuilder setChemicalFormula(String chemicalFormula) {
+        return setChemicalFormula(chemicalFormula, false);
+    }
+
     public MaterialBuilder setFlavorText(String flavorText) {
-        this.flavorText = flavorText;
+        GTLanguageManager.addStringLocalization("Material." + name.toLowerCase() + ".flavorText", flavorText);
         return this;
     }
 
@@ -207,6 +221,11 @@ public class MaterialBuilder {
         this.toolDurability = durability;
         this.toolQuality = quality;
         this.toolSpeed = speed;
+        return this;
+    }
+
+    public MaterialBuilder setMiningLevel(int level) {
+        this.toolQuality = level;
         return this;
     }
 
@@ -509,6 +528,12 @@ public class MaterialBuilder {
     /** Sets what this material arc smelts into. */
     public MaterialBuilder setArcSmeltingInto(Supplier<Materials> material) {
         pendingArcSmeltingInto = material;
+        return this;
+    }
+
+    /** Sets what this material arc smelts into when a specific gas is used. */
+    public MaterialBuilder setArcSmeltingIntoWithGas(Supplier<Materials> gas, Supplier<Materials> material) {
+        pendingArcSmeltingIntoWithGas.put(gas, material);
         return this;
     }
 

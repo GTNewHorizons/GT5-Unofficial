@@ -1,68 +1,27 @@
 package gregtech.common.render;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 
-@SuppressWarnings({ "unused", "ClassWithTooManyFields" })
-public class GTTextureBuilder implements ITextureBuilder {
+public final class GTTextureBuilder implements ITextureBuilder {
 
-    private @Nullable List<IIconContainer> iconContainerList;
-    private @Nullable List<ITexture> textureLayers;
-    private Block fromBlock;
-    private int fromMeta;
-    private ForgeDirection fromSide;
+    private @Nullable IIconContainer iconContainer;
     private short[] rgba;
-    private boolean allowAlpha;
-    private boolean stdOrient;
     private boolean extFacing;
     private boolean glow;
-    private Boolean worldCoord = null;
 
     public GTTextureBuilder() {
         rgba = Dyes._NULL.getRGBA();
-        allowAlpha = true;
-        stdOrient = false;
-        glow = false;
-    }
-
-    @Override
-    public ITextureBuilder setFromBlock(final Block block, final int meta) {
-        this.fromBlock = block;
-        this.fromMeta = meta;
-        this.fromSide = ForgeDirection.UNKNOWN;
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder setFromSide(final ForgeDirection side) {
-        this.fromSide = side;
-        return this;
     }
 
     @Override
     public ITextureBuilder addIcon(final IIconContainer iconContainer) {
-        if (iconContainerList == null) iconContainerList = new ArrayList<>(1);
-        iconContainerList.add(iconContainer);
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder addIcon(final IIconContainer... iconContainers) {
-        if (iconContainerList == null) iconContainerList = new ArrayList<>(6);
-        Collections.addAll(iconContainerList, iconContainers);
+        if (this.iconContainer != null) throw new IllegalArgumentException("iconContainer already defined!");
+        this.iconContainer = iconContainer;
         return this;
     }
 
@@ -73,40 +32,10 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
-    public ITextureBuilder addLayer(final ITexture iTexture) {
-        if (textureLayers == null) textureLayers = new ArrayList<>(1);
-        textureLayers.add(iTexture);
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder addLayer(final ITexture... iTextures) {
-        if (textureLayers == null) textureLayers = new ArrayList<>();
-        Collections.addAll(textureLayers, iTextures);
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder setAllowAlpha(final boolean allowAlpha) {
-        this.allowAlpha = allowAlpha;
-        return this;
-    }
-
-    @Override
+    @Deprecated
+    // TODO remove this (extFacing is false by default)
     public ITextureBuilder stdOrient() {
-        this.stdOrient = true;
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder useWorldCoord() {
-        this.worldCoord = true;
-        return this;
-    }
-
-    @Override
-    public ITextureBuilder noWorldCoord() {
-        this.worldCoord = false;
+        this.extFacing = false;
         return this;
     }
 
@@ -127,45 +56,9 @@ public class GTTextureBuilder implements ITextureBuilder {
      */
     @Override
     public ITexture build() {
-        if (fromBlock != null) {
-            if (worldCoord == Boolean.TRUE || worldCoord == null && isCTMBlock(fromBlock, fromMeta))
-                return new GTCopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
-            else return new GTCopiedBlockTextureRender(fromBlock, fromSide.ordinal(), fromMeta, rgba);
+        if (iconContainer == null) {
+            throw new IllegalStateException("iconContainer not specified!");
         }
-        if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
-        if (textureLayers != null && !textureLayers.isEmpty()) {
-            return new GTMultiTextureRender(textureLayers.toArray(new ITexture[0]));
-        }
-        if (iconContainerList == null) {
-            throw new IllegalStateException("Invalid sideIconContainer count");
-        }
-        return switch (iconContainerList.size()) {
-            case 1 -> new GTRenderedTexture(iconContainerList.get(0), rgba, glow, stdOrient, extFacing);
-            case 6 -> new GTSidedTextureRender(
-                iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                iconContainerList.get(ForgeDirection.UP.ordinal()),
-                iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                rgba,
-                allowAlpha);
-            default -> throw new IllegalStateException("Invalid sideIconContainer count");
-        };
-    }
-
-    private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GTMod.proxy.mCTMBlockCache.computeIfAbsent(fromBlock, fromMeta, GTTextureBuilder::apply);
-    }
-
-    private static Boolean apply(Block b, int m) {
-        Class<?> clazz = b.getClass();
-        while (clazz != Block.class) {
-            final String className = clazz.getName();
-            if (GTValues.mCTMDisabledBlock.contains(className)) return false;
-            if (GTValues.mCTMEnabledBlock.contains(className)) return true;
-            clazz = clazz.getSuperclass();
-        }
-        return false;
+        return new GTRenderedTexture(iconContainer, rgba, glow, extFacing);
     }
 }

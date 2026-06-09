@@ -27,7 +27,7 @@ public class ToolPocketMultitool extends GTTool {
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolClosed]
-            : Textures.ItemIcons.VOID;
+            : Textures.GlobalIcons.VOID;
     }
 
     @Override

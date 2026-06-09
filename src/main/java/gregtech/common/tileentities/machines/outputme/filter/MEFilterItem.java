@@ -15,7 +15,7 @@ import gregtech.api.util.GTUtility;
 public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, ItemStack> {
 
     public MEFilterItem() {
-        super(new HashSet<GTUtility.ItemId>());
+        super(new HashSet<>());
     }
 
     @Override
@@ -26,11 +26,6 @@ public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, I
     @Override
     protected boolean isCorrectType(IAEStack<?> stack) {
         return stack instanceof IAEItemStack;
-    }
-
-    @Override
-    protected String getDisplayName(IAEItemStack stack) {
-        return stack.getDisplayName();
     }
 
     @Override
@@ -61,12 +56,12 @@ public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, I
 
     @Override
     public String getEnableKey() {
-        return "GT5U.hatch.fluid.filter.enable";
+        return "GT5U.hatch.item.filter.enable";
     }
 
     @Override
     public String getDisableKey() {
-        return "GT5U.hatch.fluid.filter.disable";
+        return "GT5U.hatch.item.filter.disable";
     }
 
     @Override

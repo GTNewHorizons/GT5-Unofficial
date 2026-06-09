@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -45,10 +44,6 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
         for (byte b = 0; b < NUMBER_OF_CASINGS; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[32][b] = TextureFactory.of(this, b);
         }
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Base Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Support Structure");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Internal Structure");
 
         ItemList.SpaceElevatorBaseCasing.set(new ItemStack(this, 1, 0));
         ItemList.SpaceElevatorSupportStructure.set(new ItemStack(this, 1, 1));
@@ -132,8 +127,7 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
      * @param list List to which the sub blocks will be added
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (int i = 0; i < NUMBER_OF_CASINGS; i++) {
             list.add(new ItemStack(item, 1, i));
         }

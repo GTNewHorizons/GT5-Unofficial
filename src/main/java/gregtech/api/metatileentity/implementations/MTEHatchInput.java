@@ -12,40 +12,32 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInput extends MTEHatch {
 
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
     public RecipeMap<?> mRecipeMap = null;
-    private int customCapacity = 0;
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                String.format("Capacity: %sL", formatNumber(8000L * (1L << aTier))) });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -53,14 +45,7 @@ public class MTEHatchInput extends MTEHatch {
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        this(
-            aID,
-            aSlot,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = String.format("Capacity: %sL", formatNumber(getCapacityPerTank(aTier, aSlot)));
+        this(aID, aSlot, aName, aNameRegional, aTier, null);
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -77,12 +62,6 @@ public class MTEHatchInput extends MTEHatch {
 
     public MTEHatchInput(String aName, int aSlots, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
-    }
-
-    public void setCustomCapacity(int capacity) {
-        this.customCapacity = capacity;
-        if (mDescriptionArray != null && mDescriptionArray.length > 0)
-            mDescriptionArray[mDescriptionArray.length - 1] = String.format("Capacity: %sL", formatNumber(capacity));
     }
 
     @Override
@@ -151,22 +130,16 @@ public class MTEHatchInput extends MTEHatch {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setByte("color", getBaseMetaTileEntity().getColorization());
+        tag.setByte("color", (byte) (getBaseMetaTileEntity().getColorization() + 1));
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = accessor.getNBTData()
-            .getByte("color");
-        if (color >= 0 && color < 16) {
-            currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hatch.color_channel",
-                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()
-                        + EnumChatFormatting.GRAY));
-        }
+        final byte color = (byte) (accessor.getNBTData()
+            .getByte("color") - 1);
+        MTEHatch.addColorChannelInfo(currenttip, color);
     }
 
     @Override
@@ -211,7 +184,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return customCapacity != 0 ? customCapacity : (8000 * (1 << mTier));
+        return 8000 * (1 << mTier);
     }
 
     @Override
@@ -221,5 +194,10 @@ public class MTEHatchInput extends MTEHatch {
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
         GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatNumber(getCapacity()));
     }
 }

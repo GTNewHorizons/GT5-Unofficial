@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.util.GTUtility;
 
@@ -48,6 +49,8 @@ public interface IVoidable {
 
     List<IOutputBus> getOutputBusses();
 
+    List<IOutputHatch> getOutputHatches();
+
     /**
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
@@ -73,7 +76,7 @@ public interface IVoidable {
     /**
      * Checks if this machine contains ME output busses that can accept the given items, in which case we can just
      * assume that we will never void outputs.
-     * 
+     *
      * @param outputs The outputs that will be ejected when the recipe finishes.
      */
     boolean canDumpItemToME(List<GTUtility.ItemId> outputs);

@@ -30,8 +30,7 @@ public class RenderToxinball extends Render {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(EntityToxinball entity, double p_76986_2_, double p_76986_4_, double p_76986_6_,
-        float p_76986_8_, float p_76986_9_) {
+    public void doRender(EntityToxinball entity, double p_76986_2_, double p_76986_4_, double p_76986_6_) {
         GL11.glPushMatrix();
         this.bindEntityTexture(entity);
         GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
@@ -63,16 +62,9 @@ public class RenderToxinball extends Render {
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityToxinball entity) {
-        return TextureMap.locationItemsTexture;
-    }
-
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntityToxinball) entity);
+        return TextureMap.locationItemsTexture;
     }
 
     /**
@@ -84,6 +76,6 @@ public class RenderToxinball extends Render {
     @Override
     public void doRender(Entity entity, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
         float p_76986_9_) {
-        this.doRender((EntityToxinball) entity, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+        this.doRender((EntityToxinball) entity, p_76986_2_, p_76986_4_, p_76986_6_);
     }
 }

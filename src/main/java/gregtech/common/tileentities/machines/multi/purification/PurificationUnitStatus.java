@@ -5,8 +5,10 @@ package gregtech.common.tileentities.machines.multi.purification;
  * checking the linked machines.
  */
 public enum PurificationUnitStatus {
-    // The purification unit is online and ready to work
-    ONLINE,
+    // The purification unit is online and works
+    ACTIVE,
+    // The purification unit is online but no recipe is processed
+    IDLE,
     // The purification unit is correctly formed, but switched off.
     DISABLED,
     // The purification unit has failed its structure check

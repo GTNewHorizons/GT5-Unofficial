@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -44,6 +43,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -51,13 +51,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTEPurificationUnitPhAdjustment>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int STRUCTURE_X_OFFSET = 7;
@@ -165,7 +166,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
                         .hint(2)
-                        .cacheHint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -178,7 +178,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputBus)
                     .hint(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputBus.WithFormat",
+                            ALKALINE_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -189,7 +192,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .atLeast(InputHatch)
                     .hint(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputHatch.WithFormat",
+                            ACIDIC_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -203,28 +209,31 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE) };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE);
     }
 
     public MTEPurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {
@@ -347,11 +356,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.mLocalizedName
+                    + addFormattedString(ALKALINE_MATERIAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.mLocalizedName
+                    + addFormattedString(ACIDIC_MATERIAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " in the special hatches")
             .addInfo(
@@ -435,7 +444,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1-2",
                 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),
@@ -445,7 +454,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
                 EnumChatFormatting.GOLD + "1",
                 4)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -546,11 +555,17 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         return TierEU.RECIPE_ZPM;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
-        if (acidInputHatch == null || alkalineInputBus == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (acidInputHatch == null || alkalineInputBus == null) {
+            throw new IllegalArgumentException(
+                "This should not happen, since the structure definition included mandatory hatches...");
+        }
     }
 
     @Override
@@ -588,6 +603,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             public long count(MTEPurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
                 return gtMetaTileEntityPurificationUnitPhAdjustment.sensorHatches.size();
             }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.pHSensorHatch");
+            }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
@@ -605,6 +625,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitPhAdjustment> adder() {
             return adder;
         }

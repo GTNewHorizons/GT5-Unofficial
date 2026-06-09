@@ -42,7 +42,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import bartworks.API.BioVatLogicAdder;
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
@@ -150,11 +149,11 @@ public class BWUtil {
         return new String(nu);
     }
 
+    @SuppressWarnings("unused") // Used in NHCoreMod
     public static int calculateSv(Materials materials) {
-        for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
-            if (pair.getMaterials()
-                .equals(materials)) return pair.getSievert();
-        }
+        // TODO: Implement this method properly by giving materials actual radiation values
+        // TODO: instead of using the material's atomic number.
+
         return (int) (materials.getProtons() == 43L
             ? materials.equals(Materials.NaquadahEnriched) ? 140
                 : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
@@ -167,10 +166,13 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return itemStack != null && GTOreDictUnificator.getAssociation(itemStack) != null
-            && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
-            && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
+        return checkStackAndPrefix(GTOreDictUnificator.getAssociation(itemStack));
+    }
+
+    public static boolean checkStackAndPrefix(ItemData association) {
+        return association != null && association.mPrefix != null
+            && association.mMaterial != null
+            && association.mMaterial.mMaterial != null;
     }
 
     @Deprecated
@@ -371,7 +373,6 @@ public class BWUtil {
             (aBitMask & GTModHandler.RecipeBits.MIRRORED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.BUFFERED) != 0L,
             (aBitMask & GTModHandler.RecipeBits.KEEPNBT) != 0L,
-            (aBitMask & GTModHandler.RecipeBits.DISMANTLEABLE) != 0L,
             (aBitMask & GTModHandler.RecipeBits.NOT_REMOVABLE) == 0L,
             (aBitMask & GTModHandler.RecipeBits.REVERSIBLE) != 0L,
             (aBitMask & GTModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0L,
@@ -384,9 +385,9 @@ public class BWUtil {
             aRecipe);
     }
 
-    public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+    private static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
+        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
+        boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {

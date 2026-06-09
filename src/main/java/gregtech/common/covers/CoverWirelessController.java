@@ -5,10 +5,12 @@ import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
@@ -96,15 +98,13 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                             if (player != null) {
                                 lastPlayer = null;
                                 mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
+                                    "GT5U.chat.cover.wireless_controller.shutdown_at",
+                                    new ChatComponentTranslation(coverable.getInventoryName()),
+                                    new ChatComponentNumber(coverable.getXCoord()),
+                                    new ChatComponentNumber(coverable.getYCoord()),
+                                    new ChatComponentNumber(coverable.getZCoord()));
                             }
                         }
                         handledShutdown = true;

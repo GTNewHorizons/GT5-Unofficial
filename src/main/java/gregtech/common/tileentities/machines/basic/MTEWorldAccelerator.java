@@ -26,14 +26,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     // simple name is rather expensive to compute and it's not cached
@@ -88,10 +92,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
-    private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
-    private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
+    private static IIconContainer _mGTIco_Norm_Idle;
+    private static IIconContainer _mGTIco_Norm_Active;
+    private static IIconContainer _mGTIco_TE_Idle;
+    private static IIconContainer _mGTIco_TE_Active;
     public static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
         512 };
     private static final int AMPERAGE_NORMAL = 3;
@@ -100,10 +104,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        _mGTIco_Norm_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR");
-        _mGTIco_Norm_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
-        _mGTIco_TE_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE");
-        _mGTIco_TE_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
+        _mGTIco_Norm_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR");
+        _mGTIco_Norm_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
+        _mGTIco_TE_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE");
+        _mGTIco_TE_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
     }
 
     @SideOnly(Side.CLIENT)
@@ -123,16 +127,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
-            "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
-            EnumChatFormatting.GOLD + "Blocks Mode: "
-                + EnumChatFormatting.RESET
-                + String.format("Range: 1-%d blocks to each side | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
-            EnumChatFormatting.GOLD + "TileEntity Mode: "
-                + EnumChatFormatting.RESET
-                + String.format("Adjacent blocks only | Amps \u2264%s", AMPERAGE_TE),
-            "Use a screwdriver to change mode, sneak to change range", "Use a wrench to change speed",
-            "Power consumption increases with speed/range" };
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicmachine.accelerator.tooltip",
+            mAccelerateStatic[mTier],
+            mTier,
+            AMPERAGE_NORMAL,
+            AMPERAGE_TE);
     }
 
     @Override

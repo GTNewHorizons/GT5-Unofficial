@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
+import static gregtech.api.enums.GTAuthors.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,8 +31,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -56,6 +53,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -182,14 +181,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo(
-                EnumChatFormatting.RED + "DEPRECATED!"
-                    + EnumChatFormatting.GRAY
-                    + " Will be removed in next major version. Use the "
-                    + EnumChatFormatting.YELLOW
-                    + "Mass Solidifier"
-                    + EnumChatFormatting.GRAY
-                    + " instead")
+            .addStructureDeprecatedLine()
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -209,7 +201,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
-            .addController("Front Center bottom")
+            .addController("Front bottom center")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
             .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
@@ -266,29 +258,35 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         width = 0;
         casingAmount = 0;
         glassTier = -1;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0) && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0)) {
-                    width++;
-                } else break;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
+        while (width < 6) {
+            if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0, errors)
+                && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0, errors)) {
+                width++;
+            } else {
+                errors.clear();
+                break;
             }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        }
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {
+            return;
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
-                return false;
+                errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -318,15 +316,13 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
                 }
                 return false;
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.8F);
+            .setEuModifier(0.8F)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    public double getSpeedBonus() {
+        return (1F / speedup);
     }
 
     @Override
@@ -435,25 +431,5 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     @Override
     public boolean isInputSeparationEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

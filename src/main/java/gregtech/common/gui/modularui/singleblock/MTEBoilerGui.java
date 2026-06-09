@@ -15,10 +15,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 
@@ -73,7 +73,11 @@ public class MTEBoilerGui {
             .child(
                 new GTProgressWidget().syncHandler("heat")
                     .tooltipDynamic(
-                        (a) -> { a.add(String.format("%.2f%%", GTUtility.clamp(heat.getFloatValue() * 100, 0, 100))); })
+                        (a) -> {
+                            a.add(
+                                NumberFormatUtil.formatNumber((int) (heat.getFloatValue() * base.maxProgresstime()))
+                                    + "°C");
+                        })
                     .direction(ProgressWidget.Direction.UP)
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_BOILER_HEAT)
                     .size(10, 54));
@@ -81,21 +85,21 @@ public class MTEBoilerGui {
         IWidget fuelSlots = Flow.column()
             .coverChildren()
             .childIf(base.doesAddAshSlot(), () -> base.createAshSlot())
-            .child(
-                new GTProgressWidget().value(
-                    new DoubleSyncValue(
-                        () -> base.mProcessingEnergy > 0 ? Math.max((float) base.mProcessingEnergy / 1000, 1f / 5) : 0))
-                    .direction(ProgressWidget.Direction.UP)
-                    .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
-                    .size(14)
-                    .margin(2))
+            .child(new GTProgressWidget().value(new DoubleSyncValue(() -> {
+                if (base.mProcessingEnergy <= 0 || base.fuelMaxEnergy <= 0) return 0f;
+                return Math.max(2f / 14f, (float) base.mProcessingEnergy / base.fuelMaxEnergy);
+            }))
+                .direction(ProgressWidget.Direction.UP)
+                .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
+                .size(14)
+                .margin(2))
             .childIf(base.doesAddFuelSlot(), () -> base.createFuelSlot());
 
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
             .build()
             .child(
                 Flow.row()
-                    .alignX(0.5f)
+                    .horizontalCenter()
                     .top(25)
                     .coverChildren()
                     .childPadding(9)

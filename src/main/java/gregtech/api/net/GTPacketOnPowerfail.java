@@ -11,6 +11,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
+import gregtech.client.GTPowerfailRenderer;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.crossmod.navigator.PowerfailLayerManager;
@@ -68,8 +69,12 @@ public class GTPacketOnPowerfail extends GTPacket {
     public void process(IBlockAccess blockAccess) {
         EntityPlayer player = GTMod.proxy.getThePlayer();
 
-        GTPowerfailTracker.Powerfail previous = GTMod.clientProxy().powerfailRenderer.powerfails
-            .put(powerfail.getCoord(), powerfail);
+        GTPowerfailRenderer renderer = GTMod.clientProxy().powerfailRenderer;
+
+        var powerfails = renderer.powerfails.get(this.powerfail.dim);
+        GTPowerfailTracker.Powerfail previous = powerfails == null ? null : powerfails.get(this.powerfail.getCoord());
+
+        renderer.addPowerfail(powerfail);
 
         if (Client.chat.powerfailNotifications && (previous == null || previous.getSecs() > 60)) {
             GTUtility.sendChatToPlayer(
@@ -79,7 +84,6 @@ public class GTPacketOnPowerfail extends GTPacket {
 
             if (Client.chat.printPowerfailHelpText && !printedHelpMessage) {
                 printedHelpMessage = true;
-                Client.save();
 
                 ChatMessage.PowerfailCommandHint.send(player);
             }

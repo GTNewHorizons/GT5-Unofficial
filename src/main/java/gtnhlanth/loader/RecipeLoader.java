@@ -296,6 +296,23 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                Materials.Copper.getPlates(6),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
+                ItemList.Electric_Pump_LuV.get(3L),
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 3),
+                WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 6),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(2 * INGOTS), Materials.Lubricant.getFluid(8 * INGOTS))
+            .itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
+            .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
+            .metadata(SCANNING, new Scanning(30 * SECONDS, TierEU.RECIPE_IV))
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
         // T1 Antenna Casing
         GTValues.RA.stdBuilder()
             .fluidInputs(
@@ -449,6 +466,20 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2),
+                Materials.Titanium.getPlates(6),
+                WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 4),
+                ItemList.Electric_Pump_LuV.get(1),
+                Materials.Silver.getDust(2))
+            .fluidInputs(Materials.RubberSilicone.getMolten(2 * INGOTS))
+            .itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
         // Mu-metal lattice
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -483,7 +514,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        // Beamline Input Hatch
+        // Beam Input Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(64 * INGOTS),
@@ -503,7 +534,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
 
-        // Beamline Output Hatch
+        // Beam Output Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(64 * INGOTS),
@@ -621,7 +652,7 @@ public class RecipeLoader {
          * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3_000), Materials.Ammonia.getFluid(4_000))
          * .fluidOutputs(Materials.HydrochloricAcid.getFluid(12_000))
          * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GTRecipeBuilder.SECONDS *
-         * 30) .eut(TierEU.EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
+         * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
          */
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {
@@ -650,7 +681,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 4))
+                Materials.PotassiumHydroxide.getDust(4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -726,6 +757,19 @@ public class RecipeLoader {
                             Materials.IndiumGalliumPhosphide.getDust(64))
                         .fluidInputs(Materials.Sunnarium.getMolten(10 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNPIC)))
+                        .duration(60 * GTRecipeBuilder.SECONDS)
+                        .eut(mask.getEngraverEUt())
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.PrQPIC) {
+
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.QPIC)),
+                            WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 64))
+                        .fluidInputs(Materials.InfinityCatalyst.getMolten(4 * INGOTS))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrQPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
@@ -1033,7 +1077,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Pyrolusite.getDust(6),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6),
+                Materials.PotassiumHydroxide.getDust(6),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .itemOutputs(
                 WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
@@ -1056,7 +1100,7 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 18))
+            .itemInputs(Materials.PotassiumHydroxide.getDust(18))
             .circuit(3)
             .itemOutputs(
                 Materials.RockSalt.getDust(10),
@@ -3172,60 +3216,6 @@ public class RecipeLoader {
 
     public static void addRandomChemCrafting() {
 
-        // PTMEG Elastomer
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.Butanediol.get(OrePrefixes.cell, 1))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4_000))
-            .fluidOutputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(4_000))
-            .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Toluene Tetramethyl Diisocyanate
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffMaterialPool.TolueneDiisocyanate.get(OrePrefixes.cell, 3),
-                Materials.Hydrogen.getCells(2))
-            .itemOutputs(Materials.Empty.getCells(5))
-            .fluidInputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(2_000))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // PTHF
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffMaterialPool.TungstophosphoricAcid.get(OrePrefixes.cell, 1),
-                Materials.Oxygen.getCells(1))
-            .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1 * INGOTS))
-            .fluidOutputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(3 * INGOTS))
-            .duration(50 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        // THF
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.AcidicButanediol.get(OrePrefixes.cell, 1))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Ethanol.getFluid(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1_000))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Acidicised Butanediol
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SulfuricAcid.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1))
-            .fluidInputs(WerkstoffMaterialPool.Butanediol.getFluidOrGas(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.AcidicButanediol.getFluidOrGas(1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(mixerRecipes);
-
         // Butanediol
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dustTiny, 1))
@@ -3253,26 +3243,6 @@ public class RecipeLoader {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
-
-        // Tungstophosphoric Acid
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.PhosphoricAcid.getCells(1), Materials.HydrochloricAcid.getCells(24))
-            .itemOutputs(Materials.Salt.getDust(24), Materials.Empty.getCells(25))
-            .fluidInputs(BotWerkstoffMaterialPool.SodiumTungstate.getFluidOrGas(12_000))
-            .fluidOutputs(WerkstoffMaterialPool.TungstophosphoricAcid.getFluidOrGas(1_000))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_EV / 2)
-            .addTo(UniversalChemical);
-
-        // Toluene Diisocyanate
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1), Materials.Empty.getCells(3))
-            .itemOutputs()
-            .fluidInputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2_000))
-            .fluidOutputs(WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1_000))
-            .duration(45 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
 
         // Diaminotoluene
         GTValues.RA.stdBuilder()

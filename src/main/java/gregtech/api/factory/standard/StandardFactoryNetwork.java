@@ -38,6 +38,11 @@ public class StandardFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElemen
         }
     }
 
+    @Override
+    public void onElementUpdated(TElement element, boolean topologyChanged) {
+
+    }
+
     private void addComponentImpl(Class<?> iface, Object impl) {
         components.computeIfAbsent(iface, x -> new HashSet<>())
             .add(impl);

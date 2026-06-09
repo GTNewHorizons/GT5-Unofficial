@@ -97,9 +97,8 @@ public class CommandHandler extends CommandBase {
         return "kubatech " + USAGE.get();
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List getCommandAliases() {
+    public List<String> getCommandAliases() {
         return Collections.singletonList("kt");
     }
 

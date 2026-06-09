@@ -48,18 +48,19 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -67,6 +68,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -86,9 +91,9 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
-public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
+public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenON;
 
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
 
@@ -109,6 +114,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
+    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
@@ -219,7 +225,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/GODFORGE_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_CONTROLLER");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -243,7 +249,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 63, 14, 1);
         if (stackSize.stackSize > 1) {
             buildPiece(STRUCTURE_PIECE_SECOND_RING, stackSize, hintsOnly, 55, 11, -67);
         }
@@ -262,56 +268,51 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     };
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
 
         moduleHatches.clear();
         // Check structure of multi
         if (data.isRenderActive()) {
-            if (!structureCheck_EM(STRUCTURE_PIECE_SHAFT, 63, 14, 1)
-                || !structureCheck_EM(STRUCTURE_PIECE_FIRST_RING_AIR, 63, 14, -59)) {
+            if (!checkPiece(STRUCTURE_PIECE_SHAFT, 63, 14, 1, errors)
+                || !checkPiece(STRUCTURE_PIECE_FIRST_RING_AIR, 63, 14, -59, errors)) {
                 destroyRenderer();
-                return false;
+                return;
             }
-        } else if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1)) {
-            return false;
+        } else if (!checkPiece(STRUCTURE_PIECE_MAIN, 63, 14, 1, errors)) {
+            return;
         }
 
         if (data.getInternalBattery() != 0 && !data.isRenderActive() && !data.isRendererDisabled()) {
             createRenderer();
         }
         // Check there is 1 input bus
-        if (mInputBusses.size() != 1) {
-            return false;
-        }
+        checkHatchExact(errors, InputBus, 1);
 
         // Check there is 1 me output bus
         {
             if (mOutputBusses.size() != 1) {
-                return false;
-            }
-
-            if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                return false;
+                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
+            } else if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
+                errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
             }
         }
         // Make sure there are no energy hatches
         {
             if (!mEnergyHatches.isEmpty()) {
-                return false;
-            }
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                return false;
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            } else if (!mExoticEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
             }
         }
 
         // Make sure there is 1 input hatch
-        if (mInputHatches.size() != 1) {
-            return false;
-        }
+        checkHatchExact(errors, InputHatch, 1);
+
+        if (!errors.isEmpty()) return;
 
         if (data.isUpgradeActive(CD)) {
-            if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
+            if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67, errors)) {
                 data.setRingAmount(2);
                 if (!data.isRendererDisabled()) {
                     destroySecondRing();
@@ -319,7 +320,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
             }
             if (data.isRenderActive() && data.getRingAmount() >= 2
-                && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
+                && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67, errors)) {
                 destroyRenderer();
             }
         } else {
@@ -335,8 +336,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
-        if (data.isUpgradeActive(EE)) {
-            if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
+        if (data.isUpgradeActive(END)) {
+            if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76, errors)) {
                 data.setRingAmount(3);
                 if (!data.isRendererDisabled()) {
                     destroyThirdRing();
@@ -344,7 +345,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
             }
             if (data.isRenderActive() && data.getRingAmount() == 3
-                && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
+                && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76, errors)) {
                 destroyRenderer();
             }
         } else {
@@ -356,8 +357,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 buildThirdRing();
             }
         }
-
-        return true;
+        // clear the errors during ring checking, so the main structure can form
+        errors.clear();
     }
 
     long ticker = 0;
@@ -378,7 +379,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (data.isUpgradeActive(CD)) {
                     maxModuleCount += 4;
                 }
-                if (data.isUpgradeActive(EE)) {
+                if (data.isUpgradeActive(END)) {
                     maxModuleCount += 4;
                 }
 
@@ -395,7 +396,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         for (int i = 0; i < invLength; i++) {
                             ItemStack itemStack = inputBus.getStackInSlot(i);
                             if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
-                                int stacksize = itemStack.stackSize;
+                                int stacksize = Math
+                                    .min(itemStack.stackSize, Integer.MAX_VALUE - data.getStellarFuelAmount());
                                 inputBus.decrStackSize(i, stacksize);
                                 if (data.getInternalBattery() == 0) {
                                     data.setStellarFuelAmount(data.getStellarFuelAmount() + stacksize);
@@ -470,10 +472,31 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void drainFuel() {
+        int fuelConsumptionFactor = data.getFuelConsumptionFactor();
+
+        if (data.getSelectedFuelType() == 0) {
+            if (data.isUpgradeActive(STEM)) {
+                if (fuelConsumptionFactor > ForgeOfGodsData.MAX_RESIDUE_FACTOR_DISCOUNTED) {
+                    data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_RESIDUE_FACTOR_DISCOUNTED);
+                }
+            } else if (fuelConsumptionFactor > ForgeOfGodsData.MAX_RESIDUE_FACTOR) {
+                data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_RESIDUE_FACTOR);
+            }
+        } else if (data.getSelectedFuelType() == 1) {
+            if (data.isUpgradeActive(STEM)) {
+                if (fuelConsumptionFactor > ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED) {
+                    data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED);
+                }
+            } else if (fuelConsumptionFactor > ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR) {
+                data.setFuelConsumptionFactor(ForgeOfGodsData.MAX_STELLAR_PLASMA_FACTOR);
+            }
+        }
+
+        int updatedFuelConsumptionFactor = data.getFuelConsumptionFactor();
         data.setFuelConsumption(
             (long) Math.max(calculateFuelConsumption(data) * 5 * (data.isBatteryCharging() ? 2 : 1), 1));
         if (data.getFuelConsumption() >= Integer.MAX_VALUE) {
-            reduceBattery(data.getFuelConsumptionFactor());
+            reduceBattery(updatedFuelConsumptionFactor);
             return;
         }
 
@@ -489,14 +512,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             fuelToDrain.amount -= drained.amount;
 
             if (fuelToDrain.amount == 0) {
-                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + data.getFuelConsumptionFactor());
+                data.setTotalFuelConsumed(data.getTotalFuelConsumed() + updatedFuelConsumptionFactor);
                 if (data.isBatteryCharging()) {
-                    increaseBattery(data.getFuelConsumptionFactor());
+                    increaseBattery(updatedFuelConsumptionFactor);
                 }
                 return;
             }
         }
-        reduceBattery(data.getFuelConsumptionFactor());
+        reduceBattery(updatedFuelConsumptionFactor);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
@@ -537,6 +560,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
         }
@@ -758,6 +782,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    public boolean shouldDisplayCheckRecipeResult() {
+        return false;
+    }
+
+    @Override
     public boolean supportsMaintenanceIssueHoverable() {
         return false;
     }
@@ -814,6 +843,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + ",")
             .addInfo("explaining everything there is to know about this multiblock")
             .beginStructureBlock(127, 29, 186, false)
+            .addController("Front center")
             .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
                 getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
@@ -1026,6 +1056,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void disableWorking() {
         super.disableWorking();
         sendLoopEnd((byte) 1);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

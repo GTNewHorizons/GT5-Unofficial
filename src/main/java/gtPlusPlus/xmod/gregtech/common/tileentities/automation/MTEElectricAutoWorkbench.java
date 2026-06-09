@@ -18,7 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
@@ -31,11 +31,11 @@ import gregtech.common.gui.modularui.singleblock.MTEElectricAutoWorkbenchGui;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregtechLogo {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
     public boolean mLastCraftSuccessful = false;
-    protected String mLocalName;
 
     public static final int MAX_MODES = 10;
     public static final int MAX_THROUGHPUT = 4;
@@ -48,7 +48,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             aTier,
             30,
             aDescription);
-        mLocalName = "Auto Workbench (" + GTValues.VN[aTier] + ")";
     }
 
     public MTEElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,
@@ -679,7 +678,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Automatic Crafting Table Mk III",
+        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.automation.autoworkbench.tooltip"),
             // this.mDescription,
             GTPPCore.GT_Tooltip.get() };
     }
@@ -736,11 +735,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
             TextureFactory.of(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay) };
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

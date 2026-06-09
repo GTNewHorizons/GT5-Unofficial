@@ -41,19 +41,11 @@ public class GTGenericItem extends Item implements IProjectileItem {
     protected IIcon mIcon;
 
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
-        this(aUnlocalized, aEnglish, aEnglishTooltip, true);
-    }
-
-    public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip,
-        final boolean aWriteToolTipIntoLangFile) {
         super();
         this.mName = aUnlocalized;
         GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(
-                this.mTooltip = this.mName + ".tooltip_main",
-                aEnglishTooltip,
-                aWriteToolTipIntoLangFile);
+            GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
             this.mTooltip = null;
         }
@@ -99,22 +91,17 @@ public class GTGenericItem extends Item implements IProjectileItem {
     }
 
     @Override
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
         final boolean aF3_H) {
         if ((this.getMaxDamage() > 0) && !this.getHasSubtypes()) {
-            aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
+            tooltip.add((stack.getMaxDamage() - this.getDamage(stack)) + " / " + stack.getMaxDamage());
         }
         if (this.mTooltip != null) {
-            aList.add(GTLanguageManager.getTranslation(this.mTooltip));
+            tooltip.add(GTLanguageManager.getTranslation(this.mTooltip));
         }
-        if (GTModHandler.isElectricItem(aStack)) {
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(aStack)));
+        if (GTModHandler.isElectricItem(stack)) {
+            tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(stack)));
         }
-        this.addAdditionalToolTips(aList, aStack);
-    }
-
-    protected void addAdditionalToolTips(final List aList, final ItemStack aStack) {
-        //
     }
 
     @Override

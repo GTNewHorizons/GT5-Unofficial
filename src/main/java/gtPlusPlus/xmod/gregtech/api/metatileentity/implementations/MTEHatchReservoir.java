@@ -7,11 +7,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchReservoir extends MTEHatchFluidGenerator {
 
     public MTEHatchReservoir(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -30,10 +33,7 @@ public class MTEHatchReservoir extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[2];
-        aTooltip[0] = "Infinite water supply hatch";
-        aTooltip[1] = "Fills to max capacity every 5 seconds";
-        return aTooltip;
+        return GTSplit.splitLocalized("gt.blockmachines.input_hatch_generator.reservoir.desc");
     }
 
     @Override

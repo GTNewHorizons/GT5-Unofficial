@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.GTValues.debugCleanroom;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
@@ -11,6 +13,7 @@ import static gregtech.api.util.GlassTier.getGlassBlockTier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -32,7 +35,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,6 +46,11 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.PositionedStructureError;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -51,8 +58,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-public class MTECleanroom extends MTETooltipMultiBlockBase
-    implements IConstructable, ISecondaryDescribable, ICleanroom {
+public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstructable, ICleanroom {
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.
@@ -134,7 +140,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
+            .addStructureInfo("If width or length is even, it can be in either of the two middle positions")
             .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
             .addOtherStructurePart(
                 "Plascrete Blocks",
@@ -366,7 +372,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean addStructureBlock(IGregTechTileEntity aBaseMetaTileEntity, int dx, int dy, int dz,
-        int allowedMask) {
+        int allowedMask, List<StructureError> errors) {
         switch (getBlockType(aBaseMetaTileEntity, dx, dy, dz, allowedMask)) {
             case CASING:
                 ++casingCount;
@@ -395,11 +401,16 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             case INVALID:
                 if (debugCleanroom)
                     GTLog.out.println("Cleanroom: Invalid block at offset (" + dx + ", " + dy + ", " + dz + ").");
+                errors.add(
+                    new PositionedStructureError(
+                        aBaseMetaTileEntity.getXCoord() + dx,
+                        aBaseMetaTileEntity.getYCoord() + dy,
+                        aBaseMetaTileEntity.getZCoord() + dz));
                 return false;
 
             default:
                 throw new IllegalArgumentException(
-                    "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                    "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
         }
     }
 
@@ -478,7 +489,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * @return True on success, false on failure.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    protected boolean checkCeiling(IGregTechTileEntity aBaseMetaTileEntity) {
+    protected boolean checkCeiling(IGregTechTileEntity aBaseMetaTileEntity, List<StructureError> errors) {
         // Edges must be plascrete, everything else must be filters (except for the controller).
         for (int dx = dxMin; dx <= dxMax; ++dx) {
             for (int dz = dzMin; dz <= dzMax; ++dz) {
@@ -486,10 +497,10 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     // Controller.
                 } else if (dx == dxMin || dx == dxMax || dz == dzMin || dz == dzMax) {
                     // Edge.
-                    if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_EDGE)) return false;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_EDGE, errors)) return false;
                 } else {
                     // Internal block.
-                    if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_INTERNAL)) return false;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_INTERNAL, errors)) return false;
                 }
             }
         }
@@ -546,7 +557,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
                     default:
                         throw new IllegalArgumentException(
-                            "Cleanroom error: unknown block type at at offset (" + dx + ", " + dy + ", " + dz + ").");
+                            "Cleanroom error: unknown block type at offset (" + dx + ", " + dy + ", " + dz + ").");
                 }
             }
         }
@@ -565,26 +576,26 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * @param dy Vertical offset of the floor from the controller.
      * @return True on success, false on failure.
      */
-    protected boolean checkWall(IGregTechTileEntity aBaseMetaTileEntity, int dy) {
+    protected boolean checkWall(IGregTechTileEntity aBaseMetaTileEntity, int dy, List<StructureError> errors) {
         for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
-            if (!addStructureBlock(aBaseMetaTileEntity, dx, dy, dzMin, MASK_WALL_INTERNAL)) return false;
-            if (!addStructureBlock(aBaseMetaTileEntity, dx, dy, dzMax, MASK_WALL_INTERNAL)) return false;
+            if (!addStructureBlock(aBaseMetaTileEntity, dx, dy, dzMin, MASK_WALL_INTERNAL, errors)) return false;
+            if (!addStructureBlock(aBaseMetaTileEntity, dx, dy, dzMax, MASK_WALL_INTERNAL, errors)) return false;
         }
         for (int dz = dzMin + 1; dz <= dzMax - 1; ++dz) {
-            if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dz, MASK_WALL_INTERNAL)) return false;
-            if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dz, MASK_WALL_INTERNAL)) return false;
+            if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dz, MASK_WALL_INTERNAL, errors)) return false;
+            if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dz, MASK_WALL_INTERNAL, errors)) return false;
         }
 
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMin, MASK_WALL_EDGE)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMax, MASK_WALL_EDGE)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMin, MASK_WALL_EDGE)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE)) return false;
+        if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
+        if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
+        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
+        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
 
         return true;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mUpdate = 100;
         cleanroomReceivers.forEach(r -> r.setCleanroom(null));
         cleanroomReceivers.clear();
@@ -597,9 +608,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         // Optimization: a vast majority of the time, the size of the CR won't change. Try checking it using the old
         // size, and only if that fails, try to find a new size.
-        if (dyMin == 0 || !checkCeiling(aBaseMetaTileEntity)) {
-            if (!checkSize(aBaseMetaTileEntity)) return false;
-            if (!checkCeiling(aBaseMetaTileEntity)) return false;
+        if (dyMin == 0 || !checkCeiling(aBaseMetaTileEntity, errors)) {
+            errors.clear();
+            if (!checkSize(aBaseMetaTileEntity)) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cleanroom_size"));
+                return;
+            }
+            if (!checkCeiling(aBaseMetaTileEntity, errors)) return;
         }
 
         // Check downward until we find a valid floor.
@@ -609,22 +624,23 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             if (dyMin < -2 && checkFloor(aBaseMetaTileEntity, dyMin)) {
                 // Found a valid floor. Add its edges and finish.
                 for (int dx = dxMin; dx <= dxMax; ++dx) {
-                    if (!addStructureBlock(aBaseMetaTileEntity, dx, dyMin, dzMin, MASK_FLOOR_EDGE)) return false;
-                    if (!addStructureBlock(aBaseMetaTileEntity, dx, dyMin, dzMax, MASK_FLOOR_EDGE)) return false;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dx, dyMin, dzMin, MASK_FLOOR_EDGE, errors)) return;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dx, dyMin, dzMax, MASK_FLOOR_EDGE, errors)) return;
                 }
                 for (int dz = dzMin + 1; dz <= dzMax - 1; ++dz) {
-                    if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dyMin, dz, MASK_FLOOR_EDGE)) return false;
-                    if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dyMin, dz, MASK_FLOOR_EDGE)) return false;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dyMin, dz, MASK_FLOOR_EDGE, errors)) return;
+                    if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dyMin, dz, MASK_FLOOR_EDGE, errors)) return;
                 }
                 break;
             } else {
                 // Not floor yet, check for a wall.
-                if (!checkWall(aBaseMetaTileEntity, dyMin)) return false;
+                if (!checkWall(aBaseMetaTileEntity, dyMin, errors)) return;
             }
         }
         if (dyMin < -(MAX_HEIGHT - 1)) {
             if (debugCleanroom) GTLog.out.println("Cleanroom: Too tall.");
-            return false;
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
         mHeight = -dyMin + 1;
 
@@ -633,20 +649,23 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         // Validate structure.
 
-        if (this.mMaintenanceHatches.size() != 1 || this.mEnergyHatches.size() != 1) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Incorrect number of hatches.");
-            return false;
+        if (this.mMaintenanceHatches.size() != 1) {
+            errors
+                .add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Maintenance, this.mMaintenanceHatches.size(), 1));
+        }
+        if (this.mEnergyHatches.size() != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, this.mEnergyHatches.size(), 1));
         }
 
         if (casingCount < MachineStats.cleanroom.minCasingCount) {
             if (debugCleanroom) GTLog.out.println("Cleanroom: Not enough plascrete blocks.");
-            return false;
+            errors.add(StructureErrors.missingCasings(casingCount, MachineStats.cleanroom.minCasingCount));
+        } else if ((otherCount * 100) / (casingCount + otherCount) > MachineStats.cleanroom.maxReplacementPercentage) {
+            if (debugCleanroom) GTLog.out.println("Cleanroom: Too many non-plascrete blocks.");
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cleanroom_plascrete"));
         }
 
-        if ((otherCount * 100) / (casingCount + otherCount) > MachineStats.cleanroom.maxReplacementPercentage) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too many non-plascrete blocks.");
-            return false;
-        }
+        if (!errors.isEmpty()) return;
 
         if (isDoorOpen) {
             this.mEfficiency = Math.max(0, this.mEfficiency - 200);
@@ -674,7 +693,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         if (debugCleanroom) GTLog.out.println("Cleanroom: Check successful.");
 
-        return true;
     }
 
     @Override
@@ -795,12 +813,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTECleanRoomGui(this);
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTECleanRoomGui(this);
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

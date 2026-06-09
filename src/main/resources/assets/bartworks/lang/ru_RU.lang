@@ -15,8 +15,8 @@ bw.werkstoffblocks.01.name=Блок
 bw.werkstoffblockscasing.01.name=Заклепочный корпус
 bw.werkstoffblockscasingadvanced.01.name=Переболтованный корпус
 
-GT5U.gui.text.no_imprint=Отсутствует слепок
-GT5U.gui.text.not_enough_length=Мультиблок слишком короткий
+GT5U.gui.text.recipe_result.no_imprint=Отсутствует слепок
+GT5U.gui.text.recipe_result.not_enough_length=Мультиблок слишком короткий
 GT5U.gui.text.wrong_sievert_exactly=§7Неправильный зиверт. Требуется ровно: %s §7Sv
 GT5U.gui.text.wrong_sievert_min=§7Неправильный зиверт. Требуется не менее: %s §7Sv
 GT5U.gui.config.general.mixins=Mixins
@@ -238,8 +238,8 @@ solarsystem.Ross128System=Система Ross128
 itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul предметы
 
 # info data
-BW.infoData.BioVat.expectedProduction=Ожидаемое производство
-BW.infoData.BioVat.production=Производство
+BW.infoData.BioVat.expectedProduction.s=Ожидаемое производство: §a %s §r%%
+BW.infoData.BioVat.production.s=Производство: §a%s §§r%%
 
 BW.infoData.htr.helium_level=Уровень гелия: %sЛ / %sЛ
 BW.infoData.htr.problems=Проблемы: %s
@@ -259,10 +259,7 @@ BW.NEI.display.radhatch.0=Зиверт: %s Sv
 BW.NEI.display.radhatch.1=Масса: %s кг
 BW.NEI.display.radhatch.2=Время: %s сек
 
-misc.BatchModeTextOn=Включён пакетный режим
-misc.BatchModeTextOff=Отключён пакетный режим
-
-tooltip.cal.imprintedWith=Imprinted with:
+tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем
 #Liquids

@@ -62,13 +62,14 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addInfo("Performs 4/4 overclock")
             .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
             .addCasingInfoMin("Infinity Frame Box", 128, false)
             .addCasingInfoMin("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint Block Number 2", 2)
-            .addInputHatch("1-16, Hint Block Number 1", 1)
-            .addOutputHatch("1-16, Hint Block Number 1", 1)
+            .addEnergyHatch("1-32, Hint block number 2", 2)
+            .addInputHatch("1-16, Hint block number 1", 1)
+            .addOutputHatch("1-16, Hint block number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
@@ -202,7 +203,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .build(), getTextureOverlay() };
         if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER)
+            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY)
             .extFacing()
             .build() };
     }

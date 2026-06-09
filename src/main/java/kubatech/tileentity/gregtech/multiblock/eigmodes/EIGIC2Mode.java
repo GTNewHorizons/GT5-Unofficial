@@ -74,6 +74,7 @@ public class EIGIC2Mode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED" + EnumChatFormatting.RESET)
             .addInfo(EnumChatFormatting.GOLD + "IC2 Crops:")
             .addInfo("Minimal voltage tier: " + minVoltageTier)
             .addInfo("Minimal glass tier: " + minGlassTier)

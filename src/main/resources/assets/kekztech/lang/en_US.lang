@@ -94,13 +94,13 @@ kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just
 tile.kekztech_largehextile_block.name=Large Hex Tile
 
 # -------- Achievements
-achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Pick up this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.2=Lapotronic Capacitor (LuV)
-achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.3.desc=Pick up this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.3=Lapotronic Capacitor (ZPM)
-achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.4.desc=Pick up this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.4=Lapotronic Capacitor (UV)
-achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Pickup this item to see the recipe in NEI
+achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Pick up this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.5=Ultimate Capacitor (UHV)
 achievement.tile.kekztech_lapotronicenergyunit_block.8.desc=Beyond the ranks of Gods
 achievement.tile.kekztech_lapotronicenergyunit_block.8=Extremely Ultimate Capacitor (UEV)
@@ -112,9 +112,9 @@ achievement.tile.kekztech_lapotronicenergyunit_block.10=Mega Ultimate Capacitor 
 
 # -------- GUI
 gui.kekztech_lapotronicenergyunit.wireless=Wireless mode
-gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One Time Use)
+gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One-Time Use)
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
-gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode, it can potentially brick your base. This warning won't appear again.
+gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode. It can potentially brick your base. This warning won't appear again.
 
 kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: %s EU
 kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: %s last 5s
@@ -123,12 +123,12 @@ kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: %s last 5s
 # -------- Tooltips
 tooltip.kekztech.crafting_component=Crafting component for KekzTech things
 tooltip.kekztech.lapotronic_energy_unit.capacity=Capacity: §c%s§7 EU
-tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Supports up to §c%s§7 EU/t of wireless transfer per %s§7 capacitor.
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Supports up to §c%s§7 EU/t of wireless energy withdrawal per %s§7 capacitor.
 tooltip.kekztech.lapotronic_energy_unit.capacity.none=Capacity: None
 tooltip.kekztech.tfft.capacity=Capacity: §9%s§7 L
 tooltip.kekztech.tfft.capacity.per_fluid=Per Fluid Capacity: §9%s§7 L
 tooltip.kekztech.tfft.power_draw=Power Draw: §9%d§7 EU/t
-tooltip.kekztech.wrong=REMINDER: KekzTech recipes are only tested to work in GTNH!\nPlaceholder item in case something went wrong\nIf this item shows up in GTNH, you may report it to:\nhttps://github.com/kekzdealer/KekzTech
+tooltip.kekztech.wrong=REMINDER: KekzTech recipes are only tested to work in GTNH!\nPlaceholder item in case something goes wrong\nIf this item shows up in GTNH, you may report it to:\nhttps://github.com/kekzdealer/KekzTech
 
 # -------- InfoData
 kekztech.infodata.operational_data=Operational Data:
@@ -148,7 +148,7 @@ kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5=Avg EU OUT: %s (las
 kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1=Avg EU IN: %s (last 1 hour)
 kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1=Avg EU OUT: %s (last 1 hour)
 kekztech.infodata.lapotronic_super_capacitor.time_to.full=Time to Full: %s
-kekztech.infodata.lapotronic_super_capacitor.time_to.sth=Time to Something: Infinity years
+kekztech.infodata.lapotronic_super_capacitor.time_to.sth=Time to Something: Infinite years
 kekztech.infodata.lapotronic_super_capacitor.time_to.empty=Time to Empty: %s
 kekztech.infodata.lapotronic_super_capacitor.wireless_mode=Wireless mode: %s
 kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled=enabled
@@ -163,4 +163,4 @@ kekztech.infodata.tank.tfft.per_fluid_capacity=Per-Fluid Capacity: %sL
 kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b
 
-kekztech.structure.glass_incompatible=§cGlass configuration incompatible
+kekztech.structure.glass_incompatible=§cGlass configuration is incompatible

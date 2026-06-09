@@ -54,6 +54,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
         return ArrayUtils.add(this.mDescriptionArray, GTPPCore.GT_Tooltip.get());
     }
 
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -141,11 +142,13 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
         return (int) (GTUtility.powInt(6.0D, this.mTier) * mStorageFactor - 128.0D);
     }
 
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex == 1;
     }
 
+    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex == 0 && (this.mInventory[0] == null || GTUtility.areStacksEqual(this.mInventory[0], aStack));
@@ -188,6 +191,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
         }
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == ForgeDirection.DOWN && side == ForgeDirection.WEST
@@ -223,7 +227,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             .widget(
                 SlotWidget.phantom(inventoryHandler, 2)
                     .disableInteraction()
-                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setBackground(GTUITextures.TRANSPARENT) // Use GTGuiTextures.SLOT_ITEM_TANK when MUi2
                     .setPos(59, 42))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
@@ -231,7 +235,13 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()) // Use .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE) when
+                                                             // MUi2
                     .setPos(10, 30));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

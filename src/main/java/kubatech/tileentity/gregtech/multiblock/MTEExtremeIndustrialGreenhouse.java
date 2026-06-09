@@ -39,33 +39,22 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
-import static gregtech.api.util.GTUtility.formatShortenedLong;
-import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -85,43 +74,18 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.builder.UIInfo;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.Column;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -130,23 +94,27 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
-import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.EIGMode;
 import kubatech.api.enums.EIGModes;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.CropRenderer;
+import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     /***
      * BALANCE OF THE IC2 MODE: (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER) All IC2 crops are simulated and all drops are
@@ -193,7 +161,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public final EIGDropTable dropTracker = new EIGDropTable();
     public Collection<EIGMigrationHolder> toMigrate;
     public EIGDropTable guiDropTracker = new EIGDropTable();
-    private HashMap<ItemStack, Double> synchedGUIDropTracker = new HashMap<>();
     private int maxSeedTypes = 0;
     private int maxSeedCount = 0;
     /**
@@ -224,8 +191,51 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // TODO: Remove after 2.9
     private boolean isOldStructure = false;
 
+    public boolean isOldStructure() {
+        return this.isOldStructure;
+    }
+
     public boolean isInNoHumidityMode() {
         return this.useNoHumidity;
+    }
+
+    public int getSetupPhase() {
+        return this.setupPhase;
+    }
+
+    public void setSetupPhase(int phase) {
+        if (this.mMaxProgresstime > 0) return;
+        this.setupPhase = phase;
+        this.updateSeedLimits();
+    }
+
+    public EIGMode getEIGMode() {
+        return this.mode;
+    }
+
+    public void setModeByUIIndex(int uiIndex) {
+        if (this.mMaxProgresstime > 0) return;
+        if (!this.buckets.isEmpty()) return;
+        if (uiIndex == 0) this.mode = EIGModes.Normal;
+        else this.mode = EIGModes.IC2;
+        this.updateSeedLimits();
+    }
+
+    public void setNoHumidity(boolean val) {
+        this.useNoHumidity = val;
+    }
+
+    public int getMaxSeedTypes() {
+        return this.maxSeedTypes;
+    }
+
+    public int getMaxSeedCount() {
+        return this.maxSeedCount;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEExtremeIndustrialGreenhouseGui(this);
     }
 
     // region structure stuff
@@ -237,40 +247,39 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_V = 6;
     private static final int OFFSET_D = 0;
     private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
-    private static final Casings CASING_OLD = Casings.CleanStainlessSteelCasing;
+    private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
+    private static final String[][] STRUCTURE_MAIN = transpose(
+        new String[][] { // spotless:off
+            {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
+            {" fgggf "," g   g "," g   g "," g   g "," flllf "," g   g "," g   g "," g   g "," fgggf "},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
+            {"aaaaaaa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","aaaaaaa"},
+            {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
+        } // spotless:on
+    );
+    private static final String[][] STRUCTURE_MAIN_OLD = transpose(
+        new String[][] { // spotless:off
+            { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
+            { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
+            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
+            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
+            { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
+            { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
+        } // spotless:on
+    );
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { // spotless:off
-                    {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
-                    {" fgggf "," g   g "," g   g "," g   g "," flllf "," g   g "," g   g "," g   g "," fgggf "},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"fgggggf","g     g","g     g","g     g","f     f","g     g","g     g","g     g","fgggggf"},
-                    {"aaaaaaa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","awdddwa","aaaaaaa"},
-                    {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
-                } // spotless:on
-            ))
-        .addShape(
-            STRUCTURE_PIECE_MAIN_OLD,
-            transpose(
-                new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
-                    { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-                    { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-                    { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
-                    { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
-                })) // spotless:on
+        .addShape(STRUCTURE_PIECE_MAIN, STRUCTURE_MAIN)
+        .addShape(STRUCTURE_PIECE_MAIN_OLD, STRUCTURE_MAIN_OLD)
         .addElement(
             'a',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
                 .casingIndex(CASING.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement())))
+                .buildAndChain(onElementPass(t -> t.mCasing++, CASING.asElement())))
         .addElement('f', ofBlock(GregTechAPI.sBlockFrames, 316))
         .addElement(
             'l',
@@ -281,15 +290,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0)))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
-        .addElement('w', ofChain(isAir(), ofAnyWater(true)))
+        .addElement('w', ofChain(ofAnyWater(false), isAir()))
         .addElement(
             'c',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
                 .casingIndex(CASING_OLD.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement())))
-        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement()))
+                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement())))
+        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
     @Override
@@ -298,26 +307,45 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         mCasing = 0;
         glassTier = -1;
         isCheckingDirtWater = false;
         if (debug) glassTier = 8;
 
-        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0)) return false;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
-
-        if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-
-        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
-
-        if (valid) {
-            this.updateSeedLimits();
-            isCheckingDirtWater = true;
+        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
+        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
+            isCheckingDirtWater = GTStructureUtility.hasWaterAtStructurePosition(
+                iGregTechTileEntity,
+                getExtendedFacing(),
+                STRUCTURE_MAIN,
+                OFFSET_H,
+                OFFSET_V,
+                OFFSET_D,
+                'w');
+            return;
         }
 
-        return valid;
+        if (this.glassTier < 8) {
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+                if (this.glassTier < hatchEnergy.mTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
+                    break;
+                }
+            }
+        }
+
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasing, 70);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
+
+        if (!errors.isEmpty()) return;
+
+        this.updateSeedLimits();
+        isCheckingDirtWater = true;
     }
 
     @Override
@@ -379,20 +407,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         tt.beginStructureBlock(7, 7, 9, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Sterile Farm Casing", 70, false)
-            .addStructureInfo("Tiered glass")
+            .addStructureInfo("Tiered Glass")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .toolTipFinisher(
-                newList().addAuthors(GTValues.AuthorKuba)
-                    .addStructureAuthors("HydroCN"));
+            .addAuthors(GTAuthors.AuthorKuba)
+            .addStructureAuthors("HydroCN")
+            .toolTipFinisher();
         return tt;
     }
 
@@ -429,8 +457,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (this.mode == EIGModes.IC2) {
                 for (EIGMigrationHolder holder : toMigrate) {
                     // We will have to revalidate the seeds on the next cycle.
-                    this.buckets
-                        .add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
+                    this.buckets.add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock));
                 }
             } else {
                 this.mode = EIGModes.Normal;
@@ -704,7 +731,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     isOldStructure);
             }
         } else {
-            if (!isOldStructure && isCheckingDirtWater && mMachine && aTick % 20 == 0) {
+            if (!isOldStructure && isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
                 int didPlace = 0;
                 // try to till the dirt and place the water
@@ -742,12 +769,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
                         xyz[1] += aBaseMetaTileEntity.getYCoord();
                         xyz[2] += aBaseMetaTileEntity.getZCoord();
-                        Block block = world.getBlock(xyz[0], xyz[1], xyz[2]);
-                        boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-                            && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                        boolean isWater = (block == Blocks.water) || isCOFHCore;
-                        boolean isAir = block == Blocks.flowing_water || block == Blocks.air;
-                        if (!isWater && isAir) {
+                        boolean isReplaceable = GTUtility.canReplaceBlockWithWater(world, xyz[0], xyz[1], xyz[2]);
+                        if (isReplaceable) {
                             world.setBlock(xyz[0], xyz[1], xyz[2], Blocks.water, 0, 3);
                             world.playSoundEffect(
                                 xyz[0] + 0.5f,
@@ -772,7 +795,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      *
      * @return The number of seeds in the EIG.
      */
-    private int getTotalSeedCount() {
+    public int getTotalSeedCount() {
         // null check is to prevent a occasional weird NPE from MUI
         return this.buckets.parallelStream()
             .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
@@ -897,6 +920,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.mEfficiencyIncrease = 10000;
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
+        if (this.mode == EIGModes.IC2) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
         if (this.maxSeedTypes < this.buckets.size()) {
             return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
         }
@@ -952,7 +978,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // OVERCLOCK
         // FERTILIZER IDEA:
-        // IC2 +10% per fertilizer per crop per operation
         // NORMAL +200% per fertilizer per crop per operation
 
         int consumedFertilizer = 0;
@@ -974,17 +999,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
-        if (this.mode == EIGModes.IC2) {
-            if (glassTier < (EIG_BALANCE_IC2_ACCELERATOR_TIER + 1))
-                return SimpleCheckRecipeResult.ofFailure("EIG_ic2glass");
-            this.mMaxProgresstime = 100;
-            // determine the amount of time we are simulating on the seed.
-            double timeElapsed = ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER));
-            // Add drops to the drop tracker for each seed bucket.
-            for (EIGBucket bucket : this.buckets) {
-                bucket.addProgress(timeElapsed * multiplier, this.guiDropTracker);
-            }
-        } else if (this.mode == EIGModes.Normal) {
+        if (this.mode == EIGModes.Normal) {
             this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(multiplier, this.guiDropTracker);
@@ -1002,7 +1017,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private ItemStack addCrop(ItemStack input) {
+    public ItemStack addCrop(ItemStack input) {
         return addCrop(input, false) ? input : null;
     }
 
@@ -1044,371 +1059,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     // region ui
-
-    private static final UIInfo<?, ?> GreenhouseUI = createKTMetaTileEntityUI(
-        KT_ModulaUIContainer_ExtremeIndustrialGreenhouse::new);
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        GreenhouseUI.open(
-            aPlayer,
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
-        return true;
-    }
-
-    private static class KT_ModulaUIContainer_ExtremeIndustrialGreenhouse extends ModularUIContainer {
-
-        final WeakReference<MTEExtremeIndustrialGreenhouse> parent;
-
-        public KT_ModulaUIContainer_ExtremeIndustrialGreenhouse(ModularUIContext context, ModularWindow mainWindow,
-            MTEExtremeIndustrialGreenhouse mte) {
-            super(context, mainWindow);
-            parent = new WeakReference<>(mte);
-        }
-
-        @Override
-        public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-            if (!(aPlayer instanceof EntityPlayerMP)) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            final Slot s = getSlot(aSlotIndex);
-            if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (aSlotIndex >= 36) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            final ItemStack aStack = s.getStack();
-            if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            MTEExtremeIndustrialGreenhouse mte = parent.get();
-            if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            // if (mte.buckets.size() >= mte.maxSeedTypes) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (mte.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
-                return super.transferStackInSlot(aPlayer, aSlotIndex);
-            }
-
-            mte.addCrop(aStack);
-            if (aStack.stackSize <= 0) s.putStack(null);
-            else s.putStack(aStack);
-            detectAndSendChanges();
-            return null;
-        }
-    }
-
-    @Override
-    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
-        configurationElements.setSynced(false);
-        configurationElements.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(CONFIGURATION_WINDOW_ID);
-                })
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration"))
-                .setSize(16, 16));
-    }
-
-    EIGDynamicInventory<EIGBucket> dynamicInventory = new EIGDynamicInventory<>(
-        128,
-        60,
-        () -> this.maxSeedTypes,
-        () -> this.maxSeedCount,
-        this.buckets::size,
-        this::getTotalSeedCount,
-        this.buckets,
-        EIGBucket::getSeedStack).allowInventoryInjection(this::addCrop)
-            .allowInventoryExtraction((bucket, player) -> {
-                if (bucket == null) return null;
-                int maxRemove = bucket.getSeedStack()
-                    .getMaxStackSize();
-                ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
-                if (outputs == null || outputs.length == 0) return null;
-                ItemStack ret = outputs[0];
-                for (int i = 1; i < outputs.length; i++) {
-                    ItemStack suppertItem = outputs[i];
-                    if (!player.inventory.addItemStackToInventory(suppertItem)) {
-                        player.entityDropItem(suppertItem, 0.f);
-                    }
-                }
-                if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
-                return ret;
-            })
-            // TODO: re-add allow inventory replace?
-            .setEnabled(() -> this.mMaxProgresstime == 0);
-
-    @Override
-    public void createInventorySlots() {
-
-    }
-
-    private boolean isInInventory = true;
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        isInInventory = !getBaseMetaTileEntity().isActive();
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85)
-                .setEnabled(w -> !isInInventory));
-        builder.widget(
-            dynamicInventory.asWidget(builder, buildContext)
-                .setPos(10, 16)
-                .setEnabled(w -> isInInventory));
-
-        builder.widget(
-            new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(
-                    i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
-                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(140, 91)
-                .setSize(55, 16));
-
-        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        drawTexts(screenElements, null);
-        builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(screenElements)
-                .setPos(10, 7)
-                .setSize(182, 79)
-                .setEnabled(w -> !isInInventory));
-
-        builder.widget(createPowerSwitchButton(builder))
-            .widget(createVoidExcessButton(builder))
-            .widget(createInputSeparationButton(builder))
-            .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
-
-        DynamicPositionedRow configurationElements = new DynamicPositionedRow();
-        addConfigurationWidgets(configurationElements, buildContext);
-
-        builder.widget(
-            configurationElements.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setPos(getRecipeLockingButtonPos().add(18, 0)));
-    }
-
-    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(200, 100);
-        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(185, 3))
-            .widget(
-                new Column().widget(
-                    new CycleButtonWidget().setLength(3)
-                        .setGetter(() -> this.setupPhase)
-                        .setSetter(val -> {
-                            if (!(player instanceof EntityPlayerMP)) return;
-                            tryChangeSetupPhase(player);
-                        })
-                        .addTooltip(
-                            0,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                .color(Color.GREEN.dark(3)))
-                        .addTooltip(
-                            1,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                .color(Color.YELLOW.dark(3)))
-                        .addTooltip(
-                            2,
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                .color(Color.YELLOW.dark(3)))
-                        .setTextureGetter(
-                            i -> i == 0
-                                ? new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
-                                    .color(Color.GREEN.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
-                                        .color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                        .setBackground(
-                            ModularUITextures.VANILLA_BACKGROUND,
-                            GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                        .setSize(70, 18)
-                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")))
-                    .widget(
-                        new CycleButtonWidget().setLength(2)
-                            .setGetter(() -> this.mode.getUIIndex())
-                            .setSetter(val -> {
-                                if (!(player instanceof EntityPlayerMP)) return;
-                                tryChangeMode(player);
-                            })
-                            .addTooltip(
-                                0,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                    .color(Color.RED.dark(3)))
-                            .addTooltip(
-                                1,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                    .color(Color.GREEN.dark(3)))
-                            .setTextureGetter(
-                                i -> i == 0
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                        .color(Color.RED.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                            .setBackground(
-                                ModularUITextures.VANILLA_BACKGROUND,
-                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                            .setSize(70, 18)
-                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode")))
-                    .widget(
-                        new CycleButtonWidget().setLength(2)
-                            .setGetter(() -> useNoHumidity ? 1 : 0)
-                            .setSetter(val -> {
-                                if (!(player instanceof EntityPlayerMP)) return;
-                                this.tryChangeHumidityMode(player);
-                            })
-                            .addTooltip(
-                                0,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                    .color(Color.RED.dark(3)))
-                            .addTooltip(
-                                1,
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                    .color(Color.GREEN.dark(3)))
-                            .setTextureGetter(
-                                i -> i == 0
-                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
-                                        .color(Color.RED.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
-                                        .color(Color.GREEN.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0))
-                            .setBackground(
-                                ModularUITextures.VANILLA_BACKGROUND,
-                                GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
-                            .setSize(70, 18)
-                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode")))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(10, 30))
-            .widget(
-                new Column().widget(
-                    new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")).setSize(100, 18))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode"))
-                            .setSize(100, 18))
-                    .widget(
-                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode"))
-                            .setSize(100, 18))
-                    .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                    .setPos(80, 30))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setSize(18, 18)
-                    .setPos(10, 30)
-                    .addTooltip(
-                        new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
-                            .color(Color.RED.dark(3)))
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
-        return builder.build();
-    }
-
-    @Override
-    protected Widget generateCurrentRecipeInfoWidget() {
-        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
-
-        if (mOutputItems == null || synchedGUIDropTracker == null) return processingDetails;
-
-        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet()
-            .stream()
-            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
-                assert mOutputItems != null;
-                return Arrays.stream(mOutputItems)
-                    .filter(s -> s.isItemEqual(entry.getKey()))
-                    .mapToInt(i -> i.stackSize)
-                    .sum();
-            })
-                .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
-            assert mOutputItems != null;
-            int outputSize = Arrays.stream(mOutputItems)
-                .filter(s -> s.isItemEqual(drop.getKey()))
-                .mapToInt(i -> i.stackSize)
-                .sum();
-            if (outputSize != 0) {
-                Long itemCount = (long) outputSize;
-                String itemName = drop.getKey()
-                    .getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
-
-                processingDetails.widget(
-                    new MultiChildWidget().addChild(
-                        new ItemDrawable(
-                            drop.getKey()
-                                .copy()).asWidget()
-                                    .setSize(8, 8)
-                                    .setPos(0, 0))
-                        .addChild(
-                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
-            }
-        }
-        return processingDetails;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.widget(
-            new FakeSyncWidget.BooleanSyncer(
-                () -> this.mode == EIGModes.IC2,
-                b -> this.mode = b ? EIGModes.IC2 : EIGModes.Normal));
-        screenElements.widget(new FakeSyncWidget<>(() -> {
-            HashMap<ItemStack, Double> ret = new HashMap<>();
-
-            for (Map.Entry<ItemStack, Double> drop : this.guiDropTracker.entrySet()) {
-                ret.merge(drop.getKey(), drop.getValue(), Double::sum);
-            }
-
-            return ret;
-        }, h -> this.synchedGUIDropTracker = h, (buffer, h) -> {
-            buffer.writeVarIntToBuffer(h.size());
-            for (Map.Entry<ItemStack, Double> itemStackDoubleEntry : h.entrySet()) {
-                try {
-                    buffer.writeItemStackToBuffer(itemStackDoubleEntry.getKey());
-                    buffer.writeDouble(itemStackDoubleEntry.getValue());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, buffer -> {
-            int len = buffer.readVarIntFromBuffer();
-            HashMap<ItemStack, Double> ret = new HashMap<>(len);
-            for (int i = 0; i < len; i++) {
-                try {
-                    ret.put(buffer.readItemStackFromBuffer(), buffer.readDouble());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            return ret;
-        }));
-        super.drawTexts(screenElements, inventorySlot);
-    }
 
     @Override
     public String[] getInfoData() {
@@ -1452,7 +1102,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        final ITexture casingTexture = isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
+        final ITexture casingTexture = getCasingTexture();
         if (side == facing) {
             if (aActive) return new ITexture[] { casingTexture, TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
@@ -1477,7 +1127,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
+    public ITexture getCasingTexture() {
+        return isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
+    }
+
+    @Override
     public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.math;
 
-import java.text.NumberFormat;
 import java.util.Random;
 
 import gregtech.api.enums.GTValues;
@@ -10,13 +9,6 @@ import gtPlusPlus.core.util.Utils;
 public class MathUtils {
 
     private static final Random rand = GTPPCore.RANDOM;
-
-    /** Formats a number with group separator and at most 2 fraction digits. */
-    private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
-
-    static {
-        sNumberFormat.setMaximumFractionDigits(2);
-    }
 
     /**
      * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
@@ -119,21 +111,6 @@ public class MathUtils {
         return Math.round(((current / max) * 100) * 100.00) / 100.00;
     }
 
-    /**
-     * Returns a percentage. The returned number is the % of X in Y. Supports Floats.
-     *
-     * @param current Current value.
-     * @param max     Maximim value. Must be greater than min.
-     * @return double between min and max, inclusive.
-     */
-    public static float findPercentage(final float current, final float max) {
-        return (float) (Math.round(((current / max) * 100) * 100.00) / 100.00);
-    }
-
-    public static int findPercentageOfInt(long input, float percentage) {
-        return (int) (input * (percentage / 100.0f));
-    }
-
     // Smooth Rounding Function
 
     /**
@@ -215,7 +192,7 @@ public class MathUtils {
         return GTValues.emptyLongArray;
     }
 
-    private static long gcd(long a, long b) {
+    public static long gcd(long a, long b) {
         while (b > 0) {
             final long temp = b;
             b = a % b; // % is remainder
@@ -224,7 +201,7 @@ public class MathUtils {
         return a;
     }
 
-    private static long gcd(final long[] input) {
+    public static long gcd(final long[] input) {
         long result = input[0];
         for (int i = 1; i < input.length; i++) {
             result = gcd(result, input[i]);

@@ -95,7 +95,8 @@ public class GeneralInfoPanel {
             textList.childIf(inversionSyncer.getBoolValue(), () -> inversionText);
 
             return textList;
-        });
+        })
+            .allowC2S();
 
         inversionSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
 
@@ -114,7 +115,7 @@ public class GeneralInfoPanel {
         return IKey.lang(langKey)
             .style(EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 
@@ -177,7 +178,7 @@ public class GeneralInfoPanel {
     private static TextWidget<?> createHeaderInversion() {
         return IKey.str(getInversionHeaderText())
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 

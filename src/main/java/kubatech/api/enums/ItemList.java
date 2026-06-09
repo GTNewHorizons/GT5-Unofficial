@@ -8,6 +8,7 @@ import java.util.Locale;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +76,9 @@ public enum ItemList implements IItemContainer {
     DEFCWyvernSchematic,
     DEFCAwakenedSchematic,
     DEFCChaoticSchematic,
-    KubaFakeItemEECVoid;
+    KubaFakeItemEECVoid,
+    ElectrodeHatch,
+    ElectrodeDetectorHatch,;
 
     private @Nullable ItemStack mStack;
     private boolean mHasNotBeenSet = true;
@@ -189,7 +192,8 @@ public enum ItemList implements IItemContainer {
         // Construct a translation key from UnlocalizedName and CamelCased DisplayName
         final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
 
-        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
+        GTLanguageManager.addStringLocalization(tKey, aDisplayName);
+        rStack.setStackDisplayName(StatCollector.translateToLocal(tKey));
         return GTUtility.copyAmount(aAmount, rStack);
     }
 

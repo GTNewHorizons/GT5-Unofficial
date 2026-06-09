@@ -7,18 +7,17 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.common.items.ItemDepletedCell;
 import ic2.api.item.IBoxable;
-import ic2.core.util.StackUtil;
 
 public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
 
     protected int cellCount;
     protected int maxDmg;
-    protected int dura;
 
     public ItemRadioactiveCell(String aUnlocalized, String aEnglish, int aCellcount) {
         super(aUnlocalized, aEnglish, null);
@@ -29,12 +28,7 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
     }
 
     public static int getDurabilityOfStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        return tNBT.getInteger("advDmg");
+        return ItemStackNBT.getInteger(aStack, "advDmg");
     }
 
     protected static int sumUp(int a) {
@@ -50,32 +44,19 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
     }
 
     protected boolean outputPulseForStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("output", tNBT.getInteger("output") + 1);
+        final int output = ItemStackNBT.getInteger(aStack, "output");
+        ItemStackNBT.setInteger(aStack, "output", output + 1);
         return false; // (this.pulserate > 0) || (tNBT.getInteger("output") % -this.pulserate == 0);
     }
 
     protected boolean incrementPulseForStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("pulse", tNBT.getInteger("pulse") + 1);
+        final int pulse = ItemStackNBT.getInteger(aStack, "pulse");
+        ItemStackNBT.setInteger(aStack, "pulse", pulse + 1);
         return false; // (this.pulserate > 0) || (tNBT.getInteger("pulse") % -this.pulserate == 0);
     }
 
     protected void setDurabilityForStack(ItemStack aStack, int aDurability) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("durability", aDurability);
+        ItemStackNBT.setInteger(aStack, "durability", aDurability);
     }
 
     public int getMaxNuclearDurability() {
@@ -97,8 +78,7 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
     }
 
     public void setDamageForStack(ItemStack stack, int advDmg) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        nbtData.setInteger("advDmg", advDmg);
+        ItemStackNBT.setInteger(stack, "advDmg", advDmg);
         if (this.maxDmg > 0) {
             double p = (double) advDmg / (double) this.maxDmg;
             int newDmg = (int) (stack.getMaxDamage() * p);
@@ -106,24 +86,19 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
                 newDmg = stack.getMaxDamage() - 1;
             }
             stack.setItemDamage(newDmg);
-            this.dura = newDmg;
         }
     }
 
     public int getDamageOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        this.dura = nbtData.getInteger("advDmg");
-        return this.dura;
+        return ItemStackNBT.getInteger(stack, "advDmg");
     }
 
     public int getControlTagOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        return nbtData.getInteger("tag");
+        return ItemStackNBT.getInteger(stack, "tag");
     }
 
     public void setControlTagOfStack(ItemStack stack, int tag) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        nbtData.setInteger("tag", tag);
+        ItemStackNBT.setInteger(stack, "tag", tag);
     }
 
     public int getMaxDamageEx() {

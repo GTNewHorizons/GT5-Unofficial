@@ -11,11 +11,6 @@ on:
       - unlabeled
       - synchronize
 
-# if a second commit is pushed quickly after the first, cancel the first one's build
-concurrency:
-  group: pr-labels-${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
   Labels:
     runs-on: ubuntu-latest

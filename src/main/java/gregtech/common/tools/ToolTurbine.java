@@ -14,9 +14,6 @@ import gregtech.api.items.MetaGeneratedTool;
 public abstract class ToolTurbine extends GTTool {
 
     @Override
-    public abstract float getBaseDamage();
-
-    @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return false;
     }

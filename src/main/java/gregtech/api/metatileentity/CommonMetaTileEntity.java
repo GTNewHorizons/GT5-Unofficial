@@ -50,7 +50,6 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -82,7 +81,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     public long mSoundRequests = 0;
 
-    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
+    protected CommonMetaTileEntity(int id, String basicName, int invSlotCount) {
         if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
         if (GregTechAPI.METATILEENTITIES[id] == null) {
@@ -101,7 +100,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
             .toLowerCase(Locale.ENGLISH);
-        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
     }
 
     protected CommonMetaTileEntity(String name, int invSlotCount) {
@@ -230,6 +228,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         }
     }
 
+    @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
@@ -405,7 +404,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalNameKey();
         }
         return "";
     }
@@ -413,6 +412,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public int getInventoryStackLimit() {
         return 64;
+    }
+
+    public int getSlotLimit(int slot) {
+        return getInventoryStackLimit();
     }
 
     @Override
@@ -488,8 +491,16 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+    }
+
+    /**
+     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
+     * needs to drain a different amount than {@code fluidStack.amount}.
+     */
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, int amount, boolean doDrain) {
         if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
-            return drain(fluidStack.amount, doDrain);
+            return drain(amount, doDrain);
         }
         return null;
     }
@@ -665,7 +676,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return new GTModularScreen(mainPanel, getColoredTheme());
     }
 
-    private GTGuiTheme getColoredTheme() {
+    public final GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
         byte color = this.getBaseMetaTileEntity()

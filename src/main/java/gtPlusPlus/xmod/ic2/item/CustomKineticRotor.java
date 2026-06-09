@@ -82,7 +82,8 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     }
 
     @Override
-    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
+    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> info,
+        final boolean adv) {
 
         info.add(
             StatCollector
@@ -197,11 +198,6 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     protected String getIconString() {
         return super.getIconString();
-    }
-
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return super.getDurabilityForDisplay(stack);
     }
 
     @Override

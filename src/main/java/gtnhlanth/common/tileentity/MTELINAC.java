@@ -1,8 +1,11 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.BeamlineInput;
+import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -11,12 +14,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -36,7 +39,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
@@ -48,6 +51,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -71,10 +76,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_END = "end"; // Coolant temperature
 
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
-
-    private static final int CASING_INDEX = 1662;
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private int glassTier = -1;
     private int machineTemp = 0;
@@ -117,39 +119,37 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     { "ccccccc", "cvvvvvc", "kvvvvvk", "kvv-vvk", "kvvvvvk", "cvvvvvc", "ccccccc" },
                     { "ccccccc", "ccccccc", "ccccccc", "ccc-ccc", "ccccccc", "ccccccc", "ccccccc" },
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
-            .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-            .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
+            .addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
+            .addElement('g', Casings.GrateMachineCasing.asElement())
             .addElement('b', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
             .addElement(
                 'i',
-                buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
-                    .casingIndex(CASING_INDEX)
+                buildHatchAdder(MTELINAC.class).atLeast(BeamlineInput)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(3)
-                    .adder(MTELINAC::addBeamLineInputHatch)
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
-                    .casingIndex(CASING_INDEX)
+                buildHatchAdder(MTELINAC.class).atLeast(BeamlineOutput)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
-                    .adder(MTELINAC::addBeamLineOutputHatch)
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
             .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-            .addElement('y', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coil
+            .addElement('y', Casings.SuperconductingCoilBlock.asElement())
             .addElement(
                 'h',
                 buildHatchAdder(MTELINAC.class).atLeast(InputHatch, OutputHatch)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
             .addElement(
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(ShieldedAccCasingTextureID)
                     .hint(1)
-                    .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .build();
     }
 
@@ -169,76 +169,45 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Particle Accelerator, LINAC")
-            .addInfo("Accelerates charged particles to higher energies by running them through an electric field")
-            .addInfo("Electrically neutral particles are therefore unaffected")
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.linac.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info1"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info2"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
-            .addInfo("Increasing Structure Length increases output "+createEnergyText("Beam Energy")+" but decreases "+createFocusText("Beam Focus"))
-            .addInfo("Requires " + EnumChatFormatting.WHITE + "Length * kL/s " + EnumChatFormatting.GRAY + "of " + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " for operation")
-            .addInfo(createFocusText("Beam Focus") + " loss can be mitigated more effectively with lower temperature " + EnumChatFormatting.AQUA+"coolant")
-            .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Liquid Nitrogen",90))
-            .addInfo(coolantLine("Liquid Oxygen",90))
-            .addInfo(coolantLine("Coolant",60))
-            .addInfo(coolantLine("Super Coolant",1))
+            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.linac.info3", getFluidUnit()))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
             .addSeparator()
-            .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = max("+EnumChatFormatting.YELLOW+"V"+EnumChatFormatting.WHITE+", 50) * 10^"+EnumChatFormatting.RED+"IE")
-            .addInfo("where " + EnumChatFormatting.YELLOW + "V" + EnumChatFormatting.WHITE + " = (Length - 1) * cbrt(" + EnumChatFormatting.DARK_GREEN + "Machine Voltage" + EnumChatFormatting.WHITE + ") / 4")
-            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1 + min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Particle Energy")
-            .addInfo(EnumChatFormatting.RED + "Input Beam Energies" + EnumChatFormatting.GRAY + " higher than 7500keV are treated as if they are 7500keV")
-            .addInfo(EnumChatFormatting.GREEN +"Maximum Particle Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info4"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info5"))
             .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
-            .addInfo("where " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + " = min(max((-0.9 * (Length-1) * 1.1^(0.2 * " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + ") + 110), 5), 90)")
-            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
-            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info6"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info7"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info8"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info9"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info10"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info11"))
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
-            .addController("Front bottom")
-            .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
+            .addController("Front bottom center")
+            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 325, 1285, false)
             .addCasingInfoRange(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 148, 852, false)
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 127, 703, false)
-            .addCasingInfoRange("Superconducting Coil Block", 56, 312, false)
+            .addCasingInfoRange(Casings.SuperconductingCoilBlock.getLocalizedName(), 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
-            .addCasingInfoExactly("Grate Machine Casing", 47, false)
+            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 47, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
             .addEnergyHatch(addHintNumber(1))
             .addMaintenanceHatch(addHintNumber(1))
             .addInputHatch(addHintNumber(2))
             .addOutputHatch(addHintNumber(2))
-            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(3))
-            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(3))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(4))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        //spotless:on
         return tt;
-    }
-
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
-
-    private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
-        }
-
-        return false;
     }
 
     @NotNull
@@ -311,11 +280,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     private void outputPacketAfterRecipe() {
-        if (!mOutputBeamline.isEmpty()) {
+        if (!mBeamlineOutputHatches.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticleID, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mOutputBeamline) {
+            for (MTEHatchOutputBeamline o : mBeamlineOutputHatches) {
                 o.dataPacket = packet;
             }
         }
@@ -333,7 +302,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -345,10 +314,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity mte, ItemStack stack) {
-        mInputBeamline.clear();
-        mOutputBeamline.clear();
-
+    public void checkMachine(IGregTechTileEntity mte, ItemStack stack, List<StructureError> errors) {
         this.outputEnergy = 0;
         this.outputRate = 0;
         this.outputParticleID = 0;
@@ -358,12 +324,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         length = 8; // Base piece length
 
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0, errors)) return;
 
         while (length < 128) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length)) {
-                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) {
-                    return false;
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length, errors)) {
+                errors.clear();
+                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length, errors)) {
+                    return;
                 }
                 break;
             }
@@ -372,9 +339,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         length += 9;
 
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
-            && this.mEnergyHatches.size() <= 2
-            && this.glassTier >= VoltageIndex.LuV;
+        checkHatchMax(errors, Energy, 2);
+        checkHasMaintenanceHatch(errors);
+
+        if (glassTier < VoltageIndex.LuV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
+        }
     }
 
     @Override
@@ -432,26 +402,28 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
     }
 
     @Override
@@ -591,12 +563,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return STRUCTURE_DEFINITION;
     }
 
-    public boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return super.addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
-    public boolean supportsPowerPanel() {
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 

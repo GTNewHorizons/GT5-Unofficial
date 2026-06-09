@@ -39,9 +39,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -70,38 +68,43 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         syncManager.syncValue(
             "Module1",
-            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module2",
-            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module3",
-            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module4",
-            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Tier",
             new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
 
-        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val)
+            .allowC2S();
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
             calculatorData.setModule(0, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
             calculatorData.setModule(1, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
             calculatorData.setModule(2, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
             calculatorData.setModule(3, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
     }
 
     @Override
@@ -137,11 +140,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler contribPanel = syncManager
             .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(parent));
-        return new ButtonWidget<>().size(18)
-            .marginTop(4)
+        return new ButtonWidget<>().marginTop(4)
             .overlay(IDrawable.EMPTY)
             .tooltip(
-                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.button.foundry.contributorpanel")))
+                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .background(GTGuiTextures.PICTURE_EXOFOUNDRY_LOGO)
             .disableHoverBackground()
@@ -160,29 +162,33 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .size(getBasePanelWidth(), getBasePanelHeight() + 20)
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
         panel.child(
-            IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
+            IKey.lang("GT5U.gui.text.contributors.header")
                 .asWidget()
                 .style(EnumChatFormatting.GOLD)
                 .marginTop(8)
-                .align(Alignment.TopCenter))
+                .topRel(0)
+                .horizontalCenter())
             .child(
                 ButtonWidget.panelCloseButton()
                     .background(GTGuiTextures.BUTTON_FOUNDRY));
 
         Flow contributorColumn = Flow.column()
             .coverChildren()
+            .childPadding(5)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(14)
             .marginTop(24);
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.projectlead",
+                "GT5U.gui.text.contributors.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
-        contributorColumn.child(createContributorSection("GT5U.gui.text.foundry.programming", createSerenibyssEntry()));
+        contributorColumn
+            .child(createContributorSection("GT5U.gui.text.contributors.programming", createSerenibyssEntry()));
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.textures",
+                "GT5U.gui.text.contributors.textures",
                 createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")),
@@ -192,7 +198,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.rendering",
+                "GT5U.gui.text.contributors.rendering",
                 createContributorEntry("Sisyphus", 0xFF2BCAD9)));
 
         contributorColumn.child(
@@ -224,7 +230,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.playtest",
+                "GT5U.gui.text.contributors.playtesting",
                 createContributorEntry("Scam Run", Color.DEEP_ORANGE.main).tooltip(t -> {
                     t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "Working");
@@ -241,16 +247,15 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     private static Flow createContributorSection(String titleKey, Widget<?>... entries) {
-        return new Column().coverChildren()
-            .marginBottom(5)
-            .alignX(0)
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 IKey.lang(titleKey)
                     .style(EnumChatFormatting.UNDERLINE)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
-                    .marginBottom(2)
-                    .alignX(0))
+                    .marginBottom(2))
             .children(Arrays.asList(entries));
     }
 
@@ -316,47 +321,60 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 usingPreviewSync.setBoolValue(false);
             })
             .child(
-                new Column().sizeRel(1)
+                Flow.column()
+                    .full()
                     .paddingTop(4)
-                    .child(
-                        new TextWidget<>("Stats").alignment(Alignment.TopCenter)
-                            .height(9))
                     .widgetTheme("backgroundPopup")
-                    .child(IKey.dynamic(() -> {
-                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
-                        return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
-                    })
-                        .asWidget()
-                        .left(4)
-                        .size(120, 20)
-                        .marginBottom(2))
-
-                    .child(IKey.dynamic(() -> {
-                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
-                        return "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + data.getParallelsString();
-                    })
-                        .asWidget()
-                        .size(120, 20)
-                        .marginBottom(2)
-                        .left(4))
-                    .child(IKey.dynamic(() -> {
-                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
-                        return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
-                    })
-                        .asWidget()
-                        .size(120, 20)
-                        .marginBottom(2)
-                        .left(4))
-                    .child(IKey.dynamic(() -> {
-                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
-                        return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + data.getOCFactorString();
-                    })
-                        .asWidget()
-                        .size(120, 20)
-                        .marginBottom(2)
-                        .left(4))
+                    .child(new TextWidget<>("Stats").height(9))
                     .child(
-                        new Row().size(120, 20)
+                        Flow.row()
+                            .coverChildren()
+                            .child(
+                                Flow.column()
+                                    .crossAxisAlignment(Alignment.CrossAxis.START)
+                                    .coverChildren()
+                                    .child(IKey.dynamic(() -> {
+                                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData
+                                            : multiblock.foundryData;
+                                        return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
+                                    })
+                                        .asWidget()
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
+                                        .size(120, 20)
+                                        .marginBottom(2))
+                                    .child(IKey.dynamic(() -> {
+                                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData
+                                            : multiblock.foundryData;
+                                        return "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR
+                                            + data.getParallelsString();
+                                    })
+                                        .asWidget()
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
+                                        .size(120, 20)
+                                        .marginBottom(2))
+                                    .child(IKey.dynamic(() -> {
+                                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData
+                                            : multiblock.foundryData;
+                                        return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
+                                    })
+                                        .asWidget()
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
+                                        .size(120, 20)
+                                        .marginBottom(2))
+                                    .child(IKey.dynamic(() -> {
+                                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData
+                                            : multiblock.foundryData;
+                                        return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE
+                                            + data.getOCFactorString();
+                                    })
+                                        .asWidget()
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
+                                        .size(120, 20)
+                                        .marginBottom(2)))
+                            .child(createPairHoldingColumn(calculatorData, true)))
+                    .child(
+                        Flow.row()
+                            .size(120, 20)
                             .childPadding(1)
                             .marginBottom(2)
                             .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, tierDyn, true))
@@ -372,11 +390,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     })
                         .scale(0.9f)
                         .asWidget()
-                        .size(120, 20)
-                        .alignX(0.5f))
-                    .child(
-                        createPairHoldingColumn(calculatorData, true).right(4)
-                            .alignY(0.2f)));
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
+                        .size(120, 20)));
     }
 
     protected IWidget createConfigButton() {
@@ -392,7 +407,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     @Override
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
+        return Flow.row()
+            .size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(
                 new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
                     .paddingTop(4)
@@ -421,7 +437,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             true,
             (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats));
 
-        return new Row().size(30, 16)
+        return Flow.row()
+            .size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)
             .child(
                 new ButtonWidget<>().size(16, 16)
@@ -497,12 +514,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .size(140, 130)
             .widgetTheme("backgroundPopup")
             .child(
-                new Column().sizeRel(1)
+                Flow.column()
+                    .full()
                     .widgetTheme("backgroundPopup")
-                    .child(
-                        new TextWidget<>("Select Module " + (index + 1)).size(80, 18)
-                            .align(Alignment.TopCenter)
-                            .marginBottom(2))
+                    .childPadding(4)
+                    .child(new TextWidget<>("Select Module " + (index + 1)).size(80, 18))
                     .child(
                         SlotGroupWidget.builder()
                             .row(" I I ")
@@ -512,19 +528,15 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .row(" I I ")
                             .key(
                                 'I',
-                                i -> new ButtonWidget<>().size(18)
-                                    .overlay(
-                                        new ItemDrawable(
-                                            Objects.requireNonNull(FoundryModule.values()[i].getItemIcon())))
+                                i -> new ButtonWidget<>().overlay(
+                                    new ItemDrawable(Objects.requireNonNull(FoundryModule.values()[i].getItemIcon())))
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
                                         panel.closeIfOpen();
                                         return true;
                                     }))
-                            .build()
-                            .topRel(0.5f)
-                            .leftRel(0.4f)));
+                            .build()));
         return panel;
     }
 
@@ -676,21 +688,24 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
         IntSyncValue tierSync = syncManager.findSyncHandler("Tier", IntSyncValue.class);
 
-        return new Row().sizeRel(1)
+        return Flow.row()
+            .full()
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .background(IDrawable.EMPTY)
+            .childPadding(20)
             .child(createFoundryDisplay(syncManager))
+            .child(createPairHoldingColumn(multiblock.foundryData, false))
             // module selecting
             .child(
-                new Column().size(40, 80)
+                Flow.column()
+                    .size(40, 80)
                     .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
                     .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, tierSync, false))
                     .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, tierSync, false))
                     .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, tierSync, false))
-                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)))
-            .child(createPairHoldingColumn(multiblock.foundryData, false).alignX(0.5f));
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)));
     }
 
     private Flow createPairHoldingColumn(FoundryData data, boolean hasBackground) {
@@ -853,13 +868,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         IntSyncValue module4Sync = syncManager.findSyncHandler("Module4", IntSyncValue.class);
         parentWidget.child(
             GTGuiTextures.EXOFOUNDRY_BASE.asWidget()
-                .size(59, 80)
-                .marginRight(60))
+                .size(59, 80))
             .child(
-                new Column().size(59, 80)
+                Flow.column()
+                    .size(59, 80)
                     .pos(0, 0)
                     .child(
-                        new Column().size(59, 40)
+                        Flow.column()
+                            .size(59, 40)
                             .paddingTop(8)
                             // module 4 and 3
                             .child(
@@ -874,7 +890,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         new DynamicDrawable(
                                             () -> FoundryModule.values()[module3Sync.getIntValue()].texture))))
                     .child(
-                        new Column().size(59, 40)
+                        Flow.column()
+                            .size(59, 40)
                             .paddingTop(7)
                             // module 2 and 1
                             .child(

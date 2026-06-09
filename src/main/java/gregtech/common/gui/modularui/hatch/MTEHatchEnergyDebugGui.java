@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -31,8 +32,7 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
     private TextFieldWidget createNumberTextField() {
         return new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
             .setFormatAsInteger(true)
-            .height(14)
-            .marginRight(2);
+            .height(14);
     }
 
     private boolean onVoltageModifierButtonPressed(int mouseButton, IntSyncValue voltageTierSyncer) {
@@ -82,7 +82,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
                 + "Halve"
                 + EnumChatFormatting.RESET
                 + " Amperage");
-        t.addLine(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Max Amperage of 536,870,912");
+        t.addLine(
+            EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Max Amperage of " + formatNumber(MAX_AMPERAGE));
     }
 
     final int MAX_AMPERAGE = 536870912;
@@ -102,93 +103,103 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue voltageTierSyncer = new IntSyncValue(hatch::getVoltageTier, hatch::setVoltageTier);
-        IntSyncValue amperageSyncer = new IntSyncValue(hatch::getAmperage, hatch::setAmperage);
-        IntSyncValue intervalSyncer = new IntSyncValue(hatch::getRefillInterval, hatch::setRefillInterval);
-        Flow numberInputColumn = Flow.column();
-        numberInputColumn.sizeRel(1)
-            .paddingTop(4)
-            .paddingLeft(4)
+        IntSyncValue voltageTierSyncer = new IntSyncValue(machine::getVoltageTier, machine::setVoltageTier).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
+
+        Flow numberInputColumn = Flow.column()
+            .coverChildren()
+            .childPadding(4)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
         Flow voltageRow = Flow.row()
-            .height(18)
-            .coverChildrenWidth()
-            .marginBottom(4);
+            .width(17 * SLOT_SIZE / 2)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
+
+        Flow voltageTextRow = Flow.row()
+            .coverChildren()
+            .childPadding(2)
+            .collapseDisabledChild();
 
         // add a number input field to determine voltage tier
-        voltageRow.child(
-            createNumberTextField().width(40)
-                .setNumbers(0, 15)
+        voltageTextRow.child(
+            createNumberTextField().width(25)
+                .setMaxLength(2)
+                .numbersInt(0, 15)
                 .value(voltageTierSyncer)
-                .setDefaultNumber(0));
+                .defaultNumber(0));
 
         // add the changing tier description widget
-        voltageRow.child(IKey.dynamic(() -> {
+        voltageTextRow.child(IKey.dynamic(() -> {
             int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
             String color = GTValues.TIER_COLORS[clampedTier];
             return GTUtility.translate(
                 "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
         })
-            .asWidget()
-            .width(80)
-            .height(14)
-            .marginRight(2));
+            .asWidget());
+
+        voltageRow.child(voltageTextRow);
 
         // add a button to increment / decrement voltage tier
         voltageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.GRAPH)
-                .size(18)
                 .onMousePressed(mouseButton -> this.onVoltageModifierButtonPressed(mouseButton, voltageTierSyncer))
                 .tooltip(this::createVoltageModifierButtonTooltip));
 
         Flow amperageRow = Flow.row()
-            .height(18)
-            .marginBottom(16)
-            .coverChildrenWidth();
+            .width(17 * SLOT_SIZE / 2)
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
+
+        Flow amperageTextRow = Flow.row()
+            .coverChildren()
+            .childPadding(2);
 
         // number field for amperage
-        amperageRow.child(
-            createNumberTextField().width(60)
-                .setNumbers(1, MAX_AMPERAGE)
+        amperageTextRow.child(
+            createNumberTextField().width(70)
+                .setMaxLength((int) Math.ceil(Math.log10(MAX_AMPERAGE)))
+                .numbersInt(1, MAX_AMPERAGE)
                 .value(amperageSyncer)
-                .setDefaultNumber(2));
+                .defaultNumber(2));
 
         // text widget for Amperage, is static. width is larger for nice spacing
-        amperageRow.child(
-            new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")).width(60)
-                .height(18)
-                .marginRight(2));
+        amperageTextRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")));
 
-        // button to double / halve amperage, up to 536,870,912
+        amperageRow.child(amperageTextRow);
+
+        // button to double / halve amperage, up to MAX_AMPERAGE
         amperageRow.child(
             new ButtonWidget<>().overlay(GuiTextures.MAZE)
-                .size(18)
                 .onMousePressed(mouseButton -> onAmperageModifierButtonPressed(mouseButton, amperageSyncer))
                 .tooltip(this::createAmperageModifierButtonTooltip));
 
+        numberInputColumn.child(voltageRow);
+        numberInputColumn.child(amperageRow);
+
+        return super.createContentSection(panel, syncManager).child(numberInputColumn);
+    }
+
+    @Override
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        IntSyncValue intervalSyncer = new IntSyncValue(machine::getRefillInterval, machine::setRefillInterval)
+            .allowC2S();
+
         // row to allow setting of 'refill interval'
         Flow intervalRow = Flow.row()
-            .height(18)
-            .alignX(0)
-            .coverChildrenWidth();
+            .coverChildren();
 
         intervalRow.child(
             createNumberTextField().width(40)
-                .setDefaultNumber(600)
-                .setNumbers(MIN_TICKS_PER_REFILL, MAX_TICKS_PER_REFILL)
+                .defaultNumber(600)
+                .numbersInt(MIN_TICKS_PER_REFILL, MAX_TICKS_PER_REFILL)
                 .value(intervalSyncer));
 
         intervalRow.child(
             IKey.lang("GT5U.gui.text.ticks_between_refill")
                 .asWidget()
-                .width(100)
-                .height(18)
                 .scale(0.9f));
 
-        numberInputColumn.child(voltageRow);
-        numberInputColumn.child(amperageRow);
-        numberInputColumn.child(intervalRow);
-        return super.createContentSection(panel, syncManager).child(numberInputColumn);
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(intervalRow);
     }
 }

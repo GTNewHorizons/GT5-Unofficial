@@ -268,6 +268,22 @@ public class Client {
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderTransMetalFancy;
+
+        @Config.Comment("Enables or disables Infinity rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderInfinityFancy;
+
+        @Config.Comment("Enables or disables Cosmic Neutronium fuzz rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderCosmicNeutroniumFancy;
+
+        @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderGlitchFancy;
+
+        @Config.Comment("Enables or disables Universium rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderUniversiumFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -398,6 +414,21 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Show Flavor Text")
         public boolean showFlavorText;
+
+        @Config.Comment("Enabled show Fluid Amount")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid Amount")
+        public boolean showFluidAmount;
+
+        @Config.Comment("Enabled show Fluid Temperature")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid Temperature")
+        public boolean showFluidTemperature;
+
+        @Config.Comment("Enabled show Fluid State")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid State")
+        public boolean showFluidState;
 
         @Config.Comment("Enabled show GT++ Radioactive Text")
         @Config.DefaultBoolean(true)

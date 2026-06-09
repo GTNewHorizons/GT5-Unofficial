@@ -13,19 +13,20 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,9 +40,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
@@ -115,18 +118,21 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Base cycle time: 1 tick");
 
         tt.beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
+            .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(
-                this.getFrameMaterial().mName + " Frame Boxes",
-                "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
-            .addMaintenanceHatch("Any base casing")
-            .addInputBus("Mining Pipes, optional, any base casing")
-            .addInputHatch("Any base casing")
-            .addOutputHatch("Any base casing")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .addOtherStructurePart(this.getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
+            .addMaintenanceHatch("Any base Casing")
+            .addInputBus("Mining Pipes, optional, any base Casing")
+            .addInputHatch("Any base Casing")
+            .addOutputHatch("Any base Casing")
+            .toolTipFinisher(
+                EnumChatFormatting.GREEN + "bartimaeusnek"
+                    + EnumChatFormatting.GRAY
+                    + " via "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "BartWorks");
         return tt;
     }
 
@@ -162,8 +168,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.DEHP.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "GT5U.DEHP.mode." + machineMode;
     }
 
     @Override
@@ -172,15 +178,18 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected boolean checkHatches() {
-        return !this.mMaintenanceHatches.isEmpty() && !this.mOutputHatches.isEmpty() && !this.mInputHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
     }
 
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && fluidStack.getFluid()
                 .equals(f)) ret += ih.getFluidAmount();
         }
         return ret;
@@ -193,12 +202,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluidStack.getFluid()
                 .equals(toConsume1)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(toConsume2))
+                || fluidStack.getFluid()
+                    .equals(toConsume2)))
                 ret += ih.getFluidAmount();
         }
         return ret;
@@ -207,28 +215,29 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected void addOperatingMessages() {
         // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(STATE_AT_BOTTOM, true, "circulating_fluid");
-        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+        addResultMessage(WorkState.DOWNWARD, true, "deploying_pipe");
+        addResultMessage(WorkState.DOWNWARD, false, "extracting_pipe");
+        addResultMessage(WorkState.AT_BOTTOM, true, "circulating_fluid");
+        addResultMessage(WorkState.AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(WorkState.UPWARD, true, "retracting_pipe");
+        addResultMessage(WorkState.UPWARD, false, "drill_generic_finished");
+        addResultMessage(WorkState.ABORT, true, "retracting_pipe");
+        addResultMessage(WorkState.ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getMachineModeName());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (tryLowerPipeState(true) == 0) {
-            workState = STATE_DOWNWARD;
+        if (tryLowerPipeState(true) == PipeActionResult.SUCCESS) {
+            workState = WorkState.DOWNWARD;
             return true;
         }
         if (this.machineMode == 0) {
@@ -240,7 +249,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getDistilledWater(1)
                         .getFluid(),
                     waterConsume);
-                this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -255,7 +264,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getIC2Coolant(0)
                         .getFluid(),
                     coolantConverted);
-                this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -265,22 +274,20 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     private boolean consumeFluid(Fluid fluid, long ammount) {
+        Fluid distilledWater = GTModHandler.getDistilledWater(1)
+            .getFluid();
         if (ammount > Integer.MAX_VALUE) {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
                 for (MTEHatchInput ih : this.mInputHatches) {
-                    if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                        .getFluid()
+                    FluidStack fluidStack = ih.getFluid();
+                    if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                         .equals(fluid)
-                        || ih.getFluid()
-                            .getFluid()
-                            .equals(
-                                GTModHandler.getDistilledWater(1)
-                                    .getFluid())
-                        : ih.getFluid()
-                            .getFluid()
-                            .equals(fluid))
+                        || fluidStack.getFluid()
+                            .equals(distilledWater)
+                        : fluidStack.getFluid()
+                            .equals(fluid)))
                         tmp[i] -= ih.drain((int) ammount, true).amount;
                     if (tmp[i] <= 0) break;
                 }
@@ -291,17 +298,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         long tmp = ammount;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                 .equals(fluid)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(
-                        GTModHandler.getDistilledWater(1)
-                            .getFluid())
-                : ih.getFluid()
-                    .getFluid()
-                    .equals(fluid))
+                || fluidStack.getFluid()
+                    .equals(distilledWater)
+                : fluidStack.getFluid()
+                    .equals(fluid)))
                 tmp -= ih.drain((int) ammount, true).amount;
             if (tmp <= 0) return true;
         }
@@ -328,8 +331,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDrillerBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
