@@ -501,10 +501,8 @@ public class RecipeMapBackend {
         }
 
         Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
-        return StreamSupport.stream(
-            Spliterators
-                .spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE),
-            false);
+        return StreamSupport
+            .stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE), false);
     }
 
     private static void addLookupIngredient(List<GTRecipeLookupIngredient> group, GTRecipeLookupIngredient ingredient) {
