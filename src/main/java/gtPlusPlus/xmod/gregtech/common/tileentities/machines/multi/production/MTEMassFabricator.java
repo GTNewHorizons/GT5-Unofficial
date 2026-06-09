@@ -107,14 +107,14 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                     + EnumChatFormatting.GRAY
                     + " scrap chance per "
                     + TooltipHelper.tierText("Voltage")
-                    + " tier in recycler mode")
+                    + " Tier in recycler mode")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front bottom center")
             .addCasingInfoMin(mCasingName3, 9, false)
             .addCasingInfoMin(mCasingName2, 24, false)
-            .addCasingInfoMin(mCasingName1, 36, false)
+            .addCasingInfoMin(mCasingName1, 35, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -194,7 +194,9 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         checkCasingMin(errors, mCasing, 35);
         checkHatch(errors);
         checkHasEnergyHatch(errors);
-        if (machineMode != MODE_SCRAP) {
+        if (machineMode == MODE_SCRAP) {
+            checkHasOutputBus(errors);
+        } else {
             checkHasOutputHatch(errors);
         }
     }
