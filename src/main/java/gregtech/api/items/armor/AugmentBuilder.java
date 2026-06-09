@@ -22,6 +22,7 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
     private EnumRarity rarity;
+    private Supplier<IIcon> textureSupplier = () -> null;
 
     @SuppressWarnings("unchecked")
     private final Supplier<IIcon>[] textureSuppliers = new Supplier[4];
